@@ -1,0 +1,9 @@
+.ifndef CTRL_I
+CTRL_I = 1
+
+CTRL0	=	$4016
+CTRL1	=	$4017
+
+CTRL_BIT_COUNT	=	$8
+
+.endif	; CTRL_I

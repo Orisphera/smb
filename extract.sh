@@ -12,7 +12,7 @@ fi
 
 mkdir -p data/chr
 
-dd if=$1 bs=1 skip=16 count=32762 >data/prg.bin
+dd if=$1 bs=1 skip=106 count=32672 >data/prg.bin
 
 # CHR Common
 TILE_SIZE=16

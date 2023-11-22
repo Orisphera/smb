@@ -1,0 +1,9 @@
+.ifndef CPU_I
+CPU_I = 1
+
+BITS_IN_BYTE	= 8
+WORD_SIZE	= 2
+STACK_BASE	= $100
+RESET		= $FFFC
+
+.endif	; CPU_I
