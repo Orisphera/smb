@@ -1,6 +1,8 @@
 .include	"../inc/system/ppu.i"
 .include	"../inc/system/apu.i"
 
+.include	"../inc/engine/tunables.i"
+
 .include	"../inc/engine/unk.i"
 
 .segment	"VECTORS"
@@ -31,7 +33,7 @@ start:
         ldy     #START_COLDBOOT_VAL
         ldx     #(eng_score_end-eng_score)-1
 	: ; for (digit of eng_score) {
-		lda     eng_score,x
+		lda     eng_score, x
 		cmp     #10
 		bcs     start_init
 

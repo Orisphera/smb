@@ -15,6 +15,7 @@ ROMS		=	$(PRG) \
 			$(CHR)
 
 PRG_OBJS	=	src/start.o \
+			src/nmi.o \
 			data/prg.o
 
 CHR_OBJS	=	data/chr.o
