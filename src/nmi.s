@@ -211,16 +211,16 @@ nmi_pause:
         cmp     #game_mode::normal
         bne     :+++++
         lda     eng_gameplay_mode
-        cmp     #gameplay_mode::menu
+        cmp     #gameplay_mode::proc
         bne     :+++++
-	: ; if (game_mode == victory || (game_mode == normal && eng_gameplay_mode == menu)) {
+	: ; if (game_mode == victory || (game_mode == normal && eng_gameplay_mode == proc)) {
 		lda     eng_pause_ticks
 		beq     :+ ; if (eng_pause_ticks) {
 			dec     eng_pause_ticks
 			rts
 		: ; }
 
-		lda     joypad1_state_prev
+		lda     joypad_p1
 		and     #joypad_button::start
 		beq     :+ ; if (joypad1_start) {
 			lda     eng_pause_status
@@ -303,6 +303,6 @@ nmi_gamemode_enter:
 	lda     eng_game_mode
         jsr     eng_farjump
 	.addr	eng_title
-	.addr	eng_gameplay
+	.addr	eng_game
 	.addr	eng_victory
 	.addr	eng_game_over

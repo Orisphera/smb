@@ -14,9 +14,16 @@ CHR		=	CHR.bin
 ROMS		=	$(PRG) \
 			$(CHR)
 
-PRG_OBJS	=	src/start.o \
+BASE_OBJS	=	src/start.o \
 			src/nmi.o \
-			src/lib/oam_init.o \
+			src/lib/oam_init.o
+
+TITLE_OBJS	=	src/title/base.o \
+			src/title/cursor.o \
+			src/title/demo.o
+
+PRG_OBJS	=	$(BASE_OBJS) \
+			$(TITLE_OBJS) \
 			data/prg.o
 
 CHR_OBJS	=	data/chr.o
