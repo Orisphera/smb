@@ -1,9 +1,9 @@
 .ifndef UNK_I
 UNK_I = 1
 
-eng_victory		= $838B
-
 title_scr_proc		= $8567
+
+victory_next		= $874E
 
 palette_underwater	= $8CA4
 palette_day		= $8CC8
@@ -32,17 +32,31 @@ title_init_0		= $8FCF
 title_init_1		= $9061
 sub_clearram		= $90CC
 eng_game_over		= $9218
+eng_next_game		= $9248
 eng_loadareaptr		= $9C03
 eng_game		= $AEDC
 game_proc		= $AEEA
+game_scroll_save	= $AF6F
+game_scroll		= $AFC4
+player_proc_auto	= $B0E6
+actor_proc		= $C047
+eng_bowser_ending	= $CFEC
+eng_player_render	= $EEE9
+lib_calc_player_pos	= $F12A
 apu_cycle		= $F2D0
 irq			= $FFF0
 
 zp_byte_00		= $00
 eng_screen_update_addr	= $00
+eng_actor_offset	= $08
 eng_frame_count		= $09
 game_proc_id		= $0E
+victory_screen_hi	= $34
+victory_proc_ctrl	= $35
+eng_player_hi		= $6D
+eng_player_pos_x_lo	= $86
 apu_sfx_flag_pause	= $FA
+apu_music_event		= $FC
 
 OAM_DMA_BUFFER		= $200
 
@@ -58,13 +72,19 @@ joypad_p2		= $6FD
 
 title_demo_button_id	= $717
 title_demo_button_timer	= $718
+victory_msg_count_outer	= $719
 eng_screen_left_hi	= $71A
+eng_screen_right_hi	= $71B
 eng_sprite_overlap	= $722
 eng_scc_h_b		= $73F
 eng_scc_v_b		= $740
 eng_timer_ctl		= $747
+victory_msg_count_inner	= $749
 eng_area_type		= $74E
+eng_player_id		= $753
 eng_req_timer		= $757
+eng_lives		= $75A
+eng_goals		= $75C
 eng_hidden_one_up	= $75D
 eng_course_no		= $75F
 eng_course_sub		= $760

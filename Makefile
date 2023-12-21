@@ -18,12 +18,15 @@ BASE_OBJS	=	src/start.o \
 			src/nmi.o \
 			src/lib/oam_init.o
 
-TITLE_OBJS	=	src/title/base.o \
+TITLE_BASE_OBJS	=	src/title/base.o \
 			src/title/cursor.o \
 			src/title/demo.o
 
+GAME_BASE_OBJS	=	src/game/victory.o
+
 PRG_OBJS	=	$(BASE_OBJS) \
-			$(TITLE_OBJS) \
+			$(TITLE_BASE_OBJS) \
+			$(GAME_BASE_OBJS) \
 			data/prg.o
 
 CHR_OBJS	=	data/chr.o

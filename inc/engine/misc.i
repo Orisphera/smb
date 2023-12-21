@@ -15,6 +15,14 @@
 		proc	 = 3
 	.endenum
 
+	.enum	victory_mode
+		bridge   = 0
+		init	 = 1
+		proc     = 2
+		msg      = 3
+		end      = 4
+	.endenum
+
 	.enum	game_proc
 		start	= 0
 		vine	= 1
