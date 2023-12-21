@@ -1,9 +1,6 @@
 .ifndef UNK_I
 UNK_I = 1
 
-
-oam_init		= $8220
-oam_init_nmi		= $8223
 eng_title		= $8231
 eng_victory		= $838B
 
