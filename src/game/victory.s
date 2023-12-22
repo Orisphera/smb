@@ -1,3 +1,6 @@
+.include	"../../inc/system/cpu.i"
+.include	"../../inc/system/ppu.i"
+
 .include	"../../inc/engine/joypad.i"
 .include	"../../inc/engine/sound.i"
 .include	"../../inc/engine/tunables.i"
@@ -172,3 +175,130 @@ victory_end:
 
 		rts
 	; }
+; -----------------------------------------------------------
+SCORE_METASPR_W_TILES	= 2
+SCORE_DIGIT_MASK	= $0F
+
+screen_score_disp_tiles:
+	.byte	$FF, $FF
+
+	.byte	$F6, $FB
+	.byte	$F7, $FB
+	.byte	$F8, $FB
+	.byte	$F9, $FB
+	.byte	$FA, $FB
+	.byte	$F6, $50
+	.byte	$F7, $50
+	.byte	$F8, $50
+	.byte	$F9, $50
+	.byte	$FA, $50
+
+	.byte	$FD, $FE
+screen_score_disp_tiles_end:
+
+screen_score_disp_incs:
+	.byte	$FF
+
+	.byte	$41
+	.byte	$42
+	.byte	$44
+	.byte	$45
+	.byte	$48
+	.byte	$31
+	.byte	$32
+	.byte	$34
+	.byte	$35
+	.byte	$38
+
+	.byte	$00
+screen_score_disp_incs_end:
+; ----------------------------
+	.export screen_score_disp
+screen_score_disp:
+	lda	STACK_BASE+$10, x
+	beq	victory_end_rts
+	cmp	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
+	bcc	:+ ; if (stack[0x10] >= sizeof (disp_tiles))) {
+		lda	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
+		sta	STACK_BASE+$10, x
+	: ; }
+	tay
+
+	lda	STACK_BASE+$2C, x
+	bne	:+ ; if (!stack[0x2C]) {
+		sta	STACK_BASE+$10, x
+		rts
+	: ; }
+
+	dec	STACK_BASE+$2C, x
+	cmp	#$2B
+	bne	:++ ; if (stack[0x2C] == 0x2B) {
+		cpy	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
+		bne	:+ ; if (stack[0x10] == 1UP) {
+			inc	eng_lives
+			lda	#$40
+			sta	zp_byte_FE
+		: ; }
+
+		lda	screen_score_disp_incs, y
+		lsr	a
+		lsr	a
+		lsr	a
+		lsr	a
+		tax
+		lda	screen_score_disp_incs, y
+		and	#SCORE_DIGIT_MASK
+		sta	STACK_BASE+$34, x
+		jsr	sub_BC27
+	: ; }
+
+	ldy	tbl_6E5, x
+	lda	eng_actor_id, x
+	cmp	#actor::spiny
+	beq	:++
+	cmp	#actor::piranha_plant
+	beq	:++
+	cmp	#actor::hammer_bro
+	beq	:+
+	cmp	#actor::cheep_grey
+	beq	:++
+	cmp	#actor::cheep_red
+	beq	:++
+	cmp	#actor::div_height
+	bcs	:+
+	lda	eng_actor_state, x
+	cmp	#2
+	bcs	:++
+	: ; if (actor == hammer_bro || actor >= div_height || actor_state < 2) {
+		ldx	ppu_nmi_buffer+$EE
+		ldy	tbl_6EC, x
+		ldx	eng_actor_offset
+	: ; }
+
+	lda	STACK_BASE+$1E, x
+	cmp	#$18
+	bcc	:+ ; if (stack[0x1E] >= 0x18) {
+		sbc	#1
+		sta	STACK_BASE+$1E, x
+	: ; }
+
+	lda	STACK_BASE+$1E, x
+	sbc	#8
+	jsr	sub_E5C1
+	lda	STACK_BASE+$17, x
+	sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+	clc
+	adc	#PPU_TILE_HEIGHT_PX
+	sta	OAM_DMA_BUFFER+OBJ_POS_H+OBJ_SIZE, y
+	lda	#(obj_attr::priority_high|obj_attr::color2)
+	sta	OAM_DMA_BUFFER+OBJ_ATTR, y
+	sta	OAM_DMA_BUFFER+OBJ_ATTR+OBJ_SIZE, y
+	lda	STACK_BASE+$10, x
+	asl	a
+	tax
+	lda	screen_score_disp_tiles, x
+	sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+	lda	screen_score_disp_tiles+1, x
+	sta	OAM_DMA_BUFFER+OBJ_CHR_NO+OBJ_SIZE, y
+	ldx	eng_actor_offset
+	rts

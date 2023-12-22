@@ -1,3 +1,5 @@
+.include	"../../inc/system/ppu.i"
+
 .include	"../../inc/engine/tunables.i"
 
 .include	"../../inc/engine/unk.i"
@@ -11,7 +13,8 @@ oam_init_nmi:
 	ldy	#4
         lda     #ENG_OAM_CLEAR_SCANLINE
 	: ; for (y = 0; y < 0x100; y += 4) {
-		sta     OAM_DMA_BUFFER,y
+		sta     OAM_DMA_BUFFER+OBJ_POS_V, y
+
 		iny
 		iny
 		iny

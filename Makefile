@@ -22,7 +22,8 @@ TITLE_BASE_OBJS	=	src/title/base.o \
 			src/title/cursor.o \
 			src/title/demo.o
 
-GAME_BASE_OBJS	=	src/game/victory.o
+GAME_BASE_OBJS	=	src/game/victory.o \
+			src/lib/screen.o
 
 PRG_OBJS	=	$(BASE_OBJS) \
 			$(TITLE_BASE_OBJS) \

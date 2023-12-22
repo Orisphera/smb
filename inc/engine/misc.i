@@ -39,4 +39,39 @@
 		firefl	= 12
 	.endenum
 
+	.enum	actor
+		koopa_green	= $00
+		buzzy_beetle	= $02
+		koopa_red	= $03
+		hammer_bro	= $05
+		goomba		= $06
+		bloober		= $07
+		bullet_swarm	= $08
+
+		div_height	= $09
+
+		cheep_grey	= $0A
+		cheep_red	= $0B
+		podoboo		= $0C
+		piranha_plant	= $0D
+		koopa_para_jump_green = $0E
+		koopa_para_fly_red = $0F
+		koopa_para_fly_green = $10
+		lakitu		= $11
+		spiny		= $12
+		cheep_fly	= $14
+		bowser_flame	= $15
+		fireworks	= $16
+		bullet_cheep_swarm = $17
+		swarm_stop	= $18
+		bowser		= $2D
+		power_up	= $2E
+		vine		= $2F
+		flag_enemy	= $30
+		flag_victory	= $31
+		jump_spring	= $32
+		bullet		= $33
+		toad		= $35
+	.endenum
+
 	.endif	; MISC_I

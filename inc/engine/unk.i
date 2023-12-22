@@ -1,7 +1,7 @@
 .ifndef UNK_I
 UNK_I = 1
 
-title_scr_proc		= $8567
+lib_screen_proc		= $8567
 
 victory_next		= $874E
 
@@ -39,8 +39,10 @@ game_proc		= $AEEA
 game_scroll_save	= $AF6F
 game_scroll		= $AFC4
 player_proc_auto	= $B0E6
+sub_BC27		= $BC27
 actor_proc		= $C047
 eng_bowser_ending	= $CFEC
+sub_E5C1		= $E5C1
 eng_player_render	= $EEE9
 lib_calc_player_pos	= $F12A
 apu_cycle		= $F2D0
@@ -51,12 +53,15 @@ eng_screen_update_addr	= $00
 eng_actor_offset	= $08
 eng_frame_count		= $09
 game_proc_id		= $0E
+eng_actor_id		= $16
+eng_actor_state		= $1E
 victory_screen_hi	= $34
 victory_proc_ctrl	= $35
 eng_player_hi		= $6D
 eng_player_pos_x_lo	= $86
 apu_sfx_flag_pause	= $FA
 apu_music_event		= $FC
+zp_byte_FE		= $FE
 
 OAM_DMA_BUFFER		= $200
 
@@ -65,7 +70,9 @@ ppu_nmi_buffer		= $300
 byte_6E0		= $6E0
 tbl_6E1			= $6E1
 tbl_6E4			= $6E4
+tbl_6E5			= $6E5
 tbl_6E9			= $6E9
+tbl_6EC			= $6EC
 tbl_6F1			= $6F1
 joypad_p1		= $6FC
 joypad_p2		= $6FD
