@@ -9,7 +9,7 @@ eng_title:
 	lda	eng_gameplay_mode
 	jsr	eng_farjump
 	.addr	title_init_0
-	.addr	lib_screen_proc
+	.addr	screen_proc
 	.addr	title_init_1
 	.addr	title_proc
 ; -----------------------------------------------------------

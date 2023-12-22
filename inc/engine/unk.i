@@ -1,9 +1,22 @@
 .ifndef UNK_I
 UNK_I = 1
 
-lib_screen_proc		= $8567
+screen_color_init_3 = $85E3
+screen_color_player = $85F1
+screen_color_init_4 = $8643
+screen_stat_bg_0 = $8652
+screen_stat_bg_1 = $865A
+screen_msg_time_up = $8693
+screen_msg_world_game_over = $86A8
+screen_bg = $86E6
+screen_title_bg = $86FF
+screen_title_cursor = $8732
+screen_proc_next = $8745
+screen_title_score = $8749
 
 victory_next		= $874E
+
+screen_msg_time_reset = $889D
 
 palette_underwater	= $8CA4
 palette_day		= $8CC8
@@ -83,12 +96,15 @@ victory_msg_count_outer	= $719
 eng_screen_left_hi	= $71A
 eng_screen_right_hi	= $71B
 eng_sprite_overlap	= $722
+eng_screen_proc_id	= $73C
 eng_scc_h_b		= $73F
 eng_scc_v_b		= $740
+eng_bg_col		= $744
 eng_timer_ctl		= $747
 victory_msg_count_inner	= $749
 eng_area_type		= $74E
 eng_player_id		= $753
+eng_player_status	= $756
 eng_req_timer		= $757
 eng_lives		= $75A
 eng_goals		= $75C
