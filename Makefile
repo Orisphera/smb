@@ -2,57 +2,57 @@
 # (All Night Nippon) Super Mario Bros. (2) for the Famicom (Disk System)
 #
 AS		=	ca65
-ASFLAGS_NES	=	-DFAMI -DFAMI_SMB
+ASFLAGS_FC	=	-DFC -DFC_SMB
 ASFLAGS_FDS	=	-DFDS -DFDS_SMB
-ASFLAGS_FDS2	=	-DFDS -DFDS2
+ASFLAGS_SMB2	=	-DFDS -DSMB2
 ASFLAGS_ANN	=	-DFDS -DANN
-ASFLAGS		=	-U $(ASFLAGS_NES)
+ASFLAGS		=	-U $(ASFLAGS_FDS)
 LD		=	ld65
-LDFLAGS_NES	=	-C link.fc_smb.ld
+LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
-LDFLAGS_FDS2	=	-C link.fds_smb2.ld
+LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
 
 BINTOFDF	=	bintofdf
 FDTC		=	fdtc
 
-NES		= 	smb.nes
+FC		= 	smb.nes
 FDS		=	smb.fds
-FDS2		=	smb2.fds
+SMB2		=	smb2.fds
 ANN		=	ann_smb.fds
 
-PRG_NES		=	PRG_fc.bin
-CHR_NES		=	CHR_fc.bin
+PRG_FC		=	smmain.fc.bin
+CHR_FC		=	smchar.fc.bin
 
-PRG_FDS		=	smmain.bin
-CHR_FDS		=	smchar.bin
+PRG_FDS		=	smmain.fds.bin
+CHR_FDS		=	smchar.fds.bin
 
-PRG_FDS2	=	SM2MAIN.bin \
-			SM2DATA2.bin \
-			SM2DATA3.bin \
-			SM2DATA4.bin \
-			SM2SAVE.bin
+PRG_SMB2	=	sm2main.bin \
+			sm2data2.bin \
+			sm2data3.bin \
+			sm2data4.bin \
+			sm2save.bin
 
-CHR_FDS2	=	SM2CHAR1.bin \
-			SM2CHAR2.bin
+CHR_SMB2	=	sm2char1.bin \
+			sm2char2.bin
 
-PRG_ANN		=	NSMMAIN.bin \
-			NSMDATA2.bin \
-			NSMDATA3.bin \
-			NSMDATA4.bin \
-			NSMSAVE.bin
+PRG_ANN		=	nsmmain.bin \
+			nsmdata2.bin \
+			nsmdata3.bin \
+			nsmdata4.bin \
+			nsmsave.bin
 
-CHR_ANN		=	NSMCHAR1.bin \
-			NSMCHAR2.bin
+CHR_ANN		=	nsmchar1.bin \
+			nsmchar2.bin
 
-ROMS_NES	=	$(PRG_NES) \
-			$(CHR_NES)
+ROMS_FC		=	$(PRG_FC) \
+			$(CHR_FC)
 
 ROMS_FDS	=	$(PRG_FDS) \
 			$(CHR_FDS)
 
-ROMS_FDS2	=	$(PRG_FDS2) \
-			$(CHR_FDS2)
+ROMS_SMB2	=	$(PRG_SMB2) \
+			$(CHR_SMB2)
 
 ROMS_ANN	=	$(PRG_ANN) \
 			$(CHR_ANN)
@@ -70,18 +70,18 @@ TITLE_BASE_OBJS	=	src/title/base.o \
 GAME_BASE_OBJS	=	src/game/victory.o \
 			src/lib/screen.o
 
-HEADER_NES	=	data/header.fc.bin
+HEADER_FC	=	data/header.fc.bin
 HEADER_FDS	=	data/header.fds.bin
 
-PRG_OBJS_NES	=	$(BASE_OBJS) \
+PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(TITLE_BASE_OBJS) \
 			$(GAME_BASE_OBJS) \
-			data/prg.nes.o
+			data/prg.fc.o
 
-CHR_OBJS_NES	=	data/chr.nes.o
+CHR_OBJS_FC	=	data/chr.fc.o
 
-OBJS_NES	=	$(PRG_OBJS_NES) \
-			$(CHR_OBJS_NES)
+OBJS_FC		=	$(PRG_OBJS_FC) \
+			$(CHR_OBJS_FC)
 
 PRG_OBJS_FDS	=	$(START_OBJS) \
 			data/prg.fds.o
@@ -93,7 +93,7 @@ OBJS_FDS	=	$(PRG_OBJS_FDS) \
 			data/security.o
 
 FDS_FDFS	=	kyodaku_.fdf \
-			smchar.fdf \
+			smchar.fds.fdf \
 			smmain1.fdf \
 			smmain2.fdf
 
@@ -101,24 +101,24 @@ FDS_DEF		=	data/fs/superblock_smb.def
 
 FDS_FDT		=	fds.fdt
 
-IMAGES		=	$(NES) \
+IMAGES		=	$(FC) \
 			$(FDS) \
-			$(FDS2) \
+			$(SMB2) \
 			$(ANN)
 
-ROMS		=	$(ROMS_NES) \
+ROMS		=	$(ROMS_FC) \
 			$(ROMS_FDS) \
-			$(ROMS_FDS2) \
+			$(ROMS_SMB2) \
 			$(ROMS_ANN)
 
-OBJS		=	$(OBJS_NES) \
+OBJS		=	$(OBJS_FC) \
 			$(OBJS_FDS) \
-			$(OBJS_FDS2) \
+			$(OBJS_SMB2) \
 			$(OBJS_ANN)
 
-HEADERS		=	$(HEADER_NES) \
+HEADERS		=	$(HEADER_FC) \
 			$(HEADER_FDS) \
-			$(HEADER_FDS2) \
+			$(HEADER_SMB2) \
 			$(HEADER_ANN)
 
 FDFS		=	$(FDS_FDFS)
@@ -127,23 +127,23 @@ FDTS		=	$(FDS_FDT)
 
 .SUFFIXES : .bin .fdf .fdt .fds .sh
 
-$(NES): $(HEADER_NES) $(OBJS_NES)
-	$(LD) $(OBJS_NES) $(LDFLAGS_NES)
-	cat $(HEADER_NES) $(ROMS_NES) > $(NES)
+$(FC): $(HEADER_FC) $(OBJS_FC)
+	$(LD) $(OBJS_FC) $(LDFLAGS_FC)
+	cat $(HEADER_FC) $(ROMS_FC) > $(FC)
 
 $(FDS): $(HEADER_FDS) $(FDS_FDT)
 	cat $(HEADER_FDS) $(FDS_FDT) > $(FDS)
 
-$(FDS_FDT): smmain.bin $(FDS_FDFS) 
+$(FDS_FDT): smmain.fds.bin $(FDS_FDFS) 
 	$(FDTC) $(FDS_FDFS) <$(FDS_DEF) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
-smmain1.bin: smmain.bin
+smmain1.bin: smmain.fds.bin
 	dd if=$< bs=1 count=16384 skip=0 >$@
 
-smmain2.bin: smmain.bin
+smmain2.bin: smmain.fds.bin
 	dd if=$< bs=1 count=16384 skip=16384 >$@
 
-smmain.bin: $(OBJS_FDS)
+smmain.fds.bin: $(OBJS_FDS)
 	$(LD) $(OBJS_FDS) $(LDFLAGS_FDS)
 
 .bin.fdf:

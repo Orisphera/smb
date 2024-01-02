@@ -19,11 +19,11 @@
 
 	.export start
 start:
-	.ifdef	FAMI
+	.ifdef	FC
 		sei
 	.endif
 
-	.if	.defined(FAMI_SMB)|.defined(FDS_SMB)
+	.if	.defined(FC_SMB)|.defined(FDS_SMB)
 		cld
 		lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)
 		sta     PPU_CTLR0
@@ -37,7 +37,7 @@ start:
 			lda     PPU_SR
 			bpl     :-
 		; }
-	.elseif .defined(FDS2)
+	.elseif .defined(SMB2)
 		lda	$FA
 		and	#$F7
 		sta	FDS_CTLR
@@ -93,7 +93,7 @@ start_init:
 	.ifdef	FDS_SMB
 		lda	#$27
 		sta	FDS_CTLR
-	.elseif	.defined(FDS2)|.defined(ANN)
+	.elseif	.defined(SMB2)|.defined(ANN)
 		lda	#$C0
 		sta	$0101
 	.endif
@@ -107,7 +107,7 @@ start_init:
         jsr     eng_sta_ppu_ctlr0
 
 start_loop:
-	.if	.defined(FDS2)|.defined(ANN)
+	.if	.defined(SMB2)|.defined(ANN)
 		lda	zp_byte_00
 	.endif
 	jmp     start_loop

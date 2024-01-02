@@ -1,7 +1,7 @@
 .ifndef UNK_I
 UNK_I = 1
 
-	.ifdef	FAMI_SMB
+	.ifdef	FC_SMB
 		nt_init		= $8E19
 		joypad_read	= $8E5C
 		eng_sta_ppu_ctlr0 = $8EED
