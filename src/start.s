@@ -1,6 +1,10 @@
 .include	"../inc/system/ppu.i"
 .include	"../inc/system/apu.i"
 
+.ifdef	FDS
+.include	"../inc/system/fds.i"
+.endif
+
 .include	"../inc/engine/tunables.i"
 
 .include	"../inc/engine/unk.i"
@@ -15,21 +19,43 @@
 
 	.export start
 start:
-	sei
+	.ifdef	FAMI
+		sei
+	.endif
 
-        cld
-        lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)
-        sta     PPU_CTLR0
-        ldx     #$FF
-        txs
-	: ; while (!vblank) {
-		lda     PPU_SR
-		bpl     :-
-	; }
-	: ; while (!vblank) {
-		lda     PPU_SR
-		bpl     :-
-	; }
+	.if	.defined(FAMI_SMB)|.defined(FDS_SMB)
+		cld
+		lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)
+		sta     PPU_CTLR0
+		ldx     #$FF
+		txs
+		: ; while (!vblank) {
+			lda     PPU_SR
+			bpl     :-
+		; }
+		: ; while (!vblank) {
+			lda     PPU_SR
+			bpl     :-
+		; }
+	.elseif .defined(FDS2)
+		lda	$FA
+		and	#$F7
+		sta	FDS_CTLR
+
+		lda	$075F
+		pha
+	.elseif .defined(ANN)
+		nop
+		nop
+		nop
+
+		lda	$075F
+		pha
+
+		lda	#$27
+		sta	$FA
+		sta	FDS_CTLR
+	.endif
 
         ldy     #START_COLDBOOT_VAL
         ldx     #(eng_score_end-eng_score)-1
@@ -64,9 +90,24 @@ start_init:
         jsr     nt_init
         inc     eng_disp_disable
 
+	.ifdef	FDS_SMB
+		lda	#$27
+		sta	FDS_CTLR
+	.elseif	.defined(FDS2)|.defined(ANN)
+		lda	#$C0
+		sta	$0101
+	.endif
+
+	.ifdef	FDS
+		cli
+	.endif
+
         lda     ppu_ctlr0_b
         ora     #ppu_ctlr0::int
         jsr     eng_sta_ppu_ctlr0
 
 start_loop:
+	.if	.defined(FDS2)|.defined(ANN)
+		lda	zp_byte_00
+	.endif
 	jmp     start_loop

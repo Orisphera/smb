@@ -1,0 +1,1 @@
+	.incbin "data/prg.nes.bin"

@@ -10,9 +10,9 @@ then
     exit 1
 fi
 
-mkdir -p data/chr
+mkdir -p data/chr.nes
 
-dd if=$1 bs=1 skip=1499 count=31279 >data/prg.bin
+dd if=$1 bs=1 skip=1499 count=31279 >data/prg.nes.bin
 
 # CHR Common
 TILE_SIZE=16
@@ -26,13 +26,13 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 I=0
 while [ $I -ne $OBJ_BANK ] && [ $I -ne $TILES ]
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr/tile_bg_`printf "%.2X" $I`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.nes/tile_bg_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
 while [ $I -ne $TILES ]
 do
 	J=`expr $I - $OBJ_BANK`
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr/tile_obj_`printf "%.2X" $J`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.nes/tile_obj_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done

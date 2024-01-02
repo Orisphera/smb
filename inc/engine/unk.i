@@ -1,6 +1,23 @@
 .ifndef UNK_I
 UNK_I = 1
 
+	.ifdef	FAMI_SMB
+		nt_init		= $8E19
+		joypad_read	= $8E5C
+		eng_sta_ppu_ctlr0 = $8EED
+		sub_clearram	= $90CC
+		irq		= $FFF0
+	.endif
+
+	.ifdef	FDS_SMB
+		nmi		= $6087
+		oam_init	= $6226
+		nt_init		= $6E1F
+		eng_sta_ppu_ctlr0 = $6EF3
+		sub_clearram	= $70D2
+		irq		= $FFF0
+	.endif
+
 screen_color_init_3 = $85E3
 screen_color_player = $85F1
 screen_color_init_4 = $8643
@@ -35,15 +52,11 @@ msg_worldsel_1		= $8DDE
 msg_worldsel_2		= $8DEF
 
 eng_farjump		= $8E04
-nt_init			= $8E19
-joypad_read		= $8E5C
 eng_screen_update	= $8EDD
 eng_sta_ppu_scc_h_v	= $8EE6
-eng_sta_ppu_ctlr0	= $8EED
 eng_score_calc		= $8F97
 title_init_0		= $8FCF
 title_init_1		= $9061
-sub_clearram		= $90CC
 eng_game_over		= $9218
 eng_next_game		= $9248
 eng_loadareaptr		= $9C03
@@ -59,7 +72,6 @@ sub_E5C1		= $E5C1
 eng_player_render	= $EEE9
 lib_calc_player_pos	= $F12A
 apu_cycle		= $F2D0
-irq			= $FFF0
 
 zp_byte_00		= $00
 eng_screen_update_addr	= $00
