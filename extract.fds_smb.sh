@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # dd positions of banks in FDS image
-# security - skip=16    count=32768
-# CHR      - skip=16    count=32768
-# PRG low  - skip=32784 count=8192
-# PRG high - skip=16    count=32768
+# security - skip=91    count=224
+# CHR      - skip=332   count=8192
+# PRG low  - skip=8558  count=16384
+# PRG high - skip=24942 count=16384
 
 if [ -z $1 ]
 then
