@@ -16,6 +16,7 @@
 	.export start
 start:
 	sei
+
         cld
         lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)
         sta     PPU_CTLR0
@@ -51,6 +52,7 @@ start_init:
 	jsr     sub_clearram
         sta     DMCDATA
         sta     eng_game_mode
+
         lda     #START_WARMBOOT_FLAG
         sta     eng_boot_flag
         sta     eng_rand_seed
@@ -61,6 +63,7 @@ start_init:
         jsr     oam_init
         jsr     nt_init
         inc     eng_disp_disable
+
         lda     ppu_ctlr0_b
         ora     #ppu_ctlr0::int
         jsr     eng_sta_ppu_ctlr0
