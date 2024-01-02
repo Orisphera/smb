@@ -19,7 +19,7 @@ FDTC		=	fdtc
 FC		= 	smb.nes
 FDS		=	smb.fds
 SMB2		=	smb2.fds
-ANN		=	ann_smb.fds
+ANN		=	ann.fds
 
 PRG_FC		=	smmain.fc.bin
 CHR_FC		=	smchar.fc.bin
@@ -132,6 +132,33 @@ DEF_SMB2	=	data/fs/superblock_smb2.def
 
 FDT_SMB2	=	smb2.fdt
 
+PRG_OBJS_ANN	=	$(START_OBJS) \
+			data/prg.ann.o \
+			data/data2.ann.o \
+			data/data3.ann.o \
+			data/data4.ann.o \
+			$(SECURITY_OBJS) \
+			$(SAVE_OBJS)
+
+CHR_OBJS_ANN	=	data/chr.ann.o \
+			data/chr2.ann.o
+
+OBJS_ANN	=	$(PRG_OBJS_ANN) \
+			$(CHR_OBJS_ANN)
+
+FDFS_ANN	=	kyodaku_.fdf \
+			nsmchar1.fdf \
+			nsmchar2.fdf \
+			nsmmain.fdf \
+			nsmdata2.fdf \
+			nsmdata3.fdf \
+			nsmdata4.fdf \
+			nsmsave.fdf
+
+DEF_ANN		=	data/fs/superblock_ann.def
+
+FDT_ANN		=	ann.fdt
+
 IMAGES		=	$(FC) \
 			$(FDS) \
 			$(SMB2) \
@@ -152,9 +179,13 @@ HEADERS		=	$(HEADER_FC) \
 			$(HEADER_SMB2) \
 			$(HEADER_ANN)
 
-FDFS		=	$(FDFS_FDS)
+FDFS		=	$(FDFS_FDS) \
+			$(FDFS_SMB2) \
+			$(FDFS_ANN)
 
-FDTS		=	$(FDT_FDS)
+FDTS		=	$(FDT_FDS) \
+			$(FDT_SMB2) \
+			$(FDT_ANN)
 
 .SUFFIXES : .bin .fdf .fdt .fds .sh
 
@@ -185,6 +216,15 @@ $(FDT_SMB2): sm2main.bin $(FDFS_SMB2)
 
 sm2main.bin: $(OBJS_SMB2)
 	$(LD) $(OBJS_SMB2) $(LDFLAGS_SMB2)
+
+$(ANN): $(HEADER_FDS) $(FDT_ANN)
+	cat $(HEADER_FDS) $(FDT_ANN) > $(ANN)
+
+$(FDT_ANN): nsmmain.bin $(FDFS_ANN) 
+	$(FDTC) $(FDFS_ANN) <$(DEF_ANN) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
+
+nsmmain.bin: $(OBJS_ANN)
+	$(LD) $(OBJS_ANN) $(LDFLAGS_ANN)
 
 .bin.fdf:
 	$(BINTOFDF) $< <data/fs/files/$<.def >$@

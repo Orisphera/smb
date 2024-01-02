@@ -27,6 +27,15 @@ UNK_I = 1
 		sub_clearram	= $6F08
 	.endif
 
+	.ifdef	ANN
+		nmi		= $60A3
+		irq		= $61A5
+		oam_init	= $628A
+		nt_init		= $6D24
+		eng_sta_ppu_ctlr0 = $6DF8
+		sub_clearram	= $6F93
+	.endif
+
 screen_color_init_3 = $85E3
 screen_color_player = $85F1
 screen_color_init_4 = $8643

@@ -15,7 +15,7 @@ then
     exit 1
 fi
 
-mkdir -p data/chr.smb2
+mkdir -p data/chr.smb2 data/chr2.smb2
 
 # KYODAKU-
 dd if=$1 bs=1 skip=91 count=224 >data/security.bin
