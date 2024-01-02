@@ -62,19 +62,17 @@ start:
 	: ; for (digit of eng_score) {
 		lda     eng_score, x
 		cmp     #10
-		bcs     start_init
+		bcs     :+
 
 		dex
 		bpl     :-
 	; }
-
         lda     eng_boot_flag
         cmp     #START_WARMBOOT_FLAG
-        bne     :+ ; if (eng_boot_flag == START_WARMBOOT_FLAG) {
+        bne     :+ ; if (eng_score == number && eng_boot_flag == START_WARMBOOT_FLAG) {
 		ldy     #START_WARMBOOT_VAL
 	: ; }
 
-start_init:
 	jsr     sub_clearram
         sta     DMCDATA
         sta     eng_game_mode
