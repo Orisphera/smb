@@ -18,6 +18,15 @@ UNK_I = 1
 		irq		= $FFF0
 	.endif
 
+	.ifdef	SMB2
+		nmi		= $60A0
+		irq		= $61A2
+		oam_init	= $6287
+		nt_init		= $6C92
+		eng_sta_ppu_ctlr0 = $6D66
+		sub_clearram	= $6F08
+	.endif
+
 screen_color_init_3 = $85E3
 screen_color_player = $85F1
 screen_color_init_4 = $8643

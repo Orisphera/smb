@@ -14,13 +14,14 @@ fi
 
 mkdir -p data/chr.fds
 
+# KYODAKU-
 dd if=$1 bs=1 skip=91 count=224 >data/security.bin
 
 # CHR Common
 TILE_SIZE=16
 OBJ_BANK=256
 
-# CHR bank 00
+# SMCHAR
 BANKBASE=332
 BANKLEN=8192
 TILES=`expr $BANKLEN / $TILE_SIZE`
@@ -39,5 +40,8 @@ do
 	I=`expr $I + 1`
 done
 
+# SMMAIN1
 dd if=$1 bs=1 skip=8636 count=16289 >data/prg0.fds.bin
+
+# SMMAIN2
 dd if=$1 bs=1 skip=24942 count=16378 >data/prg1.fds.bin

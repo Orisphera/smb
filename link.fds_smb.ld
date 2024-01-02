@@ -13,7 +13,6 @@ SEGMENTS {
 	BSS:		load = RAM2, type = bss;
 	KYODAKUDATA:	load = KYODAKU, type = ro;
 	CHRDATA:	load = CHR, type = ro;
-	RODATA:		load = ROM1, type = ro;
-	CODE:		load = ROM1, type = ro;
-	VECTORS:	load = ROM2, type = ro;
+	CODE:		load = ROM1, type = rw;
+	VECTORS:	load = ROM2, type = rw;
 }

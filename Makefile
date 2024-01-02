@@ -6,7 +6,7 @@ ASFLAGS_FC	=	-DFC -DFC_SMB
 ASFLAGS_FDS	=	-DFDS -DFDS_SMB
 ASFLAGS_SMB2	=	-DFDS -DSMB2
 ASFLAGS_ANN	=	-DFDS -DANN
-ASFLAGS		=	-U $(ASFLAGS_FDS)
+ASFLAGS		=	-U $(ASFLAGS_FC)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
@@ -70,6 +70,10 @@ TITLE_BASE_OBJS	=	src/title/base.o \
 GAME_BASE_OBJS	=	src/game/victory.o \
 			src/lib/screen.o
 
+SECURITY_OBJS	=	data/security.o
+
+SAVE_OBJS	=	data/save.o
+
 HEADER_FC	=	data/header.fc.bin
 HEADER_FDS	=	data/header.fds.bin
 
@@ -90,16 +94,43 @@ CHR_OBJS_FDS	=	data/chr.fds.o
 
 OBJS_FDS	=	$(PRG_OBJS_FDS) \
 			$(CHR_OBJS_FDS) \
-			data/security.o
+			$(SECURITY_OBJS)
 
-FDS_FDFS	=	kyodaku_.fdf \
+FDFS_FDS	=	kyodaku_.fdf \
 			smchar.fds.fdf \
 			smmain1.fdf \
 			smmain2.fdf
 
-FDS_DEF		=	data/fs/superblock_smb.def
+DEF_FDS		=	data/fs/superblock_smb.def
 
-FDS_FDT		=	fds.fdt
+FDT_FDS		=	smb.fdt
+
+PRG_OBJS_SMB2	=	$(START_OBJS) \
+			data/prg.smb2.o \
+			data/data2.smb2.o \
+			data/data3.smb2.o \
+			data/data4.smb2.o \
+			$(SECURITY_OBJS) \
+			$(SAVE_OBJS)
+
+CHR_OBJS_SMB2	=	data/chr.smb2.o \
+			data/chr2.smb2.o
+
+OBJS_SMB2	=	$(PRG_OBJS_SMB2) \
+			$(CHR_OBJS_SMB2)
+
+FDFS_SMB2	=	kyodaku_.fdf \
+			sm2char1.fdf \
+			sm2char2.fdf \
+			sm2main.fdf \
+			sm2data2.fdf \
+			sm2data3.fdf \
+			sm2data4.fdf \
+			sm2save.fdf
+
+DEF_SMB2	=	data/fs/superblock_smb2.def
+
+FDT_SMB2	=	smb2.fdt
 
 IMAGES		=	$(FC) \
 			$(FDS) \
@@ -121,9 +152,9 @@ HEADERS		=	$(HEADER_FC) \
 			$(HEADER_SMB2) \
 			$(HEADER_ANN)
 
-FDFS		=	$(FDS_FDFS)
+FDFS		=	$(FDFS_FDS)
 
-FDTS		=	$(FDS_FDT)
+FDTS		=	$(FDT_FDS)
 
 .SUFFIXES : .bin .fdf .fdt .fds .sh
 
@@ -131,11 +162,11 @@ $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD) $(OBJS_FC) $(LDFLAGS_FC)
 	cat $(HEADER_FC) $(ROMS_FC) > $(FC)
 
-$(FDS): $(HEADER_FDS) $(FDS_FDT)
-	cat $(HEADER_FDS) $(FDS_FDT) > $(FDS)
+$(FDS): $(HEADER_FDS) $(FDT_FDS)
+	cat $(HEADER_FDS) $(FDT_FDS) > $(FDS)
 
-$(FDS_FDT): smmain.fds.bin $(FDS_FDFS) 
-	$(FDTC) $(FDS_FDFS) <$(FDS_DEF) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
+$(FDT_FDS): smmain.fds.bin $(FDFS_FDS) 
+	$(FDTC) $(FDFS_FDS) <$(DEF_FDS) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
 smmain1.bin: smmain.fds.bin
 	dd if=$< bs=1 count=16384 skip=0 >$@
@@ -145,6 +176,15 @@ smmain2.bin: smmain.fds.bin
 
 smmain.fds.bin: $(OBJS_FDS)
 	$(LD) $(OBJS_FDS) $(LDFLAGS_FDS)
+
+$(SMB2): $(HEADER_FDS) $(FDT_SMB2)
+	cat $(HEADER_FDS) $(FDT_SMB2) > $(SMB2)
+
+$(FDT_SMB2): sm2main.bin $(FDFS_SMB2) 
+	$(FDTC) $(FDFS_SMB2) <$(DEF_SMB2) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
+
+sm2main.bin: $(OBJS_SMB2)
+	$(LD) $(OBJS_SMB2) $(LDFLAGS_SMB2)
 
 .bin.fdf:
 	$(BINTOFDF) $< <data/fs/files/$<.def >$@

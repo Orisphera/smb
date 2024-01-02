@@ -79,6 +79,12 @@ start_init:
         sta     DMCDATA
         sta     eng_game_mode
 
+	.if	.defined(SMB2)|.defined(ANN)
+		sta	$07FC
+		pla
+		sta	$075F
+	.endif
+
         lda     #START_WARMBOOT_FLAG
         sta     eng_boot_flag
         sta     eng_rand_seed
