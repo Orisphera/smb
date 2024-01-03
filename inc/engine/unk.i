@@ -1,39 +1,164 @@
 .ifndef UNK_I
 UNK_I = 1
 
-	.ifdef	FC_SMB
+	.if	.defined(FC_SMB)
+		palette_underwater	= $8CA4
+		palette_day		= $8CC8
+		palette_underground	= $8CEC
+		palette_castle		= $8D10
+		palette_day_snow	= $8D34
+		palette_night_snow	= $8D3C
+		palette_mushroom	= $8D44
+		palette_bowser		= $8D4C
+		msg_thankyou_mario	= $8D54
+		msg_thankyou_luigi	= $8D68
+		msg_thankyou_toad	= $8D7C
+		msg_thankyou_princess1	= $8DA8
+		msg_thankyou_princess2	= $8DBF
+		msg_worldsel_1	= $8DDE
+		msg_worldsel_2	= $8DEF
+		eng_farjump	= $8E04
 		nt_init		= $8E19
 		joypad_read	= $8E5C
+		eng_screen_update	= $8EDD
+		eng_sta_ppu_scc_h_v	= $8EE6
 		eng_sta_ppu_ctlr0 = $8EED
+		eng_score_calc	= $8F97
 		sub_clearram	= $90CC
+		eng_game_over	= $9218
+		eng_game	= $AEDC
+		apu_cycle	= $F2D0
 		irq		= $FFF0
 	.endif
 
-	.ifdef	FDS_SMB
-		nmi		= $6087
+	.if	.defined(FDS_SMB)
 		oam_init	= $6226
+		oam_init_nmi	= $6229
+		eng_title	= $6237
+		eng_victory	= $6391
+		palette_underwater	= $6CAA
+		palette_day		= $6CCE
+		palette_underground	= $6CF2
+		palette_castle		= $6D16
+		palette_day_snow	= $6D3A
+		palette_night_snow	= $6D42
+		palette_mushroom	= $6D4A
+		palette_bowser		= $6D52
+		msg_thankyou_mario	= $6D5A
+		msg_thankyou_luigi	= $6D6E
+		msg_thankyou_toad	= $6D82
+		msg_thankyou_princess1	= $6DAE
+		msg_thankyou_princess2	= $6DC5
+		msg_worldsel_1		= $6DE4
+		msg_worldsel_2		= $6DF5
+		eng_farjump	= $6E0A
 		nt_init		= $6E1F
+		joypad_read	= $6E62
+		eng_screen_update	= $6EE3
+		eng_sta_ppu_scc_h_v	= $6EEC
 		eng_sta_ppu_ctlr0 = $6EF3
+		eng_score_calc	= $6F9D
 		sub_clearram	= $70D2
+		eng_game_over	= $7222
+		eng_game	= $8EE4
+		apu_cycle	= $D2D0
 		irq		= $FFF0
 	.endif
 
-	.ifdef	SMB2
-		nmi		= $60A0
-		irq		= $61A2
+	.if	.defined(SMB2)
 		oam_init	= $6287
+		oam_init_nmi	= $628A
+		eng_victory	= $6298
+
+		palette_underwater	= $6B8D
+		palette_day		= $6BB1
+		palette_underground	= $6BD5
+		palette_castle		= $6BF9
+		data_6C1D	= $6C1D
+		data_6C25	= $6C25
+		data_6C2D	= $6C2D
+		data_6C35	= $6C35
+		data_6C3D	= $6C3D
+		data_6C51	= $6C51
+		eng_farjump	= $6C7D
 		nt_init		= $6C92
+		joypad_read	= $6CD5
+		eng_screen_update = $6D56
+		eng_sta_ppu_scc_h_v = $6D5F
 		eng_sta_ppu_ctlr0 = $6D66
+		eng_score_calc	= $6E08
 		sub_clearram	= $6F08
+		eng_game_over	= $7057
+		sub_708D	= $708D
+		eng_game	= $7A37
+		data_C10B	= $C10B
+		data_C149	= $C149
+		data_C511	= $C511
+		data_C62B	= $C62B
+		data_C876	= $C876
+		data_C87F	= $C87F
+		data_C893	= $C893
+		data_C8AB	= $C8AB
+		data_C8C1	= $C8C1
+		data_C8D7	= $C8D7
+		data_C8EB	= $C8EB
+		data_C8FC	= $C8FC
+		data_C913	= $C913
+		data_C92B	= $C92B
+		data_C943	= $C943
+		data_C95C	= $C95C
+		data_C97D	= $C97D
+		data_C9C0	= $C9C0
+		eng_title	= $BFB0
+		apu_cycle	= $D2A0
 	.endif
 
-	.ifdef	ANN
-		nmi		= $60A3
-		irq		= $61A5
+	.if	.defined(ANN)
 		oam_init	= $628A
+		oam_init_nmi	= $628D
+		eng_victory	= $629B
+
+		data_C97D	= $636B
+		palette_underwater	= $6C1F
+		palette_day		= $6C43
+		palette_underground	= $6C67
+		palette_castle		= $6C8B
+		data_6C1D	= $6CAF
+		data_6C25	= $6CB7
+		data_6C2D	= $6CBF
+		data_6C35	= $6CC7
+		data_6C3D	= $6CCF
+		data_6C51	= $6CE3
+		eng_farjump	= $6D0F
 		nt_init		= $6D24
+		joypad_read	= $6D67
+		eng_screen_update = $6DE8
+		eng_sta_ppu_scc_h_v = $6DF1
 		eng_sta_ppu_ctlr0 = $6DF8
+		eng_score_calc	= $6E9A
 		sub_clearram	= $6F93
+		eng_game_over	= $70E0
+		sub_708D	= $7109
+		eng_game	= $7AA7
+		eng_title	= $BFBF
+		data_C10B	= $C121
+		data_C149	= $C15F
+		data_C511	= $C4CB
+		data_C62B	= $C5E6
+		data_C876	= $C88D
+		data_C87F	= $C896
+		data_C893	= $C8AA
+		data_C8AB	= $C8C2
+		data_C8C1	= $C8D8
+		data_C8D7	= $C8EE
+		data_C8EB	= $C902
+		data_C8FC	= $C913
+		data_C913	= $C92A
+		data_C92B	= $C942
+		data_C943	= $C95A
+		data_C9C0	= $C973
+		data_C95C	= $C983
+		apu_cycle	= $D2E5
 	.endif
 
 screen_color_init_3 = $85E3
@@ -53,32 +178,10 @@ victory_next		= $874E
 
 screen_msg_time_reset = $889D
 
-palette_underwater	= $8CA4
-palette_day		= $8CC8
-palette_underground	= $8CEC
-palette_castle		= $8D10
-palette_day_snow	= $8D34
-palette_night_snow	= $8D3C
-palette_mushroom	= $8D44
-palette_bowser		= $8D4C
-msg_thankyou_mario	= $8D54
-msg_thankyou_luigi	= $8D68
-msg_thankyou_toad	= $8D7C
-msg_thankyou_princess1	= $8DA8
-msg_thankyou_princess2	= $8DBF
-msg_worldsel_1		= $8DDE
-msg_worldsel_2		= $8DEF
-
-eng_farjump		= $8E04
-eng_screen_update	= $8EDD
-eng_sta_ppu_scc_h_v	= $8EE6
-eng_score_calc		= $8F97
 title_init_0		= $8FCF
 title_init_1		= $9061
-eng_game_over		= $9218
 eng_next_game		= $9248
 eng_loadareaptr		= $9C03
-eng_game		= $AEDC
 game_proc		= $AEEA
 game_scroll_save	= $AF6F
 game_scroll		= $AFC4
@@ -89,7 +192,6 @@ eng_bowser_ending	= $CFEC
 sub_E5C1		= $E5C1
 eng_player_render	= $EEE9
 lib_calc_player_pos	= $F12A
-apu_cycle		= $F2D0
 
 zp_byte_00		= $00
 eng_screen_update_addr	= $00
@@ -156,6 +258,8 @@ eng_pause_ticks		= $777
 ppu_ctlr0_b		= $778
 ppu_ctlr1_b		= $779
 eng_player_count	= $77A
+byte_77A		= $77A
+byte_77B		= $77B
 eng_timer_int		= $77F
 eng_timers_nmi		= $780
 eng_timer_select	= $780
@@ -167,6 +271,7 @@ eng_score_end		= $7DD
 eng_stats		= $7DD
 eng_stats_end		= $7F5
 eng_course_sel_on	= $7FC
+byte_7FC		= $7FC
 eng_continue_course	= $7FD
 eng_boot_flag		= $7FF
 

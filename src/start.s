@@ -1,8 +1,8 @@
 .include	"../inc/system/ppu.i"
 .include	"../inc/system/apu.i"
 
-.ifdef	FDS
-.include	"../inc/system/fds.i"
+.if	.defined(FDS)
+	.include	"../inc/system/fds.i"
 .endif
 
 .include	"../inc/engine/tunables.i"
@@ -19,11 +19,11 @@
 
 	.export start
 start:
-	.ifdef	FC
+	.if	.defined(FC)
 		sei
 	.endif
 
-	.if	.defined(FC_SMB)|.defined(FDS_SMB)
+	.if	.defined(SMB)
 		cld
 		lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)
 		sta     PPU_CTLR0
@@ -37,23 +37,26 @@ start:
 			lda     PPU_SR
 			bpl     :-
 		; }
-	.elseif .defined(SMB2)
-		lda	$FA
-		and	#$F7
+	.endif
+
+	.if	.defined(SMB2)
+		lda	fds_ctlr_b
+		and	#<~(fds_ctlr::mirror_h)
 		sta	FDS_CTLR
+	.elseif	.defined(ANN)
+		nop
+		nop
+		nop
+	.endif
 
-		lda	$075F
+	.if	.defined(SMB2M)
+		lda	eng_course_no
 		pha
-	.elseif .defined(ANN)
-		nop
-		nop
-		nop
+	.endif
 
-		lda	$075F
-		pha
-
-		lda	#$27
-		sta	$FA
+	.if	.defined(ANN)
+		lda	#(fds_ctlr::mask|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
+		sta	fds_ctlr_b
 		sta	FDS_CTLR
 	.endif
 
@@ -77,10 +80,10 @@ start:
         sta     DMCDATA
         sta     eng_game_mode
 
-	.if	.defined(SMB2)|.defined(ANN)
-		sta	$07FC
+	.if	.defined(SMB2M)
+		sta	byte_7FC
 		pla
-		sta	$075F
+		sta	eng_course_no
 	.endif
 
         lda     #START_WARMBOOT_FLAG
@@ -94,15 +97,15 @@ start:
         jsr     nt_init
         inc     eng_disp_disable
 
-	.ifdef	FDS_SMB
-		lda	#$27
+	.if	.defined(FDS_SMB)
+		lda	#(fds_ctlr::mask|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
 		sta	FDS_CTLR
-	.elseif	.defined(SMB2)|.defined(ANN)
-		lda	#$C0
-		sta	$0101
+	.elseif	.defined(SMB2M)
+		lda	#fds_irqmode::game_vec
+		sta	FDS_STACK_IRQMODE
 	.endif
 
-	.ifdef	FDS
+	.if	.defined(FDS)
 		cli
 	.endif
 
@@ -111,7 +114,7 @@ start:
         jsr     eng_sta_ppu_ctlr0
 
 start_loop:
-	.if	.defined(SMB2)|.defined(ANN)
+	.if	.defined(SMB2M)
 		lda	zp_byte_00
 	.endif
 	jmp     start_loop

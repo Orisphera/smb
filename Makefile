@@ -1,12 +1,21 @@
 #
 # (All Night Nippon) Super Mario Bros. (2) for the Famicom (Disk System)
 #
+# Preprocessor Definitions:
+#   FC    - Famicom-specific
+#   FDS   - Famicom Disk System-specific
+#   SMB   - Super Mario Bros.
+#   FC_SMB - Famicom-specific Super Mario Bros.
+#   FDS_SMB - Famicom Disk System-specific Super Mario Bros.
+#   SMB2 - Super Mario Bros. 2
+#   ANN - All Night Nippon Super Mario Bros.
+#   SMB2M - Super Mario Bros. 2 "Meta" (SMB2 and ANN-commonalities)
 AS		=	ca65
-ASFLAGS_FC	=	-DFC -DFC_SMB
-ASFLAGS_FDS	=	-DFDS -DFDS_SMB
-ASFLAGS_SMB2	=	-DFDS -DSMB2
-ASFLAGS_ANN	=	-DFDS -DANN
-ASFLAGS		=	-U $(ASFLAGS_FC)
+ASFLAGS_FC	=	-DFC -DSMB -DFC_SMB
+ASFLAGS_FDS	=	-DFDS -DSMB -DFDS_SMB
+ASFLAGS_SMB2	=	-DFDS -DSMB2M -DSMB2
+ASFLAGS_ANN	=	-DFDS -DSMB2M -DANN
+ASFLAGS		=	-U $(ASFLAGS_ANN)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
@@ -59,8 +68,10 @@ ROMS_ANN	=	$(PRG_ANN) \
 
 START_OBJS	=	src/start.o
 
+NMI_OBJS	=	src/nmi.o
+
 BASE_OBJS	=	$(START_OBJS) \
-			src/nmi.o \
+			$(NMI_OBJS) \
 			src/lib/oam_init.o
 
 TITLE_BASE_OBJS	=	src/title/base.o \
@@ -88,6 +99,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 			$(CHR_OBJS_FC)
 
 PRG_OBJS_FDS	=	$(START_OBJS) \
+			$(NMI_OBJS) \
 			data/prg.fds.o
 
 CHR_OBJS_FDS	=	data/chr.fds.o
@@ -106,6 +118,7 @@ DEF_FDS		=	data/fs/superblock_smb.def
 FDT_FDS		=	smb.fdt
 
 PRG_OBJS_SMB2	=	$(START_OBJS) \
+			$(NMI_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -133,6 +146,7 @@ DEF_SMB2	=	data/fs/superblock_smb2.def
 FDT_SMB2	=	smb2.fdt
 
 PRG_OBJS_ANN	=	$(START_OBJS) \
+			$(NMI_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

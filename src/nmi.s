@@ -1,67 +1,142 @@
 .include	"../inc/system/ppu.i"
 
+.if	.defined(FDS)
+	.include	"../inc/system/fds.i"
+.endif
+
 .include	"../inc/engine/joypad.i"
 .include	"../inc/engine/misc.i"
 .include	"../inc/engine/tunables.i"
 
 .include	"../inc/engine/unk.i"
 
+SMB2M_NMI_TIMER	= $1658
+
+.if	.defined(SMB2)
+	SMB2M_COURSE_NO_CUTOFF = $9
+.elseif	.defined(ANN)
+	SMB2M_COURSE_NO_CUTOFF = $8
+.endif
+
 	.export nmi
 ; -----------------------------------------------------------
 	nmi_buffer_0	= (ppu_nmi_buffer+$00)
 	nmi_buffer_1	= (ppu_nmi_buffer+$40)
-nmi_addrs_low:
-	.byte	<(nmi_buffer_0+1)
-	.byte	<(palette_underwater)
-	.byte	<(palette_day)
-	.byte	<(palette_underground)
-	.byte	<(palette_castle)
-	.byte	<(nmi_buffer_0+0)
-	.byte	<(nmi_buffer_1+1)
-	.byte	<(nmi_buffer_1+1)
-	.byte	<(palette_bowser)
-	.byte	<(palette_day_snow)
-	.byte	<(palette_night_snow)
-	.byte	<(palette_mushroom)
-	.byte	<(msg_thankyou_mario)
-	.byte	<(msg_thankyou_luigi)
-	.byte	<(msg_thankyou_toad)
-	.byte	<(msg_thankyou_princess1)
-	.byte	<(msg_thankyou_princess2)
-	.byte	<(msg_worldsel_1)
-	.byte	<(msg_worldsel_2)
 
-nmi_addrs_high:
-	.byte   >(nmi_buffer_0+1)
-	.byte	>(palette_underwater)
-	.byte	>(palette_day)
-	.byte	>(palette_underground)
-	.byte	>(palette_castle)
-	.byte	>(nmi_buffer_0+0)
-	.byte	>(nmi_buffer_1+1)
-	.byte	>(nmi_buffer_1+1)
-	.byte	>(palette_bowser)
-	.byte	>(palette_day_snow)
-	.byte	>(palette_night_snow)
-	.byte	>(palette_mushroom)
-	.byte	>(msg_thankyou_mario)
-	.byte	>(msg_thankyou_luigi)
-	.byte	>(msg_thankyou_toad)
-	.byte	>(msg_thankyou_princess1)
-	.byte	>(msg_thankyou_princess2)
-	.byte	>(msg_worldsel_1)
-	.byte	>(msg_worldsel_2)
+	.if	.defined(SMB)
+		nmi_addrs_low:
+			.byte	<(nmi_buffer_0+1)
+			.byte	<(palette_underwater)
+			.byte	<(palette_day)
+			.byte	<(palette_underground)
+			.byte	<(palette_castle)
+			.byte	<(nmi_buffer_0+0)
+			.byte	<(nmi_buffer_1+1)
+			.byte	<(nmi_buffer_1+1)
+			.byte	<(palette_bowser)
+			.byte	<(palette_day_snow)
+			.byte	<(palette_night_snow)
+			.byte	<(palette_mushroom)
+			.byte	<(msg_thankyou_mario)
+			.byte	<(msg_thankyou_luigi)
+			.byte	<(msg_thankyou_toad)
+			.byte	<(msg_thankyou_princess1)
+			.byte	<(msg_thankyou_princess2)
+			.byte	<(msg_worldsel_1)
+			.byte	<(msg_worldsel_2)
 
-nmi_buffer_offset:
-	.byte	<nmi_buffer_0
-	.byte	<nmi_buffer_1
+		nmi_addrs_high:
+			.byte   >(nmi_buffer_0+1)
+			.byte	>(palette_underwater)
+			.byte	>(palette_day)
+			.byte	>(palette_underground)
+			.byte	>(palette_castle)
+			.byte	>(nmi_buffer_0+0)
+			.byte	>(nmi_buffer_1+1)
+			.byte	>(nmi_buffer_1+1)
+			.byte	>(palette_bowser)
+			.byte	>(palette_day_snow)
+			.byte	>(palette_night_snow)
+			.byte	>(palette_mushroom)
+			.byte	>(msg_thankyou_mario)
+			.byte	>(msg_thankyou_luigi)
+			.byte	>(msg_thankyou_toad)
+			.byte	>(msg_thankyou_princess1)
+			.byte	>(msg_thankyou_princess2)
+			.byte	>(msg_worldsel_1)
+			.byte	>(msg_worldsel_2)
+
+	.elseif	.defined(SMB2M)
+		nmi_addrs:
+			.addr   (nmi_buffer_0+1)
+			.addr	(palette_underwater)
+			.addr	(palette_day)
+			.addr	(palette_underground)
+			.addr	(palette_castle)
+			.addr	(data_C62B)
+			.addr	(nmi_buffer_1+1)
+			.addr	(nmi_buffer_1+1)
+			.addr	(data_6C35)
+			.addr	(data_6C1D)
+			.addr	(data_6C25)
+			.addr	(data_6C2D)
+			.addr	(data_6C3D)
+			.addr	(data_6C51)
+			.addr	(data_C876)
+			.addr	(data_C87F)
+			.addr	(data_C893)
+			.addr	(data_C8AB)
+			.addr	(data_C8C1)
+			.addr	(data_C8D7)
+			.addr	(data_C8EB)
+			.addr	(data_C8FC)
+			.addr	(data_C913)
+			.addr	(data_C92B)
+			.addr	(data_C943)
+			.addr	(data_C149)
+			.addr	(data_C10B)
+			.addr	(data_C95C)
+			.addr	(data_C511)
+			.addr	(data_C97D)
+			.addr	(data_C9C0)
+	.endif
+
+	nmi_buffer_offset:
+		.byte	<nmi_buffer_0
+		.byte	<nmi_buffer_1
 ; ----------------------------
+	.export nmi
 nmi:
-        lda     ppu_ctlr0_b
-        and     #<~(ppu_ctlr0::int)
-        sta     ppu_ctlr0_b
-        and     #<~(ppu_ctlr0::int|ppu_ctlr0::bg_odd)
-        sta     PPU_CTLR0
+	.if	.defined(FDS_SMB)
+		cli
+	.endif
+
+	.if	.defined(SMB)
+		lda     ppu_ctlr0_b
+		and     #<~(ppu_ctlr0::int)
+		sta     ppu_ctlr0_b
+		and     #<~(ppu_ctlr0::int|ppu_ctlr0::bg_odd)
+		sta     PPU_CTLR0
+	.elseif	.defined(SMB2M)
+		lda     ppu_ctlr0_b
+		and     #<~(ppu_ctlr0::int|ppu_ctlr0::bg_odd)
+		sta     ppu_ctlr0_b
+		sta     PPU_CTLR0
+	.endif
+
+	.if	.defined(SMB2M)
+		sei
+		lda	eng_sprite_overlap
+		beq	:+ ; if (eng_sprite_overlap) {
+			lda	#<(SMB2M_NMI_TIMER)
+			sta	FDS_TIMER_DATA_LO
+			lda	#>(SMB2M_NMI_TIMER)
+			sta	FDS_TIMER_DATA_HI
+			lda	#fds_timer_ctlr::irq
+			sta	FDS_TIMER_CTLR
+			inc	byte_77B
+		: ; }
+	.endif
 
         lda     ppu_ctlr1_b
         and     #<~(ppu_ctlr1::objblk_off|ppu_ctlr1::bgblk_off|ppu_ctlr1::monotone)
@@ -81,12 +156,24 @@ nmi:
         lda     #>(OAM_DMA_BUFFER)
         sta     OBJ_DMA
 
-        ldx     nmi_addrs_ctl
-        lda     nmi_addrs_low,x
-        sta     eng_screen_update_addr
-        lda     nmi_addrs_high,x
-        sta     eng_screen_update_addr+1
-	jsr	eng_screen_update
+	.if	.defined(SMB)
+		ldx     nmi_addrs_ctl
+		lda     nmi_addrs_low,x
+		sta     eng_screen_update_addr
+		lda     nmi_addrs_high,x
+		sta     eng_screen_update_addr+1
+		jsr	eng_screen_update
+	.elseif	.defined(SMB2M)
+		lda     nmi_addrs_ctl
+		asl	a
+		tax
+		lda     nmi_addrs,x
+		sta     eng_screen_update_addr
+		inx
+		lda     nmi_addrs,x
+		sta     eng_screen_update_addr+1
+		jsr	eng_screen_update
+	.endif
 
 	ldy	#0
         ldx     nmi_addrs_ctl
@@ -101,6 +188,11 @@ nmi:
         sta     nmi_addrs_ctl
         lda     ppu_ctlr1_b
         sta     PPU_CTLR1
+
+	.if	.defined(SMB2M)
+		cli
+	.endif
+
         jsr     apu_cycle
         jsr     joypad_read
         jsr     nmi_pause
@@ -157,53 +249,136 @@ nmi:
 		bne     :-
 	; }
 
-        lda     eng_sprite_overlap
-        beq     :+++++ ; if (eng_sprite_overlap) {
-		: ; while (PPU_SR & 0x40) {
-			lda     PPU_SR
-			and     #$40
-			bne     :-
-		; }
+	.if	.defined(SMB)
+		lda     eng_sprite_overlap
+		beq     :+++++ ; if (eng_sprite_overlap) {
+			: ; while (PPU_SR & 0x40) {
+				lda     PPU_SR
+				and     #$40
+				bne     :-
+			; }
 
+			lda     eng_pause_status
+			lsr     a
+			bcs     :+ ; if (!(eng_pause_status & 0x01)) {
+				jsr     oam_init_nmi
+				jsr     nmi_oam_shuffle
+			: ; }
+
+			: ; while (PPU_SR & 0x40) {
+				lda     PPU_SR
+				and     #$40
+				beq     :-
+			; }
+
+			ldy     #PPU_NMI_HBLANK_DELAY
+			: ; for (y = PPU_NMI_HBLANK_DELAY; y > 0; y--) {
+				dey
+				bne     :-
+			; }
+		: ; }
+
+		lda     eng_scc_h_b
+		sta     PPU_SCC_H_V
+		lda     eng_scc_v_b
+		sta     PPU_SCC_H_V
+		lda     ppu_ctlr0_b
+		pha
+		sta     PPU_CTLR0
 		lda     eng_pause_status
 		lsr     a
 		bcs     :+ ; if (!(eng_pause_status & 0x01)) {
-			jsr     oam_init_nmi
-			jsr     nmi_oam_shuffle
+			jsr     nmi_gamemode_enter
 		: ; }
 
-		: ; while (PPU_SR & 0x40) {
-			lda     PPU_SR
-			and     #$40
-			beq     :-
+		lda     PPU_SR
+		pla
+        	ora     #ppu_ctlr0::int
+	.elseif .defined(SMB2M)
+		lda     eng_pause_status
+		lsr	a
+		bcs	:+++ ; if (!(eng_pause_status & 0x01)) {
+			lda	eng_sprite_overlap
+			beq	:+ ; if (eng_sprite_overlap) {
+				jsr	oam_init_nmi
+				jsr	nmi_oam_shuffle
+			: ; }
+
+			lda	eng_course_no
+			cmp	#SMB2M_COURSE_NO_CUTOFF
+			bcc	:+ ; if (eng_course_no >= cutoff) {
+				jsr	sub_708D
+			: ; }
+
+			jsr	nmi_gamemode_enter
+		: ; }
+
+		: ; while (byte_77B) {
+			lda	byte_77B
+			bne	:-
 		; }
 
-		ldy     #PPU_NMI_HBLANK_DELAY
-		: ; for (y = PPU_NMI_HBLANK_DELAY; y > 0; y--) {
-			dey
-			bne     :-
-		; }
-	: ; }
+		lda	PPU_SR
+		lda	ppu_ctlr0_b
+		ora	#ppu_ctlr0::int
+		sta	ppu_ctlr0_b
+	.endif
 
-	lda     eng_scc_h_b
-        sta     PPU_SCC_H_V
-        lda     eng_scc_v_b
-        sta     PPU_SCC_H_V
-        lda     ppu_ctlr0_b
-        pha
-        sta     PPU_CTLR0
-        lda     eng_pause_status
-        lsr     a
-        bcs     :+ ; if (!(eng_pause_status & 0x01)) {
-		jsr     nmi_gamemode_enter
-	: ; }
-
-	lda     PPU_SR
-        pla
-        ora     #ppu_ctlr0::int
         sta     PPU_CTLR0
         rti
-; ----------------------------
+; -----------------------------------------------------------
+	.if	.defined(SMB2M)
+		.export irq
+	irq:
+		sei
+		php
+		pha
+		txa
+		pha
+		tya
+		pha
+
+		lda	FDS_MEDIA_SR
+		pha
+
+		and	#fds_media_sr::tx_complete
+		bne	:+ ; if (!fds_tx_complete) {
+			pla
+
+			and	#fds_media_sr::timer_irq
+			beq	:++ ; if (fds_timer_irq) {
+				lda	ppu_ctlr0_b
+				and	#<~(ppu_ctlr0::obj_seg1)
+				ora	byte_77A
+				sta	ppu_ctlr0_b
+				sta	PPU_CTLR0
+				lda	#0
+				sta	FDS_TIMER_CTLR
+				lda	eng_scc_h_b
+				sta	PPU_SCC_H_V
+				lda	eng_scc_v_b
+				sta	PPU_SCC_H_V
+				lda	#0
+				sta	byte_77B
+
+				jmp	:++
+			; }
+		: ; } else {
+			pla
+
+			jsr	sub_E149
+		: ; }
+
+		pla
+		tay
+		pla
+		tax
+		pla
+		plp
+		cli
+		rti
+	.endif
+; -----------------------------------------------------------
 nmi_pause:
 	lda     eng_game_mode
         cmp     #game_mode::victory
@@ -211,7 +386,13 @@ nmi_pause:
         cmp     #game_mode::normal
         bne     :+++++
         lda     eng_gameplay_mode
-        cmp     #gameplay_mode::proc
+	.if	.defined(SMB)
+        	cmp     #gameplay_mode::proc
+	.elseif	.defined(SMB2)
+		cmp	#gameplay_mode::mode_4
+	.elseif	.defined(ANN)
+		cmp	#gameplay_mode::mode_5
+	.endif
         bne     :+++++
 	: ; if (game_mode == victory || (game_mode == normal && eng_gameplay_mode == proc)) {
 		lda     eng_pause_ticks
@@ -238,7 +419,7 @@ nmi_pause:
 			; }
 		: ; } else {
 			lda     eng_pause_status
-			and     #$7F
+			and     #<~($80)
 		: ; }
 
 		sta     eng_pause_status

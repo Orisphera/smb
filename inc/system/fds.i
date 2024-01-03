@@ -3,6 +3,15 @@ FDS_I	= 1
 
 .include	"./cpu.i"
 
+FDS_TIMER_DATA_LO = $4020
+FDS_TIMER_DATA_HI = $4021
+FDS_TIMER_CTLR	= $4022
+
+	.enum	fds_timer_ctlr
+		repeat = 1
+		irq    = 2
+	.endenum
+
 FDS_CTLR	= $4025
 
 	.enum fds_ctlr
@@ -23,8 +32,14 @@ FDS_CTLR	= $4025
 
 		drive_ready = 64
 
-		irq_no = 0
-		irq_yes = 128
+		irq = 128
+	.endenum
+
+FDS_MEDIA_SR	= $4030
+
+	.enum	fds_media_sr
+		timer_irq	= 1
+		tx_complete	= 2
 	.endenum
 
 FDS_DISK_SR	= $4032
@@ -40,6 +55,8 @@ FDS_DISK_SR	= $4032
 
 FDS_SND_VOL	= $4080
 FDS_SND_VOL_80	= $80
+
+sub_E149	= $E149
 
 fdsbios_filetbl_load	= $E1F8
 FDSBIOS_FILETBL_LOAD_TRY_COUNT	= 2
@@ -57,17 +74,17 @@ sub_E778	= $E778
 sub_E97D	= $E97D
 fdsbios_oam_dma	= $E9C8
 
-joypad_read	= $EA1F
-	.enum	joypad_button
-		right	= 1
-		left	= 2
-		down	= 4
-		up	= 8
-		start	= 16
-		select	= 32
-		face_b	= 64
-		face_a	= 128
-	.endenum
+; joypad_read	= $EA1F
+; 	.enum	joypad_button
+; 		right	= 1
+; 		left	= 2
+; 		down	= 4
+; 		up	= 8
+; 		start	= 16
+; 		select	= 32
+; 		face_b	= 64
+; 		face_a	= 128
+; 	.endenum
 
 FDS_STACK_NMIMODE	= STACK_BASE+0
 
@@ -96,5 +113,7 @@ FDS_RESET_SOFT	= $53
 FDS_RESET_FIRSTBOOT = $AC
 
 FDS_VENDOR_NINTENDO	= $01
+
+fds_ctlr_b	= $FA
 
 .endif	; FDS_I

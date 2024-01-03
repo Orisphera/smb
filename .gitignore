@@ -1,4 +1,7 @@
 *.o
 *.bin
 *.nes
+*.fdf
+*.fdt
+*.fds
 raw/**

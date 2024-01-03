@@ -13,6 +13,8 @@
 		scr_proc = 1
 		init_1	 = 2
 		proc	 = 3
+		mode_4   = 4
+		mode_5   = 5
 	.endenum
 
 	.enum	victory_mode
