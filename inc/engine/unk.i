@@ -32,8 +32,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(FDS_SMB)
-		oam_init	= $6226
-		oam_init_nmi	= $6229
 		eng_title	= $6237
 		eng_victory	= $6391
 		palette_underwater	= $6CAA
@@ -66,8 +64,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		oam_init	= $6287
-		oam_init_nmi	= $628A
 		eng_victory	= $6298
 
 		palette_underwater	= $6B8D
@@ -114,8 +110,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		oam_init	= $628A
-		oam_init_nmi	= $628D
 		eng_victory	= $629B
 
 		data_C97D	= $636B

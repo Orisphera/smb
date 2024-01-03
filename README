@@ -1,0 +1,30 @@
+Super Mario Bros. Meta-Disassembly
+
+This repository consists of a single code-base disassembly of
+four flavors of the original Super Mario Bros. engine
+as developed by SRD:
+
+- Super Mario Bros.
+- Super Mario Bros. (Famicom Disk System Reissue)
+- Super Mario Bros. 2
+- All Night Nippon Super Mario Bros.
+
+These represent the four released specimens of this
+particular engine for Nintendo's 8-bit home console.
+
+Throughout the disassembly, preprocessor directives are
+used to section off code that differs between these
+various versions, such that providing the correct combination
+of these definitions will produce one of the titles
+in question.  Note, a complete title cannot be produced without
+at least some subset of these definitions.  As such,
+the provided Makefile includes the definitions required
+to build Super Mario Bros. for the Famicom.
+
+Some such directives are not specific to releases
+but rather the game or console environment involved, such
+that inclusion of just those defines, ideally, would produce
+a game with those desired features synthesized from
+the various streams.
+
+This will take some time...

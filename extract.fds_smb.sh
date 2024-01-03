@@ -12,7 +12,7 @@ then
     exit 1
 fi
 
-mkdir -p data/chr.fds
+mkdir -p data/chr.smb
 
 # KYODAKU-
 dd if=$1 bs=1 skip=91 count=224 >data/security.bin
@@ -29,19 +29,19 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 I=0
 while [ $I -ne $OBJ_BANK ] && [ $I -ne $TILES ]
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.fds/tile_bg_`printf "%.2X" $I`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_bg_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
 while [ $I -ne $TILES ]
 do
 	J=`expr $I - $OBJ_BANK`
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.fds/tile_obj_`printf "%.2X" $J`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_obj_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
 
 # SMMAIN1
-dd if=$1 bs=1 skip=9091 count=15834 >data/prg0.fds.bin
+dd if=$1 bs=1 skip=9108 count=15817 >data/prg0.fds.bin
 
 # SMMAIN2
 dd if=$1 bs=1 skip=24942 count=16378 >data/prg1.fds.bin

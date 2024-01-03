@@ -66,12 +66,8 @@ ROMS_SMB2	=	$(PRG_SMB2) \
 ROMS_ANN	=	$(PRG_ANN) \
 			$(CHR_ANN)
 
-START_OBJS	=	src/start.o
-
-NMI_OBJS	=	src/nmi.o
-
-BASE_OBJS	=	$(START_OBJS) \
-			$(NMI_OBJS) \
+BASE_OBJS	=	src/start.o \
+			src/nmi.o \
 			src/lib/oam_init.o
 
 TITLE_BASE_OBJS	=	src/title/base.o \
@@ -93,16 +89,15 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(GAME_BASE_OBJS) \
 			data/prg.fc.o
 
-CHR_OBJS_FC	=	data/chr.fc.o
+CHR_OBJS_FC	=	data/chr.smb.o
 
 OBJS_FC		=	$(PRG_OBJS_FC) \
 			$(CHR_OBJS_FC)
 
-PRG_OBJS_FDS	=	$(START_OBJS) \
-			$(NMI_OBJS) \
+PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			data/prg.fds.o
 
-CHR_OBJS_FDS	=	data/chr.fds.o
+CHR_OBJS_FDS	=	data/chr.smb.o
 
 OBJS_FDS	=	$(PRG_OBJS_FDS) \
 			$(CHR_OBJS_FDS) \
@@ -117,8 +112,7 @@ DEF_FDS		=	data/fs/superblock_smb.def
 
 FDT_FDS		=	smb.fdt
 
-PRG_OBJS_SMB2	=	$(START_OBJS) \
-			$(NMI_OBJS) \
+PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -145,8 +139,7 @@ DEF_SMB2	=	data/fs/superblock_smb2.def
 
 FDT_SMB2	=	smb2.fdt
 
-PRG_OBJS_ANN	=	$(START_OBJS) \
-			$(NMI_OBJS) \
+PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \
