@@ -12,7 +12,7 @@ as developed by SRD:
 These represent the four released specimens of this
 particular engine for Nintendo's 8-bit home console.
 
-The utilities found at https://gitlab.com/segaloco/misc/fds
+The utilities found at https://gitlab.com/segaloco/misc/-/tree/master/fds
 are required to compile the FDS titles into disk images.
 Otherwise this repository should build on UNIX-like platforms
 using the cc65 6502 development suite.
