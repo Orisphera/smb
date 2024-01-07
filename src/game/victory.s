@@ -11,8 +11,20 @@
 	.export eng_victory
 eng_victory:
 	jsr	victory_enter
+
 	lda	eng_gameplay_mode
-	beq	:+ ; if (eng_gameplay_mode != bridge) {
+	beq	:++
+	.if	.defined(SMB2M)
+		ldx	eng_course_no
+		cpx	#course::no_08
+		bne	:+
+		cmp	#gameplay_mode::mode_5
+		beq	eng_victory-1
+		cmp	#gameplay_mode::mode_D
+		beq	eng_victory-1
+		; NOTE: This assumes this module follows an rts
+	.endif
+	: ; if (eng_gameplay_mode != bridge && (eng_course_no != course_08 || eng_gameplay_mode.not_in(5, $D))) {
 		ldx	#0
 		stx	eng_actor_offset
 		jsr	actor_proc
@@ -22,20 +34,207 @@ eng_victory:
 	jmp	eng_player_render
 ; -----------------------------------------------------------
 victory_enter:
-	lda	eng_gameplay_mode
-	jsr	eng_farjump
-	.addr	eng_bowser_ending
-	.addr	victory_init
-	.addr	victory_proc
-	.addr	victory_msg
-	.addr	victory_end
+	.if	.defined(SMB2M)
+		lda	eng_course_no
+		cmp	#course::no_08
+		beq	victory_course_8 ; if (!SMB2M || eng_course_no != course_8) {
+	.endif
+		lda	eng_gameplay_mode
+		jsr	eng_farjump
+		.addr	eng_bowser_ending
+		.addr	victory_init
+		.addr	victory_proc
+		.addr	victory_msg
+		.if	.defined(SMB2M)
+			.addr	sub_63AF
+		.endif
+		.addr	victory_end
+	.if	.defined(SMB2M)
+	victory_course_8: ; } else {
+		lda	eng_gameplay_mode
+		jsr	eng_farjump
+		.addr	eng_bowser_ending
+		.addr	victory_init
+		.addr	victory_proc
+		.addr	sub_C081
+		.addr	sub_C088
+		.addr	sub_C08E
+		.addr	sub_C5FE
+		.addr	sub_C642
+		.addr	sub_63AF
+		.addr	sub_C686
+		.addr	sub_C6CA
+		.addr	sub_C710
+		.addr	sub_C727
+		.addr	sub_C738
+	; }
+	.endif
 ; -----------------------------------------------------------
+	.if	.defined(ANN)
+	vram_addr_7A0	= $7A0
+	vram_addr_CD0	= $CD0
+	vram_addr_EE0	= $EE0
+
+	data_62FA:
+		.addr	data_D13E
+		.addr	data_D19E
+		.addr	data_D1FE
+		.addr	data_D25E
+		.addr	data_D14F
+		.addr	data_D1AF
+		.addr	data_D20F
+
+	data_6308:
+		.byte	>vram_addr_CD0
+		.byte	>vram_addr_7A0
+		.byte	>vram_addr_EE0
+	data_630B:
+		.byte	<vram_addr_CD0
+		.byte	<vram_addr_7A0
+		.byte	<vram_addr_EE0
+	data_630E:
+		.byte	$30, $50, $60
+; ----------------------------
+	sub_6311:
+		lda	eng_goals
+		cmp	#3
+		bne	:+++
+		ldy	byte_7FB
+		bne	:+++ ; if (eng_goals == 3 && !byte_7FB) {
+			sty	zp_byte_06
+
+			lda	eng_course_no
+			asl	a
+			tax
+			lda	data_62FA, x
+			sta	zp_addr_00
+			inx
+			lda	data_62FA, x
+			sta	zp_addr_00+1
+			: ; for (i = 0; i < 3; i++) {
+				ldx	zp_byte_06
+				lda	data_6308, x
+				sta	PPU_VRAM_AR
+				lda	data_630B, x
+				sta	PPU_VRAM_AR
+				: ; for (j; j != data_630E[j]; j++) {
+					lda	(zp_addr_00), y
+					sta	PPU_VRAM_IO
+
+					iny
+					tya
+					cmp	data_630E, x
+					bne	:-
+				; }
+
+				inc	zp_byte_06
+				lda	zp_byte_06
+				cmp	#3
+				bne	:--
+			: ; }
+		; }
+
+		jmp	sub_632A_finish
+	.endif
+; -----------------------------------------------------------
+	.if	.defined(SMB2)
+	victory_init_mask:
+		.byte	1<<0, 1<<1, 1<<2, 1<<3
+		.byte	1<<4, 1<<5, 1<<6, 1<<7
+	.elseif	.defined(ANN)
+	data_6354:
+		.addr	data_6363
+		.addr	data_6365
+		.addr	data_6367
+		.addr	data_6369
+
+	data_635C:
+		.byte	$04, $02, $00, $04
+		.byte	$02, $00, $08
+
+	data_6363:
+		.byte	$30, $12
+
+	data_6365:
+		.byte	$30, $1A
+
+	data_6367:
+		.byte	$30, $16
+
+	data_6369:
+		.byte	$17, $2A
+
+		.byte	$3F, $18, $04, $0F, $36
+
+	data_6370:
+		.byte	0, 0, 0
+	data_6370_end:
+	.endif
+; ----------------------------
 victory_init:
+	.if	.defined(ANN)
+		lda	byte_7FB
+		bne	:++
+		ldx	eng_course_no
+		cpx	#course::no_08
+		beq	:++ ; if (!byte_7FB && course_no != course_08) {
+			ldy	data_635C, x
+			lda	data_6354, y
+			sta	zp_addr_00
+			iny
+			lda	data_6354, y
+			sta	zp_addr_00+1
+			ldy	#0
+			: ; for (byte of data_6370) {
+				lda	(zp_addr_00), y
+				sta	data_6370, y
+				iny
+				cpy	#(data_6370_end-data_6370)-1
+				bne	:-
+			; }
+
+			lda	#$1D
+			sta	nmi_addrs_ctl
+		: ; }
+	.endif
+
 	ldx	eng_screen_right_hi
 	inx
 	stx	victory_screen_hi
+
+	.if	.defined(SMB2)
+		ldy	eng_course_no
+		lda	victory_init_mask, y
+		ora	byte_7FA
+		sta	byte_7FA
+	.endif
+
+	.if	.defined(SMB2M)
+		lda	byte_7FB
+		beq	:+
+		lda	eng_course_no
+		cmp	#course::no_04
+		bcc	:+ ; if (data_7FB && eng_course_no >= course_04) {
+			lda	#course::no_08
+			sta	eng_course_no
+		: ; }
+	.endif
+
 	lda	#music_event::victory_fanfare
 	sta	apu_music_event
+
+	.if	.defined(SMB2M)
+	sub_632A_finish:
+		inc	eng_gameplay_mode
+		rts
+
+	sub_632A:
+		lda	eng_game_mode
+		bne	sub_632A_finish
+
+		lda	#5
+	.endif
+
 	jmp	victory_next
 ; -----------------------------------------------------------
 victory_proc:
@@ -59,7 +258,7 @@ victory_proc:
 	beq	:+ ; if (eng_screen_left_hi != victory_screen_hi) {
 		lda	eng_scroll_subpix
 		clc
-		adc	#$80
+		adc	#VICTORY_SCROLL
 		sta	eng_scroll_subpix
 		lda	#1
 		adc	#0
@@ -73,68 +272,79 @@ victory_proc:
 	rts
 ; -----------------------------------------------------------
 victory_msg:
-        lda     victory_msg_count_inner
+        lda     victory_msg_timer_lo
         bne     victory_msg_dotick
-        lda     victory_msg_count_outer
+        lda     victory_msg_timer_hi
         beq     victory_msg_do
-        cmp     #9
-        bcs     victory_msg_dotick
-        ldy     eng_course_no
-	cpy     #7
-        bne     victory_normal
-        cmp     #3
-        bcc     victory_msg_dotick
-        sbc     #1
-        jmp     victory_msg_do
+	cmp     #VICTORY_MSG_TIMER_UPPER
+	bcs     victory_msg_dotick
 
-victory_normal:
-	cmp     #2
-        bcc     victory_msg_dotick
+	.if	.defined(SMB)
+		ldy     eng_course_no
+		cpy     #course::no_08
+		bne     :+ ; if (eng_course_no == course_8) {
+			cmp     #3
+			bcc     victory_msg_dotick
+			sbc     #1
+			jmp     victory_msg_do
+		: ; }
+	.endif
+
+	cmp	#VICTORY_MSG_TIMER_LOWER
+	bcc	victory_msg_dotick
 
 victory_msg_do:
 	tay
-        bne     victory_msg_do_more
-        lda     eng_player_id
-        beq     victory_msg_sound_check
-        iny
-        bne     victory_msg_sound_check
+	.if	.defined(SMB)
+		bne     :+ ; if () {
+			lda     eng_player_id
+			beq     victory_msg_sound_check
+			iny
+			bne     victory_msg_sound_check
+		: ; }
 
-victory_msg_do_more:
-	iny
-        lda     eng_course_no
-        cmp     #7
-        beq     victory_msg_sound_check
-        dey
-        cpy     #4
-        bcs     victory_msg_notick
-        cpy     #3
-        bcs     victory_msg_dotick
+		iny
+		lda     eng_course_no
+		cmp     #course::no_08
+		beq     victory_msg_sound_check
+		dey
+	.elseif	.defined(SMB2M)
+		beq	victory_msg_finish
+	.endif
 
-victory_msg_sound_check:
-	cpy     #3
-        bne     :+ ; if () {
-		lda     #4
-		sta     apu_music_event
-	: ; }
+	cpy     #VICTORY_NOTICK_END
+	bcs     victory_msg_notick
+	cpy     #VICTORY_DOTICK_END
+	bcs     victory_msg_dotick
 
+	.if	.defined(SMB)
+	victory_msg_sound_check:
+		cpy     #3
+		bne     :+ ; if () {
+			lda     #4
+			sta     apu_music_event
+		: ; }
+	.endif
+
+victory_msg_finish:
 	tya
         clc
         adc     #$0C
         sta     nmi_addrs_ctl
 
 victory_msg_dotick:
-	lda     victory_msg_count_inner
+	lda     victory_msg_timer_lo
         clc
-        adc     #4
-        sta     victory_msg_count_inner
-        lda     victory_msg_count_outer
+        adc     #VICTORY_TICK
+        sta     victory_msg_timer_lo
+        lda     victory_msg_timer_hi
         adc     #0
-        sta     victory_msg_count_outer
-        cmp     #7
+        sta     victory_msg_timer_hi
+        cmp     #VICTORY_MSG_TIMER_END
 
 victory_msg_notick:
-	bcc     :+ ; if (victory_msg_count_outer >= 7) {
-		lda     #6
+	bcc     :+ ; if (victory_msg_timer_hi >= end) {
+		lda     #VICTORY_TIMER_SET
 		sta     eng_timer_victory
 
 	victory_next_2:
@@ -143,38 +353,88 @@ victory_msg_notick:
 
 	rts
 ; -----------------------------------------------------------
-victory_end:
-        lda     eng_timer_victory
-        bne     victory_end_rts
-        ldy     eng_course_no
-        cpy     #7
-        bcs     :+ ; if (eng_course_no < 7) {
-		lda	#0
-		sta	eng_course_sub
-		sta	eng_goals
-		sta	eng_gameplay_mode
-		inc	eng_course_no
-		jsr	eng_loadareaptr
-		inc	eng_req_timer
-		lda	#game_mode::normal
-		sta	eng_game_mode
+	.if	.defined(SMB2M)
+	sub_63AF:
+        	lda     eng_timer_victory
+		cmp	#6
+		bcs	:++ ; if (eng_timer_victory < 6) {
+			.if	.defined(SMB2)
+				jsr	sub_9F57
+			.endif
 
-	victory_end_rts:
-		rts
-	: ; } else {
-		lda     joypad_p1
-		ora     joypad_p2
-		and     #joypad_button::face_b
-		beq     :+ ; if (joypad_face_b) {
-			lda     #1
-			sta     eng_course_sel_on
-			lda     #$FF
-			sta     eng_lives
-			jsr	eng_next_game
+			lda	byte_7EC
+			ora	byte_7ED
+			ora	byte_7EE
+			.if	.defined(SMB2)
+				bne	:++ ; if (!(byte_7EC|byte_7ED|byte_7EE)) {
+			.elseif	.defined(ANN)
+				beq	:+ ; if (byte_7EC|byte_7ED|byte_7EE) {
+					jmp	sub_9F5B
+				; } else {
+			.endif
+			: ; if (!(byte_7EC|byte_7ED|byte_7EE)) {
+				lda	#$30
+				sta	eng_timer_select
+				lda	#6
+				sta	eng_timer_victory
+				inc	eng_gameplay_mode
+			; }
 		: ; }
 
 		rts
-	; }
+	.endif
+; -----------------------------------------------------------
+victory_end:
+        lda     eng_timer_victory
+        bne     victory_end_rts
+	.if	.defined(SMB)
+		ldy     eng_course_no
+		cpy     #course::no_08
+		bcs     :+ ; if (eng_course_no < course_8) {
+	.endif
+
+	lda	#0
+	sta	eng_course_sub
+	sta	eng_goals
+	sta	eng_gameplay_mode
+
+	.if	.defined(SMBM)
+		inc	eng_course_no
+	.elseif	.defined(SMB2)
+		lda	eng_course_no
+		clc
+		adc	#1
+		cmp	#course::no_09
+		bcc	:+ ; if (eng_course_no >= course_09) {
+			lda	#course::no_09
+		: ; }
+		sta	eng_course_no
+	.endif
+
+	jsr	eng_loadareaptr
+	inc	eng_req_timer
+	lda	#game_mode::normal
+	sta	eng_game_mode
+
+	victory_end_rts:
+		rts
+
+	.if	.defined(SMB)
+		: ; } else {
+			lda     joypad_p1
+			ora     joypad_p2
+			and     #joypad_button::face_b
+			beq     :+ ; if (joypad_face_b) {
+				lda     #1
+				sta     eng_course_sel_on
+				lda     #$FF
+				sta     eng_lives
+				jsr	eng_next_game
+			: ; }
+
+			rts
+		; }
+	.endif
 ; -----------------------------------------------------------
 SCORE_METASPR_W_TILES	= 2
 SCORE_DIGIT_MASK	= $0F

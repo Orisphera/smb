@@ -11,6 +11,9 @@ screen_proc:
 	.addr	screen_msg_time_up
 	.addr	screen_msg_time_reset
 	.addr	screen_msg_world_game_over
+	.if	.defined(SMB2M)
+		.addr	sub_C5D0
+	.endif
 	.addr	screen_msg_time_reset
 	.addr	screen_bg
 	.addr	screen_color_init_2

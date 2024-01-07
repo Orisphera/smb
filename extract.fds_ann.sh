@@ -66,7 +66,7 @@ do
 done
 
 # NSMMAIN
-dd if=$1 bs=1 skip=10345  count=32095 >data/prg.ann.bin
+dd if=$1 bs=1 skip=11136 count=31304 >data/prg.ann.bin
 
 # NSMDATA2
 dd if=$1 bs=1 skip=42447 count=3584 >data/data2.ann.bin

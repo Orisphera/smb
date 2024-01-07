@@ -15,6 +15,7 @@
 		proc	 = 3
 		mode_4   = 4
 		mode_5   = 5
+		mode_D   = $D
 	.endenum
 
 	.enum	victory_mode
@@ -74,6 +75,18 @@
 		jump_spring	= $32
 		bullet		= $33
 		toad		= $35
+	.endenum
+
+	.enum	course
+		no_01	= 0
+		no_02	= 1
+		no_03	= 2
+		no_04	= 3
+		no_05	= 4
+		no_06	= 5
+		no_07	= 6
+		no_08	= 7
+		no_09	= 8
 	.endenum
 
 	.endif	; MISC_I
