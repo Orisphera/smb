@@ -12,19 +12,19 @@
 #   SMBM - Super Mario Bros. "Meta" (SMB and ANN-commonalities)
 #   SMB2M - Super Mario Bros. 2 "Meta" (SMB2 and ANN-commonalities)
 AS		=	ca65
-ASFLAGS_FC	=	-DFC -DSMB -DFC_SMB
-ASFLAGS_FDS	=	-DFDS -DSMB -DFDS_SMB
+ASFLAGS_FC	=	-DFC -DSMB -DFC_SMB -DSMBM
+ASFLAGS_FDS	=	-DFDS -DSMB -DFDS_SMB -DSMBM
 ASFLAGS_SMB2	=	-DFDS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DSMB2M -DANN -DSMBM
-ASFLAGS		=	-U $(ASFLAGS_ANN)
+ASFLAGS		=	-U $(ASFLAGS_FC)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
 
-BINTOFDF	=	bintofdf
-FDTC		=	fdtc
+BINTOFDF	=	fdtc/bintofdf
+FDTC		=	fdtc/fdtc
 
 FC		= 	smb.nes
 FDS		=	smb.fds

@@ -134,7 +134,7 @@ victory_enter:
 			: ; }
 		; }
 
-		jmp	sub_632A_finish
+		jmp	screen_title_bg_finish
 	.endif
 ; -----------------------------------------------------------
 	.if	.defined(SMB2)
@@ -142,6 +142,7 @@ victory_enter:
 		.byte	1<<0, 1<<1, 1<<2, 1<<3
 		.byte	1<<4, 1<<5, 1<<6, 1<<7
 	.elseif	.defined(ANN)
+		.export data_C97D
 	data_6354:
 		.addr	data_6363
 		.addr	data_6365
@@ -164,6 +165,7 @@ victory_enter:
 	data_6369:
 		.byte	$17, $2A
 
+	data_C97D:
 		.byte	$3F, $18, $04, $0F, $36
 
 	data_6370:
@@ -224,13 +226,14 @@ victory_init:
 	sta	apu_music_event
 
 	.if	.defined(SMB2M)
-	sub_632A_finish:
+		.export screen_title_bg
+	screen_title_bg_finish:
 		inc	eng_gameplay_mode
 		rts
 
-	sub_632A:
+	screen_title_bg:
 		lda	eng_game_mode
-		bne	sub_632A_finish
+		bne	screen_title_bg_finish
 
 		lda	#5
 	.endif
@@ -473,7 +476,7 @@ screen_score_disp_incs:
 	.byte	$00
 screen_score_disp_incs_end:
 ; ----------------------------
-	.export screen_score_disp
+	.export screen_score_disp, screen_score_disp_end
 screen_score_disp:
 	lda	STACK_BASE+$10, x
 	beq	victory_end_rts
@@ -561,4 +564,6 @@ screen_score_disp:
 	lda	screen_score_disp_tiles+1, x
 	sta	OAM_DMA_BUFFER+OBJ_CHR_NO+OBJ_SIZE, y
 	ldx	eng_actor_offset
+
+screen_score_disp_end:
 	rts

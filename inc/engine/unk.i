@@ -2,8 +2,6 @@
 UNK_I = 1
 
 	.if	.defined(FC_SMB)
-		screen_color_init_3	= $85E3
-		screen_color_player	= $85F1
 		screen_color_init_4	= $8643
 		screen_stat_bg_0	= $8652
 		screen_stat_bg_1	= $865A
@@ -60,8 +58,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(FDS_SMB)
-		screen_color_init_3	= $65E9
-		screen_color_player	= $65F7
 		screen_color_init_4	= $6649
 		screen_stat_bg_0	= $6658
 		screen_stat_bg_1	= $6660
@@ -118,9 +114,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		screen_title_bg = $632A
-		screen_color_init_3	= $653F
-		screen_color_player	= $654D
 		screen_color_init_4	= $6598
 		victory_next		= $65A1
 		screen_stat_bg_0	= $65A7
@@ -198,11 +191,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		data_C97D	= $636B
-		screen_title_bg = $63BD
-		sub_C5D0	= $654B
-		screen_color_init_3	= $65C6
-		screen_color_player	= $65D4
 		screen_color_init_4	= $661F
 		victory_next		= $6628
 		screen_stat_bg_0	= $662E
