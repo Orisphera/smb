@@ -1,3 +1,8 @@
+.include	"../../inc/system/cpu.i"
+.include	"../../inc/system/ppu.i"
+
+.include	"../../inc/engine/tunables.i"
+
 .include	"../../inc/engine/unk.i"
 
 	.export screen_proc
@@ -142,3 +147,71 @@ screen_color_player:
 screen_color_player_end:
 	sta	ppu_nmi_buffer+0
 	rts
+; ------------------------------------------------------------
+	.export screen_color_init_4_end
+screen_color_init_4:
+	lda	eng_area_var
+	cmp	#1
+	bne	:+ ; if () {
+		lda	#$0B
+	screen_color_init_4_end:
+		sta	nmi_addrs_ctl
+	: ; }
+
+	jmp	screen_proc_next
+; ------------------------------------------------------------
+screen_stat_bg_0:
+	lda	#0
+	jsr	sub_8808
+	jmp	screen_proc_next
+; ------------------------------------------------------------
+SCREEN_STAT_BG_1_ADDR	=	PPU_VRAM_BG1+$73
+SCREEN_STAT_BG_1_LEN	=	3
+
+screen_stat_bg_1:
+	jsr	sub_BC30
+	ldx	ppu_nmi_buffer+$00
+	lda	#>(SCREEN_STAT_BG_1_ADDR)
+	sta	ppu_nmi_buffer+$01, x
+	lda	#<(SCREEN_STAT_BG_1_ADDR)
+	sta	ppu_nmi_buffer+$02, x
+	lda	#SCREEN_STAT_BG_1_LEN
+	sta	ppu_nmi_buffer+$03, x
+	.if	.defined(SMB)
+		ldy	eng_course_no
+		iny
+		tya
+	.elseif	.defined(SMB2M)
+		jsr	screen_calc_course_no
+	.endif
+	sta	ppu_nmi_buffer+$04, x
+	lda	#TILE_DASH
+	sta	ppu_nmi_buffer+$05, x
+	ldy	eng_goals
+	iny
+	tya
+	sta	ppu_nmi_buffer+$06, x
+	lda	#0
+	sta	ppu_nmi_buffer+$07, x
+	txa
+	clc
+	adc	#SCREEN_STAT_BG_1_LEN+WORD_SIZE+1
+	sta	ppu_nmi_buffer+$00
+	jmp	screen_proc_next
+; ----------------------------
+	.if	.defined(SMB2M)
+	screen_calc_course_no:
+		ldy	eng_course_no
+		lda	byte_7FB
+		beq	:+ ; if (byte_7FB) {
+			tya
+			and	#$03
+			clc
+			adc	#9
+			tay
+		: ; }
+		iny
+		tya
+		rts
+	.endif
+; ------------------------------------------------------------

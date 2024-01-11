@@ -238,7 +238,11 @@ victory_init:
 		lda	#5
 	.endif
 
-	jmp	victory_next
+	.if	.defined(SMB)
+		jmp	victory_next_2
+	.elseif	.defined(SMB2M)
+		jmp	screen_color_init_4_end
+	.endif
 ; -----------------------------------------------------------
 victory_proc:
 	ldy	#0
@@ -271,7 +275,7 @@ victory_proc:
 		inc	victory_proc_ctrl
 	: ; }
 	lda	victory_proc_ctrl
-	beq	victory_next_2
+	beq	victory_next
 	rts
 ; -----------------------------------------------------------
 victory_msg:
@@ -350,7 +354,7 @@ victory_msg_notick:
 		lda     #VICTORY_TIMER_SET
 		sta     eng_timer_victory
 
-	victory_next_2:
+	victory_next:
 		inc     eng_gameplay_mode
 	: ; }
 

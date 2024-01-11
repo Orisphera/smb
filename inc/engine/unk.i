@@ -2,9 +2,6 @@
 UNK_I = 1
 
 	.if	.defined(FC_SMB)
-		screen_color_init_4	= $8643
-		screen_stat_bg_0	= $8652
-		screen_stat_bg_1	= $865A
 		screen_msg_time_up	= $8693
 		screen_msg_world_game_over = $86A8
 		screen_bg	= $86E6
@@ -12,7 +9,8 @@ UNK_I = 1
 		screen_title_cursor	= $8732
 		screen_title_score	= $8749
 		screen_proc_next	= $8745
-		victory_next	= $874E
+		victory_next_2	= $874E
+		sub_8808 = $8808
 		screen_msg_time_reset	= $889D
 		palette_underwater	= $8CA4
 		palette_day	= $8CC8
@@ -48,6 +46,7 @@ UNK_I = 1
 		game_scroll	= $AFC4
 		player_proc_auto	= $B0E6
 		sub_BC27	= $BC27
+		sub_BC30	= $BC30
 		actor_proc	= $C047
 		eng_bowser_ending	= $CFEC
 		sub_E5C1	= $E5C1
@@ -58,9 +57,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(FDS_SMB)
-		screen_color_init_4	= $6649
-		screen_stat_bg_0	= $6658
-		screen_stat_bg_1	= $6660
 		screen_msg_time_up	= $6699
 		screen_msg_world_game_over = $66AE
 		screen_bg	= $66EC
@@ -68,7 +64,8 @@ UNK_I = 1
 		screen_title_cursor	= $6738
 		screen_proc_next	= $674B
 		screen_title_score	= $674F
-		victory_next	= $6754
+		victory_next_2	= $6754
+		sub_8808 = $680E
 		screen_msg_time_reset	= $68A3
 		palette_underwater	= $6CAA
 		palette_day	= $6CCE
@@ -104,6 +101,7 @@ UNK_I = 1
 		game_scroll	= $8FCC
 		player_proc_auto	= $90EE
 		sub_BC27	= $9C2F
+		sub_BC30	= $9C38
 		actor_proc	= $A04F
 		eng_bowser_ending	= $AFF4
 		sub_E5C1	= $C5C5
@@ -114,14 +112,11 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		screen_color_init_4	= $6598
-		victory_next		= $65A1
-		screen_stat_bg_0	= $65A7
-		screen_stat_bg_1	= $65AF
 		screen_msg_time_up	= $65F8
 		screen_proc_next	= $6613
 		screen_msg_world_game_over = $6617
 		screen_bg	= $6659
+		sub_8808 = $671B
 		screen_msg_time_reset	= $677A
 		palette_underwater	= $6B8D
 		palette_day		= $6BB1
@@ -148,6 +143,7 @@ UNK_I = 1
 		game_scroll	= $7B20
 		player_proc_auto	= $7C3E
 		sub_BC27	= $87E8
+		sub_BC30	= $87ED
 		actor_proc	= $8C23
 		sub_9F57	= $9F57
 		eng_bowser_ending	= $9C21
@@ -191,13 +187,10 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		screen_color_init_4	= $661F
-		victory_next		= $6628
-		screen_stat_bg_0	= $662E
-		screen_stat_bg_1	= $6636
 		screen_msg_time_up	= $667F
 		screen_proc_next	= $669A
 		screen_bg	= $66D1
+		sub_8808 = $67A8
 		screen_msg_time_reset	= $6814
 		screen_msg_world_game_over = $669E
 		palette_underwater	= $6C1F
@@ -225,6 +218,7 @@ UNK_I = 1
 		game_scroll	= $7B8A
 		player_proc_auto	= $7CA8
 		sub_BC27	= $8833
+		sub_BC30	= $8838
 		actor_proc	= $8C56
 		eng_bowser_ending	= $9C25
 		sub_9F5B	= $9F5B
@@ -281,6 +275,7 @@ UNK_I = 1
 zp_byte_00		= $00
 zp_addr_00		= $00
 eng_screen_update_addr	= $00
+zp_byte_01		= $01
 zp_byte_06		= $06
 eng_actor_offset	= $08
 eng_frame_count		= $09
@@ -315,6 +310,7 @@ victory_msg_timer_hi	= $719
 eng_screen_left_hi	= $71A
 eng_screen_right_hi	= $71B
 eng_sprite_overlap	= $722
+eng_area_var		= $733
 eng_screen_proc_id	= $73C
 eng_scc_h_b		= $73F
 eng_scc_v_b		= $740
