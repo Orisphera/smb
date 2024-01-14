@@ -239,7 +239,7 @@ victory_init:
 	.endif
 
 	.if	.defined(SMB)
-		jmp	victory_next_2
+		jmp	screen_title_end
 	.elseif	.defined(SMB2M)
 		jmp	screen_color_init_4_end
 	.endif

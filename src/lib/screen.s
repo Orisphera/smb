@@ -296,7 +296,7 @@ screen_msg_world_game_over:
 		jsr	sub_8808
 
 		.if	.defined(SMB)
-			jmp	victory_next_2
+			jmp	screen_title_end
 		.elseif	.defined(SMB2M)
 			.if	.defined(SMB2)
 				lda	eng_course_no
@@ -310,4 +310,26 @@ screen_msg_world_game_over:
 	lda	#screen_proc::bg
 	sta	eng_screen_proc_id
 	rts
+; ------------------------------------------------------------
+screen_bg:
+	inc	eng_disp_disable
+
+	: ; while (byte_71F) {
+		jsr	sub_92B0
+		lda	byte_71F
+		bne	:-
+	; }
+
+	dec	byte_71E
+	bpl	:+ ; if (--byte_71E >= 0) {
+		inc	eng_screen_proc_id
+	: ; }
+
+	lda	#6
+	sta	nmi_addrs_ctl
+	rts
+; ------------------------------------------------------------
+.if	.defined(SMB)
+	.include	"../title/scr.s"
+.endif
 ; ------------------------------------------------------------
