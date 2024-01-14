@@ -42,6 +42,29 @@
 		firefl	= 12
 	.endenum
 
+	.enum	screen_proc
+		init
+		color_init_1
+		stat_bg_0
+		stat_bg_1
+		msg_time_up
+		msg_time_reset
+		msg_world_game_over
+		.if	.defined(SMB2)
+			proc_C5D0
+		.elseif	.defined(ANN)
+			score_disp_end
+		.endif
+		msg_time_reset_b
+		bg
+		color_init_2
+		color_init_3
+		color_init_4
+		title_bg
+		title_cursor
+		title_score
+	.endenum
+
 	.enum	actor
 		koopa_green	= $00
 		buzzy_beetle	= $02

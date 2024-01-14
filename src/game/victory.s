@@ -226,7 +226,7 @@ victory_init:
 	sta	apu_music_event
 
 	.if	.defined(SMB2M)
-		.export screen_title_bg
+		.export screen_title_bg, screen_title_bg_finish
 	screen_title_bg_finish:
 		inc	eng_gameplay_mode
 		rts

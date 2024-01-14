@@ -2,8 +2,6 @@
 UNK_I = 1
 
 	.if	.defined(FC_SMB)
-		screen_msg_time_up	= $8693
-		screen_msg_world_game_over = $86A8
 		screen_bg	= $86E6
 		screen_title_bg = $86FF
 		screen_title_cursor	= $8732
@@ -11,6 +9,7 @@ UNK_I = 1
 		screen_proc_next	= $8745
 		victory_next_2	= $874E
 		sub_8808 = $8808
+		sub_88A5 = $88A5
 		screen_msg_time_reset	= $889D
 		palette_underwater	= $8CA4
 		palette_day	= $8CC8
@@ -51,14 +50,13 @@ UNK_I = 1
 		eng_bowser_ending	= $CFEC
 		sub_E5C1	= $E5C1
 		eng_player_render	= $EEE9
+		sub_EFA4	= $EFA4
 		lib_calc_player_pos	= $F12A
 		apu_cycle	= $F2D0
 		irq		= $FFF0
 	.endif
 
 	.if	.defined(FDS_SMB)
-		screen_msg_time_up	= $6699
-		screen_msg_world_game_over = $66AE
 		screen_bg	= $66EC
 		screen_title_bg = $6705
 		screen_title_cursor	= $6738
@@ -66,6 +64,7 @@ UNK_I = 1
 		screen_title_score	= $674F
 		victory_next_2	= $6754
 		sub_8808 = $680E
+		sub_88A5 = $68AB
 		screen_msg_time_reset	= $68A3
 		palette_underwater	= $6CAA
 		palette_day	= $6CCE
@@ -106,17 +105,16 @@ UNK_I = 1
 		eng_bowser_ending	= $AFF4
 		sub_E5C1	= $C5C5
 		eng_player_render	= $CEED
+		sub_EFA4	= $CFA8
 		lib_calc_player_pos	= $D12E
 		apu_cycle	= $D2D0
 		irq		= $FFF0
 	.endif
 
 	.if	.defined(SMB2)
-		screen_msg_time_up	= $65F8
-		screen_proc_next	= $6613
-		screen_msg_world_game_over = $6617
 		screen_bg	= $6659
 		sub_8808 = $671B
+		sub_88A5 = $6782
 		screen_msg_time_reset	= $677A
 		palette_underwater	= $6B8D
 		palette_day		= $6BB1
@@ -182,17 +180,17 @@ UNK_I = 1
 		data_C95C	= $C95C
 		data_C97D	= $C97D
 		data_C9C0	= $C9C0
+		sub_EFA4	= $BC7F
 		eng_title	= $BFB0
 		apu_cycle	= $D2A0
+
 	.endif
 
 	.if	.defined(ANN)
-		screen_msg_time_up	= $667F
-		screen_proc_next	= $669A
 		screen_bg	= $66D1
 		sub_8808 = $67A8
 		screen_msg_time_reset	= $6814
-		screen_msg_world_game_over = $669E
+		sub_88A5 = $681C
 		palette_underwater	= $6C1F
 		palette_day		= $6C43
 		palette_underground	= $6C67
@@ -225,6 +223,7 @@ UNK_I = 1
 		sub_9F57	= $9F57
 		sub_E5C1	= $B272
 		eng_player_render	= $BBD4
+		sub_EFA4	= $BC8F
 		lib_calc_player_pos	= $BE1F
 		eng_title	= $BFBF
 		sub_C081	= $C092
@@ -265,11 +264,6 @@ UNK_I = 1
 		data_D20F	= $D20F
 		data_D25E	= $D25E
 		apu_cycle	= $D2E5
-
-		title_init_0	= $B001
-		title_init_1	= $B002
-		game_proc	= $B003
-		eng_next_game	= $B012
 	.endif
 
 zp_byte_00		= $00
@@ -318,9 +312,11 @@ eng_bg_col		= $744
 eng_timer_ctl		= $747
 victory_msg_timer_lo	= $749
 eng_area_type		= $74E
+byte_752		= $752
 eng_player_id		= $753
 eng_player_status	= $756
 eng_req_timer		= $757
+eng_done_timer		= $759
 eng_lives		= $75A
 eng_goals		= $75C
 eng_hidden_one_up	= $75D
@@ -330,6 +326,7 @@ eng_hidden_one_up_offscr= $764
 eng_course_no_offscr	= $766
 eng_course_sub_offscr	= $767
 eng_scroll_subpix	= $768
+byte_769		= $769
 eng_hard_mode		= $76A
 title_course_sel_no	= $76B
 eng_game_mode		= $770
@@ -346,6 +343,7 @@ byte_77B		= $77B
 eng_timer_int		= $77F
 eng_timers_nmi		= $780
 eng_timer_select	= $780
+byte_7A0		= $7A0
 eng_timer_victory	= $7A1
 eng_timer_demo		= $7A2
 eng_rand_seed		= $7A7

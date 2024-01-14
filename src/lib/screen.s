@@ -2,8 +2,15 @@
 .include	"../../inc/system/ppu.i"
 
 .include	"../../inc/engine/tunables.i"
+.include	"../../inc/engine/misc.i"
 
 .include	"../../inc/engine/unk.i"
+
+.if	.defined(SMB)
+	screen_proc_continue = screen_proc_next
+.elseif	.defined(SMB2M)
+	screen_proc_continue = screen_msg_time_up_continue
+.endif
 
 	.export screen_proc
 screen_proc:
@@ -56,7 +63,7 @@ screen_color_init_1:
 	pla
 	sta	eng_bg_col
 
-	jmp	screen_proc_next
+	jmp	screen_proc_continue
 ; ------------------------------------------------------------
 screen_palette_types:
 	.byte	1, 2, 3, 4
@@ -69,7 +76,7 @@ screen_proc_next_pal_set:
 	stx	nmi_addrs_ctl
 
 screen_proc_next_b:
-	jmp	screen_proc_next
+	jmp	screen_proc_continue
 ; ------------------------------------------------------------
 data_85D7_entry_size	= 4
 
@@ -158,12 +165,12 @@ screen_color_init_4:
 		sta	nmi_addrs_ctl
 	: ; }
 
-	jmp	screen_proc_next
+	jmp	screen_proc_continue
 ; ------------------------------------------------------------
 screen_stat_bg_0:
 	lda	#0
 	jsr	sub_8808
-	jmp	screen_proc_next
+	jmp	screen_proc_continue
 ; ------------------------------------------------------------
 SCREEN_STAT_BG_1_ADDR	=	PPU_VRAM_BG1+$73
 SCREEN_STAT_BG_1_LEN	=	3
@@ -197,7 +204,7 @@ screen_stat_bg_1:
 	clc
 	adc	#SCREEN_STAT_BG_1_LEN+WORD_SIZE+1
 	sta	ppu_nmi_buffer+$00
-	jmp	screen_proc_next
+	jmp	screen_proc_continue
 ; ----------------------------
 	.if	.defined(SMB2M)
 	screen_calc_course_no:
@@ -214,4 +221,93 @@ screen_stat_bg_1:
 		tya
 		rts
 	.endif
+; ------------------------------------------------------------
+screen_msg_time_up:
+	lda	eng_done_timer
+	beq	:+ ; if (eng_done_timer) {
+		lda	#0
+		sta	eng_done_timer
+		lda	#2
+		.if	.defined(SMB)
+			jmp	sub_86C7
+		.elseif	.defined(SMB2M)
+		screen_msg_time_up_end:
+			jsr	sub_8808
+			jsr	sub_88A5
+			lda	#0
+			sta	eng_disp_disable
+			rts
+		.endif
+	: ; } else {
+		inc	eng_screen_proc_id
+
+		.if	.defined(SMB)
+			jmp	screen_proc_continue
+		.elseif	.defined(SMB2M)	
+		screen_msg_time_up_continue:
+			inc	eng_screen_proc_id
+			rts
+		.endif
+	; }
+; ------------------------------------------------------------
+screen_msg_world_game_over:
+	lda	eng_game_mode
+	beq	:+++
+	cmp	#3
+	beq	:++ ; if (eng_game_mode.not_in(0, 3)) {
+		lda	byte_752
+		bne	:+++
+		ldy	eng_area_type
+		cpy	#3
+		beq	:+
+		lda	byte_769
+		bne	:+++
+		: ; if (!byte_752 && (eng_area_type == 3 || !byte_769)) {
+			jsr	sub_EFA4
+			lda	#1
+			.if	.defined(SMB)
+			sub_86C7:
+				jsr	sub_8808
+				jsr	sub_88A5
+				lda	#0
+				sta	eng_disp_disable
+				rts
+			.elseif	.defined(SMB2M)
+				jsr	screen_msg_time_up_end
+				.if	.defined(SMB2)
+					lda	eng_course_no
+					cmp	#course::no_09
+
+					bne	screen_proc_continue
+					inc	eng_disp_disable
+					rts
+				.elseif	.defined(ANN)
+					jmp	$669A
+				.endif
+			.endif
+		; }
+	: ; } else if (eng_game_mode == 3) {
+		.if	.defined(SMB)
+			lda	#$12
+			sta	byte_7A0
+		.endif
+
+		lda	#3
+		jsr	sub_8808
+
+		.if	.defined(SMB)
+			jmp	victory_next_2
+		.elseif	.defined(SMB2M)
+			.if	.defined(SMB2)
+				lda	eng_course_no
+				cmp	#course::no_09
+				beq	screen_proc_continue
+			.endif
+			jmp	screen_title_bg_finish
+		.endif
+	: ; }
+
+	lda	#screen_proc::bg
+	sta	eng_screen_proc_id
+	rts
 ; ------------------------------------------------------------
