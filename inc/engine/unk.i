@@ -2,7 +2,6 @@
 UNK_I = 1
 
 	.if	.defined(FC_SMB)
-		sub_8808 = $8808
 		sub_88A5 = $88A5
 		screen_msg_time_reset	= $889D
 		palette_underwater	= $8CA4
@@ -32,7 +31,7 @@ UNK_I = 1
 		sub_clearram	= $90CC
 		eng_game_over	= $9218
 		eng_next_game	= $9248
-		sub_92B0	= $92B0
+		bg_proc	= $92B0
 		eng_loadareaptr	= $9C03
 		eng_game	= $AEDC
 		game_proc	= $AEEA
@@ -53,7 +52,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(FDS_SMB)
-		sub_8808 = $680E
 		sub_88A5 = $68AB
 		screen_msg_time_reset	= $68A3
 		palette_underwater	= $6CAA
@@ -83,7 +81,7 @@ UNK_I = 1
 		sub_clearram	= $70D2
 		eng_game_over	= $7222
 		eng_next_game	= $7252
-		sub_92B0	= $72BA
+		bg_proc	= $72BA
 		eng_loadareaptr	= $7C0B
 		eng_game	= $8EE4
 		game_proc	= $8EF2
@@ -104,7 +102,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		sub_8808 = $671B
 		sub_88A5 = $6782
 		screen_msg_time_reset	= $677A
 		palette_underwater	= $6B8D
@@ -127,7 +124,7 @@ UNK_I = 1
 		sub_clearram	= $6F08
 		eng_game_over	= $7057
 		sub_708D	= $708D
-		sub_92B0	= $70C1
+		bg_proc	= $70C1
 		eng_game	= $7A37
 		game_scroll_save	= $7ACB
 		game_scroll	= $7B20
@@ -179,7 +176,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		sub_8808 = $67A8
 		screen_msg_time_reset	= $6814
 		sub_88A5 = $681C
 		palette_underwater	= $6C1F
@@ -202,7 +198,7 @@ UNK_I = 1
 		sub_clearram	= $6F93
 		eng_game_over	= $70E0
 		sub_708D	= $7109
-		sub_92B0	= $713D
+		bg_proc	= $713D
 		eng_game	= $7AA7
 		game_scroll_save	= $7B35
 		game_scroll	= $7B8A
@@ -298,7 +294,7 @@ victory_msg_timer_hi	= $719
 eng_screen_left_hi	= $71A
 eng_screen_right_hi	= $71B
 byte_71E		= $71E
-byte_71F		= $71F
+bg_proc_id		= $71F
 eng_sprite_overlap	= $722
 eng_area_var		= $733
 eng_screen_proc_id	= $73C

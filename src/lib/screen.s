@@ -169,7 +169,7 @@ screen_color_init_4:
 ; ------------------------------------------------------------
 screen_stat_bg_0:
 	lda	#0
-	jsr	sub_8808
+	jsr	screen_text_draw
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
 SCREEN_STAT_BG_1_ADDR	=	PPU_VRAM_BG1+$73
@@ -232,7 +232,7 @@ screen_msg_time_up:
 			jmp	sub_86C7
 		.elseif	.defined(SMB2M)
 		screen_msg_time_up_end:
-			jsr	sub_8808
+			jsr	screen_text_draw
 			jsr	sub_88A5
 			lda	#0
 			sta	eng_disp_disable
@@ -267,7 +267,7 @@ screen_msg_world_game_over:
 			lda	#1
 			.if	.defined(SMB)
 			sub_86C7:
-				jsr	sub_8808
+				jsr	screen_text_draw
 				jsr	sub_88A5
 				lda	#0
 				sta	eng_disp_disable
@@ -293,7 +293,7 @@ screen_msg_world_game_over:
 		.endif
 
 		lda	#3
-		jsr	sub_8808
+		jsr	screen_text_draw
 
 		.if	.defined(SMB)
 			jmp	screen_title_end
@@ -314,9 +314,9 @@ screen_msg_world_game_over:
 screen_bg:
 	inc	eng_disp_disable
 
-	: ; while (byte_71F) {
-		jsr	sub_92B0
-		lda	byte_71F
+	: ; while (bg_proc_id) {
+		jsr	bg_proc
+		lda	bg_proc_id
 		bne	:-
 	; }
 
@@ -333,3 +333,283 @@ screen_bg:
 	.include	"../title/scr.s"
 .endif
 ; ------------------------------------------------------------
+screen_text_end_val	= $FF
+.if	.defined(SMB2)
+	screen_text_draw_buffer_page	= $2400
+.elseif	.defined(SMBM)
+	screen_text_draw_buffer_page	= $2C00
+.endif
+
+screen_text:
+screen_text_line_1:
+	.incbin	"data/screen_text_line_1.bin"
+	.byte	screen_text_end_val
+
+screen_text_line_2:
+	.incbin	"data/screen_text_line_2.bin"
+	.byte	screen_text_end_val
+
+screen_text_line_3:
+.if	.defined(SMB)
+	.incbin	"data/screen_text_line_3_a.bin"
+.endif
+	.incbin	"data/screen_text_line_3_b.bin"
+	.byte	screen_text_end_val
+
+screen_text_line_4:
+.if	.defined(SMB)
+	.incbin	"data/screen_text_line_4.bin"
+	.byte	screen_text_end_val
+.elseif	.defined(SMB2M)
+	.incbin	"data/screen_text_line_4_b.bin"
+	.byte	screen_text_end_val
+.endif
+
+.if	.defined(SMB)
+screen_text_line_5:
+	.incbin	"data/screen_text_line_5.bin"
+	.byte	screen_text_end_val
+.endif
+
+.if	.defined(SMB)
+screen_text_luigi:
+	.byte	$15, $1E, $12, $10, $12
+screen_text_luigi_end:
+.endif
+
+.if	.defined(SMB2M)
+screen_text_warp_2:
+	.byte	$25, $84, $15, $20
+	.byte	$0E, $15, $0C, $18
+	.byte	$16, $0E, $24, $1D
+	.byte	$18, $24, $20, $0A
+	.byte	$1B, $19, $24, $23
+	.byte	$18, $17, $0E, $2B
+	.byte	$26
+
+	.if	.defined(SMB2)
+		.byte	$2D
+	.elseif	.defined(ANN)
+		.byte	$25
+	.endif
+
+	.byte	$01, $24
+
+	.if	.defined(ANN)
+		.byte	$26, $2D, $01, $24
+		.byte	$26, $35, $01, $24
+	.endif
+
+	.byte	$27, $D9, $46, $AA
+	.byte	$27, $E1, $45, $AA
+	.byte	0
+.endif
+
+screen_text_warps:
+	.if	.defined(SMBM)
+		.byte	4, 3, 2
+		.byte	0, $24, 5
+		.byte	$24, 0, 8
+		.byte	7, 6, 0
+	.elseif	.defined(SMB2)
+		.byte	2, 3, 4
+		.byte	1, 6, 7
+		.byte	8, 5, $B
+		.byte	$C, $D
+	.endif
+
+	.if	.defined(ANN)
+		.byte	$24, $0B
+		.byte	$24, $00
+		.byte	$24, $0C
+		.byte	$24, $00
+		.byte	$24, $0D
+		.byte	$24, $00
+	.endif
+; -------------
+screen_text_idx_off	= $08
+screen_text_idx_0		= screen_text_line_1-screen_text
+screen_text_idx_1		= screen_text_line_2-screen_text
+screen_text_idx_2		= screen_text_line_3-screen_text
+screen_text_idx_3		= screen_text_line_4-screen_text
+
+.if	.defined(SMB)
+	screen_text_idx_4		= screen_text_line_5-screen_text
+.endif
+
+screen_text_idx_tbl:
+	.if	.defined(SMB)
+		.byte	screen_text_idx_0, screen_text_idx_0
+		.byte	screen_text_idx_1, screen_text_idx_1
+		.byte	screen_text_idx_2, screen_text_idx_2+screen_text_idx_off
+		.byte	screen_text_idx_3, screen_text_idx_3+screen_text_idx_off
+	.elseif	.defined(SMB2M)
+		.byte	screen_text_idx_0
+		.byte	screen_text_idx_1
+		.byte	screen_text_idx_2
+		.byte	screen_text_idx_3
+	.endif
+
+	.if	.defined(SMB)
+		.byte	screen_text_idx_4, screen_text_idx_4
+	.endif
+; ----------------------------
+screen_text_draw:
+	pha
+
+	.if	.defined(SMB)
+		asl	a
+		tay
+		cpy	#4
+		bcc	:++ ; if (y >= 4) {
+			cpy	#8
+			bcc	:+ ; if (y >= 8) {
+				ldy	#8
+			: ; }
+
+			lda	eng_player_count
+			bne	:+ ; if (!eng_player_count) {
+				iny
+			: ; }
+		; }
+	.elseif	.defined(SMB2M)
+		tay
+	.endif
+
+	ldx	screen_text_idx_tbl, y
+	ldy	#0
+	: ; for (x = screen_text_idx_tbl[y], y = 0; screen_text[x] != screen_text_end_val && y < 0x100; x++, y++) {
+		lda	screen_text, x
+		cmp	#screen_text_end_val
+		beq	:+
+		sta	ppu_nmi_buffer+$01, y
+
+		inx
+		iny
+		bne	:-
+	: ; }
+
+	lda	#0
+	sta	ppu_nmi_buffer+$01, y
+	pla
+
+	.if	.defined(SMB2M)
+		beq	screen_text_draw_end
+	.endif
+
+	tax
+
+	.if	.defined(SMB)
+		cmp	#4
+		bcs	screen_text_draw_over
+	.endif
+
+	dex
+	bne	:++ ; if ((a < 4 || !SMB) && a > 1) {
+		lda	eng_lives
+		clc
+		adc	#1
+		cmp	#$0A
+		bcc	:+ ; if (++eng_lives >= 0x0A) {
+			sbc	#$0A
+			ldy	#$9F
+			sty	ppu_nmi_buffer+$08
+		: ; }
+		sta	ppu_nmi_buffer+$09
+	
+		.if	.defined(SMB)
+			ldy	eng_course_no
+			iny
+			sty	ppu_nmi_buffer+$14
+		.elseif	.defined(SMB2M)
+			jsr	screen_calc_course_no
+			sta	ppu_nmi_buffer+$14
+		.endif
+
+		ldy	eng_goals
+		iny
+		sty	ppu_nmi_buffer+$16
+
+	.if	.defined(SMB2M)
+		: ; }
+
+	screen_text_draw_end:
+		rts
+	.elseif	.defined(SMB)
+		rts
+		: ; } else if (a <= 1) {
+			lda	eng_player_count
+			beq	:+++ ; if (eng_player_count) {
+				lda	eng_player_id
+				dex
+				bne	:+
+				ldy	eng_game_mode
+				cpy	#game_mode::game_over
+				beq	:+ ; if (!game_over) {
+					eor	#1
+				: ; }
+
+				lsr	a
+				bcc	:++ ; if () {
+					ldy	#(screen_text_luigi_end-screen_text_luigi)-1
+					: ; for (byte of screen_text_luigi) {
+						lda	screen_text_luigi, y
+						sta	ppu_nmi_buffer+$04, y
+
+						dey
+						bpl	:-
+					; }
+				; }
+			: ; }
+
+			rts
+	.endif
+
+	.if	.defined(SMB2M)
+		screen_text_draw_over:
+			pha
+
+			ldy	#$FF
+			: ; for (byte of screen_text_warp_2) {
+				iny
+				lda	screen_text_warp_2, y
+				sta	ppu_nmi_buffer+$01, y
+
+				bne	:-
+			; }
+
+			pla
+			sec
+			sbc	#$80
+		.if	.defined(SMB2)
+				tax
+				lda	screen_text_warps, x
+				sta	ppu_nmi_buffer+$1C
+		.endif
+	.elseif	.defined(SMB)
+		screen_text_draw_over: ; } else {
+			sbc	#4
+	.endif
+
+	.if	.defined(SMBM)
+		asl	a
+		asl	a
+		tax
+		ldy	#0
+		: ; for (y = 0; y < 0xC; y += 4) {
+			lda	screen_text_warps, x
+			sta	ppu_nmi_buffer+$1C, y
+
+			inx
+			iny
+			iny
+			iny
+			iny
+			cpy	#$0C
+			bcc	:-
+		; }
+	.endif
+
+	lda	#>screen_text_draw_buffer_page
+	jmp	screen_color_player_end
+; }

@@ -58,7 +58,12 @@ do
 done
 
 # SM2MAIN
-dd if=$1 bs=1 skip=10272  count=31112 >data/prg.smb2.bin
+dd if=$1 bs=1 skip=10272 count=38 >data/screen_text_line_1.bin
+dd if=$1 bs=1 skip=10311 count=30 >data/screen_text_line_2.bin
+dd if=$1 bs=1 skip=10342 count=10 >data/screen_text_line_3_b.bin
+dd if=$1 bs=1 skip=10353 count=35 >data/screen_text_line_4_b.bin
+
+dd if=$1 bs=1 skip=10536 count=30848 >data/prg.smb2.bin
 
 # SM2DATA2
 dd if=$1 bs=1 skip=41407 count=3631 >data/data2.smb2.bin
