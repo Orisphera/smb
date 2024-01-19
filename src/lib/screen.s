@@ -2,6 +2,7 @@
 .include	"../../inc/system/ppu.i"
 
 .include	"../../inc/engine/tunables.i"
+.include	"../../inc/engine/charmap.i"
 .include	"../../inc/engine/misc.i"
 
 .include	"../../inc/engine/unk.i"
@@ -21,14 +22,14 @@ screen_proc:
 	.addr	screen_stat_bg_0
 	.addr	screen_stat_bg_1
 	.addr	screen_msg_time_up
-	.addr	screen_msg_time_reset
+	.addr	screen_timer_clear_check
 	.addr	screen_msg_world_game_over
 	.if	.defined(SMB2)
 		.addr	sub_C5D0
 	.elseif	.defined(ANN)
 		.addr	screen_score_disp_end
 	.endif
-	.addr	screen_msg_time_reset
+	.addr	screen_timer_clear_check
 	.addr	screen_bg
 	.addr	screen_color_init_2
 	.addr	screen_color_init_3
@@ -192,7 +193,7 @@ screen_stat_bg_1:
 		jsr	screen_calc_course_no
 	.endif
 	sta	ppu_nmi_buffer+$04, x
-	lda	#TILE_DASH
+	lda	#'-'
 	sta	ppu_nmi_buffer+$05, x
 	ldy	eng_goals
 	iny
@@ -233,7 +234,7 @@ screen_msg_time_up:
 		.elseif	.defined(SMB2M)
 		screen_msg_time_up_end:
 			jsr	screen_text_draw
-			jsr	sub_88A5
+			jsr	screen_timer_reset
 			lda	#0
 			sta	eng_disp_disable
 			rts
@@ -268,7 +269,7 @@ screen_msg_world_game_over:
 			.if	.defined(SMB)
 			sub_86C7:
 				jsr	screen_text_draw
-				jsr	sub_88A5
+				jsr	screen_timer_reset
 				lda	#0
 				sta	eng_disp_disable
 				rts
@@ -289,7 +290,7 @@ screen_msg_world_game_over:
 	: ; } else if (eng_game_mode == 3) {
 		.if	.defined(SMB)
 			lda	#$12
-			sta	byte_7A0
+			sta	eng_timer_screen
 		.endif
 
 		lda	#3
@@ -335,123 +336,203 @@ screen_bg:
 ; ------------------------------------------------------------
 screen_text_end_val	= $FF
 .if	.defined(SMB2)
-	screen_text_draw_buffer_page	= $2400
+	screen_text_draw_buffer_page	= PPU_VRAM_BG2
 .elseif	.defined(SMBM)
-	screen_text_draw_buffer_page	= $2C00
+	screen_text_draw_buffer_page	= PPU_VRAM_BG4
 .endif
 
 screen_text:
-screen_text_line_1:
-	.incbin	"data/screen_text_line_1.bin"
+screen_text_header:
+	.dbyt	PPU_VRAM_BG1+$43
+	.byte	screen_text_player_1_end-screen_text_player_1
+screen_text_player_1:
+	.byte	"MARIO"
+screen_text_player_1_end:
+
+	.dbyt	PPU_VRAM_BG1+$52
+	.byte	screen_text_hud_end-screen_text_hud
+screen_text_hud:
+	.byte	"WORLD  TIME"
+screen_text_hud_end:
+
+	.dbyt	PPU_VRAM_BG1+$68
+	.byte	screen_text_stats_end-screen_text_stats
+screen_text_stats:
+	.byte	"0  $x"	; $ explained in charmap.i
+screen_text_stats_end:
+
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+0
+	.byte	$7F, $AA
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+2
+	.byte	$01, $EA
 	.byte	screen_text_end_val
 
-screen_text_line_2:
-	.incbin	"data/screen_text_line_2.bin"
+screen_text_splash:
+	.dbyt	PPU_VRAM_BG1+$1CD
+	.byte	screen_text_lives_end-screen_text_lives
+screen_text_lives:
+	.byte	"  x    "
+screen_text_lives_end:
+
+	.dbyt	PPU_VRAM_BG1+$14B
+	.byte	screen_text_world_end-screen_text_world
+screen_text_world:
+	.byte	"WORLD  - "
+screen_text_world_end:
+
+	.dbyt	PPU_VRAM_BG1+$20C
+	.byte	$47, " "
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$1C
+	.byte	$01, $BA
 	.byte	screen_text_end_val
 
-screen_text_line_3:
+screen_text_timeup_screen:
 .if	.defined(SMB)
-	.incbin	"data/screen_text_line_3_a.bin"
+		.dbyt	PPU_VRAM_BG1+$1CD
+		.byte	screen_text_timeup_player_end-screen_text_timeup_player
+	screen_text_timeup_player:
+		.byte	"MARIO"
+	screen_text_timeup_player_end:
 .endif
-	.incbin	"data/screen_text_line_3_b.bin"
+	.dbyt	PPU_VRAM_BG1+$20C
+	.byte	screen_text_timeup_end-screen_text_timeup
+screen_text_timeup:
+	.byte	"TIME UP"
+screen_text_timeup_end:
 	.byte	screen_text_end_val
 
-screen_text_line_4:
+screen_text_gameover_screen:
 .if	.defined(SMB)
-	.incbin	"data/screen_text_line_4.bin"
-	.byte	screen_text_end_val
+		.dbyt	PPU_VRAM_BG1+$1CD
+		.byte	screen_text_gameover_player_end-screen_text_gameover_player
+	screen_text_gameover_player:
+		.byte	"MARIO"
+	screen_text_gameover_player_end:
+.endif
+
+.if	.defined(SMB)
+		.dbyt	PPU_VRAM_BG1+$20B
 .elseif	.defined(SMB2M)
-	.incbin	"data/screen_text_line_4_b.bin"
-	.byte	screen_text_end_val
+		.dbyt	PPU_VRAM_BG1+$16B
 .endif
-
-.if	.defined(SMB)
-screen_text_line_5:
-	.incbin	"data/screen_text_line_5.bin"
-	.byte	screen_text_end_val
-.endif
-
-.if	.defined(SMB)
-screen_text_luigi:
-	.byte	$15, $1E, $12, $10, $12
-screen_text_luigi_end:
-.endif
+	.byte	screen_text_gameover_end-screen_text_gameover
+screen_text_gameover:
+	.byte	"GAME OVER"
+screen_text_gameover_end:
 
 .if	.defined(SMB2M)
-screen_text_warp_2:
-	.byte	$25, $84, $15, $20
-	.byte	$0E, $15, $0C, $18
-	.byte	$16, $0E, $24, $1D
-	.byte	$18, $24, $20, $0A
-	.byte	$1B, $19, $24, $23
-	.byte	$18, $17, $0E, $2B
-	.byte	$26
+		.dbyt	PPU_VRAM_BG1+$1EB
+		.byte	screen_text_continue_end-screen_text_continue
+	screen_text_continue:
+		.byte	"CONTINUE"
+	screen_text_continue_end:
 
-	.if	.defined(SMB2)
-		.byte	$2D
-	.elseif	.defined(ANN)
-		.byte	$25
-	.endif
+		.dbyt	PPU_VRAM_BG1+$20C
+		.byte	$47, " "
 
-	.byte	$01, $24
+		.dbyt	PPU_VRAM_BG1+$24B
+		.byte	screen_text_retry_end-screen_text_retry
+	screen_text_retry:
+		.byte	"RETRY"
+	screen_text_retry_end:
+.endif
+	.byte	screen_text_end_val
 
-	.if	.defined(ANN)
-		.byte	$26, $2D, $01, $24
-		.byte	$26, $35, $01, $24
-	.endif
+screen_text_warp_screen:
+	.dbyt	PPU_VRAM_BG2+$184
+	.byte	screen_text_warp_zone_end-screen_text_warp_zone
+screen_text_warp_zone:
+	.byte	"WELCOME TO WARP ZONE!"
+screen_text_warp_zone_end:
 
-	.byte	$27, $D9, $46, $AA
-	.byte	$27, $E1, $45, $AA
-	.byte	0
+.if	.defined(SMBM)
+		.dbyt	PPU_VRAM_BG2+$225
+		.byte	screen_text_warp_pipe_l_end-screen_text_warp_pipe_l
+	screen_text_warp_pipe_l:
+		.byte	" "
+	screen_text_warp_pipe_l_end:
+.endif
+
+	.dbyt	PPU_VRAM_BG2+$22D
+	.byte	screen_text_warp_pipe_m_end-screen_text_warp_pipe_m
+screen_text_warp_pipe_m:
+	.byte	" "
+screen_text_warp_pipe_m_end:
+	
+.if	.defined(SMBM)
+		.dbyt	PPU_VRAM_BG2+$235
+		.byte	screen_text_warp_pipe_r_end-screen_text_warp_pipe_r
+	screen_text_warp_pipe_r:
+		.byte	" "
+	screen_text_warp_pipe_r_end:
+.endif
+
+	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_VIS+$19
+	.byte	$46, $AA
+	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_VIS+$21
+	.byte	$45, $AA
+.if	.defined(SMB)
+		.byte	screen_text_end_val
+.elseif	.defined(SMB2M)
+		.byte	0
+.endif
+
+.if	.defined(SMB)
+	screen_text_player_2:
+		.byte	"LUIGI"
+	screen_text_player_2_end:
 .endif
 
 screen_text_warps:
 	.if	.defined(SMBM)
-		.byte	4, 3, 2
-		.byte	0, $24, 5
-		.byte	$24, 0, 8
-		.byte	7, 6, 0
+		.byte	"4", "3", "2", 0
+		.byte	" ", "5", " ", 0
+		.byte	"8", "7", "6", 0
 	.elseif	.defined(SMB2)
-		.byte	2, 3, 4
-		.byte	1, 6, 7
-		.byte	8, 5, $B
-		.byte	$C, $D
+		.byte	"2"
+		.byte	"3"
+		.byte	"4"
+		.byte	"1"
+		.byte	"6"
+		.byte	"7"
+		.byte	"8"
+		.byte	"5"
+		.byte	"B"
+		.byte	"C"
+		.byte	"D"
 	.endif
 
 	.if	.defined(ANN)
-		.byte	$24, $0B
-		.byte	$24, $00
-		.byte	$24, $0C
-		.byte	$24, $00
-		.byte	$24, $0D
-		.byte	$24, $00
+		.byte	" ", "B", " ", 0
+		.byte	" ", "C", " ", 0
+		.byte	" ", "D", " ", 0
 	.endif
 ; -------------
 screen_text_idx_off	= $08
-screen_text_idx_0		= screen_text_line_1-screen_text
-screen_text_idx_1		= screen_text_line_2-screen_text
-screen_text_idx_2		= screen_text_line_3-screen_text
-screen_text_idx_3		= screen_text_line_4-screen_text
+screen_text_idx_header		= screen_text_header-screen_text
+screen_text_idx_splash		= screen_text_splash-screen_text
+screen_text_idx_timeup		= screen_text_timeup_screen-screen_text
+screen_text_idx_gameover	= screen_text_gameover_screen-screen_text
 
 .if	.defined(SMB)
-	screen_text_idx_4		= screen_text_line_5-screen_text
+	screen_text_idx_warp		= screen_text_warp_screen-screen_text
 .endif
 
 screen_text_idx_tbl:
 	.if	.defined(SMB)
-		.byte	screen_text_idx_0, screen_text_idx_0
-		.byte	screen_text_idx_1, screen_text_idx_1
-		.byte	screen_text_idx_2, screen_text_idx_2+screen_text_idx_off
-		.byte	screen_text_idx_3, screen_text_idx_3+screen_text_idx_off
+		.byte	screen_text_idx_header, screen_text_idx_header
+		.byte	screen_text_idx_splash, screen_text_idx_splash
+		.byte	screen_text_idx_timeup, screen_text_idx_timeup+screen_text_idx_off
+		.byte	screen_text_idx_gameover, screen_text_idx_gameover+screen_text_idx_off
 	.elseif	.defined(SMB2M)
-		.byte	screen_text_idx_0
-		.byte	screen_text_idx_1
-		.byte	screen_text_idx_2
-		.byte	screen_text_idx_3
+		.byte	screen_text_idx_header
+		.byte	screen_text_idx_splash
+		.byte	screen_text_idx_timeup
+		.byte	screen_text_idx_gameover
 	.endif
 
 	.if	.defined(SMB)
-		.byte	screen_text_idx_4, screen_text_idx_4
+		.byte	screen_text_idx_warp, screen_text_idx_warp
 	.endif
 ; ----------------------------
 screen_text_draw:
@@ -551,9 +632,9 @@ screen_text_draw:
 
 				lsr	a
 				bcc	:++ ; if () {
-					ldy	#(screen_text_luigi_end-screen_text_luigi)-1
-					: ; for (byte of screen_text_luigi) {
-						lda	screen_text_luigi, y
+					ldy	#(screen_text_player_2_end-screen_text_player_2)-1
+					: ; for (byte of screen_text_player_2) {
+						lda	screen_text_player_2, y
 						sta	ppu_nmi_buffer+$04, y
 
 						dey
@@ -570,9 +651,9 @@ screen_text_draw:
 			pha
 
 			ldy	#$FF
-			: ; for (byte of screen_text_warp_2) {
+			: ; for (byte of screen_text_warp_screen) {
 				iny
-				lda	screen_text_warp_2, y
+				lda	screen_text_warp_screen, y
 				sta	ppu_nmi_buffer+$01, y
 
 				bne	:-
@@ -613,3 +694,14 @@ screen_text_draw:
 	lda	#>screen_text_draw_buffer_page
 	jmp	screen_color_player_end
 ; }
+; -----------------------------------------------------------
+screen_timer_clear_check:
+	lda	eng_timer_screen
+	bne	:+ ; if (!eng_timer_screen) {
+		jsr	oam_init
+	screen_timer_reset:
+		lda	#7
+		sta	eng_timer_screen
+		inc	eng_screen_proc_id
+	: ; }
+	rts

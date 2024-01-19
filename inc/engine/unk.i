@@ -2,8 +2,6 @@
 UNK_I = 1
 
 	.if	.defined(FC_SMB)
-		sub_88A5 = $88A5
-		screen_msg_time_reset	= $889D
 		palette_underwater	= $8CA4
 		palette_day	= $8CC8
 		palette_underground	= $8CEC
@@ -52,8 +50,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(FDS_SMB)
-		sub_88A5 = $68AB
-		screen_msg_time_reset	= $68A3
 		palette_underwater	= $6CAA
 		palette_day	= $6CCE
 		palette_underground	= $6CF2
@@ -102,8 +98,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		sub_88A5 = $6782
-		screen_msg_time_reset	= $677A
 		palette_underwater	= $6B8D
 		palette_day		= $6BB1
 		palette_underground	= $6BD5
@@ -176,8 +170,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		screen_msg_time_reset	= $6814
-		sub_88A5 = $681C
 		palette_underwater	= $6C1F
 		palette_day		= $6C43
 		palette_underground	= $6C67
@@ -258,7 +250,12 @@ zp_byte_00		= $00
 zp_addr_00		= $00
 eng_screen_update_addr	= $00
 zp_byte_01		= $01
+zp_byte_02		= $02
+zp_byte_03		= $03
+zp_byte_04		= $04
+zp_byte_05		= $05
 zp_byte_06		= $06
+zp_addr_06		= $06
 eng_actor_offset	= $08
 eng_frame_count		= $09
 game_proc_id		= $0E
@@ -278,6 +275,7 @@ ppu_nmi_buffer		= $300
 
 tbl_400			= $400
 
+tbl_6A1			= $6A1
 byte_6E0		= $6E0
 tbl_6E1			= $6E1
 tbl_6E4			= $6E4
@@ -295,7 +293,10 @@ eng_screen_left_hi	= $71A
 eng_screen_right_hi	= $71B
 byte_71E		= $71E
 bg_proc_id		= $71F
+byte_720		= $720
+byte_721		= $721
 eng_sprite_overlap	= $722
+byte_726		= $726
 eng_area_var		= $733
 eng_screen_proc_id	= $73C
 eng_scc_h_b		= $73F
@@ -335,7 +336,7 @@ byte_77B		= $77B
 eng_timer_int		= $77F
 eng_timers_nmi		= $780
 eng_timer_select	= $780
-byte_7A0		= $7A0
+eng_timer_screen	= $7A0
 eng_timer_victory	= $7A1
 eng_timer_demo		= $7A2
 eng_rand_seed		= $7A7

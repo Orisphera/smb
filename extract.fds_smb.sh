@@ -19,7 +19,7 @@ dd if=$1 bs=1 skip=91 count=224 >data/security.bin
 
 # CHR Common
 TILE_SIZE=16
-OBJ_BANK=256
+BG_BANK=256
 
 # SMCHAR
 BANKBASE=332
@@ -27,28 +27,21 @@ BANKLEN=8192
 TILES=`expr $BANKLEN / $TILE_SIZE`
 
 I=0
-while [ $I -ne $OBJ_BANK ] && [ $I -ne $TILES ]
+while [ $I -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_bg_`printf "%.2X" $I`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
 while [ $I -ne $TILES ]
 do
-	J=`expr $I - $OBJ_BANK`
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_obj_`printf "%.2X" $J`.bin
+	J=`expr $I - $BG_BANK`
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
 
 # SMMAIN1
-dd if=$1 bs=1 skip=10421 count=38 >data/screen_text_line_1.bin
-dd if=$1 bs=1 skip=10460 count=30 >data/screen_text_line_2.bin
-dd if=$1 bs=1 skip=10491 count=8 >data/screen_text_line_3_a.bin
-dd if=$1 bs=1 skip=10499 count=10 >data/screen_text_line_3_b.bin
-dd if=$1 bs=1 skip=10510 count=20 >data/screen_text_line_4.bin
-dd if=$1 bs=1 skip=10531 count=44 >data/screen_text_line_5.bin
-
-dd if=$1 bs=1 skip=10752 count=14173 >data/prg0.fds.bin
+dd if=$1 bs=1 skip=10769 count=14156 >data/prg0.fds.bin
 
 # SMMAIN2
 dd if=$1 bs=1 skip=24942 count=16378 >data/prg1.fds.bin
