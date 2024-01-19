@@ -10,7 +10,7 @@
 .if	.defined(SMB)
 	screen_proc_continue = screen_proc_next
 .elseif	.defined(SMB2M)
-	screen_proc_continue = screen_msg_time_up_continue
+	screen_proc_continue = screen_text_draw_timeup_continue
 .endif
 
 	.export screen_proc
@@ -19,11 +19,11 @@ screen_proc:
 	jsr	eng_farjump
 	.addr	screen_init
 	.addr	screen_color_init_1
-	.addr	screen_stat_bg_0
-	.addr	screen_stat_bg_1
-	.addr	screen_msg_time_up
+	.addr	screen_text_draw_header
+	.addr	screen_text_draw_splash
+	.addr	screen_text_draw_timeup
 	.addr	screen_timer_clear_check
-	.addr	screen_msg_world_game_over
+	.addr	screen_text_draw_intermission
 	.if	.defined(SMB2)
 		.addr	sub_C5D0
 	.elseif	.defined(ANN)
@@ -79,29 +79,35 @@ screen_proc_next_pal_set:
 screen_proc_next_b:
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
-data_85D7_entry_size	= 4
+screen_color_bg_data:
+	.byte	PPU_COLOR_LEV0|PPU_COLOR_GREY,  PPU_COLOR_LEV0|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA
+	.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE,  PPU_COLOR_LEV2|PPU_COLOR_BLUE,   PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_PITCH
+	.byte	PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV2|PPU_COLOR_BLUE,   PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_PITCH
 
-data_85CB:
-	.byte	$00, $09, $0A, $04
+screen_color_player_data:
+screen_color_player_1:
+	.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE
+	.byte	PPU_COLOR_LEV1|PPU_COLOR_RED
+	.byte	PPU_COLOR_LEV2|PPU_COLOR_ORANGE
+	.byte	PPU_COLOR_LEV1|PPU_COLOR_YELLOW
 
-data_85CF:
-	.byte	$22, $22, $0F, $0F
-	.byte	$0F, $22, $0F, $0F
-
-tbl_85D7:
-data_85D7_0:
-	.byte	$22, $16, $27, $18
 	.if	.defined(SMB)
-	data_85D7_1:
-		.byte	$22, $30, $27, $19
+	screen_color_player_2:
+		.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_GREY
+		.byte	PPU_COLOR_LEV2|PPU_COLOR_ORANGE
+		.byte	PPU_COLOR_LEV1|PPU_COLOR_YGREEN
 	.endif
-data_85D7_2:
-	.byte	$22, $37, $27, $16
+screen_color_player_power:
+	.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE
+	.byte	PPU_COLOR_LEV3|PPU_COLOR_ORANGE
+	.byte	PPU_COLOR_LEV2|PPU_COLOR_ORANGE
+	.byte	PPU_COLOR_LEV1|PPU_COLOR_RED
 ; --------------------------
 screen_color_init_3:
 	ldy	eng_bg_col
 	beq	:+ ; if (eng_bg_col) {
-		lda	data_85CB-4, y
+		lda	screen_color_bg_data-PPU_COLOR_ROW_SIZE, y
 		sta	nmi_addrs_ctl
 	: ; }
 
@@ -109,22 +115,22 @@ screen_color_init_3:
 
 screen_color_player:
 	ldx	ppu_nmi_buffer+0
-	ldy	#(data_85D7_0-tbl_85D7)
+	ldy	#(screen_color_player_1-screen_color_player_data)
 	.if	.defined(SMB)
 		lda	eng_player_id
 		beq	:+ ; if (eng_player_id != 0) {
-			ldy	#(data_85D7_1-tbl_85D7)
+			ldy	#(screen_color_player_2-screen_color_player_data)
 		: ; }
 	.endif
 	lda	eng_player_status
 	cmp	#2
 	bne	:+ ; if (eng_player_status == 2) {
-		ldy	#(data_85D7_2-tbl_85D7)
+		ldy	#(screen_color_player_power-screen_color_player_data)
 	: ; }
-	lda	#data_85D7_entry_size-1
+	lda	#PPU_COLOR_LINE_SIZE-1
 	sta	zp_byte_00
 	: ; for (x = ppu_nmi_buffer[0], y = entry_base, i = 3; i >= 0; x++, y++, i--) {
-		lda	tbl_85D7, y
+		lda	screen_color_player_data, y
 		sta	ppu_nmi_buffer+4, x
 
 		iny
@@ -138,13 +144,13 @@ screen_color_player:
 	bne	:+ ; if (!eng_bg_col) {
 		ldy	eng_area_type
 	: ; }
-	lda	data_85CF, y
+	lda	screen_color_bg_data+PPU_COLOR_ROW_SIZE, y
 	sta	ppu_nmi_buffer+4, x
-	lda	#$3F
+	lda	#>(PPU_COLOR_PAGE_OBJ)
 	sta	ppu_nmi_buffer+1, x
-	lda	#$10
+	lda	#<(PPU_COLOR_PAGE_OBJ)
 	sta	ppu_nmi_buffer+2, x
-	lda	#4
+	lda	#PPU_COLOR_LINE_SIZE
 	sta	ppu_nmi_buffer+3, x
 	lda	#0
 	sta	ppu_nmi_buffer+8, x
@@ -168,7 +174,7 @@ screen_color_init_4:
 
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
-screen_stat_bg_0:
+screen_text_draw_header:
 	lda	#screen_text::header
 	jsr	screen_text_draw
 	jmp	screen_proc_continue
@@ -176,7 +182,7 @@ screen_stat_bg_0:
 SCREEN_STAT_BG_1_ADDR	=	PPU_VRAM_BG1+$73
 SCREEN_STAT_BG_1_LEN	=	3
 
-screen_stat_bg_1:
+screen_text_draw_splash:
 	jsr	sub_BC30
 	ldx	ppu_nmi_buffer+$00
 	lda	#>(SCREEN_STAT_BG_1_ADDR)
@@ -223,7 +229,7 @@ screen_stat_bg_1:
 		rts
 	.endif
 ; ------------------------------------------------------------
-screen_msg_time_up:
+screen_text_draw_timeup:
 	lda	eng_done_timer
 	beq	:+ ; if (eng_done_timer) {
 		lda	#0
@@ -232,7 +238,7 @@ screen_msg_time_up:
 		.if	.defined(SMB)
 			jmp	sub_86C7
 		.elseif	.defined(SMB2M)
-		screen_msg_time_up_end:
+		screen_text_draw_timeup_end:
 			jsr	screen_text_draw
 			jsr	screen_timer_reset
 			lda	#0
@@ -245,13 +251,13 @@ screen_msg_time_up:
 		.if	.defined(SMB)
 			jmp	screen_proc_continue
 		.elseif	.defined(SMB2M)	
-		screen_msg_time_up_continue:
+		screen_text_draw_timeup_continue:
 			inc	eng_screen_proc_id
 			rts
 		.endif
 	; }
 ; ------------------------------------------------------------
-screen_msg_world_game_over:
+screen_text_draw_intermission:
 	lda	eng_game_mode
 	beq	:+++
 	cmp	#3
@@ -274,7 +280,7 @@ screen_msg_world_game_over:
 				sta	eng_disp_disable
 				rts
 			.elseif	.defined(SMB2M)
-				jsr	screen_msg_time_up_end
+				jsr	screen_text_draw_timeup_end
 				.if	.defined(SMB2)
 					lda	eng_course_no
 					cmp	#course::no_09
