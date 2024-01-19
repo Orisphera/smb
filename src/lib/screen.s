@@ -169,7 +169,7 @@ screen_color_init_4:
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
 screen_stat_bg_0:
-	lda	#0
+	lda	#screen_text::header
 	jsr	screen_text_draw
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
@@ -228,7 +228,7 @@ screen_msg_time_up:
 	beq	:+ ; if (eng_done_timer) {
 		lda	#0
 		sta	eng_done_timer
-		lda	#2
+		lda	#screen_text::timeup
 		.if	.defined(SMB)
 			jmp	sub_86C7
 		.elseif	.defined(SMB2M)
@@ -265,7 +265,7 @@ screen_msg_world_game_over:
 		bne	:+++
 		: ; if (!byte_752 && (eng_area_type == 3 || !byte_769)) {
 			jsr	sub_EFA4
-			lda	#1
+			lda	#screen_text::splash
 			.if	.defined(SMB)
 			sub_86C7:
 				jsr	screen_text_draw
@@ -283,7 +283,7 @@ screen_msg_world_game_over:
 					inc	eng_disp_disable
 					rts
 				.elseif	.defined(ANN)
-					jmp	$669A
+					jmp	screen_proc_continue
 				.endif
 			.endif
 		; }
@@ -293,7 +293,7 @@ screen_msg_world_game_over:
 			sta	eng_timer_screen
 		.endif
 
-		lda	#3
+		lda	#screen_text::gameover
 		jsr	screen_text_draw
 
 		.if	.defined(SMB)

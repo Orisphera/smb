@@ -2,10 +2,10 @@
 	MISC_I = 1
 
 	.enum	game_mode
-		title     = 0
-		normal	  = 1
-		victory	  = 2
-		game_over = 3
+		title
+		normal
+		victory
+		game_over
 	.endenum
 
 	.enum	gameplay_mode
@@ -19,27 +19,27 @@
 	.endenum
 
 	.enum	victory_mode
-		bridge   = 0
-		init	 = 1
-		proc     = 2
-		msg      = 3
-		end      = 4
+		bridge
+		init
+		proc
+		msg
+		end
 	.endenum
 
 	.enum	game_proc
-		start	= 0
-		vine	= 1
-		pipe_h	= 2
-		pipe_v	= 3
-		pole	= 4
-		victory	= 5
-		lifedown = 6
-		enter	= 7
-		ctrl	= 8
-		size_chg = 9
-		hurt	= 10
-		death	= 11
-		firefl	= 12
+		start
+		vine
+		pipe_h
+		pipe_v
+		pole
+		victory
+		lifedown
+		enter
+		ctrl
+		size_chg
+		hurt
+		death
+		firefl
 	.endenum
 
 	.enum	screen_proc
@@ -63,6 +63,16 @@
 		title_bg
 		title_cursor
 		title_score
+	.endenum
+
+	.enum	screen_text
+		header
+		splash
+		timeup
+		gameover
+		.if	.defined(SMB)
+		warp
+		.endif
 	.endenum
 
 	.enum	actor
@@ -101,15 +111,15 @@
 	.endenum
 
 	.enum	course
-		no_01	= 0
-		no_02	= 1
-		no_03	= 2
-		no_04	= 3
-		no_05	= 4
-		no_06	= 5
-		no_07	= 6
-		no_08	= 7
-		no_09	= 8
+		no_01
+		no_02
+		no_03
+		no_04
+		no_05
+		no_06
+		no_07
+		no_08
+		no_09
 	.endenum
 
 	.endif	; MISC_I
