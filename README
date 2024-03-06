@@ -35,7 +35,8 @@ the various streams.
 
 To extract the necessary assets from each title, extraction
 scripts are provided expecting either an iNES image in the
-case of Super Mario Bros. or an FDS image in the case of the
+case of Super Mario Bros. and Vs. Super Mario Bros,
+or an FDS image in the case of the
 remaining titles.  The SHA1 sums for the reference
 specimens are:
 
