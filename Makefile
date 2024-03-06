@@ -110,6 +110,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 			$(CHR_OBJS_FC)
 
 PRG_OBJS_VS	=	$(BASE_OBJS) \
+			src/vs/vs_unk_00.o \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \
