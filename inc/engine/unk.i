@@ -62,9 +62,6 @@ UNK_I = 1
 	
 		VS_RAM_ARENA1           = (VS_RAM+$700)
 
-		eng_title	= $8281
-		sub_82AF	= $82AF
-		sub_82C3	= $82C3
 		eng_game_over	= $838E
 		sub_8748	= $8748
 		palette_underwater = $8EA5
@@ -111,7 +108,9 @@ UNK_I = 1
 		sub_96FF	= $96FF
 		sub_clearram	= $975D
 		sub_98CA	= $98CA
+		eng_loadareaptr	= $AB60
 		eng_victory	= $AD50
+		game_proc	= $AD6E
 		apu_cycle	= $F236
 	.endif	
 

@@ -68,4 +68,9 @@ title_demo:
 		clc
 	: ; }
 
+	.if	.defined(VS)
+		lda	#0
+		sta	joypad_p2
+	.endif
+
 	rts

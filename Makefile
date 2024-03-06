@@ -22,7 +22,7 @@ ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
 ASFLAGS		=	-U $(ASFLAGS_FC)
 LD		=	ld65
-LDFLAGS_FC	=	-C link.fc_smb.ld --mapfile smb.map
+LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
@@ -110,7 +110,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 			$(CHR_OBJS_FC)
 
 PRG_OBJS_VS	=	$(BASE_OBJS) \
-			src/vs/vs_unk_00.o \
+			$(TITLE_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \

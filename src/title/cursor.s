@@ -1,5 +1,6 @@
 .include	"../../inc/engine/unk.i"
 
+.if	.defined(CONS)
 ; -----------------------------------------------------------
 title_cursor_data:
 	.byte   $07
@@ -32,3 +33,4 @@ title_cursor_draw:
 	: ; }
 
 	rts
+.endif
