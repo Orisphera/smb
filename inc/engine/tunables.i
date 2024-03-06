@@ -1,12 +1,17 @@
 .ifndef TUNABLES_I
 TUNABLES_I = 1
 
+.include	"../system/cpu.i"
+.include	"../system/ppu.i"
+
 ENG_FONT_TILE_BASE = 0
 
 START_WARMBOOT_FLAG	= $A5
 
 START_WARMBOOT_VAL	= $D6
 START_COLDBOOT_VAL	= $FE
+
+VS_SAVEDAT_ADDR         = (PPU_VRAM_BG_CHR+$E00)
 
 PPU_NMI_HBLANK_DELAY	= $14
 

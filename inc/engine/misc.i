@@ -6,6 +6,9 @@
 		normal
 		victory
 		game_over
+		.if	.defined(VS_SMB)
+		mode_4
+		.endif
 	.endenum
 
 	.enum	gameplay_mode
@@ -120,6 +123,7 @@
 		no_07
 		no_08
 		no_09
+		no_0A
 	.endenum
 
 	.endif	; MISC_I

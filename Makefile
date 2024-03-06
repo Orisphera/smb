@@ -3,22 +3,27 @@
 #
 # Preprocessor Definitions:
 #   FC    - Famicom-specific
+#   VS    - Vs. System-specific
 #   FDS   - Famicom Disk System-specific
+#   CONS  - Home Console-specific
 #   SMB   - Super Mario Bros.
 #   FC_SMB - Famicom-specific Super Mario Bros.
+#   VS_SMB - Vs. Super Mario Bros.
 #   FDS_SMB - Famicom Disk System-specific Super Mario Bros.
 #   SMB2 - Super Mario Bros. 2
 #   ANN - All Night Nippon Super Mario Bros.
 #   SMBM - Super Mario Bros. "Meta" (SMB and ANN-commonalities)
 #   SMB2M - Super Mario Bros. 2 "Meta" (SMB2 and ANN-commonalities)
 AS		=	ca65
-ASFLAGS_FC	=	-DFC -DSMB -DFC_SMB -DSMBM
-ASFLAGS_FDS	=	-DFDS -DSMB -DFDS_SMB -DSMBM
-ASFLAGS_SMB2	=	-DFDS -DSMB2M -DSMB2
-ASFLAGS_ANN	=	-DFDS -DSMB2M -DANN -DSMBM
-ASFLAGS		=	-U $(ASFLAGS_FC)
+ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM
+ASFLAGS_VS	=	-DVS -DVS_SMB
+ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
+ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
+ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
+ASFLAGS		=	-U $(ASFLAGS_VS)
 LD		=	ld65
-LDFLAGS_FC	=	-C link.fc_smb.ld
+LDFLAGS_FC	=	-C link.fc_smb.ld --mapfile smb.map
+LDFLAGS_VS	=	-C link.vs.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
@@ -27,12 +32,17 @@ BINTOFDF	=	fdtc/bintofdf
 FDTC		=	fdtc/fdtc
 
 FC		= 	smb.nes
+VS		=	smb.vs
 FDS		=	smb.fds
 SMB2		=	smb2.fds
 ANN		=	ann.fds
 
 PRG_FC		=	smmain.fc.bin
 CHR_FC		=	smchar.fc.bin
+
+PRG_VS		=	vsmain.vs.bin
+CHR_VS		=	vschar0.vs.bin \
+			vschar1.vs.bin
 
 PRG_FDS		=	smmain.fds.bin
 CHR_FDS		=	smchar.fds.bin
@@ -58,6 +68,9 @@ CHR_ANN		=	nsmchar1.bin \
 ROMS_FC		=	$(PRG_FC) \
 			$(CHR_FC)
 
+ROMS_VS		=	$(PRG_VS) \
+			$(CHR_VS)
+
 ROMS_FDS	=	$(PRG_FDS) \
 			$(CHR_FDS)
 
@@ -68,7 +81,7 @@ ROMS_ANN	=	$(PRG_ANN) \
 			$(CHR_ANN)
 
 BASE_OBJS	=	src/start.o \
-			src/nmi.o \
+			src/int.o \
 			src/lib/oam_init.o
 
 TITLE_OBJS	=	src/title/base.o \
@@ -83,6 +96,7 @@ SECURITY_OBJS	=	data/security.o
 SAVE_OBJS	=	data/save.o
 
 HEADER_FC	=	data/header.fc.bin
+HEADER_VS	=	data/header.vs.bin
 HEADER_FDS	=	data/header.fds.bin
 
 PRG_OBJS_FC	=	$(BASE_OBJS) \
@@ -94,6 +108,15 @@ CHR_OBJS_FC	=	data/chr.smb.o
 
 OBJS_FC		=	$(PRG_OBJS_FC) \
 			$(CHR_OBJS_FC)
+
+PRG_OBJS_VS	=	$(BASE_OBJS) \
+			data/prg.vs.o
+
+CHR_OBJS_VS	=	data/chr.vs.o \
+			data/chr2.vs.o
+
+OBJS_VS		=	$(PRG_OBJS_VS) \
+			$(CHR_OBJS_VS)
 
 PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
@@ -172,21 +195,25 @@ DEF_ANN		=	data/fs/superblock_ann.def
 FDT_ANN		=	ann.fdt
 
 IMAGES		=	$(FC) \
+			$(VS) \
 			$(FDS) \
 			$(SMB2) \
 			$(ANN)
 
 ROMS		=	$(ROMS_FC) \
+			$(ROMS_VS) \
 			$(ROMS_FDS) \
 			$(ROMS_SMB2) \
 			$(ROMS_ANN)
 
 OBJS		=	$(OBJS_FC) \
+			$(OBJS_VS) \
 			$(OBJS_FDS) \
 			$(OBJS_SMB2) \
 			$(OBJS_ANN)
 
 HEADERS		=	$(HEADER_FC) \
+			$(HEADER_VS) \
 			$(HEADER_FDS) \
 			$(HEADER_SMB2) \
 			$(HEADER_ANN)
@@ -204,6 +231,10 @@ FDTS		=	$(FDT_FDS) \
 $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD) $(OBJS_FC) $(LDFLAGS_FC)
 	cat $(HEADER_FC) $(ROMS_FC) > $(FC)
+
+$(VS): $(HEADER_VS) $(OBJS_VS)
+	$(LD) $(OBJS_VS) $(LDFLAGS_VS)
+	cat $(HEADER_VS) $(ROMS_VS) > $(VS)
 
 $(FDS): $(HEADER_FDS) $(FDT_FDS)
 	cat $(HEADER_FDS) $(FDT_FDS) > $(FDS)

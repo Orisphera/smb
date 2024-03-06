@@ -2,6 +2,8 @@
 
 .if	.defined(FDS)
 	.include	"../inc/system/fds.i"
+.elseif	.defined(VS)
+	.include	"../inc/system/vs.i"
 .endif
 
 .include	"../inc/engine/joypad.i"
@@ -13,9 +15,9 @@
 SMB2M_NMI_TIMER	= $1658
 
 .if	.defined(SMB2)
-	SMB2M_COURSE_NO_CUTOFF = $9
+	SMB2M_COURSE_NO_CUTOFF = course::no_0A
 .elseif	.defined(ANN)
-	SMB2M_COURSE_NO_CUTOFF = $8
+	SMB2M_COURSE_NO_CUTOFF = course::no_09
 .endif
 
 	.export nmi
@@ -65,7 +67,6 @@ SMB2M_NMI_TIMER	= $1658
 			.byte	>(msg_thankyou_princess2)
 			.byte	>(msg_worldsel_1)
 			.byte	>(msg_worldsel_2)
-
 	.elseif	.defined(SMB2M)
 		nmi_addrs:
 			.addr   (nmi_buffer_0+1)
@@ -99,6 +100,103 @@ SMB2M_NMI_TIMER	= $1658
 			.addr	(data_C511)
 			.addr	(data_C97D)
 			.addr	(data_C9C0)
+	.elseif .defined(VS_SMB)
+		nmi_addrs_low:
+			.byte	<(nmi_buffer_0+1)
+			.byte	<(palette_underwater)
+			.byte	<(palette_day)
+			.byte	<(palette_underground)
+			.byte	<(palette_castle)
+			.byte	<(nmi_buffer_0+0)
+			.byte	<(nmi_buffer_1+1)
+			.byte	<(nmi_buffer_1+1)
+			.byte	<(nmi_addr_08)
+			.byte	<(nmi_addr_09)
+			.byte	<(nmi_addr_0A)
+			.byte	<(nmi_addr_0B)
+			.byte	<(nmi_addr_0C)
+			.byte	<(nmi_addr_0D)
+			.byte	<(nmi_addr_0E)
+			.byte	<(nmi_addr_0F)
+			.byte	<(nmi_addr_10)
+			.byte	<(nmi_addr_11)
+			.byte	<(nmi_addr_12)
+			.byte	<(nmi_addr_13)
+			.byte	<(nmi_addr_14)
+			.byte	<(nmi_addr_15)
+			.byte	<(nmi_addr_16)
+			.byte	<(nmi_addr_17)
+			.byte	<(nmi_addr_18)
+			.byte	<(nmi_addr_19)
+			.byte	<(nmi_addr_1A)
+			.byte	<(nmi_addr_1B)
+			.byte	<(nmi_addr_1C)
+			.byte	<(nmi_addr_1D)
+			.byte	<(nmi_addr_1D)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1F)
+
+		nmi_addrs_high:
+			.byte	>(nmi_buffer_0+1)
+			.byte	>(palette_underwater)
+			.byte	>(palette_day)
+			.byte	>(palette_underground)
+			.byte	>(palette_castle)
+			.byte	>(nmi_buffer_0+0)
+			.byte	>(nmi_buffer_1+1)
+			.byte	>(nmi_buffer_1+1)
+			.byte	>(nmi_addr_08)
+			.byte	>(nmi_addr_09)
+			.byte	>(nmi_addr_0A)
+			.byte	>(nmi_addr_0B)
+			.byte	>(nmi_addr_0C)
+			.byte	>(nmi_addr_0D)
+			.byte	>(nmi_addr_0E)
+			.byte	>(nmi_addr_0F)
+			.byte	>(nmi_addr_10)
+			.byte	>(nmi_addr_11)
+			.byte	>(nmi_addr_12)
+			.byte	>(nmi_addr_13)
+			.byte	>(nmi_addr_14)
+			.byte	>(nmi_addr_15)
+			.byte	>(nmi_addr_16)
+			.byte	>(nmi_addr_17)
+			.byte	>(nmi_addr_18)
+			.byte	>(nmi_addr_19)
+			.byte	>(nmi_addr_1A)
+			.byte	>(nmi_addr_1B)
+			.byte	>(nmi_addr_1C)
+			.byte	>(nmi_addr_1D)
+			.byte	>(nmi_addr_1D)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1F)
+
+		nmi_addr_1F:
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV2|PPU_COLOR_YELLOW, PPU_COLOR_LEV0|PPU_COLOR_GREY
+
+		nmi_addr_1E:
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV2|PPU_COLOR_GREY, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV0|PPU_COLOR_YELLOW, PPU_COLOR_LEV2|PPU_COLOR_RED, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_BLACK, PPU_COLOR_LEV1|PPU_COLOR_BLUE, PPU_COLOR_LEV0|PPU_COLOR_RED, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV1|PPU_COLOR_BLUE, PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV0|PPU_COLOR_CYAN, PPU_COLOR_LEV0|PPU_COLOR_ORANGE, PPU_COLOR_LEV3|PPU_COLOR_BLUE, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV1|PPU_COLOR_SPRING, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV0|PPU_COLOR_VSBLACK, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+			.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV0|PPU_COLOR_GREY
 	.endif
 
 	nmi_buffer_offset:
@@ -111,7 +209,7 @@ nmi:
 		cli
 	.endif
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		lda     ppu_ctlr0_b
 		and     #<~(ppu_ctlr0::int)
 		sta     ppu_ctlr0_b
@@ -156,7 +254,7 @@ nmi:
         lda     #>(OAM_DMA_BUFFER)
         sta     OBJ_DMA
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		ldx     nmi_addrs_ctl
 		lda     nmi_addrs_low,x
 		sta     eng_screen_update_addr
@@ -194,13 +292,24 @@ nmi:
 	.endif
 
         jsr     apu_cycle
-        jsr     joypad_read
-        jsr     nmi_pause
+
+	.if	.defined(CONS)
+		jsr     joypad_read
+		jsr     nmi_pause
+	.elseif	.defined(VS)
+		jsr     sub_9324
+		jsr     sub_9362
+		jsr     sub_9389
+		jsr     sub_9113
+	.endif
+
         jsr     eng_score_calc
 
+	.if	.defined(CONS)
         lda     eng_pause_status
         lsr     a
-        bcs     :++++++ ; if (!(eng_pause_status & 0x01)) {
+        bcs     :++++++ ; if (!CONS || !(eng_pause_status & 0x01)) {
+	.endif
 		lda     eng_timer_ctl
 		beq     :+
 		dec     eng_timer_ctl
@@ -249,7 +358,7 @@ nmi:
 		bne     :-
 	; }
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		lda     eng_sprite_overlap
 		beq     :+++++ ; if (eng_sprite_overlap) {
 			: ; while (PPU_SR & 0x40) {
@@ -258,9 +367,11 @@ nmi:
 				bne     :-
 			; }
 
+			.if	.defined(CONS)
 			lda     eng_pause_status
 			lsr     a
-			bcs     :+ ; if (!(eng_pause_status & 0x01)) {
+			bcs     :+ ; if (!CONS || !(eng_pause_status & 0x01)) {
+			.endif
 				jsr     oam_init_nmi
 				jsr     nmi_oam_shuffle
 			: ; }
@@ -285,9 +396,12 @@ nmi:
 		lda     ppu_ctlr0_b
 		pha
 		sta     PPU_CTLR0
+
+		.if	.defined(CONS)
 		lda     eng_pause_status
 		lsr     a
-		bcs     :+ ; if (!(eng_pause_status & 0x01)) {
+		bcs     :+ ; if (!CONS || !(eng_pause_status & 0x01)) {
+		.endif
 			jsr     nmi_gamemode_enter
 		: ; }
 
@@ -295,9 +409,11 @@ nmi:
 		pla
         	ora     #ppu_ctlr0::int
 	.elseif .defined(SMB2M)
+		.if	.defined(CONS)
 		lda     eng_pause_status
 		lsr	a
 		bcs	:+++ ; if (!(eng_pause_status & 0x01)) {
+		.endif
 			lda	eng_sprite_overlap
 			beq	:+ ; if (eng_sprite_overlap) {
 				jsr	oam_init_nmi
@@ -377,55 +493,78 @@ nmi:
 		plp
 		cli
 		rti
+	.elseif	.defined(VS_SMB)
+		.export irq
+	irq:
+		lda	VS_SR
+		bmi	:+ ; if (VS_SR & game_sub) {
+			lda     #vs_req::chr_low|vs_req::irq_rel
+			sta     VS_REQ
+		: ; }
+
+		pla
+		pla
+		pla
+		rts
 	.endif
 ; -----------------------------------------------------------
-nmi_pause:
-	lda     eng_game_mode
-        cmp     #game_mode::victory
-        beq     :+
-        cmp     #game_mode::normal
-        bne     :+++++
-        lda     eng_gameplay_mode
-	.if	.defined(SMB)
-        	cmp     #gameplay_mode::proc
-	.elseif	.defined(SMB2)
-		cmp	#gameplay_mode::mode_4
-	.elseif	.defined(ANN)
-		cmp	#gameplay_mode::mode_5
-	.endif
-        bne     :+++++
-	: ; if (game_mode == victory || (game_mode == normal && eng_gameplay_mode == proc)) {
-		lda     eng_pause_ticks
-		beq     :+ ; if (eng_pause_ticks) {
-			dec     eng_pause_ticks
-			rts
-		: ; }
+.if	.defined(VS)
+		.export vs_setbank_low
+	vs_setbank_low:
+		lda     #vs_req::chr_low|vs_req::irq_rel
+		sta     VS_REQ
+		rts
+.endif
+; -----------------------------------------------------------
+	.if	.defined(CONS)
+	nmi_pause:
+		lda     eng_game_mode
+		cmp     #game_mode::victory
+		beq     :+
+		cmp     #game_mode::normal
+		bne     :+++++
+		lda     eng_gameplay_mode
+		.if	.defined(SMB)
+			cmp     #gameplay_mode::proc
+		.elseif	.defined(SMB2)
+			cmp	#gameplay_mode::mode_4
+		.elseif	.defined(ANN)
+			cmp	#gameplay_mode::mode_5
+		.endif
+		bne     :+++++
+		: ; if (game_mode == victory || (game_mode == normal && eng_gameplay_mode == proc)) {
+			lda     eng_pause_ticks
+			beq     :+ ; if (eng_pause_ticks) {
+				dec     eng_pause_ticks
+				rts
+			: ; }
 
-		lda     joypad_p1
-		and     #joypad_button::start
-		beq     :+ ; if (joypad1_start) {
-			lda     eng_pause_status
-			and     #$80
-			bne     :+++ ; if (!(eng_pause_status & 0x80)) {
-				lda     #$2B
-				sta     eng_pause_ticks
+			lda     joypad_p1
+			and     #joypad_button::start
+			beq     :+ ; if (joypad1_start) {
 				lda     eng_pause_status
-				tay
-				iny
-				sty     apu_sfx_flag_pause
-				eor     #$01
-				ora     #$80
-				bne     :++
-			; }
-		: ; } else {
-			lda     eng_pause_status
-			and     #<~($80)
+				and     #$80
+				bne     :+++ ; if (!(eng_pause_status & 0x80)) {
+					lda     #$2B
+					sta     eng_pause_ticks
+					lda     eng_pause_status
+					tay
+					iny
+					sty     apu_sfx_flag_pause
+					eor     #$01
+					ora     #$80
+					bne     :++
+				; }
+			: ; } else {
+				lda     eng_pause_status
+				and     #<~($80)
+			: ; }
+
+			sta     eng_pause_status
 		: ; }
 
-		sta     eng_pause_status
-	: ; }
-
-	rts
+		rts
+	.endif
 ; ----------------------------
 nmi_oam_shuffle:
 	ldy     eng_area_type
@@ -487,3 +626,7 @@ nmi_gamemode_enter:
 	.addr	eng_game
 	.addr	eng_victory
 	.addr	eng_game_over
+
+	.if	.defined(VS_SMB)
+	.addr	sub_98CA
+	.endif

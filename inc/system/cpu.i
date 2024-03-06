@@ -6,4 +6,6 @@ WORD_SIZE	= 2
 STACK_BASE	= $100
 RESET		= $FFFC
 
+BIT_ABS_OPCODE  = $2C
+
 .endif	; CPU_I

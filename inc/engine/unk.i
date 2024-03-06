@@ -1,6 +1,8 @@
 .ifndef UNK_I
 UNK_I = 1
 
+.include "../system/vs.i"
+
 	.if	.defined(FC_SMB)
 		palette_underwater	= $8CA4
 		palette_day	= $8CC8
@@ -48,6 +50,61 @@ UNK_I = 1
 		apu_cycle	= $F2D0
 		irq		= $FFF0
 	.endif
+
+	.if	.defined(VS_SMB)
+		nmi_addr_1D	= $6000
+		nmi_addr_1C	= $6300
+
+		VS_RAM_ARENA0           = (VS_RAM+$600)
+
+		VS_SAVEDAT              = (VS_RAM_ARENA0+$74)
+		VS_SAVEDAT_SCORE        = (VS_SAVEDAT+$46)
+	
+		VS_RAM_ARENA1           = (VS_RAM+$700)
+
+		eng_title	= $8281
+		eng_game_over	= $838E
+		palette_underwater = $8EA5
+		palette_day	= $8EC9
+		palette_underground = $8EED
+		palette_castle	= $8F11
+		nmi_addr_08	= $8F4D
+		nmi_addr_09	= $8F35
+		nmi_addr_0A	= $8F3D
+		nmi_addr_0B	= $8F45
+		nmi_addr_0C	= $8F55
+		nmi_addr_0D	= $8F69
+		nmi_addr_0E	= $8F7D
+		nmi_addr_0F	= $8FA9
+		nmi_addr_10	= $8FB2
+		nmi_addr_11	= $8FC6
+		nmi_addr_12	= $8FDE
+		nmi_addr_13	= $8FF6
+		nmi_addr_14	= $900C
+		nmi_addr_15	= $9022
+		nmi_addr_16	= $9036
+		nmi_addr_17	= $904A
+		nmi_addr_18	= $905B
+		nmi_addr_19	= $9072
+		nmi_addr_1A	= $908A
+		nmi_addr_1B	= $90A2
+		eng_farjump	= $90BB
+		nt_init		= $90D0
+		sub_9113	= $9113
+		eng_screen_update = $9195
+		eng_sta_ppu_scc_h_v = $919E
+		eng_sta_ppu_ctlr0 = $91A5
+		eng_score_calc	= $924F
+		sub_9274	= $9274
+		sub_9324	= $9324
+		sub_9362	= $9362
+		sub_9389	= $9389
+		eng_game	= $941E
+		sub_clearram	= $975D
+		sub_98CA	= $98CA
+		eng_victory	= $AD50
+		apu_cycle	= $F236
+	.endif	
 
 	.if	.defined(FDS_SMB)
 		palette_underwater	= $6CAA

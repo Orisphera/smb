@@ -4,4 +4,5 @@
 *.fdf
 *.fdt
 *.fds
+*.vs
 raw/**
