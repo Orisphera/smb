@@ -624,9 +624,8 @@ nmi_gamemode_enter:
         jsr     eng_farjump
 	.addr	eng_title
 	.addr	eng_game
+	.if	.defined(VS_SMB)
+		.addr	sub_AD50
+	.endif
 	.addr	eng_victory
 	.addr	eng_game_over
-
-	.if	.defined(VS_SMB)
-	.addr	sub_98CA
-	.endif

@@ -62,7 +62,7 @@ UNK_I = 1
 	
 		VS_RAM_ARENA1           = (VS_RAM+$700)
 
-		eng_game_over	= $838E
+		eng_victory	= $838E
 		sub_8748	= $8748
 		palette_underwater = $8EA5
 		palette_day	= $8EC9
@@ -107,10 +107,17 @@ UNK_I = 1
 		sub_9651	= $9651
 		sub_96FF	= $96FF
 		sub_clearram	= $975D
-		sub_98CA	= $98CA
+		eng_game_over	= $98CA
 		eng_loadareaptr	= $AB60
-		eng_victory	= $AD50
+		sub_AD50	= $AD50
 		game_proc	= $AD6E
+		sub_AE1C	= $AE1C
+		sub_AE71	= $AE71
+		sub_AF93	= $AF93
+		sub_BF60	= $BF60
+		sub_CF2F	= $CF2F
+		sub_EE46	= $EE46
+		sub_F08F	= $F08F
 		apu_cycle	= $F236
 	.endif	
 
