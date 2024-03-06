@@ -1,5 +1,5 @@
 #
-# (All Night Nippon) Super Mario Bros. (2) for the Famicom (Disk System)
+# (All Night Nippon) Super Mario Bros. (2) for the (Vs) Famicom (Disk System)
 #
 # Preprocessor Definitions:
 #   FC    - Famicom-specific
