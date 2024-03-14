@@ -31,7 +31,7 @@ UNK_I = 1
 		sub_clearram	= $90CC
 		eng_game_over	= $9218
 		eng_next_game	= $9248
-		bg_proc	= $92B0
+		bg_proc		= $92B0
 		eng_loadareaptr	= $9C03
 		eng_game	= $AEDC
 		game_proc	= $AEEA
@@ -52,18 +52,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(VS_SMB)
-		nmi_addr_1D	= $6000
-		nmi_addr_1C	= $6300
-
-		VS_RAM_ARENA0           = (VS_RAM+$600)
-
-		VS_SAVEDAT              = (VS_RAM_ARENA0+$74)
-		VS_SAVEDAT_SCORE        = (VS_SAVEDAT+$46)
-	
-		VS_RAM_ARENA1           = (VS_RAM+$700)
-
-		sub_8748	= $8748
-		sub_894A	= $894A
 		palette_underwater = $8EA5
 		palette_day	= $8EC9
 		palette_underground = $8EED
@@ -108,6 +96,7 @@ UNK_I = 1
 		sub_96FF	= $96FF
 		sub_clearram	= $975D
 		eng_game_over	= $98CA
+		bg_proc		= $A18B
 		eng_loadareaptr	= $AB60
 		sub_AD50	= $AD50
 		game_proc	= $AD6E
@@ -115,6 +104,8 @@ UNK_I = 1
 		game_scroll	= $AE71
 		player_proc_auto = $AF93
 		sub_BC27	= $BB32
+		sub_BC30	= $BB3B
+		sub_BC36	= $BB41
 		actor_proc	= $BF60
 		eng_bowser_ending = $CF2F
 		sub_D260	= $D260
@@ -122,6 +113,7 @@ UNK_I = 1
 		sub_E5C1	= $E51E
 		sub_E7DA	= $E7DA
 		eng_player_render = $EE46
+		sub_EFA4	= $EF09
 		lib_calc_player_pos = $F08F
 		apu_cycle	= $F236
 	.endif	
@@ -393,6 +385,7 @@ eng_goals		= $75C
 eng_hidden_one_up	= $75D
 eng_course_no		= $75F
 eng_course_sub		= $760
+byte_761		= $761
 eng_hidden_one_up_offscr= $764
 eng_course_no_offscr	= $766
 eng_course_sub_offscr	= $767
@@ -435,5 +428,19 @@ eng_course_sel_on	= $7FC
 byte_7FC		= $7FC
 eng_continue_course	= $7FD
 eng_boot_flag		= $7FF
+
+.if	.defined(VS_SMB)
+	nmi_addr_1D	= VS_RAM+$000
+	nmi_addr_1C	= VS_RAM+$300
+
+	title_tbl_400	= $6400
+
+	VS_RAM_ARENA0           = (VS_RAM+$600)
+
+	VS_SAVEDAT              = (VS_RAM_ARENA0+$74)
+	VS_SAVEDAT_SCORE        = (VS_SAVEDAT+$46)
+
+	VS_RAM_ARENA1           = (VS_RAM+$700)
+.endif
 
 .endif	; UNK_I

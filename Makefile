@@ -111,7 +111,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 
 PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
-			src/game/victory.o \
+			$(GAME_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \

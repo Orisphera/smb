@@ -7,7 +7,7 @@
 
 .include	"../../inc/engine/unk.i"
 
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 	screen_proc_continue = screen_proc_next
 .elseif	.defined(SMB2M)
 	screen_proc_continue = screen_text_draw_timeup_continue
@@ -81,15 +81,27 @@ screen_proc_next_b:
 ; ------------------------------------------------------------
 screen_color_bg_data:
 	.byte	PPU_COLOR_LEV0|PPU_COLOR_GREY,  PPU_COLOR_LEV0|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA
-	.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE,  PPU_COLOR_LEV2|PPU_COLOR_BLUE,   PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_PITCH
-	.byte	PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV2|PPU_COLOR_BLUE,   PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_PITCH
+	.if	.defined(CONS)
+	.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE,  PPU_COLOR_LEV2|PPU_COLOR_BLUE, PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_PITCH
+	.byte	PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV2|PPU_COLOR_BLUE, PPU_COLOR_LEV0|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_PITCH
+	.elseif	.defined(VS)
+	.byte	PPU_COLOR_LEV1|PPU_COLOR_GREEN,   PPU_COLOR_LEV1|PPU_COLOR_GREEN, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+	.byte	PPU_COLOR_LEV1|PPU_COLOR_MAGENTA, PPU_COLOR_LEV1|PPU_COLOR_GREEN, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+	.endif
 
 screen_color_player_data:
 screen_color_player_1:
+	.if	.defined(CONS)
 	.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE
 	.byte	PPU_COLOR_LEV1|PPU_COLOR_RED
 	.byte	PPU_COLOR_LEV2|PPU_COLOR_ORANGE
 	.byte	PPU_COLOR_LEV1|PPU_COLOR_YELLOW
+	.elseif	.defined(VS)
+	.byte	PPU_COLOR_LEV1|PPU_COLOR_GREEN
+	.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET
+	.byte	PPU_COLOR_LEV3|PPU_COLOR_YGREEN
+	.byte	PPU_COLOR_LEV0|PPU_COLOR_GREY
+	.endif
 
 	.if	.defined(SMB)
 	screen_color_player_2:
@@ -97,12 +109,26 @@ screen_color_player_1:
 		.byte	PPU_COLOR_LEV3|PPU_COLOR_GREY
 		.byte	PPU_COLOR_LEV2|PPU_COLOR_ORANGE
 		.byte	PPU_COLOR_LEV1|PPU_COLOR_YGREEN
+	.elseif	.defined(VS_SMB)
+	screen_color_player_2:
+		.byte	PPU_COLOR_LEV1|PPU_COLOR_GREEN
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_RED
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_YGREEN
+		.byte	PPU_COLOR_LEV1|PPU_COLOR_SPRING
 	.endif
+
 screen_color_player_power:
+	.if	.defined(CONS)
 	.byte	PPU_COLOR_LEV2|PPU_COLOR_BLUE
 	.byte	PPU_COLOR_LEV3|PPU_COLOR_ORANGE
 	.byte	PPU_COLOR_LEV2|PPU_COLOR_ORANGE
 	.byte	PPU_COLOR_LEV1|PPU_COLOR_RED
+	.elseif	.defined(VS)
+	.byte	PPU_COLOR_LEV1|PPU_COLOR_GREEN
+	.byte	PPU_COLOR_LEV0|PPU_COLOR_VSBLACK
+	.byte	PPU_COLOR_LEV3|PPU_COLOR_YGREEN
+	.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET
+	.endif
 ; --------------------------
 screen_color_init_3:
 	ldy	eng_bg_col
@@ -116,7 +142,7 @@ screen_color_init_3:
 screen_color_player:
 	ldx	ppu_nmi_buffer+0
 	ldy	#(screen_color_player_1-screen_color_player_data)
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		lda	eng_player_id
 		beq	:+ ; if (eng_player_id != 0) {
 			ldy	#(screen_color_player_2-screen_color_player_data)
@@ -191,7 +217,7 @@ screen_text_draw_splash:
 	sta	ppu_nmi_buffer+$02, x
 	lda	#SCREEN_STAT_BG_1_LEN
 	sta	ppu_nmi_buffer+$03, x
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		ldy	eng_course_no
 		iny
 		tya
@@ -235,7 +261,7 @@ screen_text_draw_timeup:
 		lda	#0
 		sta	eng_done_timer
 		lda	#screen_text::timeup
-		.if	.defined(SMB)
+		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	sub_86C7
 		.elseif	.defined(SMB2M)
 		screen_text_draw_timeup_end:
@@ -248,7 +274,7 @@ screen_text_draw_timeup:
 	: ; } else {
 		inc	eng_screen_proc_id
 
-		.if	.defined(SMB)
+		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	screen_proc_continue
 		.elseif	.defined(SMB2M)	
 		screen_text_draw_timeup_continue:
@@ -260,7 +286,11 @@ screen_text_draw_timeup:
 screen_text_draw_intermission:
 	lda	eng_game_mode
 	beq	:+++
-	cmp	#3
+	.if	.defined(CONS)
+	cmp	#game_mode::game_over
+	.elseif	.defined(VS)
+	cmp	#game_mode::mode_4
+	.endif
 	beq	:++ ; if (eng_game_mode.not_in(0, 3)) {
 		lda	byte_752
 		bne	:+++
@@ -272,7 +302,7 @@ screen_text_draw_intermission:
 		: ; if (!byte_752 && (eng_area_type == 3 || !byte_769)) {
 			jsr	sub_EFA4
 			lda	#screen_text::splash
-			.if	.defined(SMB)
+			.if	.defined(SMB)|.defined(VS_SMB)
 			sub_86C7:
 				jsr	screen_text_draw
 				jsr	screen_timer_reset
@@ -294,7 +324,7 @@ screen_text_draw_intermission:
 			.endif
 		; }
 	: ; } else if (eng_game_mode == 3) {
-		.if	.defined(SMB)
+		.if	.defined(SMB)|.defined(VS_SMB)
 			lda	#$12
 			sta	eng_timer_screen
 		.endif
@@ -302,7 +332,7 @@ screen_text_draw_intermission:
 		lda	#screen_text::gameover
 		jsr	screen_text_draw
 
-		.if	.defined(SMB)
+		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	screen_title_end
 		.elseif	.defined(SMB2M)
 			.if	.defined(SMB2)
@@ -336,14 +366,14 @@ screen_bg:
 	sta	nmi_addrs_ctl
 	rts
 ; ------------------------------------------------------------
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 	.include	"../title/scr.s"
 .endif
 ; ------------------------------------------------------------
 screen_text_end_val	= $FF
 .if	.defined(SMB2)
 	screen_text_draw_buffer_page	= PPU_VRAM_BG2
-.elseif	.defined(SMBM)
+.elseif	.defined(SMBM)|.defined(VS_SMB)
 	screen_text_draw_buffer_page	= PPU_VRAM_BG4
 .endif
 
@@ -393,7 +423,7 @@ screen_text_world_end:
 	.byte	screen_text_end_val
 
 screen_text_timeup_screen:
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG1+$1CD
 		.byte	screen_text_timeup_player_end-screen_text_timeup_player
 	screen_text_timeup_player:
@@ -408,7 +438,7 @@ screen_text_timeup_end:
 	.byte	screen_text_end_val
 
 screen_text_gameover_screen:
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG1+$1CD
 		.byte	screen_text_gameover_player_end-screen_text_gameover_player
 	screen_text_gameover_player:
@@ -416,7 +446,7 @@ screen_text_gameover_screen:
 	screen_text_gameover_player_end:
 .endif
 
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG1+$20B
 .elseif	.defined(SMB2M)
 		.dbyt	PPU_VRAM_BG1+$16B
@@ -451,7 +481,7 @@ screen_text_warp_zone:
 	.byte	"WELCOME TO WARP ZONE!"
 screen_text_warp_zone_end:
 
-.if	.defined(SMBM)
+.if	.defined(SMBM)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG2+$225
 		.byte	screen_text_warp_pipe_l_end-screen_text_warp_pipe_l
 	screen_text_warp_pipe_l:
@@ -465,7 +495,7 @@ screen_text_warp_pipe_m:
 	.byte	" "
 screen_text_warp_pipe_m_end:
 	
-.if	.defined(SMBM)
+.if	.defined(SMBM)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG2+$235
 		.byte	screen_text_warp_pipe_r_end-screen_text_warp_pipe_r
 	screen_text_warp_pipe_r:
@@ -477,23 +507,27 @@ screen_text_warp_pipe_m_end:
 	.byte	$46, $AA
 	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_VIS+$21
 	.byte	$45, $AA
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	screen_text_end_val
 .elseif	.defined(SMB2M)
 		.byte	0
 .endif
 
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 	screen_text_player_2:
 		.byte	"LUIGI"
 	screen_text_player_2_end:
 .endif
 
 screen_text_warps:
-	.if	.defined(SMBM)
+	.if	.defined(SMBM)|.defined(VS_SMB)
 		.byte	"4", "3", "2", 0
 		.byte	" ", "5", " ", 0
-		.byte	"8", "7", "6", 0
+		.if	.defined(SMBM)
+			.byte	"8", "7", "6", 0
+		.elseif	.defined(VS_SMB)
+			.byte	" ", "6", " ", 0
+		.endif
 	.elseif	.defined(SMB2)
 		.byte	"2"
 		.byte	"3"
@@ -520,12 +554,12 @@ screen_text_idx_splash		= screen_text_splash-screen_text
 screen_text_idx_timeup		= screen_text_timeup_screen-screen_text
 screen_text_idx_gameover	= screen_text_gameover_screen-screen_text
 
-.if	.defined(SMB)
+.if	.defined(SMB)|.defined(VS_SMB)
 	screen_text_idx_warp		= screen_text_warp_screen-screen_text
 .endif
 
 screen_text_idx_tbl:
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	screen_text_idx_header, screen_text_idx_header
 		.byte	screen_text_idx_splash, screen_text_idx_splash
 		.byte	screen_text_idx_timeup, screen_text_idx_timeup+screen_text_idx_off
@@ -537,14 +571,14 @@ screen_text_idx_tbl:
 		.byte	screen_text_idx_gameover
 	.endif
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	screen_text_idx_warp, screen_text_idx_warp
 	.endif
 ; ----------------------------
 screen_text_draw:
 	pha
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		asl	a
 		tay
 		cpy	#4
@@ -586,7 +620,7 @@ screen_text_draw:
 
 	tax
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		cmp	#4
 		bcs	screen_text_draw_over
 	.endif
@@ -604,7 +638,7 @@ screen_text_draw:
 		: ; }
 		sta	ppu_nmi_buffer+$09
 	
-		.if	.defined(SMB)
+		.if	.defined(SMB)|.defined(VS_SMB)
 			ldy	eng_course_no
 			iny
 			sty	ppu_nmi_buffer+$14
@@ -622,7 +656,7 @@ screen_text_draw:
 
 	screen_text_draw_end:
 		rts
-	.elseif	.defined(SMB)
+	.elseif	.defined(SMB)|.defined(VS_SMB)
 		rts
 		: ; } else if (a <= 1) {
 			lda	eng_player_count
@@ -631,8 +665,16 @@ screen_text_draw:
 				dex
 				bne	:+
 				ldy	eng_game_mode
+				.if	.defined(SMB)
 				cpy	#game_mode::game_over
-				beq	:+ ; if (!game_over) {
+				.elseif	.defined(VS_SMB)
+				cpy	#game_mode::mode_4
+				.endif
+				beq	:+ ; if (!game_over && (!VS_SMB || byte_761 >= 0)) {
+				.if	.defined(VS_SMB)
+					ldy	byte_761
+					bmi	:+
+				.endif
 					eor	#1
 				: ; }
 
@@ -673,12 +715,12 @@ screen_text_draw:
 				lda	screen_text_warps, x
 				sta	ppu_nmi_buffer+$1C
 		.endif
-	.elseif	.defined(SMB)
+	.elseif	.defined(SMB)|.defined(VS_SMB)
 		screen_text_draw_over: ; } else {
 			sbc	#4
 	.endif
 
-	.if	.defined(SMBM)
+	.if	.defined(SMBM)|.defined(VS_SMB)
 		asl	a
 		asl	a
 		tax

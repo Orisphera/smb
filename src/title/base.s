@@ -28,7 +28,7 @@ eng_title:
 			jsr	eng_farjump
 			.addr	sub_82AF
 			.addr	sub_9651
-			.addr	sub_8748
+			.addr	screen_proc
 			.addr	sub_96FF
 			.addr	title_proc
 			.addr	sub_942C

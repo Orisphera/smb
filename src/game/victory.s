@@ -245,12 +245,10 @@ victory_init:
 		lda	#5
 	.endif
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		jmp	screen_title_end
 	.elseif	.defined(SMB2M)
 		jmp	screen_color_init_4_end
-	.elseif	.defined(VS_SMB)
-		jmp	sub_894A
 	.endif
 ; -----------------------------------------------------------
 victory_proc:

@@ -10,8 +10,8 @@ as developed by SRD:
 - All Night Nippon Super Mario Bros.
 - Vs. Super Mario Bros.
 
-These represent the five released specimens of this
-particular engine for Nintendo's 8-bit platforms.
+These represent five released specimens of this
+particular engine for Nintendo's 6502-based 8-bit platforms.
 
 The utilities required to compile the FDS image are included
 as a submodule of this repository.
