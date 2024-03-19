@@ -184,6 +184,7 @@ screen_color_player:
 	clc
 	adc	#7
 
+	.export screen_color_player_end
 screen_color_player_end:
 	sta	ppu_nmi_buffer+0
 	rts

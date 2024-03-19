@@ -25,7 +25,7 @@ SMB2M_NMI_TIMER	= $1658
 	nmi_buffer_0	= (ppu_nmi_buffer+$00)
 	nmi_buffer_1	= (ppu_nmi_buffer+$40)
 
-	.if	.defined(SMB)
+	.if	.defined(SMB)|.defined(VS_SMB)
 		nmi_addrs_low:
 			.byte	<(nmi_buffer_0+1)
 			.byte	<(palette_underwater)
@@ -42,10 +42,37 @@ SMB2M_NMI_TIMER	= $1658
 			.byte	<(msg_thankyou_mario)
 			.byte	<(msg_thankyou_luigi)
 			.byte	<(msg_thankyou_toad)
+		.if	.defined(SMB)
 			.byte	<(msg_thankyou_princess1)
 			.byte	<(msg_thankyou_princess2)
 			.byte	<(msg_worldsel_1)
 			.byte	<(msg_worldsel_2)
+		.elseif	.defined(VS_SMB)
+			.byte	<(nmi_addr_0F)
+			.byte	<(nmi_addr_10)
+			.byte	<(msg_thankyou_mario_2)
+			.byte	<(msg_thankyou_luigi_2)
+			.byte	<(msg_vsend_1)
+			.byte	<(msg_vsend_2)
+			.byte	<(msg_vsend_3_mario)
+			.byte	<(msg_vsend_3_luigi)
+			.byte	<(msg_vsend_4)
+			.byte	<(msg_vsend_5)
+			.byte	<(msg_vsend_6)
+			.byte	<(msg_vsend_7)
+			.byte	<(msg_vsend_8)
+			.byte	<(nmi_addr_1C)
+			.byte	<(nmi_addr_1D)
+			.byte	<(nmi_addr_1D)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1E)
+			.byte	<(nmi_addr_1F)
+		.endif
 
 		nmi_addrs_high:
 			.byte   >(nmi_buffer_0+1)
@@ -63,10 +90,37 @@ SMB2M_NMI_TIMER	= $1658
 			.byte	>(msg_thankyou_mario)
 			.byte	>(msg_thankyou_luigi)
 			.byte	>(msg_thankyou_toad)
+		.if	.defined(SMB)
 			.byte	>(msg_thankyou_princess1)
 			.byte	>(msg_thankyou_princess2)
 			.byte	>(msg_worldsel_1)
 			.byte	>(msg_worldsel_2)
+		.elseif	.defined(VS_SMB)
+			.byte	>(nmi_addr_0F)
+			.byte	>(nmi_addr_10)
+			.byte	>(msg_thankyou_mario_2)
+			.byte	>(msg_thankyou_luigi_2)
+			.byte	>(msg_vsend_1)
+			.byte	>(msg_vsend_2)
+			.byte	>(msg_vsend_3_mario)
+			.byte	>(msg_vsend_3_luigi)
+			.byte	>(msg_vsend_4)
+			.byte	>(msg_vsend_5)
+			.byte	>(msg_vsend_6)
+			.byte	>(msg_vsend_7)
+			.byte	>(msg_vsend_8)
+			.byte	>(nmi_addr_1C)
+			.byte	>(nmi_addr_1D)
+			.byte	>(nmi_addr_1D)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1E)
+			.byte	>(nmi_addr_1F)
+		.endif
 	.elseif	.defined(SMB2M)
 		nmi_addrs:
 			.addr   (nmi_buffer_0+1)
@@ -77,12 +131,12 @@ SMB2M_NMI_TIMER	= $1658
 			.addr	(data_C62B)
 			.addr	(nmi_buffer_1+1)
 			.addr	(nmi_buffer_1+1)
-			.addr	(data_6C35)
-			.addr	(data_6C1D)
-			.addr	(data_6C25)
-			.addr	(data_6C2D)
-			.addr	(data_6C3D)
-			.addr	(data_6C51)
+			.addr	(palette_bowser)
+			.addr	(palette_day_snow)
+			.addr	(palette_night_snow)
+			.addr	(palette_mushroom)
+			.addr	(msg_thankyou_mario)
+			.addr	(msg_thankyou_toad)
 			.addr	(data_C876)
 			.addr	(data_C87F)
 			.addr	(data_C893)
@@ -100,103 +154,23 @@ SMB2M_NMI_TIMER	= $1658
 			.addr	(data_C511)
 			.addr	(data_C97D)
 			.addr	(data_C9C0)
-	.elseif .defined(VS_SMB)
-		nmi_addrs_low:
-			.byte	<(nmi_buffer_0+1)
-			.byte	<(palette_underwater)
-			.byte	<(palette_day)
-			.byte	<(palette_underground)
-			.byte	<(palette_castle)
-			.byte	<(nmi_buffer_0+0)
-			.byte	<(nmi_buffer_1+1)
-			.byte	<(nmi_buffer_1+1)
-			.byte	<(nmi_addr_08)
-			.byte	<(nmi_addr_09)
-			.byte	<(nmi_addr_0A)
-			.byte	<(nmi_addr_0B)
-			.byte	<(nmi_addr_0C)
-			.byte	<(nmi_addr_0D)
-			.byte	<(nmi_addr_0E)
-			.byte	<(nmi_addr_0F)
-			.byte	<(nmi_addr_10)
-			.byte	<(nmi_addr_11)
-			.byte	<(nmi_addr_12)
-			.byte	<(nmi_addr_13)
-			.byte	<(nmi_addr_14)
-			.byte	<(nmi_addr_15)
-			.byte	<(nmi_addr_16)
-			.byte	<(nmi_addr_17)
-			.byte	<(nmi_addr_18)
-			.byte	<(nmi_addr_19)
-			.byte	<(nmi_addr_1A)
-			.byte	<(nmi_addr_1B)
-			.byte	<(nmi_addr_1C)
-			.byte	<(nmi_addr_1D)
-			.byte	<(nmi_addr_1D)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1F)
+	.endif
 
-		nmi_addrs_high:
-			.byte	>(nmi_buffer_0+1)
-			.byte	>(palette_underwater)
-			.byte	>(palette_day)
-			.byte	>(palette_underground)
-			.byte	>(palette_castle)
-			.byte	>(nmi_buffer_0+0)
-			.byte	>(nmi_buffer_1+1)
-			.byte	>(nmi_buffer_1+1)
-			.byte	>(nmi_addr_08)
-			.byte	>(nmi_addr_09)
-			.byte	>(nmi_addr_0A)
-			.byte	>(nmi_addr_0B)
-			.byte	>(nmi_addr_0C)
-			.byte	>(nmi_addr_0D)
-			.byte	>(nmi_addr_0E)
-			.byte	>(nmi_addr_0F)
-			.byte	>(nmi_addr_10)
-			.byte	>(nmi_addr_11)
-			.byte	>(nmi_addr_12)
-			.byte	>(nmi_addr_13)
-			.byte	>(nmi_addr_14)
-			.byte	>(nmi_addr_15)
-			.byte	>(nmi_addr_16)
-			.byte	>(nmi_addr_17)
-			.byte	>(nmi_addr_18)
-			.byte	>(nmi_addr_19)
-			.byte	>(nmi_addr_1A)
-			.byte	>(nmi_addr_1B)
-			.byte	>(nmi_addr_1C)
-			.byte	>(nmi_addr_1D)
-			.byte	>(nmi_addr_1D)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1F)
+	.if .defined(VS_SMB)
+	nmi_addr_1F:
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV2|PPU_COLOR_YELLOW, PPU_COLOR_LEV0|PPU_COLOR_GREY
 
-		nmi_addr_1F:
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA, PPU_COLOR_LEV0|PPU_COLOR_MAGENTA, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV2|PPU_COLOR_YELLOW, PPU_COLOR_LEV0|PPU_COLOR_GREY
-
-		nmi_addr_1E:
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV2|PPU_COLOR_GREY, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV0|PPU_COLOR_YELLOW, PPU_COLOR_LEV2|PPU_COLOR_RED, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_BLACK, PPU_COLOR_LEV1|PPU_COLOR_BLUE, PPU_COLOR_LEV0|PPU_COLOR_RED, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV1|PPU_COLOR_BLUE, PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV0|PPU_COLOR_CYAN, PPU_COLOR_LEV0|PPU_COLOR_ORANGE, PPU_COLOR_LEV3|PPU_COLOR_BLUE, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV1|PPU_COLOR_SPRING, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV0|PPU_COLOR_VSBLACK, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
-			.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV0|PPU_COLOR_GREY
+	nmi_addr_1E:
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV2|PPU_COLOR_GREY, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV0|PPU_COLOR_YELLOW, PPU_COLOR_LEV2|PPU_COLOR_RED, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_BLACK, PPU_COLOR_LEV1|PPU_COLOR_BLUE, PPU_COLOR_LEV0|PPU_COLOR_RED, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV0|PPU_COLOR_GREEN, PPU_COLOR_LEV1|PPU_COLOR_BLUE, PPU_COLOR_LEV3|PPU_COLOR_PITCH, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV0|PPU_COLOR_CYAN, PPU_COLOR_LEV0|PPU_COLOR_ORANGE, PPU_COLOR_LEV3|PPU_COLOR_BLUE, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_RED, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV1|PPU_COLOR_SPRING, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV0|PPU_COLOR_VSBLACK, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV1|PPU_COLOR_MAGENTA
+		.byte	PPU_COLOR_LEV3|PPU_COLOR_VIOLET, PPU_COLOR_LEV3|PPU_COLOR_YGREEN, PPU_COLOR_LEV0|PPU_COLOR_GREY, PPU_COLOR_LEV0|PPU_COLOR_GREY
 	.endif
 
 	nmi_buffer_offset:

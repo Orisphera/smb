@@ -89,7 +89,8 @@ TITLE_OBJS	=	src/title/base.o \
 			src/title/demo.o
 
 GAME_OBJS	=	src/game/victory.o \
-			src/lib/screen.o
+			src/lib/screen.o \
+			src/lib/gfx.o
 
 SECURITY_OBJS	=	data/security.o
 

@@ -4,21 +4,6 @@ UNK_I = 1
 .include "../system/vs.i"
 
 	.if	.defined(FC_SMB)
-		palette_underwater	= $8CA4
-		palette_day	= $8CC8
-		palette_underground	= $8CEC
-		palette_castle	= $8D10
-		palette_day_snow	= $8D34
-		palette_night_snow	= $8D3C
-		palette_mushroom	= $8D44
-		palette_bowser	= $8D4C
-		msg_thankyou_mario	= $8D54
-		msg_thankyou_luigi	= $8D68
-		msg_thankyou_toad	= $8D7C
-		msg_thankyou_princess1	= $8DA8
-		msg_thankyou_princess2	= $8DBF
-		msg_worldsel_1	= $8DDE
-		msg_worldsel_2	= $8DEF
 		eng_farjump	= $8E04
 		nt_init		= $8E19
 		joypad_read	= $8E5C
@@ -52,30 +37,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(VS_SMB)
-		palette_underwater = $8EA5
-		palette_day	= $8EC9
-		palette_underground = $8EED
-		palette_castle	= $8F11
-		nmi_addr_08	= $8F4D
-		nmi_addr_09	= $8F35
-		nmi_addr_0A	= $8F3D
-		nmi_addr_0B	= $8F45
-		nmi_addr_0C	= $8F55
-		nmi_addr_0D	= $8F69
-		nmi_addr_0E	= $8F7D
-		nmi_addr_0F	= $8FA9
-		nmi_addr_10	= $8FB2
-		nmi_addr_11	= $8FC6
-		nmi_addr_12	= $8FDE
-		nmi_addr_13	= $8FF6
-		nmi_addr_14	= $900C
-		nmi_addr_15	= $9022
-		nmi_addr_16	= $9036
-		nmi_addr_17	= $904A
-		nmi_addr_18	= $905B
-		nmi_addr_19	= $9072
-		nmi_addr_1A	= $908A
-		nmi_addr_1B	= $90A2
 		eng_farjump	= $90BB
 		nt_init		= $90D0
 		sub_9113	= $9113
@@ -119,21 +80,6 @@ UNK_I = 1
 	.endif	
 
 	.if	.defined(FDS_SMB)
-		palette_underwater	= $6CAA
-		palette_day	= $6CCE
-		palette_underground	= $6CF2
-		palette_castle	= $6D16
-		palette_day_snow	= $6D3A
-		palette_night_snow	= $6D42
-		palette_mushroom	= $6D4A
-		palette_bowser	= $6D52
-		msg_thankyou_mario	= $6D5A
-		msg_thankyou_luigi	= $6D6E
-		msg_thankyou_toad	= $6D82
-		msg_thankyou_princess1	= $6DAE
-		msg_thankyou_princess2	= $6DC5
-		msg_worldsel_1	= $6DE4
-		msg_worldsel_2	= $6DF5
 		eng_farjump	= $6E0A
 		nt_init		= $6E1F
 		joypad_read	= $6E62
@@ -167,16 +113,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		palette_underwater	= $6B8D
-		palette_day		= $6BB1
-		palette_underground	= $6BD5
-		palette_castle		= $6BF9
-		data_6C1D	= $6C1D
-		data_6C25	= $6C25
-		data_6C2D	= $6C2D
-		data_6C35	= $6C35
-		data_6C3D	= $6C3D
-		data_6C51	= $6C51
 		eng_farjump	= $6C7D
 		nt_init		= $6C92
 		joypad_read	= $6CD5
@@ -239,16 +175,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		palette_underwater	= $6C1F
-		palette_day		= $6C43
-		palette_underground	= $6C67
-		palette_castle		= $6C8B
-		data_6C1D	= $6CAF
-		data_6C25	= $6CB7
-		data_6C2D	= $6CBF
-		data_6C35	= $6CC7
-		data_6C3D	= $6CCF
-		data_6C51	= $6CE3
 		eng_farjump	= $6D0F
 		nt_init		= $6D24
 		joypad_read	= $6D67
@@ -322,6 +248,7 @@ zp_byte_01		= $01
 zp_byte_02		= $02
 zp_byte_03		= $03
 zp_byte_04		= $04
+zp_addr_04		= $04
 zp_byte_05		= $05
 zp_byte_06		= $06
 zp_addr_06		= $06
@@ -345,7 +272,8 @@ ppu_nmi_buffer		= $300
 
 tbl_400			= $400
 
-tbl_6A1			= $6A1
+tbl_metatile_b		= $6A1
+gfx_color_rotate_off	= $6D4
 byte_6E0		= $6E0
 tbl_6E1			= $6E1
 tbl_6E4			= $6E4
@@ -363,10 +291,10 @@ eng_screen_left_hi	= $71A
 eng_screen_right_hi	= $71B
 byte_71E		= $71E
 bg_proc_id		= $71F
-byte_720		= $720
-byte_721		= $721
+eng_bg_addr_hi		= $720
+eng_bg_addr_lo		= $721
 eng_sprite_overlap	= $722
-byte_726		= $726
+eng_pos_x		= $726
 eng_area_var		= $733
 eng_screen_proc_id	= $73C
 eng_scc_h_b		= $73F
