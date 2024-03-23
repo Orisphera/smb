@@ -687,7 +687,7 @@ sub_85E0:
 			inc	eng_course_no
 			jsr	eng_loadareaptr
 			inc	eng_req_timer
-			lda	#game_mode::victory
+			lda	#game_mode::normal
 			sta	eng_game_mode
 		: ; }
 
@@ -798,7 +798,7 @@ sub_865D:
 		sta	byte_7FC
 		lda	#$FF
 		sta	eng_lives
-		lda	#game_mode::mode_4
+		lda	#game_mode::game_over
 		sta	eng_game_mode
 		lda	#gameplay_mode::init_0
 		sta	eng_gameplay_mode

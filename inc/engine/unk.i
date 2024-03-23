@@ -4,13 +4,6 @@ UNK_I = 1
 .include "../system/vs.i"
 
 	.if	.defined(FC_SMB)
-		eng_farjump	= $8E04
-		nt_init		= $8E19
-		joypad_read	= $8E5C
-		eng_screen_update	= $8EDD
-		eng_sta_ppu_scc_h_v	= $8EE6
-		eng_sta_ppu_ctlr0 = $8EED
-		eng_score_calc	= $8F97
 		title_init_0	= $8FCF
 		title_init_1	= $9061
 		sub_clearram	= $90CC
@@ -37,29 +30,22 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(VS_SMB)
-		eng_farjump	= $90BB
-		nt_init		= $90D0
-		sub_9113	= $9113
-		eng_screen_update = $9195
-		eng_sta_ppu_scc_h_v = $919E
-		eng_sta_ppu_ctlr0 = $91A5
-		eng_score_calc	= $924F
 		sub_9274	= $9274
 		sub_9324	= $9324
 		sub_9362	= $9362
 		sub_9389	= $9389
-		eng_game	= $941E
+		sub_941E	= $941E
 		sub_942C	= $942C
 		sub_9502	= $9502
 		sub_953B	= $953B
 		sub_9588	= $9588
-		sub_9651	= $9651
-		sub_96FF	= $96FF
+		title_init_0	= $9651
+		title_init_1	= $96FF
 		sub_clearram	= $975D
 		eng_game_over	= $98CA
 		bg_proc		= $A18B
 		eng_loadareaptr	= $AB60
-		sub_AD50	= $AD50
+		eng_game	= $AD50
 		game_proc	= $AD6E
 		game_scroll_save = $AE1C
 		game_scroll	= $AE71
@@ -80,19 +66,12 @@ UNK_I = 1
 	.endif	
 
 	.if	.defined(FDS_SMB)
-		eng_farjump	= $6E0A
-		nt_init		= $6E1F
-		joypad_read	= $6E62
-		eng_screen_update	= $6EE3
-		eng_sta_ppu_scc_h_v	= $6EEC
-		eng_sta_ppu_ctlr0	= $6EF3
-		eng_score_calc	= $6F9D
 		title_init_0	= $6FD5
 		title_init_1	= $7067
 		sub_clearram	= $70D2
 		eng_game_over	= $7222
 		eng_next_game	= $7252
-		bg_proc	= $72BA
+		bg_proc		= $72BA
 		eng_loadareaptr	= $7C0B
 		eng_game	= $8EE4
 		game_proc	= $8EF2
@@ -113,17 +92,10 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		eng_farjump	= $6C7D
-		nt_init		= $6C92
-		joypad_read	= $6CD5
-		eng_screen_update = $6D56
-		eng_sta_ppu_scc_h_v = $6D5F
-		eng_sta_ppu_ctlr0 = $6D66
-		eng_score_calc	= $6E08
 		sub_clearram	= $6F08
 		eng_game_over	= $7057
 		sub_708D	= $708D
-		bg_proc	= $70C1
+		bg_proc		= $70C1
 		eng_game	= $7A37
 		game_scroll_save	= $7ACB
 		game_scroll	= $7B20
@@ -175,17 +147,10 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		eng_farjump	= $6D0F
-		nt_init		= $6D24
-		joypad_read	= $6D67
-		eng_screen_update = $6DE8
-		eng_sta_ppu_scc_h_v = $6DF1
-		eng_sta_ppu_ctlr0 = $6DF8
-		eng_score_calc	= $6E9A
 		sub_clearram	= $6F93
 		eng_game_over	= $70E0
 		sub_708D	= $7109
-		bg_proc	= $713D
+		bg_proc		= $713D
 		eng_game	= $7AA7
 		game_scroll_save	= $7B35
 		game_scroll	= $7B8A
@@ -281,6 +246,7 @@ tbl_6E5			= $6E5
 tbl_6E9			= $6E9
 tbl_6EC			= $6EC
 tbl_6F1			= $6F1
+joypad_bits		= $6FC
 joypad_p1		= $6FC
 joypad_p2		= $6FD
 
@@ -302,6 +268,9 @@ eng_scc_v_b		= $740
 eng_bg_col		= $744
 eng_timer_ctl		= $747
 victory_msg_timer_lo	= $749
+joypad_mask		= $74A
+joypad_mask_p1		= $74A
+joypad_mask_p2		= $74B
 eng_area_type		= $74E
 byte_752		= $752
 eng_player_id		= $753

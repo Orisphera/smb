@@ -3,12 +3,12 @@
 
 	.enum	game_mode
 		title
+		.if	.defined(VS_SMB)
+			mode_vs_1
+		.endif
 		normal
 		victory
 		game_over
-		.if	.defined(VS_SMB)
-		mode_4
-		.endif
 	.endenum
 
 	.enum	gameplay_mode

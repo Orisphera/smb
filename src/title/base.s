@@ -6,14 +6,7 @@
 
 	.export eng_title
 eng_title:
-	.if	.defined(CONS)
-		lda	eng_gameplay_mode
-		jsr	eng_farjump
-		.addr	title_init_0
-		.addr	screen_proc
-		.addr	title_init_1
-		.addr	title_proc
-	.elseif	.defined(VS)
+	.if	.defined(VS)
 		lda	VS_RAM_ARENA0+$10
 		beq	:+ ; if (VS_RAM_ARENA0[0x10]) {
 			lda	#0
@@ -24,26 +17,31 @@ eng_title:
 			sta	eng_disp_disable
 			rts
 		: ; } else {
-			lda	eng_gameplay_mode
-			jsr	eng_farjump
-			.addr	sub_82AF
-			.addr	sub_9651
-			.addr	screen_proc
-			.addr	sub_96FF
-			.addr	title_proc
-			.addr	sub_942C
-			.addr	sub_9502
-			.addr	sub_953B
-			.addr	sub_9588
-		; }
+	.endif
+
+	lda	eng_gameplay_mode
+	jsr	eng_farjump
+	.if	.defined(VS)
+		.addr	sub_82AF
+	.endif
+	.addr	title_init_0
+	.addr	screen_proc
+	.addr	title_init_1
+	.addr	title_proc
+	.if	.defined(VS)
+		.addr	sub_942C
+		.addr	sub_9502
+		.addr	sub_953B
+		.addr	sub_9588
+	; }
 ; ----------------------------
-	sub_82AF:
-		lda	#1
-		sta	eng_disp_disable
-		lda	#0
-		sta	eng_sprite_overlap
-		inc	eng_gameplay_mode
-		rts
+		sub_82AF:
+			lda	#1
+			sta	eng_disp_disable
+			lda	#0
+			sta	eng_sprite_overlap
+			inc	eng_gameplay_mode
+			rts
 	.endif
 ; -----------------------------------------------------------
 title_course_no:

@@ -33,8 +33,10 @@ PPU_CTLR0	= $2000
 		bg2	= 1
 		bg3	= 2
 		bg4	= 3
+		bg_bits	= 3
 		inc_1	= 0
 		inc_32	= 4
+		inc_bit	= 4
 
 		obj_seg0	= 0
 		obj_seg1	= 8

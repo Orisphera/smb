@@ -20,7 +20,7 @@ ASFLAGS_VS	=	-DVS -DVS_SMB
 ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
-ASFLAGS		=	-U $(ASFLAGS_FC)
+ASFLAGS		=	-U $(ASFLAGS_ANN)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
@@ -88,9 +88,10 @@ TITLE_OBJS	=	src/title/base.o \
 			src/title/cursor.o \
 			src/title/demo.o
 
-GAME_OBJS	=	src/game/victory.o \
+LIB_OBJS	=	src/game/victory.o \
 			src/lib/screen.o \
-			src/lib/gfx.o
+			src/lib/gfx.o \
+			src/lib/misc.o
 
 SECURITY_OBJS	=	data/security.o
 
@@ -102,7 +103,7 @@ HEADER_FDS	=	data/header.fds.bin
 
 PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
-			$(GAME_OBJS) \
+			$(LIB_OBJS) \
 			data/prg.fc.o
 
 CHR_OBJS_FC	=	data/chr.smb.o
@@ -112,7 +113,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 
 PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
-			$(GAME_OBJS) \
+			$(LIB_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \
@@ -123,7 +124,7 @@ OBJS_VS		=	$(PRG_OBJS_VS) \
 
 PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
-			$(GAME_OBJS) \
+			$(LIB_OBJS) \
 			data/prg.fds.o
 
 CHR_OBJS_FDS	=	data/chr.smb.o
@@ -142,7 +143,7 @@ DEF_FDS		=	data/fs/superblock_smb.def
 FDT_FDS		=	smb.fdt
 
 PRG_OBJS_SMB2	=	$(BASE_OBJS) \
-			$(GAME_OBJS) \
+			$(LIB_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -170,7 +171,7 @@ DEF_SMB2	=	data/fs/superblock_smb2.def
 FDT_SMB2	=	smb2.fdt
 
 PRG_OBJS_ANN	=	$(BASE_OBJS) \
-			$(GAME_OBJS) \
+			$(LIB_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

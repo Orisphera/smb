@@ -287,12 +287,8 @@ screen_text_draw_timeup:
 screen_text_draw_intermission:
 	lda	eng_game_mode
 	beq	:+++
-	.if	.defined(CONS)
 	cmp	#game_mode::game_over
-	.elseif	.defined(VS)
-	cmp	#game_mode::mode_4
-	.endif
-	beq	:++ ; if (eng_game_mode.not_in(0, 3)) {
+	beq	:++ ; if (eng_game_mode.not_in(title, game_over)) {
 		lda	byte_752
 		bne	:+++
 		ldy	eng_area_type
@@ -666,11 +662,7 @@ screen_text_draw:
 				dex
 				bne	:+
 				ldy	eng_game_mode
-				.if	.defined(SMB)
 				cpy	#game_mode::game_over
-				.elseif	.defined(VS_SMB)
-				cpy	#game_mode::mode_4
-				.endif
 				beq	:+ ; if (!game_over && (!VS_SMB || byte_761 >= 0)) {
 				.if	.defined(VS_SMB)
 					ldy	byte_761

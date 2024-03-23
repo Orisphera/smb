@@ -267,14 +267,16 @@ nmi:
 
         jsr     apu_cycle
 
-	.if	.defined(CONS)
-		jsr     joypad_read
-		jsr     nmi_pause
-	.elseif	.defined(VS)
+	.if	.defined(VS)
 		jsr     sub_9324
 		jsr     sub_9362
 		jsr     sub_9389
-		jsr     sub_9113
+	.endif
+
+	jsr     joypad_read
+
+	.if	.defined(CONS)
+		jsr	nmi_pause
 	.endif
 
         jsr     eng_score_calc
@@ -597,9 +599,9 @@ nmi_gamemode_enter:
 	lda     eng_game_mode
         jsr     eng_farjump
 	.addr	eng_title
-	.addr	eng_game
 	.if	.defined(VS_SMB)
-		.addr	sub_AD50
+		.addr	sub_941E
 	.endif
+	.addr	eng_game
 	.addr	eng_victory
 	.addr	eng_game_over
