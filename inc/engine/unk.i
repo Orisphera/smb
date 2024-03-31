@@ -30,7 +30,7 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(VS_SMB)
-		sub_9274	= $9274
+		vs_read_dips	= $9274
 		sub_9324	= $9324
 		sub_9362	= $9362
 		sub_9389	= $9389
@@ -309,6 +309,7 @@ eng_timer_screen	= $7A0
 eng_timer_victory	= $7A1
 eng_timer_demo		= $7A2
 eng_rand_seed		= $7A7
+tbl_7B0			= $7B0
 byte_7B1		= $7B1
 eng_score		= $7D7
 eng_score_end		= $7DD

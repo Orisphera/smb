@@ -153,7 +153,7 @@ start:
 			bpl     :-
 		; }
 
-		jsr     sub_9274
+		jsr     vs_read_dips
 	.endif
 
 	.if	.defined(FDS)
