@@ -55,6 +55,7 @@ screen_title_bg:
 		sta	PPU_VRAM_AR
 	.elseif	.defined(VS)
 		ldy	#0
+		.export sub_88F7
 	sub_88F7:
 		lda	#vs_req::chr_high|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_SR

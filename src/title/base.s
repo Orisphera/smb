@@ -147,6 +147,7 @@ title_proc:
 			rts
 		.endif
 
+			.export title_recycle
 		title_recycle:
 			lda	#0
 			sta	eng_game_mode
@@ -155,6 +156,7 @@ title_proc:
 			inc	eng_disp_disable
 		; }
 		rts
+		.export title_exit
 	title_exit: ; } else {
 		.if	.defined(CONS)
 		ldy	eng_timer_demo

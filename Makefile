@@ -114,6 +114,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
+			src/lib/vs.o \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \

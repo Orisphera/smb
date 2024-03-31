@@ -30,19 +30,14 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(VS_SMB)
-		vs_read_dips	= $9274
-		sub_9324	= $9324
-		sub_9362	= $9362
-		sub_9389	= $9389
-		sub_941E	= $941E
-		sub_942C	= $942C
-		sub_9502	= $9502
-		sub_953B	= $953B
-		sub_9588	= $9588
+		sub_9643	= $9643
 		title_init_0	= $9651
+		sub_96E4	= $96E4
 		title_init_1	= $96FF
 		sub_clearram	= $975D
 		eng_game_over	= $98CA
+		sub_9D62	= $9D62
+		sub_9DF7	= $9DF7
 		bg_proc		= $A18B
 		eng_loadareaptr	= $AB60
 		eng_game	= $AD50
