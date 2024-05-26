@@ -93,6 +93,9 @@ LIB_OBJS	=	src/game/victory.o \
 			src/lib/gfx.o \
 			src/lib/misc.o
 
+GAME_OBJS	=	src/game/init.o \
+			src/game/gameover.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_OBJS	=	data/save.o
@@ -104,6 +107,7 @@ HEADER_FDS	=	data/header.fds.bin
 PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
+			$(GAME_OBJS) \
 			data/prg.fc.o
 
 CHR_OBJS_FC	=	data/chr.smb.o
@@ -115,6 +119,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
 			src/lib/vs.o \
+			$(GAME_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \
@@ -126,6 +131,7 @@ OBJS_VS		=	$(PRG_OBJS_VS) \
 PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
+			$(GAME_OBJS) \
 			data/prg.fds.o
 
 CHR_OBJS_FDS	=	data/chr.smb.o
@@ -145,6 +151,7 @@ FDT_FDS		=	smb.fdt
 
 PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
+			$(GAME_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -173,6 +180,7 @@ FDT_SMB2	=	smb2.fdt
 
 PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
+			$(GAME_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

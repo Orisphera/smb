@@ -4,6 +4,9 @@ TUNABLES_I = 1
 .include	"../system/cpu.i"
 .include	"../system/ppu.i"
 
+.include	"../engine/misc.i"
+.include	"../engine/unk.i"
+
 ENG_FONT_TILE_BASE = 0
 
 START_WARMBOOT_FLAG	= $A5
@@ -44,6 +47,20 @@ VICTORY_TICK		= 4
 	VICTORY_MSG_TIMER_LOWER_B = 6
 	VICTORY_TIMER_SET	= 12
 	VICTORY_NOTICK_END	= 3
+.endif
+
+.if	.defined(SMB)
+	ENG_HARDMODE_VAR	= eng_hard_mode
+	ENG_HARDMODE_B_COURSE	= course::no_05
+	ENG_HARDMODE_B_GOAL	= 2
+.elseif	.defined(VS_SMB)
+	ENG_HARDMODE_VAR	= eng_hard_mode
+	ENG_HARDMODE_B_COURSE	= course::no_04
+	ENG_HARDMODE_B_GOAL	= 1
+.elseif	.defined(SMB2M)
+	ENG_HARDMODE_VAR	= byte_7FB
+	ENG_HARDMODE_B_COURSE	= course::no_04
+	ENG_HARDMODE_B_GOAL	= 3
 .endif
 
 .endif	; TUNABLES_I

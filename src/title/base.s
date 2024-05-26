@@ -24,9 +24,9 @@ eng_title:
 	.if	.defined(VS)
 		.addr	sub_82AF
 	.endif
-	.addr	title_init_0
+	.addr	eng_init_0
 	.addr	screen_proc
-	.addr	title_init_1
+	.addr	eng_init_1
 	.addr	title_proc
 	.if	.defined(VS)
 		.addr	sub_942C
@@ -170,7 +170,7 @@ title_proc:
 
 			jsr	eng_loadareaptr
 			inc	eng_hidden_one_up
-			inc	eng_hidden_one_up_offscr
+			inc	eng_hidden_one_up_b
 			inc	eng_req_timer
 			inc	eng_game_mode
 			.if	.defined(CONS)
@@ -178,7 +178,7 @@ title_proc:
 			.elseif	.defined(VS)
 				lda	byte_7FC
 			.endif
-			sta	eng_hard_mode
+			sta	ENG_HARDMODE_VAR
 			lda	#gameplay_mode::init_0
 			sta	eng_gameplay_mode
 			sta	eng_timer_demo
@@ -202,8 +202,8 @@ title_proc:
 ; ----------------------------
 title_course_set:
 	sta     eng_course_no
-        sta     eng_course_no_offscr
+        sta     eng_course_no_b
         ldx     #0
         stx     eng_course_sub
-        stx     eng_course_sub_offscr
+        stx     eng_course_sub_b
         rts

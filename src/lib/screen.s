@@ -111,6 +111,7 @@ screen_color_init_3:
 
 	inc	eng_screen_proc_id
 
+	.export screen_color_player
 screen_color_player:
 	ldx	ppu_nmi_buffer+0
 	ldy	#(screen_color_player_1-screen_color_player_data)
@@ -215,8 +216,8 @@ screen_text_draw_splash:
 	.if	.defined(SMB2M)
 	screen_calc_course_no:
 		ldy	eng_course_no
-		lda	byte_7FB
-		beq	:+ ; if (byte_7FB) {
+		lda	ENG_HARDMODE_VAR
+		beq	:+ ; if (ENG_HARDMODE_VAR) {
 			tya
 			and	#$03
 			clc
@@ -261,14 +262,14 @@ screen_text_draw_intermission:
 	beq	:+++
 	cmp	#game_mode::game_over
 	beq	:++ ; if (eng_game_mode.not_in(title, game_over)) {
-		lda	byte_752
+		lda	eng_start_alt
 		bne	:+++
 		ldy	eng_area_type
 		cpy	#3
 		beq	:+
-		lda	byte_769
+		lda	eng_disable_b
 		bne	:+++
-		: ; if (!byte_752 && (eng_area_type == 3 || !byte_769)) {
+		: ; if (!eng_start_alt && (eng_area_type == 3 || !eng_disable_b)) {
 			jsr	sub_EFA4
 			lda	#screen_text::splash
 			.if	.defined(SMB)|.defined(VS_SMB)
@@ -326,8 +327,8 @@ screen_bg:
 		bne	:-
 	; }
 
-	dec	byte_71E
-	bpl	:+ ; if (--byte_71E >= 0) {
+	dec	eng_columnsets
+	bpl	:+ ; if (--eng_columnsets >= 0) {
 		inc	eng_screen_proc_id
 	: ; }
 
@@ -635,9 +636,9 @@ screen_text_draw:
 				bne	:+
 				ldy	eng_game_mode
 				cpy	#game_mode::game_over
-				beq	:+ ; if (!game_over && (!VS_SMB || byte_761 >= 0)) {
+				beq	:+ ; if (!game_over && (!VS_SMB || eng_lives_b >= 0)) {
 				.if	.defined(VS_SMB)
-					ldy	byte_761
+					ldy	eng_lives_b
 					bmi	:+
 				.endif
 					eor	#1

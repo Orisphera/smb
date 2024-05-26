@@ -72,6 +72,7 @@ sub_92E1_data_1:
 	.byte	$0E, $0E, $24, $19
 	.byte	$15, $0A, $22, $00
 ; ----------------------------
+	.export	sub_92E1
 sub_92E1:
 	jsr	vs_setbank_low
 
@@ -358,8 +359,8 @@ sub_947A:
 		sta	VS_RAM_ARENA0+$28
 		sta	VS_RAM_ARENA0+$29
 		dec	VS_RAM_ARENA0+$10
-		jsr	sub_9643
-		jsr	sub_96E4
+		jsr	eng_init_ram
+		jsr	eng_init_setup
 		lda	joypad_p1
 		jmp	title_exit
 	: ; } else {

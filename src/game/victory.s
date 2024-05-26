@@ -105,10 +105,10 @@ victory_enter:
 ; ----------------------------
 	sub_6311:
 		lda	eng_goals
-		cmp	#3
+		cmp	#ENG_HARDMODE_B_GOAL
 		bne	:+++
-		ldy	byte_7FB
-		bne	:+++ ; if (eng_goals == 3 && !byte_7FB) {
+		ldy	ENG_HARDMODE_VAR
+		bne	:+++ ; if (eng_goals == ENG_HARDMODE_B_GOAL && !ENG_HARDMODE_VAR) {
 			sty	zp_byte_06
 
 			lda	eng_course_no
@@ -183,11 +183,11 @@ victory_enter:
 ; ----------------------------
 victory_init:
 	.if	.defined(ANN)
-		lda	byte_7FB
+		lda	ENG_HARDMODE_VAR
 		bne	:++
 		ldx	eng_course_no
 		cpx	#course::no_08
-		beq	:++ ; if (!byte_7FB && course_no != course_08) {
+		beq	:++ ; if (!ENG_HARDMODE_VAR && course_no != course_08) {
 			ldy	data_635C, x
 			lda	data_6354, y
 			sta	zp_addr_00
@@ -215,16 +215,16 @@ victory_init:
 	.if	.defined(SMB2)
 		ldy	eng_course_no
 		lda	victory_init_mask, y
-		ora	byte_7FA
-		sta	byte_7FA
+		ora	eng_timer_disp+2
+		sta	eng_timer_disp+2
 	.endif
 
 	.if	.defined(SMB2M)
-		lda	byte_7FB
+		lda	ENG_HARDMODE_VAR
 		beq	:+
 		lda	eng_course_no
-		cmp	#course::no_04
-		bcc	:+ ; if (data_7FB && eng_course_no >= course_04) {
+		cmp	#ENG_HARDMODE_B_COURSE
+		bcc	:+ ; if (ENG_HARDMODE_VAR && eng_course_no >= course_04) {
 			lda	#course::no_08
 			sta	eng_course_no
 		: ; }
@@ -433,13 +433,9 @@ victory_msg_notick:
 	.endif
 
 	.if	.defined(SMB2M)
-		sub_63AF_VAR_0	= byte_7EC
-		sub_63AF_VAR_1	= byte_7ED
-		sub_63AF_VAR_2	= byte_7EE
+		ENG_TIMER_DISP	= eng_timer_disp_b
 	.elseif	.defined(VS_SMB)
-		sub_63AF_VAR_0	= byte_7F8
-		sub_63AF_VAR_1	= byte_7F9
-		sub_63AF_VAR_2	= byte_7FA
+		ENG_TIMER_DISP	= eng_timer_disp
 	.endif
 
 	sub_63AF:
@@ -452,9 +448,9 @@ victory_msg_notick:
 				jsr	sub_D260
 			.endif
 
-			lda	sub_63AF_VAR_0
-			ora	sub_63AF_VAR_1
-			ora	sub_63AF_VAR_2
+			lda	ENG_TIMER_DISP
+			ora	ENG_TIMER_DISP+1
+			ora	ENG_TIMER_DISP+2
 			.if	.defined(SMB2)|.defined(VS_SMB)
 				bne	:++ ; if (!(VAR_0|VAR_1|VAR_2)) {
 			.elseif	.defined(ANN)

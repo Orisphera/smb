@@ -296,6 +296,8 @@ nmi:
 
 			dec     eng_timer_int
 			bpl     :+ ; if (--eng_timer_int < 0) {
+				.export nmi_timer_int_init
+			nmi_timer_int_init:
 				lda     #$14
 				sta     eng_timer_int
 				ldx     #$23
@@ -400,7 +402,7 @@ nmi:
 			lda	eng_course_no
 			cmp	#SMB2M_COURSE_NO_CUTOFF
 			bcc	:+ ; if (eng_course_no >= cutoff) {
-				jsr	sub_708D
+				jsr	eng_next_game
 			: ; }
 
 			jsr	nmi_gamemode_enter
