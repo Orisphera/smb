@@ -94,7 +94,8 @@ LIB_OBJS	=	src/game/victory.o \
 			src/lib/misc.o
 
 GAME_OBJS	=	src/game/init.o \
-			src/game/gameover.o
+			src/game/gameover.o \
+			src/game/bg.o
 
 SECURITY_OBJS	=	data/security.o
 

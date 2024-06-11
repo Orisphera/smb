@@ -13,7 +13,7 @@ fi
 
 mkdir -p data/chr.vs data/chr2.vs
 
-dd if=$1 bs=1 skip=8603 count=24175 >data/prg.vs.bin
+dd if=$1 bs=1 skip=11067 count=21711 >data/prg.vs.bin
 
 # CHR Common
 TILE_SIZE=16

@@ -545,6 +545,7 @@ screen_text_idx_tbl:
 		.byte	screen_text_idx_warp, screen_text_idx_warp
 	.endif
 ; ----------------------------
+	.export	screen_text_draw
 screen_text_draw:
 	pha
 
@@ -661,6 +662,7 @@ screen_text_draw:
 	.endif
 
 	.if	.defined(SMB2M)
+			.export screen_text_draw_over
 		screen_text_draw_over:
 			pha
 

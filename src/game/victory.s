@@ -255,13 +255,13 @@ victory_init:
 victory_proc:
 	ldy	#0
 	sty	victory_proc_ctrl
-	lda	eng_player_hi
+	lda	eng_player_pos_x_hi
 	cmp	victory_screen_hi
 	bne	:+
 	lda	eng_player_pos_x_lo
 	cmp	#VICTORY_X_POS
 	bcs	:++
-	: ; if ((eng_player_hi != victory_screen_hi) || eng_player_pos_x_lo < VICTORY_X_POS) {
+	: ; if ((eng_player_pos_x < victory_pos_x) {
 		inc	victory_proc_ctrl
 		iny
 	: ; }
@@ -498,7 +498,7 @@ tbl_6E5_84B9:
 	.byte	$80, $50, $68, $80
 	.byte	$98, $B0, $C8
 
-zp_byte_CF_84C0:
+eng_actor_pos_y_lo_84C0:
 	.byte	$E0, $B8, $90, $70
 	.byte	$68, $70, $90
 
@@ -638,8 +638,8 @@ sub_8552:
 				sty	tbl_6E5
 				lda	#$35
 				sta	eng_actor_id
-				lda	zp_byte_CF_84C0, x
-				sta	zp_byte_CF
+				lda	eng_actor_pos_y_lo_84C0, x
+				sta	eng_actor_pos_y_lo
 				lda	ppu_84C7, x
 				sta	ppu_nmi_buffer+$AE
 				ldx	#0
@@ -660,7 +660,7 @@ sub_8552:
 		lda	#$30
 		sta	tbl_6E5
 		lda	#$B8
-		sta	zp_byte_CF
+		sta	eng_actor_pos_y_lo
 		rts
 	; }
 ; -----------------------------------------------------------

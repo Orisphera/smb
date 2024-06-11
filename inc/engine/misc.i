@@ -126,4 +126,10 @@
 		no_0A
 	.endenum
 
+	.enum	area_type
+		water
+		overworld	
+		underground
+	.endenum
+
 	.endif	; MISC_I

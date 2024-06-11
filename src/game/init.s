@@ -362,7 +362,7 @@ eng_timer_vals_b:
 ; ----------------------------
 sub_enter_timer_init:
 	lda	eng_screen_left_hi
-	sta	eng_player_hi
+	sta	eng_player_pos_x_hi
 	lda	#$28
 	sta	eng_player_gravity
 	lda	#1
