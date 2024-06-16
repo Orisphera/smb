@@ -126,10 +126,13 @@
 		no_0A
 	.endenum
 
-	.enum	area_type
+	.enum	course_types
 		water
 		overworld	
 		underground
+		castle
+		MAX = castle
+		cloud
 	.endenum
 
 	.endif	; MISC_I

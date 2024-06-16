@@ -212,11 +212,11 @@ gfx_color_rotate:
 		ldx	ppu_nmi_buffer+$00
 		lda	#3
 		sta	zp_addr_00
-		lda	eng_area_type
+		lda	course_type
 		asl	a
 		asl	a
 		tay
-		: ; for (i = 3, x = ppu_nmi_buffer_entry, y = (eng_area_type * 4); i >= 0; i--, x++, y++) {
+		: ; for (i = 3, x = ppu_nmi_buffer_entry, y = (course_type * 4); i >= 0; i--, x++, y++) {
 			lda	pal_page_3, y
 			sta	ppu_nmi_buffer+$04, x
 
@@ -257,8 +257,8 @@ gfx_clear_small:
 	ldy	#$41
 	lda	#3
 
-	ldx	eng_area_type
-	bne	:+ ; if (eng_area_type == 0) {
+	ldx	course_type
+	bne	:+ ; if (course_type == water) {
 		lda	#4
 	: ; }
 

@@ -60,9 +60,9 @@ eng_game_over_run:
 		bne	eng_next_game
 	.elseif	.defined(SMB2M)
 		.if	.defined(SMB2)
-			lda     eng_course_no
+			lda     course_no
 			cmp     #course::no_09
-			beq     :+ ; if (eng_course_no != no_09) {
+			beq     :+ ; if (course_no != no_09) {
 		.endif
 
 		jmp     sub_C1C2
@@ -92,7 +92,7 @@ eng_game_over_run:
 		lda	eng_lives
 		bpl	eng_game_continue
 	.endif
-		lda	eng_course_no
+		lda	course_no
 		sta	eng_continue_course
 .endif
 
@@ -108,7 +108,7 @@ eng_game_over_run:
 	eng_next_game_rts_a:
 		rts
 	eng_game_continue: ; } else {
-		jsr	eng_loadareaptr
+		jsr	course_descriptor_load
 		lda	#1
 		sta	eng_player_size
 		inc	eng_req_timer

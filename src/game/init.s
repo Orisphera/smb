@@ -1,5 +1,6 @@
 .include	"../../inc/system/ppu.i"
 
+.include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/joypad.i"
 .include	"../../inc/engine/sound.i"
 .include	"../../inc/engine/tunables.i"
@@ -55,7 +56,7 @@ eng_init_oam_end:
 
 		lda	#TITLE_DEMO_TIMER
 		sta	eng_timer_demo
-		jsr	eng_loadareaptr
+		jsr	course_descriptor_load
 	.elseif	.defined(SMB2M)
 	eng_init_0:
 	.endif
@@ -109,11 +110,11 @@ eng_init_oam_end:
 
 	lda	#$0B
 	sta	eng_columnsets
-	jsr	eng_getdataptrs
+	jsr	course_load
 
 	lda	ENG_HARDMODE_VAR
 	bne	:+
-	lda	eng_course_no
+	lda	course_no
 	cmp	#ENG_HARDMODE_B_COURSE
 	bcc	:++
 	bne	:+
@@ -126,8 +127,8 @@ eng_init_oam_end:
 
 	lda	eng_startpage_alt
 	beq	:+ ; if (eng_startpage_alt) {
-		lda	#2
-		sta	eng_enter_pos
+		lda	#COURSE_DATA_ENTER_POS_B0_A_VAL
+		sta	course_enter_pos
 	: ; }
 
 	lda	#music_area::none
@@ -311,15 +312,15 @@ sub_load_area_music:
 		cmp	#2
 		beq	:+
 		ldy	#area_music_data_pipe_intro-area_music_data
-		lda	eng_enter_pos
-		cmp	#6
+		lda	course_enter_pos
+		cmp	#COURSE_DATA_ENTER_POS_B0_B_VAL
 		beq	:++
-		cmp	#7
+		cmp	#COURSE_DATA_ENTER_POS_B0_C_VAL
 		beq	:++
-		: ; if (eng_start_alt == 2 || eng_enter_pos.not_in(6, 7)) {
-			ldy	eng_area_type
-			lda	eng_area_type_cloud_b
-			beq	:+ ; if (eng_area_type_cloud_b) {
+		: ; if (eng_start_alt == 2 || course_enter_pos != 0xB0) {
+			ldy	course_type
+			lda	course_type_cloud
+			beq	:+ ; if (course_type_cloud) {
 				ldy	#area_music_data_clouds-area_music_data
 			; }
 		: ; }
@@ -334,10 +335,41 @@ player_start_x:
 	.byte	$28, $18, $38, $28
 
 player_alt_y:
-	.byte	$08, $00
+	.byte	COURSE_DATA_ENTER_POS_F0_VAL
+	.byte	COURSE_DATA_ENTER_POS_00_A_VAL
 
+	.export player_start_y
+	.export player_start_y_00_A, player_start_y_00_B, player_start_y_00_C
+	.export	player_start_y_20, player_start_y_50
+	.export player_start_y_B0_A, player_start_y_B0_B, player_start_y_B0_C
+	.export player_start_y_F0
 player_start_y:
-	.byte	$00, $20, $B0, $50, $00, $00, $B0, $B0, $F0
+player_start_y_00_A:
+	.byte	$00
+
+player_start_y_20:
+	.byte	$20
+
+player_start_y_B0_A:
+	.byte	$B0
+
+player_start_y_50:
+	.byte	$50
+
+player_start_y_00_B:
+	.byte	$00
+
+player_start_y_00_C:
+	.byte	$00
+
+player_start_y_B0_B:
+	.byte	$B0
+
+player_start_y_B0_C:
+	.byte	$B0
+
+player_start_y_F0:
+	.byte	$F0
 
 player_bg_priority:
 	.byte	$00, $20, $00, $00, $00, $00, $00, $00, $20
@@ -374,13 +406,13 @@ sub_enter_timer_init:
 
 	ldy	#0
 	sty	eng_startpage_alt
-	lda	eng_area_type
-	bne	:+ ; if (eng_area_type == 0) {
+	lda	course_type
+	bne	:+ ; if (courese_type == water) {
 		iny
 	: ; }
 	sty	eng_player_swimming
 
-	ldx	eng_enter_pos
+	ldx	course_enter_pos
 	ldy	eng_start_alt
 	beq	:+
 	cpy	#1
@@ -396,10 +428,10 @@ sub_enter_timer_init:
 	sta	ppu_nmi_buffer+$C4
 	jsr	screen_color_player
 
-	ldy	eng_timer_setting
+	ldy	course_timer_setting
 	beq	:+
 	lda	eng_req_timer
-	beq	:+ ; if (eng_timer_setting != 0 && eng_req_timer > 0) {
+	beq	:+ ; if (course_timer_setting != 0 && eng_req_timer > 0) {
 	.if	.defined(VS)
 		lda	VS_RAM_ARENA0+$03
 		beq	sub_enter_timer_init_all
@@ -445,8 +477,8 @@ sub_enter_timer_init:
 		jsr	eng_init_vine
 	: ; }
 
-	ldy	eng_area_type
-	bne	:+ ; if (eng_area_type == 0) {
+	ldy	course_type
+	bne	:+ ; if (course_type == water) {
 		jsr	eng_init_bubbles
 	: ; }
 
@@ -525,7 +557,7 @@ eng_lose_life:
 		sta	eng_game_mode
 		rts
 	: ; } else {
-		lda	eng_course_no
+		lda	course_no
 		asl	a
 		tax
 		lda	eng_goals

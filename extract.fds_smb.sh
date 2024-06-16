@@ -41,7 +41,7 @@ do
 done
 
 # SMMAIN1
-dd if=$1 bs=1 skip=15711 count=9214 >data/prg0.fds.bin
+dd if=$1 bs=1 skip=20544 count=4381 >data/prg0.fds.bin
 
 # SMMAIN2
 dd if=$1 bs=1 skip=24942 count=16378 >data/prg1.fds.bin

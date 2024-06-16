@@ -205,7 +205,7 @@ sub_995D:
         ; }
 
 	ldy	#course::no_01
-	lda	eng_course_no
+	lda	course_no
 	clc
 	adc	#1
 	sta	(zp_addr_06), y
@@ -1150,7 +1150,7 @@ sub_A01B:
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
 		sta	eng_goals
-		sta	eng_course_sub
+		sta	course_sub
 		inc	eng_gameplay_mode
 		jsr	sub_9924
 	

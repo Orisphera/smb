@@ -399,9 +399,9 @@ nmi:
 				jsr	nmi_oam_shuffle
 			: ; }
 
-			lda	eng_course_no
+			lda	course_no
 			cmp	#SMB2M_COURSE_NO_CUTOFF
-			bcc	:+ ; if (eng_course_no >= cutoff) {
+			bcc	:+ ; if (course_no >= cutoff) {
 				jsr	eng_next_game
 			: ; }
 
@@ -546,7 +546,7 @@ nmi:
 	.endif
 ; ----------------------------
 nmi_oam_shuffle:
-	ldy     eng_area_type
+	ldy	course_type
         lda     #$28
         sta     zp_byte_00
         ldx     #$0F-1

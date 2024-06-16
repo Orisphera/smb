@@ -13,7 +13,7 @@ fi
 
 mkdir -p data/chr.vs data/chr2.vs
 
-dd if=$1 bs=1 skip=11067 count=21711 >data/prg.vs.bin
+dd if=$1 bs=1 skip=11607 count=21171 >data/prg.vs.bin
 
 # CHR Common
 TILE_SIZE=16
@@ -39,20 +39,4 @@ do
 done
 
 # CHR bank 01
-BANKBASE=40976
-BANKLEN=8192
-TILES=`expr $BANKLEN / $TILE_SIZE`
-
-I=0
-while [ $I -ne $BG_BANK ] && [ $I -ne $TILES ]
-do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.vs/tile_obj_`printf "%.2X" $I`.bin
-        I=`expr $I + 1`
-done
-
-while [ $I -ne $TILES ]
-do
-	J=`expr $I - $BG_BANK`
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.vs/tile_bg_`printf "%.2X" $J`.bin
-	I=`expr $I + 1`
-done
+dd if=$1 bs=1 skip=47632 count=1536 >data/chr2.vs.bin

@@ -39,3 +39,4 @@ VS_COINS	= $4020
 VS_RAM  = $6000
 
 .endif	; VS_I
+

@@ -52,7 +52,7 @@ start:
 	.endif
 
 	.if	.defined(SMB2M)
-		lda	eng_course_no
+		lda	course_no
 		pha
 	.endif
 
@@ -90,7 +90,7 @@ start:
 	.if	.defined(SMB2M)
 		sta	byte_7FC
 		pla
-		sta	eng_course_no
+		sta	course_no
 	.endif
 
         lda     #START_WARMBOOT_FLAG

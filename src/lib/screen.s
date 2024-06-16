@@ -2,6 +2,7 @@
 .include	"../../inc/system/ppu.i"
 .include	"../../inc/system/palettes.i"
 
+.include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/tunables.i"
 .include	"../../inc/engine/charmap.i"
 .include	"../../inc/engine/misc.i"
@@ -49,21 +50,21 @@ screen_init:
 	; }
 ; ------------------------------------------------------------
 screen_color_init_1:
-	lda	eng_bg_col
+	lda	course_bg_col
 	pha
 	lda	eng_player_status
 	pha
 
 	lda	#0
 	sta	eng_player_status
-	lda	#2
-	sta	eng_bg_col
+	lda	#COURSE_DATA_BG_COL_OVERWORLD_VAL
+	sta	course_bg_col
 	jsr	screen_color_player
 
 	pla
 	sta	eng_player_status
 	pla
-	sta	eng_bg_col
+	sta	course_bg_col
 
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
@@ -71,7 +72,7 @@ screen_palette_types:
 	.byte	1, 2, 3, 4
 ; ----------------------------
 screen_color_init_2:
-	ldy	eng_area_type
+	ldy	course_type
 	ldx	screen_palette_types, y
 
 screen_proc_next_pal_set:
@@ -80,14 +81,22 @@ screen_proc_next_pal_set:
 screen_proc_next_b:
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
+	.export screen_color_bg_data
+	.export screen_color_bg_data_water
+	.export screen_color_bg_data_overworld
+	.export screen_color_bg_data_underground
 screen_color_bg_data:
+screen_color_bg_data_water:
 	.if	.defined(CONS)
 	.byte	PPU_COLOR_GREY0, PPU_COLOR_YGREEN0, PPU_COLOR_GREEN0, PPU_COLOR_MAGENTA0
 	.elseif	.defined(VS)
 	.byte	PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW0, PPU_COLOR_YGREEN3, PPU_COLOR_PITCH1
 	.endif
 
+screen_color_bg_data_overworld:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
+
+screen_color_bg_data_underground:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
 
 screen_color_player_data:
@@ -103,8 +112,8 @@ screen_color_player_power:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1
 ; --------------------------
 screen_color_init_3:
-	ldy	eng_bg_col
-	beq	:+ ; if (eng_bg_col) {
+	ldy	course_bg_col
+	beq	:+ ; if (course_bg_col) {
 		lda	screen_color_bg_data-PPU_COLOR_ROW_SIZE, y
 		sta	nmi_addrs_ctl
 	: ; }
@@ -139,9 +148,9 @@ screen_color_player:
 	; }
 
 	ldx	ppu_nmi_buffer+0
-	ldy	eng_bg_col
-	bne	:+ ; if (!eng_bg_col) {
-		ldy	eng_area_type
+	ldy	course_bg_col
+	bne	:+ ; if (!course_bg_col) {
+		ldy	course_type
 	: ; }
 	lda	screen_color_bg_data+PPU_COLOR_ROW_SIZE, y
 	sta	ppu_nmi_buffer+4, x
@@ -164,9 +173,9 @@ screen_color_player_end:
 ; ------------------------------------------------------------
 	.export screen_color_init_4_end
 screen_color_init_4:
-	lda	eng_area_var
-	cmp	#1
-	bne	:+ ; if () {
+	lda	course_ledge_type
+	cmp	#COURSE_AREA_LEDGE_MUSHROOM_VAL
+	bne	:+ ; if (ledge_type == MUSHROOM) {
 		lda	#$0B
 	screen_color_init_4_end:
 		sta	nmi_addrs_ctl
@@ -192,7 +201,7 @@ screen_text_draw_splash:
 	lda	#SCREEN_STAT_BG_1_LEN
 	sta	ppu_nmi_buffer+$03, x
 	.if	.defined(SMB)|.defined(VS_SMB)
-		ldy	eng_course_no
+		ldy	course_no
 		iny
 		tya
 	.elseif	.defined(SMB2M)
@@ -215,7 +224,7 @@ screen_text_draw_splash:
 ; ----------------------------
 	.if	.defined(SMB2M)
 	screen_calc_course_no:
-		ldy	eng_course_no
+		ldy	course_no
 		lda	ENG_HARDMODE_VAR
 		beq	:+ ; if (ENG_HARDMODE_VAR) {
 			tya
@@ -264,12 +273,12 @@ screen_text_draw_intermission:
 	beq	:++ ; if (eng_game_mode.not_in(title, game_over)) {
 		lda	eng_start_alt
 		bne	:+++
-		ldy	eng_area_type
-		cpy	#3
+		ldy	course_type
+		cpy	#course_types::castle
 		beq	:+
 		lda	eng_disable_b
 		bne	:+++
-		: ; if (!eng_start_alt && (eng_area_type == 3 || !eng_disable_b)) {
+		: ; if (!eng_start_alt && (course_type == castle || !eng_disable_b)) {
 			jsr	sub_EFA4
 			lda	#screen_text::splash
 			.if	.defined(SMB)|.defined(VS_SMB)
@@ -282,7 +291,7 @@ screen_text_draw_intermission:
 			.elseif	.defined(SMB2M)
 				jsr	screen_text_draw_timeup_end
 				.if	.defined(SMB2)
-					lda	eng_course_no
+					lda	course_no
 					cmp	#course::no_09
 
 					bne	screen_proc_continue
@@ -306,7 +315,7 @@ screen_text_draw_intermission:
 			jmp	screen_title_end
 		.elseif	.defined(SMB2M)
 			.if	.defined(SMB2)
-				lda	eng_course_no
+				lda	course_no
 				cmp	#course::no_09
 				beq	screen_proc_continue
 			.endif
@@ -610,7 +619,7 @@ screen_text_draw:
 		sta	ppu_nmi_buffer+$09
 	
 		.if	.defined(SMB)|.defined(VS_SMB)
-			ldy	eng_course_no
+			ldy	course_no
 			iny
 			sty	ppu_nmi_buffer+$14
 		.elseif	.defined(SMB2M)

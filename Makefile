@@ -97,6 +97,10 @@ GAME_OBJS	=	src/game/init.o \
 			src/game/gameover.o \
 			src/game/bg.o
 
+COURSES_OBJS	=	data/course_data_head.o \
+			src/game/courses.o \
+			data/course_data.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_OBJS	=	data/save.o
@@ -109,6 +113,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
+			$(COURSES_OBJS) \
 			data/prg.fc.o
 
 CHR_OBJS_FC	=	data/chr.smb.o
@@ -121,6 +126,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			src/lib/vs.o \
 			$(GAME_OBJS) \
+			$(COURSES_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \
@@ -133,6 +139,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
+			$(COURSES_OBJS) \
 			data/prg.fds.o
 
 CHR_OBJS_FDS	=	data/chr.smb.o

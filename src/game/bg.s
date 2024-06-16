@@ -1,3 +1,4 @@
+.include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/misc.i"
 .include	"../../inc/engine/tunables.i"
  
@@ -156,9 +157,18 @@ bg_inc_col:
 	sta	disp_buff_col
 	rts
 ; ------------------------------------------------------------
+	.export bg_scenery_tbl
+	.export bg_scenery_tbl_cloud
+	.export bg_scenery_tbl_mnt_bush
+	.export bg_scenery_tbl_tree_fence
 bg_scenery_tbl:
+bg_scenery_tbl_cloud:
 	.byte	bg_scenery_cloud-bg_scenery
+
+bg_scenery_tbl_mnt_bush:
 	.byte	bg_scenery_mnt_bush-bg_scenery
+
+bg_scenery_tbl_tree_fence:
 	.byte	bg_scenery_tree_fence-bg_scenery
 
 bg_scenery:
@@ -303,9 +313,18 @@ bg_tile_tree_short:
 	.byte	$0E, $4E, $4E
 bg_tiles_end:
 
+	.export fg_scenery_tbl
+	.export fg_scenery_tbl_water
+	.export fg_scenery_tbl_walls
+	.export fg_scenery_tbl_surface
 fg_scenery_tbl:
+fg_scenery_tbl_water:
 	.byte	fg_scenery_water-fg_scenery
+
+fg_scenery_tbl_walls:
 	.byte	fg_scenery_walls-fg_scenery
+
+fg_scenery_tbl_surface:
 	.byte	fg_scenery_surface-fg_scenery
 
 fg_scenery:
@@ -327,22 +346,47 @@ fg_scenery_surface:
 fg_tiles:
 	.byte	FG_BASE_TILE_A, FG_BASE_TILE_B, FG_BASE_TILE_C, FG_BASE_TILE_D
 
+	.export	fg_masks
+	.export fg_mask_0, fg_mask_1
+	.export fg_mask_2, fg_mask_3
+	.export fg_mask_4, fg_mask_5
+	.export fg_mask_6, fg_mask_7
+	.export fg_mask_8, fg_mask_9
+	.export fg_mask_10, fg_mask_11
+	.export fg_mask_12, fg_mask_13
+	.export fg_mask_14, fg_mask_15
 fg_masks:
+fg_mask_0:
 	.byte	%00000000, %00000000
+fg_mask_1:
 	.byte	%00000000, %00011000
+fg_mask_2:
 	.byte	%00000001, %00011000
+fg_mask_3:
 	.byte	%00000111, %00011000
+fg_mask_4:
 	.byte	%00001111, %00011000
+fg_mask_5:
 	.byte	%11111111, %00011000
+fg_mask_6:
 	.byte	%00000001, %00011111
+fg_mask_7:
 	.byte	%00000111, %00011111
+fg_mask_8:
 	.byte	%00001111, %00011111
+fg_mask_9:
 	.byte	%10000001, %00011111
+fg_mask_10:
 	.byte	%00000001, %00000000
+fg_mask_11:
 	.byte	%10001111, %00011111
+fg_mask_12:
 	.byte	%11110001, %00011111
+fg_mask_13:
 	.byte	%11111001, %00011000
+fg_mask_14:
 	.byte	%11110001, %00011000
+fg_mask_15:
 	.byte	%11111111, %00011111
 ; ------------------------------------------------------------
 bg_proc_main:
@@ -360,8 +404,8 @@ bg_proc_main:
 		bpl	:-
 	; }
 
-	ldy	eng_bg_id
-	beq	:++++ ; if (eng_bg_id) {
+	ldy	course_bg_id
+	beq	:++++ ; if (course_bg_id) {
 		lda	eng_page_current
 		: ; while ((eng_page_current -= ENG_METATILE_SIZE) > ENG_METATILE_SIZE) {
 			cmp	#ENG_METATILE_SIZE
@@ -379,7 +423,7 @@ bg_proc_main:
 		adc	eng_pos_x
 		tax
 		lda	bg_scenery, x
-		beq	:++ ; if (bg_scenery[(eng_page_current*16)+bg_scenery_tbl[eng_bg_id-1]+eng_pos_x]) {
+		beq	:++ ; if (bg_scenery[(eng_page_current*16)+bg_scenery_tbl[course_bg_id-1]+eng_pos_x]) {
 			pha
 			and	#$0F
 			sec
@@ -414,8 +458,8 @@ bg_proc_main:
 		; }
 	: ; }
 
-	ldx	eng_fg_id
-	beq	:+++ ; if (eng_fg_id) {
+	ldx	course_fg_id
+	beq	:+++ ; if (course_fg_id) {
 		ldy	fg_scenery_tbl-1, x
 		ldx	#0
 		: ; for (byte of fg_scenery) {
@@ -431,32 +475,32 @@ bg_proc_main:
 		; }
 	: ; }
 
-	ldy	eng_area_type
+	ldy	course_type
 	bne	:+
-	lda	eng_course_no
+	lda	course_no
 	cmp	#course::no_08
-	bne	:+ ; if (eng_area_type == water && eng_course_no == no_08) {
+	bne	:+ ; if (course_type == water && course_no == no_08) {
 		lda	#FG_BASE_TILE_D
 		jmp	:++
 	: ; } else {
 		lda	fg_tiles, y
-		ldy	eng_area_type_cloud_b
-		beq	:+ ; if (eng_area_type_cloud_b) {
+		ldy	course_type_cloud
+		beq	:+ ; if (course_type_cloud) {
 			lda	#$88
 		; }
 	: ; }
 	sta	zp_byte_07
 
 	ldx	#0
-	lda	eng_fg_mask_id
+	lda	course_fg_mask_id
 	asl	a
 	tay
-	: ; for (x = 0, y = 2*eng_fg_mask_id; x < 0xD && y < 0x100; x += 8, y++) {
+	: ; for (x = 0, y = 2*course_fg_mask_id; x < 0xD && y < 0x100; x += 8, y++) {
 		lda	fg_masks, y
 		sta	zp_byte_00
 		iny
 		sty	zp_byte_01
-		lda	eng_area_type_cloud_b
+		lda	course_type_cloud
 		beq	:+	
 		cpx	#0
 		beq	:+ ; if () {
@@ -478,11 +522,11 @@ bg_proc_main:
 			cpx	#<(tbl_metatile_b_end-tbl_metatile_b)
 			beq	:++
 		
-			lda	eng_area_type
-			cmp	#area_type::underground
+			lda	course_type
+			cmp	#course_types::underground
 			bne	:+
 			cpx	#(tbl_metatile_b_0B-tbl_metatile_b)
-			bne	:+ ; if (eng_area_type == underground && x == tbl_metatile_b_0B) {
+			bne	:+ ; if (course_type == underground && x == tbl_metatile_b_0B) {
 				lda	#FG_BASE_TILE_B
 				sta	zp_byte_07
 			: ; }
@@ -554,17 +598,17 @@ bg_area:
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 				sta	VS_SR
 			.endif
-			lda	(eng_area_data_addr), y
-			cmp	#$FD
+			lda	(course_data_addr), y
+			cmp	#COURSE_DATA_END
 			beq	:++++
 			lda	eng_lenareaobj_0, x
-			bpl	:++++ ; if (eng_area_data_byte_0 != 0xFD && (eng_lenareaobj & 0x80)) {
+			bpl	:++++ ; if (course_data_byte_0 != COURSE_DATA_END && (eng_lenareaobj & 0x80)) {
 				iny
-				lda	(eng_area_data_addr), y
+				lda	(course_data_addr), y
 				asl	a
 				bcc	:+
 				lda	eng_areaobj_page_on
-				bne	:+ ; if ((eng_area_data_byte_1 & 0x80) && !eng_area_obj_page_on) {
+				bne	:+ ; if ((course_data_byte_1 & 0x80) && !eng_area_obj_page_on) {
 					inc	eng_areaobj_page_on
 					inc	eng_areaobj_page_loc
 				: ; }
@@ -574,23 +618,23 @@ bg_area:
 					lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 					sta	VS_SR
 				.endif
-				lda	(eng_area_data_addr), y
+				lda	(course_data_addr), y
 				and	#$0F
 				cmp	#$0D
-				bne	:+ ; if ((eng_area_data_byte_0 & 0xF) == 0xD) {
+				bne	:+ ; if ((course_data_byte_0 & 0xF) == 0xD) {
 					iny
-					lda	(eng_area_data_addr), y
+					lda	(course_data_addr), y
 					dey
 					and	#$40
 					bne	:++
 					lda	eng_areaobj_page_on
-					bne	:++ ; if (!(eng_area_data_byte_1 & 0x40) && !eng_areaobj_page_on) {
+					bne	:++ ; if (!(course_data_byte_1 & 0x40) && !eng_areaobj_page_on) {
 						iny
 						.if	.defined(VS)
 							lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 							sta	VS_SR
 						.endif
-						lda	(eng_area_data_addr), y
+						lda	(course_data_addr), y
 						and	#$1F
 						sta	eng_areaobj_page_loc
 						inc	eng_areaobj_page_on
@@ -605,7 +649,7 @@ bg_area:
 				cmp	eng_page_current
 				bcc	:++
 			; }
-			: ; if (eng_area_data_byte == 0xFD || !(eng_lenareaobj & 0x80)) {
+			: ; if (course_data_byte == COURSE_DATA_END || !(eng_lenareaobj & 0x80)) {
 				jsr	bg_area_decode
 				jmp	:+++
 			: ; } else {
@@ -688,28 +732,28 @@ bg_area_decode:
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_SR
 	.endif
-	lda	(eng_area_data_addr), y
-	cmp	#$FD
+	lda	(course_data_addr), y
+	cmp	#COURSE_DATA_END
 	beq	bg_area_rts
 	and	#$0F
 	cmp	#$0F
-	beq	:+ ; if ((eng_area_data_byte_0 & 0xF) == 0xC) {
+	beq	:+ ; if ((course_data_byte_0 & 0xF) == 0xC) {
 		ldx	#8
 	cmp	#$0C
-	beq	:+ ; } else if ((eng_area_data_byte_0 & 0xF) != 0xF) {
+	beq	:+ ; } else if ((course_data_byte_0 & 0xF) != 0xF) {
 		ldx	#0
 	: ; }
 	stx	zp_byte_07
 	ldx	eng_actor_offset
 	cmp	#$0E
-	bne	:+ ; if ((eng_area_data_byte_0 & 0xF) == 0xE) {
+	bne	:+ ; if ((course_data_byte_0 & 0xF) == 0xE) {
 		lda	#0
 		sta	zp_byte_07
 
 		lda	#BG_AREA_DECODE_0E_VAL
 		bne	:++++++++
 	: cmp	#$0D
-	bne	:++ ; } else if ((eng_area_data_byte_0 & 0xF) == 0xD) {
+	bne	:++ ; } else if ((course_data_byte_0 & 0xF) == 0xD) {
 		lda	#BG_AREA_DECODE_0D_VAL
 		sta	zp_byte_07
 
@@ -718,13 +762,13 @@ bg_area_decode:
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_SR
 		.endif
-		lda	(eng_area_data_addr), y
+		lda	(course_data_addr), y
 		and	#$40
-		beq	bg_area_decode_rts ; if (eng_area_data_byte_1 & 0x40) {
-			lda	(eng_area_data_addr), y
+		beq	bg_area_decode_rts ; if (course_data_byte_1 & 0x40) {
+			lda	(course_data_addr), y
 			and	#$7F
 			cmp	#$4B
-			bne	:+ ; if ((eng_area_data_byte_1 & 0x7F) == 0x4B) {
+			bne	:+ ; if ((course_data_byte_1 & 0x7F) == 0x4B) {
 				inc	eng_loop_flag
 			: ; }
 			and	#$3F
@@ -737,13 +781,13 @@ bg_area_decode:
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_SR
 	.endif
-	lda	(eng_area_data_addr), y
+	lda	(course_data_addr), y
 	and	#$70
-	bne	:+ ; } else if ((eng_area_data & 0xF) < 0xC && !(eng_area_data_byte_1 & 0x70)) {
+	bne	:+ ; } else if ((eng_area_data & 0xF) < 0xC && !(course_data_byte_1 & 0x70)) {
 		lda	#BG_AREA_DECODE_0C_VAL
 		sta	zp_byte_07
 
-		lda	(eng_area_data_addr), y
+		lda	(course_data_addr), y
 		and	#$0F
 		jmp	:+++++
 	: ; } else {
@@ -754,9 +798,9 @@ bg_area_decode:
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_SR
 		.endif
-		lda	(eng_area_data_addr), y
+		lda	(course_data_addr), y
 		and	#$08
-		beq	:+ ; if (zp_byte_00 == 0x70 && (eng_area_data_byte_1 & 0x08)) {
+		beq	:+ ; if (zp_byte_00 == 0x70 && (course_data_byte_1 & 0x08)) {
 			lda	#0
 			sta	zp_byte_00
 		: ; }
@@ -772,7 +816,7 @@ bg_area_decode:
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 				sta	VS_SR
 			.endif
-			lda	(eng_area_data_addr), y
+			lda	(course_data_addr), y
 			and	#$70
 		: ; }
 
@@ -793,14 +837,14 @@ bg_area_decode:
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_SR
 	.endif
-	lda	(eng_area_data_addr), y
+	lda	(course_data_addr), y
 	and	#$0F
 	cmp	#$0E
 	bne	bg_area_decode_rts
 	lda	eng_page_cached
 	bne	:+++
 bg_area_decode_rts:
-	; if ((eng_lenareaobj & 0x80) && eng_areaobj_page_loc != eng_page_current && (((eng_area_data_byte_0 & 0xF) != 0xE) || !eng_page_cached)) {
+	; if ((eng_lenareaobj & 0x80) && eng_areaobj_page_loc != eng_page_current && (((course_data_byte_0 & 0xF) != 0xE) || !eng_page_cached)) {
 		rts
 	: lda	eng_page_cached
 	beq	:+ ; } else if (eng_page_cached) {
@@ -816,7 +860,7 @@ bg_area_decode_rts:
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_SR
 		.endif
-		lda	(eng_area_data_addr), y
+		lda	(course_data_addr), y
 		and	#$F0
 		lsr	a
 		lsr	a
@@ -916,31 +960,31 @@ bg_areaobj_set_attr:
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_SR
 	.endif
-	lda	(eng_area_data_addr), y
+	lda	(course_data_addr), y
 	pha
 	and	#$40
-	bne	:+ ; if ((eng_area_data_byte_1 & 0x40)) {
+	bne	:+ ; if ((course_data_byte_1 & 0x40)) {
 		pla
 		pha
 		and	#$0F
-		sta	eng_fg_mask_id
+		sta	course_fg_mask_id
 		pla
 		and	#$30
 		lsr	a
 		lsr	a
 		lsr	a
 		lsr	a
-		sta	eng_bg_id
+		sta	course_bg_id
 		rts
 	: ; } else {
 		pla
 		and	#$07
 		cmp	#4
 		bcc	:+ ; if ((eng_area_data_byte_1 & 0x7) >= 4) {
-			sta	eng_bg_col
-			lda	#0
+			sta	course_bg_col
+			lda	#COURSE_DATA_FG_NONE_VAL
 		: ; }
-		sta	eng_fg_id
+		sta	course_fg_id
 		rts
 	; }
 ; -----------------------------
@@ -954,21 +998,21 @@ bg_areaobj_lock_warp:
 	.endif
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
-		lda	eng_course_no
-		beq	:++ ; if (eng_course_no > no_01) {
+		lda	course_no
+		beq	:++ ; if (course_no > no_01) {
 			inx
 
-			ldy	eng_area_type
+			ldy	course_type
 			dey
-			bne	:++ ; if (eng_area_type == overworld) {
+			bne	:++ ; if (course_type == overworld) {
 
 			.if	.defined(ANN)
 				jmp	:+
 
 			bg_areaobj_lock_warp_7FB_set:
 				ldx	#$84
-				lda	eng_course_no
-				bne	:+ ; if (eng_course_no == no_01) {
+				lda	course_no
+				bne	:+ ; if (course_no == no_01) {
 					dex
 					ldy	eng_goals
 					dey
@@ -982,14 +1026,14 @@ bg_areaobj_lock_warp:
 		: ; }
 		txa
 	.elseif	.defined(SMB2)
-		lda	eng_course_no
-		bne	:+++ ; if (!byte_7FB && eng_course_no == no_01) {
-			ldy	eng_area_type
+		lda	course_no
+		bne	:+++ ; if (!byte_7FB && course_no == no_01) {
+			ldy	course_type
 			dey
 			beq	:+
-			lda	byte_74F
-			beq	:++ ; if (eng_area_type == overworld || byte_74F) {
-				; if (eng_area_type != overworld) {
+			lda	course_page_offset
+			beq	:++ ; if (course_type == overworld || course_page_offset) {
+				; if (course_type != overworld) {
 					inx
 				: ; }
 
@@ -1003,24 +1047,24 @@ bg_areaobj_lock_warp:
 			bne	bg_areaobj_lock_warp_do
 		: ; } else {
 			ldx	#$83
-			lda	eng_course_no
+			lda	course_no
 			cmp	#course::no_03
 			beq	bg_areaobj_lock_warp_load ; if (course != no_03) {
 				inx
 				cmp	#course::no_05
 				bne	:+
-				lda	byte_74F
+				lda	course_page_offset
 				cmp	#$0B
 				beq	bg_areaobj_lock_warp_load
-				ldy	eng_area_type
+				ldy	course_type
 				dey
 				beq	:++
 				jmp	:+++
 			: ; } if (course.not_in(no_03, no_05)) {
 					inx
-			: ; } if (course.not_in(no_03, no_05) || (course == no_05 && byte_74F != 0x0B && eng_area_type == overworld)) {
+			: ; } if (course.not_in(no_03, no_05) || (course == no_05 && course_page_offset != 0x0B && course_type == overworld)) {
 					inx
-			: ; } if (course.not_in(no_03, no_05) || (course == no_05 && byte_74F != 0x0B)) {
+			: ; } if (course.not_in(no_03, no_05) || (course == no_05 && course_page_offset != 0x0B)) {
 					inx
 			; }
 		; }
@@ -1085,11 +1129,22 @@ bg_areaobj_swarm:
 	sta	eng_swarm_queue
 	rts
 ; -----------------------------
+	.export bg_areaobj_ledge_tbl
+	.export bg_areaobj_ledge_tbl_tree
+	.export bg_areaobj_ledge_tbl_mushroom
+	.export bg_areaobj_ledge_tbl_cannon
 bg_areaobj_ledge:
-	lda	eng_area_var
+	lda	course_ledge_type
 	jsr	eng_farjump
+
+bg_areaobj_ledge_tbl:
+bg_areaobj_ledge_tbl_tree:
 	.addr	bg_areaobj_ledge_tree
+
+bg_areaobj_ledge_tbl_mushroom:
 	.addr	bg_areaobj_ledge_mushroom
+
+bg_areaobj_ledge_tbl_cannon:
 	.addr	bg_areaobj_cannon
 ; --------------
 bg_areaobj_ledge_tree:
@@ -1358,15 +1413,15 @@ bg_areaobj_pipe_vert:
 	pha
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		lda	eng_course_sub
-		ora	eng_course_no
+		lda	course_sub
+		ora	course_no
 		beq	:+
 	.endif
 
 	ldy	eng_lenareaobj_0, x
 	beq	:+
 	jsr	bg_obj_alloc
-	bcs	:+ ; if ((eng_course_sub|eng_course_no) && eng_lenareaobj && !bg_obj_alloc()) {
+	bcs	:+ ; if ((course_sub|course_no) && eng_lenareaobj && !bg_obj_alloc()) {
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jsr	bg_objpos_x_get
 			clc
@@ -1381,8 +1436,8 @@ bg_areaobj_pipe_vert:
 			jsr	bg_objpos_y_get
 			sta	eng_actor_pos_y_lo, x
 		.elseif	.defined(ANN)
-			lda	eng_course_no
-			ora	eng_course_sub
+			lda	course_no
+			ora	course_sub
 			ora	byte_7FB
 			beq	:+
 		.endif
@@ -1574,7 +1629,7 @@ bg_areaobj_coinrow_tiles:
 	.byte	COINROW_TILE_A
 ; --------------
 bg_areaobj_coinrow:
-	ldy	eng_area_type
+	ldy	course_type
 	lda	bg_areaobj_coinrow_tiles, y
 	jmp	bg_areaobj_get_row
 ; -----------------------------
@@ -1620,16 +1675,16 @@ bg_areaobj_brick_tiles:
 	.byte	$88
 ; --------------
 bg_areaobj_brickrow:
-	ldy	eng_area_type
-	lda	eng_area_type_cloud_b
-	beq	:+ ; if () {
-		ldy	#4
+	ldy	course_type
+	lda	course_type_cloud
+	beq	:+ ; if (course_type == cloud) {
+		ldy	#course_types::cloud
 	: ; }
 	lda	bg_areaobj_brick_tiles, y
 	jmp	bg_areaobj_get_row
 
 bg_areaobj_floorrow:
-	ldy	eng_area_type
+	ldy	course_type
 	lda	bg_areaobj_floor_tiles, y
 bg_areaobj_get_row:
 	pha
@@ -1643,12 +1698,12 @@ bg_areaobj_draw_row:
 	jmp	bg_objrenderbase
 
 bg_areaobj_brickcol:
-	ldy	eng_area_type
+	ldy	course_type
 	lda	bg_areaobj_brick_tiles, y
 	jmp	bg_areaobj_get_col
 
 bg_areaobj_floorcol:
-	ldy	eng_area_type
+	ldy	course_type
 	lda	bg_areaobj_floor_tiles, y
 bg_areaobj_get_col:
 	pha
@@ -1760,9 +1815,9 @@ bg_areaobj_block_item:
 	jsr	bg_areaobj_block_id
 	sty	zp_byte_07
 	lda	#0
-	ldy	eng_area_type
+	ldy	course_type
 	dey
-	beq	:+ ; if (eng_area_type == overworld) {
+	beq	:+ ; if (course_type == overworld) {
 		lda	#BLOCK_TILE_OFFSET
 	: ; }
 	clc
@@ -1790,8 +1845,8 @@ bg_areaobj_pit_tiles:
 bg_areaobj_pit:
 	jsr	eng_loadobjlen
 	bcc	:++
-	lda	eng_area_type
-	bne	:++ ; if (eng_loadobjlen() && eng_area_type == water) {
+	lda	course_type
+	bne	:++ ; if (eng_loadobjlen() && course_type == water) {
 		ldx	eng_cannon_offset
 		jsr	bg_objpos_x_get
 		sec
@@ -1816,7 +1871,7 @@ bg_areaobj_pit:
 		stx	eng_cannon_offset
 	: ; }
 
-	ldx	eng_area_type
+	ldx	course_type
 	lda	bg_areaobj_pit_tiles, x
 	ldx	#8
 	ldy	#$0F
@@ -1874,11 +1929,11 @@ eng_loadobjattr:
 		sta	VS_SR
 	.endif
 	ldy	eng_areaobj_offset_0, x
-	lda	(eng_area_data_addr), y
+	lda	(course_data_addr), y
 	and	#$0F
 	sta	BG_PROC_METATILE_ID
 	iny
-	lda	(eng_area_data_addr), y
+	lda	(course_data_addr), y
 	and	#$0F
 	tay
 	rts
@@ -1923,8 +1978,8 @@ bg_get_buffer_ptr:
 	sta	eng_buffer_ptr
 	rts
 ; -----------------------------
-.if	.defined(FC_SMB)|.defined(VS_SMB)
-	.byte	$FF, $FF
-.elseif	.defined(FDS_SMB)
-	.byte	$12, $36
+.if	.defined(FC_SMB)
+	.res	2, $FF
+.elseif	.defined(VS_SMB)
+	.res	55, $FF
 .endif

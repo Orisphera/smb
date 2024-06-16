@@ -111,7 +111,7 @@ title_proc:
 							bmi	:-
 						; }
 
-						ldy	eng_course_no
+						ldy	course_no
 						iny
 						sty	ppu_nmi_buffer+4
 					: ; }
@@ -168,7 +168,7 @@ title_proc:
 				jsr	title_course_set
 			: ; }
 
-			jsr	eng_loadareaptr
+			jsr	course_descriptor_load
 			inc	eng_hidden_one_up
 			inc	eng_hidden_one_up_b
 			inc	eng_req_timer
@@ -201,9 +201,9 @@ title_proc:
 	; }
 ; ----------------------------
 title_course_set:
-	sta     eng_course_no
-        sta     eng_course_no_b
+	sta     course_no
+        sta     course_no_b
         ldx     #0
-        stx     eng_course_sub
-        stx     eng_course_sub_b
+        stx     course_sub
+        stx     course_sub_b
         rts

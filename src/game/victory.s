@@ -16,7 +16,7 @@ eng_victory:
 	lda	eng_gameplay_mode
 	beq	:++
 	.if	.defined(SMB2M)
-		ldx	eng_course_no
+		ldx	course_no
 		cpx	#course::no_08
 		bne	:+
 		cmp	#gameplay_mode::mode_5
@@ -25,7 +25,7 @@ eng_victory:
 		beq	eng_victory-1
 		; NOTE: This assumes this module follows an rts
 	.endif
-	: ; if (eng_gameplay_mode != bridge && (eng_course_no != course_08 || eng_gameplay_mode.not_in(5, $D))) {
+	: ; if (eng_gameplay_mode != bridge && (course_no != course_08 || eng_gameplay_mode.not_in(5, $D))) {
 		ldx	#0
 		stx	eng_actor_offset
 		jsr	actor_proc
@@ -36,9 +36,9 @@ eng_victory:
 ; -----------------------------------------------------------
 victory_enter:
 	.if	.defined(SMB2M)
-		lda	eng_course_no
+		lda	course_no
 		cmp	#course::no_08
-		beq	victory_course_8 ; if (!SMB2M || eng_course_no != course_8) {
+		beq	victory_course_8 ; if (!SMB2M || course_no != course_8) {
 	.endif
 		lda	eng_gameplay_mode
 		jsr	eng_farjump
@@ -111,7 +111,7 @@ victory_enter:
 		bne	:+++ ; if (eng_goals == ENG_HARDMODE_B_GOAL && !ENG_HARDMODE_VAR) {
 			sty	zp_byte_06
 
-			lda	eng_course_no
+			lda	course_no
 			asl	a
 			tax
 			lda	data_62FA, x
@@ -185,7 +185,7 @@ victory_init:
 	.if	.defined(ANN)
 		lda	ENG_HARDMODE_VAR
 		bne	:++
-		ldx	eng_course_no
+		ldx	course_no
 		cpx	#course::no_08
 		beq	:++ ; if (!ENG_HARDMODE_VAR && course_no != course_08) {
 			ldy	data_635C, x
@@ -213,7 +213,7 @@ victory_init:
 	stx	victory_screen_hi
 
 	.if	.defined(SMB2)
-		ldy	eng_course_no
+		ldy	course_no
 		lda	victory_init_mask, y
 		ora	eng_timer_disp+2
 		sta	eng_timer_disp+2
@@ -222,11 +222,11 @@ victory_init:
 	.if	.defined(SMB2M)
 		lda	ENG_HARDMODE_VAR
 		beq	:+
-		lda	eng_course_no
+		lda	course_no
 		cmp	#ENG_HARDMODE_B_COURSE
-		bcc	:+ ; if (ENG_HARDMODE_VAR && eng_course_no >= course_04) {
+		bcc	:+ ; if (ENG_HARDMODE_VAR && course_no >= course_04) {
 			lda	#course::no_08
-			sta	eng_course_no
+			sta	course_no
 		: ; }
 	.endif
 
@@ -297,9 +297,9 @@ victory_msg:
 		bcs	victory_msg_dotick
 
 		.if	.defined(SMB)
-			ldy	eng_course_no
+			ldy	course_no
 			cpy	#course::no_08
-			bne	:+ ; if (eng_course_no == course_8) {
+			bne	:+ ; if (course_no == course_8) {
 				cmp	#3
 				bcc	victory_msg_dotick
 				sbc	#1
@@ -321,7 +321,7 @@ victory_msg:
 			: ; }
 
 			iny
-			lda	eng_course_no
+			lda	course_no
 			cmp	#course::no_08
 			beq	victory_msg_sound_check
 			dey
@@ -335,9 +335,9 @@ victory_msg:
 		bcs	victory_msg_dotick
 	.elseif	.defined(VS)
 		ldy	victory_msg_timer_hi
-		lda	eng_course_no
+		lda	course_no
 		cmp	#course::no_08
-		beq	:++ ; if (!victory_msg_timer_lo && eng_course_no != no_08) {
+		beq	:++ ; if (!victory_msg_timer_lo && course_no != no_08) {
 			cpy	#0
 			bne	:+ ; if (victory_msg_timer_hi == 0) {
 				inc	victory_msg_timer_hi
@@ -507,9 +507,9 @@ ppu_84C7:
 	.byte	$80, $A0, $B8, $C8
 ; ----------------------------
 sub_84CF:
-	lda	eng_course_no
+	lda	course_no
 	cmp	#course::no_08
-	beq	:+ ; if (eng_course_no != no_08) {
+	beq	:+ ; if (course_no != no_08) {
 		lda	eng_gameplay_mode
 		clc
 		adc	#2
@@ -619,7 +619,7 @@ sub_8552:
 		: ; }
 
 		inc	VS_RAM_ARENA0+$18
-		lda	eng_course_no
+		lda	course_no
 		pha
 		lda	VS_RAM_ARENA0+$22
 		pha
@@ -643,7 +643,7 @@ sub_8552:
 				lda	ppu_84C7, x
 				sta	ppu_nmi_buffer+$AE
 				ldx	#0
-				stx	eng_course_no
+				stx	course_no
 				stx	eng_actor_offset
 				jsr	sub_E7DA
 			: ; }
@@ -656,7 +656,7 @@ sub_8552:
 		pla
 		sta	VS_RAM_ARENA0+$22
 		pla
-		sta	eng_course_no
+		sta	course_no
 		lda	#$30
 		sta	tbl_6E5
 		lda	#$B8
@@ -665,24 +665,24 @@ sub_8552:
 	; }
 ; -----------------------------------------------------------
 sub_85E0:
-	lda	eng_course_no
+	lda	course_no
 	cmp	#course::no_08
-	bne	:+ ; if (eng_course_no == no_08) {
+	bne	:+ ; if (course_no == no_08) {
 		jsr	sub_8552
 	: ; }
 
 	lda	eng_timer_victory
 	bne	:+
-	ldy	eng_course_no
+	ldy	course_no
 	cpy	#course::no_08
-	bcs	:++ ; if (!eng_timer_victory || eng_course_no < no_08) {
+	bcs	:++ ; if (!eng_timer_victory || course_no < no_08) {
 		; if (!eng_timer_victory) {
 			lda	#0
-			sta	eng_course_sub
+			sta	course_sub
 			sta	eng_goals
 			sta	eng_gameplay_mode
-			inc	eng_course_no
-			jsr	eng_loadareaptr
+			inc	course_no
+			jsr	course_descriptor_load
 			inc	eng_req_timer
 			lda	#game_mode::normal
 			sta	eng_game_mode
@@ -705,41 +705,41 @@ victory_end:
 
 	.if	.defined(CONS)
 		.if	.defined(SMB)
-			ldy	eng_course_no
+			ldy	course_no
 			cpy	#course::no_08
-			bcs	:+ ; if (eng_course_no < course_8) {
+			bcs	:+ ; if (course_no < course_8) {
 		.endif
 
 		lda	#0
-		sta	eng_course_sub
+		sta	course_sub
 		sta	eng_goals
 		sta	eng_gameplay_mode
 
 		.if	.defined(SMBM)
-			inc	eng_course_no
+			inc	course_no
 		.elseif	.defined(SMB2)
-			lda	eng_course_no
+			lda	course_no
 			clc
 			adc	#1
 			cmp	#course::no_09
-			bcc	:+ ; if (eng_course_no >= course_09) {
+			bcc	:+ ; if (course_no >= course_09) {
 				lda	#course::no_09
 			: ; }
-			sta	eng_course_no
+			sta	course_no
 		.endif
 
-		jsr	eng_loadareaptr
+		jsr	course_descriptor_load
 		inc	eng_req_timer
 		lda	#game_mode::normal
 		sta	eng_game_mode
 	.elseif	.defined(VS)
-		lda	eng_course_no
+		lda	course_no
 		cmp	#course::no_08
 		bne	:+
 		lda	eng_lives
 		bmi	:+
 		lda	eng_timer_select
-		bne	:++ ; if (eng_course_no == no_08 && eng_lives >= 0 && !eng_timer_select) {
+		bne	:++ ; if (course_no == no_08 && eng_lives >= 0 && !eng_timer_select) {
 			lda	#$30
 			sta	eng_timer_select
 			lda	#$40
@@ -748,7 +748,7 @@ victory_end:
 			lda	#1
 			sta	STACK_BASE+$35
 			jmp	sub_D279
-		: ; } else if (eng_course_no != no_08 || eng_lives < 0) {
+		: ; } else if (course_no != no_08 || eng_lives < 0) {
 			inc	eng_gameplay_mode
 		: ; }
 	.endif
