@@ -621,25 +621,24 @@ bg_area:
 				lda	(course_data_addr), y
 				and	#$0F
 				cmp	#$0D
-				bne	:+ ; if ((course_data_byte_0 & 0xF) == 0xD) {
+				bne	:+
+				iny
+				lda	(course_data_addr), y
+				dey
+				and	#$40
+				bne	:++
+				lda	eng_areaobj_page_on
+				bne	:++ ; if ((course_data_byte_0 & 0xF) == 0xD && !(course_data_byte_1 & 0x40) && !eng_areaobj_page_on) {
 					iny
+					.if	.defined(VS)
+						lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
+						sta	VS_SR
+					.endif
 					lda	(course_data_addr), y
-					dey
-					and	#$40
-					bne	:++
-					lda	eng_areaobj_page_on
-					bne	:++ ; if (!(course_data_byte_1 & 0x40) && !eng_areaobj_page_on) {
-						iny
-						.if	.defined(VS)
-							lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-							sta	VS_SR
-						.endif
-						lda	(course_data_addr), y
-						and	#$1F
-						sta	eng_areaobj_page_loc
-						inc	eng_areaobj_page_on
-						jmp	:+++++
-					; }
+					and	#$1F
+					sta	eng_areaobj_page_loc
+					inc	eng_areaobj_page_on
+					jmp	:+++++
 				: ; }
 				cmp	#$0E
 				bne	:+
@@ -649,10 +648,14 @@ bg_area:
 				cmp	eng_page_current
 				bcc	:++
 			; }
-			: ; if (course_data_byte == COURSE_DATA_END || !(eng_lenareaobj & 0x80)) {
+			: ; if (
+			;	course_data_byte == COURSE_DATA_END
+			;	|| !(eng_lenareaobj & 0x80)
+			;	|| (((course_data_byte & 0xF) == 0xE && eng_page_cached)
+			;	|| eng_areaobj_page_loc >= eng_page_current)) {
 				jsr	bg_area_decode
 				jmp	:+++
-			: ; } else {
+			: ; } else if (eng_areaobj_page_loc < eng_page_current) {
 				inc	eng_area_bg_flag
 			: ; }
 			; if (needs_increment) {
