@@ -545,11 +545,11 @@ palette_underwater_start:
 palette_underwater_end:
 	.byte	0
 
-	.export palette_day
-palette_day:
+	.export palette_ground
+palette_ground:
 	.dbyt	PPU_COLOR_PAGE_BG
-	.byte	palette_day_end-palette_day_start
-palette_day_start:
+	.byte	palette_ground_end-palette_ground_start
+palette_ground_start:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_YGREEN2, PPU_COLOR_GREEN1,  PPU_COLOR_PITCH0
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_RED3,    PPU_COLOR_ORANGE1, PPU_COLOR_PITCH0
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3,   PPU_COLOR_AZURE2,  PPU_COLOR_PITCH0
@@ -558,7 +558,7 @@ palette_day_start:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_GREEN1,  PPU_COLOR_GREY3,   PPU_COLOR_ORANGE2
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_RED1,    PPU_COLOR_GREY3,   PPU_COLOR_ORANGE2
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_PITCH0,  PPU_COLOR_RED3,    PPU_COLOR_ORANGE1
-palette_day_end:
+palette_ground_end:
 	.byte	0
 
 	.export palette_underground

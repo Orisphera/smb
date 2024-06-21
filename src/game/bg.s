@@ -589,7 +589,7 @@ bg_area:
 	.endif
 	bg_areaobj_outer_loop: ; while (eng_area_bg_flag || eng_page_cached) {
 		ldx	#3-1
-		bg_areaobj_loop: ; for (x = 3; x >= 0; x--) {
+		bg_areaobj_loop: ; for (x = 3-1 x >= 0; x--) {
 			stx	eng_actor_offset
 			lda	#0
 			sta	eng_area_bg_flag
@@ -619,13 +619,13 @@ bg_area:
 					sta	VS_SR
 				.endif
 				lda	(course_data_addr), y
-				and	#$0F
-				cmp	#$0D
+				and	#<COURSE_DATA_TYPE_MASK
+				cmp	#<COURSE_DATA_TYPE_0D
 				bne	:+
 				iny
 				lda	(course_data_addr), y
 				dey
-				and	#$40
+				and	#>COURSE_DATA_TYPE_0D_MASK
 				bne	:++
 				lda	eng_areaobj_page_on
 				bne	:++ ; if ((course_data_byte_0 & 0xF) == 0xD && !(course_data_byte_1 & 0x40) && !eng_areaobj_page_on) {
@@ -635,12 +635,12 @@ bg_area:
 						sta	VS_SR
 					.endif
 					lda	(course_data_addr), y
-					and	#$1F
+					and	#>COURSE_DATA_TYPE_0D_LOC_MASK
 					sta	eng_areaobj_page_loc
 					inc	eng_areaobj_page_on
 					jmp	:+++++
 				: ; }
-				cmp	#$0E
+				cmp	#<COURSE_DATA_TYPE_0E
 				bne	:+
 				lda	eng_page_cached
 				bne	:++
@@ -738,25 +738,25 @@ bg_area_decode:
 	lda	(course_data_addr), y
 	cmp	#COURSE_DATA_END
 	beq	bg_area_rts
-	and	#$0F
-	cmp	#$0F
-	beq	:+ ; if ((course_data_byte_0 & 0xF) == 0xC) {
+	and	#<COURSE_DATA_TYPE_MASK
+	cmp	#<COURSE_DATA_TYPE_0F
+	beq	:+ ; if (course_data_type == 0xC) {
 		ldx	#8
 	cmp	#$0C
-	beq	:+ ; } else if ((course_data_byte_0 & 0xF) != 0xF) {
+	beq	:+ ; } else if (course_data_type != 0xF) {
 		ldx	#0
 	: ; }
 	stx	zp_byte_07
 	ldx	eng_actor_offset
-	cmp	#$0E
-	bne	:+ ; if ((course_data_byte_0 & 0xF) == 0xE) {
+	cmp	#<COURSE_DATA_TYPE_0E
+	bne	:+ ; if (course_data_type == 0xE) {
 		lda	#0
 		sta	zp_byte_07
 
 		lda	#BG_AREA_DECODE_0E_VAL
 		bne	:++++++++
-	: cmp	#$0D
-	bne	:++ ; } else if ((course_data_byte_0 & 0xF) == 0xD) {
+	: cmp	#<COURSE_DATA_TYPE_0D
+	bne	:++ ; } else if (course_data_type == 0xD) {
 		lda	#BG_AREA_DECODE_0D_VAL
 		sta	zp_byte_07
 
@@ -766,7 +766,7 @@ bg_area_decode:
 			sta	VS_SR
 		.endif
 		lda	(course_data_addr), y
-		and	#$40
+		and	#>COURSE_DATA_TYPE_0D_MASK
 		beq	bg_area_decode_rts ; if (course_data_byte_1 & 0x40) {
 			lda	(course_data_addr), y
 			and	#$7F
@@ -774,10 +774,10 @@ bg_area_decode:
 			bne	:+ ; if ((course_data_byte_1 & 0x7F) == 0x4B) {
 				inc	eng_loop_flag
 			: ; }
-			and	#$3F
+			and	#>COURSE_DATA_TYPE_0D_OBJ_MASK
 			jmp	:++++++
 		; } else rts;
-	: cmp	#$0C
+	: cmp	#<COURSE_DATA_TYPE_0C
 	bcs	:+++
 	iny
 	.if	.defined(VS)
@@ -786,7 +786,7 @@ bg_area_decode:
 	.endif
 	lda	(course_data_addr), y
 	and	#$70
-	bne	:+ ; } else if ((eng_area_data & 0xF) < 0xC && !(course_data_byte_1 & 0x70)) {
+	bne	:+ ; } else if (course_data_type < 0xC && !(course_data_byte_1 & 0x70)) {
 		lda	#BG_AREA_DECODE_0C_VAL
 		sta	zp_byte_07
 
@@ -820,7 +820,7 @@ bg_area_decode:
 				sta	VS_SR
 			.endif
 			lda	(course_data_addr), y
-			and	#$70
+			and	#>COURSE_AREAOBJ_MASK
 		: ; }
 
 		lsr	a
@@ -841,8 +841,8 @@ bg_area_decode:
 		sta	VS_SR
 	.endif
 	lda	(course_data_addr), y
-	and	#$0F
-	cmp	#$0E
+	and	#<COURSE_DATA_TYPE_MASK
+	cmp	#<COURSE_DATA_TYPE_0E
 	bne	bg_area_decode_rts
 	lda	eng_page_cached
 	bne	:+++
@@ -864,7 +864,7 @@ bg_area_decode_rts:
 			sta	VS_SR
 		.endif
 		lda	(course_data_addr), y
-		and	#$F0
+		and	#<COURSE_DATA_POSX_MASK
 		lsr	a
 		lsr	a
 		lsr	a
@@ -883,6 +883,7 @@ bg_area_decode_rts:
 	adc	zp_byte_07
 	jsr	eng_farjump
 	.addr	bg_areaobj_pipe_vert
+
 	.addr	bg_areaobj_ledge
 	.addr	bg_areaobj_brickrow
 	.addr	bg_areaobj_floorrow
@@ -890,6 +891,7 @@ bg_area_decode_rts:
 	.addr	bg_areaobj_brickcol
 	.addr	bg_areaobj_floorcol
 	.addr	bg_areaobj_pipe_vert
+
 	.addr	bg_areaobj_pit
 	.addr	bg_areaobj_pulley
 	.addr	bg_areaobj_bridge_hi
@@ -898,6 +900,7 @@ bg_area_decode_rts:
 	.addr	bg_areaobj_waterhole
 	.addr	bg_areaobj_block_qhi
 	.addr	bg_areaobj_block_qlo
+
 	.addr	bg_areaobj_rope_norm
 	.addr	bg_areaobj_rope_plat
 	.addr	bg_areaobj_castle
@@ -941,6 +944,7 @@ bg_area_decode_rts:
 	.addr	bg_areaobj_castle_bridge_axe
 	.addr	bg_areaobj_castle_bridge_draw
 	.addr	bg_areaobj_castle_bridge
+
 	.addr	bg_areaobj_lock_warp
 	.addr	bg_areaobj_lock
 	.addr	bg_areaobj_lock

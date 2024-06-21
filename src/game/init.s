@@ -61,6 +61,8 @@ eng_init_oam_end:
 	eng_init_0:
 	.endif
 
+	.export	eng_init_0_do
+eng_init_0_do:
 	ldy	#$4B
 	jsr	sub_clearram
 
@@ -184,6 +186,8 @@ eng_init_oam_end:
 	eng_init_1:
 	.endif
 
+	.export eng_init_1_do
+eng_init_1_do:
 	lda	#0
 	sta	eng_disp_disable
 	

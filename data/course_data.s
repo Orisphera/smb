@@ -27,8 +27,13 @@ courses_actor_castle_1:
 	.byte	COURSE_ACTORS_END
 
 courses_actor_castle_2:
-	.byte	$0F, $03, $56, $1B, $C9, $1B, $0F, $07, $36, $1B
-	.byte	$AA, $1B, $48, $95
+	.byte	$0F, $03
+	.byte	$56, $1B
+	.byte	$C9, $1B
+	.byte	$0F, $07
+	.byte	$36, $1B
+	.byte	$AA, $1B
+	.byte	$48, $95
 
 	.if	.defined(VS_SMB)
 		.byte	$1B, $8C
@@ -56,34 +61,27 @@ courses_actor_castle_3:
 courses_actor_castle_4:
 	.byte	$0B, $8C
 	.if	.defined(SMB)
-		.byte	$3B
+		.word	$1D3B
+		.word	$1D8B
 	.elseif	.defined(VS_SMB)
-		.byte	$3A
+		.word	$1D3A
+		.word	$1D8A
 	.endif
-	.byte	$1D
-	.if	.defined(SMB)
-		.byte	$8B
-	.elseif	.defined(VS_SMB)
-		.byte	$8A
-	.endif
-	.byte	$1D, $AB, $0C
+	.byte	$AB, $0C
 	.if	.defined(SMB)
 		.byte	$DB, $1D
 	.elseif	.defined(VS_SMB)
 		.byte	$DA, $1B
 	.endif
-
 	.if	.defined(SMB)
 		.byte	$0F, $03
 	.elseif	.defined(VS_SMB)
 		.byte	$3B, $8C, $55, $1B, $FB, $0C
 	.endif
-
-	.byte	$65
 	.if	.defined(SMB)
-		.byte	$1D
+		.word	$1D65
 	.elseif	.defined(VS_SMB)
-		.byte	$9D
+		.word	$9D65
 	.endif
 
 	.byte	$6B, $1B, $05, $9D, $0B, $1B, $05, $9B, $0B
@@ -93,11 +91,11 @@ courses_actor_castle_4:
 		.byte	$E8, $03
 	.endif
 
-	.byte	$1B, $8C, $70, $15, $7B, $0C, $DB, $0C, $0F
+	.byte	$1B, $8C, $70, $15, $7B, $0C, $DB, $0C
 	.if	.defined(SMB)
-		.byte	$08
+		.word	$080F
 	.elseif	.defined(VS_SMB)
-		.byte	$07
+		.word	$070F
 	.endif
 
 	.if	.defined(VS_SMB)
@@ -170,12 +168,16 @@ courses_actor_overworld_1:
 		.byte	$04, $8F
 	.endif
 
-	.byte	$9B
 	.if	.defined(SMB)
-		.byte	$83
+		.word	$839B
 	.elseif	.defined(VS_SMB)
-		.byte	$03, $F1, $0E
+		.word	$039B
 	.endif
+
+	.if	.defined(VS_SMB)
+		.word	$0EF1
+	.endif
+
 	.byte	$16, $A4, $88, $24, $E9, $28, $05, $A8, $7B, $28
 	.if	.defined(SMB)
 		.byte	$24, $8F, $C8, $03, $E8, $03, $46, $A8
@@ -194,11 +196,13 @@ courses_actor_overworld_2:
 
 courses_actor_overworld_3:
 	.byte	$2E, $C2, $66, $E2, $11, $0F, $07, $02, $11, $0F
+
 	.if	.defined(SMB)
 		.byte	$0C, $12
 	.elseif	.defined(VS_SMB)
 		.byte	$0B, $17, $10, $72
 	.endif
+
 	.byte	$11
 	.byte	COURSE_ACTORS_END
 
@@ -609,285 +613,774 @@ courses_actor_water_4:
 .endif
 courses_data_castle_1:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_7|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07
+	.word	$3205
+	.word	$3306
 	.if	.defined(SMB)
-		.byte	$34, $CE, $03, $DC, $51
-		.byte	$EE, $07, $73, $E0, $74, $0A, $7E, $06, $9E, $0A
-		.byte	$CE, $06, $E4, $00, $E8, $0A, $FE, $0A, $2E, $89
-		.byte	$4E, $0B, $54, $0A, $14, $8A, $C4, $0A, $34, $8A
-		.byte	$7E, $06, $C7, $0A, $01, $E0, $02, $0A, $47, $0A
-		.byte	$81, $60, $82, $0A, $C7, $0A, $0E, $87, $7E, $02
-		.byte	$A7, $02, $B3, $02, $D7, $02, $E3, $02, $07, $82
-		.byte	$13, $02, $3E, $06, $7E, $02, $AE, $07
+		.word	$3407
+		.word	$03CE
+		.word	$51DC
+		.word	$07EE
+		.word	$E073
+		.word	$0A74
+		.word	$067E
+		.word	$0A9E
+		.word	$06CE
+		.word	$00E4
+		.word	$0AE8
+		.word	$0AFE
+		.word	$892E
+		.word	$0B4E
+		.word	$0A54
+		.word	$8A14
+		.word	$0AC4
+		.word	$8A34
+		.word	$067E
+		.word	$0AC7
+		.word	$E001
+		.word	$0A02
+		.word	$0A47
+		.word	$6081
+		.word	$0A82
+		.word	$0AC7
+		.word	$870E
+		.word	$027E
+		.word	$02A7
+		.word	$02B3
+		.word	$02D7
+		.word	$02E3
+		.word	$8207
+		.word	$0213
+		.word	$063E
+		.word	$027E
+		.word	$07AE
 	.elseif	.defined(VS_SMB)
-		.byte	$33, $3E, $03, $4C, $50, $4E
-		.byte	$07, $57, $31, $6E, $03, $7C, $52, $9E, $07, $FE, $0A, $7E, $89, $9E, $0A, $EE
-		.byte	$07, $F7, $34, $13, $8A, $3E, $0A, $6E, $09, $87, $0A, $9E, $02, $C6, $04, $CA
-		.byte	$0A, $F7, $62, $07, $8A, $08, $61, $17, $62, $1E, $0A, $4E, $06, $5E, $0A, $7E
-		.byte	$06, $8E, $0A, $AE, $06, $BE, $07, $F3, $0A, $1E, $86, $2E, $0A, $84, $37, $93
-		.byte	$36, $A2, $45, $1E, $89, $46, $0A, $6E, $0A, $B7, $60, $DB, $60, $F7, $60, $1B
-		.byte	$E0, $37, $60, $7E, $09, $8E, $0B, $A3, $0A, $FE, $04, $17, $BB, $47, $0A, $77
-		.byte	$0A, $BE, $02, $CE, $0A, $07, $8A, $17, $31, $63, $31, $A7, $34, $C7, $0A, $13
-		.byte	$B1, $4E, $09, $1E, $8A, $7E, $02, $97, $34, $B7, $0A, $CE, $0A, $DE, $02, $D8
-		.byte	$61, $F7, $62, $FE, $03, $07, $B4, $17, $0A, $47, $62, $4E, $0A, $5E, $03, $51
-		.byte	$61, $67, $62, $77, $34, $B7, $62, $C1, $61, $DA, $60, $E9, $61, $F8, $62
+		.word	$3307
+		.word	$033E
+		.word	$504C
+		.word	$074E
+		.word	$3157
+		.word	$036E
+		.word	$527C
+		.word	$079E
+		.word	$0AFE
+		.word	$897E
+		.word	$0A9E
+		.word	$07EE
+		.word	$34F7
+		.word	$8A13
+		.word	$0A3E
+		.word	$096E
+		.word	$0A87
+		.word	$029E
+		.word	$04C6
+		.word	$0ACA
+		.word	$62F7
+		.word	$8A07
+		.word	$6108
+		.word	$6217
+		.word	$0A1E
+		.word	$064E
+		.word	$0A5E
+		.word	$067E
+		.word	$0A8E
+		.word	$06AE
+		.word	$07BE
+		.word	$0AF3
+		.word	$861E
+		.word	$0A2E
+		.word	$3784
+		.word	$3693
+		.word	$45A2
+		.word	$891E
+		.word	$0A46
+		.word	$0A6E
+		.word	$60B7
+		.word	$60DB
+		.word	$60F7
+		.word	$E01B
+		.word	$6037
+		.word	$097E
+		.word	$0B8E
+		.word	$0AA3
+		.word	$04FE
+		.word	$BB17
+		.word	$0A47
+		.word	$0A77
+		.word	$02BE
+		.word	$0ACE
+		.word	$8A07
+		.word	$3117
+		.word	$3163
+		.word	$34A7
+		.word	$0AC7
+		.word	$B113
+		.word	$094E
+		.word	$8A1E
+		.word	$027E
+		.word	$3497
+		.word	$0AB7
+		.word	$0ACE
+		.word	$02DE
+		.word	$61D8
+		.word	$62F7
+		.word	$03FE
+		.word	$B407
+		.word	$0A17
+		.word	$6247
+		.word	$0A4E
+		.word	$035E
+		.word	$6151
+		.word	$6267
+		.word	$3477
+		.word	$62B7
+		.word	$61C1
+		.word	$60DA
+		.word	$61E9
+		.word	$62F8
 	.endif
 
-	.byte	$FE, $0A, $0D, $C4
+	.word	$0AFE
+	.word	$C40D
 
 	.if	.defined(VS_SMB)
-		.byte	$01, $52, $11, $52, $21, $52, $31, $52, $41, $52
-		.byte	$51, $52, $61, $52
+		.word	$5201
+		.word	$5211
+		.word	$5221
+		.word	$5231
+		.word	$5241
+		.word	$5251
+		.word	$5261
 	.endif
 
-	.byte	$CD, $43, $CE, $09, $DE, $0B, $DD, $42, $FE, $02
-	.byte	$5D, $C7
-
+	.word	$43CD
+	.word	$09CE
+	.word	$0BDE
+	.word	$42DD
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 
 courses_data_castle_2:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_7|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07, $34, $5E, $0A, $68, $64
-	.byte	$98, $64, $A8, $64, $CE, $06, $FE, $02, $0D, $01
-	.byte	$1E, $0E, $7E, $02, $94, $63, $B4, $63, $D4, $63
-	.byte	$F4, $63, $14, $E3, $2E, $0E, $5E, $02, $64, $35
-	.byte	$88, $72, $BE, $0E, $0D, $04, $AE, $02, $CE, $08
-	.byte	$CD, $4B, $FE, $02, $0D, $05, $68, $31, $7E, $0A
-	.byte	$96, $31, $A9, $63, $A8, $33, $D5, $30, $EE, $02
-	.byte	$E6, $62, $F4, $61, $04, $B1, $08, $3F, $44, $33
-	.byte	$94, $63, $A4, $31, $E4, $31, $04, $BF, $08, $3F
-	.byte	$04, $BF, $08, $3F, $CD, $4B, $03, $E4, $0E, $03
+	.word	$3205
+	.word	$3306
+	.word	$3407
+	.word	$0A5E
+	.word	$6468
+	.word	$6498
+	.word	$64A8
+	.word	$06CE
+	.word	$02FE
+	.word	$010D
+	.word	$0E1E
+	.word	$027E
+	.word	$6394
+	.word	$63B4
+	.word	$63D4
+	.word	$63F4
+	.word	$E314
+	.word	$0E2E
+	.word	$025E
+	.word	$3564
+	.word	$7288
+	.word	$0EBE
+	.word	$040D
+	.word	$02AE
+	.word	$08CE
+	.word	$4BCD
+	.word	$02FE
+	.word	$050D
+	.word	$3168
+	.word	$0A7E
+	.word	$3196
+	.word	$63A9
+	.word	$33A8
+	.word	$30D5
+	.word	$02EE
+	.word	$62E6
+	.word	$61F4
+	.word	$B104
+	.word	$3F08
+	.word	$3344
+	.word	$6394
+	.word	$31A4
+	.word	$31E4
+	.word	$BF04
+	.word	$3F08
+	.word	$BF04
+	.word	$3F08
+	.word	$4BCD
+	.word	$E403
+	.word	$030E
 
 	.if	.defined(VS_SMB)
-		.byte	$1C, $01
+		.word	$011C
 	.endif
 
-	.byte	$2E, $01
+	.word	$012E
 
 	.if	.defined(VS_SMB)
-		.byte	$4C, $01, $7C, $00
+		.word	$014C
+		.word	$007C
 	.endif
 
-	.byte	$7E, $06, $BE, $02, $DE, $06, $FE, $0A
-	.byte	$0D, $C4, $CD, $43, $CE, $09, $DE, $0B, $DD, $42
-	.byte	$FE, $02, $5D, $C7
+	.word	$067E
+	.word	$02BE
+	.word	$06DE
+	.word	$0AFE
+	.word	$C40D
+	.word	$43CD
+	.word	$09CE
+	.word	$0BDE
+	.word	$42DD
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 
 courses_data_castle_3:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_7|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07, $34
+	.word	$3205
+	.word	$3306
+	.word	$3407
 	.if	.defined(SMB)
-		.byte	$FE, $00, $27, $B1
-		.byte	$65, $32, $75, $0A, $71, $00, $B7, $31, $08, $E4
-		.byte	$18, $64, $1E, $04, $57, $3B, $BB, $0A, $17, $8A
-		.byte	$27, $3A, $73, $0A, $7B, $0A, $D7, $0A, $E7, $3A
-		.byte	$3B, $8A, $97, $0A, $FE, $08, $24, $8A, $2E, $00
-		.byte	$3E, $40, $38, $64, $6F, $00, $9F, $00, $BE, $43
-		.byte	$C8, $0A, $C9, $63, $CE, $07, $FE, $07, $2E, $81
-		.byte	$66, $42, $6A, $42, $79, $0A, $BE, $00, $C8, $64
-		.byte	$F8, $64, $08, $E4, $2E, $07, $7E, $03, $9E, $07
-		.byte	$BE, $03, $DE, $07, $FE, $0A, $03, $A5, $0D, $44
+		.word	$00FE
+		.word	$B127
+		.word	$3265
+		.word	$0A75
+		.word	$0071
+		.word	$31B7
+		.word	$E408
+		.word	$6418
+		.word	$041E
+		.word	$3B57
+		.word	$0ABB
+		.word	$8A17
+		.word	$3A27
+		.word	$0A73
+		.word	$0A7B
+		.word	$0AD7
+		.word	$3AE7
+		.word	$8A3B
+		.word	$0A97
+		.word	$08FE
+		.word	$8A24
+		.word	$002E
+		.word	$403E
+		.word	$6438
+		.word	$006F
+		.word	$009F
+		.word	$43BE
+		.word	$0AC8
+		.word	$63C9
+		.word	$07CE
+		.word	$07FE
+		.word	$812E
+		.word	$4266
+		.word	$426A
+		.word	$0A79
+		.word	$00BE
+		.word	$64C8
+		.word	$64F8
+		.word	$E408
+		.word	$072E
+		.word	$037E
+		.word	$079E
+		.word	$03BE
+		.word	$07DE
+		.word	$0AFE
+		.word	$A503
+		.word	$440D
 	.elseif	.defined(VS_SMB)
-		.byte	$CE, $03, $DC
-		.byte	$51, $EE, $07, $73, $E0, $74, $0A, $7E, $06, $9E, $0A, $CE, $06, $E4, $00, $E8
-		.byte	$0A, $FE, $0A, $2E, $89, $4E, $0B, $54, $0A, $14, $8A, $C4, $0A, $34, $8A, $7E
-		.byte	$06, $C7, $0A, $01, $E0, $02, $0A, $47, $0A, $81, $60, $82, $0A, $C7, $0A, $0E
-		.byte	$87, $7E, $02, $A7, $02, $B3, $02, $D7, $02, $E3, $02, $07, $82, $13, $02, $3E
-		.byte	$06, $4E, $0A, $6E, $06, $7E, $02, $AE, $07, $DE, $0A, $E1, $61, $EE, $07, $FE
-		.byte	$0A, $0D, $C4
+		.word	$03CE
+		.word	$51DC
+		.word	$07EE
+		.word	$E073
+		.word	$0A74
+		.word	$067E
+		.word	$0A9E
+		.word	$06CE
+		.word	$00E4
+		.word	$0AE8
+		.word	$0AFE
+		.word	$892E
+		.word	$0B4E
+		.word	$0A54
+		.word	$8A14
+		.word	$0AC4
+		.word	$8A34
+		.word	$067E
+		.word	$0AC7
+		.word	$E001
+		.word	$0A02
+		.word	$0A47
+		.word	$6081
+		.word	$0A82
+		.word	$0AC7
+		.word	$870E
+		.word	$027E
+		.word	$02A7
+		.word	$02B3
+		.word	$02D7
+		.word	$02E3
+		.word	$8207
+		.word	$0213
+		.word	$063E
+		.word	$0A4E
+		.word	$066E
+		.word	$027E
+		.word	$07AE
+		.word	$0ADE
+		.word	$61E1
+		.word	$07EE
+		.word	$0AFE
+		.word	$C40D
 	.endif
-	.byte	$CD, $43, $CE, $09
+	.word	$43CD
+	.word	$09CE
 
 	.if	.defined(VS_SMB)
-		.byte	$DE, $0B
+		.word	$0BDE
 	.endif
 
-	.byte	$DD, $42
+	.word	$42DD
 
 	.if	.defined(SMB)
-		.byte	$DE, $0B
+		.word	$0BDE
 	.endif
 
-	.byte	$FE, $02, $5D, $C7
-
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 
 courses_data_castle_4:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_7|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07, $34
+	.word	$3205
+	.word	$3306
+	.word	$3407
 
 	.if	.defined(VS_SMB)
-		.byte	$BE, $03, $CC, $01, $DE, $07
+		.word	$03BE
+		.word	$01CC
+		.word	$07DE
 	.endif
 
-	.byte	$FE, $06, $0C, $81
+	.word	$06FE
+	.word	$810C
 	.if	.defined(SMB)
-		.byte	$39
+		.word	$0A39
 	.elseif	.defined(VS_SMB)
-		.byte	$38
+		.word	$0A38
 	.endif
-	.byte	$0A, $5C, $01
+	.word	$015C
 	.if	.defined(SMB)
-		.byte	$89
+		.word	$0A89
 	.elseif	.defined(VS_SMB)
-		.byte	$88
+		.word	$0A88
 	.endif
-	.byte	$0A, $AC, $01
+	.word	$01AC
 	.if	.defined(SMB)
-		.byte	$D9, $0A, $FC, $01, $2E, $83
+		.word	$0AD9
+		.word	$01FC
+		.word	$832E
 	.elseif	.defined(VS_SMB)
-		.byte	$D8, $0A, $EE, $0A, $0E, $86, $2E, $0a, $4E, $03
-		.byte	$53, $0A, $6E, $0A, $8E, $03
+		.word	$0AD8
+		.word	$0AEE
+		.word	$860E
 	.endif
-	.byte	$A7, $01, $B7
-	.if	.defined(SMB)
-		.byte	$00
-	.elseif	.defined(VS_SMB)
-		.byte	$01
-	.endif
-	.byte	$C7
-	.if	.defined(SMB)
-		.byte	$01
-	.elseif	.defined(VS_SMB)
-		.byte	$00
-	.endif
-	.byte	$DE, $0A, $FE, $02, $4E, $83, $5A, $32, $63, $0A
-	.byte	$69, $0A, $7E
 
 	.if	.defined(VS_SMB)
-		.byte	$02, $8E, $0A, $9E, $02, $CE, $0A, $DE
+		.word	$0A2E
+		.word	$034E
+		.word	$0A53
+		.word	$0A6E
+		.word	$038E
 	.endif
 
-	.byte	$02, $EE, $03, $FA, $32, $03, $8A, $09, $0A, $1E
+	.word	$01A7
+	.if	.defined(SMB)
+		.word	$00B7
+		.word	$01C7
+	.elseif	.defined(VS_SMB)
+		.word	$01B7
+		.word	$00C7
+	.endif
+	.word	$0ADE
+	.word	$02FE
+	.word	$834E
+	.word	$325A
+	.word	$0A63
+	.word	$0A69
+	.word	$027E
 
 	.if	.defined(VS_SMB)
-		.byte	$02, $2E, $0A, $3E, $02, $CE, $0A, $DE
+		.word	$0A8E
+		.word	$029E
+		.word	$0ACE
+		.word	$02DE
 	.endif
 	
-
-	.byte	$02, $EE, $03, $FA, $32, $03, $8A, $09, $0A, $14
-	.byte	$42, $1E
-
-	.if	.defined(VS_SMB)
-		.byte	$02, $2E, $0A, $3E
-	.endif
-
-	.byte	$02, $7E, $0A, $9E, $07, $FE, $0A, $2E, $86, $5E
-	.byte	$0A, $8E, $06, $BE, $0A, $EE, $07, $3E, $83, $5E
+	.word	$03EE
+	.word	$32FA
+	.word	$8A03
+	.word	$0A09
+	.word	$021E
 
 	.if	.defined(VS_SMB)
-		.byte	$07, $7E, $03, $8C, $01, $9E, $07, $AE, $03, $BC
-		.byte	$00, $BE, $07, $CE, $03, $DC, $00, $DE
+		.word	$0A2E
+		.word	$023E
+		.word	$0ACE
+		.word	$02DE
 	.endif
 
-	.byte	$07, $FE, $0A, $0D, $C4, $41, $52, $51, $52, $CD
-	.byte	$43, $CE, $09, $DE, $0B, $DD, $42, $FE, $02, $5D
-	.byte	$C7
+	.word	$03EE
+	.word	$32FA
+	.word	$8A03
+	.word	$0A09
+	.word	$4214
+	.word	$021E
+
+	.if	.defined(VS_SMB)
+		.word	$0A2E
+		.word	$023E
+	.endif
+
+	.word	$0A7E
+	.word	$079E
+	.word	$0AFE
+	.word	$862E
+	.word	$0A5E
+	.word	$068E
+	.word	$0ABE
+	.word	$07EE
+	.word	$833E
+	.word	$075E
+
+	.if	.defined(VS_SMB)
+		.word	$037E
+		.word	$018C
+		.word	$079E
+		.word	$03AE
+		.word	$00BC
+		.word	$07BE
+		.word	$03CE
+		.word	$00DC
+		.word	$07DE
+	.endif
+
+	.word	$0AFE
+	.word	$C40D
+	.word	$5241
+	.word	$5251
+	.word	$43CD
+	.word	$09CE
+	.word	$0BDE
+	.word	$42DD
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 
 courses_data_castle_5:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_7|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07, $34, $FE, $0A, $AE, $86
-	.byte	$BE, $07, $FE, $02, $0D, $02, $27, $32, $46, $61
-	.byte	$55, $62, $5E, $0E, $1E, $82, $68, $3C, $74, $3A
-	.byte	$7D, $4B, $5E, $8E, $7D, $4B, $7E, $82, $84, $62
-	.byte	$94, $61, $A4, $31, $BD, $4B, $CE, $06, $FE, $02
-	.byte	$0D, $06, $34, $31, $3E, $0A, $64, $32, $75, $0A
-	.byte	$7B, $61, $A4, $33, $AE, $02, $DE, $0E, $3E, $82
-	.byte	$64, $32, $78, $32, $B4, $36, $C8, $36, $DD, $4B
-	.byte	$44, $B2, $58, $32, $94, $63, $A4, $3E, $BA, $30
-	.byte	$C9, $61, $CE, $06, $DD, $4B, $CE, $86, $DD, $4B
-	.byte	$FE
+	.word	$3205
+	.word	$3306
+	.word	$3407
+	.word	$0AFE
+	.word	$86AE
+	.word	$07BE
+	.word	$02FE
+	.word	$020D
+	.word	$3227
+	.word	$6146
+	.word	$6255
+	.word	$0E5E
+	.word	$821E
+	.word	$3C68
+	.word	$3A74
+	.word	$4B7D
+	.word	$8E5E
+	.word	$4B7D
+	.word	$827E
+	.word	$6284
+	.word	$6194
+	.word	$31A4
+	.word	$4BBD
+	.word	$06CE
+	.word	$02FE
+	.word	$060D
+	.word	$3134
+	.word	$0A3E
+	.word	$3264
+	.word	$0A75
+	.word	$617B
+	.word	$33A4
+	.word	$02AE
+	.word	$0EDE
+	.word	$823E
+	.word	$3264
+	.word	$3278
+	.word	$36B4
+	.word	$36C8
+	.word	$4BDD
+	.word	$B244
+	.word	$3258
+	.word	$6394
+	.word	$3EA4
+	.word	$30BA
+	.word	$61C9
+	.word	$06CE
+	.word	$4BDD
+	.word	$86CE
+	.word	$4BDD
 	.if	.defined(SMB)
-		.byte	$02
+		.word	$02FE
 	.elseif	.defined(VS_SMB)
-		.byte	$0A
+		.word	$0AFE
 	.endif
-	.byte	$2E, $86, $5E
+	.word	$862E
 	.if	.defined(SMB)
-		.byte	$02
+		.word	$025E
 	.elseif	.defined(VS_SMB)
-		.byte	$0A
+		.word	$0A5E
 	.endif
-	.byte	$7E, $06, $FE
+	.word	$067E
 	.if	.defined(SMB)
-		.byte	$02
+		.word	$02FE
 	.elseif	.defined(VS_SMB)
-		.byte	$0A
+		.word	$0AFE
 	.endif
-	.byte	$1E, $86, $3E
+	.word	$861E
 	.if	.defined(SMB)
-		.byte	$02
+		.word	$023E
 	.elseif	.defined(VS_SMB)
-		.byte	$0A
+		.word	$0A3E
 	.endif
-	.byte	$5E, $06
+	.word	$065E
 	.if	.defined(SMB)
-		.byte	$7E, $02
+		.word	$027E
 	.elseif	.defined(VS_SMB)
-		.byte	$6E, $0A
+		.word	$0A6E
 	.endif
-	.byte	$9E, $06
+	.word	$069E
 
 	.if	.defined(VS_SMB)
-		.byte	$BE, $0A, $DE, $06
+		.word	$0ABE
+		.word	$06DE
 	.endif
 
-	.byte	$FE, $0A, $0D, $C4, $CD, $43, $CE, $09, $DE, $0B
-	.byte	$DD, $42, $FE, $02, $5D, $C7
+	.word	$0AFE
+	.word	$C40D
+	.word	$43CD
+	.word	$09CE
+	.word	$0BDE
+	.word	$42DD
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 
 courses_data_castle_6:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_6|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07, $34, $5E, $0A, $AE, $02
-	.byte	$0D, $01, $39, $73, $0D, $03, $39, $7B, $4D, $4B
-	.byte	$DE, $06, $1E, $8A, $AE, $06, $C4, $33, $16, $FE
-	.byte	$A5, $77, $FE, $02, $FE, $82, $0D, $07, $39, $73
-	.byte	$A8, $74, $ED, $4B, $49, $FB, $E8, $74, $FE, $0A
-	.byte	$2E, $82
+	.word	$3205
+	.word	$3306
+	.word	$3407
+	.word	$0A5E
+	.word	$02AE
+	.word	$010D
+	.word	$7339
+	.word	$030D
+	.word	$7B39
+	.word	$4B4D
+	.word	$06DE
+	.word	$8A1E
+	.word	$06AE
+	.word	$33C4
+	.word	$FE16
+	.word	$77A5
+	.word	$02FE
+	.word	$82FE
+	.word	$070D
+	.word	$7339
+	.word	$74A8
+	.word	$4BED
+	.word	$FB49
+	.word	$74E8
+	.word	$0AFE
+	.word	$822E
 	.if	.defined(SMB)
-		.byte	$67
+		.word	$0267
 	.elseif	.defined(VS_SMB)
-		.byte	$66
+		.word	$0266
 	.endif
-	.byte	$02, $84, $7A, $87, $31, $0D, $0B
-	.byte	$FE, $02, $0D, $0C, $39, $73, $5E, $06, $C6, $76
-	.byte	$45, $FF, $BE, $0A, $DD, $48, $FE, $06, $3D, $CB
-	.byte	$46, $7E, $AD, $4A, $FE, $82, $39, $F3, $A9, $7B
-	.byte	$4E, $8A, $9E, $07, $FE, $0A, $0D, $C4
+	.word	$7A84
+	.word	$3187
+	.word	$0B0D
+	.word	$02FE
+	.word	$0C0D
+	.word	$7339
+	.word	$065E
+	.word	$76C6
+	.word	$FF45
+	.word	$0ABE
+	.word	$48DD
+	.word	$06FE
+	.word	$CB3D
+	.word	$7E46
+	.word	$4AAD
+	.word	$82FE
+	.word	$F339
+	.word	$7BA9
+	.word	$8A4E
+	.word	$079E
+	.word	$0AFE
+	.word	$C40D
 
 	.if	.defined(VS_SMB)
-		.byte	$01, $52, $11, $52, $21, $52, $31, $52, $41, $52
-		.byte	$51, $52, $61, $52, $71, $52, $81, $52, $91, $52
-		.byte	$A1, $52, $B1, $52
+		.word	$5201
+		.word	$5211
+		.word	$5221
+		.word	$5231
+		.word	$5241
+		.word	$5251
+		.word	$5261
+		.word	$5271
+		.word	$5281
+		.word	$5291
+		.word	$52A1
+		.word	$52B1
 	.endif
 
-	.byte	$CD, $43, $CE, $09, $DE, $0B, $DD, $42, $FE, $02
-	.byte	$5D, $C7
+	.word	$43CD
+	.word	$09CE
+	.word	$0BDE
+	.word	$42DD
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 
 .if	.defined(VS_SMB)
 courses_data_castle_7:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_7|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07, $34, $33, $8A, $3E, $06, $4E, $0A, $7E, $06, $9E, $0A
-	.byte	$CE, $06, $D3, $00, $EE, $0A, $1E, $86, $2E, $07, $53, $0A, $7E, $06, $8E, $0A
-	.byte	$9E, $02, $C7, $0A, $D7, $37, $5E, $8A, $57, $0A, $BE, $02, $DA, $60, $E9, $61
-	.byte	$F8, $62, $FE, $07, $07, $BF, $43, $0A, $C3, $0A, $07, $B7, $43, $0A, $87, $0A
-	.byte	$97, $31, $AE, $0A, $FE, $06, $2E, $8A, $3E, $06, $57, $0A, $6E, $0A, $7E, $06
-	.byte	$AE, $0A, $BE, $02, $07, $E3, $47, $63, $87, $63, $AE, $07, $FE, $0A, $0D, $C4
-	.byte	$CD, $43, $CE, $09, $DE, $0B, $DD, $42, $FE, $02, $5D, $C7
+	.word	$3205
+	.word	$3306
+	.word	$3407
+	.word	$8A33
+	.word	$063E
+	.word	$0A4E
+	.word	$067E
+	.word	$0A9E
+	.word	$06CE
+	.word	$00D3
+	.word	$0AEE
+	.word	$861E
+	.word	$072E
+	.word	$0A53
+	.word	$067E
+	.word	$0A8E
+	.word	$029E
+	.word	$0AC7
+	.word	$37D7
+	.word	$8A5E
+	.word	$0A57
+	.word	$02BE
+	.word	$60DA
+	.word	$61E9
+	.word	$62F8
+	.word	$07FE
+	.word	$BF07
+	.word	$0A43
+	.word	$0AC3
+	.word	$B707
+	.word	$0A43
+	.word	$0A87
+	.word	$3197
+	.word	$0AAE
+	.word	$06FE
+	.word	$8A2E
+	.word	$063E
+	.word	$0A57
+	.word	$0A6E
+	.word	$067E
+	.word	$0AAE
+	.word	$02BE
+	.word	$E307
+	.word	$6347
+	.word	$6387
+	.word	$07AE
+	.word	$0AFE
+	.word	$C40D
+	.word	$43CD
+	.word	$09CE
+	.word	$0BDE
+	.word	$42DD
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 
 courses_data_castle_8:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_7|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_50|COURSE_DATA_FG_SURFACE)
-	.byte	$05, $32, $06, $33, $07, $34, $FE, $00, $27, $B1, $65, $32, $75, $0A, $71, $00
-	.byte	$B7, $31, $08, $E4, $18, $64, $1E, $04, $57, $3B, $BB, $0A, $DC, $00, $17, $8A
-	.byte	$27, $31, $57, $37, $73, $0A, $7B, $0A, $D7, $0A, $E7, $3A, $0C, $80, $3B, $0A
-	.byte	$97, $0A, $FE, $08, $24, $8A, $2E, $00, $3E, $40, $38, $64, $6F, $00, $9F, $00
-	.byte	$BE, $43, $C8, $0A, $C9, $63, $CE, $07, $FE, $07, $2E, $80, $4E, $01, $66, $42
-	.byte	$6A, $42, $79, $0A, $9E, $00, $BE, $0A, $C8, $64, $F8, $64, $08, $E4, $0E, $0A
-	.byte	$2E, $06, $7E, $0A, $8E, $06, $9E, $0A, $BE, $06, $CE, $0A, $EE, $06, $FE, $0A
-	.byte	$03, $A5, $0D, $44, $CD, $43, $CE, $09, $DD, $42, $DE, $0B, $FE, $02, $5D, $C7
+	.word	$3205
+	.word	$3306
+	.word	$3407
+	.word	$00FE
+	.word	$B127
+	.word	$3265
+	.word	$0A75
+	.word	$0071
+	.word	$31B7
+	.word	$E408
+	.word	$6418
+	.word	$041E
+	.word	$3B57
+	.word	$0ABB
+	.word	$00DC
+	.word	$8A17
+	.word	$3127
+	.word	$3757
+	.word	$0A73
+	.word	$0A7B
+	.word	$0AD7
+	.word	$3AE7
+	.word	$800C
+	.word	$0A3B
+	.word	$0A97
+	.word	$08FE
+	.word	$8A24
+	.word	$002E
+	.word	$403E
+	.word	$6438
+	.word	$006F
+	.word	$009F
+	.word	$43BE
+	.word	$0AC8
+	.word	$63C9
+	.word	$07CE
+	.word	$07FE
+	.word	$802E
+	.word	$014E
+	.word	$4266
+	.word	$426A
+	.word	$0A79
+	.word	$009E
+	.word	$0ABE
+	.word	$64C8
+	.word	$64F8
+	.word	$E408
+	.word	$0A0E
+	.word	$062E
+	.word	$0A7E
+	.word	$068E
+	.word	$0A9E
+	.word	$06BE
+	.word	$0ACE
+	.word	$06EE
+	.word	$0AFE
+	.word	$A503
+	.word	$440D
+	.word	$43CD
+	.word	$09CE
+	.word	$42DD
+	.word	$0BDE
+	.word	$02FE
+	.word	$C75D
 	.byte	COURSE_DATA_END
 .endif
 
@@ -907,85 +1400,153 @@ courses_data_castle_8:
 .endif
 courses_data_overworld_1:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_BG_COL_NONE)
-	.byte	$0F, $26, $FE, $10, $28, $94, $65, $15, $EB, $12
-	.byte	$FA, $41
+	.word	$260F
+	.word	$10FE
+	.word	$9428
+	.word	$1565
+	.word	$12EB
+	.word	$41FA
 	.if	.defined(SMB)
-		.byte	$4A, $96, $54, $40
+		.word	$964A
+		.word	$4054
 	.elseif	.defined(VS_SMB)
-		.byte	$54, $C0, $6A, $12
+		.word	$C054
+		.word	$126A
 	.endif
-	.byte	$A4, $42, $B7
+	.word	$42A4
 	.if	.defined(SMB)
-		.byte	$13, $E9, $19
+		.word	$13B7
+		.word	$19E9
 	.elseif	.defined(VS_SMB)
-		.byte	$12, $F9, $18
+		.word	$12B7
+		.word	$18F9
 	.endif
-	.byte	$F5, $15, $11, $80, $47, $42
+	.word	$15F5
+	.word	$8011
+	.word	$4247
 	.if	.defined(SMB)
-		.byte	$71, $13
+		.word	$1371
 	.elseif	.defined(VS_SMB)
-		.byte	$81, $12
+		.word	$1281
 	.endif
-	.byte	$80, $41, $15, $92, $1B
+	.word	$4180
+	.word	$9215
 	.if	.defined(SMB)
-		.byte	$1F
+		.word	$1F1B
 	.elseif	.defined(VS_SMB)
-		.byte	$1E
+		.word	$1E1B
 	.endif
-	.byte	$24, $40, $55, $12
-	.byte	$64, $40, $95, $12, $A4, $40, $D2, $12, $E1, $40
-	.byte	$13, $C0, $2C, $17, $2F, $12, $49, $13, $83, $40
-	.byte	$9F, $14, $A3, $40, $17, $92, $83, $13, $92, $41
-	.byte	$B9, $14, $C5, $12, $C8, $40, $D4, $40
+	.word	$4024
+	.word	$1255
+	.word	$4064
+	.word	$1295
+	.word	$40A4
+	.word	$12D2
+	.word	$40E1
+	.word	$C013
+	.word	$172C
+	.word	$122F
+	.word	$1349
+	.word	$4083
+	.word	$149F
+	.word	$40A3
+	.word	$9217
+	.word	$1383
+	.word	$4192
+	.word	$14B9
+	.word	$12C5
+	.word	$40C8
+	.word	$40D4
 	.if	.defined(SMB)
-		.byte	$4B, $92, $78, $1B
+		.word	$924B
+		.word	$1B78
 	.elseif	.defined(VS_SMB)
-		.byte	$78, $95, $E8, $14
+		.word	$9578
+		.word	$14E8
 	.endif
-	.byte	$9C, $94, $9F, $11, $DF, $14
+	.word	$949C
+	.word	$119F
+	.word	$14DF
 	.if	.defined(SMB)
-		.byte	$FE, $11, $7D, $C1
+		.word	$11FE
+		.word	$C17D
 	.elseif	.defined(VS_SMB)
-		.byte	$3E, $91, $8D, $41
+		.word	$913E
+		.word	$418D
 	.endif
-	.byte	$9E, $42, $CF, $20
+	.word	$429E
+	.word	$20CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_2:
 	.word	(COURSE_AREA_LEDGE_CANNON|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
-	.byte	$0F, $26, $29, $91, $7E, $42, $FE, $40, $28, $92
-	.byte	$4E, $42, $2E, $C0, $57, $73, $C3
+	.word	$260F
+	.word	$9129
+	.word	$427E
+	.word	$40FE
+	.word	$9228
+	.word	$424E
+	.word	$C02E
+	.word	$7357
 	.if	.defined(SMB)
-		.byte	$25
+		.word	$25C3
 	.elseif	.defined(VS_SMB)
-		.byte	$27
+		.word	$27C3
 	.endif
-	.byte	$C7, $27
+	.word	$27C7
 
 	.if	.defined(SMB)
-		.byte	$23, $84, $33, $20
+		.word	$8423
+		.word	$2033
 	.endif
 
-	.byte	$5C
 	.if	.defined(SMB)
-		.byte	$01
+		.word	$015C
 	.elseif	.defined(VS_SMB)
-		.byte	$81
+		.word	$815C
 	.endif
-	.byte	$77, $63, $88, $62
-	.byte	$99, $61, $AA, $60, $BC, $01, $EE, $42, $4E, $C0
-	.byte	$69, $11, $7E, $42, $DE, $40, $F8, $62, $0E, $C2
-	.byte	$AE, $40, $D7, $63, $E7, $63, $33, $A7, $37, $27
-	.byte	$43, $04, $CC, $01, $E7, $73, $0C, $81, $3E, $42
-	.byte	$0D, $0A, $5E, $40, $88, $72, $BE, $42, $E7, $87
-	.byte	$FE, $40, $39, $E1, $4E, $00, $69, $60, $87, $60
-	.byte	$A5, $60
+	.word	$6377
+	.word	$6288
+	.word	$6199
+	.word	$60AA
+	.word	$01BC
+	.word	$42EE
+	.word	$C04E
+	.word	$1169
+	.word	$427E
+	.word	$40DE
+	.word	$62F8
+	.word	$C20E
+	.word	$40AE
+	.word	$63D7
+	.word	$63E7
+	.word	$A733
+	.word	$2737
+	.word	$0443
+	.word	$01CC
+	.word	$73E7
+	.word	$810C
+	.word	$423E
+	.word	$0A0D
+	.word	$405E
+	.word	$7288
+	.word	$42BE
+	.word	$87E7
+	.word	$40FE
+	.word	$E139
+	.word	$004E
+	.word	$6069
+	.word	$6087
+	.word	$60A5
 	.if	.defined(SMB)
-		.byte	$C3, $31
+		.word	$31C3
 	.elseif	.defined(VS_SMB)
-		.byte	$D3, $30
+		.word	$30D3
 	.endif
-	.byte	$FE, $31, $6D, $C1, $BE, $42, $EF, $20
+	.word	$31FE
+	.word	$C16D
+	.word	$42BE
+	.word	$20EF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_3:
@@ -994,206 +1555,391 @@ courses_data_overworld_3:
 	.elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_MNT_BUSH|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_3|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_WALLS)
 	.endif
-	.byte	$0F, $20, $6E, $40, $58, $F2, $93, $01, $97, $00
-	.byte	$0C, $81, $97, $40, $A6, $41, $C7, $40
+	.word	$200F
+	.word	$406E
+	.word	$F258
+	.word	$0193
+	.word	$0097
+	.word	$810C
+	.word	$4097
+	.word	$41A6
+	.word	$40C7
 	.if	.defined(SMB)
-		.byte	$0D, $04, $03, $1
+		.word	$040D
+		.word	$0103
 	.elseif	.defined(VS_SMB)
-		.byte	$DC, $01, $77, $E3, $03, $81
+		.word	$01DC
+		.word	$E377
+		.word	$8103
 	.endif
-	.byte	$07, $01, $23, $01, $27, $01, $EC, $03, $AC, $F3
+	.word	$0107
+	.word	$0123
+	.word	$0127
+	.word	$03EC
+	.word	$F3AC
 
 	.if	.defined(SMB)
-		.byte	$C3, $03
+		.word	$03C3
 	.endif
 
-	.byte	$78, $E2, $94, $43, $47, $F3
-	.byte	$74, $43, $47, $FB, $74, $43, $2C, $F1, $4C, $63
-	.byte	$47, $00, $57, $21, $5C, $01, $7C, $72, $39, $F1
-	.byte	$EC, $02, $4C, $81
+	.word	$E278
+	.word	$4394
+	.word	$F347
+	.word	$4374
+	.word	$FB47
+	.word	$4374
+	.word	$F12C
+	.word	$634C
+	.word	$0047
+	.word	$2157
+	.word	$015C
+	.word	$727C
+	.word	$F139
+	.word	$02EC
+	.word	$814C
 
 	.if	.defined(VS_SMB)
-		.byte	$97, $63
+		.word	$6397
 	.endif
 
-	.byte	$D8, $62, $EC, $01, $0D, $0D, $0F
+	.word	$62D8
+	.word	$01EC
+	.word	$0D0D
 	.if	.defined(SMB)
-		.byte	$38
+		.word	$380F
 	.elseif	.defined(VS_SMB)
-		.byte	$35
+		.word	$350F
 	.endif
 
 	.if	.defined(VS_SMB)
-		.byte	$6C, $01, $83, $67
+		.word	$016C
+		.word	$6783
 	.endif
 
-	.byte	$C7, $07, $ED, $4A, $1D, $C1, $5F, $26
+	.word	$07C7
+	.word	$4AED
+	.word	$C11D
+	.word	$265F
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_4:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_MNT_BUSH|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_BG_COL_NONE)
-	.byte	$0F, $26, $A7, $22, $37, $FB, $73, $20, $83, $07
-	.byte	$87, $02, $93, $20, $C7, $73
+	.word	$260F
+	.word	$22A7
+	.word	$FB37
+	.word	$2073
+	.word	$0783
+	.word	$0287
+	.word	$2093
+	.word	$73C7
 
 	.if	.defined(VS_SMB)
-		.byte	$EC, $01
+		.word	$01EC
 	.endif
 
-	.byte	$04, $F1, $06, $31
-	.byte	$39, $71, $59, $71, $E7, $73, $37, $A0, $47, $04
-	.byte	$86, $7C, $E5, $71, $E7, $31, $33, $A4, $39, $71
+	.word	$F104
+	.word	$3106
+	.word	$7139
+	.word	$7159
+	.word	$73E7
+	.word	$A037
+	.word	$0447
+	.word	$7C86
+	.word	$71E5
+	.word	$31E7
+	.word	$A433
+	.word	$7139
 
 	.if	.defined(VS_SMB)
-		.byte	$5C, $01
+		.word	$015C
 	.endif
 
-	.byte	$A9, $71, $D3, $23
+	.word	$71A9
+	.word	$23D3
 
 	.if	.defined(VS_SMB)
-		.byte	$EC, $01
+		.word	$01EC
 	.endif
 
-	.byte	$08, $F2, $13, $05, $27, $02, $49, $71
+	.word	$F208
+	.word	$0513
+	.word	$0227
+	.word	$7149
 
 	.if	.defined(VS_SMB)
-		.byte	$6C, $00
+		.word	$006C
 	.endif
 
-	.byte	$75, $75, $E8, $72, $67, $F3, $99, $71
-	.byte	$E7, $20, $F4, $72, $F7, $31, $17, $A0, $33, $20
-	.byte	$39, $71, $73, $28, $BC, $05, $39, $F1, $79, $71
-	.byte	$A6, $21, $C3, $06, $D3, $20, $DC, $00, $FC, $00
-	.byte	$07, $A2, $13, $21, $5F, $32, $8C, $00, $98, $7A
-	.byte	$C7, $63, $D9, $61, $03, $A2, $07, $22, $74, $72
-	.byte	$77, $31, $E7, $73
+	.word	$7575
+	.word	$72E8
+	.word	$F367
+	.word	$7199
+	.word	$20E7
+	.word	$72F4
+	.word	$31F7
+	.word	$A017
+	.word	$2033
+	.word	$7139
+	.word	$2873
+	.word	$05BC
+	.word	$F139
+	.word	$7179
+	.word	$21A6
+	.word	$06C3
+	.word	$20D3
+	.word	$00DC
+	.word	$00FC
+	.word	$A207
+	.word	$2113
+	.word	$325F
+	.word	$008C
+	.word	$7A98
+	.word	$63C7
+	.word	$61D9
+	.word	$A203
+	.word	$2207
+	.word	$7274
+	.word	$3177
+	.word	$73E7
 
 	.if	.defined(VS_SMB)
-		.byte	$0C, $82
+		.word	$820C
 	.endif
 
-	.byte	$39
 	.if	.defined(SMB)
-		.byte	$F1
+		.word	$F139
 	.elseif	.defined(VS_SMB)
-		.byte	$71
+		.word	$7139
 	.endif
-	.byte	$58, $72, $77, $73
-	.byte	$D8, $72, $7F, $B1, $97, $73, $B6, $64, $C5, $65
-	.byte	$D4, $66, $E3
+	.word	$7258
+	.word	$7377
+	.word	$72D8
+	.word	$B17F
+	.word	$7397
+	.word	$64B6
+	.word	$65C5
+	.word	$66D4
+	.word	$67E3
 
 	.if	.defined(SMB)
-		.byte	$67, $F3
+		.word	$67F3
 	.endif
 
-	.byte	$67, $8D, $C1, $CF, $26
+	.word	$C18D
+	.word	$26CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_5:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_WALLS)
-	.byte	$0F, $20, $6E, $66, $07, $81, $36, $01, $66, $00
-	.byte	$A7
+	.word	$200F
+	.word	$666E
+	.word	$8107
+	.word	$0136
+	.word	$0066
 	.if	.defined(SMB)
-		.byte	$22
+		.word	$22A7
 	.elseif	.defined(VS_SMB)
-		.byte	$21
+		.word	$21A7
 	.endif
 
 	.if	.defined(VS_SMB)
-		.byte	$C9, $20, $DC, $02
+		.word	$20C9
+		.word	$02DC
 	.endif
 
-	.byte	$08, $F2, $67, $7B
-
-	.if	.defined(VS_SMB)
-		.byte	$AC, $00
-	.endif
-
-	.byte	$DC, $02
-	.if	.defined(SMB)
-		.byte	$98, $F2
-	.elseif	.defined(VS_SMB)
-		.byte	$07, $A2, $0A, $60, $37, $07, $39, $20, $96, $74
-	.endif
-	.byte	$D7, $20
+	.word	$F208
+	.word	$7B67
 
 	.if	.defined(VS_SMB)
-		.byte	$2C, $80
+		.word	$00AC
 	.endif
 
-	.byte	$39
+	.word	$02DC
 	.if	.defined(SMB)
-		.byte	$F1
+		.word	$F298
 	.elseif	.defined(VS_SMB)
-		.byte	$71
+		.word	$A207
+		.word	$600A
+		.word	$0737
+		.word	$2039
+		.word	$7496
 	.endif
-	.byte	$9F, $33, $DC, $27, $DC, $57
-	.byte	$23, $83, $57, $63, $6C, $51, $87, $63, $99, $61
-	.byte	$A3, $06, $B3, $21
+	.word	$20D7
 
 	.if	.defined(VS_SMB)
-		.byte	$CC, $00, $D8, $62, $EC, $00
+		.word	$802C
 	.endif
 
-	.byte	$77, $F3
+	.if	.defined(SMB)
+		.word	$F139
+	.elseif	.defined(VS_SMB)
+		.word	$7139
+	.endif
+	.word	$339F
+	.word	$27DC
+	.word	$57DC
+	.word	$8323
+	.word	$6357
+	.word	$516C
+	.word	$6387
+	.word	$6199
+	.word	$06A3
+	.word	$21B3
 
 	.if	.defined(VS_SMB)
-		.byte	$9C, $00
+		.word	$00CC
+		.word	$62D8
+		.word	$00EC
 	.endif
 
-	.byte	$F3
-	.if	.defined(SMB)
-		.byte	$21
-	.elseif	.defined(VS_SMB)
-		.byte	$01
-	.endif
-	.byte	$F7, $2A
-	.if	.defined(SMB)
-		.byte	$13, $81, $23, $22, $53, $00, $63, $22, $E9, $0B
-		.byte	$0C, $83, $13, $21, $16, $22, $33, $05, $8F, $35
-		.byte	$EC, $01, $63, $A0, $67, $20, $73, $01, $77, $01
-		.byte	$83, $20, $87, $20, $B3, $20, $B7, $20, $C3, $01
-		.byte	$C7, $00, $D3, $20, $D7, $20, $67, $A0, $77, $07
-		.byte	$87, $22
-	.elseif	.defined(VS_SMB)
-		.byte	$03, $81, $13, $01
-		.byte	$23, $01, $33, $01, $43, $01, $53, $00, $63, $01, $73, $01, $83, $01, $93, $01
-		.byte	$AC, $00, $CC, $01, $E9, $0B, $FC, $05, $13, $A1, $16, $22, $33, $05, $7F, $35
-		.byte	$DC, $02, $63, $81, $67, $01, $73, $01, $77, $01, $83, $01, $87, $01, $B3, $01
-		.byte	$B7, $01, $C3, $00, $C7, $01, $D3, $01, $D7, $01, $67, $A4, $9A, $60, $AC, $02
+	.word	$F377
+
+	.if	.defined(VS_SMB)
+		.word	$009C
 	.endif
 
-	.byte	$E8, $62, $F5, $65, $1C
 	.if	.defined(SMB)
-		.byte	$82
+		.word	$21F3
 	.elseif	.defined(VS_SMB)
-		.byte	$84
+		.word	$01F3
 	.endif
-	.byte	$7F, $38, $8D, $C1, $CF, $26
+	.word	$2AF7
+	.if	.defined(SMB)
+		.word	$8113
+		.word	$2223
+		.word	$0053
+		.word	$2263
+		.word	$0BE9
+		.word	$830C
+		.word	$2113
+		.word	$2216
+		.word	$0533
+		.word	$358F
+		.word	$01EC
+		.word	$A063
+		.word	$2067
+		.word	$0173
+		.word	$0177
+		.word	$2083
+		.word	$2087
+		.word	$20B3
+		.word	$20B7
+		.word	$01C3
+		.word	$00C7
+		.word	$20D3
+		.word	$20D7
+		.word	$A067
+		.word	$0777
+		.word	$2287
+	.elseif	.defined(VS_SMB)
+		.word	$8103
+		.word	$0113
+		.word	$0123
+		.word	$0133
+		.word	$0143
+		.word	$0053
+		.word	$0163
+		.word	$0173
+		.word	$0183
+		.word	$0193
+		.word	$00AC
+		.word	$01CC
+		.word	$0BE9
+		.word	$05FC
+		.word	$A113
+		.word	$2216
+		.word	$0533
+		.word	$357F
+		.word	$02DC
+		.word	$8163
+		.word	$0167
+		.word	$0173
+		.word	$0177
+		.word	$0183
+		.word	$0187
+		.word	$01B3
+		.word	$01B7
+		.word	$00C3
+		.word	$01C7
+		.word	$01D3
+		.word	$01D7
+		.word	$A467
+		.word	$609A
+		.word	$02AC
+	.endif
+
+	.word	$62E8
+	.word	$65F5
+	.if	.defined(SMB)
+		.word	$821C
+	.elseif	.defined(VS_SMB)
+		.word	$841C
+	.endif
+	.word	$387F
+	.word	$C18D
+	.word	$26CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_6:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_MNT_BUSH|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
-	.byte	$07, $81, $47, $24, $57, $00, $63, $01, $77, $01
-	.byte	$C9, $71, $68, $F2, $E7, $73, $97, $FB, $06, $83
-	.byte	$5C, $01, $D7, $22
+	.word	$8107
+	.word	$2447
+	.word	$0057
+	.word	$0163
+	.word	$0177
+	.word	$71C9
+	.word	$F268
+	.word	$73E7
+	.word	$FB97
+	.word	$8306
+	.word	$015C
+	.word	$22D7
 	.if	.defined(SMB)
-		.byte	$E7, $00, $03, $A7
+		.word	$00E7
+	.word	$A703
 	.elseif	.defined(VS_SMB)
-		.byte	$03, $80, $13, $26
+		.word	$8003
+	.word	$2613
 	.endif
-	.byte	$6C, $02, $B3, $22, $E3, $01, $E7, $07, $47, $A0
-	.byte	$57, $06, $A7, $01, $D3
+	.word	$026C
+	.word	$22B3
+	.word	$01E3
+	.word	$07E7
+	.word	$A047
+	.word	$0657
+	.word	$01A7
 	.if	.defined(SMB)
-		.byte	$00
+		.word	$00D3
 	.elseif	.defined(VS_SMB)
-		.byte	$01
+		.word	$01D3
 	.endif
-	.byte	$D7, $01, $07, $81, $67, $20
-	.byte	$93, $22, $03, $A3, $1C, $61, $17, $21, $6F, $33
-	.byte	$C7, $63, $D8, $62, $E9, $61, $FA, $60, $4F, $B3
-	.byte	$87, $63, $9C, $01, $B7, $63, $C8, $62, $D9, $61
-	.byte	$EA, $60, $39, $F1, $87, $21, $A7, $01, $B7, $20
-	.byte	$39, $F1, $5F, $38, $6D, $C1, $AF, $26
+	.word	$01D7
+	.word	$8107
+	.word	$2067
+	.word	$2293
+	.word	$A303
+	.word	$611C
+	.word	$2117
+	.word	$336F
+	.word	$63C7
+	.word	$62D8
+	.word	$61E9
+	.word	$60FA
+	.word	$B34F
+	.word	$6387
+	.word	$019C
+	.word	$63B7
+	.word	$62C8
+	.word	$61D9
+	.word	$60EA
+	.word	$F139
+	.word	$2187
+	.word	$01A7
+	.word	$20B7
+	.word	$F139
+	.word	$385F
+	.word	$C16D
+	.word	$26AF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_7:
@@ -1202,170 +1948,439 @@ courses_data_overworld_7:
 .elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_BG_COL_UNDERGROUND)
 .endif
-	.byte	$0F, $26, $FE, $10
-
+	.word	$260F
+	.word	$10FE
 	.if	.defined(SMB)
-		.byte	$2A, $93, $87, $17, $A3, $14
-		.byte	$B2, $42, $0A, $92, $19, $40, $36, $14, $50, $41
-		.byte	$82, $16, $2B, $93, $24, $41, $BB, $14, $B8, $00
-		.byte	$C2, $43, $C3, $13, $1B, $94, $67, $12, $C4, $15
-		.byte	$53, $C1, $D2, $41, $12, $C1, $29, $13, $85, $17
-		.byte	$1B, $92, $1A, $42, $47, $13, $83, $41, $A7, $13
-		.byte	$0E, $91, $A7, $63, $B7, $63, $C5, $65, $D5, $65
-		.byte	$DD, $4A, $E3, $67, $F3, $67, $8D, $C1, $AE, $42
-		.byte	$DF, $20
+		.word	$932A
+		.word	$1787
+		.word	$14A3
+		.word	$42B2
+		.word	$920A
+		.word	$4019
+		.word	$1436
+		.word	$4150
+		.word	$1682
+		.word	$932B
+		.word	$4124
+		.word	$14BB
+		.word	$00B8
+		.word	$43C2
+		.word	$13C3
+		.word	$941B
+		.word	$1267
+		.word	$15C4
+		.word	$C153
+		.word	$41D2
+		.word	$C112
+		.word	$1329
+		.word	$1785
+		.word	$921B
+		.word	$421A
+		.word	$1347
+		.word	$4183
+		.word	$13A7
+		.word	$910E
+		.word	$63A7
+		.word	$63B7
+		.word	$65C5
+		.word	$65D5
+		.word	$4ADD
+		.word	$67E3
+		.word	$67F3
+		.word	$C18D
+		.word	$42AE
+		.word	$20DF
 	.elseif	.defined(VS_SMB)
-		.byte	$8B, $93, $A9, $0B, $1B, $92, $14, $41, $8B, $12
-		.byte	$B6, $40, $CC, $16, $CF, $11, $D6, $40, $EB, $12, $2F, $95, $B7, $14, $B7, $97
-		.byte	$C6, $45, $2B, $92, $39, $0B, $72, $41, $A7, $00, $D7, $42, $1B, $95, $97, $13
-		.byte	$6C, $95, $6F, $11, $A2, $40, $BF, $15, $C2, $40, $0B, $9F, $62, $44, $63, $14
-		.byte	$47, $C0, $56, $42, $87, $40, $9B, $1D, $D7, $12, $B7, $E0, $ED, $4A, $03, $E0
-		.byte	$8E, $11, $9D, $41, $BE, $42, $EF, $20
+		.word	$938B
+		.word	$0BA9
+		.word	$921B
+		.word	$4114
+		.word	$128B
+		.word	$40B6
+		.word	$16CC
+		.word	$11CF
+		.word	$40D6
+		.word	$12EB
+		.word	$952F
+		.word	$14B7
+		.word	$97B7
+		.word	$45C6
+		.word	$922B
+		.word	$0B39
+		.word	$4172
+		.word	$00A7
+		.word	$42D7
+		.word	$951B
+		.word	$1397
+		.word	$956C
+		.word	$116F
+		.word	$40A2
+		.word	$15BF
+		.word	$40C2
+		.word	$9F0B
+		.word	$4462
+		.word	$1463
+		.word	$C047
+		.word	$4256
+		.word	$4087
+		.word	$1D9B
+		.word	$12D7
+		.word	$E0B7
+		.word	$4AED
+		.word	$E003
+		.word	$118E
+		.word	$419D
+		.word	$42BE
+		.word	$20EF
 	.endif
 
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_8:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
-	.byte	$0F, $26
+	.word	$260F
 	.if	.defined(SMB)
-		.byte	$6E, $10, $8B, $17, $AF, $32, $D8, $62
-		.byte	$E8, $62, $FC, $3F, $AD, $C8, $F8, $64, $0C, $BE
-		.byte	$43, $43, $F8, $64, $0C, $BF, $73, $40, $84, $40
-		.byte	$93, $40, $A4, $40, $B3, $40, $F8, $64, $48, $E4
-		.byte	$5C, $39, $83, $40, $92, $41, $B3, $40, $F8, $64
-		.byte	$48, $E4, $5C, $39, $F8, $64, $13, $C2, $37, $65
-		.byte	$4C, $24, $63, $00, $97, $65, $C3, $42, $0B, $97
-		.byte	$AC, $32, $F8, $64, $0C, $BE, $53, $45, $9D, $48
-		.byte	$F8, $64, $2A, $E2, $3C, $47, $56, $43, $BA, $62
-		.byte	$F8, $64, $0C, $B7, $88, $64, $BC, $31, $D4, $45
-		.byte	$FC, $31, $3C, $B1, $78, $64, $8C, $38, $0B, $9C
-		.byte	$1A, $33, $18, $61, $28, $61, $39, $60, $5D, $4A
-		.byte	$EE, $11, $0F, $B8, $1D, $C1, $3E, $42, $6F, $20
+		.word	$106E
+		.word	$178B
+		.word	$32AF
+		.word	$62D8
+		.word	$62E8
+		.word	$3FFC
+		.word	$C8AD
+		.word	$64F8
+		.word	$BE0C
+		.word	$4343
+		.word	$64F8
+		.word	$BF0C
+		.word	$4073
+		.word	$4084
+		.word	$4093
+		.word	$40A4
+		.word	$40B3
+		.word	$64F8
+		.word	$E448
+		.word	$395C
+		.word	$4083
+		.word	$4192
+		.word	$40B3
+		.word	$64F8
+		.word	$E448
+		.word	$395C
+		.word	$64F8
+		.word	$C213
+		.word	$6537
+		.word	$244C
+		.word	$0063
+		.word	$6597
+		.word	$42C3
+		.word	$970B
+		.word	$32AC
+		.word	$64F8
+		.word	$BE0C
+		.word	$4553
+		.word	$489D
+		.word	$64F8
+		.word	$E22A
+		.word	$473C
+		.word	$4356
+		.word	$62BA
+		.word	$64F8
+		.word	$B70C
+		.word	$6488
+		.word	$31BC
+		.word	$45D4
+		.word	$31FC
+		.word	$B13C
+		.word	$6478
+		.word	$388C
+		.word	$9C0B
+		.word	$331A
+		.word	$6118
+		.word	$6128
+		.word	$6039
+		.word	$4A5D
+		.word	$11EE
+		.word	$B80F
+		.word	$C11D
+		.word	$423E
+		.word	$206F
 	.elseif	.defined(VS_SMB)
-		.byte	$AF, $32, $D8, $62, $DE, $10, $08, $E4, $5A, $62, $6C, $4C
-		.byte	$86, $43, $AD, $48, $3A, $E2, $53, $42, $88, $64, $9C, $36, $08, $E4, $4A, $62
-		.byte	$5C, $4D, $3A, $E2, $9C, $32, $FC, $41, $3C, $B1, $83, $00, $AC, $42, $2A, $E2
-		.byte	$3C, $46, $AA, $62, $BC, $4E, $C6, $43, $46, $C3, $AA, $62, $BD, $48, $0B, $96
-		.byte	$C7, $12, $4C, $C1, $9C, $41, $CD, $48, $DC, $31, $4C, $C2, $BC, $31, $1C, $B1
-		.byte	$5A, $62, $6C, $44, $76, $43, $BA, $62, $DC, $32, $1C, $C4, $6C, $31, $8C, $43
-		.byte	$28, $E4, $3C, $36, $63, $40, $72, $41, $93, $40, $BC, $31, $EC, $31, $1C, $C3
-		.byte	$5A, $62, $97, $12, $F6, $12, $5D, $CA, $73, $12, $E3, $12, $8E, $91, $9D, $41
-		.byte	$BE, $42, $EF, $20
+		.word	$32AF
+		.word	$62D8
+		.word	$10DE
+		.word	$E408
+		.word	$625A
+		.word	$4C6C
+		.word	$4386
+		.word	$48AD
+		.word	$E23A
+		.word	$4253
+		.word	$6488
+		.word	$369C
+		.word	$E408
+		.word	$624A
+		.word	$4D5C
+		.word	$E23A
+		.word	$329C
+		.word	$41FC
+		.word	$B13C
+		.word	$0083
+		.word	$42AC
+		.word	$E22A
+		.word	$463C
+		.word	$62AA
+		.word	$4EBC
+		.word	$43C6
+		.word	$C346
+		.word	$62AA
+		.word	$48BD
+		.word	$960B
+		.word	$12C7
+		.word	$C14C
+		.word	$419C
+		.word	$48CD
+		.word	$31DC
+		.word	$C24C
+		.word	$31BC
+		.word	$B11C
+		.word	$625A
+		.word	$446C
+		.word	$4376
+		.word	$62BA
+		.word	$32DC
+		.word	$C41C
+		.word	$316C
+		.word	$438C
+		.word	$E428
+		.word	$363C
+		.word	$4063
+		.word	$4172
+		.word	$4093
+		.word	$31BC
+		.word	$31EC
+		.word	$C31C
+		.word	$625A
+		.word	$1297
+		.word	$12F6
+		.word	$CA5D
+		.word	$1273
+		.word	$12E3
+		.word	$918E
+		.word	$419D
+		.word	$42BE
+		.word	$20EF
 	.endif
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_9:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_WALLS)
-	.byte	$0F, $20, $6E, $40, $F7, $20, $07, $84, $17, $20
+	.word	$200F
+	.word	$406E
+	.word	$20F7
+	.word	$8407
+	.word	$2017
 
 	.if	.defined(VS_SMB)
-		.byte	$3C, $00
+		.word	$003C
 	.endif
 
 	.if	.defined(SMB)
-		.byte	$4F
+		.word	$344F
+		.word	$03C3
 	.elseif	.defined(VS_SMB)
-		.byte	$5F
+		.word	$345F
+		.word	$07C3
 	.endif
-	.byte	$34, $C3
+	.word	$02C7
+	.word	$22D3
 	.if	.defined(SMB)
-		.byte	$03
+		.word	$E327
 	.elseif	.defined(VS_SMB)
-		.byte	$07
+		.word	$E426
 	.endif
-	.byte	$C7, $02, $D3, $22
+	.word	$6139
+	.word	$73E7
+	.word	$E45C
+	.word	$0057
+	.word	$736C
+	.word	$A047
+	.word	$0653
+	.word	$2263
+	.word	$73A7
+	.word	$73FC
+	.word	$A113
+	.word	$0533
+	.word	$2143
+	.word	$725C
 	.if	.defined(SMB)
-		.byte	$27, $E3
+		.word	$23C3
+		.word	$03CC
 	.elseif	.defined(VS_SMB)
-		.byte	$26, $E4
+		.word	$22D3
+		.word	$05FC
 	.endif
-	.byte	$39, $61, $E7, $73, $5C, $E4, $57, $00, $6C, $73
-	.byte	$47, $A0, $53, $06, $63, $22, $A7, $73, $FC, $73
-	.byte	$13, $A1, $33, $05, $43, $21, $5C, $72
-	.if	.defined(SMB)
-		.byte	$C3, $23, $CC, $03
-	.elseif	.defined(VS_SMB)
-		.byte	$D3, $22, $FC, $05
-	.endif
-	.byte	$77, $FB, $AC, $02, $39, $F1, $A7, $73
-	.byte	$D3, $04, $E8, $72, $E3, $22, $26, $F4, $BC, $02
+	.word	$FB77
+	.word	$02AC
+	.word	$F139
+	.word	$73A7
+	.word	$04D3
+	.word	$72E8
+	.word	$22E3
+	.word	$F426
+	.word	$02BC
 
 	.if	.defined(VS_SMB)
-		.byte	$2C, $80
+		.word	$802C
 	.endif
 
-	.byte	$8C
 	.if	.defined(SMB)
-		.byte	$81
+		.word	$818C
 	.elseif	.defined(VS_SMB)
-		.byte	$01
+		.word	$018C
 	.endif
-	.byte	$A8
+	.word	$62A8
 
 	.if	.defined(VS_SMB)
-		.byte	$62, $BC, $01, $D8
+		.word	$01BC
+		.word	$62D8
 	.endif
 
-	.byte	$62, $17, $87, $43, $24, $A7, $01
-	.byte	$C3, $04, $08, $F2, $97, $21, $A3, $02, $C9, $0B
+	.word	$8717
+	.word	$2443
+	.word	$01A7
+	.word	$04C3
+	.word	$F208
+	.word	$2197
+	.word	$02A3
+	.word	$0BC9
 
 	.if	.defined(SMB)
-		.byte	$E1, $69
+		.word	$69E1
 	.endif
 
-	.byte	$F1, $69, $8D, $C1, $CF, $26
+	.word	$69F1
+	.word	$C18D
+	.word	$26CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_10:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_0|COURSE_DATA_ENTER_POS_B0_C|COURSE_DATA_FG_NONE)
-	.byte	$0F, $26, $AD, $40, $3D, $C7
+	.word	$260F
+	.word	$40AD
+	.word	$C73D
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_11:
 	.word	(COURSE_AREA_LEDGE_CANNON|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_BG_COL_WATER)
-	.byte	$0F, $26, $0D, $02, $C8, $72, $1C, $81, $38, $72
-	.byte	$0D, $05, $97, $34, $98, $62, $A3, $20, $B3, $06
-	.byte	$C3, $20, $CC, $03, $F9, $91, $2C, $81, $48, $62
-	.byte	$0D, $09, $37, $63, $47, $03, $57, $21, $8C, $02
-	.byte	$C5, $79, $C7, $31, $F9, $11, $39, $F1, $A9, $11
-	.byte	$6F, $B4, $D3, $65, $E3, $65, $7D, $C1, $BF, $26
+	.word	$260F
+	.word	$020D
+	.word	$72C8
+	.word	$811C
+	.word	$7238
+	.word	$050D
+	.word	$3497
+	.word	$6298
+	.word	$20A3
+	.word	$06B3
+	.word	$20C3
+	.word	$03CC
+	.word	$91F9
+	.word	$812C
+	.word	$6248
+	.word	$090D
+	.word	$6337
+	.word	$0347
+	.word	$2157
+	.word	$028C
+	.word	$79C5
+	.word	$31C7
+	.word	$11F9
+	.word	$F139
+	.word	$11A9
+	.word	$B46F
+	.word	$65D3
+	.word	$65E3
+	.word	$C17D
+	.word	$26BF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_12:
 	.word	(COURSE_AREA_LEDGE_CLOUD|COURSE_BG_NONE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_0|COURSE_DATA_ENTER_POS_00_A|COURSE_DATA_FG_NONE)
-	.byte	$4C, $00, $F4, $4F, $0D, $02, $02, $42, $43, $4F
-	.byte	$52, $C2, $DE, $00, $5A, $C2, $4D, $C7
+	.word	$004C
+	.word	$4FF4
+	.word	$020D
+	.word	$4202
+	.word	$4F43
+	.word	$C252
+	.word	$00DE
+	.word	$C25A
+	.word	$C74D
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_13:
 	.word	(COURSE_AREA_LEDGE_MUSHROOM|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
-	.byte	$0F, $26, $EE, $10, $0B, $94, $33, $14, $42, $42
-	.byte	$77, $16, $86, $44, $02, $92, $4A, $16, $69, $42
-	.byte	$73, $14, $B0, $00, $C7, $12, $05, $C0, $1C, $17
-	.byte	$1F, $11, $36, $12, $8F, $14, $91, $40, $1B, $94
-	.byte	$35, $12, $34, $42, $60, $42, $61, $12, $87, $12
-	.byte	$96, $40, $A3, $14, $1C, $98, $1F, $11, $47, $12
-	.byte	$9F, $15, $CC, $15, $CF, $11, $05, $C0, $1F, $15
+	.word	$260F
+	.word	$10EE
+	.word	$940B
+	.word	$1433
+	.word	$4242
+	.word	$1677
+	.word	$4486
+	.word	$9202
+	.word	$164A
+	.word	$4269
+	.word	$1473
+	.word	$00B0
+	.word	$12C7
+	.word	$C005
+	.word	$171C
+	.word	$111F
+	.word	$1236
+	.word	$148F
+	.word	$4091
+	.word	$941B
+	.word	$1235
+	.word	$4234
+	.word	$4260
+	.word	$1261
+	.word	$1287
+	.word	$4096
+	.word	$14A3
+	.word	$981C
+	.word	$111F
+	.word	$1247
+	.word	$159F
+	.word	$15CC
+	.word	$11CF
+	.word	$C005
+	.word	$151F
 
 	.if	.defined(SMB)
-		.byte	$39, $12
+		.word	$1239
 	.endif
 
-	.byte	$7C, $16, $7F, $11, $82, $40
+	.word	$167C
+	.word	$117F
+	.word	$4082
 
 	.if	.defined(SMB)
-		.byte	$98, $12
+		.word	$1298
 	.endif
 
-	.byte	$DF, $15, $16, $C4, $17, $14, $54, $12, $9B, $16
-	.byte	$28, $94
+	.word	$15DF
+	.word	$C416
+	.word	$1417
+	.word	$1254
+	.word	$169B
+	.word	$9428
 	.if	.defined(SMB)
-		.byte	$CE, $01
+		.word	$01CE
 	.elseif	.defined(VS_SMB)
-		.byte	$EE, $11
+		.word	$11EE
 	.endif
-	.byte	$3D, $C1, $5E, $42, $8F, $20
+	.word	$C13D
+	.word	$425E
+	.word	$208F
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_14:
@@ -1374,16 +2389,55 @@ courses_data_overworld_14:
 .elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
 .endif
-	.byte	$0F, $26, $FE, $10, $2B, $92, $57, $12, $8B, $12
-	.byte	$C0, $41, $F7, $13, $5B, $92, $69, $0B, $BB, $12
-	.byte	$B2, $46, $19, $93, $71, $00, $17, $94, $7C, $14
-	.byte	$7F, $11, $93, $41, $BF, $15, $FC, $13, $FF, $11
-	.byte	$2F, $95, $50, $42, $51, $12, $58, $14, $A6, $12
-	.byte	$DB, $12, $1B, $93, $46, $43, $7B, $12, $8D, $49
-	.byte	$B7, $14, $1B, $94, $49, $0B, $BB, $12, $FC, $13
-	.byte	$FF, $12, $03, $C1, $2F, $15, $43, $12, $4B, $13
-	.byte	$77, $13, $9D, $4A, $15, $C1, $A1, $41, $C3, $12
-	.byte	$FE, $01, $7D, $C1, $9E, $42, $CF, $20
+	.word	$260F
+	.word	$10FE
+	.word	$922B
+	.word	$1257
+	.word	$128B
+	.word	$41C0
+	.word	$13F7
+	.word	$925B
+	.word	$0B69
+	.word	$12BB
+	.word	$46B2
+	.word	$9319
+	.word	$0071
+	.word	$9417
+	.word	$147C
+	.word	$117F
+	.word	$4193
+	.word	$15BF
+	.word	$13FC
+	.word	$11FF
+	.word	$952F
+	.word	$4250
+	.word	$1251
+	.word	$1458
+	.word	$12A6
+	.word	$12DB
+	.word	$931B
+	.word	$4346
+	.word	$127B
+	.word	$498D
+	.word	$14B7
+	.word	$941B
+	.word	$0B49
+	.word	$12BB
+	.word	$13FC
+	.word	$12FF
+	.word	$C103
+	.word	$152F
+	.word	$1243
+	.word	$134B
+	.word	$1377
+	.word	$4A9D
+	.word	$C115
+	.word	$41A1
+	.word	$12C3
+	.word	$01FE
+	.word	$C17D
+	.word	$429E
+	.word	$20CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_15:
@@ -1392,77 +2446,126 @@ courses_data_overworld_15:
 .elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_MNT_BUSH|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_3|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_WALLS)
 .endif
-	.byte	$0F, $20, $6E, $44, $0C, $F1, $4C, $01, $AA, $35
-	.byte	$D9, $34, $EE, $20, $08, $B3, $37, $32
+	.word	$200F
+	.word	$446E
+	.word	$F10C
+	.word	$014C
+	.word	$35AA
+	.word	$34D9
+	.word	$20EE
+	.word	$B308
+	.word	$3237
 
 	.if	.defined(SMB)
-		.byte	$43, $04
+		.word	$0443
 	.endif
 
-	.byte	$4E, $21
+	.word	$214E
 
 	.if	.defined(SMB)
-		.byte	$53, $20
+		.word	$2053
 	.endif
 
-	.byte	$7C, $01, $97, $21, $B7, $07
-	.byte	$9C, $81, $E7, $42, $5F, $B3
+	.word	$017C
+	.word	$2197
+	.word	$07B7
+	.word	$819C
+	.word	$42E7
+	.word	$B35F
 
 	.if	.defined(VS_SMB)
-		.byte	$83, $02
+		.word	$0283
 	.endif
 
-	.byte	$97, $63, $AC, $02
-	.byte	$C5, $41, $49, $E0, $58, $61, $76, $64, $85, $65
-	.byte	$94, $66, $A4, $22
+	.word	$6397
+	.word	$02AC
+	.word	$41C5
+	.word	$E049
+	.word	$6158
+	.word	$6476
+	.word	$6585
+	.word	$6694
+	.word	$22A4
 
 	.if	.defined(SMB)
-		.byte	$A6, $03
+		.word	$03A6
 	.endif
 
-	.byte	$C8, $22, $DC, $02
-	.byte	$68, $F2, $96, $42, $13, $82, $17, $02, $AF, $34
-	.byte	$F6, $21, $FC, $06, $26, $80, $2A, $24, $36, $01
-	.byte	$8C, $00, $FF, $35, $4E, $A0, $55, $21, $77, $20
-	.byte	$87, $07, $89, $22, $AE, $21, $4C, $82, $9F, $34
-	.byte	$EC
+	.word	$22C8
+	.word	$02DC
+	.word	$F268
+	.word	$4296
+	.word	$8213
+	.word	$0217
+	.word	$34AF
+	.word	$21F6
+	.word	$06FC
+	.word	$8026
+	.word	$242A
+	.word	$0136
+	.word	$008C
+	.word	$35FF
+	.word	$A04E
+	.word	$2155
+	.word	$2077
+	.word	$0787
+	.word	$2289
+	.word	$21AE
+	.word	$824C
+	.word	$349F
 	.if	.defined(SMB)
-		.byte	$01
+		.word	$01EC
 	.elseif	.defined(VS_SMB)
-		.byte	$02
+		.word	$02EC
 	.endif
 
 	.if	.defined(SMB)
-		.byte	$03, $E7
+		.word	$E703
 	.endif
 
-	.byte	$13
 	.if	.defined(SMB)
-		.byte	$67
+		.word	$6713
 	.elseif	.defined(VS_SMB)
-		.byte	$E7
+		.word	$E713
 	.endif
-	.byte	$8D, $4A, $AD, $41, $0F, $A6
+	.word	$4A8D
+	.word	$41AD
+	.word	$A60F
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_16:
 	.word	(COURSE_AREA_LEDGE_MUSHROOM|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_0|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
-	.byte	$4C, $00, $C7, $12, $C6, $42, $03, $92, $02, $42
-	.byte	$29, $12, $63, $12, $62, $42, $69, $14, $A5, $12
-	.byte	$A4, $42, $E2, $14, $E1, $44, $F8, $16, $37, $C1
-	.byte	$8F, $38, $02, $BB
+	.word	$004C
+	.word	$12C7
+	.word	$42C6
+	.word	$9203
+	.word	$4202
+	.word	$1229
+	.word	$1263
+	.word	$4262
+	.word	$1469
+	.word	$12A5
+	.word	$42A4
+	.word	$14E2
+	.word	$44E1
+	.word	$16F8
+	.word	$C137
+	.word	$388F
+	.word	$BB02
 
 	.if	.defined(SMB)
-		.byte	$28, $7A
+		.word	$7A28
 	.endif
 
-	.byte	$68, $7A
+	.word	$7A68
 
 	.if	.defined(SMB)
-		.byte	$A8, $7A
+		.word	$7AA8
 	.endif
 
-	.byte	$E0, $6A, $F0, $6A, $6D, $C5
+	.word	$6AE0
+	.word	$6AF0
+	.word	$C56D
 	.byte	COURSE_DATA_END
 
 .if	.defined(VS_SMB)
@@ -1475,98 +2578,199 @@ courses_data_overworld_17:
 .elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_3|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_WALLS)
 .endif
-	.byte	$0F, $20, $6E, $40, $0D, $02, $37, $73, $EC, $00
-	.byte	$0C, $80, $3C, $00, $6C, $00, $9C, $00, $06, $C0
-	.byte	$C7, $73, $06, $83, $28, $72, $96, $40, $E7, $73
-	.byte	$26, $C0, $87, $7B, $D2, $41, $39, $F1, $C8, $F2
-	.byte	$97, $E3, $A3, $23, $E7, $02, $E3, $07, $F3, $22
-	.byte	$37, $E3, $9C, $00, $BC, $00, $EC, $00, $0C, $80
-	.byte	$3C, $00, $86, $21, $A6, $06, $B6, $24, $5C, $80
-	.byte	$7C, $00, $9C, $00, $29, $E1, $DC, $05, $F6, $41
-	.byte	$DC, $80, $E8, $72, $0C, $81, $27, $73, $4C, $01
-	.byte	$66, $74, $0D, $11, $3F, $35, $B6, $41, $2C, $82
-	.byte	$36, $40, $7C
+	.word	$200F
+	.word	$406E
+	.word	$020D
+	.word	$7337
+	.word	$00EC
+	.word	$800C
+	.word	$003C
+	.word	$006C
+	.word	$009C
+	.word	$C006
+	.word	$73C7
+	.word	$8306
+	.word	$7228
+	.word	$4096
+	.word	$73E7
+	.word	$C026
+	.word	$7B87
+	.word	$41D2
+	.word	$F139
+	.word	$F2C8
+	.word	$E397
+	.word	$23A3
+	.word	$02E7
+	.word	$07E3
+	.word	$22F3
+	.word	$E337
+	.word	$009C
+	.word	$00BC
+	.word	$00EC
+	.word	$800C
+	.word	$003C
+	.word	$2186
+	.word	$06A6
+	.word	$24B6
+	.word	$805C
+	.word	$007C
+	.word	$009C
+	.word	$E129
+	.word	$05DC
+	.word	$41F6
+	.word	$80DC
+	.word	$72E8
+	.word	$810C
+	.word	$7327
+	.word	$014C
+	.word	$7466
+	.word	$110D
+	.word	$353F
+	.word	$41B6
+	.word	$822C
+	.word	$4036
 	.if	.defined(SMB)
-		.byte	$02
+		.word	$027C
 	.elseif	.defined(VS_SMB)
-		.byte	$03
+		.word	$037C
 	.endif
-	.byte	$86, $40, $F9, $61, $39, $E1
-	.byte	$AC, $04, $C6, $41, $0C, $83, $16, $41, $88, $F2
-	.byte	$39, $F1, $7C, $00, $89, $61, $9C, $00, $A7, $63
-	.byte	$BC, $00, $C5, $65, $DC
+	.word	$4086
+	.word	$61F9
+	.word	$E139
+	.word	$04AC
+	.word	$41C6
+	.word	$830C
+	.word	$4116
+	.word	$F288
+	.word	$F139
+	.word	$007C
+	.word	$6189
+	.word	$009C
+	.word	$63A7
+	.word	$00BC
+	.word	$65C5
 	.if	.defined(SMB)
-		.byte	$00
+		.word	$00DC
 	.elseif	.defined(VS_SMB)
-		.byte	$01
+		.word	$01DC
 	.endif
 
 	.if	.defined(SMB)
-		.byte	$E3, $67
+		.word	$67E3
 	.endif
 
-	.byte	$F3, $67, $8D, $C1, $CF, $26
+	.word	$67F3
+	.word	$C18D
+	.word	$26CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_18:
 	.word	(COURSE_AREA_LEDGE_CANNON|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_BG_COL_WATER)
-	.byte	$0F, $26, $CF, $33, $07, $B2, $15, $11, $52, $42
-	.byte	$99, $0B, $AC, $02, $D3
+	.word	$260F
+	.word	$33CF
+	.word	$B207
+	.word	$1115
+	.word	$4252
+	.word	$0B99
+	.word	$02AC
 	.if	.defined(SMB)
-		.byte	$24
+		.word	$24D3
 	.elseif	.defined(VS_SMB)
-		.byte	$25
+		.word	$25D3
 	.endif
-	.byte	$D6, $42, $D7, $25
+	.word	$42D6
+	.word	$25D7
 	.if	.defined(SMB)
-		.byte	$23, $84
+		.word	$8423
 	.elseif	.defined(VS_SMB)
-		.byte	$4A, $90
+		.word	$904A
 	.endif
-	.byte	$CF, $33, $07, $E3, $19, $61
+	.word	$33CF
+	.word	$E307
+	.word	$6119
 
 	.if	.defined(VS_SMB)
-		.byte	$4C, $01
+		.word	$014C
 	.endif
 
-	.byte	$78, $7A
-
-	.if	.defined(VS_SMB)
-		.byte	$9C, $00
-	.endif
-
-	.byte	$EF, $33, $2C, $81, $46, $64, $55, $65, $65, $65
-	.byte	$EC, $74
+	.word	$7A78
 
 	.if	.defined(VS_SMB)
-		.byte	$3C, $81
+		.word	$009C
+	.endif
+
+	.word	$33EF
+	.word	$812C
+	.word	$6446
+	.word	$6555
+	.word	$6565
+	.word	$74EC
+
+	.if	.defined(VS_SMB)
+		.word	$813C
 	.endif
 
 	.if	.defined(SMB)
-		.byte	$47, $82, $53, $05
+		.word	$8247
+		.word	$0553
 	.elseif	.defined(VS_SMB)
-		.byte	$46, $02, $53, $04
+		.word	$0246
+		.word	$0453
 	.endif
-	.byte	$63, $21, $62, $41, $96, $22, $9A, $41, $CC, $03
+	.word	$2163
+	.word	$4162
+	.word	$2296
+	.word	$419A
+	.word	$03CC
+
+	.if	.defined(VS_SMB)
+		.word	$A033
+		.word	$015C
+		.word	$2083
+	.endif
+
 	.if	.defined(SMB)
-		.byte	$B9, $91
+		.word	$91B9
 	.elseif	.defined(VS_SMB)
-		.byte	$33, $A0, $5C, $01, $83, $20, $B9, $11, $D3, $05
-		.byte	$E6, $02
+		.word	$11B9
 	.endif
-	.byte	$39, $F1
-	.byte	$63, $26, $67, $27, $D3, $06, $FC, $01, $18, $E2
-	.byte	$D9, $07, $E9, $04, $0C, $86, $37, $22, $93, $24
-	.byte	$87
+
+	.if	.defined(VS_SMB)
+		.word	$05D3
+		.word	$02E6
+	.endif
+
+	.word	$F139
+	.word	$2663
+	.word	$2767
+	.word	$06D3
+	.word	$01FC
+	.word	$E218
+	.word	$07D9
+	.word	$04E9
+	.word	$860C
+	.word	$2237
+	.word	$2493
 	.if	.defined(SMB)
-		.byte	$84
+		.word	$8487
 	.elseif	.defined(VS_SMB)
-		.byte	$82
+		.word	$8287
 	.endif
-	.byte	$AC, $02, $C2, $41, $C3, $23, $D9, $71
-	.byte	$FC, $01, $7F, $B1, $9C, $00, $A7, $63, $B6, $64
-	.byte	$CC, $00, $D4, $66, $E3, $67, $F3, $67, $8D, $C1
-	.byte	$CF, $26
+	.word	$02AC
+	.word	$41C2
+	.word	$23C3
+	.word	$71D9
+	.word	$01FC
+	.word	$B17F
+	.word	$009C
+	.word	$63A7
+	.word	$64B6
+	.word	$00CC
+	.word	$66D4
+	.word	$67E3
+	.word	$67F3
+	.word	$C18D
+	.word	$26CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_19:
@@ -1575,46 +2779,85 @@ courses_data_overworld_19:
 .elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_CANNON|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_3|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
 .endif
-	.byte	$0F, $26, $FC, $00, $1F, $B3, $5C, $00, $65, $65
-	.byte	$74, $66, $83, $67, $93, $67, $DC, $73, $4C, $80
-	.byte	$B3, $20, $C9, $0B, $C3
+	.word	$260F
+	.word	$00FC
+	.word	$B31F
+	.word	$005C
+	.word	$6565
+	.word	$6674
+	.word	$6783
+	.word	$6793
+	.word	$73DC
+	.word	$804C
+	.word	$20B3
+	.word	$0BC9
 	.if	.defined(SMB)
-		.byte	$08
+		.word	$08C3
 	.elseif	.defined(VS_SMB)
-		.byte	$04
+		.word	$04C3
 	.endif
-	.byte	$D3, $2F, $DC, $00
-	.byte	$2C, $80, $4C, $00, $8C, $00, $D3, $2E, $ED, $4A
-	.byte	$FC, $00
+	.word	$2FD3
+	.word	$00DC
+	.word	$802C
+	.word	$004C
+	.word	$008C
+	.word	$2ED3
+	.word	$4AED
+	.word	$00FC
 
 	.if	.defined(SMB)
-		.byte	$D7, $A1
+		.word	$A1D7
 	.endif
 
-	.byte	$EC
 	.if	.defined(SMB)
-		.byte	$01
+		.word	$01EC
 	.elseif	.defined(VS_SMB)
-		.byte	$82
+		.word	$82EC
 	.endif
-	.byte	$4C, $80, $59, $11
-	.byte	$D8, $11, $DA, $10, $37, $A0, $47, $04, $99, $11
-	.byte	$E7, $21, $3A, $90, $67, $20, $76, $10, $77, $60
-	.byte	$87, $07, $D8, $12, $39, $F1, $AC, $00, $E9, $71
-	.byte	$0C, $80, $2C, $00, $4C, $05, $C7, $7B, $39, $F1
-	.byte	$EC, $00, $F9, $11, $0C, $82, $6F, $34, $F8, $11
-	.byte	$FA, $10, $7F, $B2, $AC, $00, $B6, $64, $CC
+	.word	$804C
+	.word	$1159
+	.word	$11D8
+	.word	$10DA
+	.word	$A037
+	.word	$0447
+	.word	$1199
+	.word	$21E7
+	.word	$903A
+	.word	$2067
+	.word	$1076
+	.word	$6077
+	.word	$0787
+	.word	$12D8
+	.word	$F139
+	.word	$00AC
+	.word	$71E9
+	.word	$800C
+	.word	$002C
+	.word	$054C
+	.word	$7BC7
+	.word	$F139
+	.word	$00EC
+	.word	$11F9
+	.word	$820C
+	.word	$346F
+	.word	$11F8
+	.word	$10FA
+	.word	$B27F
+	.word	$00AC
+	.word	$64B6
 	.if	.defined(SMB)
-		.byte	$01
+		.word	$01CC
 	.elseif	.defined(VS_SMB)
-		.byte	$02
+		.word	$02CC
 	.endif
 
 	.if	.defined(SMB)
-		.byte	$E3, $67
+		.word	$67E3
 	.endif
 
-	.byte	$F3, $67, $8D, $C1, $CF, $26
+	.word	$67F3
+	.word	$C18D
+	.word	$26CF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_20:
@@ -1623,60 +2866,115 @@ courses_data_overworld_20:
 .elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_CANNON|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_3|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_WALLS)
 .endif
-	.byte	$0F, $20, $6E, $45, $39, $91, $B3, $04, $C3, $21
-	.byte	$C8, $11, $CA, $10
+	.word	$200F
+	.word	$456E
+	.word	$9139
+	.word	$04B3
+	.word	$21C3
+	.word	$11C8
+	.word	$10CA
 
 	.if	.defined(VS_SMB)
-		.byte	$0C, $81
+		.word	$810C
 	.endif
 
-	.byte	$49
 	.if	.defined(SMB)
-		.byte	$91
+		.word	$9149
 	.elseif	.defined(VS_SMB)
-		.byte	$11
+		.word	$1149
 	.endif
-	.byte	$7C, $73, $E8, $12
-	.byte	$88, $91, $8A, $10, $E7, $21, $05, $91, $07, $30
-	.byte	$17, $07, $27, $20, $49, $11, $9C, $01, $C8, $72
-	.byte	$23
+	.word	$737C
+	.word	$12E8
+	.word	$9188
+	.word	$108A
+	.word	$21E7
+	.word	$9105
+	.word	$3007
+	.word	$0717
+	.word	$2027
+	.word	$1149
+	.word	$019C
+	.word	$72C8
 	.if	.defined(SMB)
-		.byte	$A6, $27, $26
+		.word	$A623
+		.word	$2627
 	.elseif	.defined(VS_SMB)
-		.byte	$81, $27, $01, $33, $01, $37, $01, $43, $01, $47
-		.byte	$01, $53, $01, $57, $01, $63, $01, $67, $01, $73
-		.byte	$01, $77, $01, $83, $01, $87, $01
+		.word	$8123
+		.word	$0127
+		.word	$0133
+		.word	$0137
+		.word	$0143
+		.word	$0147
+		.word	$0153
+		.word	$0157
+		.word	$0163
+		.word	$0167
+		.word	$0173
+		.word	$0177
+		.word	$0183
+		.word	$0187
 	.endif
-	.byte	$D3, $03, $D8, $7A, $89, $91
-	.byte	$D8, $72, $39, $F1, $A9, $11
+
+	.word	$03D3
+	.word	$7AD8
+	.word	$9189
+	.word	$72D8
+	.word	$F139
+	.word	$11A9
 
 	.if	.defined(VS_SMB)
-		.byte	$EC, $01
+		.word	$01EC
 	.endif
 
-	.byte	$09, $F1, $63, $24
-	.byte	$67, $24, $D8, $62, $28, $91, $2A, $10
+	.word	$F109
+	.word	$2463
+	.word	$2467
+	.word	$62D8
+	.word	$9128
+	.word	$102A
 
 	.if	.defined(VS_SMB)
-		.byte	$3C, $03
+		.word	$033C
 	.endif
 
-	.byte	$56, $21, $70, $04, $79, $0B, $8C, $00, $94, $21
-	.byte	$9F, $35
+	.word	$2156
+	.word	$0470
+	.word	$0B79
+	.word	$008C
+	.word	$2194
+	.word	$359F
 
 	.if	.defined(VS_SMB)
-		.byte	$FC, $52
+		.word	$52FC
 	.endif
 
-	.byte	$2F, $B8, $3D, $C1, $7F, $26
+	.word	$B82F
+	.word	$C13D
+	.word	$267F
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_21:
 	.word	(COURSE_AREA_LEDGE_CLOUD|COURSE_BG_NONE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_0|COURSE_DATA_ENTER_POS_00_A|COURSE_DATA_BG_COL_OVERWORLD)
-	.byte	$4C, $00, $F4, $4F, $0D, $02, $06, $20, $24, $4F
-	.byte	$35, $A0, $36, $20, $53, $46, $D5, $20, $D6, $20
-	.byte	$34, $A1, $73, $49, $74, $20, $94, $20, $B4, $20
-	.byte	$D4, $20, $F4, $20, $2E, $80, $59, $42, $4D, $C7
+	.word	$004C
+	.word	$4FF4
+	.word	$020D
+	.word	$2006
+	.word	$4F24
+	.word	$A035
+	.word	$2036
+	.word	$4653
+	.word	$20D5
+	.word	$20D6
+	.word	$A134
+	.word	$4973
+	.word	$2074
+	.word	$2094
+	.word	$20B4
+	.word	$20D4
+	.word	$20F4
+	.word	$802E
+	.word	$4259
+	.word	$C74D
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_22:
@@ -1685,48 +2983,212 @@ courses_data_overworld_22:
 .elseif	.defined(VS_SMB)
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_TREE_FENCE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_BG_COL_OVERWORLD)
 .endif
-	.byte	$0F, $26
+	.word	$260F
 	.if	.defined(SMB)
-		.byte	$0D, $03, $1A, $60, $77, $42, $C4, $00
-		.byte	$C8, $62, $B9, $E1, $D3, $06, $D7, $07, $F9, $61
-		.byte	$0C, $81, $4E, $B1, $8E, $B1, $BC, $01, $E4, $50
-		.byte	$E9, $61, $0C, $81, $0D, $0A, $84, $43, $98, $72
-		.byte	$0D, $0C, $0F, $38, $1D, $C1, $5F, $26
+		.word	$030D
+		.word	$601A
+		.word	$4277
+		.word	$00C4
+		.word	$62C8
+		.word	$E1B9
+		.word	$06D3
+		.word	$07D7
+		.word	$61F9
+		.word	$810C
+		.word	$B14E
+		.word	$B18E
+		.word	$01BC
+		.word	$50E4
+		.word	$61E9
+		.word	$810C
+		.word	$0A0D
+		.word	$4384
+		.word	$7298
+		.word	$0C0D
+		.word	$380F
+		.word	$C11D
+		.word	$265F
 	.elseif	.defined(VS_SMB)
-		.byte	$38, $F2, $9E, $00, $AA, $72, $0A, $F2, $3E, $01, $96, $42
-		.byte	$CE, $00, $1E, $81, $29, $61, $3A, $60, $4E, $00, $88, $74, $9E, $01, $06, $C3
-		.byte	$0A, $E0, $0E, $00, $4E, $01, $57, $63, $67, $63, $78, $62, $89, $61, $9A, $60
-		.byte	$AE, $00, $FA, $72, $15, $C1, $49, $73, $8E, $01, $9A, $60, $9A, $E0, $AC, $02
-		.byte	$D9, $61, $D4, $06, $EC, $01, $05, $C1, $D6, $42, $84, $C3, $98, $F2, $D3, $04
-		.byte	$D7, $07, $E9, $61, $EE, $00, $3E, $81, $A3, $02, $B7, $02, $CE, $00, $E1, $71
-		.byte	$E3, $31, $6E, $81, $7A, $60, $E6, $41, $2E, $80, $28, $62, $3E, $01, $99, $71
-		.byte	$AE, $00, $CE, $01, $BE, $80, $D6, $60, $F6, $60, $1E, $81, $3C, $00, $5F, $37
-		.byte	$5D, $C1, $9F, $26
+		.word	$F238
+		.word	$009E
+		.word	$72AA
+		.word	$F20A
+		.word	$013E
+		.word	$4296
+		.word	$00CE
+		.word	$811E
+		.word	$6129
+		.word	$603A
+		.word	$004E
+		.word	$7488
+		.word	$019E
+		.word	$C306
+		.word	$E00A
+		.word	$000E
+		.word	$014E
+		.word	$6357
+		.word	$6367
+		.word	$6278
+		.word	$6189
+		.word	$609A
+		.word	$00AE
+		.word	$72FA
+		.word	$C115
+		.word	$7349
+		.word	$018E
+		.word	$609A
+		.word	$E09A
+		.word	$02AC
+		.word	$61D9
+		.word	$06D4
+		.word	$01EC
+		.word	$C105
+		.word	$42D6
+		.word	$C384
+		.word	$F298
+		.word	$04D3
+		.word	$07D7
+		.word	$61E9
+		.word	$00EE
+		.word	$813E
+		.word	$02A3
+		.word	$02B7
+		.word	$00CE
+		.word	$71E1
+		.word	$31E3
+		.word	$816E
+		.word	$607A
+		.word	$41E6
+		.word	$802E
+		.word	$6228
+		.word	$013E
+		.word	$7199
+		.word	$00AE
+		.word	$01CE
+		.word	$80BE
+		.word	$60D6
+		.word	$60F6
+		.word	$811E
+		.word	$003C
+		.word	$375F
+		.word	$C15D
+		.word	$269F
 	.endif
 	.byte	COURSE_DATA_END
 
 .if	.defined(VS_SMB)
 courses_data_overworld_23:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
-	.byte	$0F, $26, $FE, $10, $2A, $93, $87, $17, $A3, $14, $B2, $42, $0A, $92, $19, $40
-	.byte	$36, $14, $50, $41, $82, $16, $2B, $93, $24, $41, $BB, $14, $B8, $00, $C2, $43
-	.byte	$C3, $13, $1B, $94, $67, $12, $C4, $15, $53, $C1, $D2, $41, $12, $C1, $29, $13
-	.byte	$85, $17, $1B, $92, $1A, $42, $47, $13, $83, $41, $A7, $13, $9E, $91, $A7, $63
-	.byte	$B7, $63, $C5, $65, $D5, $65, $DD, $4A, $E3, $67, $F3, $67, $8D, $C1, $AE, $42
-	.byte	$DF, $20
+	.word	$260F
+	.word	$10FE
+	.word	$932A
+	.word	$1787
+	.word	$14A3
+	.word	$42B2
+	.word	$920A
+	.word	$4019
+	.word	$1436
+	.word	$4150
+	.word	$1682
+	.word	$932B
+	.word	$4124
+	.word	$14BB
+	.word	$00B8
+	.word	$43C2
+	.word	$13C3
+	.word	$941B
+	.word	$1267
+	.word	$15C4
+	.word	$C153
+	.word	$41D2
+	.word	$C112
+	.word	$1329
+	.word	$1785
+	.word	$921B
+	.word	$421A
+	.word	$1347
+	.word	$4183
+	.word	$13A7
+	.word	$919E
+	.word	$63A7
+	.word	$63B7
+	.word	$65C5
+	.word	$65D5
+	.word	$4ADD
+	.word	$67E3
+	.word	$67F3
+	.word	$C18D
+	.word	$42AE
+	.word	$20DF
 	.byte	COURSE_DATA_END
 
 courses_data_overworld_24:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_DATA_ENTER_POS_B0_A|COURSE_DATA_FG_NONE)
-	.byte	$0F, $26, $6E, $10, $8B, $17, $AF, $32, $D8, $62, $E8, $62, $FC, $3F, $AD, $C8
-	.byte	$F8, $64, $0C, $BE, $43, $43, $F8, $64, $0C, $BF, $73, $40, $84, $40, $93, $40
-	.byte	$A4, $40, $B3, $40, $F8, $64, $48, $E4, $5C, $39, $83, $40, $92, $41, $B3, $40
-	.byte	$F8, $64, $48, $E4, $5C, $39, $F8, $64, $13, $C2, $37, $65, $4C, $24, $63, $00
-	.byte	$97, $65, $C3, $42, $0B, $97, $AC, $32, $F8, $64, $0C, $BE, $53, $45, $9D, $48
-	.byte	$F8, $64, $2A, $E2, $3C, $47, $56, $43, $BA, $62, $F8, $64, $0C, $B7, $88, $64
-	.byte	$BC, $31, $D4, $45, $FC, $31, $3C, $B1, $78, $64, $8C, $38, $0B, $9C, $1A, $33
-	.byte	$18, $61, $28, $61, $39, $60, $5D, $4A, $EE, $11, $0F, $B8, $1D, $C1, $3E, $42
-	.byte	$6F, $20
+	.word	$260F
+	.word	$106E
+	.word	$178B
+	.word	$32AF
+	.word	$62D8
+	.word	$62E8
+	.word	$3FFC
+	.word	$C8AD
+	.word	$64F8
+	.word	$BE0C
+	.word	$4343
+	.word	$64F8
+	.word	$BF0C
+	.word	$4073
+	.word	$4084
+	.word	$4093
+	.word	$40A4
+	.word	$40B3
+	.word	$64F8
+	.word	$E448
+	.word	$395C
+	.word	$4083
+	.word	$4192
+	.word	$40B3
+	.word	$64F8
+	.word	$E448
+	.word	$395C
+	.word	$64F8
+	.word	$C213
+	.word	$6537
+	.word	$244C
+	.word	$0063
+	.word	$6597
+	.word	$42C3
+	.word	$970B
+	.word	$32AC
+	.word	$64F8
+	.word	$BE0C
+	.word	$4553
+	.word	$489D
+	.word	$64F8
+	.word	$E22A
+	.word	$473C
+	.word	$4356
+	.word	$62BA
+	.word	$64F8
+	.word	$B70C
+	.word	$6488
+	.word	$31BC
+	.word	$45D4
+	.word	$31FC
+	.word	$B13C
+	.word	$6478
+	.word	$388C
+	.word	$9C0B
+	.word	$331A
+	.word	$6118
+	.word	$6128
+	.word	$6039
+	.word	$4A5D
+	.word	$11EE
+	.word	$B80F
+	.word	$C11D
+	.word	$423E
+	.word	$206F
 	.byte	COURSE_DATA_END
 .endif
 
@@ -1735,180 +3197,341 @@ courses_data_overworld_24:
 	.export courses_data_underground_3
 courses_data_underground_1:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_15|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_20|COURSE_DATA_FG_NONE)
-	.byte	$0E, $01, $5E, $02, $A7, $00, $BC, $73, $1A, $E0
-	.byte	$39, $61, $58, $62, $77, $63, $97, $63, $B8, $62
-	.byte	$D6, $07, $F8, $62, $19, $E1, $75, $52, $86, $40
-	.byte	$87, $50, $95, $52, $93, $43, $A5, $21, $C5, $52
-	.byte	$D6, $40, $D7, $20, $E5, $06, $E6, $51, $3E, $8D
-	.byte	$5E, $03, $67, $52, $77, $52, $7E, $02, $9E, $03
+	.word	$010E
+	.word	$025E
+	.word	$00A7
+	.word	$73BC
+	.word	$E01A
+	.word	$6139
+	.word	$6258
+	.word	$6377
+	.word	$6397
+	.word	$62B8
+	.word	$07D6
+	.word	$62F8
+	.word	$E119
+	.word	$5275
+	.word	$4086
+	.word	$5087
+	.word	$5295
+	.word	$4393
+	.word	$21A5
+	.word	$52C5
+	.word	$40D6
+	.word	$20D7
+	.word	$06E5
+	.word	$51E6
+	.word	$8D3E
+	.word	$035E
+	.word	$5267
+	.word	$5277
+	.word	$027E
+	.word	$039E
 	.if	.defined(SMB)
-		.byte	$A6, $43, $A7, $23
+		.word	$43A6
+		.word	$23A7
 	.elseif	.defined(VS_SMB)
-		.byte	$B6, $42, $B7, $22
+		.word	$42B6
+		.word	$22B7
 	.endif
-	.byte	$DE, $05, $FE, $02, $1E, $83
-	.byte	$33, $54, $46, $40, $47, $21, $56
+	.word	$05DE
+	.word	$02FE
+	.word	$831E
+	.word	$5433
+	.word	$4046
+	.word	$2147
 	.if	.defined(SMB)
-		.byte	$04
+		.word	$0456
 	.elseif	.defined(VS_SMB)
-		.byte	$50
+		.word	$5056
 	.endif
-	.byte	$5E, $02
-	.byte	$83, $54, $93, $52, $96, $07, $97, $50, $BE, $03
-	.byte	$C7, $23, $FE, $02, $0C, $82, $43, $45, $45, $24
-	.byte	$46, $24, $90
+	.word	$025E
+	.word	$5483
+	.word	$5293
+	.word	$0796
+	.word	$5097
+	.word	$03BE
+	.word	$23C7
+	.word	$02FE
+	.word	$820C
+	.word	$4543
+	.word	$2445
+	.word	$2446
 	.if	.defined(SMB)
-		.byte	$08
+		.word	$0890
 	.elseif	.defined(VS_SMB)
-		.byte	$04
+		.word	$0490
 	.endif
-	.byte	$95, $51, $78, $FA, $D7, $73
-	.byte	$39, $F1, $8C, $01, $A8, $52, $B8, $52, $CC, $01
-	.byte	$5F, $B3, $97, $63, $9E, $00, $0E, $81, $16, $24
-	.byte	$66, $04
+	.word	$5195
+	.word	$FA78
+	.word	$73D7
+	.word	$F139
+	.word	$018C
+	.word	$52A8
+	.word	$52B8
+	.word	$01CC
+	.word	$B35F
+	.word	$6397
+	.word	$009E
+	.word	$810E
+	.word	$2416
+	.word	$0466
 	.if	.defined(SMB)
-		.byte	$8E
+		.word	$008E
 	.elseif	.defined(VS_SMB)
-		.byte	$6E
+		.word	$006E
 	.endif
-	.byte	$00, $FE, $01, $08, $D2
+	.word	$01FE
+	.word	$D208
 
 	.if	.defined(VS_SMB)
-		.byte	$18, $52
+		.word	$5218
 	.endif
 
 	.if	.defined(SMB)
-		.byte	$0E
+		.word	$060E
 	.elseif	.defined(VS_SMB)
-		.byte	$1E
+		.word	$061E
 	.endif
-	.byte	$06
 
 	.if	.defined(VS_SMB)
-		.byte	$5E, $01, $68, $52
+		.word	$015E
+		.word	$5268
 	.endif
 
-	.byte	$6F, $47
+	.word	$476F
 
 	.if	.defined(VS_SMB)
-		.byte	$78, $52, $7E, $06
+		.word	$5278
+		.word	$067E
 	.endif
 
-	.byte	$9E, $0F, $0E, $82, $2D, $47, $28, $7A
-	.byte	$68, $7A, $A8, $7A, $AE, $01, $DE, $0F, $6D, $C5
+	.word	$0F9E
+	.word	$820E
+	.word	$472D
+	.word	$7A28
+	.word	$7A68
+	.word	$7AA8
+	.word	$01AE
+	.word	$0FDE
+	.word	$C56D
 	.byte	COURSE_DATA_END
 
 courses_data_underground_2:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_15|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_20|COURSE_DATA_FG_NONE)
-	.byte	$0E, $01, $5E, $02, $BC, $01, $FC, $01, $2C, $82
-	.byte	$41, $52, $4E, $04, $67
+	.word	$010E
+	.word	$025E
+	.word	$01BC
+	.word	$01FC
+	.word	$822C
+	.word	$5241
+	.word	$044E
 	.if	.defined(SMB)
-		.byte	$25, $68, $24, $69, $24
+		.word	$2567
+		.word	$2468
+		.word	$2469
 	.elseif	.defined(VS_SMB)
-		.byte	$52, $77, $52, $87, $51, $89, $07, $97, $52, $A7
-		.byte	$52, $B7, $50
+		.word	$5267
+		.word	$5277
+		.word	$5187
+		.word	$0789
+		.word	$5297
+		.word	$52A7
+		.word	$50B7
 	.endif
-	.byte	$BA, $42, $C7, $04, $DE, $0B, $B2, $87, $FE, $02
-	.byte	$2C, $E1, $2C, $71
+	.word	$42BA
+	.word	$04C7
+	.word	$0BDE
+	.word	$87B2
+	.word	$02FE
+	.word	$E12C
+	.word	$712C
 	.if	.defined(SMB)
-		.byte	$67, $01, $77, $00, $87, $01
+		.word	$0167
+	.word	$0077
+	.word	$0187
 	.elseif	.defined(VS_SMB)
-		.byte	$6C, $72
+		.word	$726C
 	.endif
-	.byte	$8E, $00, $EE, $01, $F6, $02, $03, $85, $05, $02
-	.byte	$13, $21, $16, $02, $27, $02, $2E, $02, $88, $72
-	.byte	$C7, $20, $D7, $07, $E4, $76, $07, $A0, $17, $06
-	.byte	$48
+	.word	$008E
+	.word	$01EE
+	.word	$02F6
+	.word	$8503
+	.word	$0205
+	.word	$2113
+	.word	$0216
+	.word	$0227
+	.word	$022E
+	.word	$7288
+	.word	$20C7
+	.word	$07D7
+	.word	$76E4
+	.word	$A007
+	.word	$0617
 	.if	.defined(SMB)
-		.byte	$7A
+		.word	$7A48
 	.elseif	.defined(VS_SMB)
-		.byte	$72
+		.word	$7248
 	.endif
-	.byte	$76, $20, $98
+	.word	$2076
 	.if	.defined(SMB)
-		.byte	$72
+		.word	$7298
 	.elseif	.defined(VS_SMB)
-		.byte	$7A
+		.word	$7A98
 	.endif
-	.byte	$79, $E1, $88, $62
-	.byte	$9C, $01, $B7, $73, $DC, $01, $F8, $62, $FE, $01
-	.byte	$08, $E2, $0E, $00, $6E, $02, $73, $20, $77, $23
-	.byte	$83, $04, $93
+	.word	$E179
+	.word	$6288
+	.word	$019C
+	.word	$73B7
+	.word	$01DC
+	.word	$62F8
+	.word	$01FE
+	.word	$E208
+	.word	$000E
+	.word	$026E
+	.word	$2073
+	.word	$2377
+	.word	$0483
 	.if	.defined(SMB)
-		.byte	$20
+		.word	$2093
 	.elseif	.defined(VS_SMB)
-		.byte	$21
+		.word	$2193
 	.endif
-	.byte	$AE, $00
+	.word	$00AE
 
 	.if	.defined(SMB)
-		.byte	$FE, $0A
+		.word	$0AFE
 	.endif
 
-	.byte	$0E
 	.if	.defined(SMB)
-		.byte	$82
+		.word	$820E
 	.elseif	.defined(VS_SMB)
-		.byte	$81
+		.word	$810E
 	.endif
-	.byte	$39, $71
+	.word	$7139
 
 	.if	.defined(VS_SMB)
-		.byte	$5E, $02
+		.word	$025E
 	.endif
 
-	.byte	$A8, $72, $E7, $73, $0C, $81, $8F, $32
-	.byte	$AE, $00, $FE, $04, $04
+	.word	$72A8
+	.word	$73E7
+	.word	$810C
+	.word	$328F
+	.word	$00AE
+	.word	$04FE
 	.if	.defined(SMB)
-		.byte	$D1
+		.word	$D104
+		.word	$0417
 	.elseif	.defined(VS_SMB)
-		.byte	$D3
+		.word	$D304
+		.word	$2A17
 	.endif
-	.byte	$17
-	.if	.defined(SMB)
-		.byte	$04
-	.elseif	.defined(VS_SMB)
-		.byte	$2A
-	.endif
-	.byte	$26, $49
+	.word	$4926
 
 	.if	.defined(SMB)
-		.byte	$27, $29
+		.word	$2927
 	.endif
 
-	.byte	$DF, $33, $FE, $02, $44, $F6, $7C, $01
-	.byte	$8E, $06
+	.word	$33DF
+	.word	$02FE
+	.word	$F644
+	.word	$017C
+	.word	$068E
 
 	.if	.defined(VS_SMB)
-		.byte	$AE, $01
+		.word	$01AE
 	.endif
 
-	.byte	$BF, $47
+	.word	$47BF
 
 	.if	.defined(VS_SMB)
-		.byte	$B8, $52, $C8, $52, $D8, $52, $E8, $52
+		.word	$52B8
+		.word	$52C8
+		.word	$52D8
+		.word	$52E8
 	.endif
 
-	.byte	$EE, $0F, $4D, $C7, $0E, $82
-	.byte	$68, $7A, $AE, $01, $DE, $0F, $6D, $C5
+	.word	$0FEE
+	.word	$C74D
+	.word	$820E
+	.word	$7A68
+	.word	$01AE
+	.word	$0FDE
+	.word	$C56D
 	.byte	COURSE_DATA_END
 
 courses_data_underground_3:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_20|COURSE_DATA_FG_NONE)
-	.byte	$0E, $01, $00, $5A, $3E, $06, $45, $46, $47, $46
-	.byte	$53, $44, $AE, $01, $DF, $4A, $4D, $C7, $0E, $81
-	.byte	$00, $5A, $2E, $04, $37, $28, $3A, $48, $46, $47
-	.byte	$C7, $07, $CE, $0F, $DF, $4A, $4D, $C7, $0E, $81
-	.byte	$00, $5A, $33, $53, $43, $51, $46, $40, $47, $50
-	.byte	$53, $04, $55, $40, $56, $50, $62, $43, $64, $40
-	.byte	$65, $50, $71, $41, $73, $51, $83, $51, $94, $40
-	.byte	$95, $50, $A3, $50, $A5, $40, $A6, $50, $B3, $51
-	.byte	$B6, $40, $B7, $50, $C3, $53, $DF, $4A, $4D, $C7
-	.byte	$0E, $81, $00, $5A, $2E, $02, $36, $47, $37, $52
-	.byte	$3A, $49, $47, $25, $A7, $52, $D7, $04, $DF, $4A
-	.byte	$4D, $C7, $0E, $81, $00, $5A, $3E, $02, $44, $51
-	.byte	$53, $44, $54, $44, $55, $24, $A1, $54, $AE, $01
-	.byte	$B4, $21, $DF, $4A, $E5, $07, $4D, $C7
+	.word	$010E
+	.word	$5A00
+	.word	$063E
+	.word	$4645
+	.word	$4647
+	.word	$4453
+	.word	$01AE
+	.word	$4ADF
+	.word	$C74D
+	.word	$810E
+	.word	$5A00
+	.word	$042E
+	.word	$2837
+	.word	$483A
+	.word	$4746
+	.word	$07C7
+	.word	$0FCE
+	.word	$4ADF
+	.word	$C74D
+	.word	$810E
+	.word	$5A00
+	.word	$5333
+	.word	$5143
+	.word	$4046
+	.word	$5047
+	.word	$0453
+	.word	$4055
+	.word	$5056
+	.word	$4362
+	.word	$4064
+	.word	$5065
+	.word	$4171
+	.word	$5173
+	.word	$5183
+	.word	$4094
+	.word	$5095
+	.word	$50A3
+	.word	$40A5
+	.word	$50A6
+	.word	$51B3
+	.word	$40B6
+	.word	$50B7
+	.word	$53C3
+	.word	$4ADF
+	.word	$C74D
+	.word	$810E
+	.word	$5A00
+	.word	$022E
+	.word	$4736
+	.word	$5237
+	.word	$493A
+	.word	$2547
+	.word	$52A7
+	.word	$04D7
+	.word	$4ADF
+	.word	$C74D
+	.word	$810E
+	.word	$5A00
+	.word	$023E
+	.word	$5144
+	.word	$4453
+	.word	$4454
+	.word	$2455
+	.word	$54A1
+	.word	$01AE
+	.word	$21B4
+	.word	$4ADF
+	.word	$07E5
+	.word	$C74D
 	.byte	COURSE_DATA_END
 
 	.export courses_data_water_1
@@ -1919,81 +3542,300 @@ courses_data_underground_3:
 .endif
 courses_data_water_1:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_00_A|COURSE_DATA_FG_WATER)
-	.byte	$B4, $34, $C8, $52, $F2, $51, $47, $D3, $6C, $03
-	.byte	$65, $49, $9E, $07, $BE, $01, $CC, $03, $FE, $07
-	.byte	$0D, $C9, $1E, $01, $6C, $01, $62, $35, $63, $53
-	.byte	$8A, $41, $AC, $01, $B3, $53, $E9, $51, $26, $C3
-	.byte	$27, $33, $63, $43, $64, $33, $BA, $60, $C9, $61
-	.byte	$CE, $0B
+	.word	$34B4
+	.word	$52C8
+	.word	$51F2
+	.word	$D347
+	.word	$036C
+	.word	$4965
+	.word	$079E
+	.word	$01BE
+	.word	$03CC
+	.word	$07FE
+	.word	$C90D
+	.word	$011E
+	.word	$016C
+	.word	$3562
+	.word	$5363
+	.word	$418A
+	.word	$01AC
+	.word	$53B3
+	.word	$51E9
+	.word	$C326
+	.word	$3327
+	.word	$4363
+	.word	$3364
+	.word	$60BA
+	.word	$61C9
+	.word	$0BCE
 	
 	.if	.defined(VS_SMB)
-		.byte	$E4, $60
+		.word	$60E4
 	.endif
 
-	.byte	$E5, $09, $EE, $0F, $7D, $CA, $7D, $47
+	.word	$09E5
+	.word	$0FEE
+	.word	$CA7D
+	.word	$477D
 	.byte	COURSE_DATA_END
 
 courses_data_water_2:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_00_A|COURSE_DATA_FG_WATER)
 	.if	.defined(SMB)
-		.byte	$B8, $52, $EA, $41, $27, $B2, $B3, $42, $16, $D4
-		.byte	$4A, $42, $A5, $51, $A7, $31, $27, $D3, $08, $E2
-		.byte	$16, $64, $2C, $04, $38, $42, $76, $64, $88, $62
-		.byte	$DE, $07, $FE, $01, $0D, $C9, $23, $32, $31, $51
-		.byte	$98, $52, $0D, $C9, $59, $42, $63, $53, $67, $31
-		.byte	$14, $C2, $36, $31, $87, $53, $17, $E3, $29, $61
-		.byte	$30, $62, $3C, $08, $42, $37, $59, $40, $6A, $42
-		.byte	$99, $40, $C9, $61, $D7, $63, $39, $D1, $58, $52
-		.byte	$C3, $67, $D3, $31, $DC, $06, $F7, $42, $FA, $42
-		.byte	$23, $B1, $43, $67, $C3, $34, $C7, $34, $D1, $51
-		.byte	$43, $B3, $47, $33
+		.word	$52B8
+		.word	$41EA
+		.word	$B227
+		.word	$42B3
+		.word	$D416
+		.word	$424A
+		.word	$51A5
+		.word	$31A7
+		.word	$D327
+		.word	$E208
+		.word	$6416
+		.word	$042C
+		.word	$4238
+		.word	$6476
+		.word	$6288
+		.word	$07DE
+		.word	$01FE
+		.word	$C90D
+		.word	$3223
+		.word	$5131
+		.word	$5298
+		.word	$C90D
+		.word	$4259
+		.word	$5363
+		.word	$3167
+		.word	$C214
+		.word	$3136
+		.word	$5387
+		.word	$E317
+		.word	$6129
+		.word	$6230
+		.word	$083C
+		.word	$3742
+		.word	$4059
+		.word	$426A
+		.word	$4099
+		.word	$61C9
+		.word	$63D7
+		.word	$D139
+		.word	$5258
+		.word	$67C3
+		.word	$31D3
+		.word	$06DC
+		.word	$42F7
+		.word	$42FA
+		.word	$B123
+		.word	$6743
+		.word	$34C3
+		.word	$34C7
+		.word	$51D1
+		.word	$B343
+		.word	$3347
 	.elseif	.defined(VS_SMB)
-		.byte	$27, $D3, $79, $51, $C4, $56, $0C, $8E, $1D, $49, $39, $40, $4A, $42, $79, $40
-		.byte	$A5, $57, $FC, $0F, $00, $E2, $03, $53, $12, $3B, $1A, $42, $43, $54, $83, $53
-		.byte	$99, $53, $C3, $54, $DA, $52, $FC, $05, $09, $D3, $53, $64, $63, $31, $67, $34
-		.byte	$86, $41, $8C, $01, $A3, $30, $B3, $64, $CC, $03, $D9, $42, $5C, $84, $A0, $62
-		.byte	$A8, $62, $B0, $62, $B8, $62, $C0, $62, $C8, $62, $D0, $62, $D8, $62, $E0, $62
-		.byte	$E8, $62, $16, $C2, $58, $52, $8C, $04, $A7, $55, $D0, $63, $D7, $65, $E2, $61
-		.byte	$E7, $65, $F2, $61, $F7, $65, $13, $B8, $17, $38, $8C, $03, $1D, $C9, $50, $62
-		.byte	$5C, $0B, $62, $3E, $63, $52, $8A, $52, $93, $54, $AA, $42, $D3, $51, $EA, $41
-		.byte	$03, $D3, $1C, $04, $1A, $52, $33, $55, $73, $44, $77, $44, $16, $D2, $19, $31
-		.byte	$1A, $32, $5C, $0F, $9A, $47, $95, $64, $A5, $64, $B5, $64, $C5, $64, $D5, $64
-		.byte	$E5, $64, $F5, $64, $05, $E4, $40, $61, $42, $35, $56, $34, $5C, $09, $A2, $61
-		.byte	$A6, $61, $B3, $34, $B7, $34, $FC, $0B, $0A, $C2, $4A, $41, $3A, $52, $68, $54
-		.byte	$C9, $51, $0C, $87, $28, $54, $59, $53
+		.word	$D327
+		.word	$5179
+		.word	$56C4
+		.word	$8E0C
+		.word	$491D
+		.word	$4039
+		.word	$424A
+		.word	$4079
+		.word	$57A5
+		.word	$0FFC
+		.word	$E200
+		.word	$5303
+		.word	$3B12
+		.word	$421A
+		.word	$5443
+		.word	$5383
+		.word	$5399
+		.word	$54C3
+		.word	$52DA
+		.word	$05FC
+		.word	$D309
+		.word	$6453
+		.word	$3163
+		.word	$3467
+		.word	$4186
+		.word	$018C
+		.word	$30A3
+		.word	$64B3
+		.word	$03CC
+		.word	$42D9
+		.word	$845C
+		.word	$62A0
+		.word	$62A8
+		.word	$62B0
+		.word	$62B8
+		.word	$62C0
+		.word	$62C8
+		.word	$62D0
+		.word	$62D8
+		.word	$62E0
+		.word	$62E8
+		.word	$C216
+		.word	$5258
+		.word	$048C
+		.word	$55A7
+		.word	$63D0
+		.word	$65D7
+		.word	$61E2
+		.word	$65E7
+		.word	$61F2
+		.word	$65F7
+		.word	$B813
+		.word	$3817
+		.word	$038C
+		.word	$C91D
+		.word	$6250
+		.word	$0B5C
+		.word	$3E62
+		.word	$5263
+		.word	$528A
+		.word	$5493
+		.word	$42AA
+		.word	$51D3
+		.word	$41EA
+		.word	$D303
+		.word	$041C
+		.word	$521A
+		.word	$5533
+		.word	$4473
+		.word	$4477
+		.word	$D216
+		.word	$3119
+		.word	$321A
+		.word	$0F5C
+		.word	$479A
+		.word	$6495
+		.word	$64A5
+		.word	$64B5
+		.word	$64C5
+		.word	$64D5
+		.word	$64E5
+		.word	$64F5
+		.word	$E405
+		.word	$6140
+		.word	$3542
+		.word	$3456
+		.word	$095C
+		.word	$61A2
+		.word	$61A6
+		.word	$34B3
+		.word	$34B7
+		.word	$0BFC
+		.word	$C20A
+		.word	$414A
+		.word	$523A
+		.word	$5468
+		.word	$51C9
+		.word	$870C
+		.word	$5428
+		.word	$5359
 	.endif
 
-	.byte	$9A, $30, $A9, $61, $B8, $62, $BE, $0B
+	.word	$309A
+	.word	$61A9
+	.word	$62B8
+	.word	$0BBE
 
 	.if	.defined(VS_SMB)
-		.byte	$D4, $60
+		.word	$60D4
 	.endif
 
-	.byte	$D5, $09, $DE, $0F, $0D, $CA, $7D, $47
+	.word	$09D5
+	.word	$0FDE
+	.word	$CA0D
+	.word	$477D
 	.byte	COURSE_DATA_END
 
 courses_data_water_3:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_15|COURSE_TIMER_SETTING_1|COURSE_DATA_ENTER_POS_20|COURSE_DATA_FG_WATER)
-	.byte	$1E, $01, $39, $73, $5E, $07, $AE, $0B, $1E, $82
-	.byte	$6E, $88, $9E, $02, $0D, $04, $2E, $0B
+	.word	$011E
+	.word	$7339
+	.word	$075E
+	.word	$0BAE
+	.word	$821E
+	.word	$886E
+	.word	$029E
+	.word	$040D
+	.word	$0B2E
 
 	.if	.defined(VS_SMB)
-		.byte	$44, $50
+		.word	$5044
 	.endif
 
-	.byte	$45, $09, $4E, $0F, $ED, $47
+	.word	$0945
+	.word	$0F4E
+	.word	$47ED
 	.byte	COURSE_DATA_END
 
 .if	.defined(VS_SMB)
 courses_data_water_4:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_3|COURSE_DATA_ENTER_POS_00_A|COURSE_DATA_FG_WATER)
-        .byte   $B8, $52, $EA, $41, $27, $B2, $B3, $42, $16, $D4, $4A, $42, $A5, $51, $A7, $31
-        .byte   $27, $D3, $08, $E2, $16, $64, $2C, $04, $38, $42, $76, $64, $88, $62, $DE, $07
-        .byte   $FE, $01, $0D, $C9, $23, $32, $31, $51, $98, $52, $0D, $C9, $59, $42, $63, $53
-        .byte   $67, $31, $14, $C2, $36, $31, $87, $53, $17, $E3, $29, $61, $30, $62, $3C, $08
-        .byte   $42, $37, $59, $40, $6A, $42, $99, $40, $C9, $61, $D7, $63, $39, $D1, $58, $52
-        .byte   $C3, $67, $D3, $31, $DC, $06, $F7, $42, $FA, $42, $23, $B1, $43, $67, $C3, $34
-        .byte   $C7, $34, $D1, $51, $43, $B3, $47, $33, $9A, $30, $A9, $61, $B8, $62, $BE, $0B
-        .byte   $D4, $60, $D5, $09, $DE, $0F, $0D, $CA, $7D, $47
+	.word	$52B8
+	.word	$41EA
+	.word	$B227
+	.word	$42B3
+	.word	$D416
+	.word	$424A
+	.word	$51A5
+	.word	$31A7
+	.word	$D327
+	.word	$E208
+	.word	$6416
+	.word	$042C
+	.word	$4238
+	.word	$6476
+	.word	$6288
+	.word	$07DE
+	.word	$01FE
+	.word	$C90D
+	.word	$3223
+	.word	$5131
+	.word	$5298
+	.word	$C90D
+	.word	$4259
+	.word	$5363
+	.word	$3167
+	.word	$C214
+	.word	$3136
+	.word	$5387
+	.word	$E317
+	.word	$6129
+	.word	$6230
+	.word	$083C
+	.word	$3742
+	.word	$4059
+	.word	$426A
+	.word	$4099
+	.word	$61C9
+	.word	$63D7
+	.word	$D139
+	.word	$5258
+	.word	$67C3
+	.word	$31D3
+	.word	$06DC
+	.word	$42F7
+	.word	$42FA
+	.word	$B123
+	.word	$6743
+	.word	$34C3
+	.word	$34C7
+	.word	$51D1
+	.word	$B343
+	.word	$3347
+	.word	$309A
+	.word	$61A9
+	.word	$62B8
+	.word	$0BBE
+	.word	$60D4
+	.word	$09D5
+	.word	$0FDE
+	.word	$CA0D
+	.word	$477D
 	.byte	COURSE_DATA_END
 .endif

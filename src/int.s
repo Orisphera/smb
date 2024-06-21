@@ -30,7 +30,7 @@ SMB2M_NMI_TIMER	= $1658
 		nmi_addrs_low:
 			.byte	<(nmi_buffer_0+1)
 			.byte	<(palette_underwater)
-			.byte	<(palette_day)
+			.byte	<(palette_ground)
 			.byte	<(palette_underground)
 			.byte	<(palette_castle)
 			.byte	<(nmi_buffer_0+0)
@@ -78,7 +78,7 @@ SMB2M_NMI_TIMER	= $1658
 		nmi_addrs_high:
 			.byte   >(nmi_buffer_0+1)
 			.byte	>(palette_underwater)
-			.byte	>(palette_day)
+			.byte	>(palette_ground)
 			.byte	>(palette_underground)
 			.byte	>(palette_castle)
 			.byte	>(nmi_buffer_0+0)
@@ -126,7 +126,7 @@ SMB2M_NMI_TIMER	= $1658
 		nmi_addrs:
 			.addr   (nmi_buffer_0+1)
 			.addr	(palette_underwater)
-			.addr	(palette_day)
+			.addr	(palette_ground)
 			.addr	(palette_underground)
 			.addr	(palette_castle)
 			.addr	(data_C62B)
@@ -374,25 +374,16 @@ nmi:
 		sta     PPU_SCC_H_V
 		lda     ppu_ctlr0_b
 		pha
+
 		sta     PPU_CTLR0
+	.endif
 
-		.if	.defined(CONS)
-		lda     eng_pause_status
-		lsr     a
-		bcs     :+ ; if (!CONS || !(eng_pause_status & 0x01)) {
-		.endif
-			jsr     nmi_gamemode_enter
-		: ; }
-
-		lda     PPU_SR
-		pla
-        	ora     #ppu_ctlr0::int
-	.elseif .defined(SMB2M)
-		.if	.defined(CONS)
-		lda     eng_pause_status
-		lsr	a
-		bcs	:+++ ; if (!(eng_pause_status & 0x01)) {
-		.endif
+	.if	.defined(CONS)
+	lda     eng_pause_status
+	lsr     a
+	bcs     :+++ ; if (!CONS && !(eng_pause_status & 0x01)) {
+	.endif
+		.if	.defined(SMB2M)
 			lda	eng_sprite_overlap
 			beq	:+ ; if (eng_sprite_overlap) {
 				jsr	oam_init_nmi
@@ -404,22 +395,34 @@ nmi:
 			bcc	:+ ; if (course_no >= cutoff) {
 				jsr	eng_next_game
 			: ; }
+		.else
+			:
+			:
+		.endif
 
-			jsr	nmi_gamemode_enter
-		: ; }
+		jsr     nmi_gamemode_enter
+	: ; }
 
+	.if	.defined(SMB2M)
 		: ; while (byte_77B) {
 			lda	byte_77B
 			bne	:-
 		; }
-
-		lda	PPU_SR
-		lda	ppu_ctlr0_b
-		ora	#ppu_ctlr0::int
-		sta	ppu_ctlr0_b
 	.endif
 
+	lda     PPU_SR
+
+	.if	.defined(SMB)|.defined(VS_SMB)
+		pla
+	.elseif	.defined(SMB2M)
+		lda	ppu_ctlr0_b
+	.endif
+	ora	#ppu_ctlr0::int
+	.if	.defined(SMB2M)
+		sta	ppu_ctlr0_b
+	.endif
         sta     PPU_CTLR0
+
         rti
 ; -----------------------------------------------------------
 	.if	.defined(SMB2M)
