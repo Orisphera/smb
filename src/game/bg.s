@@ -710,19 +710,8 @@ bg_buffer_inc:
 	sta	eng_areaobj_page_on
 	rts
 ; ------------------------------------------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
-	BG_AREA_DECODE_0C_VAL	= $16
-	BG_AREA_DECODE_0D_VAL	= $22
-	BG_AREA_DECODE_0E_VAL	= $2E
-.elseif	.defined(SMB2)
-	BG_AREA_DECODE_0C_VAL	= $18
-	BG_AREA_DECODE_0D_VAL	= $28
-	BG_AREA_DECODE_0E_VAL	= $36
-.elseif	.defined(ANN)
-	BG_AREA_DECODE_0C_VAL	= $18
-	BG_AREA_DECODE_0D_VAL	= $25
-	BG_AREA_DECODE_0E_VAL	= $31
-.endif
+BG_OBJ_TBL_BASE		= zp_byte_00
+BG_OBJ_TBL_OFFSET	= zp_byte_07
 
 bg_area_decode:
 	lda	eng_lenareaobj_0, x
@@ -730,7 +719,7 @@ bg_area_decode:
 		ldy	eng_areaobj_offset_0, x
 	: ; }
 
-	ldx	#$10
+	ldx	#(bg_obj_spec_B-bg_obj_tbl)/WORD_SIZE
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_SR
@@ -741,24 +730,24 @@ bg_area_decode:
 	and	#<COURSE_DATA_TYPE_MASK
 	cmp	#<COURSE_DATA_TYPE_0F
 	beq	:+ ; if (course_data_type == 0xC) {
-		ldx	#8
+		ldx	#(bg_obj_spec_A-bg_obj_tbl)/WORD_SIZE
 	cmp	#$0C
 	beq	:+ ; } else if (course_data_type != 0xF) {
-		ldx	#0
+		ldx	#(bg_obj_norm-bg_obj_tbl)/WORD_SIZE
 	: ; }
-	stx	zp_byte_07
+	stx	BG_OBJ_TBL_OFFSET
 	ldx	eng_actor_offset
 	cmp	#<COURSE_DATA_TYPE_0E
 	bne	:+ ; if (course_data_type == 0xE) {
-		lda	#0
-		sta	zp_byte_07
+		lda	#(bg_obj_norm-bg_obj_tbl)/WORD_SIZE
+		sta	BG_OBJ_TBL_OFFSET
 
-		lda	#BG_AREA_DECODE_0E_VAL
-		bne	:++++++++
+		lda	#(bg_obj_tbl_set_attr-bg_obj_tbl)/WORD_SIZE
+		bne	bg_obj_set_base
 	: cmp	#<COURSE_DATA_TYPE_0D
 	bne	:++ ; } else if (course_data_type == 0xD) {
-		lda	#BG_AREA_DECODE_0D_VAL
-		sta	zp_byte_07
+		lda	#(bg_obj_spec_D-bg_obj_tbl)/WORD_SIZE
+		sta	BG_OBJ_TBL_OFFSET
 
 		iny
 		.if	.defined(VS)
@@ -775,7 +764,7 @@ bg_area_decode:
 				inc	eng_loop_flag
 			: ; }
 			and	#>COURSE_DATA_TYPE_0D_OBJ_MASK
-			jmp	:++++++
+			jmp	bg_obj_set_base
 		; } else rts;
 	: cmp	#<COURSE_DATA_TYPE_0C
 	bcs	:+++
@@ -787,14 +776,14 @@ bg_area_decode:
 	lda	(course_data_addr), y
 	and	#$70
 	bne	:+ ; } else if (course_data_type < 0xC && !(course_data_byte_1 & 0x70)) {
-		lda	#BG_AREA_DECODE_0C_VAL
-		sta	zp_byte_07
+		lda	#(bg_obj_spec_C-bg_obj_tbl)/WORD_SIZE
+		sta	BG_OBJ_TBL_OFFSET
 
 		lda	(course_data_addr), y
 		and	#$0F
 		jmp	:+++++
 	: ; } else {
-		sta	zp_byte_00
+		sta	BG_OBJ_TBL_BASE
 		cmp	#$70
 		bne	:+
 		.if	.defined(VS)
@@ -803,12 +792,12 @@ bg_area_decode:
 		.endif
 		lda	(course_data_addr), y
 		and	#$08
-		beq	:+ ; if (zp_byte_00 == 0x70 && (course_data_byte_1 & 0x08)) {
+		beq	:+ ; if (BG_OBJ_TBL_BASE == 0x70 && (course_data_byte_1 & 0x08)) {
 			lda	#0
-			sta	zp_byte_00
+			sta	BG_OBJ_TBL_BASE
 		: ; }
 	
-		lda	zp_byte_00
+		lda	BG_OBJ_TBL_BASE
 		jmp	:++
 	: ; }
 
@@ -828,7 +817,9 @@ bg_area_decode:
 		lsr	a
 		lsr	a
 	: ; }
-	sta	zp_byte_00
+
+bg_obj_set_base:
+	sta	BG_OBJ_TBL_BASE
 
 	lda	eng_lenareaobj_0, x
 	bpl	:++++
@@ -878,10 +869,12 @@ bg_area_decode_rts:
 		jsr	bg_buffer_inc
 	: ; }
 
-	lda	zp_byte_00
+	lda	BG_OBJ_TBL_BASE
 	clc
-	adc	zp_byte_07
+	adc	BG_OBJ_TBL_OFFSET
 	jsr	eng_farjump
+bg_obj_tbl:
+bg_obj_norm:
 	.addr	bg_areaobj_pipe_vert
 
 	.addr	bg_areaobj_ledge
@@ -892,6 +885,7 @@ bg_area_decode_rts:
 	.addr	bg_areaobj_floorcol
 	.addr	bg_areaobj_pipe_vert
 
+bg_obj_spec_A:
 	.addr	bg_areaobj_pit
 	.addr	bg_areaobj_pulley
 	.addr	bg_areaobj_bridge_hi
@@ -901,6 +895,7 @@ bg_area_decode_rts:
 	.addr	bg_areaobj_block_qhi
 	.addr	bg_areaobj_block_qlo
 
+bg_obj_spec_B:
 	.addr	bg_areaobj_rope_norm
 	.addr	bg_areaobj_rope_plat
 	.addr	bg_areaobj_castle
@@ -913,6 +908,7 @@ bg_area_decode_rts:
 		.addr	bg_areaobj_C475
 	.endif
 
+bg_obj_spec_C:
 	.if	.defined(SMB2)
 		.addr	bg_areaobj_block_q
 	.endif
@@ -939,6 +935,8 @@ bg_area_decode_rts:
 	.addr	bg_areaobj_pipe_water
 	.addr	bg_areaobj_empty_draw
 	.addr	bg_areaobj_spring
+
+bg_obj_spec_D:
 	.addr	bg_areaobj_pipe_intro
 	.addr	bg_areaobj_pole
 	.addr	bg_areaobj_castle_bridge_axe
@@ -958,6 +956,7 @@ bg_area_decode_rts:
 		.addr	bg_areaobj_C5C2
 	.endif
 
+bg_obj_tbl_set_attr:
 	.addr	bg_areaobj_set_attr
 ; ------------------------------------------------------------
 bg_areaobj_set_attr:
