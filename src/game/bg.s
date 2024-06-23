@@ -620,12 +620,12 @@ bg_area:
 				.endif
 				lda	(course_data_addr), y
 				and	#<COURSE_DATA_TYPE_MASK
-				cmp	#<COURSE_DATA_TYPE_0D
+				cmp	#<COURSE_DATA_TYPE_D
 				bne	:+
 				iny
 				lda	(course_data_addr), y
 				dey
-				and	#>COURSE_DATA_TYPE_0D_MASK
+				and	#>COURSE_DATA_TYPE_D_MASK
 				bne	:++
 				lda	eng_areaobj_page_on
 				bne	:++ ; if ((course_data_byte_0 & 0xF) == 0xD && !(course_data_byte_1 & 0x40) && !eng_areaobj_page_on) {
@@ -635,12 +635,12 @@ bg_area:
 						sta	VS_SR
 					.endif
 					lda	(course_data_addr), y
-					and	#>COURSE_DATA_TYPE_0D_LOC_MASK
+					and	#>COURSE_DATA_TYPE_D_LOC_MASK
 					sta	eng_areaobj_page_loc
 					inc	eng_areaobj_page_on
 					jmp	:+++++
 				: ; }
-				cmp	#<COURSE_DATA_TYPE_0E
+				cmp	#<COURSE_DATA_TYPE_E
 				bne	:+
 				lda	eng_page_cached
 				bne	:++
@@ -728,23 +728,23 @@ bg_area_decode:
 	cmp	#COURSE_DATA_END
 	beq	bg_area_rts
 	and	#<COURSE_DATA_TYPE_MASK
-	cmp	#<COURSE_DATA_TYPE_0F
+	cmp	#<COURSE_DATA_TYPE_F
 	beq	:+ ; if (course_data_type == 0xC) {
 		ldx	#(bg_obj_spec_A-bg_obj_tbl)/WORD_SIZE
-	cmp	#$0C
+	cmp	#COURSE_DATA_TYPE_C
 	beq	:+ ; } else if (course_data_type != 0xF) {
 		ldx	#(bg_obj_norm-bg_obj_tbl)/WORD_SIZE
 	: ; }
 	stx	BG_OBJ_TBL_OFFSET
 	ldx	eng_actor_offset
-	cmp	#<COURSE_DATA_TYPE_0E
+	cmp	#<COURSE_DATA_TYPE_E
 	bne	:+ ; if (course_data_type == 0xE) {
 		lda	#(bg_obj_norm-bg_obj_tbl)/WORD_SIZE
 		sta	BG_OBJ_TBL_OFFSET
 
 		lda	#(bg_obj_tbl_set_attr-bg_obj_tbl)/WORD_SIZE
 		bne	bg_obj_set_base
-	: cmp	#<COURSE_DATA_TYPE_0D
+	: cmp	#<COURSE_DATA_TYPE_D
 	bne	:++ ; } else if (course_data_type == 0xD) {
 		lda	#(bg_obj_spec_D-bg_obj_tbl)/WORD_SIZE
 		sta	BG_OBJ_TBL_OFFSET
@@ -755,51 +755,52 @@ bg_area_decode:
 			sta	VS_SR
 		.endif
 		lda	(course_data_addr), y
-		and	#>COURSE_DATA_TYPE_0D_MASK
+		and	#>COURSE_DATA_TYPE_D_MASK
 		beq	bg_area_decode_rts ; if (course_data_byte_1 & 0x40) {
 			lda	(course_data_addr), y
-			and	#$7F
-			cmp	#$4B
-			bne	:+ ; if ((course_data_byte_1 & 0x7F) == 0x4B) {
+			and	#>(COURSE_DATA_TYPE_D_OBJ_MASK|COURSE_DATA_TYPE_D_MASK)
+			cmp	#>(COURSE_OBJ_D_LOOP|COURSE_DATA_TYPE_D_MASK)
+			bne	:+ ; if ((course_data_byte_1 & obj_mask) == rts) {
 				inc	eng_loop_flag
 			: ; }
-			and	#>COURSE_DATA_TYPE_0D_OBJ_MASK
+			and	#>COURSE_DATA_TYPE_D_OBJ_MASK
 			jmp	bg_obj_set_base
 		; } else rts;
-	: cmp	#<COURSE_DATA_TYPE_0C
-	bcs	:+++
-	iny
-	.if	.defined(VS)
-		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
-	.endif
-	lda	(course_data_addr), y
-	and	#$70
-	bne	:+ ; } else if (course_data_type < 0xC && !(course_data_byte_1 & 0x70)) {
-		lda	#(bg_obj_spec_C-bg_obj_tbl)/WORD_SIZE
-		sta	BG_OBJ_TBL_OFFSET
-
-		lda	(course_data_addr), y
-		and	#$0F
-		jmp	:+++++
-	: ; } else {
-		sta	BG_OBJ_TBL_BASE
-		cmp	#$70
-		bne	:+
+	: cmp	#<COURSE_DATA_TYPE_C
+	bcs	:+++ ; } else if (course_data_type < 0xC) {
+		iny
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_SR
 		.endif
 		lda	(course_data_addr), y
-		and	#$08
-		beq	:+ ; if (BG_OBJ_TBL_BASE == 0x70 && (course_data_byte_1 & 0x08)) {
-			lda	#0
-			sta	BG_OBJ_TBL_BASE
-		: ; }
+		and	#>(COURSE_AREAOBJ_MASK)
+		bne	:+ ; if (!(course_data_byte_1 & 0x70)) {
+			lda	#(bg_obj_spec_C-bg_obj_tbl)/WORD_SIZE
+			sta	BG_OBJ_TBL_OFFSET
 	
-		lda	BG_OBJ_TBL_BASE
-		jmp	:++
-	: ; }
+			lda	(course_data_addr), y
+			and	#$0F
+			jmp	bg_obj_set_base
+		: ; } else {
+			sta	BG_OBJ_TBL_BASE
+			cmp	#>(COURSE_AREAOBJ_MASK)
+			bne	:+
+			.if	.defined(VS)
+				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
+				sta	VS_SR
+			.endif
+			lda	(course_data_addr), y
+			and	#$08
+			beq	:+ ; if (BG_OBJ_TBL_BASE == 0x70 && (course_data_byte_1 & 0x08)) {
+				lda	#(bg_obj_tbl_pipe_vert-bg_obj_tbl)/WORD_SIZE
+				sta	BG_OBJ_TBL_BASE
+			: ; }
+		
+			lda	BG_OBJ_TBL_BASE
+			jmp	:++
+		: ; }
+	; }
 
 	; if () {
 		; if () {
@@ -833,7 +834,7 @@ bg_obj_set_base:
 	.endif
 	lda	(course_data_addr), y
 	and	#<COURSE_DATA_TYPE_MASK
-	cmp	#<COURSE_DATA_TYPE_0E
+	cmp	#<COURSE_DATA_TYPE_E
 	bne	bg_area_decode_rts
 	lda	eng_page_cached
 	bne	:+++
@@ -873,8 +874,16 @@ bg_area_decode_rts:
 	clc
 	adc	BG_OBJ_TBL_OFFSET
 	jsr	eng_farjump
+	.export bg_obj_tbl
+	.export bg_obj_spec_B
+	.export bg_obj_spec_D
+	.export bg_obj_tbl_castle
+	.export bg_obj_tbl_pipe_intro
+	.export bg_obj_tbl_lock_start
+	.export	bg_obj_tbl_decode_rts
 bg_obj_tbl:
 bg_obj_norm:
+bg_obj_tbl_pipe_vert:
 	.addr	bg_areaobj_pipe_vert
 
 	.addr	bg_areaobj_ledge
@@ -898,6 +907,7 @@ bg_obj_spec_A:
 bg_obj_spec_B:
 	.addr	bg_areaobj_rope_norm
 	.addr	bg_areaobj_rope_plat
+bg_obj_tbl_castle:
 	.addr	bg_areaobj_castle
 	.addr	bg_areaobj_stairs
 	.addr	bg_areaobj_pipe_exit
@@ -937,6 +947,7 @@ bg_obj_spec_C:
 	.addr	bg_areaobj_spring
 
 bg_obj_spec_D:
+bg_obj_tbl_pipe_intro:
 	.addr	bg_areaobj_pipe_intro
 	.addr	bg_areaobj_pole
 	.addr	bg_areaobj_castle_bridge_axe
@@ -945,10 +956,12 @@ bg_obj_spec_D:
 
 	.addr	bg_areaobj_lock_warp
 	.addr	bg_areaobj_lock
+bg_obj_tbl_lock_start:
 	.addr	bg_areaobj_lock
 	.addr	bg_areaobj_swarm
 	.addr	bg_areaobj_swarm
 	.addr	bg_areaobj_swarm
+bg_obj_tbl_decode_rts:
 	.addr	bg_area_decode_rts2
 
 	.if	.defined(SMB2)
