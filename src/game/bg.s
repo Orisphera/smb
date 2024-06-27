@@ -922,12 +922,20 @@ bg_area_decode_rts:
 	.export bg_obj_tbl_block_item_c
 	.export	bg_obj_tbl_block_item_d
 	.export bg_obj_tbl_block_coin
+	.export bg_obj_tbl_pipe_water
+	.export bg_obj_tbl_empty_draw
+	.export bg_obj_tbl_spring
 
 	.export bg_obj_spec_D
+
+	.export	bg_obj_tbl_pipe_intro
 	.export	bg_obj_tbl_pole
+	.export	bg_obj_tbl_castle_bridge_axe
+	.export	bg_obj_tbl_castle_bridge_draw
 	.export	bg_obj_tbl_castle_bridge
-	.export bg_obj_tbl_pipe_intro
-	.export bg_obj_tbl_lock_start
+	.export	bg_obj_tbl_lock_warp
+	.export	bg_obj_tbl_lock_end
+	.export	bg_obj_tbl_lock_start
 	.export	bg_obj_tbl_swarm_a
 	.export	bg_obj_tbl_swarm_b
 	.export	bg_obj_tbl_swarm_c
@@ -1053,8 +1061,13 @@ bg_obj_tbl_block_coin:
 bg_obj_tbl_block_item_d:
 	.addr	bg_areaobj_block_item
 
+bg_obj_tbl_pipe_water:
 	.addr	bg_areaobj_pipe_water
+
+bg_obj_tbl_empty_draw:
 	.addr	bg_areaobj_empty_draw
+
+bg_obj_tbl_spring:
 	.addr	bg_areaobj_spring
 
 bg_obj_spec_D:
@@ -1062,12 +1075,15 @@ bg_obj_tbl_pipe_intro:
 	.addr	bg_areaobj_pipe_intro
 bg_obj_tbl_pole:
 	.addr	bg_areaobj_pole
+bg_obj_tbl_castle_bridge_axe:
 	.addr	bg_areaobj_castle_bridge_axe
+bg_obj_tbl_castle_bridge_draw:
 	.addr	bg_areaobj_castle_bridge_draw
 bg_obj_tbl_castle_bridge:
 	.addr	bg_areaobj_castle_bridge
-
+bg_obj_tbl_lock_warp:
 	.addr	bg_areaobj_lock_warp
+bg_obj_tbl_lock_end:
 	.addr	bg_areaobj_lock
 bg_obj_tbl_lock_start:
 	.addr	bg_areaobj_lock

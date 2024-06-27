@@ -112,6 +112,7 @@ COURSE_AREA_LEDGE_CLOUD_VAL	= 3
 COURSE_AREA_LEDGE_CLOUD		= (COURSE_AREA_LEDGE_CLOUD_VAL<<COURSE_AREA_LEDGE_SHIFT)
 COURSE_AREA_LEDGE_MAX		= <(COURSE_AREA_LEDGE_CLOUD>>COURSE_AREA_LEDGE_SHIFT)
 
+COURSE_DATA_POS_Y_0 = (0<<0)
 COURSE_DATA_POS_Y_1	= (1<<0)
 COURSE_DATA_POS_Y_2	= (2<<0)
 COURSE_DATA_POS_Y_3	= (3<<0)
@@ -167,24 +168,50 @@ COURSE_OBJ_A_WATERHOLE	= (((bg_obj_tbl_waterhole-bg_obj_spec_A)/WORD_SIZE)<<OBJ_
 COURSE_OBJ_A_BLOCK_QHI	= (((bg_obj_tbl_block_qhi-bg_obj_spec_A)/WORD_SIZE)<<OBJ_A_BIT)
 COURSE_OBJ_A_BLOCK_QLO	= (((bg_obj_tbl_block_qlo-bg_obj_spec_A)/WORD_SIZE)<<OBJ_A_BIT)
 
+COURSE_OBJ_DIM_1	= (($0)<<8)
+COURSE_OBJ_DIM_2	= (($1)<<8)
+COURSE_OBJ_DIM_3	= (($2)<<8)
+COURSE_OBJ_DIM_4	= (($3)<<8)
+COURSE_OBJ_DIM_5	= (($4)<<8)
+COURSE_OBJ_DIM_6	= (($5)<<8)
+COURSE_OBJ_DIM_7	= (($6)<<8)
+COURSE_OBJ_DIM_8	= (($7)<<8)
+COURSE_OBJ_DIM_9	= (($8)<<8)
+COURSE_OBJ_DIM_10	= (($9)<<8)
+COURSE_OBJ_DIM_11	= (($A)<<8)
+COURSE_OBJ_DIM_12	= (($B)<<8)
+COURSE_OBJ_DIM_13	= (($C)<<8)
+COURSE_OBJ_DIM_14	= (($D)<<8)
+COURSE_OBJ_DIM_15	= (($E)<<8)
+COURSE_OBJ_DIM_16	= (($F)<<8)
+
 COURSE_DATA_TYPE_D_LOC_MASK	= $1F00
 COURSE_DATA_TYPE_D_OBJ_MASK	= $3F00
 COURSE_DATA_TYPE_D_MASK		= $4000
 
 COURSE_PAGE_D_1		= (1<<8)
 COURSE_PAGE_D_2		= (2<<8)
+COURSE_PAGE_D_4		= (4<<8)
 COURSE_PAGE_D_5		= (5<<8)
+COURSE_PAGE_D_9		= (9<<8)
+COURSE_PAGE_D_A		= ($A<<8)
+COURSE_PAGE_D_D		= ($D<<8)
 
-OBJ_0_MASK	= ($7800)
+COURSE_DOWNPIPE_MASK	= ($7800)
 
-COURSE_OBJ_D_PIPE_INTRO	= (((bg_obj_tbl_pipe_intro-bg_obj_spec_D)/WORD_SIZE)<<8)
-COURSE_OBJ_D_POLE		= (((bg_obj_tbl_pole-bg_obj_spec_D)/WORD_SIZE)<<8)
-COURSE_OBJ_D_BRIDGE		= (((bg_obj_tbl_castle_bridge-bg_obj_spec_D)/WORD_SIZE)<<8)
-COURSE_OBJ_D_LOCK_START	= (((bg_obj_tbl_lock_start-bg_obj_spec_D)/WORD_SIZE)<<8)
-COURSE_OBJ_D_SWARM_A	= (((bg_obj_tbl_swarm_a-bg_obj_spec_D)/WORD_SIZE)<<8)
-COURSE_OBJ_D_SWARM_B	= (((bg_obj_tbl_swarm_b-bg_obj_spec_D)/WORD_SIZE)<<8)
-COURSE_OBJ_D_SWARM_C	= (((bg_obj_tbl_swarm_c-bg_obj_spec_D)/WORD_SIZE)<<8)
-COURSE_OBJ_D_LOOP		= (((bg_obj_tbl_decode_rts-bg_obj_spec_D)/WORD_SIZE)<<8)
+OBJ_D_BIT	= 8
+COURSE_OBJ_D_PIPE_INTRO	= (((bg_obj_tbl_pipe_intro-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_POLE		= (((bg_obj_tbl_pole-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_BRIDGE_AXE	= (((bg_obj_tbl_castle_bridge_axe-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_BRIDGE_DRAW	= (((bg_obj_tbl_castle_bridge_draw-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_BRIDGE		= (((bg_obj_tbl_castle_bridge-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_LOCK_WARP	= (((bg_obj_tbl_lock_warp-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_LOCK_END	= (((bg_obj_tbl_lock_end-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_LOCK_START	= (((bg_obj_tbl_lock_start-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_SWARM_A	= (((bg_obj_tbl_swarm_a-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_SWARM_B	= (((bg_obj_tbl_swarm_b-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_SWARM_C	= (((bg_obj_tbl_swarm_c-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+COURSE_OBJ_D_LOOP		= (((bg_obj_tbl_decode_rts-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
 
 COURSE_AREAOBJ_MASK	= $7000
 
@@ -196,7 +223,7 @@ COURSE_OBJ_B_STAIRS	= (((bg_obj_tbl_stairs-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_PIPE_EXIT	= (((bg_obj_tbl_pipe_exit-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_POLE_TIP	= (((bg_obj_tbl_pole_tip-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 
-OBJ_C_BIT	= 12;
+OBJ_C_BIT	= 8;
 COURSE_OBJ_C_BLOCK_Q_A		= (((bg_obj_tbl_block_q_a-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
 COURSE_OBJ_C_BLOCK_Q_B		= (((bg_obj_tbl_block_q_b-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
 COURSE_OBJ_C_BLOCK_Q_C		= (((bg_obj_tbl_block_q_c-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
@@ -214,6 +241,11 @@ COURSE_OBJ_C_BLOCK_ITEM_B	= (((bg_obj_tbl_block_item_b-bg_obj_spec_C)/WORD_SIZE)
 COURSE_OBJ_C_BLOCK_ITEM_C	= (((bg_obj_tbl_block_item_c-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
 COURSE_OBJ_C_BLOCK_ITEM_D	= (((bg_obj_tbl_block_item_d-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
 COURSE_OBJ_C_BLOCK_COIN		= (((bg_obj_tbl_block_coin-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
+COURSE_OBJ_C_PIPE_WATER		= (((bg_obj_tbl_pipe_water-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
+COURSE_OBJ_C_EMPTY_DRAW		= (((bg_obj_tbl_empty_draw-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
+COURSE_OBJ_C_SPRING		= (((bg_obj_tbl_spring-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
+
+COURSE_OBJ_E_FG_MASK	= $4000
 
 COURSE_DATA_NEW_PAGE	= (1<<15)
 
