@@ -793,7 +793,7 @@ bg_area_decode:
 			lda	(course_data_addr), y
 			and	#$08
 			beq	:+ ; if (BG_OBJ_TBL_BASE == 0x70 && (course_data_byte_1 & 0x08)) {
-				lda	#(bg_obj_tbl_pipe_vert-bg_obj_tbl)/WORD_SIZE
+				lda	#(bg_obj_tbl_pipe_vert_a-bg_obj_tbl)/WORD_SIZE
 				sta	BG_OBJ_TBL_BASE
 			: ; }
 		
@@ -875,42 +875,131 @@ bg_area_decode_rts:
 	adc	BG_OBJ_TBL_OFFSET
 	jsr	eng_farjump
 	.export bg_obj_tbl
+
+	.export bg_obj_norm
+	.export bg_obj_tbl_pipe_vert_a
+	.export bg_obj_tbl_ledge
+	.export	bg_obj_tbl_brickrow
+	.export	bg_obj_tbl_floorrow
+	.export	bg_obj_tbl_coinrow
+	.export	bg_obj_tbl_brickcol
+	.export	bg_obj_tbl_floorcol
+	.export bg_obj_tbl_pipe_vert_b
+
+	.export	bg_obj_spec_A
+	.export	bg_obj_tbl_pit
+	.export	bg_obj_tbl_pulley
+	.export	bg_obj_tbl_bridge_hi
+	.export	bg_obj_tbl_bridge_mid
+	.export	bg_obj_tbl_bridge_lo
+	.export	bg_obj_tbl_waterhole
+	.export	bg_obj_tbl_block_qhi
+	.export	bg_obj_tbl_block_qlo
+
 	.export bg_obj_spec_B
+	.export	bg_obj_tbl_rope_norm
+	.export	bg_obj_tbl_rope_plat
+	.export	bg_obj_tbl_castle
+	.export	bg_obj_tbl_stairs
+	.export	bg_obj_tbl_pipe_exit
+	.export	bg_obj_tbl_pole_tip
+
+	.export	bg_obj_spec_C
+	.export	bg_obj_tbl_block_q_a
+	.export	bg_obj_tbl_block_q_b
+	.export	bg_obj_tbl_block_q_c
+	.if	.defined(SMB2)
+		.export bg_obj_tbl_block_q_d
+		.export bg_obj_tbl_block_q_f
+		.export bg_obj_tbl_block_item_e
+	.endif
+	.if	.defined(SMB2M)
+		.export bg_obj_tbl_block_q_e
+	.endif
+	.export	bg_obj_tbl_hidden_one_up
+	.export	bg_obj_tbl_block_item_a
+	.export	bg_obj_tbl_block_item_b
+	.export bg_obj_tbl_block_item_c
+	.export	bg_obj_tbl_block_item_d
+	.export bg_obj_tbl_block_coin
+
 	.export bg_obj_spec_D
-	.export bg_obj_tbl_castle
+	.export	bg_obj_tbl_pole
+	.export	bg_obj_tbl_castle_bridge
 	.export bg_obj_tbl_pipe_intro
 	.export bg_obj_tbl_lock_start
+	.export	bg_obj_tbl_swarm_a
+	.export	bg_obj_tbl_swarm_b
+	.export	bg_obj_tbl_swarm_c
 	.export	bg_obj_tbl_decode_rts
 bg_obj_tbl:
 bg_obj_norm:
-bg_obj_tbl_pipe_vert:
+bg_obj_tbl_pipe_vert_a:
 	.addr	bg_areaobj_pipe_vert
 
+bg_obj_tbl_ledge:
 	.addr	bg_areaobj_ledge
+
+bg_obj_tbl_brickrow:
 	.addr	bg_areaobj_brickrow
+
+bg_obj_tbl_floorrow:
 	.addr	bg_areaobj_floorrow
+
+bg_obj_tbl_coinrow:
 	.addr	bg_areaobj_coinrow
+
+bg_obj_tbl_brickcol:
 	.addr	bg_areaobj_brickcol
+
+bg_obj_tbl_floorcol:
 	.addr	bg_areaobj_floorcol
+
+bg_obj_tbl_pipe_vert_b:
 	.addr	bg_areaobj_pipe_vert
 
 bg_obj_spec_A:
+bg_obj_tbl_pit:
 	.addr	bg_areaobj_pit
+
+bg_obj_tbl_pulley:
 	.addr	bg_areaobj_pulley
+
+bg_obj_tbl_bridge_hi:
 	.addr	bg_areaobj_bridge_hi
+
+bg_obj_tbl_bridge_mid:
 	.addr	bg_areaobj_bridge_mid
+
+bg_obj_tbl_bridge_lo:
 	.addr	bg_areaobj_bridge_lo
+
+bg_obj_tbl_waterhole:
 	.addr	bg_areaobj_waterhole
+
+bg_obj_tbl_block_qhi:
 	.addr	bg_areaobj_block_qhi
+
+bg_obj_tbl_block_qlo:
 	.addr	bg_areaobj_block_qlo
 
 bg_obj_spec_B:
+bg_obj_tbl_rope_norm:
 	.addr	bg_areaobj_rope_norm
+
+bg_obj_tbl_rope_plat:
 	.addr	bg_areaobj_rope_plat
+
 bg_obj_tbl_castle:
 	.addr	bg_areaobj_castle
+
+bg_obj_tbl_stairs:
 	.addr	bg_areaobj_stairs
+
+bg_obj_tbl_pipe_exit:
 	.addr	bg_areaobj_pipe_exit
+
+bg_obj_tbl_pole_tip:
 	.addr	bg_areaobj_pole_tip
 
 	.if	.defined(SMB2M)
@@ -919,29 +1008,51 @@ bg_obj_tbl_castle:
 	.endif
 
 bg_obj_spec_C:
+bg_obj_tbl_block_q_a:
+	.addr	bg_areaobj_block_q
+
+bg_obj_tbl_block_q_b:
+	.addr	bg_areaobj_block_q
+
+bg_obj_tbl_block_q_c:
+	.addr	bg_areaobj_block_q
+
 	.if	.defined(SMB2)
+	bg_obj_tbl_block_q_d:
 		.addr	bg_areaobj_block_q
 	.endif
 
-	.addr	bg_areaobj_block_q
-	.addr	bg_areaobj_block_q
-	.addr	bg_areaobj_block_q
+bg_obj_tbl_hidden_one_up:
 	.addr	bg_areaobj_hidden_one_up
 
 	.if	.defined(SMB2M)
+	bg_obj_tbl_block_q_e:
 		.addr	bg_areaobj_block_q
 	.endif
 
 	.if	.defined(SMB2)
+	bg_obj_tbl_block_q_f:
 		.addr	bg_areaobj_block_q
+
+	bg_obj_tbl_block_item_e:
 		.addr	bg_areaobj_block_item
 	.endif
 
+bg_obj_tbl_block_item_a:
 	.addr	bg_areaobj_block_item
+
+bg_obj_tbl_block_item_b:
 	.addr	bg_areaobj_block_item
+
+bg_obj_tbl_block_item_c:
 	.addr	bg_areaobj_block_item
+
+bg_obj_tbl_block_coin:
 	.addr	bg_areaobj_block_coin
+
+bg_obj_tbl_block_item_d:
 	.addr	bg_areaobj_block_item
+
 	.addr	bg_areaobj_pipe_water
 	.addr	bg_areaobj_empty_draw
 	.addr	bg_areaobj_spring
@@ -949,17 +1060,22 @@ bg_obj_spec_C:
 bg_obj_spec_D:
 bg_obj_tbl_pipe_intro:
 	.addr	bg_areaobj_pipe_intro
+bg_obj_tbl_pole:
 	.addr	bg_areaobj_pole
 	.addr	bg_areaobj_castle_bridge_axe
 	.addr	bg_areaobj_castle_bridge_draw
+bg_obj_tbl_castle_bridge:
 	.addr	bg_areaobj_castle_bridge
 
 	.addr	bg_areaobj_lock_warp
 	.addr	bg_areaobj_lock
 bg_obj_tbl_lock_start:
 	.addr	bg_areaobj_lock
+bg_obj_tbl_swarm_a:
 	.addr	bg_areaobj_swarm
+bg_obj_tbl_swarm_b:
 	.addr	bg_areaobj_swarm
+bg_obj_tbl_swarm_c:
 	.addr	bg_areaobj_swarm
 bg_obj_tbl_decode_rts:
 	.addr	bg_area_decode_rts2

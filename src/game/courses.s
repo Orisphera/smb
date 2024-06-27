@@ -222,55 +222,80 @@ courses_world_offsets:
 ; --------------
 courses_area_offsets:
 course_01_areas:
-	.byte	$25, $29, $C0
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_06
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
+		.byte	COURSE_TYPE_UNDERGROUND_B|(%100)<<5|course_underground::no_01
 .if	.defined(SMB)
-	.byte	$26, $60
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01
 .elseif	.defined(VS_SMB)
-	.byte	$36, $66
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_23
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_07
 .endif
 
 course_02_areas:
-	.byte	$28, $29
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_09
 .if	.defined(SMB)
-	.byte	$01, $27
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
+		.byte	COURSE_TYPE_WATER_B|course_water::no_02
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08
 .elseif	.defined(VS_SMB)
-	.byte	$03, $37
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
+		.byte	COURSE_TYPE_WATER_B|course_water::no_04
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_24
 .endif
-	.byte	$62
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_03
 
 course_03_areas:
-	.byte	$24, $35, $20, $63
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_05
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_22
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_01
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_04
 
 course_04_areas:
-	.byte	$22, $29, $41, $2C
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_03
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
+		.byte	COURSE_TYPE_UNDERGROUND_B|course_underground::no_02
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_13
 .if	.defined(SMB)
-	.byte	$61
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02
 .elseif	.defined(VS_SMB)
-	.byte	$67
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_08
 .endif
 
 course_05_areas:
-	.byte	$2A, $31
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_11
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_18
 .if	.defined(SMB)
-	.byte	$26, $62
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_03
 .elseif	.defined(VS_SMB)
-	.byte	$2D, $61
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02
 .endif
 
 course_06_areas:
-	.byte	$2E, $23
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_15
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_04
 .if	.defined(SMB)
-	.byte	$2D
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
 .elseif	.defined(VS_SMB)
-	.byte	$26
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
 .endif
-	.byte	$60
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01
 
 course_07_areas:
-	.byte	$33, $29, $01, $27, $64
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_20
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
+		.byte	COURSE_TYPE_WATER_B|course_water::no_02
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_05
 
 course_08_areas:
-	.byte	$30, $32, $21, $65
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_17
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_19
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_02
+	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_06
 ; -----------------------------
 .if	.defined(CONS)
 	COURSE_OFFSET_INC_SIZE	= 1

@@ -135,4 +135,61 @@
 		cloud
 	.endenum
 
+	.enum	course_water
+		no_01
+		no_02
+		no_03
+		.if	.defined(VS_SMB)
+			no_04
+		.endif
+	.endenum
+
+	.enum	course_overworld
+		no_01
+		no_02
+		no_03
+		no_04
+		no_05
+		no_06
+		no_07
+		no_08
+		no_09
+		no_10
+		no_11
+		no_12
+		no_13
+		no_14
+		no_15
+		no_16
+		no_17
+		no_18
+		no_19
+		no_20
+		no_21
+		no_22
+		.if	.defined(VS_SMB)
+			no_23
+			no_24
+		.endif
+	.endenum
+
+	.enum	course_underground
+		no_01
+		no_02
+		no_03
+	.endenum
+
+	.enum	course_castle
+		no_01
+		no_02
+		no_03
+		no_04
+		no_05
+		no_06
+		.if	.defined(VS_SMB)
+			no_07
+			no_08
+		.endif
+	.endenum
+
 	.endif	; MISC_I
