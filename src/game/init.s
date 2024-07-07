@@ -91,10 +91,10 @@ eng_init_0_do:
 	sta	eng_page_current
 	sta	eng_page_cached
 
-	jsr	disp_get_pos
+	jsr	game_proc_disp_pos
 	ldy	#>PPU_VRAM_BG1
 	and	#1
-	beq	:+ ; if (disp_get_pos() % 1) {
+	beq	:+ ; if (game_proc_disp_pos() % 1) {
 		ldy	#>PPU_VRAM_BG2
 	: ; }
 	sty	eng_bg_addr_hi
@@ -160,7 +160,7 @@ eng_init_0_do:
 		jsr	vs_setbank_low
 		.endif
 
-		lda	#1
+		lda	#player_size::small
 		sta	eng_req_timer
 		sta	eng_player_size
 
@@ -192,7 +192,7 @@ eng_init_1_do:
 	sta	eng_disp_disable
 	
 	.if	.defined(SMB2)
-		sta	eng_timer_disp+1
+		sta	byte_7F9
 	.endif
 
 	.if	.defined(SMB2M)
@@ -309,6 +309,7 @@ area_music_data_clouds:
 area_music_data_pipe_intro:
 	.byte	music_area::pipe_intro
 ; ----------------------------
+	.export	sub_load_area_music
 sub_load_area_music:
 	lda	eng_game_mode
 	beq	:+++ ; if (eng_game_mode != title) {
@@ -396,15 +397,16 @@ eng_timer_vals_b:
 	ENG_TIMER_DISP	= eng_timer_disp_b
 .endif
 ; ----------------------------
-sub_enter_timer_init:
+	.export game_proc_start
+game_proc_start:
 	lda	eng_screen_left_hi
 	sta	eng_player_pos_x_hi
 	lda	#$28
 	sta	eng_player_gravity
-	lda	#1
+	lda	#PLAYER_DIR_RIGHT
 	sta	eng_player_dir
 	sta	eng_player_pos_y_hi
-	lda	#0
+	lda	#player_state::no_00
 	sta	eng_player_state
 	dec	eng_player_collision
 
@@ -433,64 +435,61 @@ sub_enter_timer_init:
 	jsr	screen_color_player
 
 	ldy	course_timer_setting
-	beq	:+
+	beq	:+++
 	lda	eng_req_timer
-	beq	:+ ; if (course_timer_setting != 0 && eng_req_timer > 0) {
+	beq	:+++ ; if (course_timer_setting != 0 && eng_req_timer > 0) {
 	.if	.defined(VS)
 		lda	VS_RAM_ARENA0+$03
-		beq	sub_enter_timer_init_all
-		lda	eng_timer_vals_a, y
-		sta	ENG_TIMER_DISP
-		lda	eng_timer_vals_b, y
-		sta	ENG_TIMER_DISP+1
-		jmp	sub_enter_timer_init_some
+		beq	:+ ; if (vs_ram_arena0[3]) {
+			lda	eng_timer_vals_a, y
+			sta	ENG_TIMER_DISP
+			lda	eng_timer_vals_b, y
+			sta	ENG_TIMER_DISP+1
+			jmp	:++
+		; } else {
 	.endif
-
-	sub_enter_timer_init_all:
-		lda	enter_timer_vals-1, y
-		sta	ENG_TIMER_DISP
+			: lda	enter_timer_vals-1, y
+			sta	ENG_TIMER_DISP
 		.if	.defined(VS)
 			lda	enter_timer_vals+2, y
 			sta	ENG_TIMER_DISP+1
+		; }
 		.endif
-	sub_enter_timer_init_some:
-		lda	#1
+		: lda	#1
 		sta	ENG_TIMER_DISP+2
-
 		.if	.defined(SMB)|.defined(SMB2M)
 			lsr	a
 			sta	ENG_TIMER_DISP+1
-		.elseif	.defined(VS)
+		.elseif	.defined(VS_SMB)
 			lda	#0
 		.endif
-
 		sta	eng_req_timer
-		sta	ent_timer_star
+		sta	eng_timer_star
 	: ; }
 
 	ldy	eng_joypad_override
 	beq	:+ ; if (eng_joypad_override) {
-		lda	#3
+		lda	#player_state::no_03
 		sta	eng_player_state
 		ldx	#0
-		jsr	eng_init_blockpos
+		jsr	block_initpos
 		lda	#$F0
 		sta	eng_block_pos_y
 		ldx	#5
 		ldy	#0
-		jsr	eng_init_vine
+		jsr	game_proc_vine_init
 	: ; }
 
 	ldy	course_type
 	bne	:+ ; if (course_type == water) {
-		jsr	eng_init_bubbles
+		jsr	game_proc_bubble_init
 	: ; }
 
-	lda	#7
+	lda	#game_proc::enter
 	sta	game_proc_id
 	rts
 ; -----------------------------------------------------------
-eng_lose_life_starts:
+lifedown_starts:
 .if	.defined(SMBM)|.defined(VS_SMB)
 	.byte	$56, $40
 .elseif	.defined(SMB2)
@@ -547,7 +546,8 @@ eng_lose_life_starts:
 	.byte	$00, $00
 .endif
 ; ----------------------------
-eng_lose_life:
+	.export	game_proc_lifedown
+game_proc_lifedown:
 	inc	eng_disp_disable
 	lda	#0
 	sta	eng_sprite_overlap
@@ -570,7 +570,7 @@ eng_lose_life:
 			inx
 		: ; }
 
-		ldy	eng_lose_life_starts, x
+		ldy	lifedown_starts, x
 		lda	eng_goals
 		lsr	a
 		tya
@@ -583,7 +583,7 @@ eng_lose_life:
 		and	#$0F
 		cmp	eng_screen_left_hi
 		beq	:+
-		bcc	:+ ; if (eng_lose_life_starts > eng_screen_left_hi) {
+		bcc	:+ ; if (lifedown_starts > eng_screen_left_hi) {
 			lda	#0
 		: ; }
 		sta	eng_startpage_alt

@@ -12,13 +12,27 @@
 	.endenum
 
 	.enum	gameplay_mode
-		init_0	 = 0
-		scr_proc = 1
-		init_1	 = 2
-		proc	 = 3
-		mode_4   = 4
-		mode_5   = 5
-		mode_D   = $D
+		.if	.defined(VS_SMB)
+			vs_init
+		.elseif	.defined(SMB2M)
+			mode_unk_0
+		.endif
+
+		init_0_do
+
+		.if	.defined(ANN)
+			mode_unk_1
+		.endif
+
+		scr_proc
+		init_1
+		proc
+
+		init_0	= 0
+		.if	.defined(SMB2M)
+			mode_5	= $5
+			mode_D	= $D
+		.endif
 	.endenum
 
 	.enum	victory_mode
@@ -68,6 +82,13 @@
 		title_score
 	.endenum
 
+	.enum	player_state
+		no_00
+		no_01
+		no_02
+		no_03
+	.endenum
+
 	.enum	screen_text
 		header
 		splash
@@ -75,6 +96,75 @@
 		gameover
 		.if	.defined(SMB)
 		warp
+		.endif
+	.endenum
+
+	.enum	nmi_addr
+		buffer_01_A
+		pal_underwater
+		pal_overworld
+		pal_underground
+		pal_castle
+		buffer_00_A
+		buffer_11_A
+		buffer_11_B
+		pal_bowser
+		pal_day_snow
+		pal_night_snow
+		pal_mushroom
+		msg_ty_mario
+		.if	.defined(SMB)|.defined(VS_SMB)
+			msg_ty_luigi
+		.endif
+		msg_ty_toad
+		.if	.defined(SMB)
+			msg_ty_princess1
+			msg_ty_princess2
+			msg_addr_worldsel_1
+			msg_addr_worldsel_2
+		.elseif	.defined(VS_SMB)
+			addr_0F
+			addr_10
+			msg_ty_mario_2
+			msg_ty_luigi_2
+			vsend_1
+			vsend_2
+			vsend_3_mario
+			vsend_3_luigi
+			vsend_4
+			vsend_5
+			vsend_6
+			vsend_7
+			vsend_8
+			addr_1C
+			addr_1D_A
+			addr_1D_B
+			addr_1E_A
+			addr_1E_B
+			addr_1E_C
+			addr_1E_D
+			addr_1E_E
+			addr_1E_F
+			addr_1E_G
+			addr_1F
+		.elseif	.defined(SMB2M)
+			addr_C876
+			addr_C87F
+			addr_C893
+			addr_C8AB
+			addr_C8C1
+			addr_C8D7
+			addr_C8EB
+			addr_C8FC
+			addr_C913
+			addr_C92B
+			addr_C943
+			addr_C149
+			addr_C10B
+			addr_C95C
+			addr_C511
+			addr_C97D
+			addr_C9C0
 		.endif
 	.endenum
 
@@ -190,6 +280,17 @@
 			no_07
 			no_08
 		.endif
+	.endenum
+
+	.enum	player_size
+		large
+		small
+	.endenum
+
+	.enum	col_box_type
+		large
+		small
+		crouch
 	.endenum
 
 	.endif	; MISC_I

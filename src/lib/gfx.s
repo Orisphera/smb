@@ -158,7 +158,7 @@ gfx_render_attr:
 	sty	ppu_nmi_buffer+$40
 
 gfx_render_attr_end:
-	lda	#$06
+	lda	#nmi_addr::buffer_11_A
 	sta	nmi_addrs_ctl
 	rts
 ; -----------------------------------------------------------
@@ -256,14 +256,13 @@ gfx_clear_blocks:
 gfx_clear_small:
 	ldy	#$41
 	lda	#3
-
 	ldx	course_type
 	bne	:+ ; if (course_type == water) {
 		lda	#4
 	: ; }
 
 	jsr	gfx_clear_put
-	lda	#$06
+	lda	#nmi_addr::buffer_11_A
 	sta	nmi_addrs_ctl
 	rts
 ; ----------------------------

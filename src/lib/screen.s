@@ -69,7 +69,10 @@ screen_color_init_1:
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
 screen_palette_types:
-	.byte	1, 2, 3, 4
+	.byte	nmi_addr::pal_underwater
+	.byte	nmi_addr::pal_overworld
+	.byte	nmi_addr::pal_underground
+	.byte	nmi_addr::pal_castle
 ; ----------------------------
 screen_color_init_2:
 	ldy	course_type
@@ -176,7 +179,7 @@ screen_color_init_4:
 	lda	course_ledge_type
 	cmp	#COURSE_AREA_LEDGE_MUSHROOM_VAL
 	bne	:+ ; if (ledge_type == MUSHROOM) {
-		lda	#$0B
+		lda	#nmi_addr::pal_mushroom
 	screen_color_init_4_end:
 		sta	nmi_addrs_ctl
 	: ; }
@@ -341,7 +344,7 @@ screen_bg:
 		inc	eng_screen_proc_id
 	: ; }
 
-	lda	#6
+	lda	#nmi_addr::buffer_11_A
 	sta	nmi_addrs_ctl
 	rts
 ; ------------------------------------------------------------

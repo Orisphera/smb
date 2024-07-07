@@ -12,7 +12,7 @@ fi
 
 mkdir -p data/chr.smb
 
-dd if=$1 bs=1 skip=12011 count=20767 >data/prg.fc.bin
+dd if=$1 bs=1 skip=15001 count=17777 >data/prg.fc.bin
 
 # CHR Common
 TILE_SIZE=16

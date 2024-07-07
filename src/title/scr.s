@@ -113,7 +113,7 @@ screen_proc_next:
 ; ----------------------------
 screen_title_score:
 	lda	#$FA
-	jsr	sub_BC36
+	jsr	eng_player_add_score
 
 	.export screen_title_end
 screen_title_end:

@@ -229,6 +229,7 @@ stats_offsets:
 		.byte	$1E, $24
 	.endif
 ; ----------------------------
+	.export	eng_stats_print_num
 eng_stats_print_num:
 	sta	zp_byte_00
 	jsr	print_num
@@ -288,6 +289,7 @@ print_num:
 
 	rts
 ; -----------------------------------------------------------
+	.export eng_stats_math
 eng_stats_math:
 	lda	eng_game_mode
 	.if	.defined(SMB)|.defined(VS_SMB)

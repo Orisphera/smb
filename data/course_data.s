@@ -4378,3 +4378,10 @@ courses_data_water_4:
 
 	.byte	COURSE_DATA_END
 .endif
+
+.if	.defined(SMB)
+	.res	1, $FF
+.elseif	.defined(VS_SMB)
+	.res	9, $FF
+.endif
+

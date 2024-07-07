@@ -27,6 +27,7 @@ PPU_I = 1
 ; Control Register 0 [1](11.2.2)(p. 6)
 PPU_CTLR0	= $2000
 	.enum   ppu_ctlr0
+		bg_parity = 1
 		bg_even	= 0
 		bg_odd	= 1
 		bg1	= 0

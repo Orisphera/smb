@@ -29,7 +29,7 @@ eng_game_over_init:
 	sta	eng_sprite_overlap
 
 .if	.defined(SMB2M)
-	sta	eng_timer_disp
+	sta	byte_7F8
 .endif
 
 	lda	#music_event::game_over
@@ -109,7 +109,7 @@ eng_game_over_run:
 		rts
 	eng_game_continue: ; } else {
 		jsr	course_descriptor_load
-		lda	#1
+		lda	#player_size::small
 		sta	eng_player_size
 		inc	eng_req_timer
 		lda	#0

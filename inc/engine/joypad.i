@@ -10,6 +10,16 @@ JOYPAD_I = 1
 		select	= 32
 		face_b	= 64
 		face_a	= 128
+		none	= 0
 	.endenum
+
+	PLAYER_DIR_RIGHT	= joypad_button::right
+	PLAYER_DIR_LEFT		= joypad_button::left
+
+	PLAYER_COL_NONE		= joypad_button::none
+	PLAYER_COL_RIGHT	= joypad_button::right
+	PLAYER_COL_LEFT		= joypad_button::left
+	PLAYER_COL_BOTTOM	= joypad_button::down
+	PLAYER_COL_TOP		= joypad_button::up
 
 .endif	; JOYPAD_I

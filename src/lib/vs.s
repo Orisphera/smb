@@ -237,7 +237,7 @@ sub_93E0:
 	jsr	vs_setbank_low
 
 	lda	#1
-	sta	zp_byte_FE
+	sta	apu_pulse2_queue
 ; ----------------------------
 sub_93E7:
 	lda	VS_RAM_ARENA0+$06
@@ -309,7 +309,7 @@ sub_9454_do:
 	lda	VS_RAM_ARENA0+$10
 	cmp	#1
 	beq	:+ ; if (vs_ram_arena0[16] != 1) {
-		lda	#$26
+		lda	#nmi_addr::addr_1F
 		sta	nmi_addrs_ctl
 	: ; }
 
@@ -417,7 +417,7 @@ sub_9502:
 	jsr	nt_init
 	lda	#$FF
 	sta	VS_RAM_ARENA0+$16
-	lda	#2
+	lda	#nmi_addr::pal_overworld
 	sta	nmi_addrs_ctl
 	lda	#0
 	sta	VS_RAM_ARENA0+$22
@@ -440,7 +440,7 @@ sub_953B:
 	lda	VS_RAM_ARENA0+$22
 	bne	:+ ; if (vs_ram_arena0[34].in(0, 1)) {
 		; if (vs_ram_arena0[34] == 0) {
-			lda	#$24
+			lda	#nmi_addr::addr_1E_F
 			sta	nmi_addrs_ctl
 			jmp	:++
 		: cmp	#1
@@ -465,7 +465,7 @@ sub_953B:
 
 		lda	#0
 		sta	VS_RAM, x
-		lda	#$1E
+		lda	#nmi_addr::addr_1D_B
 		sta	nmi_addrs_ctl
 
 		ldy	#(sub_953B_oam_end-sub_953B_oam)-1

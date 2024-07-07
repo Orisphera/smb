@@ -5,6 +5,8 @@ SOUND_I = 1
 		game_over	= 2
 		victory_normal	= 4
 		victory_castle	= 8
+		event_20	= 32
+		event_40	= 64
 		none		= 128
 	.endenum
 

@@ -103,6 +103,7 @@ victory_enter:
 	data_630E:
 		.byte	$30, $50, $60
 ; ----------------------------
+		.export sub_6311
 	sub_6311:
 		lda	eng_goals
 		cmp	#ENG_HARDMODE_B_GOAL
@@ -203,7 +204,7 @@ victory_init:
 				bne	:-
 			; }
 
-			lda	#$1D
+			lda	#nmi_addr::addr_C97D
 			sta	nmi_addrs_ctl
 		: ; }
 	.endif
@@ -215,8 +216,8 @@ victory_init:
 	.if	.defined(SMB2)
 		ldy	course_no
 		lda	victory_init_mask, y
-		ora	eng_timer_disp+2
-		sta	eng_timer_disp+2
+		ora	byte_7FA
+		sta	byte_7FA
 	.endif
 
 	.if	.defined(SMB2M)
@@ -253,7 +254,7 @@ victory_init:
 	.endif
 ; -----------------------------------------------------------
 victory_proc:
-	ldy	#0
+	ldy	#joypad_button::none
 	sty	victory_proc_ctrl
 	lda	eng_player_pos_x_hi
 	cmp	victory_screen_hi
@@ -266,7 +267,7 @@ victory_proc:
 		iny
 	: ; }
 	tya
-	jsr	player_proc_auto
+	jsr	game_proc_auto
 
 	lda	eng_screen_left_hi
 	cmp	victory_screen_hi
@@ -278,8 +279,8 @@ victory_proc:
 		lda	#1
 		adc	#0
 		tay
-		jsr	game_scroll
-		jsr	game_scroll_save
+		jsr	game_proc_scroll_do
+		jsr	game_proc_scroll_save
 		inc	victory_proc_ctrl
 	: ; }
 	lda	victory_proc_ctrl
@@ -387,7 +388,7 @@ victory_msg:
 victory_msg_finish:
 	tya
 	clc
-	adc	#$0C
+	adc	#nmi_addr::msg_ty_mario
 	sta	nmi_addrs_ctl
 
 victory_msg_dotick:
@@ -601,7 +602,7 @@ sub_8552:
 			bne	:++ ; if (!(vs_ram_arena0[0x18] & 0x1F)) {
 				inc	VS_RAM_ARENA0+$22
 				lda	#1
-				sta	zp_byte_FE
+				sta	apu_pulse2_queue
 				jmp	:++
 			; }
 		: ; } else {
@@ -645,7 +646,7 @@ sub_8552:
 				ldx	#0
 				stx	course_no
 				stx	eng_actor_offset
-				jsr	sub_E7DA
+				jsr	eng_actor_render
 			: ; }
 
 			dec	VS_RAM_ARENA0+$22
@@ -743,7 +744,7 @@ victory_end:
 			lda	#$30
 			sta	eng_timer_select
 			lda	#$40
-			sta	zp_byte_FE
+			sta	apu_pulse2_queue
 			dec	eng_lives
 			lda	#1
 			sta	STACK_BASE+$35
@@ -790,14 +791,14 @@ sub_865D:
 
 	lda	eng_timer_select
 	bne	:+
-	lda	byte_7B1
-	bne	:+ ; if (!eng_timer_select && !byte_7B1) {
+	lda	snd_ram+1
+	bne	:+ ; if (!eng_timer_select && !snd_ram[1]) {
 		sta	byte_7FC
 		lda	#$FF
 		sta	eng_lives
 		lda	#game_mode::game_over
 		sta	eng_game_mode
-		lda	#gameplay_mode::init_0
+		lda	#gameplay_mode::vs_init
 		sta	eng_gameplay_mode
 	: ; }
 
@@ -882,7 +883,7 @@ screen_score_disp:
 		bne	:+ ; if (stack[0x10] == 1UP) {
 			inc	eng_lives
 			lda	#$40
-			sta	zp_byte_FE
+			sta	apu_pulse2_queue
 		: ; }
 
 		lda	screen_score_disp_incs, y
@@ -894,7 +895,7 @@ screen_score_disp:
 		lda	screen_score_disp_incs, y
 		and	#SCORE_DIGIT_MASK
 		sta	STACK_BASE+$34, x
-		jsr	sub_BC27
+		jsr	eng_player_update_score
 	: ; }
 
 	ldy	tbl_6E5, x

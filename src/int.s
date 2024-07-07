@@ -250,12 +250,12 @@ nmi:
 
 	ldy	#0
         ldx     nmi_addrs_ctl
-        cpx     #6
-        bne     :+ ; if (nmi_addrs_ctl == 6) {
+        cpx     #nmi_addr::buffer_11_A
+        bne     :+ ; if (nmi_addrs_ctl == buffer_11_A) {
 		iny
 	: ; }
 	ldx     nmi_buffer_offset,y
-        lda     #0
+        lda     #nmi_addr::buffer_01_A
         sta     ppu_nmi_buffer,x
         sta     ppu_nmi_buffer+1,x
         sta     nmi_addrs_ctl
@@ -506,13 +506,7 @@ nmi:
 		cmp     #game_mode::normal
 		bne     :+++++
 		lda     eng_gameplay_mode
-		.if	.defined(SMB)
-			cmp     #gameplay_mode::proc
-		.elseif	.defined(SMB2)
-			cmp	#gameplay_mode::mode_4
-		.elseif	.defined(ANN)
-			cmp	#gameplay_mode::mode_5
-		.endif
+		cmp     #gameplay_mode::proc
 		bne     :+++++
 		: ; if (game_mode == victory || (game_mode == normal && eng_gameplay_mode == proc)) {
 			lda     eng_pause_ticks

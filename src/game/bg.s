@@ -1795,7 +1795,7 @@ bg_areaobj_castle_bridge:
 	jmp	bg_areaobj_castle_bridge_draw
 
 bg_areaobj_castle_bridge_axe:
-	lda	#8
+	lda	#nmi_addr::pal_bowser
 	sta	nmi_addrs_ctl
 
 bg_areaobj_castle_bridge_draw:
@@ -2107,6 +2107,7 @@ bg_objpos_y_get:
 	adc	#(2<<4)
 	rts
 ; -----------------------------
+	.export bg_buffer_ptr_lo, bg_buffer_ptr_hi
 bg_buffer_ptr_lo:
 	.byte	<bg_buffer_0, <bg_buffer_1
 

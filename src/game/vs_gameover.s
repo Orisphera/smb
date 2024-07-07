@@ -261,7 +261,7 @@ sub_9A32:
 sub_9A4E:
 	lda	VS_RAM_ARENA0+$22
 	bne	:+ ; if (!vs_ram_arena0[0x22]) {
-                lda	#$24
+                lda	#nmi_addr::addr_1E_F
                 sta	nmi_addrs_ctl
                 inc	VS_RAM_ARENA0+$22
                 rts
@@ -1008,7 +1008,7 @@ data_9F33:
 sub_9F3B:
 	lda	VS_RAM_ARENA0+$22 ; switch (vs_ram_arena0[0x22]) {
 	bne	:+ ; case 0:
-		lda	#$24
+		lda	#nmi_addr::addr_1E_F
 		sta	nmi_addrs_ctl
 		inc	VS_RAM_ARENA0+$22
 		rts
