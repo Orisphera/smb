@@ -76,7 +76,7 @@ eng_init_0_do:
 	; }
 
 	.if	.defined(VS_SMB)
-		sta	eng_frame_count
+		sta	frame_count
 		lda	nmi_timer_int_init+1
 		sta	eng_timer_int
 		sta	eng_rand_seed
@@ -406,8 +406,8 @@ game_proc_start:
 	lda	#PLAYER_DIR_RIGHT
 	sta	eng_player_dir
 	sta	eng_player_pos_y_hi
-	lda	#player_state::no_00
-	sta	eng_player_state
+	lda	#player_state::ground
+	sta	state_player
 	dec	eng_player_collision
 
 	ldy	#0
@@ -469,12 +469,12 @@ game_proc_start:
 
 	ldy	eng_joypad_override
 	beq	:+ ; if (eng_joypad_override) {
-		lda	#player_state::no_03
-		sta	eng_player_state
+		lda	#player_state::climb
+		sta	state_player
 		ldx	#0
-		jsr	block_initpos
+		jsr	obj_spec_block_initpos
 		lda	#$F0
-		sta	eng_block_pos_y
+		sta	eng_spec_pos_y_lo
 		ldx	#5
 		ldy	#0
 		jsr	game_proc_vine_init

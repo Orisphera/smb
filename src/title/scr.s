@@ -1,12 +1,12 @@
 ; -----------------------------------------------------------
 .if	.defined(CONS)
 	SCREEN_TITLE_BG_SIZE	= $3A
-	TITLE_TBL_400		= tbl_400
+	TITLE_NMI_BUFFER_END	= ppu_nmi_buffer_end
 	TITLE_NMI_ADDR		= ppu_nmi_buffer
 	TITLE_COLOR_ID		= $05
 .elseif	.defined(VS)
 	SCREEN_TITLE_BG_SIZE	= $5A
-	TITLE_TBL_400		= VS_RAM+$400
+	TITLE_NMI_BUFFER_END	= VS_RAM+$400
 	TITLE_NMI_ADDR		= nmi_addr_1C
 	TITLE_COLOR_ID		= $1C
 .endif
@@ -70,7 +70,7 @@ screen_title_bg:
 	ldy	#<(TITLE_NMI_ADDR)
 	sty	zp_addr_00
 	lda	PPU_VRAM_IO
-	: ; for () {
+	: ; for (entry of nmi_buffer) {
 		lda	PPU_VRAM_IO
 		sta	(zp_addr_00), y
 		iny
@@ -79,7 +79,7 @@ screen_title_bg:
 		:
 
 		lda	zp_addr_00+1
-		cmp	#>(TITLE_TBL_400)
+		cmp	#>(TITLE_NMI_BUFFER_END)
 		bne	:--
 		cpy	#SCREEN_TITLE_BG_SIZE
 		bcc	:--
@@ -99,7 +99,8 @@ screen_title_cursor:
 	ldx	#0
 	: ; for (byte of ppu_nmi_buffer) {
 		sta	ppu_nmi_buffer, x
-		sta	tbl_400, x
+		sta	ppu_nmi_buffer+$100, x
+
 		dex
 		bne	:-
 	; }
@@ -113,7 +114,7 @@ screen_proc_next:
 ; ----------------------------
 screen_title_score:
 	lda	#$FA
-	jsr	eng_player_add_score
+	jsr	obj_misc_add_score
 
 	.export screen_title_end
 screen_title_end:

@@ -27,7 +27,7 @@ eng_victory:
 	.endif
 	: ; if (eng_gameplay_mode != bridge && (course_no != course_08 || eng_gameplay_mode.not_in(5, $D))) {
 		ldx	#0
-		stx	eng_actor_offset
+		stx	actor_index
 		jsr	actor_proc
 	: ; }
 
@@ -638,14 +638,14 @@ sub_8552:
 				ldy	tbl_6E5_84B9, x
 				sty	tbl_6E5
 				lda	#$35
-				sta	eng_actor_id
+				sta	actor_id
 				lda	eng_actor_pos_y_lo_84C0, x
 				sta	eng_actor_pos_y_lo
 				lda	ppu_84C7, x
 				sta	ppu_nmi_buffer+$AE
 				ldx	#0
 				stx	course_no
-				stx	eng_actor_offset
+				stx	actor_index
 				jsr	eng_actor_render
 			: ; }
 
@@ -895,11 +895,11 @@ screen_score_disp:
 		lda	screen_score_disp_incs, y
 		and	#SCORE_DIGIT_MASK
 		sta	STACK_BASE+$34, x
-		jsr	eng_player_update_score
+		jsr	obj_misc_update_score
 	: ; }
 
 	ldy	tbl_6E5, x
-	lda	eng_actor_id, x
+	lda	actor_id, x
 	cmp	#actor::spiny
 	beq	:++
 	cmp	#actor::piranha_plant
@@ -912,13 +912,13 @@ screen_score_disp:
 	beq	:++
 	cmp	#actor::div_height
 	bcs	:+
-	lda	eng_actor_state, x
+	lda	state_actor, x
 	cmp	#2
 	bcs	:++
-	: ; if (actor == hammer_bro || actor >= div_height || actor_state < 2) {
+	: ; if (actor.id == hammer_bro || actor.id >= div_height || actor.state < 2) {
 		ldx	ppu_nmi_buffer+$EE
 		ldy	tbl_6EC, x
-		ldx	eng_actor_offset
+		ldx	actor_index
 	: ; }
 
 	lda	STACK_BASE+$1E, x
@@ -946,7 +946,7 @@ screen_score_disp:
 	sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
 	lda	screen_score_disp_tiles+1, x
 	sta	OAM_DMA_BUFFER+OBJ_CHR_NO+OBJ_SIZE, y
-	ldx	eng_actor_offset
+	ldx	actor_index
 
 screen_score_disp_end:
 	rts

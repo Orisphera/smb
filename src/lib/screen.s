@@ -195,7 +195,7 @@ SCREEN_STAT_BG_1_ADDR	=	PPU_VRAM_BG1+$73
 SCREEN_STAT_BG_1_LEN	=	3
 
 screen_text_draw_splash:
-	jsr	sub_BC30
+	jsr	obj_misc_update_stats
 	ldx	ppu_nmi_buffer+$00
 	lda	#>(SCREEN_STAT_BG_1_ADDR)
 	sta	ppu_nmi_buffer+$01, x

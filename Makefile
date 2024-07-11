@@ -101,7 +101,11 @@ COURSES_OBJS	=	data/course_data_head.o \
 			src/game/courses.o \
 			data/course_data.o
 
-MAIN_OBJS	=	src/game/main.o
+MAIN_OBJ	=	src/game/main.o
+
+ENTITY_OBJS	=	src/obj/misc.o \
+			src/obj/spec.o \
+			src/obj/motion.o
 
 SECURITY_OBJS	=	data/security.o
 
@@ -116,7 +120,8 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSES_OBJS) \
-			$(MAIN_OBJS) \
+			$(MAIN_OBJ) \
+			$(ENTITY_OBJS) \
 			data/prg.fc.o
 
 CHR_OBJS_FC	=	data/chr.smb.o
@@ -130,7 +135,8 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			src/lib/vs.o \
 			$(GAME_OBJS) \
 			$(COURSES_OBJS) \
-			$(MAIN_OBJS) \
+			$(MAIN_OBJ) \
+			$(ENTITY_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.vs.o \
@@ -144,7 +150,8 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSES_OBJS) \
-			$(MAIN_OBJS) \
+			$(MAIN_OBJ) \
+			$(ENTITY_OBJS) \
 			data/prg.fds.o
 
 CHR_OBJS_FDS	=	data/chr.smb.o
@@ -165,7 +172,8 @@ FDT_FDS		=	smb.fdt
 PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
-			$(MAIN_OBJS) \
+			$(MAIN_OBJ) \
+			$(ENTITY_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -195,7 +203,8 @@ FDT_SMB2	=	smb2.fdt
 PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
-			$(MAIN_OBJS) \
+			$(MAIN_OBJ) \
+			$(ENTITY_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

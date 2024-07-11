@@ -192,14 +192,14 @@ pal_page_3:
 
 	.export gfx_color_rotate
 gfx_color_rotate:
-	lda	eng_frame_count
+	lda	frame_count
 	and	#$07
 	bne	:+++
 	ldx	ppu_nmi_buffer+$00
 	cpx	#GFX_COLOR_ROT_THRESH
-	bcs	:+++ ; if ((eng_frame_count % 8) || ppu_nmi_buffer_entry < GFX_COLOR_ROT_THRESH) {
+	bcs	:+++ ; if ((frame_count % 8) || ppu_nmi_buffer_entry < GFX_COLOR_ROT_THRESH) {
 		tay
-		: ; for (x = ppu_nmi_buffer_entry, y = (eng_frame_count % 8); y < 8; x++, y++) {
+		: ; for (x = ppu_nmi_buffer_entry, y = (frame_count % 8); y < 8; x++, y++) {
 			lda	pal_null, y
 			sta	ppu_nmi_buffer+$01, x
 
@@ -253,6 +253,7 @@ gfx_clear_blocks:
 	.byte	$24, $24, $24, $24
 	.byte	$26, $26, $26, $26
 ; ----------------------------
+	.export gfx_clear_small
 gfx_clear_small:
 	ldy	#$41
 	lda	#3
@@ -266,6 +267,7 @@ gfx_clear_small:
 	sta	nmi_addrs_ctl
 	rts
 ; ----------------------------
+	.export gfx_meta_replace
 gfx_meta_replace:
 	jsr	gfx_meta_write
 	inc	ppu_nmi_buffer+$F0
@@ -289,6 +291,7 @@ gfx_meta_replace:
 	GFX_META_DEST_BLK_3	= $52
 .endif
 
+	.export gfx_meta_destroy
 gfx_meta_destroy:
 	lda	#0
 gfx_meta_write:

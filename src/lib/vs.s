@@ -364,9 +364,9 @@ sub_947A:
 		lda	joypad_p1
 		jmp	title_exit
 	: ; } else {
-		lda	eng_frame_count
+		lda	frame_count
 		and	#1
-		beq	:+++++ ; if (eng_frame_count % 1) {
+		beq	:+++++ ; if (frame_count % 1) {
 			jsr	sub_92E1
 			dec	VS_RAM_ARENA0+$26
 			bne	:++++ ; if (--vs_ram_arena0[38] == 0) {
@@ -492,11 +492,11 @@ sub_9588:
 	lda	#0
 	sta	eng_disp_disable
 
-	lda	eng_frame_count
+	lda	frame_count
 	and	#1
 	bne	:+
 	dec	VS_RAM_ARENA0+$16
-	bne	:+ ; if (!(eng_frame_count % 1) && --vs_ram_arena0[22] != 0) {
+	bne	:+ ; if (!(frame_count % 1) && --vs_ram_arena0[22] != 0) {
 		jmp	title_recycle
 	: ; } else {
 		rts

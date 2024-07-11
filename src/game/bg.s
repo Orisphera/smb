@@ -1,117 +1,11 @@
 .include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/misc.i"
 .include	"../../inc/engine/tunables.i"
+.include	"../../inc/engine/tiles.i"
  
 .include	"../../inc/engine/unk.i"
 
 BG_PROC_METATILE_ID	= zp_byte_07
-
-.if	.defined(SMB)|.defined(VS_SMB)
-	PIPE_TILE_M_B			= $14
-	PIPE_TILE_BASE			= $15
-	LEDGE_MUSHROOM_TILE_A	= $19
-	LEDGE_MUSHROOM_TILE_B	= $1A
-	LEDGE_MUSHROOM_TILE_C	= $1B
-	PIPE_TILE_T_D			= $1C
-	PIPE_TILE_T_C			= $1D
-	PIPE_TILE_T_B			= $1E
-	PIPE_TILE_B_D			= $1F
-	PIPE_TILE_B_C			= $20
-	PIPE_TILE_B_B			= $21
-	BRICK_TILE_A			= $22
-	POLE_TILE_A				= $24
-	POLE_TILE_B				= $25
-	BRICK_TILE_B			= $51
-	FG_BASE_TILE_C			= $52
-	FG_BASE_TILE_B			= $54
-	POLE_TILE_C				= $61
-	FG_BASE_TILE_D			= $62
-	BRIDGE_TILE				= $63
-	CANNON_TILE_A			= $64
-	CANNON_TILE_B			= $65
-	CANNON_TILE_C			= $66
-	SPRING_TILE_A			= $67
-	SPRING_TILE_B			= $68
-	FG_BASE_TILE_A			= $69
-	PIPE_WATER_TILE_A		= $6B
-	PIPE_WATER_TILE_B		= $6C
-	POLE_TIP_TILE			= $6D
-	COINROW_TILE_A			= $C2
-	COINROW_TILE_B			= $C3
-	CASTLE_BRIDGE_TILE_A	= $C4
-	CASTLE_BRIDGE_TILE_B	= $C5
-	BLOCK_TILE_OFFSET	= $5
-.elseif	.defined(SMB2)
-	PIPE_TILE_M_B			= $14
-	PIPE_TILE_BASE			= $15
-	PIPE_TILE_T_D			= $19
-	PIPE_TILE_T_C			= $1A
-	PIPE_TILE_T_B			= $1B
-	PIPE_TILE_B_D			= $1C
-	PIPE_TILE_B_C			= $1D
-	PIPE_TILE_B_B			= $1E
-	BRICK_TILE_A			= $1F
-	POLE_TILE_A				= $21
-	POLE_TILE_B				= $22
-	BRICK_TILE_B			= $4F
-	FG_BASE_TILE_C			= $50
-	POLE_TILE_C				= $62
-	FG_BASE_TILE_D			= $63
-	BRIDGE_TILE				= $64
-	CANNON_TILE_A			= $65
-	CANNON_TILE_B			= $66
-	CANNON_TILE_C			= $67
-	SPRING_TILE_A			= $68
-	SPRING_TILE_B			= $69
-	FG_BASE_TILE_A			= $6A
-	FG_BASE_TILE_B			= $6B
-	PIPE_WATER_TILE_A		= $6D
-	PIPE_WATER_TILE_B		= $6E
-	POLE_TIP_TILE			= $6F
-	LEDGE_MUSHROOM_TILE_A	= $8A
-	LEDGE_MUSHROOM_TILE_B	= $8B
-	LEDGE_MUSHROOM_TILE_C	= $8C
-	COINROW_TILE_A			= $C3
-	COINROW_TILE_B			= $C4
-	CASTLE_BRIDGE_TILE_A	= $C5
-	CASTLE_BRIDGE_TILE_B	= $C6
-	BLOCK_TILE_OFFSET	= $6
-.elseif	.defined(ANN)
-	PIPE_TILE_M_B			= $14
-	PIPE_TILE_BASE			= $15
-	LEDGE_MUSHROOM_TILE_A	= $19
-	LEDGE_MUSHROOM_TILE_B	= $1A
-	LEDGE_MUSHROOM_TILE_C	= $1B
-	PIPE_TILE_T_D			= $1C
-	PIPE_TILE_T_C			= $1D
-	PIPE_TILE_T_B			= $1E
-	PIPE_TILE_B_D			= $1F
-	PIPE_TILE_B_C			= $20
-	PIPE_TILE_B_B			= $21
-	BRICK_TILE_A			= $22
-	POLE_TILE_A				= $24
-	POLE_TILE_B				= $25
-	BRICK_TILE_B			= $51
-	FG_BASE_TILE_C			= $52
-	POLE_TILE_C				= $61
-	FG_BASE_TILE_D			= $62
-	BRIDGE_TILE				= $63
-	CANNON_TILE_A			= $64
-	CANNON_TILE_B			= $65
-	CANNON_TILE_C			= $66
-	SPRING_TILE_A			= $67
-	SPRING_TILE_B			= $68
-	FG_BASE_TILE_A			= $69
-	FG_BASE_TILE_B			= $6A
-	PIPE_WATER_TILE_A		= $6C
-	PIPE_WATER_TILE_B		= $6D
-	POLE_TIP_TILE			= $6E
-	COINROW_TILE_A			= $C2
-	COINROW_TILE_B			= $C3
-	CASTLE_BRIDGE_TILE_A	= $C4
-	CASTLE_BRIDGE_TILE_B	= $C5
-	BLOCK_TILE_OFFSET	= $5
-.endif
 
 	.export bg_proc
 bg_proc:
@@ -589,8 +483,8 @@ bg_area:
 	.endif
 	bg_areaobj_outer_loop: ; while (eng_area_bg_flag || eng_page_cached) {
 		ldx	#3-1
-		bg_areaobj_loop: ; for (x = 3-1 x >= 0; x--) {
-			stx	eng_actor_offset
+		bg_areaobj_loop: ; for (actor_index = 3-1; actor_index >= 0; x--) {
+			stx	actor_index
 			lda	#0
 			sta	eng_area_bg_flag
 			ldy	eng_area_offset
@@ -662,7 +556,7 @@ bg_area:
 				jsr	bg_buffer_inc
 			: ; }
 		
-			ldx	eng_actor_offset
+			ldx	actor_index
 			lda	eng_lenareaobj_0, x
 			bmi	:+ ; if (!(eng_lenareaobj & 0x80)) {
 				dec	eng_lenareaobj_0, x
@@ -736,7 +630,7 @@ bg_area_decode:
 		ldx	#(bg_obj_norm-bg_obj_tbl)/WORD_SIZE
 	: ; }
 	stx	BG_OBJ_TBL_OFFSET
-	ldx	eng_actor_offset
+	ldx	actor_index
 	cmp	#<COURSE_DATA_TYPE_E
 	bne	:+ ; if (course_data_type == 0xE) {
 		lda	#(bg_obj_norm-bg_obj_tbl)/WORD_SIZE
@@ -846,7 +740,7 @@ bg_area_decode_rts:
 		lda	#0
 		sta	eng_page_cached
 		sta	eng_area_bg_flag
-		sta	eng_actor_offset
+		sta	actor_index
 	bg_area_decode_rts2:
 		rts
 	: ; } else {
@@ -1243,13 +1137,13 @@ bg_areaobj_lock:
 ; -----------------------------
 bg_actor_kill:
 	sta	zp_byte_00
-	lda	#0
-	ldx	#(eng_actor_id_end-eng_actor_id)-1
-	: ; for (entry of eng_actor_id) {
-		ldy	eng_actor_id, x
+	lda	#actor_mode::dead
+	ldx	#ENG_ACTOR_MAX-2
+	: ; for (entry of actor_id) {
+		ldy	actor_id, x
 		cpy	zp_byte_00
-		bne	:+ ; if (eng_actor_id == zp_byte_00) {
-			sta	eng_actor_flag, x
+		bne	:+ ; if (actor_id == zp_byte_00) {
+			sta	actor_mode, x
 		: ; }
 	
 		dex
@@ -1271,7 +1165,7 @@ bg_areaobj_swarm:
 		dey
 		bmi	:+
 
-		cmp	eng_actor_id, y
+		cmp	actor_id, y
 		bne	:-
 	; }
 	; if (actor_found) {
@@ -1453,11 +1347,11 @@ bg_areaobj_castle:
 			sta	eng_actor_pos_x_hi, x
 			lda	#$01
 			sta	eng_actor_pos_y_hi, x
-			sta	eng_actor_flag, x
+			sta	actor_mode, x
 			lda	#$90
 			sta	eng_actor_pos_y_lo, x
 			lda	#actor::flag_victory
-			sta	eng_actor_id, x
+			sta	actor_id, x
 			rts
 		: ; } else if (eng_lenareaobj == 1 || (zp_byte_07 && eng_lenareaobj != 2) || eng_lenareaobj == 3) {
 			ldy	#FG_BASE_TILE_C
@@ -1583,7 +1477,7 @@ bg_areaobj_pipe_vert:
 			sta	eng_actor_pos_x_hi, x
 			lda	#1
 			sta	eng_actor_pos_y_hi, x
-			sta	eng_actor_flag, x
+			sta	actor_mode, x
 			jsr	bg_objpos_y_get
 			sta	eng_actor_pos_y_lo, x
 		.elseif	.defined(ANN)
@@ -1596,7 +1490,7 @@ bg_areaobj_pipe_vert:
 		lda	#actor::piranha_plant
 
 		.if	.defined(SMB)|.defined(VS_SMB)
-			sta	eng_actor_id, x
+			sta	actor_id, x
 			jsr	eng_piranha_plant_init
 		.elseif	.defined(SMB2M)
 			jsr	bg_areaobj_pipe_vert_plant
@@ -1626,7 +1520,7 @@ bg_areaobj_pipe_h:
 ; -------------
 .if	.defined(SMB2M)
 bg_areaobj_pipe_vert_plant:
-	sta	eng_actor_id, x
+	sta	actor_id, x
 	jsr	bg_objpos_x_get
 	clc
 	adc	#8
@@ -1636,7 +1530,7 @@ bg_areaobj_pipe_vert_plant:
 	sta	eng_actor_pos_x_hi, x
 	lda	#1
 	sta	eng_actor_pos_y_hi, x
-	sta	eng_actor_flag, x
+	sta	actor_mode, x
 	jsr	bg_objpos_y_get
 	sta	eng_actor_pos_y_lo, x
 	jmp	eng_piranha_plant_init
@@ -1644,12 +1538,12 @@ bg_areaobj_pipe_vert_plant:
 ; -----------------------------
 bg_obj_alloc:
 	ldx	#0
-	: ; for (x = 0; eng_actor_flag[x] && x < ENG_ACTOR_MAX; x++) {
+	: ; for (x = 0; actor_mode[x] != dead && x < (ENG_ACTOR_MAX-1); x++) {
 		clc
-		lda	eng_actor_flag, x
+		lda	actor_mode, x
 		beq	:+
 		inx
-		cpx	#ENG_ACTOR_MAX
+		cpx	#ENG_ACTOR_MAX-1
 		bne	:-
 	: ; }
 
@@ -1737,17 +1631,17 @@ bg_areaobj_pole:
 	jsr	bg_objpos_x_get
 	sec
 	sbc	#8
-	sta	eng_actor_pos_x_lo+ENG_ACTOR_MAX
+	sta	eng_actor_pos_x_lo+ENG_ACTOR_MAX-1
 	lda	eng_page_current
 	sbc	#0
-	sta	eng_actor_pos_x_hi+ENG_ACTOR_MAX
+	sta	eng_actor_pos_x_hi+ENG_ACTOR_MAX-1
 	lda	#$30
-	sta	eng_actor_pos_y_lo+ENG_ACTOR_MAX
+	sta	eng_actor_pos_y_lo+ENG_ACTOR_MAX-1
 	lda	#$B0
 	sta	STACK_BASE+$0D
 	lda	#actor::flag_enemy
-	sta	eng_actor_id+ENG_ACTOR_MAX
-	inc	eng_actor_flag+ENG_ACTOR_MAX
+	sta	actor_id+ENG_ACTOR_MAX-1
+	inc	actor_mode+ENG_ACTOR_MAX-1
 	rts
 ; -----------------------------
 bg_areaobj_rope_norm:
@@ -1922,7 +1816,7 @@ bg_areaobj_stairs:
 bg_areaobj_spring:
 	jsr	eng_loadobjattr
 	jsr	bg_obj_alloc
-		.if	.defined(VS)|.defined(SMB2M)
+		.if	.defined(VS_SMB)|.defined(SMB2M)
 		bcs	:+ ; if () {
 		.endif
 		jsr	bg_objpos_x_get
@@ -1931,18 +1825,18 @@ bg_areaobj_spring:
 		sta	eng_actor_pos_x_hi, x
 		jsr	bg_objpos_y_get
 		sta	eng_actor_pos_y_lo, x
-		sta	eng_spring_pos_y, x
+		sta	eng_actor_veloc_x, x
 		lda	#actor::jump_spring
-		sta	eng_actor_id, x
+		sta	actor_id, x
 		ldy	#1
 		sty	eng_actor_pos_y_hi, x
-		inc	eng_actor_flag, x
+		inc	actor_mode, x
 		ldx	BG_PROC_METATILE_ID
 		lda	#SPRING_TILE_A
 		sta	tbl_metatile_b, x
 		lda	#SPRING_TILE_B
 		sta	tbl_metatile_b+1, x
-		.if	.defined(VS)|.defined(SMB2M)
+		.if	.defined(VS_SMB)|.defined(SMB2M)
 		: ; }
 		.endif
 	rts
@@ -1960,7 +1854,7 @@ bg_areaobj_block_q:
 
 bg_areaobj_block_coin:
 	lda	#0
-	sta	eng_block_timer
+	sta	eng_block_time
 
 bg_areaobj_block_item:
 	jsr	bg_areaobj_block_id
@@ -1976,7 +1870,7 @@ bg_areaobj_block_item:
 	tay
 
 bg_areaobj_block_draw:
-	lda	data_block_tiles, y
+	lda	obj_spec_block_tiles, y
 	pha
 	jsr	eng_loadobjattr
 	jmp	bg_areaobj_draw_row

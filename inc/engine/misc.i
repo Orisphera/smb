@@ -1,6 +1,10 @@
 	.ifndef	MISC_I
 	MISC_I = 1
 
+	.enum	actor_mode
+		dead
+	.endenum
+
 	.enum	game_mode
 		title
 		.if	.defined(VS_SMB)
@@ -32,6 +36,17 @@
 		.if	.defined(SMB2M)
 			mode_5	= $5
 			mode_D	= $D
+		.endif
+	.endenum
+
+	.enum	powerup_type
+		mushroom_a
+		firefl
+		star
+		mushroom_b
+		.if	.defined(SMB2M)
+			type_04
+			type_05
 		.endif
 	.endenum
 
@@ -83,10 +98,10 @@
 	.endenum
 
 	.enum	player_state
-		no_00
-		no_01
-		no_02
-		no_03
+		ground
+		jump_swim
+		fall
+		climb
 	.endenum
 
 	.enum	screen_text
@@ -193,6 +208,7 @@
 		fireworks	= $16
 		bullet_cheep_swarm = $17
 		swarm_stop	= $18
+		unk_00		= $29
 		bowser		= $2D
 		power_up	= $2E
 		vine		= $2F

@@ -314,7 +314,7 @@ nmi:
 			; }
 		: ; }
 
-		inc     eng_frame_count
+		inc     frame_count
 	: ; }
 
 	ldx     #0
