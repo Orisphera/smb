@@ -11,7 +11,7 @@ then
     exit 1
 fi
 
-CHR_PATH_BASE="chr.nes"
+CHR_PATH_BASE="chr.smb"
 CHR_PATH_VS="chr.vs"
 
 mkdir -p data/${CHR_PATH_BASE} data/${CHR_PATH_VS} data/chr2.vs
