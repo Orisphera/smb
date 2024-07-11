@@ -11,7 +11,10 @@ then
     exit 1
 fi
 
-mkdir -p data/chr.vs data/chr2.vs
+CHR_PATH_BASE="chr.nes"
+CHR_PATH_VS="chr.vs"
+
+mkdir -p data/${CHR_PATH_BASE} data/${CHR_PATH_VS} data/chr2.vs
 
 dd if=$1 bs=1 skip=16240 count=16538 >data/prg.vs.bin
 
@@ -24,17 +27,46 @@ BANKBASE=32784
 BANKLEN=8192
 TILES=`expr $BANKLEN / $TILE_SIZE`
 
+ONEUP_TILE_LEFT=253
+ONEUP_TILE_RIGHT=254
+
 I=0
 while [ $I -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.vs/tile_obj_`printf "%.2X" $I`.bin
+        CHR_PATH=$CHR_PATH_BASE
+        if [ $I -eq $ONEUP_TILE_LEFT ] || [ $I -eq $ONEUP_TILE_RIGHT ]
+        then
+                CHR_PATH=$CHR_PATH_VS
+        fi
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
+
+FONT_FIRST=0
+FONT_LAST=35
+FONT_DASH=40
+FONT_X=41
+FONT_EX=43
+FONT_PER=175
+ICON_MUSH=206
+VS_NEWBG_FIRST=236
+VS_NEWBG_LAST=254
 
 while [ $I -ne $TILES ]
 do
 	J=`expr $I - $BG_BANK`
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.vs/tile_bg_`printf "%.2X" $J`.bin
+        CHR_PATH=$CHR_PATH_BASE
+        if [ $J -ge $FONT_FIRST ] && [ $J -le $FONT_LAST ]
+        then
+                CHR_PATH=$CHR_PATH_VS
+        elif [ $J -eq $FONT_DASH ] || [ $J -eq $FONT_X ] || [ $J -eq $FONT_EX ] || [ $J -eq $FONT_PER ] || [ $J -eq $ICON_MUSH ]
+        then
+                CHR_PATH=$CHR_PATH_VS
+        elif [ $J -ge $VS_NEWBG_FIRST ] && [ $J -le $VS_NEWBG_LAST ]
+        then
+                CHR_PATH=$CHR_PATH_VS
+        fi
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
 

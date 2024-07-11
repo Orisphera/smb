@@ -2,6 +2,7 @@
 .include	"../../inc/system/palettes.i"
 
 .include	"../../inc/engine/charmap.i"
+.include	"../../inc/engine/tiles.i"
 
 .include	"../../inc/engine/unk.i"
 
@@ -274,23 +275,6 @@ gfx_meta_replace:
 	dec	ppu_nmi_buffer+$EC, x
 	rts
 ; ----------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
-	GFX_META_DEST_BLK_0	= $58
-	GFX_META_DEST_BLK_1	= $51
-	GFX_META_DEST_BLK_2	= $5D
-	GFX_META_DEST_BLK_3	= $52
-.elseif	.defined(SMB2)
-	GFX_META_DEST_BLK_0	= $56
-	GFX_META_DEST_BLK_1	= $4F
-	GFX_META_DEST_BLK_2	= $5C
-	GFX_META_DEST_BLK_3	= $50
-.elseif	.defined(ANN)
-	GFX_META_DEST_BLK_0	= $57
-	GFX_META_DEST_BLK_1	= $51
-	GFX_META_DEST_BLK_2	= $5C
-	GFX_META_DEST_BLK_3	= $52
-.endif
-
 	.export gfx_meta_destroy
 gfx_meta_destroy:
 	lda	#0
@@ -299,15 +283,15 @@ gfx_meta_write:
 	cmp	#0
 	beq	:+ ; if (a != 0) {
 		ldy	#0
-		cmp	#GFX_META_DEST_BLK_0
+		cmp	#BLOCK_TILE_A
 		beq	:+
-		cmp	#GFX_META_DEST_BLK_1
-		beq	:+ ; if (a.not_in(GFX_META_DEST_BLK_0, GFX_META_DEST_BLK_1)) {
+		cmp	#BRICK_TILE_B
+		beq	:+ ; if (a.not_in(BLOCK_TILE_A, BRICK_TILE_B)) {
 			iny
-			cmp	#GFX_META_DEST_BLK_2
+			cmp	#BLOCK_TILE_B
 			beq	:+
-			cmp	#GFX_META_DEST_BLK_3
-			beq	:+ ; if (a.not_in(GFX_META_DEST_BLK_2, GFX_META_DEST_BLK_3)) {
+			cmp	#FG_BASE_TILE_C
+			beq	:+ ; if (a.not_in(BLOCK_TILE_B, FG_BASE_TILE_C)) {
 				iny
 			: ; }
 		; }
