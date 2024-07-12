@@ -10,7 +10,7 @@ MEMORY {
 SEGMENTS {
 	ZEROPAGE:	load = RAM1, type = bss, define = yes;
 	BSS:		load = RAM2, type = bss;
-	CHRDATA:	load = CHR, type = ro;
+	CHR0DATA:	load = CHR, type = ro;
 	CODE:		load = ROM1, type = ro;
 	VECTORS:	load = ROM2, type = ro;
 }

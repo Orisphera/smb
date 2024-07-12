@@ -27,14 +27,14 @@ BANKBASE=32784
 BANKLEN=8192
 TILES=`expr $BANKLEN / $TILE_SIZE`
 
-ONEUP_TILE_LEFT=253
-ONEUP_TILE_RIGHT=254
+TILE_ONEUP_LEFT=253
+TILE_ONEUP_RIGHT=254
 
 I=0
 while [ $I -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
         CHR_PATH=$CHR_PATH_BASE
-        if [ $I -eq $ONEUP_TILE_LEFT ] || [ $I -eq $ONEUP_TILE_RIGHT ]
+        if [ $I -eq $TILE_ONEUP_LEFT ] || [ $I -eq $TILE_ONEUP_RIGHT ]
         then
                 CHR_PATH=$CHR_PATH_VS
         fi

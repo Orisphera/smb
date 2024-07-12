@@ -12,7 +12,7 @@ SEGMENTS {
 	ZEROPAGE:	load = RAM1, type = bss, define = yes;
 	BSS:		load = RAM2, type = bss;
 	KYODAKUDATA:	load = KYODAKU, type = ro;
-	CHRDATA:	load = CHR, type = ro;
+	CHR0DATA:	load = CHR, type = ro;
 	CODE:		load = ROM1, type = rw;
 	VECTORS:	load = ROM2, type = rw;
 }

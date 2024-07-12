@@ -1,4 +1,4 @@
-.segment	"CHR2DATA"
+.segment	"CHR1DATA"
 
 	.incbin	"data/chr2.smb2/tile_obj_85.bin"
 	.incbin	"data/chr2.smb2/tile_obj_86.bin"

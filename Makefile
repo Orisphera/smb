@@ -124,7 +124,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			data/prg.fc.o
 
-CHR_OBJS_FC	=	data/chr.smb.o
+CHR_OBJS_FC	=	data/chr.o
 
 OBJS_FC		=	$(PRG_OBJS_FC) \
 			$(CHR_OBJS_FC)
@@ -139,7 +139,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			data/prg.vs.o
 
-CHR_OBJS_VS	=	data/chr.vs.o \
+CHR_OBJS_VS	=	data/chr.o \
 			data/chr2.vs.o
 
 OBJS_VS		=	$(PRG_OBJS_VS) \
@@ -154,7 +154,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			data/prg.fds.o
 
-CHR_OBJS_FDS	=	data/chr.smb.o
+CHR_OBJS_FDS	=	data/chr.o
 
 OBJS_FDS	=	$(PRG_OBJS_FDS) \
 			$(CHR_OBJS_FDS) \
@@ -181,7 +181,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(SECURITY_OBJS) \
 			$(SAVE_OBJS)
 
-CHR_OBJS_SMB2	=	data/chr.smb2.o \
+CHR_OBJS_SMB2	=	data/chr.o \
 			data/chr2.smb2.o
 
 OBJS_SMB2	=	$(PRG_OBJS_SMB2) \
@@ -212,7 +212,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(SECURITY_OBJS) \
 			$(SAVE_OBJS)
 
-CHR_OBJS_ANN	=	data/chr.ann.o \
+CHR_OBJS_ANN	=	data/chr.o \
 			data/chr2.ann.o
 
 OBJS_ANN	=	$(PRG_OBJS_ANN) \
