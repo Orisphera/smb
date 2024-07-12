@@ -5,16 +5,17 @@
 ; ------------------------------------------------------------
 obj_hammer_actor_id:
 	.byte	4, 4, 4, 5, 5, 5, 6, 6, 6
+obj_hammer_actor_id_end:
 
 obj_hammer_veloc_x:
 	.byte	16, <-16
 ; -----------------------------
 obj_hammer_init:
 	lda	eng_rand_seed+1
-	and	#%00000111
-	bne	:+ ; if (!(eng_rand_seed[1] & 0x07)) {
+	and	#(obj_hammer_actor_id_end-obj_hammer_actor_id)-2
+	bne	:+ ; if (!(eng_rand_seed[1] % obj_hammer_actor_id_count)) {
 		lda	eng_rand_seed+1
-		and	#%00001000
+		and	#(obj_hammer_actor_id_end-obj_hammer_actor_id)-1
 	: ; }
 	tay
 
