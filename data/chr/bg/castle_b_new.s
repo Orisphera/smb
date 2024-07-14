@@ -1,7 +1,9 @@
-.ifndef	CASTLE_B_NEW
-CASTLE_B_NEW = 1
+.ifndef	CASTLE_B
+CASTLE_B = 1
 
-		.incbin	"data/chr.smb2/tile_bg_A9.bin"
-		.incbin	"data/chr.smb2/tile_bg_AA.bin"
+	.export tile_bg_castle_b
+tile_bg_castle_b:
+	.incbin	"data/chr.smb2/tile_bg_A9.bin"
+	.incbin	"data/chr.smb2/tile_bg_AA.bin"
 
-.endif	; CASTLE_B_NEW
+.endif	; CASTLE_B

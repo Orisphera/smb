@@ -1,6 +1,8 @@
-.ifndef	BRICK_A_NEW
-BRICK_A_NEW = 1
+.ifndef	BRICK_A
+BRICK_A = 1
 
-		.incbin	"data/chr.smb2/tile_bg_45.bin"
+	.export tile_bg_brick_a
+tile_bg_brick_a:
+	.incbin	"data/chr.smb2/tile_bg_45.bin"
 
-.endif	; BRICK_A_NEW
+.endif	; BRICK_A

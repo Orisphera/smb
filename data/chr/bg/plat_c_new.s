@@ -1,6 +1,8 @@
-.ifndef	PLAT_H
-PLAT_H = 1
+.ifndef	PLAT_C
+PLAT_C = 1
 
+	.export tile_bg_plat_c
+tile_bg_plat_c:
 		.incbin	"data/chr.smb2/tile_bg_6B.bin"
 		.incbin	"data/chr.smb2/tile_bg_6C.bin"
 		.incbin	"data/chr.smb2/tile_bg_6D.bin"
@@ -12,4 +14,4 @@ PLAT_H = 1
 		.incbin	"data/chr.smb2/tile_bg_73.bin"
 		.incbin	"data/chr.smb2/tile_bg_74.bin"
 
-.endif	; PLAT_H
+.endif	; PLAT_C

@@ -1,6 +1,8 @@
 .ifndef	PIPE_H
 PIPE_H = 1
 
+	.export tile_bg_pipe_h
+tile_bg_pipe_h:
 	.incbin	"data/chr.smb/tile_bg_86.bin"
 	.incbin	"data/chr.smb/tile_bg_87.bin"
 	.incbin	"data/chr.smb/tile_bg_88.bin"

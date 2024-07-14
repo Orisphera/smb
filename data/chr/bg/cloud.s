@@ -1,6 +1,8 @@
 .ifndef	CLOUD_S
 CLOUD_S = 1
 
+	.export tile_bg_cloud
+tile_bg_cloud:
 		.incbin	"data/chr.smb/tile_bg_35.bin"
 		.incbin	"data/chr.smb/tile_bg_36.bin"
 		.incbin	"data/chr.smb/tile_bg_37.bin"

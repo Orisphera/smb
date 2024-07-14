@@ -2,6 +2,7 @@
 .include	"../../inc/system/palettes.i"
 
 .include	"../../inc/engine/charmap.i"
+.include	"../../inc/engine/chr.i"
 .include	"../../inc/engine/tiles.i"
 
 .include	"../../inc/engine/unk.i"
@@ -248,11 +249,30 @@ gfx_color_rotate:
 	rts
 ; -----------------------------------------------------------
 gfx_clear_blocks:
-	.byte	$45, $45, $47, $47
-	.byte	$47, $47, $47, $47
-	.byte	$57, $58, $59, $5A
-	.byte	$24, $24, $24, $24
-	.byte	$26, $26, $26, $26
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+; ---
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+; ---
+	.byte	tile_bg::block_empty
+	.byte	tile_bg::block_empty+1
+	.byte	tile_bg::block_empty+2
+	.byte	tile_bg::block_empty+3
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
 ; ----------------------------
 	.export gfx_clear_small
 gfx_clear_small:
@@ -381,139 +401,575 @@ gfx_metatile_hi:
 	.byte	>gfx_meta_block_0, >gfx_meta_block_1, >gfx_meta_block_2, >gfx_meta_block_3
 
 gfx_meta_block_0:
-	.byte	$24, $24, $24, $24
-	.byte	$27, $27, $27, $27
-	.byte	$24, $24, $24, $35
-	.byte	$36, $25, $37, $25
-	.byte	$24, $38, $24, $24
-	.byte	$24, $30, $30, $26
-	.byte	$26, $26, $34, $26
-	.byte	$24, $31, $24, $32
-	.byte	$33, $26, $24, $33
-	.byte	$34, $26, $26, $26
-	.byte	$26, $26, $26, $26
-	.byte	$24, $C0, $24, $C0
-	.byte	$24, $7F, $7F, $24
-	.byte	$B8, $BA, $B9, $BB
-	.byte	$B8, $BC, $B9, $BD
-	.byte	$BA, $BC, $BB, $BD
-	.byte	$60, $64, $61, $65
-	.byte	$62, $66, $63, $67
-	.byte	$60, $64, $61, $65
-	.byte	$62, $66, $63, $67
-	.byte	$68, $68, $69, $69
-	.byte	$26, $26, $6A, $6A
-	.byte	$4B, $4C, $4D, $4E
-	.byte	$4D, $4F, $4D, $4F
-	.byte	$4D, $4E, $50, $51
-	.if	.defined(SMBM)|.defined(VS_SMB)
-		.byte	$6B, $70, $2C, $2D
-		.byte	$6C, $71, $6D, $72
-		.byte	$6E, $73, $6F, $74
-	.endif
-	.byte	$86, $8A, $87, $8B
-	.byte	$88, $8C, $88, $8C
-	.byte	$89, $8D, $69, $69
-	.byte	$8E, $91, $8F, $92
-	.byte	$26, $93, $26, $93
-	.byte	$90, $94, $69, $69
-	.byte	$A4, $E9, $EA, $EB
-	.byte	$24, $24, $24, $24
-	.byte	$24, $2F, $24, $3D
-	.byte	$A2, $A2, $A3, $A3
-	.byte	$24, $24, $24, $24
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::cloud
 
+	.byte	tile_bg::cloud+1
+	.byte	tile_bg::blanks+1
+	.byte	tile_bg::cloud+2
+	.byte	tile_bg::blanks+1
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::cloud+3
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::hill_a
+	.byte	tile_bg::hill_a
+	.byte	tile_bg::blanks+2
+
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::hill_a+4
+	.byte	tile_bg::blanks+2
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::hill_a+1
+	.byte	tile_bg::blanks
+	.byte	tile_bg::hill_a+2
+
+	.byte	tile_bg::hill_a+3
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks
+	.byte	tile_bg::hill_a+3
+
+	.byte	tile_bg::hill_a+4
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+; ---
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::bridge_parts
+	.byte	tile_bg::blanks
+	.byte	tile_bg::bridge_parts
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::chain
+	.byte	tile_bg::chain
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::tree
+	.byte	tile_bg::tree+2
+	.byte	tile_bg::tree+1
+	.byte	tile_bg::tree+3
+
+	.byte	tile_bg::tree
+	.byte	tile_bg::tree+4
+	.byte	tile_bg::tree+1
+	.byte	tile_bg::tree+5
+
+	.byte	tile_bg::tree+2
+	.byte	tile_bg::tree+4
+	.byte	tile_bg::tree+3
+	.byte	tile_bg::tree+5
+; ---
+	.byte	tile_bg::pipe_v
+	.byte	tile_bg::pipe_v+4
+	.byte	tile_bg::pipe_v+1
+	.byte	tile_bg::pipe_v+5
+
+	.byte	tile_bg::pipe_v+2
+	.byte	tile_bg::pipe_v+6
+	.byte	tile_bg::pipe_v+3
+	.byte	tile_bg::pipe_v+7
+
+	.byte	tile_bg::pipe_v
+	.byte	tile_bg::pipe_v+4
+	.byte	tile_bg::pipe_v+1
+	.byte	tile_bg::pipe_v+5
+
+	.byte	tile_bg::pipe_v+2
+	.byte	tile_bg::pipe_v+6
+	.byte	tile_bg::pipe_v+3
+	.byte	tile_bg::pipe_v+7
+
+	.byte	tile_bg::pipe_v+8
+	.byte	tile_bg::pipe_v+8
+	.byte	tile_bg::pipe_v+9
+	.byte	tile_bg::pipe_v+9
+
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::pipe_v+10
+	.byte	tile_bg::pipe_v+10
+; ---
+	.byte	tile_bg::plat_b
+	.byte	tile_bg::plat_b+1
+	.byte	tile_bg::plat_b+2
+	.byte	tile_bg::plat_b+3
+
+	.byte	tile_bg::plat_b+2
+	.byte	tile_bg::plat_b+4
+	.byte	tile_bg::plat_b+2
+	.byte	tile_bg::plat_b+4
+
+	.byte	tile_bg::plat_b+2
+	.byte	tile_bg::plat_b+3
+	.byte	tile_bg::plat_b+5
+	.byte	tile_bg::plat_b+6
+; ---
+	.if	.defined(SMBM)|.defined(VS_SMB)
+		.byte	tile_bg::plat_a
+		.byte	tile_bg::plat_a+5
+		.byte	tile_bg::plat_a_mid
+		.byte	tile_bg::plat_a_mid+1
+
+		.byte	tile_bg::plat_a+1
+		.byte	tile_bg::plat_a+6
+		.byte	tile_bg::plat_a+2
+		.byte	tile_bg::plat_a+7
+
+		.byte	tile_bg::plat_a+3
+		.byte	tile_bg::plat_a+8
+		.byte	tile_bg::plat_a+4
+		.byte	tile_bg::plat_a+9
+	.endif
+; ---
+; pipe_h
+	.byte	tile_bg::pipe_h
+	.byte	tile_bg::pipe_h+4
+	.byte	tile_bg::pipe_h+1
+	.byte	tile_bg::pipe_h+5
+
+	.byte	tile_bg::pipe_h+2
+	.byte	tile_bg::pipe_h+6
+	.byte	tile_bg::pipe_h+2
+	.byte	tile_bg::pipe_h+6
+
+	.byte	tile_bg::pipe_h+3
+	.byte	tile_bg::pipe_h+7
+	.byte	tile_bg::pipe_v+9
+	.byte	tile_bg::pipe_v+9
+
+	.byte	tile_bg::pipe_h+8
+	.byte	tile_bg::pipe_h+11
+	.byte	tile_bg::pipe_h+9
+	.byte	tile_bg::pipe_h+12
+
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::pipe_h+13
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::pipe_h+13
+
+	.byte	tile_bg::pipe_h+10
+	.byte	tile_bg::pipe_h+14
+	.byte	tile_bg::pipe_v+9
+	.byte	tile_bg::pipe_v+9
+; ---
+	.byte	tile_bg::coral_a
+	.byte	tile_bg::coral_b
+	.byte	tile_bg::coral_b+1
+	.byte	tile_bg::coral_b+2
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::flag_ball_a
+	.byte	tile_bg::blanks
+	.byte	tile_bg::flag_ball_b
+; ---
+	.byte	tile_bg::pole
+	.byte	tile_bg::pole
+	.byte	tile_bg::pole+1
+	.byte	tile_bg::pole+1
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
 gfx_meta_block_1:
-	.byte	$A2, $A2, $A3, $A3
-	.byte	$99, $24, $99, $24
-	.byte	$24, $A2, $3E, $3F
-	.byte	$5B, $5C, $24, $A3
-	.byte	$24, $24, $24, $24
-	.byte	$9D, $47, $9E, $47
-	.byte	$47, $47, $27, $27
-	.byte	$47, $47, $47, $47
-	.byte	$27, $27, $47, $47
-	.byte	$A9, $47, $AA, $47
-	.byte	$9B, $27, $9C, $27
-	.byte	$27, $27, $27, $27
-	.byte	$52, $52, $52, $52
-	.byte	$80, $A0, $81, $A1
-	.byte	$BE, $BE, $BF, $BF
+	.byte	tile_bg::pole
+	.byte	tile_bg::pole
+	.byte	tile_bg::pole+1
+	.byte	tile_bg::pole+1
+
+	.byte	tile_bg::rope
+	.byte	tile_bg::blanks
+	.byte	tile_bg::rope
+	.byte	tile_bg::blanks
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::pole
+	.byte	tile_bg::pulley_a
+	.byte	tile_bg::pulley_a+1
+
+	.byte	tile_bg::pulley_b
+	.byte	tile_bg::pulley_b+1
+	.byte	tile_bg::blanks
+	.byte	tile_bg::pole+1
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::castle_a+2
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::castle_a+3
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::castle_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::castle_b+1
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::castle_a
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::castle_a+1
+	.byte	tile_bg::blanks+3
+
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+	.byte	tile_bg::blanks+3
+; ---
+	.byte	tile_bg::plat_b+7
+	.byte	tile_bg::plat_b+7
+	.byte	tile_bg::plat_b+7
+	.byte	tile_bg::plat_b+7
+; ---
+	.byte	tile_bg::post_a
+	.byte	tile_bg::post_b
+	.byte	tile_bg::post_a+1
+	.byte	tile_bg::post_b+1
+; ---
+	.byte	tile_bg::tree_trunk
+	.byte	tile_bg::tree_trunk
+	.byte	tile_bg::tree_trunk+1
+	.byte	tile_bg::tree_trunk+1
+; ---
 	.if	.defined(SMBM)|.defined(VS_SMB)
-		.byte	$75, $BA, $76, $BB
-		.byte	$BA, $BA, $BB, $BB
+		.byte	tile_bg::edge_b
+		.byte	tile_bg::tree+2
+		.byte	tile_bg::edge_b+1
+		.byte	tile_bg::tree+3
+
+		.byte	tile_bg::tree+2
+		.byte	tile_bg::tree+2
+		.byte	tile_bg::tree+3
+		.byte	tile_bg::tree+3
 	.endif
-	.byte	$45, $47, $45, $47
-	.byte	$47, $47, $47, $47
-	.byte	$45, $47, $45, $47
+; ---
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+; ---
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.byte	$B4, $B6, $B5, $B7
+		.byte	tile_bg::floor_normal
+		.byte	tile_bg::floor_normal+2
+		.byte	tile_bg::floor_normal+1
+		.byte	tile_bg::floor_normal+3
 	.elseif	.defined(SMB2)
-		.byte	$45, $47, $45, $47
+		.byte	tile_bg::brick_a
+		.byte	tile_bg::brick_b
+		.byte	tile_bg::brick_a
+		.byte	tile_bg::brick_b
 	.endif
-	.byte	$45, $47, $45, $47
-	.byte	$45, $47, $45, $47
-	.byte	$45, $47, $45, $47
-	.byte	$45, $47, $45, $47
-	.byte	$45, $47, $45, $47
-	.byte	$47, $47, $47, $47
-	.byte	$47, $47, $47, $47
-	.byte	$47, $47, $47, $47
-	.byte	$47, $47, $47, $47
-	.byte	$47, $47, $47, $47
-	.if	.defined(SMB2)
-		.byte	$47, $47, $47, $47
-		.byte	$24, $24, $24, $24
-	.endif
-	.if	.defined(SMB2M)
-		.byte	$24, $24, $24, $24
-	.endif
-	.byte	$24, $24, $24, $24
-	.byte	$24, $24, $24, $24
-	.byte	$AB, $AC, $AD, $AE
-	.byte	$5D, $5E, $5D, $5E
-	.byte	$C1, $24, $C1, $24
-	.byte	$C6, $C8, $C7, $C9
-	.byte	$CA, $CC, $CB, $CD
-	.byte	$2A, $2A, $40, $40
-	.byte	$24, $24, $24, $24
-	.byte	$24, $47, $24, $47
-	.byte	$82, $83, $84, $85
-	.if	.defined(SMB2M)
-		.byte	$B4, $B6, $B5, $B7
-	.endif
-	.byte	$24, $47, $24, $47
-	.byte	$86, $8A, $87, $8B
-	.byte	$8E, $91, $8F, $92
-	.byte	$24, $2F, $24, $3D
+; ---
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
 
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_a
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::brick_b
+
+	.if	.defined(SMB2)
+		.byte	tile_bg::brick_b
+		.byte	tile_bg::brick_b
+		.byte	tile_bg::brick_b
+		.byte	tile_bg::brick_b
+
+		.byte	tile_bg::blanks
+		.byte	tile_bg::blanks
+		.byte	tile_bg::blanks
+		.byte	tile_bg::blanks
+	.endif
+	.if	.defined(SMB2M)
+		.byte	tile_bg::blanks
+		.byte	tile_bg::blanks
+		.byte	tile_bg::blanks
+		.byte	tile_bg::blanks
+	.endif
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::stair
+	.byte	tile_bg::stair+1
+	.byte	tile_bg::stair+2
+	.byte	tile_bg::stair+3
+; ---
+	.byte	tile_bg::floor_castle
+	.byte	tile_bg::floor_castle+1
+	.byte	tile_bg::floor_castle
+	.byte	tile_bg::floor_castle+1
+; ---
+	.byte	tile_bg::bridge_parts+1
+	.byte	tile_bg::blanks
+	.byte	tile_bg::bridge_parts+1
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::cannon
+	.byte	tile_bg::cannon+2
+	.byte	tile_bg::cannon+1
+	.byte	tile_bg::cannon+3
+
+	.byte	tile_bg::cannon+4
+	.byte	tile_bg::cannon+6
+	.byte	tile_bg::cannon+5
+	.byte	tile_bg::cannon+7
+; ---
+	.byte	tile_bg::castle_door_left
+	.byte	tile_bg::castle_door_left
+	.byte	tile_bg::castle_door_right
+	.byte	tile_bg::castle_door_right
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::blanks
+	.byte	tile_bg::brick_b
+; ---
+	.byte	tile_bg::floor_underwater
+	.byte	tile_bg::floor_underwater+1
+	.byte	tile_bg::floor_underwater+2
+	.byte	tile_bg::floor_underwater+3
+; ---
+	.if	.defined(SMB2M)
+		.byte	tile_bg::floor_normal
+		.byte	tile_bg::floor_normal+2
+		.byte	tile_bg::floor_normal+1
+		.byte	tile_bg::floor_normal+3
+	.endif
+; ---
+	.byte	tile_bg::blanks
+	.byte	tile_bg::brick_b
+	.byte	tile_bg::blanks
+	.byte	tile_bg::brick_b
+; ---
+	.byte	tile_bg::pipe_h
+	.byte	tile_bg::pipe_h+4
+	.byte	tile_bg::pipe_h+1
+	.byte	tile_bg::pipe_h+5
+
+	.byte	tile_bg::pipe_h+8
+	.byte	tile_bg::pipe_h+11
+	.byte	tile_bg::pipe_h+9
+	.byte	tile_bg::pipe_h+12
+; ---
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::flag_ball_a
+	.byte	tile_bg::blanks
+	.byte	tile_bg::flag_ball_b
+; ---
 gfx_meta_block_2:
-	.byte	$24, $24, $24, $35
-	.byte	$36, $25, $37, $25
-	.byte	$24, $38, $24, $24
-	.byte	$24, $24, $39, $24
-	.byte	$3A, $24, $3B, $24
-	.byte	$3C, $24, $24, $24
-	.byte	$41, $26, $41, $26
-	.byte	$26, $26, $26, $26
-	.byte	$B0, $B1, $B2, $B3
-	.byte	$77, $79, $77, $79
-	.if	.defined(SMB2)
-		.byte	$6B, $70, $2C, $2D
-		.byte	$6C, $71, $6D, $72
-		.byte	$6E, $73, $6F, $74
-	.endif
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::cloud
 
+	.byte	tile_bg::cloud+1
+	.byte	tile_bg::blanks+1
+	.byte	tile_bg::cloud+2
+	.byte	tile_bg::blanks+1
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::cloud+3
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::cloud+4
+	.byte	tile_bg::blanks
+
+	.byte	tile_bg::cloud+5
+	.byte	tile_bg::blanks
+	.byte	tile_bg::cloud+6
+	.byte	tile_bg::blanks
+
+	.byte	tile_bg::cloud+7
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+	.byte	tile_bg::blanks
+; ---
+	.byte	tile_bg::water
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::water
+	.byte	tile_bg::blanks+2
+; ---
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+	.byte	tile_bg::blanks+2
+; ---
+	.byte	tile_bg::cloud_small
+	.byte	tile_bg::cloud_small+1
+	.byte	tile_bg::cloud_small+2
+	.byte	tile_bg::cloud_small+3
+; ---
+	.byte	tile_bg::bridge_a
+	.byte	tile_bg::bridge_b
+	.byte	tile_bg::bridge_a
+	.byte	tile_bg::bridge_b
+; ---
+	.if	.defined(SMB2)
+		.byte	tile_bg::plat_a
+		.byte	tile_bg::plat_a+5
+		.byte	tile_bg::plat_a_mid
+		.byte	tile_bg::plat_a_mid+1
+
+		.byte	tile_bg::plat_a+1
+		.byte	tile_bg::plat_a+6
+		.byte	tile_bg::plat_a+2
+		.byte	tile_bg::plat_a+7
+
+		.byte	tile_bg::plat_a+3
+		.byte	tile_bg::plat_a+8
+		.byte	tile_bg::plat_a+4
+		.byte	tile_bg::plat_a+9
+	.endif
+; ---
 gfx_meta_block_3:
 	.if	.defined(SMB2)
-		.byte	$53, $55, $54, $56
+		.byte	tile_bg::block_q
+		.byte	tile_bg::block_q+2
+		.byte	tile_bg::block_q+1
+		.byte	tile_bg::block_q+3
 	.endif
-	.byte	$53, $55, $54, $56
-	.byte	$53, $55, $54, $56
-	.byte	$A5, $A7, $A6, $A8
-	.byte	$C2, $C4, $C3, $C5
-	.byte	$57, $59, $58, $5A
-	.byte	$7B, $7D, $7C, $7E
+
+	.byte	tile_bg::block_q
+	.byte	tile_bg::block_q+2
+	.byte	tile_bg::block_q+1
+	.byte	tile_bg::block_q+3
+
+	.byte	tile_bg::block_q
+	.byte	tile_bg::block_q+2
+	.byte	tile_bg::block_q+1
+	.byte	tile_bg::block_q+3
+; ---
+	.byte	tile_bg::coin_a
+	.byte	tile_bg::coin_a+2
+	.byte	tile_bg::coin_a+1
+	.byte	tile_bg::coin_a+3
+; ---
+	.byte	tile_bg::coin_b
+	.byte	tile_bg::coin_b+2
+	.byte	tile_bg::coin_b+1
+	.byte	tile_bg::coin_b+3
+; ---
+	.byte	tile_bg::block_empty
+	.byte	tile_bg::block_empty+2
+	.byte	tile_bg::block_empty+1
+	.byte	tile_bg::block_empty+3
+; ---
+	.byte	tile_bg::axe
+	.byte	tile_bg::axe+2
+	.byte	tile_bg::axe+1
+	.byte	tile_bg::axe+3
 ; -----------------------------------------------------------
 	.export palette_underwater
 palette_underwater:

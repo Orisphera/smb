@@ -1,5 +1,7 @@
 .segment	"CHR0DATA"
 
+	.export chr_obj, chr_bg
+chr_obj:
 	.include	"chr/obj/mario_a.s"
 	.include	"chr/obj/digits_a.s"
 	.include	"chr/obj/fire_koopa.s"
@@ -144,6 +146,7 @@
 		.include	"chr/obj/mushroom_new_c.s"
 	.endif
 
+chr_bg:
 	.if	.defined(SMB)
 		.include	"chr/bg/font_a.s"
 	.elseif	.defined(VS_SMB)|.defined(SMB2M)
@@ -186,7 +189,7 @@
 		.include	"chr/bg/font_f.vs.s"
 	.endif
 
-	.include	"chr/bg/line_a.s"
+	.include	"chr/bg/castle_door_left.s"
 
 	.if	.defined(SMB)
 		.include	"chr/bg/font_g.s"
@@ -195,12 +198,13 @@
 	.endif
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
-		.include	"chr/bg/plat_a.s"
+		.include	"chr/bg/plat_a_mid.s"
 	.elseif	.defined(SMB2)
-		.include	"chr/bg/plat_e.s"
+		.include	"chr/bg/plat_a_mid_new.s"
 	.endif
 
 	.include	"chr/bg/hud.s"
+	.include	"chr/bg/flag_ball_a.s"
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.include	"chr/bg/hill_a.s"
@@ -220,10 +224,11 @@
 		.include	"chr/bg/cloud_new.s"
 	.endif
 
+	.include	"chr/bg/flag_ball_b.s"
 	.include	"chr/bg/pulley_a.s"
+	.include	"chr/bg/castle_door_right.s"
 	.include	"chr/bg/water.s"
 	.include	"chr/bg/edge_a.s"
-
 	.include	"chr/bg/sign_nw.s"
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -245,33 +250,25 @@
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/plat_b.s"
 	.elseif	.defined(SMB2M)
-		.include	"chr/bg/plat_f.s"
-	.endif
-
-	.include	"chr/bg/plat_mid.s"
-
-	.if	.defined(SMB)|.defined(VS_SMB)
-		.include	"chr/bg/plat_c.s"
-	.elseif	.defined(SMB2M)
-		.include	"chr/bg/plat_g.s"
+		.include	"chr/bg/plat_b_new.s"
 	.endif
 
 	.include	"chr/bg/block.s"
 	.include	"chr/bg/pulley_b.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.include	"chr/bg/brick_c.s"
+		.include	"chr/bg/floor_castle.s"
 	.elseif	.defined(SMB2M)
-		.include	"chr/bg/brick_c_new.s"
+		.include	"chr/bg/floor_castle_new.s"
 	.endif
 
 	.include	"chr/bg/sign_sw.s"
 	.include	"chr/bg/pipe_v.s"
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
-		.include	"chr/bg/plat_d.s"
+		.include	"chr/bg/plat_a.s"
 	.elseif	.defined(SMB2)
-		.include	"chr/bg/plat_h.s"
+		.include	"chr/bg/plat_a_new.s"
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)
@@ -303,7 +300,7 @@
 		.include	"chr/bg/post_a_nsm.s"
 	.endif
 
-	.include	"chr/bg/rock.s"
+	.include	"chr/bg/floor_underwater.s"
 	.include	"chr/bg/pipe_h.s"
 	.include	"chr/bg/sign_text_a.s"
 	.include	"chr/bg/rope.s"
@@ -325,7 +322,7 @@
 	.endif
 
 	.include	"chr/bg/pole.s"
-	.include	"chr/bg/unk_a.s"
+	.include	"chr/bg/coral_a.s"
 	.include	"chr/bg/coin_a.s"
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -345,10 +342,10 @@
 	.include	"chr/bg/cloud_small.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.include	"chr/bg/floor.s"
+		.include	"chr/bg/floor_normal.s"
 		.include	"chr/bg/tree.s"
 	.elseif	.defined(SMB2M)
-		.include	"chr/bg/floor_new.s"
+		.include	"chr/bg/floor_normal_new.s"
 		.include	"chr/bg/tree_new.s"
 	.endif
 
@@ -376,7 +373,7 @@
 	.endif
 
 	.include	"chr/bg/sign_text_b.s"
-	.include	"chr/bg/coral.s"
+	.include	"chr/bg/coral_b.s"
 
 	.if	.defined(SMB)
 		.include	"chr/bg/padding.s"

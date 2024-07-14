@@ -1,7 +1,9 @@
-.ifndef	POST_B_NSM
-POST_B_NSM = 1
+.ifndef	POST_B
+POST_B = 1
 
-		.incbin	"data/chr.ann/tile_bg_A0.bin"
-		.incbin	"data/chr.ann/tile_bg_A1.bin"
+	.export tile_bg_post_b
+tile_bg_post_b:
+	.incbin	"data/chr.ann/tile_bg_A0.bin"
+	.incbin	"data/chr.ann/tile_bg_A1.bin"
 
-.endif	; POST_B_NSM
+.endif	; POST_B

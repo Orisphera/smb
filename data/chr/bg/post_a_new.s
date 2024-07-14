@@ -1,7 +1,9 @@
-.ifndef	POST_A_NEW
-POST_A_NEW = 1
+.ifndef	POST_A
+POST_A = 1
 
-		.incbin	"data/chr.smb2/tile_bg_80.bin"
-		.incbin	"data/chr.smb2/tile_bg_81.bin"
+	.export tile_bg_post_a
+tile_bg_post_a:
+	.incbin	"data/chr.smb2/tile_bg_80.bin"
+	.incbin	"data/chr.smb2/tile_bg_81.bin"
 
-.endif	; POST_A_NEW
+.endif	; POST_A

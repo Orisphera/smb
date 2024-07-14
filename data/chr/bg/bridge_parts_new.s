@@ -1,7 +1,9 @@
-.ifndef BRIDGE_PARTS_NEW
-BRIDGE_PARTS_NEW = 1
+.ifndef BRIDGE_PARTS
+BRIDGE_PARTS = 1
 
-		.incbin	"data/chr.smb2/tile_bg_C0.bin"
-		.incbin	"data/chr.smb2/tile_bg_C1.bin"
+	.export tile_bg_bridge_parts
+tile_bg_bridge_parts:
+	.incbin	"data/chr.smb2/tile_bg_C0.bin"
+	.incbin	"data/chr.smb2/tile_bg_C1.bin"
 
-.endif	; BRIDGE_PARTS_NEW
+.endif	; BRIDGE_PARTS
