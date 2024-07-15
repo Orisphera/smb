@@ -1,25 +1,36 @@
 .ifndef	TILES_I
 TILES_I = 1
 
+TILE_PAGE_0	= %00000000
+TILE_PAGE_1	= %01000000
+TILE_PAGE_2	= %10000000
+TILE_PAGE_3	= %11000000
 TILE_PAGE_BITS	= %11000000
 TILE_ENTRY_BITS	= %00111111
+METATILE_SIZE	= 4
+
+	.enum	metatile_0
+		blank_a		= <((gfx_meta_block_0_blank_a-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		blank_b		= <((gfx_meta_block_0_blank_b-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_v_e	= <((gfx_meta_block_0_pipe_v_e-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_v_f	= <((gfx_meta_block_0_pipe_v_f-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_h_a	= <((gfx_meta_block_0_pipe_h_a-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_h_b	= <((gfx_meta_block_0_pipe_h_b-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_h_c	= <((gfx_meta_block_0_pipe_h_c-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_h_d	= <((gfx_meta_block_0_pipe_h_d-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_h_e	= <((gfx_meta_block_0_pipe_h_e-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pipe_h_f	= <((gfx_meta_block_0_pipe_h_f-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		coral		= <((gfx_meta_block_0_coral-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		blank_d		= <((gfx_meta_block_0_blank_d-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		flag_ball	= <((gfx_meta_block_0_flag_ball-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		pole		= <((gfx_meta_block_0_pole-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+	.endenum
 
 .if	.defined(SMB)|.defined(VS_SMB)
-	PIPE_TILE_M_B		= $14
-	PIPE_TILE_BASE		= $15
 	LEDGE_MUSHROOM_TILE_A	= $19
 	LEDGE_MUSHROOM_TILE_B	= $1A
 	LEDGE_MUSHROOM_TILE_C	= $1B
-	PIPE_TILE_T_D		= $1C
-	PIPE_TILE_T_C		= $1D
-	PIPE_TILE_T_B		= $1E
-	PIPE_TILE_B_D		= $1F
-	PIPE_TILE_B_C		= $20
-	PIPE_TILE_B_B		= $21
-	BRICK_TILE_A		= $22
-	BLOCK_TILE_C		= $23
-	POLE_TILE_A		= $24
-	POLE_TILE_B		= $25
+
 	BRICK_TILE_B		= $51
 	FG_BASE_TILE_C		= $52
 	FG_BASE_TILE_B		= $54
@@ -47,26 +58,16 @@ TILE_ENTRY_BITS	= %00111111
 	PIPE_WATER_TILE_A	= $6B
 	PIPE_WATER_TILE_B	= $6C
 	POLE_TIP_TILE		= $6D
+
 	BLOCK_TILE_D		= $C0
 	BLOCK_TILE_E		= $C1
 	COINROW_TILE_A		= $C2
 	COINROW_TILE_B		= $C3
 	CASTLE_BRIDGE_TILE_A	= $C4
 	CASTLE_BRIDGE_TILE_B	= $C5
+
 	BLOCK_TILE_OFFSET	= $5
 .elseif	.defined(SMB2)
-	PIPE_TILE_M_B		= $14
-	PIPE_TILE_BASE		= $15
-	PIPE_TILE_T_D		= $19
-	PIPE_TILE_T_C		= $1A
-	PIPE_TILE_T_B		= $1B
-	PIPE_TILE_B_D		= $1C
-	PIPE_TILE_B_C		= $1D
-	PIPE_TILE_B_B		= $1E
-	BRICK_TILE_A		= $1F
-	BLOCK_TILE_C		= $20
-	POLE_TILE_A		= $21
-	POLE_TILE_B		= $22
 	BRICK_TILE_B		= $4F
 	FG_BASE_TILE_C		= $50
 	BLOCK_TILE_S		= $52
@@ -98,9 +99,11 @@ TILE_ENTRY_BITS	= %00111111
 	PIPE_WATER_TILE_A	= $6D
 	PIPE_WATER_TILE_B	= $6E
 	POLE_TIP_TILE		= $6F
+
 	LEDGE_MUSHROOM_TILE_A	= $8A
 	LEDGE_MUSHROOM_TILE_B	= $8B
 	LEDGE_MUSHROOM_TILE_C	= $8C
+
 	BLOCK_TILE_P		= $C0
 	BLOCK_TILE_D		= $C1
 	BLOCK_TILE_E		= $C2
@@ -108,23 +111,13 @@ TILE_ENTRY_BITS	= %00111111
 	COINROW_TILE_B		= $C4
 	CASTLE_BRIDGE_TILE_A	= $C5
 	CASTLE_BRIDGE_TILE_B	= $C6
+
 	BLOCK_TILE_OFFSET	= $6
 .elseif	.defined(ANN)
-	PIPE_TILE_M_B		= $14
-	PIPE_TILE_BASE		= $15
 	LEDGE_MUSHROOM_TILE_A	= $19
 	LEDGE_MUSHROOM_TILE_B	= $1A
 	LEDGE_MUSHROOM_TILE_C	= $1B
-	PIPE_TILE_T_D		= $1C
-	PIPE_TILE_T_C		= $1D
-	PIPE_TILE_T_B		= $1E
-	PIPE_TILE_B_D		= $1F
-	PIPE_TILE_B_C		= $20
-	PIPE_TILE_B_B		= $21
-	BRICK_TILE_A		= $22
-	BLOCK_TILE_C		= $23
-	POLE_TILE_A		= $24
-	POLE_TILE_B		= $25
+
 	BRICK_TILE_B		= $51
 	FG_BASE_TILE_C		= $52
 	BLOCK_TILE_H		= $54
@@ -153,7 +146,9 @@ TILE_ENTRY_BITS	= %00111111
 	PIPE_WATER_TILE_A	= $6C
 	PIPE_WATER_TILE_B	= $6D
 	POLE_TIP_TILE		= $6E
+
 	BLOCK_TILE_P		= $BF
+
 	BLOCK_TILE_D		= $C0
 	BLOCK_TILE_E		= $C1
 	COINROW_TILE_A		= $C2

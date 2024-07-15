@@ -166,7 +166,7 @@ obj_spec_block_punch:
 	jsr	obj_spec_block_initpos
 
 	ldy	zp_byte_02
-	lda	#BLOCK_TILE_C
+	lda	#metatile_0::blank_d
 	sta	(eng_buffer_ptr), y
 	lda	#$10
 	sta	eng_timer_block_bounce	

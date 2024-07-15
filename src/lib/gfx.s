@@ -417,12 +417,18 @@ gfx_metatile_lo:
 gfx_metatile_hi:
 	.byte	>gfx_meta_block_0, >gfx_meta_block_1, >gfx_meta_block_2, >gfx_meta_block_3
 
+	.export gfx_meta_block_0
 gfx_meta_block_0:
+
+	.export gfx_meta_block_0_blank_a
+gfx_meta_block_0_blank_a:
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 ; ---
+	.export gfx_meta_block_0_blank_b
+gfx_meta_block_0_blank_b:
 	.byte	tile_bg::blanks+3
 	.byte	tile_bg::blanks+3
 	.byte	tile_bg::blanks+3
@@ -498,6 +504,7 @@ gfx_meta_block_0:
 	.byte	tile_bg::tree+3
 	.byte	tile_bg::tree+5
 ; ---
+	.export	gfx_meta_block_0_pipe_v_e, gfx_meta_block_0_pipe_v_f
 	.byte	tile_bg::pipe_v
 	.byte	tile_bg::pipe_v+4
 	.byte	tile_bg::pipe_v+1
@@ -518,11 +525,13 @@ gfx_meta_block_0:
 	.byte	tile_bg::pipe_v+3
 	.byte	tile_bg::pipe_v+7
 
+gfx_meta_block_0_pipe_v_e:
 	.byte	tile_bg::pipe_v+8
 	.byte	tile_bg::pipe_v+8
 	.byte	tile_bg::pipe_v+9
 	.byte	tile_bg::pipe_v+9
 
+gfx_meta_block_0_pipe_v_f:
 	.byte	tile_bg::blanks+2
 	.byte	tile_bg::blanks+2
 	.byte	tile_bg::pipe_v+10
@@ -560,52 +569,68 @@ gfx_meta_block_0:
 		.byte	tile_bg::plat_a+9
 	.endif
 ; ---
-; pipe_h
+	.export gfx_meta_block_0_pipe_h_a, gfx_meta_block_0_pipe_h_b
+	.export gfx_meta_block_0_pipe_h_c, gfx_meta_block_0_pipe_h_d
+	.export gfx_meta_block_0_pipe_h_e, gfx_meta_block_0_pipe_h_f
+gfx_meta_block_0_pipe_h_a:
 	.byte	tile_bg::pipe_h
 	.byte	tile_bg::pipe_h+4
 	.byte	tile_bg::pipe_h+1
 	.byte	tile_bg::pipe_h+5
 
+gfx_meta_block_0_pipe_h_b:
 	.byte	tile_bg::pipe_h+2
 	.byte	tile_bg::pipe_h+6
 	.byte	tile_bg::pipe_h+2
 	.byte	tile_bg::pipe_h+6
 
+gfx_meta_block_0_pipe_h_c:
 	.byte	tile_bg::pipe_h+3
 	.byte	tile_bg::pipe_h+7
 	.byte	tile_bg::pipe_v+9
 	.byte	tile_bg::pipe_v+9
 
+gfx_meta_block_0_pipe_h_d:
 	.byte	tile_bg::pipe_h+8
 	.byte	tile_bg::pipe_h+11
 	.byte	tile_bg::pipe_h+9
 	.byte	tile_bg::pipe_h+12
 
+gfx_meta_block_0_pipe_h_e:
 	.byte	tile_bg::blanks+2
 	.byte	tile_bg::pipe_h+13
 	.byte	tile_bg::blanks+2
 	.byte	tile_bg::pipe_h+13
 
+gfx_meta_block_0_pipe_h_f:
 	.byte	tile_bg::pipe_h+10
 	.byte	tile_bg::pipe_h+14
 	.byte	tile_bg::pipe_v+9
 	.byte	tile_bg::pipe_v+9
 ; ---
+	.export gfx_meta_block_0_coral
+gfx_meta_block_0_coral:
 	.byte	tile_bg::coral_a
 	.byte	tile_bg::coral_b
 	.byte	tile_bg::coral_b+1
 	.byte	tile_bg::coral_b+2
 ; ---
+	.export gfx_meta_block_0_blank_d
+gfx_meta_block_0_blank_d:
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 ; ---
+	.export gfx_meta_block_0_flag_ball
+gfx_meta_block_0_flag_ball:
 	.byte	tile_bg::blanks
 	.byte	tile_bg::flag_ball_a
 	.byte	tile_bg::blanks
 	.byte	tile_bg::flag_ball_b
 ; ---
+	.export gfx_meta_block_0_pole
+gfx_meta_block_0_pole:
 	.byte	tile_bg::pole
 	.byte	tile_bg::pole
 	.byte	tile_bg::pole+1
