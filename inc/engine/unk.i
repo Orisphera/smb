@@ -498,9 +498,22 @@ apu_noise_event		= $FD
 apu_pulse2_queue	= $FE
 apu_pulse1_queue	= $FF
 
-OAM_DMA_BUFFER		= $200
+OAM_DMA_BUFFER		= (STACK_BASE+STACK_SIZE)
+OAM_DMA_BUFFER_END	= (OAM_DMA_BUFFER+(OBJ_MAX*OBJ_SIZE))
 
-ppu_nmi_buffer		= $300
+ppu_nmi_buffer		= OAM_DMA_BUFFER_END
+ppu_nmi_buffer_0	= ppu_nmi_buffer
+ppu_nmi_buffer_0_offset	= ppu_nmi_buffer_0
+ppu_nmi_buffer_0_data	= ppu_nmi_buffer_0_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
+ppu_nmi_buffer_0_addr_dbyt = ppu_nmi_buffer_0_data
+ppu_nmi_buffer_0_byte	= ppu_nmi_buffer_0_addr_dbyt+WORD_SIZE
+ppu_nmi_buffer_0_end	= ppu_nmi_buffer_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
+ppu_nmi_buffer_1	= ppu_nmi_buffer_0_end
+ppu_nmi_buffer_1_offset	= ppu_nmi_buffer_1
+ppu_nmi_buffer_1_data	= ppu_nmi_buffer_1_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
+ppu_nmi_buffer_1_addr_dbyt = ppu_nmi_buffer_1_data
+ppu_nmi_buffer_1_byte	= ppu_nmi_buffer_1_addr_dbyt+WORD_SIZE
+ppu_nmi_buffer_1_end	= ppu_nmi_buffer_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
 
 eng_player_pos_x_rel	= $3AD
 eng_actor_pos_x_rel	= eng_player_pos_x_rel+1
@@ -518,6 +531,10 @@ byte_3C3		= eng_misc_pos_y_rel+5
 eng_player_attr		= byte_3C3+1
 eng_actor_attr		= eng_player_attr+1
 eng_spec_tile		= $3E8
+byte_3EC		= $3EC
+byte_3F0		= $3F0
+eng_attr_buffer		= $3F9
+
 ppu_nmi_buffer_end	= $400
 
 eng_player_accel_x_b	= ppu_nmi_buffer_end
@@ -547,23 +564,9 @@ bg_buffer_0		= $500
 bg_buffer_1		= $5D0
 
 disp_buff_col		= $6A0
-tbl_metatile_b		= $6A1
-tbl_metatile_b_00	= tbl_metatile_b+$0
-tbl_metatile_b_01	= tbl_metatile_b+$1
-tbl_metatile_b_02       = tbl_metatile_b+$2
-tbl_metatile_b_03       = tbl_metatile_b+$3
-tbl_metatile_b_04       = tbl_metatile_b+$4
-tbl_metatile_b_05       = tbl_metatile_b+$5
-tbl_metatile_b_06       = tbl_metatile_b+$6
-tbl_metatile_b_07       = tbl_metatile_b+$7
-tbl_metatile_b_08       = tbl_metatile_b+$8
-tbl_metatile_b_09       = tbl_metatile_b+$9
-tbl_metatile_b_0A       = tbl_metatile_b+$A
-tbl_metatile_b_0B       = tbl_metatile_b+$B
-tbl_metatile_b_0C       = tbl_metatile_b+$C
-tbl_metatile_b_0D       = tbl_metatile_b+$D
-tbl_metatile_b_end	= tbl_metatile_b_0D
-eng_misc_actor_id	= $6AE
+gfx_metatile		= disp_buff_col+1
+gfx_metatile_end	= gfx_metatile+METATILE_MAX
+eng_misc_actor_id	= gfx_metatile_end
 eng_misc_block_id	= $6B7
 eng_block_time		= $6BC
 byte_6C9		= $6C9

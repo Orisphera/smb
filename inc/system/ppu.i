@@ -11,6 +11,7 @@ PPU_I = 1
 	OBJ_ATTR	= 2
 	OBJ_POS_H	= 3
 	OBJ_SIZE	= 4
+	OBJ_MAX		= 64
 
 	.enum	obj_attr
 		color0		= 0
@@ -96,6 +97,7 @@ PPU_VRAM_BG2		= $2400
 PPU_VRAM_BG3		= $2800
 PPU_VRAM_BG4		= $2C00
 PPU_VRAM_COLOR		= $3F00
+PPU_ADDR_SIZE		= 2
 
 ; Character Format [1](11.2.9.1)(p. 7)
 PPU_TILE_SIZE		= $10

@@ -7,94 +7,111 @@
 
 .include	"../../inc/engine/unk.i"
 
+gfx_render_area_offset		= zp_byte_00
+gfx_render_area_index		= zp_byte_01
+gfx_metatile_id_offset		= zp_byte_02
+gfx_metatile_id_page		= zp_byte_03
+gfx_render_area_attr_index	= zp_byte_04
+gfx_render_area_pos_x_parity	= zp_byte_05
+
 	.export gfx_render_area
 gfx_render_area:
 	lda	eng_pos_x
-	and	#$01
-	sta	zp_byte_05
-	ldy	ppu_nmi_buffer+$40
-	sty	zp_addr_00
+	and	#1
+	sta	gfx_render_area_pos_x_parity
+
+	ldy	ppu_nmi_buffer_1_offset
+	sty	gfx_render_area_offset
+
 	lda	eng_bg_addr_lo
-	sta	ppu_nmi_buffer+$42, y
+	sta	ppu_nmi_buffer_1_addr_dbyt+1, y
 	lda	eng_bg_addr_hi
-	sta	ppu_nmi_buffer+$41, y
+	sta	ppu_nmi_buffer_1_addr_dbyt, y
 	lda	#$9A
-	sta	ppu_nmi_buffer+$43, y
+	sta	ppu_nmi_buffer_1_byte, y
+
 	lda	#0
-	sta	zp_byte_04
+	sta	gfx_render_area_attr_index
 	tax
-	: ; for (x = 0; x < 13; x++) {
-		stx	zp_addr_00+$01
-		lda	tbl_metatile_b, x
-		and	#$C0
-		sta	zp_byte_03
+	: ; for (tile in gfx_metatile) {
+		stx	gfx_render_area_index
+
+		lda	gfx_metatile, x
+		and	#TILE_PAGE_BITS
+		sta	gfx_metatile_id_page
 		asl	a
 		rol	a
 		rol	a
 		tay
 		lda	gfx_metatile_lo, y
-		sta	zp_addr_06
+		sta	eng_buffer_ptr
 		lda	gfx_metatile_hi, y
-		sta	zp_addr_06+1
-		lda	tbl_metatile_b, x
+		sta	eng_buffer_ptr+1
+
+		lda	gfx_metatile, x
 		asl	a
 		asl	a
-		sta	zp_byte_02
+		sta	gfx_metatile_id_offset
 		lda	bg_proc_id
-		and	#$01
+		and	#1
 		eor	#1
 		asl	a
-		adc	zp_byte_02
+		adc	gfx_metatile_id_offset
 		tay
-		ldx	zp_addr_00
-		lda	(zp_addr_06), y
-		sta	ppu_nmi_buffer+$44, x
+		ldx	gfx_render_area_offset
+		lda	(eng_buffer_ptr), y
+		sta	ppu_nmi_buffer_1_addr_dbyt+(1*NMI_BUFFER_ENTRY_SIZE), x
 		iny
-		lda	(zp_addr_06), y
-		sta	ppu_nmi_buffer+$45, x
-		ldy	zp_byte_04
-		lda	zp_byte_05
+		lda	(eng_buffer_ptr), y
+		sta	ppu_nmi_buffer_1_addr_dbyt+1+(1*NMI_BUFFER_ENTRY_SIZE), x
+
+		ldy	gfx_render_area_attr_index
+		lda	gfx_render_area_pos_x_parity
 		bne	:+
-		lda	zp_addr_00+$01
+		lda	gfx_render_area_index
 		lsr	a
-		bcs	:++ ; if (!zp_byte_05 && !(zp_addr_00 % 1)) {
-			rol	zp_byte_03
-			rol	zp_byte_03
-			rol	zp_byte_03
+		bcs	:++ ; if (gfx_render_area_pos_x_parity == even && gfx_render_area_index_parity == even) {
+			rol	gfx_metatile_id_page
+			rol	gfx_metatile_id_page
+			rol	gfx_metatile_id_page
 			jmp	:++++
-		: lda	zp_addr_00+$01
+		: lda	gfx_render_area_index
 		lsr	a
-		bcs	:++ ; } else if (zp_byte_05 && !(zp_addr_00 % 1)) {
-			lsr	zp_byte_03
-			lsr	zp_byte_03
-			lsr	zp_byte_03
-			lsr	zp_byte_03
+		bcs	:++ ; } else if (gfx_render_area_pos_x_parity == odd && gfx_render_area_index_parity == even) {
+			lsr	gfx_metatile_id_page
+			lsr	gfx_metatile_id_page
+			lsr	gfx_metatile_id_page
+			lsr	gfx_metatile_id_page
 			jmp	:+++
-		: ; } else if (!zp_byte_05 && zp_addr_00 % 1) {
-			lsr	zp_byte_03
-			lsr	zp_byte_03
-		: ; } else if (zp_addr_00 % 1) {
-			inc	zp_byte_04
+		: ; } else if (gfx_render_area_pos_x_parity == even && gfx_render_area_index_parity == odd) {
+			lsr	gfx_metatile_id_page
+			lsr	gfx_metatile_id_page
+		: ; }
+		; if (gfx_render_area_index_parity == odd) {
+			inc	gfx_render_area_attr_index
 		: ; }
 
-		lda	ppu_nmi_buffer+$F9, y
-		ora	zp_byte_03
-		sta	ppu_nmi_buffer+$F9, y
-		inc	zp_addr_00
-		inc	zp_addr_00
-		ldx	zp_addr_00+$01
+		lda	eng_attr_buffer, y
+		ora	gfx_metatile_id_page
+		sta	eng_attr_buffer, y
+
+		inc	gfx_render_area_offset
+		inc	gfx_render_area_offset
+
+		ldx	gfx_render_area_index
 		inx
-		cpx	#13
+		cpx	#METATILE_MAX
 		bcc	:-----
 	; }
 
-	ldy	zp_addr_00
+	ldy	gfx_render_area_offset
 	iny
 	iny
 	iny
 	lda	#0
-	sta	ppu_nmi_buffer+$41, y
-	sty	ppu_nmi_buffer+$40
+	sta	ppu_nmi_buffer_1_data, y
+	sty	ppu_nmi_buffer_1_offset
+
 	inc	eng_bg_addr_lo
 	lda	eng_bg_addr_lo
 	and	#$1F
@@ -115,7 +132,7 @@ gfx_render_attr:
 	sec
 	sbc	#4
 	and	#$1F
-	sta	zp_addr_00+$01
+	sta	zp_byte_01
 	lda	eng_bg_addr_hi
 	bcs	:+ ; if ((eng_bg_addr_lo & 0x1F) < 4) {
 		eor	#$04
@@ -123,29 +140,29 @@ gfx_render_attr:
 
 	and	#$04
 	ora	#$23
-	sta	zp_addr_00
-	lda	zp_addr_00+$01
+	sta	zp_byte_00
+	lda	zp_byte_01
 	lsr	a
 	lsr	a
 	adc	#$C0
-	sta	zp_addr_00+$01
+	sta	zp_byte_01
 
 	ldx	#0
-	ldy	ppu_nmi_buffer+$40
+	ldy	ppu_nmi_buffer_1_offset
 	: ; for (x = 0, y = ppu_nmi_buffer_b_entry; x < 7; x++, y += 4) {
-		lda	zp_addr_00
-		sta	ppu_nmi_buffer+$41, y
-		lda	zp_addr_00+$01
+		lda	zp_byte_00
+		sta	ppu_nmi_buffer_1_addr_dbyt, y
+		lda	zp_byte_01
 		clc
 		adc	#8
-		sta	ppu_nmi_buffer+$42, y
-		sta	zp_addr_00+$01
-		lda	ppu_nmi_buffer+$F9, x
-		sta	ppu_nmi_buffer+$44, y
+		sta	ppu_nmi_buffer_1_addr_dbyt+1, y
+		sta	zp_byte_01
+		lda	eng_attr_buffer, x
+		sta	ppu_nmi_buffer_1_byte+1, y
 		lda	#1
-		sta	ppu_nmi_buffer+$43, y
+		sta	ppu_nmi_buffer_1_byte, y
 		lsr	a
-		sta	ppu_nmi_buffer+$F9, x
+		sta	eng_attr_buffer, x
 
 		iny
 		iny
@@ -156,8 +173,8 @@ gfx_render_attr:
 		bcc	:-
 	; }
 
-	sta	ppu_nmi_buffer+$41, y
-	sty	ppu_nmi_buffer+$40
+	sta	ppu_nmi_buffer_1_data, y
+	sty	ppu_nmi_buffer_1_offset
 
 gfx_render_attr_end:
 	lda	#nmi_addr::buffer_11_A
@@ -197,45 +214,45 @@ gfx_color_rotate:
 	lda	frame_count
 	and	#$07
 	bne	:+++
-	ldx	ppu_nmi_buffer+$00
+	ldx	ppu_nmi_buffer_0_offset
 	cpx	#GFX_COLOR_ROT_THRESH
-	bcs	:+++ ; if ((frame_count % 8) || ppu_nmi_buffer_entry < GFX_COLOR_ROT_THRESH) {
+	bcs	:+++ ; if ((frame_count % 8) || ppu_nmi_buffer_0_offset < GFX_COLOR_ROT_THRESH) {
 		tay
 		: ; for (x = ppu_nmi_buffer_entry, y = (frame_count % 8); y < 8; x++, y++) {
 			lda	pal_null, y
-			sta	ppu_nmi_buffer+$01, x
+			sta	ppu_nmi_buffer_0_data, x
 
 			inx
 			iny
-			cpy	#8
+			cpy	#2*PPU_COLOR_ROW_SIZE
 			bcc	:-
 		; }
 
-		ldx	ppu_nmi_buffer+$00
-		lda	#3
-		sta	zp_addr_00
+		ldx	ppu_nmi_buffer_0_offset
+		lda	#PPU_COLOR_ROW_SIZE-1
+		sta	zp_byte_00
 		lda	course_type
 		asl	a
 		asl	a
 		tay
 		: ; for (i = 3, x = ppu_nmi_buffer_entry, y = (course_type * 4); i >= 0; i--, x++, y++) {
 			lda	pal_page_3, y
-			sta	ppu_nmi_buffer+$04, x
+			sta	ppu_nmi_buffer_0_data+(PPU_COLOR_ROW_SIZE-1), x
 
 			iny
 			inx
-			dec	zp_addr_00
+			dec	zp_byte_00
 			bpl	:-
 		; }
 
-		ldx	ppu_nmi_buffer+$00
+		ldx	ppu_nmi_buffer_0_offset
 		ldy	gfx_color_rotate_off
 		lda	pal_rotating, y
-		sta	ppu_nmi_buffer+$05, x
-		lda	ppu_nmi_buffer+$00
+		sta	ppu_nmi_buffer+(NMI_BUFFER_ENTRY_OFFSET_SIZE+(1*PPU_COLOR_ROW_SIZE)), x
+		lda	ppu_nmi_buffer_0_offset
 		clc
 		adc	#7
-		sta	ppu_nmi_buffer+$00
+		sta	ppu_nmi_buffer_0_offset
 
 		inc	gfx_color_rotate_off
 		lda	gfx_color_rotate_off
@@ -291,8 +308,8 @@ gfx_clear_small:
 	.export gfx_meta_replace
 gfx_meta_replace:
 	jsr	gfx_meta_write
-	inc	ppu_nmi_buffer+$F0
-	dec	ppu_nmi_buffer+$EC, x
+	inc	byte_3F0
+	dec	byte_3EC, x
 	rts
 ; ----------------------------
 	.export gfx_meta_destroy
@@ -318,7 +335,7 @@ gfx_meta_write:
 	; }
 	tya
 
-	ldy	ppu_nmi_buffer+$00
+	ldy	ppu_nmi_buffer_0_offset
 	iny
 	jsr	gfx_clear_put
 

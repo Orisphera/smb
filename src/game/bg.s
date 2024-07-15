@@ -67,118 +67,118 @@ bg_scenery_tbl_tree_fence:
 
 bg_scenery:
 bg_scenery_cloud:
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
 	.res	2, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
 	.res	2, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_05-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_05-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_05-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+5-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+5-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+5-gfx_metatile)<<4))
 	.res	6, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
 	.res	6, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
 	.res	4, ENG_METATILE_NULL
-	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_05-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_05-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_05-tbl_metatile_b)<<4))
-	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_04-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_04-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_04-tbl_metatile_b)<<4))
+	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+5-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+5-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+5-gfx_metatile)<<4))
+	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+4-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+4-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+4-gfx_metatile)<<4))
 	.res	5, ENG_METATILE_NULL
-	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
+	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
 
 bg_scenery_mnt_bush:
-	.byte	<((((bg_tile_mnt_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_mnt_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_08-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_mnt_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_08-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_mnt_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_08-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_mnt_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_mnt_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_mnt_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+8-gfx_metatile)<<4))
+	.byte	<((((bg_tile_mnt_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+8-gfx_metatile)<<4))
+	.byte	<((((bg_tile_mnt_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+8-gfx_metatile)<<4))
+	.byte	<((((bg_tile_mnt_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
 	.res	3, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_mnt_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_mnt_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_mnt_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_mnt_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_mnt_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_mnt_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
 	.res	1, ENG_METATILE_NULL
-	.byte	<((((bg_tile_bush_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_bush_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
 	.res	1, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
 	.res	4, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
 	.res	1, ENG_METATILE_NULL
-	.byte	<((((bg_tile_bush_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_bush_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_bush_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_bush_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
 	.res	3, ENG_METATILE_NULL
 
 bg_scenery_tree_fence:
-	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
+	.byte   <((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
 	.res	7, ENG_METATILE_NULL
-	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
 	.res	1, ENG_METATILE_NULL
-	.byte	<((((bg_tile_tree_tall-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_08-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_tree_tall-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_08-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_tree_tall-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+8-gfx_metatile)<<4))
+	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_tree_tall-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+8-gfx_metatile)<<4))
 	.res	1, ENG_METATILE_NULL
-	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
 	.res	2, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_01-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+1-gfx_metatile)<<4))
 	.res	4, ENG_METATILE_NULL
-	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_09-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_0A-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
+	.byte	<((((bg_tile_tree_short-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+9-gfx_metatile)<<4))
+	.byte	<((((bg_tile_fence-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+10-gfx_metatile)<<4))
 	.res	1, ENG_METATILE_NULL
-	.byte	<((((bg_tile_tree_tall-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_08-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_tree_tall-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+8-gfx_metatile)<<4))
 	.res	1, ENG_METATILE_NULL
-	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
-	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((tbl_metatile_b_00-tbl_metatile_b)<<4))
+	.byte	<((((bg_tile_cloud_left-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_middle-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
+	.byte	<((((bg_tile_cloud_right-bg_tiles)/ENG_METATILE_SIZE)+1)|((gfx_metatile+0-gfx_metatile)<<4))
 
 bg_tiles:
 bg_tile_cloud_left:
@@ -289,10 +289,10 @@ bg_proc_main:
 		jsr	bg_area
 	: ; }
 
-	ldx	#<(tbl_metatile_b_end-tbl_metatile_b)-1
+	ldx	#METATILE_MAX-1
 	lda	#0
-	: ; for (entry of tbl_metatile_b) {
-		sta	tbl_metatile_b, x
+	: ; for (entry of gfx_metatile) {
+		sta	gfx_metatile, x
 
 		dex
 		bpl	:-
@@ -340,7 +340,7 @@ bg_proc_main:
 			;	 x++, y++, i--
 			; ) {
 				lda	bg_tiles, x
-				sta	tbl_metatile_b, y
+				sta	gfx_metatile, y
 		
 				inx
 				iny
@@ -359,12 +359,12 @@ bg_proc_main:
 		: ; for (byte of fg_scenery) {
 			lda	fg_scenery, y
 			beq	:+ ; if (fg_scenery_byte) {
-				sta	tbl_metatile_b, x
+				sta	gfx_metatile, x
 			: ; }
 		
 			iny
 			inx
-			cpx	#<(tbl_metatile_b_end-tbl_metatile_b)
+			cpx	#METATILE_MAX
 			bne	:--
 		; }
 	: ; }
@@ -409,18 +409,18 @@ bg_proc_main:
 			bit	zp_byte_00
 			beq	:+ ; if ((area_bitmasks[y] & fg_mask)) {
 				lda	zp_byte_07
-				sta	tbl_metatile_b, x
+				sta	gfx_metatile, x
 			: ; }
 		
 			inx
-			cpx	#<(tbl_metatile_b_end-tbl_metatile_b)
+			cpx	#METATILE_MAX
 			beq	:++
 		
 			lda	course_type
 			cmp	#course_types::underground
 			bne	:+
-			cpx	#(tbl_metatile_b_0B-tbl_metatile_b)
-			bne	:+ ; if (course_type == underground && x == tbl_metatile_b_0B) {
+			cpx	#11
+			bne	:+ ; if (course_type == underground && tile == 11) {
 				lda	#FG_BASE_TILE_B
 				sta	zp_byte_07
 			: ; }
@@ -439,17 +439,17 @@ bg_proc_main:
 	jsr	bg_get_buffer_ptr
 	ldx	#0
 	ldy	#0
-	: ; for (entry of tbl_metatile_b) {
+	: ; for (entry of gfx_metatile) {
 		sty	zp_byte_00
-		lda	tbl_metatile_b, x
+		lda	gfx_metatile, x
 		and	#$C0
 		asl	a
 		rol	a
 		rol	a
 		tay
-		lda	tbl_metatile_b, x
+		lda	gfx_metatile, x
 		cmp	bg_buffer_cutoff, y
-		bcs	:+ ; if (tbl_metatile_b_entry < bg_buffer_cutoff[tbl_metatile_b_entry>>6]) {
+		bcs	:+ ; if (gfx_metatile_entry < bg_buffer_cutoff[gfx_metatile_entry>>6]) {
 			lda	#0
 		: ; }
 		ldy	zp_byte_00
@@ -460,7 +460,7 @@ bg_proc_main:
 		tay
 
 		inx
-		cpx	#<(tbl_metatile_b_end-tbl_metatile_b)
+		cpx	#METATILE_MAX
 		bcc	:--
 	; }
 
@@ -1210,7 +1210,7 @@ bg_areaobj_ledge_tree:
 
 		ldx	BG_PROC_METATILE_ID
 		lda	#$17
-		sta	tbl_metatile_b, x
+		sta	gfx_metatile, x
 		lda	#$4C
 		jmp	bg_areaobj_ledge_base
 	: ; } else {
@@ -1235,13 +1235,13 @@ bg_areaobj_ledge_mushroom:
 			sta	zp_byte_06
 			ldx	BG_PROC_METATILE_ID
 			lda	#LEDGE_MUSHROOM_TILE_B
-			sta	tbl_metatile_b, x
+			sta	gfx_metatile, x
 			.if	.defined(SMBM)|.defined(VS_SMB)
 				cpy	zp_byte_06
 				bne	bg_areaobj_pulley_rts ; if (eng_lenareaobj == tbl_736_obj) {
 					inx
 					lda	#$4F
-					sta	tbl_metatile_b, x
+					sta	gfx_metatile, x
 					lda	#$50
 			.elseif	.defined(SMB2)
 				rts
@@ -1275,7 +1275,7 @@ bg_areaobj_pulley:
 		; }
 	: ; }
 	lda	bg_areaobj_pulley_tiles, y
-	sta	tbl_metatile_b
+	sta	gfx_metatile
 
 bg_areaobj_pulley_rts:
 	rts
@@ -1307,7 +1307,7 @@ bg_areaobj_castle:
 	sta	zp_byte_06
 	: ; for (x = zp_byte_07, i = 0x0B; x < 0x0B; x++, i--, y += 5) {
 		lda	bg_areaobj_castle_tiles, y
-		sta	tbl_metatile_b, x
+		sta	gfx_metatile, x
 
 		inx
 		lda	zp_byte_06
@@ -1355,7 +1355,7 @@ bg_areaobj_castle:
 			rts
 		: ; } else if (eng_lenareaobj == 1 || (zp_byte_07 && eng_lenareaobj != 2) || eng_lenareaobj == 3) {
 			ldy	#FG_BASE_TILE_C
-			sty	tbl_metatile_b_0A
+			sty	gfx_metatile+10
 		; }
 	: ; }
 
@@ -1366,9 +1366,9 @@ bg_areaobj_pipe_water:
 	ldy	eng_lenareaobj_0, x
 	ldx	BG_PROC_METATILE_ID
 	lda	#PIPE_WATER_TILE_A
-	sta	tbl_metatile_b_00, x
+	sta	gfx_metatile+0, x
 	lda	#PIPE_WATER_TILE_B
-	sta	tbl_metatile_b_01, x
+	sta	gfx_metatile+1, x
 	rts
 ; -----------------------------
 BG_AREAOBJ_PIPE_SIZE	= 7
@@ -1382,14 +1382,14 @@ bg_areaobj_pipe_intro:
 		ldx	#BG_AREAOBJ_PIPE_SIZE-1
 		: ; for (tile of bg_areaobj_pipe) {
 			lda	#0
-			sta	tbl_metatile_b, x
+			sta	gfx_metatile, x
 
 			dex
 			bpl	:-
 		; }
 
 		lda	bg_areaobj_pipe_v_tiles, y
-		sta	tbl_metatile_b+BG_AREAOBJ_PIPE_SIZE
+		sta	gfx_metatile+BG_AREAOBJ_PIPE_SIZE
 	: ; }
 
 	rts
@@ -1434,9 +1434,9 @@ bg_areaobj_pipe_horiz:
 
 	ldy	zp_byte_06
 	lda	bg_areaobj_pipe_horiz_t, y
-	sta	tbl_metatile_b, x
+	sta	gfx_metatile, x
 	lda	bg_areaobj_pipe_horiz_b, y
-	sta	tbl_metatile_b+1, x
+	sta	gfx_metatile+1, x
 	rts
 ; --------------
 bg_areaobj_pipe_v_tiles:
@@ -1501,7 +1501,7 @@ bg_areaobj_pipe_vert:
 	tay
 	ldx	BG_PROC_METATILE_ID
 	lda	bg_areaobj_pipe_v_tiles, y
-	sta	tbl_metatile_b, x
+	sta	gfx_metatile, x
 	inx
 	lda	bg_areaobj_pipe_v_tiles+2, y
 	ldy	zp_byte_06
@@ -1552,7 +1552,7 @@ bg_obj_alloc:
 bg_areaobj_waterhole:
 	jsr	eng_loadobjlen
 	lda	#$86
-	sta	tbl_metatile_b_0A
+	sta	gfx_metatile+10
 	ldx	#$0B
 	ldy	#1
 	lda	#$87
@@ -1577,7 +1577,7 @@ bg_areaobj_block_q_row:
 	pla
 	tax
 	lda	#$C0
-	sta	tbl_metatile_b, x
+	sta	gfx_metatile, x
 	rts
 ; -----------------------------
 bg_areaobj_bridge_hi:
@@ -1607,7 +1607,7 @@ bg_areaobj_bridge:
 	pla
 	tax
 	lda	#$0B
-	sta	tbl_metatile_b, x
+	sta	gfx_metatile, x
 	inx
 	ldy	#0
 	lda	#BRIDGE_TILE
@@ -1621,13 +1621,13 @@ bg_areaobj_pole_tip:
 ; --------------
 bg_areaobj_pole:
 	lda	#POLE_TILE_A
-	sta	tbl_metatile_b
+	sta	gfx_metatile
 	ldx	#1
 	ldy	#8
 	lda	#POLE_TILE_B
 	jsr	bg_objrenderbase
 	lda	#POLE_TILE_C
-	sta	tbl_metatile_b_0A
+	sta	gfx_metatile+10
 	jsr	bg_objpos_x_get
 	sec
 	sbc	#8
@@ -1764,12 +1764,12 @@ bg_areaobj_cannon:
 	ldx	BG_PROC_METATILE_ID
 
 	lda	#CANNON_TILE_A
-	sta	tbl_metatile_b, x
+	sta	gfx_metatile, x
 	inx
 	dey
 	bmi	:+ ; if (--y >= 0) {
 		lda	#CANNON_TILE_B
-		sta	tbl_metatile_b, x
+		sta	gfx_metatile, x
 		inx
 		dey
 		bmi	:+ ; if (--y >= 0) {
@@ -1833,9 +1833,9 @@ bg_areaobj_spring:
 		inc	actor_mode, x
 		ldx	BG_PROC_METATILE_ID
 		lda	#SPRING_TILE_A
-		sta	tbl_metatile_b, x
+		sta	gfx_metatile, x
 		lda	#SPRING_TILE_B
-		sta	tbl_metatile_b+1, x
+		sta	gfx_metatile+1, x
 		.if	.defined(VS_SMB)|.defined(SMB2M)
 		: ; }
 		.endif
@@ -1924,7 +1924,7 @@ bg_areaobj_pit:
 bg_objrenderbase:
 	: ; for (x = metatile_base_id, y = eng_obj_height; x >= 0xD && y >= 0; x++, y--) {
 		sty	eng_obj_height
-		ldy	tbl_metatile_b, x
+		ldy	gfx_metatile, x
 		beq	:+
 		cpy	#$17
 		beq	:++
@@ -1941,7 +1941,7 @@ bg_objrenderbase:
 			beq	:++
 		.endif
 		: ; if (metatile == 0 || (metatile.not_in(0x17, 0x1A) && (metatile == 0xC0 || (metatile < 0xC0 && (metatile != 0x54 || a != 0x50))))) {
-			sta	tbl_metatile_b, x
+			sta	gfx_metatile, x
 		: ; }
 
 		inx

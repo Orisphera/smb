@@ -1,6 +1,9 @@
 .ifndef	TILES_I
 TILES_I = 1
 
+TILE_PAGE_BITS	= %11000000
+TILE_ENTRY_BITS	= %00111111
+
 .if	.defined(SMB)|.defined(VS_SMB)
 	PIPE_TILE_M_B		= $14
 	PIPE_TILE_BASE		= $15
