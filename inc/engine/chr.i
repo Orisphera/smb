@@ -5,7 +5,7 @@ CHR_I = 1
 
 	.enum	tile_bg
 		blanks		= <((tile_bg_blanks-chr_bg)/PPU_TILE_SIZE)
-		castle_door_left = <((tile_bg_castle_door_left-chr_bg)/PPU_TILE_SIZE)
+		cannon_base_left = <((tile_bg_cannon_base_left-chr_bg)/PPU_TILE_SIZE)
 		plat_a_mid	= <((tile_bg_plat_a_mid-chr_bg)/PPU_TILE_SIZE)
 		flag_ball_a	= <((tile_bg_flag_ball_a-chr_bg)/PPU_TILE_SIZE)
 		hill_a		= <((tile_bg_hill_a-chr_bg)/PPU_TILE_SIZE)
@@ -13,7 +13,7 @@ CHR_I = 1
 		cloud		= <((tile_bg_cloud-chr_bg)/PPU_TILE_SIZE)
 		flag_ball_b	= <((tile_bg_flag_ball_b-chr_bg)/PPU_TILE_SIZE)
 		pulley_a	= <((tile_bg_pulley_a-chr_bg)/PPU_TILE_SIZE)
-		castle_door_right = <((tile_bg_castle_door_right-chr_bg)/PPU_TILE_SIZE)
+		cannon_base_right = <((tile_bg_cannon_base_right-chr_bg)/PPU_TILE_SIZE)
 		water		= <((tile_bg_water-chr_bg)/PPU_TILE_SIZE)
 		brick_a		= <((tile_bg_brick_a-chr_bg)/PPU_TILE_SIZE)
 		brick_b		= <((tile_bg_brick_b-chr_bg)/PPU_TILE_SIZE)

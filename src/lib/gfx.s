@@ -833,11 +833,11 @@ gfx_meta_block_1:
 	.byte	tile_bg::cannon+6
 	.byte	tile_bg::cannon+5
 	.byte	tile_bg::cannon+7
-; ---
-	.byte	tile_bg::castle_door_left
-	.byte	tile_bg::castle_door_left
-	.byte	tile_bg::castle_door_right
-	.byte	tile_bg::castle_door_right
+
+	.byte	tile_bg::cannon_base_left
+	.byte	tile_bg::cannon_base_left
+	.byte	tile_bg::cannon_base_right
+	.byte	tile_bg::cannon_base_right
 ; ---
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks

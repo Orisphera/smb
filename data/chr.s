@@ -189,7 +189,7 @@ chr_bg:
 		.include	"chr/bg/font_f.vs.s"
 	.endif
 
-	.include	"chr/bg/castle_door_left.s"
+	.include	"chr/bg/cannon_base_left.s"
 
 	.if	.defined(SMB)
 		.include	"chr/bg/font_g.s"
@@ -226,7 +226,7 @@ chr_bg:
 
 	.include	"chr/bg/flag_ball_b.s"
 	.include	"chr/bg/pulley_a.s"
-	.include	"chr/bg/castle_door_right.s"
+	.include	"chr/bg/cannon_base_right.s"
 	.include	"chr/bg/water.s"
 	.include	"chr/bg/edge_a.s"
 	.include	"chr/bg/sign_nw.s"
