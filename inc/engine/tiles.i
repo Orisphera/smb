@@ -26,6 +26,11 @@ METATILE_SIZE	= 4
 		blank_d		= <((gfx_meta_block_0_blank_d-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		flag_ball	= <((gfx_meta_block_0_flag_ball-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		pole		= <((gfx_meta_block_0_pole-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		.if	.defined(SMBM)|.defined(VS_SMB)
+			plat_a_a	= <((gfx_meta_block_0_plat_a_a-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+			plat_a_b	= <((gfx_meta_block_0_plat_a_b-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+			plat_a_c	= <((gfx_meta_block_0_plat_a_c-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		.endif
 	.endenum
 
 	.enum	metatile_1
@@ -66,6 +71,14 @@ METATILE_SIZE	= 4
 		.endif
 	.endenum
 
+	.enum	metatile_2
+		.if	.defined(SMB2)
+			plat_a_a	= <((gfx_meta_block_2_plat_a_a-gfx_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
+			plat_a_b	= <((gfx_meta_block_2_plat_a_b-gfx_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
+			plat_a_c	= <((gfx_meta_block_2_plat_a_c-gfx_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
+		.endif
+	.endenum
+
 	.enum	metatile_3
 		block_q_a	= <((gfx_meta_block_3_block_q_a-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 		block_q_b	= <((gfx_meta_block_3_block_q_b-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
@@ -78,24 +91,19 @@ METATILE_SIZE	= 4
 		axe	= <((gfx_meta_block_3_axe-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 	.endenum
 
-.if	.defined(SMB)|.defined(VS_SMB)
-	LEDGE_MUSHROOM_TILE_A	= $19
-	LEDGE_MUSHROOM_TILE_B	= $1A
-	LEDGE_MUSHROOM_TILE_C	= $1B
+.if	.defined(SMBM)|.defined(VS_SMB)
+	METATILE_PLAT_A_A	= metatile_0::plat_a_a
+	METATILE_PLAT_A_B	= metatile_0::plat_a_b
+	METATILE_PLAT_A_C	= metatile_0::plat_a_c
 
 	BLOCK_TILE_OFFSET	= $5
 .elseif	.defined(SMB2)
-	LEDGE_MUSHROOM_TILE_A	= $8A
-	LEDGE_MUSHROOM_TILE_B	= $8B
-	LEDGE_MUSHROOM_TILE_C	= $8C
+	METATILE_PLAT_A_A	= metatile_2::plat_a_a
+	METATILE_PLAT_A_B	= metatile_2::plat_a_b
+	METATILE_PLAT_A_C	= metatile_2::plat_a_c
 
 	BLOCK_TILE_OFFSET	= $6
-.elseif	.defined(ANN)
-	LEDGE_MUSHROOM_TILE_A	= $19
-	LEDGE_MUSHROOM_TILE_B	= $1A
-	LEDGE_MUSHROOM_TILE_C	= $1B
-
-	BLOCK_TILE_OFFSET	= $5
 .endif
 
 .endif	; TILES_I
+

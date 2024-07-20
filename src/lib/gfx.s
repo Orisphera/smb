@@ -555,16 +555,22 @@ gfx_meta_block_0_pipe_v_f:
 	.byte	tile_bg::plat_b+6
 ; ---
 	.if	.defined(SMBM)|.defined(VS_SMB)
+		.export gfx_meta_block_0_plat_a_a
+		.export gfx_meta_block_0_plat_a_b
+		.export gfx_meta_block_0_plat_a_c
+	gfx_meta_block_0_plat_a_a:
 		.byte	tile_bg::plat_a
 		.byte	tile_bg::plat_a+5
 		.byte	tile_bg::plat_a_mid
 		.byte	tile_bg::plat_a_mid+1
 
+	gfx_meta_block_0_plat_a_b:
 		.byte	tile_bg::plat_a+1
 		.byte	tile_bg::plat_a+6
 		.byte	tile_bg::plat_a+2
 		.byte	tile_bg::plat_a+7
 
+	gfx_meta_block_0_plat_a_c:
 		.byte	tile_bg::plat_a+3
 		.byte	tile_bg::plat_a+8
 		.byte	tile_bg::plat_a+4
@@ -1022,16 +1028,22 @@ gfx_meta_block_2:
 	.byte	tile_bg::bridge_b
 ; ---
 	.if	.defined(SMB2)
+		.export gfx_meta_block_2_plat_a_a
+		.export gfx_meta_block_2_plat_a_b
+		.export gfx_meta_block_2_plat_a_c
+	gfx_meta_block_2_plat_a_a:
 		.byte	tile_bg::plat_a
 		.byte	tile_bg::plat_a+5
 		.byte	tile_bg::plat_a_mid
 		.byte	tile_bg::plat_a_mid+1
 
+	gfx_meta_block_2_plat_a_b:
 		.byte	tile_bg::plat_a+1
 		.byte	tile_bg::plat_a+6
 		.byte	tile_bg::plat_a+2
 		.byte	tile_bg::plat_a+7
 
+	gfx_meta_block_2_plat_a_c:
 		.byte	tile_bg::plat_a+3
 		.byte	tile_bg::plat_a+8
 		.byte	tile_bg::plat_a+4

@@ -1229,16 +1229,16 @@ bg_areaobj_ledge_mushroom:
 		lda	eng_lenareaobj_0, x
 		lsr	a
 		sta	eng_ledge_dims, x
-		lda	#LEDGE_MUSHROOM_TILE_A
+		lda	#METATILE_PLAT_A_A
 		jmp	bg_areaobj_ledge_no_base
 	: ; } else {
-		lda	#LEDGE_MUSHROOM_TILE_C
+		lda	#METATILE_PLAT_A_C
 		ldy	eng_lenareaobj_0, x
 		beq	bg_areaobj_ledge_no_base ; if (eng_lenareaobj) {
 			lda	eng_ledge_dims, x
 			sta	zp_byte_06
 			ldx	BG_PROC_METATILE_ID
-			lda	#LEDGE_MUSHROOM_TILE_B
+			lda	#METATILE_PLAT_A_B
 			sta	gfx_metatile, x
 			.if	.defined(SMBM)|.defined(VS_SMB)
 				cpy	zp_byte_06
@@ -1932,7 +1932,7 @@ bg_objrenderbase:
 		beq	:+
 		cpy	#$17
 		beq	:++
-		cpy	#LEDGE_MUSHROOM_TILE_B
+		cpy	#METATILE_PLAT_A_B
 		beq	:++
 		cpy	#$C0
 		beq	:+
