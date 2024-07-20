@@ -226,7 +226,8 @@ fg_scenery_water:
 	.byte	$86, $87, $87, $87, $87, $87, $87
 	.byte	$87, $87, $87, $87
 
-	.byte	FG_BASE_TILE_A, FG_BASE_TILE_A
+	.byte	metatile_1::floor_underwater
+	.byte	metatile_1::floor_underwater
 
 fg_scenery_walls:
 	.res	5, ENG_TILEOBJ_NULL
@@ -238,7 +239,10 @@ fg_scenery_surface:
 	.byte	$86, $87
 
 fg_tiles:
-	.byte	FG_BASE_TILE_A, FG_BASE_TILE_B, FG_BASE_TILE_C, FG_BASE_TILE_D
+	.byte	metatile_1::floor_underwater
+	.byte	metatile_1::floor_normal
+	.byte	metatile_1::brick_b
+	.byte	metatile_1::floor_castle
 
 	.export	fg_masks
 	.export fg_mask_0, fg_mask_1
@@ -374,7 +378,7 @@ bg_proc_main:
 	lda	course_no
 	cmp	#course::no_08
 	bne	:+ ; if (course_type == water && course_no == no_08) {
-		lda	#FG_BASE_TILE_D
+		lda	#metatile_1::floor_castle
 		jmp	:++
 	: ; } else {
 		lda	fg_tiles, y
@@ -421,7 +425,7 @@ bg_proc_main:
 			bne	:+
 			cpx	#11
 			bne	:+ ; if (course_type == underground && tile == 11) {
-				lda	#FG_BASE_TILE_B
+				lda	#metatile_1::floor_normal
 				sta	zp_byte_07
 			: ; }
 		
@@ -1354,7 +1358,7 @@ bg_areaobj_castle:
 			sta	actor_id, x
 			rts
 		: ; } else if (eng_lenareaobj == 1 || (zp_byte_07 && eng_lenareaobj != 2) || eng_lenareaobj == 3) {
-			ldy	#FG_BASE_TILE_C
+			ldy	#metatile_1::brick_b
 			sty	gfx_metatile+10
 		; }
 	: ; }
@@ -1365,9 +1369,9 @@ bg_areaobj_pipe_water:
 	jsr	eng_loadobjattr
 	ldy	eng_lenareaobj_0, x
 	ldx	BG_PROC_METATILE_ID
-	lda	#PIPE_WATER_TILE_A
+	lda	#metatile_1::pipe_water_a
 	sta	gfx_metatile+0, x
-	lda	#PIPE_WATER_TILE_B
+	lda	#metatile_1::pipe_water_b
 	sta	gfx_metatile+1, x
 	rts
 ; -----------------------------
@@ -1606,17 +1610,17 @@ bg_areaobj_bridge:
 
 	pla
 	tax
-	lda	#$0B
+	lda	#metatile_0::bridge_rope
 	sta	gfx_metatile, x
 	inx
 	ldy	#0
-	lda	#BRIDGE_TILE
+	lda	#metatile_1::bridge_base
 	jmp	bg_objrenderbase
 ; -----------------------------
 bg_areaobj_pole_tip:
 	jsr	eng_loadobjattr
 	ldx	#2
-	lda	#POLE_TIP_TILE
+	lda	#metatile_1::flag_ball
 	jmp	bg_objrenderbase
 ; --------------
 bg_areaobj_pole:
@@ -1626,7 +1630,7 @@ bg_areaobj_pole:
 	ldy	#8
 	lda	#metatile_0::pole
 	jsr	bg_objrenderbase
-	lda	#POLE_TILE_C
+	lda	#metatile_1::stair
 	sta	gfx_metatile+10
 	jsr	bg_objpos_x_get
 	sec
@@ -1668,10 +1672,10 @@ bg_areaobj_rope_draw:
 	jmp	bg_objrenderbase
 ; -----------------------------
 bg_areaobj_coinrow_tiles:
-	.byte	COINROW_TILE_B
-	.byte	COINROW_TILE_A
-	.byte	COINROW_TILE_A
-	.byte	COINROW_TILE_A
+	.byte	metatile_3::coin_b
+	.byte	metatile_3::coin_a
+	.byte	metatile_3::coin_a
+	.byte	metatile_3::coin_a
 ; --------------
 bg_areaobj_coinrow:
 	ldy	course_type
@@ -1681,7 +1685,7 @@ bg_areaobj_coinrow:
 bg_areaobj_castle_bridge_data:
 	.byte	$06, $07, $08
 bg_areaobj_castle_bridge_tiles:
-	.byte	CASTLE_BRIDGE_TILE_B, $0C, $89
+	.byte	metatile_3::axe, $0C, $89
 ; --------------
 bg_areaobj_castle_bridge:
 	ldy	#$0C
@@ -1701,22 +1705,22 @@ bg_areaobj_castle_bridge_draw:
 bg_areaobj_empty_draw:
 	jsr	eng_loadobjattr
 	ldx	BG_PROC_METATILE_ID
-	lda	#CASTLE_BRIDGE_TILE_A
+	lda	#metatile_3::axe_block
 
 bg_areaobj_castle_bridge_draw_do:
 	ldy	#0
 	jmp	bg_objrenderbase
 ; -----------------------------
 bg_areaobj_floor_tiles:
-	.byte	FG_BASE_TILE_A
-	.byte	POLE_TILE_C
-	.byte	POLE_TILE_C
-	.byte	FG_BASE_TILE_D
+	.byte	metatile_1::floor_underwater
+	.byte	metatile_1::stair
+	.byte	metatile_1::stair
+	.byte	metatile_1::floor_castle
 bg_areaobj_brick_tiles:
 	.byte	metatile_0::coral
-	.byte	BRICK_TILE_B
-	.byte	FG_BASE_TILE_C
-	.byte	FG_BASE_TILE_C
+	.byte	metatile_1::brick_a
+	.byte	metatile_1::brick_b
+	.byte	metatile_1::brick_b
 	.byte	$88
 ; --------------
 bg_areaobj_brickrow:
@@ -1763,17 +1767,17 @@ bg_areaobj_cannon:
 	jsr	eng_loadobjattr
 	ldx	BG_PROC_METATILE_ID
 
-	lda	#CANNON_TILE_A
+	lda	#metatile_1::cannon_a
 	sta	gfx_metatile, x
 	inx
 	dey
 	bmi	:+ ; if (--y >= 0) {
-		lda	#CANNON_TILE_B
+		lda	#metatile_1::cannon_b
 		sta	gfx_metatile, x
 		inx
 		dey
 		bmi	:+ ; if (--y >= 0) {
-			lda	#CANNON_TILE_C
+			lda	#metatile_1::cannon_c
 			jsr	bg_objrenderbase
 		; }
 	: ; }
@@ -1810,7 +1814,7 @@ bg_areaobj_stairs:
 	ldx	bg_areaobj_stairs_row, y
 	lda	bg_areaobj_stairs_height, y
 	tay
-	lda	#POLE_TILE_C
+	lda	#metatile_1::stair
 	jmp	bg_objrenderbase
 ; -----------------------------
 bg_areaobj_spring:
@@ -1832,9 +1836,9 @@ bg_areaobj_spring:
 		sty	eng_actor_pos_y_hi, x
 		inc	actor_mode, x
 		ldx	BG_PROC_METATILE_ID
-		lda	#SPRING_TILE_A
+		lda	#metatile_1::spring_bg_a
 		sta	gfx_metatile, x
-		lda	#SPRING_TILE_B
+		lda	#metatile_1::spring_bg_b
 		sta	gfx_metatile+1, x
 		.if	.defined(VS_SMB)|.defined(SMB2M)
 		: ; }
@@ -1935,12 +1939,12 @@ bg_objrenderbase:
 		cpy	#$C0
 		bcs	:++
 		.if	.defined(SMBM)|.defined(VS_SMB)
-			cpy	#FG_BASE_TILE_B
+			cpy	#metatile_1::floor_normal
 			bne	:+
 			cmp	#$50
 			beq	:++
 		.endif
-		: ; if (metatile == 0 || (metatile.not_in(0x17, 0x1A) && (metatile == 0xC0 || (metatile < 0xC0 && (metatile != 0x54 || a != 0x50))))) {
+		: ; if (metatile == 0 || (metatile.not_in(0x17, 0x1A) && (metatile == 0xC0 || (metatile < 0xC0 && (metatile != floor_normal || a != 0x50))))) {
 			sta	gfx_metatile, x
 		: ; }
 

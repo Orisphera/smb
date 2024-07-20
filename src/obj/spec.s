@@ -141,13 +141,13 @@ obj_spec_block_punch:
 		ldy	#$11
 		sty	state_spec, x
 
-		lda	#CASTLE_BRIDGE_TILE_A
+		lda	#metatile_3::axe_block
 		ldy	zp_byte_00
-		cpy	#BLOCK_TILE_A
+		cpy	#metatile_1::brick_g
 		beq	:+
-		cpy	#BLOCK_TILE_B
+		cpy	#metatile_1::brick_l
 		bne	:++++
-		: ; if (this.tile.in(BLOCK_TILE_A, BLOCK_TILE_B)) {
+		: ; if (this.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
 			lda	eng_block_time
 			bne	:+ ; if (!eng_block_timer) {
 				lda	#$0B
@@ -157,7 +157,7 @@ obj_spec_block_punch:
 		
 			lda	eng_timer_block
 			bne	:+ ; if (!eng_timer_block) {
-				ldy	#CASTLE_BRIDGE_TILE_A
+				ldy	#metatile_3::axe_block
 			: ; }
 			tya
 		; }
@@ -325,36 +325,36 @@ obj_spec_block_item_rts:
 	.export obj_spec_block_tiles
 obj_spec_block_tiles:
 	.if	.defined(SMBM)|.defined(VS_SMB)
-		.byte	BLOCK_TILE_E, BLOCK_TILE_D
+		.byte	metatile_3::block_q_b, metatile_3::block_q_a
 	.elseif	.defined(SMB2)
-		.byte	BLOCK_TILE_D, BLOCK_TILE_E
+		.byte	metatile_3::block_q_a, metatile_3::block_q_b
 	.endif
 
 	.if	.defined(SMB2)
-		.byte	BLOCK_TILE_P, BLOCK_TILE_Q
+		.byte	metatile_3::block_q_c, metatile_1::blank_e
 	.endif
 
 	.if	.defined(SMB2M)
-		.byte	BLOCK_TILE_R
+		.byte	metatile_1::blank_d
 	.endif
 
-	.byte	BLOCK_TILE_F, BLOCK_TILE_G
+	.byte	metatile_1::blank_b, metatile_1::blank_c
 
 	.if	.defined(SMB2)
-		.byte	BLOCK_TILE_S
+		.byte	metatile_1::brick_n
 	.endif
 
-	.byte	BLOCK_TILE_H, BLOCK_TILE_I
-	.byte	BLOCK_TILE_J, BLOCK_TILE_A
-	.byte	BLOCK_TILE_K
+	.byte	metatile_1::brick_d, metatile_1::brick_e
+	.byte	metatile_1::brick_f, metatile_1::brick_g
+	.byte	metatile_1::brick_h
 
 	.if	.defined(SMB2)
-		.byte	BLOCK_TILE_T
+		.byte	metatile_1::brick_o
 	.endif
 
-	.byte	BLOCK_TILE_L, BLOCK_TILE_M
-	.byte	BLOCK_TILE_N, BLOCK_TILE_B
-	.byte	BLOCK_TILE_O
+	.byte	metatile_1::brick_i, metatile_1::brick_j
+	.byte	metatile_1::brick_k, metatile_1::brick_l
+	.byte	metatile_1::brick_m
 obj_spec_block_tiles_end:
 ; -----------------------------
 obj_spec_block_is_tile:
@@ -395,8 +395,8 @@ obj_spec_block_top_check:
 		sta	zp_byte_02
 		tay
 		lda	(eng_buffer_ptr), y
-		cmp	#COINROW_TILE_A
-		bne	:+ ; if (eng_buffer_ptr[zp_byte_02-0x10] == COINROW_TILE_A) {
+		cmp	#metatile_3::coin_a
+		bne	:+ ; if (eng_buffer_ptr[zp_byte_02-0x10] == metatile_3::coin_a) {
 			lda	#0
 			sta	(eng_buffer_ptr), y
 			jsr	gfx_clear_small
