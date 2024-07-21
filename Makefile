@@ -91,6 +91,8 @@ TITLE_OBJS	=	src/title/base.o \
 LIB_OBJS	=	src/game/victory.o \
 			src/lib/screen.o \
 			src/lib/gfx.o \
+			data/metatiles.o \
+			data/nmi_data.o \
 			src/lib/misc.o
 
 GAME_OBJS	=	src/game/init.o \

@@ -182,29 +182,56 @@ bg_scenery_tree_fence:
 
 bg_tiles:
 bg_tile_cloud_left:
-	.byte	$80, $83, $00
+	.byte	metatile_2::cloud_a
+	.byte	metatile_2::cloud_d
+	.byte	metatile_0::blank_a
 bg_tile_cloud_middle:
-	.byte	$81, $84, $00
+	.byte	metatile_2::cloud_b
+	.byte	metatile_2::cloud_e
+	.byte	metatile_0::blank_a
 bg_tile_cloud_right:
-	.byte	$82, $85, $00
+	.byte	metatile_2::cloud_c
+	.byte	metatile_2::cloud_f
+	.byte	metatile_0::blank_a
+
 bg_tile_bush_left:
-	.byte	$02, $00, $00
+	.byte	metatile_0::bush_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
 bg_tile_bush_middle:
-	.byte	$03, $00, $00
+	.byte	metatile_0::bush_b
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
 bg_tile_bush_right:
-	.byte	$04, $00, $00
+	.byte	metatile_0::bush_c
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+
 bg_tile_mnt_left:
-	.byte	$00, $05, $06
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::hill_a
+	.byte	metatile_0::hill_b
 bg_tile_mnt_middle:
-	.byte	$07, $06, $0A
+	.byte	metatile_0::hill_c
+	.byte	metatile_0::hill_b
+	.byte	metatile_0::hill_f
 bg_tile_mnt_right:
-	.byte	$00, $08, $09
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::hill_d
+	.byte	metatile_0::hill_e
+
 bg_tile_fence:
-	.byte	$4D, $00, $00
+	.byte	metatile_1::post
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
 bg_tile_tree_tall:
-	.byte	$0D, $0F, $4E
+	.byte	metatile_0::tree_a
+	.byte	metatile_0::tree_c
+	.byte	metatile_1::tree_trunk
 bg_tile_tree_short:
-	.byte	$0E, $4E, $4E
+	.byte	metatile_0::tree_b
+	.byte	metatile_1::tree_trunk
+	.byte	metatile_1::tree_trunk
 bg_tiles_end:
 
 	.export fg_scenery_tbl
@@ -223,20 +250,49 @@ fg_scenery_tbl_surface:
 
 fg_scenery:
 fg_scenery_water:
-	.byte	$86, $87, $87, $87, $87, $87, $87
-	.byte	$87, $87, $87, $87
-
+	.byte	metatile_2::water_a
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
+	.byte	metatile_2::water_b
 	.byte	metatile_1::floor_underwater
 	.byte	metatile_1::floor_underwater
 
 fg_scenery_walls:
-	.res	5, ENG_TILEOBJ_NULL
-	.byte	$45, $47, $47, $47, $47, $47
-	.res	2, ENG_TILEOBJ_NULL
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_1::castle_a
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
 
 fg_scenery_surface:
-	.res	11, ENG_TILEOBJ_NULL
-	.byte	$86, $87
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_2::water_a
+	.byte	metatile_2::water_b
 
 fg_tiles:
 	.byte	metatile_1::floor_underwater
@@ -384,10 +440,10 @@ bg_proc_main:
 		lda	fg_tiles, y
 		ldy	course_type_cloud
 		beq	:+ ; if (course_type_cloud) {
-			lda	#$88
+			lda	#metatile_2::cloud_small
 		; }
 	: ; }
-	sta	zp_byte_07
+	sta	BG_PROC_METATILE_ID
 
 	ldx	#0
 	lda	course_fg_mask_id
@@ -412,7 +468,7 @@ bg_proc_main:
 			lda	area_bitmasks, y
 			bit	zp_byte_00
 			beq	:+ ; if ((area_bitmasks[y] & fg_mask)) {
-				lda	zp_byte_07
+				lda	BG_PROC_METATILE_ID
 				sta	gfx_metatile, x
 			: ; }
 		
@@ -426,7 +482,7 @@ bg_proc_main:
 			cpx	#11
 			bne	:+ ; if (course_type == underground && tile == 11) {
 				lda	#metatile_1::floor_normal
-				sta	zp_byte_07
+				sta	BG_PROC_METATILE_ID
 			: ; }
 		
 			iny
@@ -446,7 +502,7 @@ bg_proc_main:
 	: ; for (entry of gfx_metatile) {
 		sty	zp_byte_00
 		lda	gfx_metatile, x
-		and	#$C0
+		and	#TILE_PAGE_BITS
 		asl	a
 		rol	a
 		rol	a
@@ -470,14 +526,11 @@ bg_proc_main:
 
 	rts
 ; --------------
-.if	.defined(SMBM)|.defined(VS_SMB)
-	BG_BUFFER_CUTOFF_B	= $51
-.elseif	.defined(SMB2)
-	BG_BUFFER_CUTOFF_B	= $4F
-.endif
-
 bg_buffer_cutoff:
-	.byte	$10, BG_BUFFER_CUTOFF_B, $88, $C0
+	.byte	metatile_0::cutoff
+	.byte	metatile_1::cutoff
+	.byte	metatile_2::cutoff
+	.byte	metatile_3::cutoff
 ; ------------------------------------------------------------
 bg_area:
 	.if	.defined(VS)
@@ -1207,18 +1260,18 @@ bg_areaobj_ledge_tree:
 			lda	eng_page_current
 			ora	eng_pos_x
 			beq	:+ ; if (eng_page_current|eng_pos_x) {
-				lda	#$16
+				lda	#metatile_0::plat_b_a
 				jmp	bg_areaobj_ledge_no_base
 			; }
 		: ; }
 
 		ldx	BG_PROC_METATILE_ID
-		lda	#$17
+		lda	#metatile_0::plat_b_b
 		sta	gfx_metatile, x
-		lda	#$4C
+		lda	#metatile_1::plat_b
 		jmp	bg_areaobj_ledge_base
 	: ; } else {
-		lda	#$18
+		lda	#metatile_0::plat_b_c
 		jmp	bg_areaobj_ledge_no_base
 	; }
 ; --------------
@@ -1244,9 +1297,9 @@ bg_areaobj_ledge_mushroom:
 				cpy	zp_byte_06
 				bne	bg_areaobj_pulley_rts ; if (eng_lenareaobj == tbl_736_obj) {
 					inx
-					lda	#$4F
+					lda	#metatile_1::tree_a
 					sta	gfx_metatile, x
-					lda	#$50
+					lda	#metatile_1::tree_b
 			.elseif	.defined(SMB2)
 				rts
 			.endif
@@ -1265,7 +1318,9 @@ bg_areaobj_ledge_no_base:
 	jmp	bg_objrenderbase
 ; -----------------------------
 bg_areaobj_pulley_tiles:
-	.byte	$42, $41, $43
+	.byte	metatile_1::pulley_c
+	.byte	metatile_1::pulley_b
+	.byte	metatile_1::pulley_d
 ; --------------
 bg_areaobj_pulley:
 	jsr	eng_loadobjlen
@@ -1285,17 +1340,71 @@ bg_areaobj_pulley_rts:
 	rts
 ; -----------------------------
 bg_areaobj_castle_tiles:
-	.byte	$00, $45, $45, $45, $00
-	.byte	$00, $48, $47, $46, $00
-	.byte	$45, $49, $49, $49, $45
-	.byte	$47, $47, $4A, $47, $47
-	.byte	$47, $47, $4B, $47, $47
-	.byte	$49, $49, $49, $49, $49
-	.byte	$47, $4A, $47, $4A, $47
-	.byte	$47, $4B, $47, $4B, $47
-	.byte	$47, $47, $47, $47, $47
-	.byte	$4A, $47, $4A, $47, $4A
-	.byte	$4B, $47, $4B, $47, $4B
+	.byte	metatile_0::blank_a
+	.byte	metatile_1::castle_a
+	.byte	metatile_1::castle_a
+	.byte	metatile_1::castle_a
+	.byte	metatile_0::blank_a
+
+	.byte	metatile_0::blank_a
+	.byte	metatile_1::castle_d
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_b
+	.byte	metatile_0::blank_a
+
+	.byte	metatile_1::castle_a
+	.byte	metatile_1::castle_e
+	.byte	metatile_1::castle_e
+	.byte	metatile_1::castle_e
+	.byte	metatile_1::castle_a
+
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_f
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_g
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+
+	.byte	metatile_1::castle_e
+	.byte	metatile_1::castle_e
+	.byte	metatile_1::castle_e
+	.byte	metatile_1::castle_e
+	.byte	metatile_1::castle_e
+
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_f
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_f
+	.byte	metatile_1::castle_c
+
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_g
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_g
+	.byte	metatile_1::castle_c
+
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_c
+
+	.byte	metatile_1::castle_f
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_f
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_f
+
+	.byte	metatile_1::castle_g
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_g
+	.byte	metatile_1::castle_c
+	.byte	metatile_1::castle_g
 ; --------------
 bg_areaobj_castle:
 	jsr	eng_loadobjattr
@@ -1334,7 +1443,7 @@ bg_areaobj_castle:
 		lda	eng_lenareaobj_0, x
 		cmp	#1
 		beq	:++
-		ldy	zp_byte_07
+		ldy	BG_PROC_METATILE_ID
 		bne	:+
 		cmp	#3
 		beq	:++
@@ -1357,7 +1466,7 @@ bg_areaobj_castle:
 			lda	#actor::flag_victory
 			sta	actor_id, x
 			rts
-		: ; } else if (eng_lenareaobj == 1 || (zp_byte_07 && eng_lenareaobj != 2) || eng_lenareaobj == 3) {
+		: ; } else if (eng_lenareaobj == 1 || (tile_id && eng_lenareaobj != 2) || eng_lenareaobj == 3) {
 			ldy	#metatile_1::brick_b
 			sty	gfx_metatile+10
 		; }
@@ -1385,7 +1494,7 @@ bg_areaobj_pipe_intro:
 	bcs	:++ ; if (!bg_areaobj_pipe_horiz()) {
 		ldx	#BG_AREAOBJ_PIPE_SIZE-1
 		: ; for (tile of bg_areaobj_pipe) {
-			lda	#0
+			lda	#metatile_0::blank_a
 			sta	gfx_metatile, x
 
 			dex
@@ -1444,10 +1553,10 @@ bg_areaobj_pipe_horiz:
 	rts
 ; --------------
 bg_areaobj_pipe_v_tiles:
-	.byte	$11, $10
-	.byte	$15, $14
-	.byte	$13, $12
-	.byte	$15, $14
+	.byte	metatile_0::pipe_v_b, metatile_0::pipe_v_a
+	.byte	metatile_0::pipe_v_f, metatile_0::pipe_v_e
+	.byte	metatile_0::pipe_v_d, metatile_0::pipe_v_c
+	.byte	metatile_0::pipe_v_f, metatile_0::pipe_v_e
 ; --------------
 bg_areaobj_pipe_vert:
 	jsr	bg_areaobj_pipe_h
@@ -1555,11 +1664,11 @@ bg_obj_alloc:
 ; -----------------------------
 bg_areaobj_waterhole:
 	jsr	eng_loadobjlen
-	lda	#$86
+	lda	#metatile_2::water_a
 	sta	gfx_metatile+10
 	ldx	#$0B
 	ldy	#1
-	lda	#$87
+	lda	#metatile_2::water_b
 	jmp	bg_objrenderbase
 ; -----------------------------
 bg_areaobj_block_qhi:
@@ -1580,7 +1689,7 @@ bg_areaobj_block_q_row:
 
 	pla
 	tax
-	lda	#$C0
+	lda	#metatile_3::block_q_set
 	sta	gfx_metatile, x
 	rts
 ; -----------------------------
@@ -1659,7 +1768,7 @@ bg_areaobj_rope_plat:
 
 	ldx	#1
 	ldy	#$0F
-	lda	#$44
+	lda	#metatile_1::pulley_e
 	jsr	bg_objrenderbase
 
 	pla
@@ -1668,7 +1777,7 @@ bg_areaobj_rope_plat:
 	ldx	#1
 
 bg_areaobj_rope_draw:
-	lda	#$40
+	lda	#metatile_1::pulley_a
 	jmp	bg_objrenderbase
 ; -----------------------------
 bg_areaobj_coinrow_tiles:
@@ -1685,7 +1794,9 @@ bg_areaobj_coinrow:
 bg_areaobj_castle_bridge_data:
 	.byte	$06, $07, $08
 bg_areaobj_castle_bridge_tiles:
-	.byte	metatile_3::axe, $0C, $89
+	.byte	metatile_3::axe
+	.byte	metatile_0::chain
+	.byte	metatile_2::bridge_castle
 ; --------------
 bg_areaobj_castle_bridge:
 	ldy	#$0C
@@ -1721,7 +1832,7 @@ bg_areaobj_brick_tiles:
 	.byte	metatile_1::brick_a
 	.byte	metatile_1::brick_b
 	.byte	metatile_1::brick_b
-	.byte	$88
+	.byte	metatile_2::cloud_small
 ; --------------
 bg_areaobj_brickrow:
 	ldy	course_type
@@ -1889,7 +2000,10 @@ bg_areaobj_block_rts:
 	rts
 ; -----------------------------
 bg_areaobj_pit_tiles:
-	.byte	$87, $00, $00, $00
+	.byte	metatile_2::water_b
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
+	.byte	metatile_0::blank_a
 ; --------------
 bg_areaobj_pit:
 	jsr	eng_loadobjlen
@@ -1930,13 +2044,13 @@ bg_objrenderbase:
 		sty	eng_obj_height
 		ldy	gfx_metatile, x
 		beq	:+
-		cpy	#$17
+		cpy	#metatile_0::plat_b_b
 		beq	:++
 		cpy	#METATILE_PLAT_A_B
 		beq	:++
-		cpy	#$C0
+		cpy	#TILE_PAGE_3
 		beq	:+
-		cpy	#$C0
+		cpy	#TILE_PAGE_3
 		bcs	:++
 		.if	.defined(SMBM)|.defined(VS_SMB)
 			cpy	#metatile_1::floor_normal
@@ -1944,7 +2058,7 @@ bg_objrenderbase:
 			cmp	#$50
 			beq	:++
 		.endif
-		: ; if (metatile == 0 || (metatile.not_in(0x17, 0x1A) && (metatile == 0xC0 || (metatile < 0xC0 && (metatile != floor_normal || a != 0x50))))) {
+		: ; if (metatile == blank_a || (metatile.not_in(plat_b_b, plat_a_b) && (metatile == 0xC0 || (metatile < 0xC0 && (metatile != floor_normal || a != 0x50))))) {
 			sta	gfx_metatile, x
 		: ; }
 
