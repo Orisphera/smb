@@ -744,7 +744,7 @@ victory_end:
 		bne	:++ ; if (course_no == no_08 && eng_lives >= 0 && !eng_timer_select) {
 			lda	#$30
 			sta	eng_timer_select
-			lda	#$40
+			lda	#%01000000
 			sta	apu_pulse2_queue
 			dec	eng_lives
 			lda	#1
@@ -766,7 +766,7 @@ victory_end:
 			beq	:+ ; if (joypad_face_b) {
 				lda	#1
 				sta	eng_course_sel_on
-				lda	#$FF
+				lda	#255
 				sta	eng_lives
 				jsr	eng_next_game
 			: ; }
@@ -795,7 +795,7 @@ sub_865D:
 	lda	snd_ram+1
 	bne	:+ ; if (!eng_timer_select && !snd_ram[1]) {
 		sta	byte_7FC
-		lda	#$FF
+		lda	#255
 		sta	eng_lives
 		lda	#game_mode::game_over
 		sta	eng_game_mode
@@ -883,7 +883,7 @@ screen_score_disp:
 		.endif
 		bne	:+ ; if (stack[0x10] == 1UP) {
 			inc	eng_lives
-			lda	#$40
+			lda	#%01000000
 			sta	apu_pulse2_queue
 		: ; }
 
@@ -914,7 +914,7 @@ screen_score_disp:
 	cmp	#actor::div_height
 	bcs	:+
 	lda	state_actor, x
-	cmp	#2
+	cmp	#actor_states::state_2
 	bcs	:++
 	: ; if (actor.id == hammer_bro || actor.id >= div_height || actor.state < 2) {
 		ldx	obj_data_offset_ctl

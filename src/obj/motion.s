@@ -82,8 +82,8 @@ motion_y_check_spring:
 motion_y:
 	ldy	#$3D
 	lda	state_actor, x
-	cmp	#5
-	bne	:+ ; if (this.state == 5) {
+	cmp	#actor_states::state_5
+	bne	:+ ; if (this.state == state_05) {
 		ldy	#$20
 	: ; }
 	jmp	motion_fall_max_hi

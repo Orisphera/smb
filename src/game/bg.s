@@ -55,7 +55,7 @@ bg_proc_main_b:
 bg_inc_col:
 	inc	eng_pos_x
 	lda	eng_pos_x
-	and	#$0F
+	and	#%00001111
 	bne	:+ ; if (!(eng_pos_x & 0xF)) {
 		sta	eng_pos_x
 		inc	eng_page_current
@@ -63,7 +63,7 @@ bg_inc_col:
 
 	inc	disp_buff_col
 	lda	disp_buff_col
-	and	#$1F
+	and	#%00011111
 	sta	disp_buff_col
 	rts
 ; ------------------------------------------------------------
@@ -395,7 +395,7 @@ bg_proc_main:
 		lda	bg_scenery, x
 		beq	:++ ; if (bg_scenery[(eng_page_current*16)+bg_scenery_tbl[course_bg_id-1]+eng_pos_x]) {
 			pha
-			and	#$0F
+			and	#%00001111
 			sec
 			sbc	#1
 			sta	zp_byte_00
@@ -475,7 +475,7 @@ bg_proc_main:
 		cpx	#0
 		beq	:+ ; if () {
 			lda	zp_byte_00
-			and	#$08
+			and	#%00001000
 			sta	zp_byte_00
 		: ; }
 	
@@ -532,7 +532,7 @@ bg_proc_main:
 		sta	(eng_buffer_ptr), y
 		tya
 		clc
-		adc	#$10
+		adc	#16
 		tay
 
 		inx
@@ -742,12 +742,12 @@ bg_area_decode:
 		.endif
 		lda	(course_data_addr), y
 		and	#>(COURSE_AREAOBJ_MASK)
-		bne	:+ ; if (!(course_data_byte_1 & 0x70)) {
+		bne	:+ ; if (!(course_data_byte_1 & COURSE_AREAOBJ_MASK)) {
 			lda	#(bg_obj_spec_C-bg_obj_tbl)/WORD_SIZE
 			sta	BG_OBJ_TBL_OFFSET
 	
 			lda	(course_data_addr), y
-			and	#$0F
+			and	#%00001111
 			jmp	bg_obj_set_base
 		: ; } else {
 			sta	BG_OBJ_TBL_BASE
@@ -758,7 +758,7 @@ bg_area_decode:
 				sta	VS_SR
 			.endif
 			lda	(course_data_addr), y
-			and	#$08
+			and	#%00001000
 			beq	:+ ; if (BG_OBJ_TBL_BASE == 0x70 && (course_data_byte_1 & 0x08)) {
 				lda	#(bg_obj_tbl_pipe_vert_a-bg_obj_tbl)/WORD_SIZE
 				sta	BG_OBJ_TBL_BASE
@@ -894,7 +894,6 @@ bg_area_decode_rts:
 	.export bg_obj_tbl_spring
 
 	.export bg_obj_spec_D
-
 	.export	bg_obj_tbl_pipe_intro
 	.export	bg_obj_tbl_pole
 	.export	bg_obj_tbl_castle_bridge_axe
@@ -1080,14 +1079,14 @@ bg_areaobj_set_attr:
 	.endif
 	lda	(course_data_addr), y
 	pha
-	and	#$40
+	and	#%01000000
 	bne	:+ ; if ((course_data_byte_1 & 0x40)) {
 		pla
 		pha
-		and	#$0F
+		and	#%00001111
 		sta	course_fg_mask_id
 		pla
-		and	#$30
+		and	#%00110000
 		lsr	a
 		lsr	a
 		lsr	a
@@ -1096,7 +1095,7 @@ bg_areaobj_set_attr:
 		rts
 	: ; } else {
 		pla
-		and	#$07
+		and	#%00000111
 		cmp	#4
 		bcc	:+ ; if ((eng_area_data_byte_1 & 0x7) >= 4) {
 			sta	course_bg_col
@@ -1204,7 +1203,7 @@ bg_areaobj_lock_warp:
 
 bg_areaobj_lock:
 	lda	eng_scroll_lock
-	eor	#$01
+	eor	#1
 	sta	eng_scroll_lock
 	rts
 ; -----------------------------
@@ -1233,7 +1232,7 @@ bg_swarm_ids:
 bg_areaobj_swarm:
 	ldx	zp_byte_00
 	lda	bg_swarm_ids-8, x
-	ldy	#6-1
+	ldy	#ENG_ACTOR_MAX-1
 	: ; for (y = 6-1; y > 0; y--) {
 		dey
 		bmi	:+
@@ -1477,7 +1476,7 @@ bg_areaobj_castle:
 			lda	#actor_modes::active
 			sta	pos_y_hi_actor, x
 			sta	actor_mode, x
-			lda	#$90
+			lda	#<-112
 			sta	pos_y_lo_actor, x
 			lda	#actor::flag_victory
 			sta	actor_id, x
@@ -1642,7 +1641,7 @@ bg_areaobj_pipe_h:
 	jsr	eng_loadobjlen_b
 	jsr	eng_loadobjattr
 	tya
-	and	#$07
+	and	#%00000111
 	sta	zp_byte_06
 	ldy	eng_lenareaobj_0, x
 	rts
@@ -1764,7 +1763,7 @@ bg_areaobj_pole:
 	lda	eng_page_current
 	sbc	#0
 	sta	pos_x_hi_actor+ENG_ACTOR_MAX-1
-	lda	#$30
+	lda	#48
 	sta	pos_y_lo_actor+ENG_ACTOR_MAX-1
 	lda	#$B0
 	sta	STACK_BASE+$0D
@@ -2029,7 +2028,7 @@ bg_areaobj_pit:
 		ldx	eng_cannon_offset
 		jsr	bg_objpos_x_get
 		sec
-		sbc	#$10
+		sbc	#16
 		sta	pos_x_lo_cannon, x
 		lda	eng_page_current
 		sbc	#0
@@ -2109,11 +2108,11 @@ eng_loadobjattr:
 	.endif
 	ldy	eng_areaobj_offset_0, x
 	lda	(course_data_addr), y
-	and	#$0F
+	and	#%00001111
 	sta	BG_PROC_METATILE_ID
 	iny
 	lda	(course_data_addr), y
-	and	#$0F
+	and	#%00001111
 	tay
 	rts
 ; -----------------------------
@@ -2152,7 +2151,7 @@ bg_get_buffer_ptr:
 	lda	bg_buffer_ptr_hi, y
 	sta	eng_buffer_ptr+1
 	pla
-	and	#$0F
+	and	#%00001111
 	clc
 	adc	bg_buffer_ptr_lo, y
 	sta	eng_buffer_ptr

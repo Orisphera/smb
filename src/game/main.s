@@ -2085,7 +2085,7 @@ game_proc_bullet:
 	lda	eng_timer_ctl
 	bne	:++++ ; if (!eng_timer_ctl) {
 		lda	state_actor, x
-		bne	:++ ; if (this.state == 0) {
+		bne	:++ ; if (this.state == state_00) {
 			lda	bits_offscr_actor
 			and	#%00001100
 			cmp	#%00001100
@@ -2103,9 +2103,9 @@ game_proc_bullet:
 				adc	#$28
 				cmp	#$50
 				bcc	:++++ ; if ((zp_byte_00 + 0x28) >= 0x50) {
-					lda	#1
+					lda	#actor_states::state_1
 					sta	state_actor, x
-					lda	#$0A
+					lda	#10
 					sta	eng_timer_actor_ani, x
 					lda	#8
 					sta	apu_pulse2_queue

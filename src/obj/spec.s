@@ -48,7 +48,7 @@ obj_spec_powerup_do:
 	ldx	#OBJ_MISC_POWERUP_ACTOR
 	stx	actor_index
 	lda	state_actor+OBJ_MISC_POWERUP_ACTOR
-	beq	:+++++ ; if (powerup.state) {
+	beq	:+++++ ; if (powerup.state != state_00) {
 		asl	a
 		bcc	:++
 		lda	eng_timer_ctl
@@ -79,11 +79,11 @@ obj_spec_powerup_do:
 				dec	pos_y_lo_actor+OBJ_MISC_POWERUP_ACTOR
 				lda	state_actor+OBJ_MISC_POWERUP_ACTOR
 				inc	state_actor+OBJ_MISC_POWERUP_ACTOR
-				cmp	#$11
+				cmp	#%00010000|actor_states::state_1
 				bcc	:+ ; if (powerup.state >= 0x11) {
 					lda	#16
 					sta	veloc_x_actor, x
-					lda	#$80
+					lda	#%10000000
 					sta	state_actor+OBJ_MISC_POWERUP_ACTOR
 					asl	a
 					sta	byte_3CA
@@ -93,7 +93,7 @@ obj_spec_powerup_do:
 			: ; }
 
 			lda	state_actor+OBJ_MISC_POWERUP_ACTOR
-			cmp	#6
+			cmp	#actor_states::state_6
 			bcc	:++
 		: ; }
 

@@ -18,6 +18,7 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		state_3
 		state_4
 		state_5
+		state_6
 	.endenum
 
 	.enum	game_mode

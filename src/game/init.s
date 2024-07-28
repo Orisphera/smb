@@ -218,11 +218,12 @@ eng_init_1_do:
 	lda	pos_x_hi_screen_left
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lsr	ppu_ctlr0_b
-		and	#$01
+	.endif
+	and	#1
+	.if	.defined(SMB)|.defined(VS_SMB)
 		ror	a
 		rol	ppu_ctlr0_b
 	.elseif	.defined(SMB2M)
-		and	#$01
 		sta	player_count
 	.endif
 
@@ -596,4 +597,3 @@ game_proc_lifedown:
 
 		jmp	eng_game_continue
 	; }
-

@@ -72,7 +72,7 @@ obj_hammer_do:
 				sta	veloc_y_misc, x
 
 				lda	state_actor, y
-				and	#%11110111
+				and	#<~(%00001000)
 				sta	state_actor, y
 
 				ldx	motion_dir_actor, y
