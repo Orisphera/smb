@@ -212,7 +212,7 @@ victory_init:
 
 	ldx	pos_x_hi_screen_right
 	inx
-	stx	victory_screen_hi
+	stx	pos_x_hi_victory_right
 
 	.if	.defined(SMB2)
 		ldy	course_no
@@ -258,7 +258,7 @@ victory_proc:
 	ldy	#joypad_button::none
 	sty	victory_proc_ctrl
 	lda	pos_x_hi_player
-	cmp	victory_screen_hi
+	cmp	pos_x_hi_victory_right
 	bne	:+
 	lda	pos_x_lo_player
 	cmp	#VICTORY_X_POS
@@ -271,8 +271,8 @@ victory_proc:
 	jsr	game_proc_auto
 
 	lda	pos_x_hi_screen_left
-	cmp	victory_screen_hi
-	beq	:+ ; if (pos_x_hi_screen_left != victory_screen_hi) {
+	cmp	pos_x_hi_victory_right
+	beq	:+ ; if (screen_left.pos_x.hi != victory_right.pos_x.hi) {
 		lda	eng_scroll_subpix
 		clc
 		adc	#VICTORY_SCROLL
@@ -360,7 +360,7 @@ victory_msg:
 			: ; if (victory_msg_timer_hi.in(2, 6)) {
 				inc	victory_msg_timer_hi
 				lda	player_id
-				beq	:+ ; if (player_id != 0) {
+				beq	:+ ; if (player.id != 0) {
 					iny
 				; }
 			: ; }
