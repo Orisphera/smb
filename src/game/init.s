@@ -1,9 +1,11 @@
 .include	"../../inc/system/ppu.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/joypad.i"
 .include	"../../inc/engine/sound.i"
 .include	"../../inc/engine/tunables.i"
+.include	"../../inc/engine/misc.i"
 
 .include	"../../inc/engine/unk.i"
 
@@ -162,7 +164,7 @@ eng_init_0_do:
 
 		lda	#player_size::small
 		sta	eng_req_timer
-		sta	eng_player_size
+		sta	player_size
 
 		.if	.defined(VS_SMB)
 		lda	#1
@@ -221,7 +223,7 @@ eng_init_1_do:
 		rol	ppu_ctlr0_b
 	.elseif	.defined(SMB2M)
 		and	#$01
-		sta	eng_player_count
+		sta	player_count
 	.endif
 
 	jsr	sub_load_area_music
@@ -400,15 +402,15 @@ eng_timer_vals_b:
 	.export game_proc_start
 game_proc_start:
 	lda	eng_screen_left_hi
-	sta	eng_player_pos_x_hi
+	sta	pos_x_hi_player
 	lda	#$28
-	sta	eng_player_gravity
+	sta	player_gravity
 	lda	#PLAYER_DIR_RIGHT
-	sta	eng_player_dir
-	sta	eng_player_pos_y_hi
+	sta	player_dir
+	sta	pos_y_hi_player
 	lda	#player_state::ground
 	sta	state_player
-	dec	eng_player_collision
+	dec	player_collision
 
 	ldy	#0
 	sty	eng_startpage_alt
@@ -416,7 +418,7 @@ game_proc_start:
 	bne	:+ ; if (courese_type == water) {
 		iny
 	: ; }
-	sty	eng_player_swimming
+	sty	player_swimming
 
 	ldx	course_enter_pos
 	ldy	eng_start_alt
@@ -427,9 +429,9 @@ game_proc_start:
 	: ; }
 
 	lda	player_start_x, y
-	sta	eng_player_pos_x_lo
+	sta	pos_x_lo_player
 	lda	player_start_y, x
-	sta	eng_player_pos_y_lo
+	sta	pos_y_lo_player
 	lda	player_bg_priority, x
 	sta	ppu_nmi_buffer+$C4
 	jsr	screen_color_player
@@ -474,7 +476,7 @@ game_proc_start:
 		ldx	#0
 		jsr	obj_spec_block_initpos
 		lda	#$F0
-		sta	eng_spec_pos_y_lo
+		sta	pos_y_lo_spec
 		ldx	#5
 		ldy	#0
 		jsr	game_proc_vine_init
@@ -589,7 +591,7 @@ game_proc_lifedown:
 		sta	eng_startpage_alt
 
 		.if	.defined(SMB)|.defined(VS_SMB)
-			jsr	eng_player_switch
+			jsr	player_switch
 		.endif
 
 		jmp	eng_game_continue

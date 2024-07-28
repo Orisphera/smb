@@ -2,6 +2,7 @@
 .include	"../../inc/system/ppu.i"
 .include	"../../inc/system/palettes.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/joypad.i"
 .include	"../../inc/engine/sound.i"
 .include	"../../inc/engine/tunables.i"
@@ -32,7 +33,7 @@ eng_victory:
 	: ; }
 
 	jsr	lib_calc_player_pos
-	jmp	eng_player_render
+	jmp	render_player
 ; -----------------------------------------------------------
 victory_enter:
 	.if	.defined(SMB2M)
@@ -42,7 +43,7 @@ victory_enter:
 	.endif
 		lda	eng_gameplay_mode
 		jsr	eng_farjump
-		.addr	eng_bowser_ending
+		.addr	actor_bowser_ending
 		.addr	victory_init
 		.addr	victory_proc
 		.addr	victory_msg
@@ -61,7 +62,7 @@ victory_enter:
 	victory_course_8: ; } else {
 		lda	eng_gameplay_mode
 		jsr	eng_farjump
-		.addr	eng_bowser_ending
+		.addr	actor_bowser_ending
 		.addr	victory_init
 		.addr	victory_proc
 		.addr	sub_C081
@@ -256,13 +257,13 @@ victory_init:
 victory_proc:
 	ldy	#joypad_button::none
 	sty	victory_proc_ctrl
-	lda	eng_player_pos_x_hi
+	lda	pos_x_hi_player
 	cmp	victory_screen_hi
 	bne	:+
-	lda	eng_player_pos_x_lo
+	lda	pos_x_lo_player
 	cmp	#VICTORY_X_POS
 	bcs	:++
-	: ; if ((eng_player_pos_x < victory_pos_x) {
+	: ; if ((player.pos_x < victory.pos_x) {
 		inc	victory_proc_ctrl
 		iny
 	: ; }
@@ -315,7 +316,7 @@ victory_msg:
 		tay
 		.if	.defined(SMB)
 			bne	:+ ; if () {
-				lda	eng_player_id
+				lda	player_id
 				beq	victory_msg_sound_check
 				iny
 				bne	victory_msg_sound_check
@@ -342,8 +343,8 @@ victory_msg:
 			cpy	#0
 			bne	:+ ; if (victory_msg_timer_hi == 0) {
 				inc	victory_msg_timer_hi
-				lda	eng_player_id
-				beq	:+ ; if (eng_player_id != 0) {
+				lda	player_id
+				beq	:+ ; if (player_id != 0) {
 					iny
 				; }
 			: ; }
@@ -358,8 +359,8 @@ victory_msg:
 			bne	:++
 			: ; if (victory_msg_timer_hi.in(2, 6)) {
 				inc	victory_msg_timer_hi
-				lda	eng_player_id
-				beq	:+ ; if (eng_player_id != 0) {
+				lda	player_id
+				beq	:+ ; if (player_id != 0) {
 					iny
 				; }
 			: ; }
@@ -499,7 +500,7 @@ tbl_6E5_84B9:
 	.byte	$80, $50, $68, $80
 	.byte	$98, $B0, $C8
 
-eng_actor_pos_y_lo_84C0:
+actor_pos_y_lo_84C0:
 	.byte	$E0, $B8, $90, $70
 	.byte	$68, $70, $90
 
@@ -575,7 +576,7 @@ sub_8526:
 	; }
 
 	inc	eng_gameplay_mode
-	ldx	eng_player_id
+	ldx	player_id
 	lda	#1
 	sta	VS_RAM_ARENA0+$28, x
 	lda	#0
@@ -639,14 +640,14 @@ sub_8552:
 				sty	tbl_6E5
 				lda	#$35
 				sta	actor_id
-				lda	eng_actor_pos_y_lo_84C0, x
-				sta	eng_actor_pos_y_lo
+				lda	actor_pos_y_lo_84C0, x
+				sta	pos_y_lo_actor
 				lda	ppu_84C7, x
 				sta	ppu_nmi_buffer+$AE
 				ldx	#0
 				stx	course_no
 				stx	actor_index
-				jsr	eng_actor_render
+				jsr	render_actor
 			: ; }
 
 			dec	VS_RAM_ARENA0+$22
@@ -661,7 +662,7 @@ sub_8552:
 		lda	#$30
 		sta	tbl_6E5
 		lda	#$B8
-		sta	eng_actor_pos_y_lo
+		sta	pos_y_lo_actor
 		rts
 	; }
 ; -----------------------------------------------------------

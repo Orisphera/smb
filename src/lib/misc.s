@@ -5,9 +5,8 @@
 	.include	"../../inc/system/vs.i"
 .endif
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/joypad.i"
-
-.include	"../../inc/engine/unk.i"
 
 	.export eng_farjump
 eng_farjump:
@@ -55,8 +54,8 @@ nt_init_do:
 
 	ldy	#64
 	txa
-	sta	ppu_nmi_buffer+$00
-	sta	ppu_nmi_buffer+$01
+	sta	ppu_nmi_buffer_0_offset
+	sta	ppu_nmi_buffer_0_data+0
 	: ; for (y = 64, y > 0; y--) {
 		sta	PPU_VRAM_IO
 
@@ -248,18 +247,18 @@ print_num:
 		pha
 		asl	a
 		tay
-		ldx	ppu_nmi_buffer+$00
+		ldx	ppu_nmi_buffer_0_offset
 		lda	#$20
 		cpy	#0
 		bne	:+ ; if ((2*arg) == 0) {
 			lda	#$22
 		: ; }
-		sta	ppu_nmi_buffer+$01, x
+		sta	ppu_nmi_buffer_0_data+0, x
 
 		lda	stats_data, y
-		sta	ppu_nmi_buffer+$02, x
+		sta	ppu_nmi_buffer_0_data+1, x
 		lda	stats_data+1, y
-		sta	ppu_nmi_buffer+$03, x
+		sta	ppu_nmi_buffer_0_data+2, x
 		sta	zp_byte_03
 		stx	zp_byte_02
 		pla
@@ -271,7 +270,7 @@ print_num:
 		ldx	zp_byte_02
 		: ; for (x = zp_byte_02, y = tbl_lo, zp_byte_03 = tbl_hi; zp_byte_03 > 0; x++, y++, zp_byte_03--) {
 			lda	eng_score, y
-			sta	ppu_nmi_buffer+$04, x
+			sta	ppu_nmi_buffer_0_data+3, x
 
 			inx
 			iny
@@ -280,11 +279,11 @@ print_num:
 		; }
 
 		lda	#0
-		sta	ppu_nmi_buffer+$04, x
+		sta	ppu_nmi_buffer_0_data+3, x
 		inx
 		inx
 		inx
-		stx	ppu_nmi_buffer+$00
+		stx	ppu_nmi_buffer_0_offset
 	: ; }
 
 	rts

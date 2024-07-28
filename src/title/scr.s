@@ -1,14 +1,13 @@
+.include	"../../inc/engine/mem.i"
 ; -----------------------------------------------------------
 .if	.defined(CONS)
 	SCREEN_TITLE_BG_SIZE	= $3A
-	TITLE_NMI_BUFFER_END	= ppu_nmi_buffer_end
+	TITLE_NMI_BUFFER_END	= ppu_nmi_buffer_title_end
 	TITLE_NMI_ADDR		= ppu_nmi_buffer
-	TITLE_COLOR_ID		= $05
 .elseif	.defined(VS)
 	SCREEN_TITLE_BG_SIZE	= $5A
 	TITLE_NMI_BUFFER_END	= VS_RAM+$400
 	TITLE_NMI_ADDR		= nmi_addr_1C
-	TITLE_COLOR_ID		= $1C
 .endif
 
 .if	.defined(CONS)
@@ -90,7 +89,7 @@ screen_title_bg:
 		sta	VS_SR
 	.endif
 
-	lda	#TITLE_COLOR_ID
+	lda	#PPU_COLOR_ROSE0
 	jmp	screen_color_init_4_end
 ; ----------------------------
 screen_title_cursor:
@@ -99,7 +98,7 @@ screen_title_cursor:
 	ldx	#0
 	: ; for (byte of ppu_nmi_buffer) {
 		sta	ppu_nmi_buffer, x
-		sta	ppu_nmi_buffer+$100, x
+		sta	ppu_nmi_buffer_title_end, x
 
 		dex
 		bne	:-

@@ -7,7 +7,9 @@
 	.include	"../inc/system/vs.i"
 .endif
 
+.include	"../inc/engine/mem.i"
 .include	"../inc/engine/tunables.i"
+.include	"../inc/engine/misc.i"
 
 .include	"../inc/engine/unk.i"
 

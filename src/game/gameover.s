@@ -1,5 +1,6 @@
 .include	"../../inc/system/ppu.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/joypad.i"
 .include	"../../inc/engine/sound.i"
 .include	"../../inc/engine/misc.i"
@@ -86,7 +87,7 @@ eng_game_over_run:
 	.export	eng_game_continue
 .if	.defined(SMB)|.defined(VS_SMB)
 
-	jsr	eng_player_switch
+	jsr	player_switch
 	bcc	eng_game_continue ; if () {
 	.if	.defined(VS_SMB)
 		lda	eng_lives
@@ -110,11 +111,11 @@ eng_game_over_run:
 	eng_game_continue: ; } else {
 		jsr	course_descriptor_load
 		lda	#player_size::small
-		sta	eng_player_size
+		sta	player_size
 		inc	eng_req_timer
 		lda	#0
 		sta	eng_timer_ctl
-		sta	eng_player_status
+		sta	player_status
 		sta	game_proc_id
 		sta	eng_gameplay_mode
 		lda	#game_mode::normal
@@ -124,16 +125,16 @@ eng_game_over_run:
 	; }
 ; -----------------------------------------------------------
 	.if	.defined(SMB)|.defined(VS_SMB)
-	.export	eng_player_switch
-eng_player_switch:
+	.export	player_switch
+player_switch:
 	sec
-	lda	eng_player_count
+	lda	player_count
 	beq	:++
 	lda	eng_lives_b
 	bmi	:++ ; if () {
-		lda	eng_player_id
+		lda	player_id
 		eor	#1
-		sta	eng_player_id
+		sta	player_id
 		ldx	#(eng_lives_b-eng_lives)-1
 		: ; for (value of per_player_values) {
 			lda	eng_lives, x

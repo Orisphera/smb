@@ -1,8 +1,23 @@
-	.ifndef	MISC_I
-	MISC_I = 1
+.ifndef	MISC_I
+MISC_I = 1
 
-	.enum	actor_mode
-		dead
+.include	"../system/cpu.i"
+
+	.enum	actor_modes
+		free
+		active
+	.endenum
+
+ACTOR_MODE_CHILD_BIT	= %10000000
+ACTOR_MODE_PARENT_MASK	= %00001111
+
+	.enum	actor_states
+		state_0
+		state_1
+		state_2
+		state_3
+		state_4
+		state_5
 	.endenum
 
 	.enum	game_mode
@@ -185,8 +200,10 @@
 
 	.enum	actor
 		koopa_green	= $00
+
 		buzzy_beetle	= $02
 		koopa_red	= $03
+
 		hammer_bro	= $05
 		goomba		= $06
 		bloober		= $07
@@ -203,11 +220,19 @@
 		koopa_para_fly_green = $10
 		lakitu		= $11
 		spiny		= $12
+
 		cheep_fly	= $14
+
+		actors_page_b	= $15
+
 		bowser_flame	= $15
 		fireworks	= $16
 		bullet_cheep_swarm = $17
 		swarm_stop	= $18
+
+		actor_1B	= $1B
+		actor_1D	= $1D
+		actor_28	= $28
 		unk_00		= $29
 		bowser		= $2D
 		power_up	= $2E
@@ -217,6 +242,9 @@
 		jump_spring	= $32
 		bullet		= $33
 		toad		= $35
+
+		goomba_trio	= $37
+		actor_3F	= $3F
 	.endenum
 
 	.enum	course
@@ -307,6 +335,19 @@
 		large
 		small
 		crouch
+	.endenum
+
+	.enum	bg_procs
+		main_c			= 0
+		inc_col_a		= (((bg_proc_inc_col_a-bg_proc_tbl)/WORD_SIZE)+1)
+		gfx_render_area_a	= (((bg_proc_gfx_render_area_a-bg_proc_tbl)/WORD_SIZE)+1)
+		gfx_render_area_b	= (((bg_proc_gfx_render_area_b-bg_proc_tbl)/WORD_SIZE)+1)
+		main_a			= (((bg_proc_main_a-bg_proc_tbl)/WORD_SIZE)+1)
+		inc_col_b		= (((bg_proc_inc_col_b-bg_proc_tbl)/WORD_SIZE)+1)
+		gfx_render_area_c	= (((bg_proc_gfx_render_area_c-bg_proc_tbl)/WORD_SIZE)+1)
+		gfx_render_area_d	= (((bg_proc_gfx_render_area_d-bg_proc_tbl)/WORD_SIZE)+1)
+		main_b			= (((bg_proc_main_b-bg_proc_tbl)/WORD_SIZE)+1)
+		mask			= $07
 	.endenum
 
 	.endif	; MISC_I

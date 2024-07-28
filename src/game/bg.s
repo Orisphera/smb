@@ -1,39 +1,55 @@
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/misc.i"
 .include	"../../inc/engine/tunables.i"
 .include	"../../inc/engine/tiles.i"
- 
-.include	"../../inc/engine/unk.i"
 
+.include	"../../inc/engine/unk.i"
+ 
 BG_PROC_METATILE_ID	= zp_byte_07
 
 	.export bg_proc
 bg_proc:
 	ldy	bg_proc_id
-	bne	:+ ; if (!bg_proc_id) {
-		ldy	#8
+	bne	:+ ; if (bg_proc_id == main_c) {
+		ldy	#bg_procs::main_b
 		sty	bg_proc_id
 	: ; }
 
 	dey
 	tya
 	jsr	bg_proc_do
+
 	dec	bg_proc_id
-	bne	:+ ; if (!--bg_proc_id) {
+	bne	:+ ; if (bg_proc_id == inc_col_a) {
 		jsr	gfx_render_attr
 	: ; }
 
 	rts
 ; ------------------------------------------------------------
+	.export bg_proc_tbl
+	.export bg_proc_inc_col_a, bg_proc_inc_col_b
+	.export bg_proc_gfx_render_area_a, bg_proc_gfx_render_area_b
+	.export bg_proc_gfx_render_area_c, bg_proc_gfx_render_area_d
+	.export bg_proc_main_a, bg_proc_main_b
 bg_proc_do:
 	jsr	eng_farjump
+bg_proc_tbl:
+bg_proc_inc_col_a:
 	.addr	bg_inc_col
+bg_proc_gfx_render_area_a:
 	.addr	gfx_render_area
+bg_proc_gfx_render_area_b:
 	.addr	gfx_render_area
+bg_proc_main_a:
 	.addr	bg_proc_main
+bg_proc_inc_col_b:
 	.addr	bg_inc_col
+bg_proc_gfx_render_area_c:
 	.addr	gfx_render_area
+bg_proc_gfx_render_area_d:
 	.addr	gfx_render_area
+bg_proc_main_b:
 	.addr	bg_proc_main
 ; ------------------------------------------------------------
 bg_inc_col:
@@ -465,9 +481,9 @@ bg_proc_main:
 	
 		ldy	#0
 		: ; for (y = 0; x < 0xD && y < 8; x++, y++) {
-			lda	area_bitmasks, y
+			lda	actor_C69C_data_a, y
 			bit	zp_byte_00
-			beq	:+ ; if ((area_bitmasks[y] & fg_mask)) {
+			beq	:+ ; if ((actor_C69C_data_a[y] & fg_mask)) {
 				lda	BG_PROC_METATILE_ID
 				sta	gfx_metatile, x
 			: ; }
@@ -1194,7 +1210,7 @@ bg_areaobj_lock:
 ; -----------------------------
 bg_actor_kill:
 	sta	zp_byte_00
-	lda	#actor_mode::dead
+	lda	#actor_modes::free
 	ldx	#ENG_ACTOR_MAX-2
 	: ; for (entry of actor_id) {
 		ldy	actor_id, x
@@ -1455,14 +1471,14 @@ bg_areaobj_castle:
 			jsr	bg_obj_alloc
 
 			pla
-			sta	eng_actor_pos_x_lo, x
+			sta	pos_x_lo_actor, x
 			lda	eng_page_current
-			sta	eng_actor_pos_x_hi, x
-			lda	#$01
-			sta	eng_actor_pos_y_hi, x
+			sta	pos_x_hi_actor, x
+			lda	#actor_modes::active
+			sta	pos_y_hi_actor, x
 			sta	actor_mode, x
 			lda	#$90
-			sta	eng_actor_pos_y_lo, x
+			sta	pos_y_lo_actor, x
 			lda	#actor::flag_victory
 			sta	actor_id, x
 			rts
@@ -1584,15 +1600,15 @@ bg_areaobj_pipe_vert:
 			jsr	bg_objpos_x_get
 			clc
 			adc	#8
-			sta	eng_actor_pos_x_lo, x
+			sta	pos_x_lo_actor, x
 			lda	eng_page_current
 			adc	#0
-			sta	eng_actor_pos_x_hi, x
-			lda	#1
-			sta	eng_actor_pos_y_hi, x
+			sta	pos_x_hi_actor, x
+			lda	#actor_modes::active
+			sta	pos_y_hi_actor, x
 			sta	actor_mode, x
 			jsr	bg_objpos_y_get
-			sta	eng_actor_pos_y_lo, x
+			sta	pos_y_lo_actor, x
 		.elseif	.defined(ANN)
 			lda	course_no
 			ora	course_sub
@@ -1604,7 +1620,7 @@ bg_areaobj_pipe_vert:
 
 		.if	.defined(SMB)|.defined(VS_SMB)
 			sta	actor_id, x
-			jsr	eng_piranha_plant_init
+			jsr	actor_init_piranha_plant
 		.elseif	.defined(SMB2M)
 			jsr	bg_areaobj_pipe_vert_plant
 		.endif
@@ -1637,16 +1653,16 @@ bg_areaobj_pipe_vert_plant:
 	jsr	bg_objpos_x_get
 	clc
 	adc	#8
-	sta	eng_actor_pos_x_lo, x
+	sta	pos_x_lo_actor, x
 	lda	eng_page_current
 	adc	#0
-	sta	eng_actor_pos_x_hi, x
-	lda	#1
-	sta	eng_actor_pos_y_hi, x
+	sta	pos_x_hi_actor, x
+	lda	#actor_modes::active
+	sta	pos_y_hi_actor, x
 	sta	actor_mode, x
 	jsr	bg_objpos_y_get
-	sta	eng_actor_pos_y_lo, x
-	jmp	eng_piranha_plant_init
+	sta	pos_y_lo_actor, x
+	jmp	actor_init_piranha_plant
 .endif
 ; -----------------------------
 bg_obj_alloc:
@@ -1744,12 +1760,12 @@ bg_areaobj_pole:
 	jsr	bg_objpos_x_get
 	sec
 	sbc	#8
-	sta	eng_actor_pos_x_lo+ENG_ACTOR_MAX-1
+	sta	pos_x_lo_actor+ENG_ACTOR_MAX-1
 	lda	eng_page_current
 	sbc	#0
-	sta	eng_actor_pos_x_hi+ENG_ACTOR_MAX-1
+	sta	pos_x_hi_actor+ENG_ACTOR_MAX-1
 	lda	#$30
-	sta	eng_actor_pos_y_lo+ENG_ACTOR_MAX-1
+	sta	pos_y_lo_actor+ENG_ACTOR_MAX-1
 	lda	#$B0
 	sta	STACK_BASE+$0D
 	lda	#actor::flag_enemy
@@ -1895,11 +1911,11 @@ bg_areaobj_cannon:
 
 	ldx	eng_cannon_offset
 	jsr	bg_objpos_y_get
-	sta	eng_cannon_pos_y_lo, x
+	sta	pos_y_lo_cannon, x
 	lda	eng_page_current
-	sta	eng_cannon_pos_y_hi, x
+	sta	pos_y_hi_cannon, x
 	jsr	bg_objpos_x_get
-	sta	eng_cannon_pos_x_lo, x
+	sta	pos_x_lo_cannon, x
 	inx
 	cpx	#6
 	bcc	:+ ; if (x >= 6) {
@@ -1935,16 +1951,16 @@ bg_areaobj_spring:
 		bcs	:+ ; if () {
 		.endif
 		jsr	bg_objpos_x_get
-		sta	eng_actor_pos_x_lo, x
+		sta	pos_x_lo_actor, x
 		lda	eng_page_current
-		sta	eng_actor_pos_x_hi, x
+		sta	pos_x_hi_actor, x
 		jsr	bg_objpos_y_get
-		sta	eng_actor_pos_y_lo, x
-		sta	eng_actor_veloc_x, x
+		sta	pos_y_lo_actor, x
+		sta	veloc_x_actor, x
 		lda	#actor::jump_spring
 		sta	actor_id, x
 		ldy	#1
-		sty	eng_actor_pos_y_hi, x
+		sty	pos_y_hi_actor, x
 		inc	actor_mode, x
 		ldx	BG_PROC_METATILE_ID
 		lda	#metatile_1::spring_bg_a
@@ -2014,10 +2030,10 @@ bg_areaobj_pit:
 		jsr	bg_objpos_x_get
 		sec
 		sbc	#$10
-		sta	eng_cannon_pos_x_lo, x
+		sta	pos_x_lo_cannon, x
 		lda	eng_page_current
 		sbc	#0
-		sta	eng_cannon_pos_y_hi, x
+		sta	pos_y_hi_cannon, x
 		iny
 		iny
 		tya
@@ -2025,7 +2041,7 @@ bg_areaobj_pit:
 		asl	a
 		asl	a
 		asl	a
-		sta	eng_cannon_pos_y_lo, x
+		sta	pos_y_lo_cannon, x
 		inx
 		cpx	#5
 		bcc	:+ ; if (x >= 5) {

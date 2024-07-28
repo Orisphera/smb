@@ -1,5 +1,6 @@
 .include	"../../inc/system/cpu.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/tunables.i"
 .include	"../../inc/engine/tiles.i"
 
@@ -10,26 +11,26 @@ OBJ_MISC_POWERUP_ACTOR	= (ENG_ACTOR_MAX-1)
 obj_spec_powerup_init:
 	lda	#actor::power_up
 	sta	actor_id+OBJ_MISC_POWERUP_ACTOR
-	lda	eng_spec_pos_x_hi, x
-	sta	eng_actor_pos_x_hi+OBJ_MISC_POWERUP_ACTOR
-	lda	eng_spec_pos_x_lo, x
-	sta	eng_actor_pos_x_lo+OBJ_MISC_POWERUP_ACTOR
+	lda	pos_x_hi_spec, x
+	sta	pos_x_hi_actor+OBJ_MISC_POWERUP_ACTOR
+	lda	pos_x_lo_spec, x
+	sta	pos_x_lo_actor+OBJ_MISC_POWERUP_ACTOR
 	lda	#1
-	sta	eng_actor_pos_y_hi+OBJ_MISC_POWERUP_ACTOR
-	lda	eng_spec_pos_y_lo, x
+	sta	pos_y_hi_actor+OBJ_MISC_POWERUP_ACTOR
+	lda	pos_y_lo_spec, x
 	sec
 	sbc	#8
-	sta	eng_actor_pos_y_lo+OBJ_MISC_POWERUP_ACTOR
-	lda	#1
+	sta	pos_y_lo_actor+OBJ_MISC_POWERUP_ACTOR
+	lda	#actor_modes::active
 	sta	state_actor+OBJ_MISC_POWERUP_ACTOR
 	sta	actor_mode+OBJ_MISC_POWERUP_ACTOR
 	lda	#3
-	sta	eng_actor_col_box+OBJ_MISC_POWERUP_ACTOR
+	sta	col_box_actor+OBJ_MISC_POWERUP_ACTOR
 
 	lda	eng_powerup_type
 	cmp	#powerup_type::star
 	bcs	:++ ; if (powerup.type < star) {
-		lda	eng_player_status
+		lda	player_status
 		cmp	#2
 		bcc	:+ ; if (player.status >= 2) {
 			lsr	a
@@ -75,19 +76,19 @@ obj_spec_powerup_do:
 			lda	frame_count
 			and	#3
 			bne	:+ ; if (frame_count % 4) {
-				dec	eng_actor_pos_y_lo+OBJ_MISC_POWERUP_ACTOR
+				dec	pos_y_lo_actor+OBJ_MISC_POWERUP_ACTOR
 				lda	state_actor+OBJ_MISC_POWERUP_ACTOR
 				inc	state_actor+OBJ_MISC_POWERUP_ACTOR
 				cmp	#$11
 				bcc	:+ ; if (powerup.state >= 0x11) {
 					lda	#16
-					sta	eng_actor_veloc_x, x
+					sta	veloc_x_actor, x
 					lda	#$80
 					sta	state_actor+OBJ_MISC_POWERUP_ACTOR
 					asl	a
 					sta	ppu_nmi_buffer+$CA
 					rol	a
-					sta	eng_actor_motion_dir, x
+					sta	motion_dir_actor, x
 				; }
 			: ; }
 
@@ -116,7 +117,7 @@ obj_spec_block_punch:
 
 	lda	#$11
 	ldx	ppu_nmi_buffer+$EE
-	ldy	eng_player_size
+	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		lda	#$12
 	: ; }
@@ -133,7 +134,7 @@ obj_spec_block_punch:
 	lda	(eng_buffer_ptr), y
 	jsr	obj_spec_block_is_tile
 	sta	zp_byte_00
-	ldy	eng_player_size
+	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		tya
 	: ; }
@@ -162,7 +163,7 @@ obj_spec_block_punch:
 			tya
 		; }
 	: ; }
-	sta	eng_spec_tile, x
+	sta	spec_tile, x
 	jsr	obj_spec_block_initpos
 
 	ldy	zp_byte_02
@@ -177,17 +178,17 @@ obj_spec_block_punch:
 	ldy	#0
 	lda	eng_crouch
 	bne	:+
-	lda	eng_player_size
+	lda	player_size
 	beq	:++
 	: ; if (eng_crouch || player.size == small) {
 		iny
 	: ; }
 
-	lda	eng_player_pos_y_lo
+	lda	pos_y_lo_player
 	clc
 	adc	obj_spec_block_punch_off_y, y
 	and	#$F0
-	sta	eng_spec_pos_y_lo, x
+	sta	pos_y_lo_spec, x
 
 	ldy	state_spec, x
 	cpy	#$11
@@ -198,24 +199,24 @@ obj_spec_block_punch:
 		jsr	obj_spec_block_item
 	: ; }
 
-	lda	ppu_nmi_buffer+$EE
+	lda	byte_3EE
 	eor	#1
-	sta	ppu_nmi_buffer+$EE
+	sta	byte_3EE
 	rts
 ; ------------------------------------------------------------
 	.export obj_spec_block_initpos
 obj_spec_block_initpos:
-	lda	eng_player_pos_x_lo
+	lda	pos_x_lo_player
 	clc
 	adc	#8
 	and	#$F0
-	sta	eng_spec_pos_x_lo, x
-	lda	eng_player_pos_x_hi
+	sta	pos_x_lo_spec, x
+	lda	pos_x_hi_player
 	adc	#0
-	sta	eng_spec_pos_x_hi, x
+	sta	pos_x_hi_spec, x
 	sta	ppu_nmi_buffer+$EA, x
-	lda	eng_player_pos_y_hi
-	sta	eng_spec_pos_y_hi, x
+	lda	pos_y_hi_player
+	sta	pos_y_hi_spec, x
 	rts
 ; ------------------------------------------------------------
 obj_spec_block_item:
@@ -225,11 +226,11 @@ obj_spec_block_item:
 	sta	apu_pulse1_queue
 
 	lda	#0
-	sta	eng_spec_veloc_x, x
-	sta	eng_spec_accel_y, x
-	sta	eng_player_veloc_y
+	sta	veloc_x_spec, x
+	sta	accel_y_spec, x
+	sta	veloc_y_player
 	lda	#<-2
-	sta	eng_spec_veloc_y, x
+	sta	veloc_y_spec, x
 
 	lda	zp_byte_05
 	jsr	obj_spec_block_is_tile
@@ -374,15 +375,15 @@ obj_spec_block_is_tile:
 obj_spec_block_break:
 	jsr	obj_spec_block_top_check
 	lda	#1
-	sta	ppu_nmi_buffer+$EC, x
+	sta	byte_3EC, x
 	sta	apu_noise_event
 	jsr	obj_spec_block_bits_init
 	lda	#<-2
-	sta	eng_player_veloc_y
+	sta	veloc_y_player
 	lda	#5
 	sta	STACK_BASE+$39
 	jsr	obj_misc_update_score
-	ldx	ppu_nmi_buffer+$EE
+	ldx	byte_3EE
 	rts
 ; ------------------------------------------------------------
 obj_spec_block_top_check:
@@ -391,7 +392,7 @@ obj_spec_block_top_check:
 	beq	:+ ; if (zp_byte_02) {
 		tya
 		sec
-		sbc	#$10
+		sbc	#16
 		sta	zp_byte_02
 		tay
 		lda	(eng_buffer_ptr), y
@@ -400,7 +401,7 @@ obj_spec_block_top_check:
 			lda	#0
 			sta	(eng_buffer_ptr), y
 			jsr	gfx_clear_small
-			ldx	ppu_nmi_buffer+$EE
+			ldx	byte_3EE
 			jsr	obj_misc_block_coin_b
 		; }
 	: ; }
@@ -408,35 +409,35 @@ obj_spec_block_top_check:
 	rts
 ; ------------------------------------------------------------
 obj_spec_block_bits_init:
-	lda	eng_spec_pos_x_lo, x
-	sta	ppu_nmi_buffer+$F1, x
+	lda	pos_x_lo_spec, x
+	sta	byte_3F1, x
 	lda	#<-16
-	sta	eng_spec_veloc_x, x
-	sta	eng_spec_veloc_x+2, x
+	sta	veloc_x_spec, x
+	sta	veloc_x_spec+2, x
 	lda	#<-6
-	sta	eng_spec_veloc_y, x
+	sta	veloc_y_spec, x
 	lda	#<-4
-	sta	eng_spec_veloc_y+2, x
+	sta	veloc_y_spec+2, x
 	lda	#0
-	sta	eng_spec_accel_y, x
-	sta	eng_spec_accel_y+2, x
-	lda	eng_spec_pos_x_hi, x
-	sta	eng_spec_pos_x_hi+2, x
-	lda	eng_spec_pos_x_lo, x
-	sta	eng_spec_pos_x_lo+2, x
-	lda	eng_spec_pos_y_lo, x
+	sta	accel_y_spec, x
+	sta	accel_y_spec+2, x
+	lda	pos_x_hi_spec, x
+	sta	pos_x_hi_spec+2, x
+	lda	pos_x_lo_spec, x
+	sta	pos_x_lo_spec+2, x
+	lda	pos_y_lo_spec, x
 	clc
 	adc	#8
-	sta	eng_spec_pos_y_lo+2, x
+	sta	pos_y_lo_spec+2, x
 	lda	#<-6
-	sta	eng_spec_veloc_y, x
+	sta	veloc_y_spec, x
 	rts
 ; ------------------------------------------------------------
 	.export obj_spec_block_proc
 obj_spec_block_proc:
 	lda	state_spec, x
 	beq	:++++ ; if (this.state != 0) {
-		and	#$0F
+		and	#%00001111
 		pha
 
 		tay
@@ -461,17 +462,17 @@ obj_spec_block_proc:
 			jsr	render_block_bits
 
 			pla
-			ldy	eng_spec_pos_y_hi, x
+			ldy	pos_y_hi_spec, x
 			beq	:++++ ; if (this.pos_y.hi) {
 				pha
 
 				lda	#$F0
-				cmp	eng_spec_pos_y_lo+2, x
+				cmp	pos_y_lo_spec+2, x
 				bcs	:+ ; if (that.pos_y.lo < 0xF0) {
-					sta	eng_spec_pos_y_lo+2, x
+					sta	pos_y_lo_spec+2, x
 				: ; }
 		
-				lda	eng_spec_pos_y_lo, x
+				lda	pos_y_lo_spec, x
 				cmp	#$F0
 
 				pla
@@ -484,14 +485,14 @@ obj_spec_block_proc:
 			jsr	lib_calc_spec_pos
 			jsr	lib_spec_bits_get
 			jsr	render_block
-			lda	eng_spec_pos_y_lo, x
-			and	#$0F
+			lda	pos_y_lo_spec, x
+			and	#%00001111
 			cmp	#5
 
 			pla
 			bcs	:++ ; if ((this.pos_y.lo & 0xF) < 5) {
 				lda	#1
-				sta	ppu_nmi_buffer+$EC, x
+				sta	byte_3EC, x
 			; }
 		; }
 	: ; }
@@ -508,23 +509,23 @@ obj_spec_block_flatten:
 	: ; for (block of blocks) {
 		stx	actor_index
 
-		lda	ppu_nmi_buffer+$01
+		lda	ppu_nmi_buffer_0_data+0
 		bne	:+
-		lda	ppu_nmi_buffer+$EC, x
-		beq	:+ ; if (!ppu_nmi_buffer[1] && ppu_nmi_buffer[0xEC]) {
-			lda	ppu_nmi_buffer+$E6, x
+		lda	byte_3EC, x
+		beq	:+ ; if (!ppu_nmi_buffer[0] && byte_3EC[actor_index]) {
+			lda	byte_3E6, x
 			sta	eng_buffer_ptr
 			lda	#5
 			sta	eng_buffer_ptr+1
-			lda	ppu_nmi_buffer+$E4, x
+			lda	byte_3E4, x
 			sta	zp_byte_02
 			tay
-			lda	ppu_nmi_buffer+$E8, x
+			lda	spec_tile, x
 			sta	(eng_buffer_ptr), y
 			jsr	gfx_meta_replace
 
 			lda	#0
-			sta	ppu_nmi_buffer+$EC, x
+			sta	byte_3EC, x
 		: ; }
 
 		dex

@@ -2,6 +2,7 @@
 .include	"../../inc/system/ppu.i"
 .include	"../../inc/system/palettes.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/tunables.i"
 .include	"../../inc/engine/charmap.i"
@@ -52,17 +53,17 @@ screen_init:
 screen_color_init_1:
 	lda	course_bg_col
 	pha
-	lda	eng_player_status
+	lda	player_status
 	pha
 
 	lda	#0
-	sta	eng_player_status
+	sta	player_status
 	lda	#COURSE_DATA_BG_COL_OVERWORLD_VAL
 	sta	course_bg_col
 	jsr	screen_color_player
 
 	pla
-	sta	eng_player_status
+	sta	player_status
 	pla
 	sta	course_bg_col
 
@@ -125,24 +126,24 @@ screen_color_init_3:
 
 	.export screen_color_player
 screen_color_player:
-	ldx	ppu_nmi_buffer+0
+	ldx	ppu_nmi_buffer_0_offset
 	ldy	#(screen_color_player_1-screen_color_player_data)
 	.if	.defined(SMB)|.defined(VS_SMB)
-		lda	eng_player_id
-		beq	:+ ; if (eng_player_id != 0) {
+		lda	player_id
+		beq	:+ ; if (player_id != 0) {
 			ldy	#(screen_color_player_2-screen_color_player_data)
 		: ; }
 	.endif
-	lda	eng_player_status
+	lda	player_status
 	cmp	#2
-	bne	:+ ; if (eng_player_status == 2) {
+	bne	:+ ; if (player_status == 2) {
 		ldy	#(screen_color_player_power-screen_color_player_data)
 	: ; }
 	lda	#PPU_COLOR_LINE_SIZE-1
 	sta	zp_byte_00
-	: ; for (x = ppu_nmi_buffer[0], y = entry_base, i = 3; i >= 0; x++, y++, i--) {
+	: ; for (x = ppu_nmi_buffer_0_offset, y = entry_base, i = 3; i >= 0; x++, y++, i--) {
 		lda	screen_color_player_data, y
-		sta	ppu_nmi_buffer+4, x
+		sta	ppu_nmi_buffer_0_data+3, x
 
 		iny
 		inx
@@ -150,28 +151,28 @@ screen_color_player:
 		bpl	:-
 	; }
 
-	ldx	ppu_nmi_buffer+0
+	ldx	ppu_nmi_buffer_0_offset
 	ldy	course_bg_col
 	bne	:+ ; if (!course_bg_col) {
 		ldy	course_type
 	: ; }
 	lda	screen_color_bg_data+PPU_COLOR_ROW_SIZE, y
-	sta	ppu_nmi_buffer+4, x
+	sta	ppu_nmi_buffer_0_data+3, x
 	lda	#>(PPU_COLOR_PAGE_OBJ)
-	sta	ppu_nmi_buffer+1, x
+	sta	ppu_nmi_buffer_0_data+0, x
 	lda	#<(PPU_COLOR_PAGE_OBJ)
-	sta	ppu_nmi_buffer+2, x
+	sta	ppu_nmi_buffer_0_data+1, x
 	lda	#PPU_COLOR_LINE_SIZE
-	sta	ppu_nmi_buffer+3, x
+	sta	ppu_nmi_buffer_0_data+2, x
 	lda	#0
-	sta	ppu_nmi_buffer+8, x
+	sta	ppu_nmi_buffer_0_data+7, x
 	txa
 	clc
 	adc	#7
 
 	.export screen_color_player_end
 screen_color_player_end:
-	sta	ppu_nmi_buffer+0
+	sta	ppu_nmi_buffer_0_offset
 	rts
 ; ------------------------------------------------------------
 	.export screen_color_init_4_end
@@ -196,13 +197,13 @@ SCREEN_STAT_BG_1_LEN	=	3
 
 screen_text_draw_splash:
 	jsr	obj_misc_update_stats
-	ldx	ppu_nmi_buffer+$00
+	ldx	ppu_nmi_buffer_0_offset
 	lda	#>(SCREEN_STAT_BG_1_ADDR)
-	sta	ppu_nmi_buffer+$01, x
+	sta	ppu_nmi_buffer_0_data+0, x
 	lda	#<(SCREEN_STAT_BG_1_ADDR)
-	sta	ppu_nmi_buffer+$02, x
+	sta	ppu_nmi_buffer_0_data+1, x
 	lda	#SCREEN_STAT_BG_1_LEN
-	sta	ppu_nmi_buffer+$03, x
+	sta	ppu_nmi_buffer_0_data+2, x
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldy	course_no
 		iny
@@ -210,19 +211,19 @@ screen_text_draw_splash:
 	.elseif	.defined(SMB2M)
 		jsr	screen_calc_course_no
 	.endif
-	sta	ppu_nmi_buffer+$04, x
+	sta	ppu_nmi_buffer_0_data+3, x
 	lda	#'-'
-	sta	ppu_nmi_buffer+$05, x
+	sta	ppu_nmi_buffer_0_data+4, x
 	ldy	eng_goals
 	iny
 	tya
-	sta	ppu_nmi_buffer+$06, x
+	sta	ppu_nmi_buffer_0_data+5, x
 	lda	#0
-	sta	ppu_nmi_buffer+$07, x
+	sta	ppu_nmi_buffer_0_data+6, x
 	txa
 	clc
 	adc	#SCREEN_STAT_BG_1_LEN+WORD_SIZE+1
-	sta	ppu_nmi_buffer+$00
+	sta	ppu_nmi_buffer_0_offset
 	jmp	screen_proc_continue
 ; ----------------------------
 	.if	.defined(SMB2M)
@@ -333,7 +334,7 @@ screen_text_draw_intermission:
 screen_bg:
 	inc	eng_disp_disable
 
-	: ; while (bg_proc_id) {
+	: ; while (bg_proc_id != main_c) {
 		jsr	bg_proc
 		lda	bg_proc_id
 		bne	:-
@@ -571,8 +572,8 @@ screen_text_draw:
 				ldy	#8
 			: ; }
 
-			lda	eng_player_count
-			bne	:+ ; if (!eng_player_count) {
+			lda	player_count
+			bne	:+ ; if (!player_count) {
 				iny
 			: ; }
 		; }
@@ -586,7 +587,7 @@ screen_text_draw:
 		lda	screen_text, x
 		cmp	#screen_text_end_val
 		beq	:+
-		sta	ppu_nmi_buffer+$01, y
+		sta	ppu_nmi_buffer_0_data+0, y
 
 		inx
 		iny
@@ -594,7 +595,7 @@ screen_text_draw:
 	: ; }
 
 	lda	#0
-	sta	ppu_nmi_buffer+$01, y
+	sta	ppu_nmi_buffer_0_data+0, y
 	pla
 
 	.if	.defined(SMB2M)
@@ -613,26 +614,26 @@ screen_text_draw:
 		lda	eng_lives
 		clc
 		adc	#1
-		cmp	#$0A
-		bcc	:+ ; if (++eng_lives >= 0x0A) {
-			sbc	#$0A
+		cmp	#10
+		bcc	:+ ; if (++eng_lives >= 10) {
+			sbc	#10
 			ldy	#$9F
-			sty	ppu_nmi_buffer+$08
+			sty	ppu_nmi_buffer_0_data+7
 		: ; }
-		sta	ppu_nmi_buffer+$09
+		sta	ppu_nmi_buffer_0_data+8
 	
 		.if	.defined(SMB)|.defined(VS_SMB)
 			ldy	course_no
 			iny
-			sty	ppu_nmi_buffer+$14
+			sty	ppu_nmi_buffer_0_data+19
 		.elseif	.defined(SMB2M)
 			jsr	screen_calc_course_no
-			sta	ppu_nmi_buffer+$14
+			sta	ppu_nmi_buffer_0_data+19
 		.endif
 
 		ldy	eng_goals
 		iny
-		sty	ppu_nmi_buffer+$16
+		sty	ppu_nmi_buffer_0_data+21
 
 	.if	.defined(SMB2M)
 		: ; }
@@ -642,9 +643,9 @@ screen_text_draw:
 	.elseif	.defined(SMB)|.defined(VS_SMB)
 		rts
 		: ; } else if (a <= 1) {
-			lda	eng_player_count
-			beq	:+++ ; if (eng_player_count) {
-				lda	eng_player_id
+			lda	player_count
+			beq	:+++ ; if (player_count) {
+				lda	player_id
 				dex
 				bne	:+
 				ldy	eng_game_mode
@@ -662,7 +663,7 @@ screen_text_draw:
 					ldy	#(screen_text_player_2_end-screen_text_player_2)-1
 					: ; for (byte of screen_text_player_2) {
 						lda	screen_text_player_2, y
-						sta	ppu_nmi_buffer+$04, y
+						sta	ppu_nmi_buffer_0_data+3, y
 
 						dey
 						bpl	:-
@@ -682,7 +683,7 @@ screen_text_draw:
 			: ; for (byte of screen_text_warp_screen) {
 				iny
 				lda	screen_text_warp_screen, y
-				sta	ppu_nmi_buffer+$01, y
+				sta	ppu_nmi_buffer_0_data+0, y
 
 				bne	:-
 			; }
@@ -693,7 +694,7 @@ screen_text_draw:
 		.if	.defined(SMB2)
 				tax
 				lda	screen_text_warps, x
-				sta	ppu_nmi_buffer+$1C
+				sta	ppu_nmi_buffer_0_data+27
 		.endif
 	.elseif	.defined(SMB)|.defined(VS_SMB)
 		screen_text_draw_over: ; } else {
@@ -705,16 +706,16 @@ screen_text_draw:
 		asl	a
 		tax
 		ldy	#0
-		: ; for (y = 0; y < 0xC; y += 4) {
+		: ; for (y = 0; y < 12; y += 4) {
 			lda	screen_text_warps, x
-			sta	ppu_nmi_buffer+$1C, y
+			sta	ppu_nmi_buffer_0_data+27, y
 
 			inx
 			iny
 			iny
 			iny
 			iny
-			cpy	#$0C
+			cpy	#12
 			bcc	:-
 		; }
 	.endif

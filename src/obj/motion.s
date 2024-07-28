@@ -1,8 +1,7 @@
 .include	"../../inc/system/cpu.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/misc.i"
-
-.include	"../../inc/engine/unk.i"
 
 	.export motion_x, motion_x_check_spring, motion_x_do
 motion_x:
@@ -17,13 +16,13 @@ motion_x_check_spring:
 		tax
 	
 	motion_x_do:
-		lda	eng_player_veloc_x, x
+		lda	veloc_x_player, x
 		asl	a
 		asl	a
 		asl	a
 		asl	a
 		sta	zp_byte_01
-		lda	eng_player_veloc_x, x
+		lda	veloc_x_player, x
 		lsr	a
 		lsr	a
 		lsr	a
@@ -41,22 +40,22 @@ motion_x_check_spring:
 		: ; }
 		sty	zp_byte_02
 
-		lda	eng_player_accel_x_b, x
+		lda	accel_x_player_b, x
 		clc
 		adc	zp_byte_01
-		sta	eng_player_accel_x_b, x
+		sta	accel_x_player_b, x
 
 		lda	#0
 		rol	a
 		pha
 	
 		ror	a
-		lda	eng_player_pos_x_lo, x
+		lda	pos_x_lo_player, x
 		adc	zp_byte_00
-		sta	eng_player_pos_x_lo, x
-		lda	eng_player_pos_x_hi, x
+		sta	pos_x_lo_player, x
+		lda	pos_x_hi_player, x
 		adc	zp_byte_02
-		sta	eng_player_pos_x_hi, x
+		sta	pos_x_hi_player, x
 
 		pla
 		clc
@@ -74,7 +73,7 @@ motion_y_check_spring:
 	lda	eng_spring_ani
 	bne	:-
 	: ; if (eng_timer_ctl || !eng_spring_ani) {
-		lda	eng_player_accel_y
+		lda	accel_y_player
 		sta	motion_gravity_accel_y_inc
 		lda	#4
 		jmp	motion_gravity_do
@@ -197,40 +196,40 @@ motion_bounce_gravity_do:
 motion_gravity:
 	pha
 
-	lda	eng_actor_accel_y_b, x
+	lda	accel_y_actor_b, x
 	clc
-	adc	eng_actor_accel_y, x
-	sta	eng_actor_accel_y_b, x
+	adc	accel_y_actor, x
+	sta	accel_y_actor_b, x
 
 	ldy	#0
-	lda	eng_player_veloc_y, x
+	lda	veloc_y_player, x
 	bpl	:+ ; if (this.veloc_y < 0) {
 		dey
 	: ; }
 	sty	zp_byte_07
-	adc	eng_player_pos_y_lo, x
-	sta	eng_player_pos_y_lo, x
-	lda	eng_player_pos_y_hi, x
+	adc	pos_y_lo_player, x
+	sta	pos_y_lo_player, x
+	lda	pos_y_hi_player, x
 	adc	zp_byte_07
-	sta	eng_player_pos_y_hi, x
+	sta	pos_y_hi_player, x
 
-	lda	eng_actor_accel_y, x
+	lda	accel_y_actor, x
 	clc
 	adc	motion_gravity_accel_y_inc
-	sta	eng_actor_accel_y, x
+	sta	accel_y_actor, x
 
-	lda	eng_player_veloc_y, x
+	lda	veloc_y_player, x
 	adc	#0
-	sta	eng_player_veloc_y, x
+	sta	veloc_y_player, x
 	cmp	motion_gravity_veloc_y_max_abs
 	bmi	:+
-	lda	eng_actor_accel_y, x
+	lda	accel_y_actor, x
 	cmp	#$80
 	bcc	:+ ; if (abs(this.veloc_y) > abs(motion_gravity_veloc_y_max_abs) && this.accel_y < 0) {
 		lda	motion_gravity_veloc_y_max_abs
-		sta	eng_player_veloc_y, x
+		sta	veloc_y_player, x
 		lda	#0
-		sta	eng_actor_accel_y, x
+		sta	accel_y_actor, x
 	: ; }
 
 	pla
@@ -241,23 +240,23 @@ motion_gravity:
 		iny
 		sty	zp_byte_07
 
-		lda	eng_actor_accel_y, x
+		lda	accel_y_actor, x
 		sec
 		sbc	motion_gravity_accel_y_dec
-		sta	eng_actor_accel_y, x
+		sta	accel_y_actor, x
 
-		lda	eng_player_veloc_y, x
+		lda	veloc_y_player, x
 		sbc	#0
-		sta	eng_player_veloc_y, x
+		sta	veloc_y_player, x
 		cmp	zp_byte_07
 		bpl	:+
-		lda	eng_actor_accel_y, x
+		lda	accel_y_actor, x
 		cmp	#$80
 		bcs	:+ ; if (abs(this.veloc_y) > abs(motion_gravity_veloc_y_max_abs) && this.accel_y >= 0) {
 			lda	zp_byte_07
-			sta	eng_player_veloc_y, x
+			sta	veloc_y_player, x
 			lda	#<-1
-			sta	eng_actor_accel_y, x
+			sta	accel_y_actor, x
 		; }
 	: ; }
 

@@ -1,5 +1,6 @@
 .include	"../../inc/system/cpu.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/course_flags.i"
 .include	"../../inc/engine/misc.i"
 
@@ -24,7 +25,7 @@ course_descriptor_load:
 	sta	course_descriptor
 
 course_type_get:
-	and	#(course_types::MAX<<5)
+	and	#(course_types::MAX<<COURSE_DESC_TYPE_BIT)
 	asl	a
 	rol	a
 	rol	a
@@ -70,7 +71,7 @@ course_load:
 	tay
 
 	lda	course_descriptor
-	and	#(COURSE_AREA_OFFSET_MAX<<0)
+	and	#(COURSE_AREA_OFFSET_MAX<<COURSE_DESC_PAGE_BIT)
 	sta	course_page_offset
 
 	lda	course_actor_pages, y

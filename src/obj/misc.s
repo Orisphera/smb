@@ -1,3 +1,4 @@
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/tunables.i"
 
 .include	"../../inc/engine/unk.i"
@@ -23,14 +24,14 @@ obj_hammer_init:
 	bne	:+
 	ldx	obj_hammer_actor_id, y
 	lda	actor_mode, x
-	bne	:+ ; if (obj_rand.state == 0 && obj_rand.mode == dead) {
+	bne	:+ ; if (obj_rand.state == 0 && obj_rand.mode == free) {
 		ldx	actor_index
 		txa
-		sta	eng_misc_actor_id, y
+		sta	misc_actor_id, y
 		lda	#$90
 		sta	state_misc, y
 		lda	#7
-		sta	eng_misc_col_box, y
+		sta	col_box_misc, y
 		sec
 		rts
 	: ; } else {
@@ -44,7 +45,7 @@ obj_hammer_do:
 	bne	:++++ ; if (!eng_timer_ctl) {
 		lda	state_misc, x
 		and	#$7F
-		ldy	eng_misc_actor_id, x
+		ldy	misc_actor_id, x
 		cmp	#2
 		beq	:+
 		bcs	:++ ; if ((this.state & 0x7F) < 2) {
@@ -68,37 +69,37 @@ obj_hammer_do:
 		: ; } else {
 			; if (this.state == 2) {
 				lda	#<-2
-				sta	eng_misc_veloc_y, x
+				sta	veloc_y_misc, x
 
 				lda	state_actor, y
 				and	#%11110111
 				sta	state_actor, y
 
-				ldx	eng_actor_motion_dir, y
+				ldx	motion_dir_actor, y
 				dex
 				lda	obj_hammer_veloc_x, x
 				ldx	actor_index
-				sta	eng_misc_veloc_x, x
+				sta	veloc_x_misc, x
 			: ; }
 	
 			dec	state_misc, x
 
-			lda	eng_actor_pos_x_lo, y
+			lda	pos_x_lo_actor, y
 			clc
 			adc	#2
-			sta	eng_misc_pos_x_lo, x
+			sta	pos_x_lo_misc, x
 
-			lda	eng_actor_pos_x_hi, y
+			lda	pos_x_hi_actor, y
 			adc	#0
-			sta	eng_misc_pos_x_hi, x
+			sta	pos_x_hi_misc, x
 
-			lda	eng_actor_pos_y_lo, y
+			lda	pos_y_lo_actor, y
 			sec
 			sbc	#10
-			sta	eng_misc_pos_y_lo, x
+			sta	pos_y_lo_misc, x
 
 			lda	#1
-			sta	eng_misc_pos_y_hi, x
+			sta	pos_y_hi_misc, x
 			bne	:++
 		: ; }
 
@@ -116,36 +117,36 @@ obj_hammer_do:
 	.export obj_misc_block_coin_a, obj_misc_block_coin_b
 obj_misc_block_coin_a:
 	jsr	obj_misc_block_alloc
-	lda	eng_spec_pos_x_hi, x
-	sta	eng_misc_pos_x_hi, y
-	lda	eng_spec_pos_x_lo, x
+	lda	pos_x_hi_spec, x
+	sta	pos_x_hi_misc, y
+	lda	pos_x_lo_spec, x
 	ora	#%00000101
-	sta	eng_misc_pos_x_lo, y
-	lda	eng_spec_pos_y_lo, x
+	sta	pos_x_lo_misc, y
+	lda	pos_y_lo_spec, x
 	sbc	#16
-	sta	eng_misc_pos_y_lo, y
+	sta	pos_y_lo_misc, y
 	jmp	obj_misc_block_coin
 ; -----------------------------
 obj_misc_block_coin_b:
 	jsr	obj_misc_block_alloc
 	lda	ppu_nmi_buffer+$EA, x
-	sta	eng_misc_pos_x_hi, y
+	sta	pos_x_hi_misc, y
 	lda	zp_byte_06
 	asl	a
 	asl	a
 	asl	a
 	asl	a
 	ora	#%00000101
-	sta	eng_misc_pos_x_lo, y
+	sta	pos_x_lo_misc, y
 	lda	zp_byte_02
 	adc	#32
-	sta	eng_misc_pos_y_lo, y
+	sta	pos_y_lo_misc, y
 
 obj_misc_block_coin:
 	lda	#<-5
-	sta	eng_misc_veloc_y, y
+	sta	veloc_y_misc, y
 	lda	#1
-	sta	eng_misc_pos_y_hi, y
+	sta	pos_y_hi_misc, y
 	sta	state_misc, y
 	sta	apu_pulse2_queue
 	stx	actor_index
@@ -165,7 +166,7 @@ obj_misc_block_alloc:
 			ldy	#ENG_MISC_MAX-1
 		; }
 	: ; }
-	sty	eng_misc_block_id
+	sty	misc_block_id
 	rts
 ; ------------------------------------------------------------
 	.export	obj_misc_routine
@@ -185,13 +186,13 @@ obj_misc_routine:
 			beq	:+ ; if (this.state != 1) {
 				inc	state_misc, x
 
-				lda	eng_misc_pos_x_lo, x
+				lda	pos_x_lo_misc, x
 				clc
 				adc	eng_scroll_amount
-				sta	eng_misc_pos_x_lo, x
-				lda	eng_misc_pos_x_hi, x
+				sta	pos_x_lo_misc, x
+				lda	pos_x_hi_misc, x
 				adc	#0
-				sta	eng_misc_pos_x_hi, x
+				sta	pos_x_hi_misc, x
 
 				lda	state_misc, x
 				cmp	#$30
@@ -216,7 +217,7 @@ obj_misc_routine:
 				jsr	motion_gravity
 
 				ldx	actor_index
-				lda	eng_misc_veloc_y, x
+				lda	veloc_y_misc, x
 				cmp	#5
 				bne	:+ ; if (this.veloc_y == 5) {
 					inc	state_misc, x
@@ -264,7 +265,7 @@ obj_misc_add_coin:
 	lda	#1
 	sta	STACK_BASE+$39
 	.if	.defined(SMB)|.defined(VS_SMB)
-		ldx	eng_player_id
+		ldx	player_id
 		ldy	obj_misc_coin_players, x
 	.elseif	.defined(SMB2M)
 		ldy	#$11
@@ -284,7 +285,7 @@ obj_misc_add_coin:
 		sta	eng_coins
 
 		.if	.defined(VS_SMB)
-			ldx	eng_player_id
+			ldx	player_id
 			ldy	obj_misc_coin_players, x
 			ldx	#4-1
 			: ; for (x = 4-1; x > 0; x--) {
@@ -308,7 +309,7 @@ obj_misc_add_coin:
 
 obj_misc_update_score:
 	.if	.defined(SMB)|.defined(VS_SMB)
-		ldx	eng_player_id
+		ldx	player_id
 		ldy	obj_misc_score_players, x
 	.elseif	.defined(SMB2M)
 		ldy	#$0B
@@ -317,7 +318,7 @@ obj_misc_update_score:
 
 obj_misc_update_stats:
 	.if	.defined(SMB)|.defined(VS_SMB)
-		ldy	eng_player_id
+		ldy	player_id
 		lda	obj_misc_stats_players, y
 	.elseif	.defined(SMB2M)
 		lda	#$01

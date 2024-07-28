@@ -5,7 +5,6 @@ TUNABLES_I = 1
 .include	"../system/ppu.i"
 
 .include	"../engine/misc.i"
-.include	"../engine/unk.i"
 
 ENG_FONT_TILE_BASE = 0
 
@@ -50,15 +49,12 @@ VICTORY_TICK		= 4
 .endif
 
 .if	.defined(SMB)
-	ENG_HARDMODE_VAR	= eng_hard_mode
 	ENG_HARDMODE_B_COURSE	= course::no_05
 	ENG_HARDMODE_B_GOAL	= 2
 .elseif	.defined(VS_SMB)
-	ENG_HARDMODE_VAR	= eng_hard_mode
 	ENG_HARDMODE_B_COURSE	= course::no_04
 	ENG_HARDMODE_B_GOAL	= 1
 .elseif	.defined(SMB2M)
-	ENG_HARDMODE_VAR	= byte_7FB
 	ENG_HARDMODE_B_COURSE	= course::no_04
 	ENG_HARDMODE_B_GOAL	= 3
 .endif
@@ -95,5 +91,7 @@ NMI_BUFFER_ENTRY_SIZE	= (PPU_ADDR_SIZE+NMI_BUFFER_ENTRY_DATA_SIZE)
 METATILE_MAX	= 13
 
 NMI_DATA_END	= 0
+
+LOOP_VAL_COUNT	= 11
 
 .endif	; TUNABLES_I

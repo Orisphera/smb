@@ -1,9 +1,8 @@
 .include	"../../inc/system/ppu.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/joypad.i"
 .include	"../../inc/engine/sound.i"
-
-.include	"../../inc/engine/unk.i"
 
 sub_98DC:
 	lda	VS_RAM_ARENA0+$17
@@ -49,7 +48,7 @@ sub_9919:
 data_9922:
 	.byte	$DD, $E3
 sub_9924:
-	ldx	eng_player_id
+	ldx	player_id
 	lda	data_9922, x
 	sta	zp_addr_04
 	lda	#7
@@ -220,7 +219,7 @@ sub_995D:
 sub_9A0C:
         lda	#0
 	sta	VS_RAM_ARENA0+$17
-	ldx	eng_player_id
+	ldx	player_id
 	lda	VS_RAM_ARENA0+$28, x
 	beq	:+ ; if (vs_ram_arena0[0x28]) {
                 inc	eng_gameplay_mode
@@ -629,7 +628,7 @@ L9CB0:
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_H
 
-	lda	eng_player_id
+	lda	player_id
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR
@@ -675,9 +674,9 @@ sub_9D3C:
 	rts
 ; ----------------------------
 sub_9D4D:
-	lda	eng_player_count
-	beq	:+ ; if (eng_player_count) {
-		ldx	eng_player_id
+	lda	player_count
+	beq	:+ ; if (player_count) {
+		ldx	player_id
 		lda	joypad_p1, x
 		jmp	:++
 	: ; } else {
@@ -1059,7 +1058,7 @@ sub_9F3B:
 				lda	data_9F33, y
 				and	#obj_attr::v_flip
 				lsr	a
-				ora	eng_player_id
+				ora	player_id
 				sta	OAM_DMA_BUFFER+OBJ_ATTR-2, x
 				dex
 				lda	data_9F33, y

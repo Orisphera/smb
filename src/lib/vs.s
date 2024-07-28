@@ -1,10 +1,9 @@
 .include	"../../inc/system/ppu.i"
 .include	"../../inc/system/vs.i"
 
+.include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/charmap.i"
 .include	"../../inc/engine/joypad.i"
-
-.include	"../../inc/engine/unk.i"
 
 	.export vs_read_dips
 vs_read_dips:
