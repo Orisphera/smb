@@ -492,11 +492,11 @@ ppu_84AA:
 	.byte	$00
 ppu_84AA_end:
 
-tbl_6E5_84B3:
+obj_data_offset_enemy_84B3:
 	.byte	$50, $B0, $E0, $68
 	.byte	$98, $C8
 
-tbl_6E5_84B9:
+obj_data_offset_enemy_84B9:
 	.byte	$80, $50, $68, $80
 	.byte	$98, $B0, $C8
 
@@ -632,12 +632,12 @@ sub_8552:
 			bcc	:+
 			sbc	#4
 			tay
-			lda	tbl_6E5_84B3, y
-			cmp	tbl_6E5_84B9, x
+			lda	obj_data_offset_enemy_84B3, y
+			cmp	obj_data_offset_enemy_84B9, x
 			beq	:++
-			: ; if ((vs_ram_arena0[0x1F] < 4) || (tbl_6E5_84B3[vs_ram_arena[0x1F]-4] != tbl_6E5_84B9[vs_ram_arena0[0x22]])) {
-				ldy	tbl_6E5_84B9, x
-				sty	tbl_6E5
+			: ; if ((vs_ram_arena0[0x1F] < 4) || (obj_data_offset_enemy_84B3[vs_ram_arena[0x1F]-4] != obj_data_offset_enemy_84B9[vs_ram_arena0[0x22]])) {
+				ldy	obj_data_offset_enemy_84B9, x
+				sty	obj_data_offset_enemy
 				lda	#$35
 				sta	actor_id
 				lda	actor_pos_y_lo_84C0, x
@@ -660,7 +660,7 @@ sub_8552:
 		pla
 		sta	course_no
 		lda	#$30
-		sta	tbl_6E5
+		sta	obj_data_offset_enemy
 		lda	#$B8
 		sta	pos_y_lo_actor
 		rts
@@ -695,7 +695,7 @@ sub_85E0:
 		lda	#0
 		sta	eng_timer_ctl
 		lda	#$1C
-		sta	byte_797
+		sta	eng_timer_actor+1
 		inc	eng_gameplay_mode
 		rts
 	; }
@@ -779,8 +779,8 @@ victory_end:
 sub_864C:
 	jsr	sub_8552
 
-	lda	byte_797
-	bne	sub_865D_rts ; if (!byte_797) {
+	lda	eng_timer_actor+1
+	bne	sub_865D_rts ; if (!eng_timer_actor+1) {
 		inc	eng_gameplay_mode
 		lda	#$D8
 		sta	eng_timer_select
@@ -899,7 +899,7 @@ screen_score_disp:
 		jsr	obj_misc_update_score
 	: ; }
 
-	ldy	tbl_6E5, x
+	ldy	obj_data_offset_enemy, x
 	lda	actor_id, x
 	cmp	#actor::spiny
 	beq	:++
@@ -917,8 +917,8 @@ screen_score_disp:
 	cmp	#2
 	bcs	:++
 	: ; if (actor.id == hammer_bro || actor.id >= div_height || actor.state < 2) {
-		ldx	byte_3EE
-		ldy	tbl_6EC, x
+		ldx	obj_data_offset_ctl
+		ldy	obj_data_offset_spec, x
 		ldx	actor_index
 	: ; }
 

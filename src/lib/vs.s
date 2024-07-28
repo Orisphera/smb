@@ -362,7 +362,7 @@ sub_947A:
 			dec	VS_RAM_ARENA0+$10
 			lda	#1
 		: ; }
-		sta	byte_77A
+		sta	player_count
 		lda	#0
 		sta	VS_RAM_ARENA0+$28
 		sta	VS_RAM_ARENA0+$29

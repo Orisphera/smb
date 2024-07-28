@@ -116,7 +116,7 @@ obj_spec_block_punch:
 	pha
 
 	lda	#$11
-	ldx	byte_3EE
+	ldx	obj_data_offset_ctl
 	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		lda	#$12
@@ -125,12 +125,12 @@ obj_spec_block_punch:
 
 	jsr	gfx_meta_destroy
 
-	ldx	byte_3EE
+	ldx	obj_data_offset_ctl
 	lda	zp_byte_02
-	sta	byte_3E4, x
+	sta	pos_y_orig_spec, x
 	tay
 	lda	eng_buffer_ptr
-	sta	byte_3E6, x
+	sta	spec_buf_lo, x
 	lda	(eng_buffer_ptr), y
 	jsr	obj_spec_block_is_tile
 	sta	zp_byte_00
@@ -199,9 +199,9 @@ obj_spec_block_punch:
 		jsr	obj_spec_block_item
 	: ; }
 
-	lda	byte_3EE
+	lda	obj_data_offset_ctl
 	eor	#1
-	sta	byte_3EE
+	sta	obj_data_offset_ctl
 	rts
 ; ------------------------------------------------------------
 	.export obj_spec_block_initpos
@@ -214,7 +214,7 @@ obj_spec_block_initpos:
 	lda	pos_x_hi_player
 	adc	#0
 	sta	pos_x_hi_spec, x
-	sta	byte_3EA, x
+	sta	spec_page_loc_b, x
 	lda	pos_y_hi_player
 	sta	pos_y_hi_spec, x
 	rts
@@ -317,7 +317,7 @@ obj_spec_block_powerup:
 ; -----------------------------
 obj_spec_block_vine:
 	ldx	#$05
-	ldy	byte_3EE
+	ldy	obj_data_offset_ctl
 	jsr	game_proc_vine_init
 
 obj_spec_block_item_rts:
@@ -375,7 +375,7 @@ obj_spec_block_is_tile:
 obj_spec_block_break:
 	jsr	obj_spec_block_top_check
 	lda	#1
-	sta	byte_3EC, x
+	sta	spec_rep_flag, x
 	sta	apu_noise_event
 	jsr	obj_spec_block_bits_init
 	lda	#<-2
@@ -383,11 +383,11 @@ obj_spec_block_break:
 	lda	#5
 	sta	STACK_BASE+$39
 	jsr	obj_misc_update_score
-	ldx	byte_3EE
+	ldx	obj_data_offset_ctl
 	rts
 ; ------------------------------------------------------------
 obj_spec_block_top_check:
-	ldx	byte_3EE
+	ldx	obj_data_offset_ctl
 	ldy	zp_byte_02
 	beq	:+ ; if (zp_byte_02) {
 		tya
@@ -401,7 +401,7 @@ obj_spec_block_top_check:
 			lda	#0
 			sta	(eng_buffer_ptr), y
 			jsr	gfx_clear_small
-			ldx	byte_3EE
+			ldx	obj_data_offset_ctl
 			jsr	obj_misc_block_coin_b
 		; }
 	: ; }
@@ -410,7 +410,7 @@ obj_spec_block_top_check:
 ; ------------------------------------------------------------
 obj_spec_block_bits_init:
 	lda	pos_x_lo_spec, x
-	sta	byte_3F1, x
+	sta	pos_x_orig_spec, x
 	lda	#<-16
 	sta	veloc_x_spec, x
 	sta	veloc_x_spec+2, x
@@ -492,7 +492,7 @@ obj_spec_block_proc:
 			pla
 			bcs	:++ ; if ((this.pos_y.lo & 0xF) < 5) {
 				lda	#1
-				sta	byte_3EC, x
+				sta	spec_rep_flag, x
 			; }
 		; }
 	: ; }
@@ -511,13 +511,13 @@ obj_spec_block_flatten:
 
 		lda	ppu_nmi_buffer_0_data
 		bne	:+
-		lda	byte_3EC, x
-		beq	:+ ; if (*ppu_nmi_buffer == NMI_DATA_END && byte_3EC[actor_index]) {
-			lda	byte_3E6, x
+		lda	spec_rep_flag, x
+		beq	:+ ; if (*ppu_nmi_buffer == NMI_DATA_END && spec_rep_flag[actor_index]) {
+			lda	spec_buf_lo, x
 			sta	eng_buffer_ptr
 			lda	#5
 			sta	eng_buffer_ptr+1
-			lda	byte_3E4, x
+			lda	pos_y_orig_spec, x
 			sta	zp_byte_02
 			tay
 			lda	spec_tile, x
@@ -525,7 +525,7 @@ obj_spec_block_flatten:
 			jsr	gfx_meta_replace
 
 			lda	#0
-			sta	byte_3EC, x
+			sta	spec_rep_flag, x
 		: ; }
 
 		dex

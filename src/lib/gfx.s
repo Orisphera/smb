@@ -308,8 +308,8 @@ gfx_clear_small:
 	.export gfx_meta_replace
 gfx_meta_replace:
 	jsr	gfx_meta_write
-	inc	byte_3F0
-	dec	byte_3EC, x
+	inc	spec_counter_res
+	dec	spec_rep_flag, x
 	rts
 ; ----------------------------
 	.export gfx_meta_destroy

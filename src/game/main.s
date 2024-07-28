@@ -189,7 +189,7 @@ game_proc_scroll_save:
 game_proc_scroll:
 	lda	player_scroll_x
 	clc
-	adc	byte_3A1
+	adc	actor_plat_scroll_x
 	sta	player_scroll_x
 	lda	eng_scroll_lock
 	bne	:+++
@@ -243,7 +243,7 @@ game_proc_scroll:
 			ora	zp_byte_00
 			sta	ppu_ctlr0_b
 		.elseif	.defined(SMB2M)
-			sta	byte_77A
+			sta	player_count
 		.endif
 
 		jsr	game_proc_disp_pos
@@ -283,7 +283,7 @@ game_proc_scroll:
 	; }
 
 	lda	#0
-	sta	byte_3A1
+	sta	actor_plat_scroll_x
 	rts
 ; ----------------------------
 game_proc_scroll_off:
@@ -356,7 +356,7 @@ game_proc_enter:
 			rts
 		; }
 	: ; } else {
-		lda	byte_399
+		lda	height_vine
 		cmp	#$60
 		bne	game_proc_enter_rts
 		lda	pos_y_lo_player
@@ -879,7 +879,7 @@ game_proc_player_jump_swim:
 	lda	player_jump_org_y_lo
 	sec
 	sbc	pos_y_lo_player
-	cmp	byte_706
+	cmp	player_jump_diff
 	bcc	:++
 	: ; if (
 	;	!(veloc_y_player & 0x80)
@@ -1111,7 +1111,7 @@ game_proc_player_physics:
 			; }
 		: ; }
 		lda	#1
-		sta	byte_706
+		sta	player_jump_diff
 
 		lda	player_swimming
 		beq	:+ ; if (player.swimming) {
@@ -1423,7 +1423,7 @@ game_proc_proj_do:
 		jsr	col_proj_box
 		jsr	col_proj_proc
 
-		lda	byte_3D2
+		lda	bits_offscr_proj
 		and	#%11001100
 		bne	:+ ; if () {
 			jsr	col_proj_actor_proc
@@ -1853,14 +1853,14 @@ game_proc_vine_init:
 
 	lda	pos_y_lo_spec, y
 	sta	pos_y_lo_actor, x
-	ldy	eng_vine_flag
-	bne	:+ ; if (!eng_vine_flag) {
-		sta	byte_39D
+	ldy	actor_vine_flag
+	bne	:+ ; if (!actor_vine_flag) {
+		sta	pos_y_vine
 	: ; }
 
 	txa
-	sta	byte_39A, y
-	inc	eng_vine_flag
+	sta	actor_vine_offset, y
+	inc	actor_vine_flag
 	lda	#4
 	sta	apu_pulse2_queue
 	rts
@@ -1885,55 +1885,55 @@ game_proc_vine_do:
 		rts
 	: ; }
 .endif
-		ldy	eng_vine_flag
+		ldy	actor_vine_flag
 		dey
-		lda	byte_399
+		lda	height_vine
 		cmp	game_proc_vine_heights, y
 		beq	:+
 		lda	frame_count
 		lsr	a
 		lsr	a
-		bcc	:+ ; if (byte_399 != game_proc_vine_heights[ppu_nmi_buffer[0x98]-1] && frame_count % 4) {
+		bcc	:+ ; if (height_vine != game_proc_vine_heights[ppu_nmi_buffer[0x98]-1] && frame_count % 4) {
 			lda	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
 			sbc	#1
 			sta	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
-			inc	byte_399
+			inc	height_vine
 		: ; }
 	
-		lda	byte_399
+		lda	height_vine
 		cmp	#8
-		bcc	:++++ ; if (byte_399 >= 8) {
+		bcc	:++++ ; if (height_vine >= 8) {
 			jsr	lib_calc_actor_pos
 			jsr	lib_actor_bits_get
 
 			ldy	#0
-			: ; for (y = 0; y < eng_vine_flag; y++) {
+			: ; for (y = 0; y < actor_vine_flag; y++) {
 				jsr	render_vine
 
 				iny
-				cpy	eng_vine_flag
+				cpy	actor_vine_flag
 				bne	:-
 			; }
 		
-			lda	byte_3D1
+			lda	bits_offscr_actor
 			and	#%00001100
-			beq	:++ ; if (byte_3D1 & 0x0C) {
+			beq	:++ ; if (bits_offscr_actor & 0x0C) {
 				dey
-				: ; for (y = eng_vine_flag - 1; y >= 0; y--) {
-					ldx	byte_39A, y
+				: ; for (y = actor_vine_flag - 1; y >= 0; y--) {
+					ldx	actor_vine_offset, y
 					jsr	actor_erase
 
 					dey
 					bpl	:-
 				; }
 
-				sta	eng_vine_flag
-				sta	byte_399
+				sta	actor_vine_flag
+				sta	height_vine
 			: ; }
 		
-			lda	byte_399
+			lda	height_vine
 			cmp	#$20
-			bcc	:+ ; if (byte_399 >= 0x20) {
+			bcc	:+ ; if (height_vine >= 0x20) {
 				ldx	#$06
 				lda	#$01
 				ldy	#$1B
@@ -2086,10 +2086,10 @@ game_proc_bullet:
 	bne	:++++ ; if (!eng_timer_ctl) {
 		lda	state_actor, x
 		bne	:++ ; if (this.state == 0) {
-			lda	byte_3D1
+			lda	bits_offscr_actor
 			and	#%00001100
 			cmp	#%00001100
-			beq	:+++++ ; if ((byte_3D1 & 0x0C) != 0x0C) {
+			beq	:+++++ ; if ((bits_offscr_actor & 0x0C) != 0x0C) {
 				ldy	#MOTION_DIR_RIGHT
 				jsr	col_player_bullet_diff
 				bmi	:+ ; if (col_player_bullet_diff() >= 0) {

@@ -129,7 +129,7 @@ obj_misc_block_coin_a:
 ; -----------------------------
 obj_misc_block_coin_b:
 	jsr	obj_misc_block_alloc
-	lda	byte_3EA, x
+	lda	spec_page_loc_b, x
 	sta	pos_x_hi_misc, y
 	lda	zp_byte_06
 	asl	a

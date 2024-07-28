@@ -214,7 +214,7 @@ eng_init_1_do:
 	sta	eng_page_cached
 
 	lda	#$FF
-	sta	byte_3A0
+	sta	actor_plat_align
 	lda	pos_x_hi_screen_left
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lsr	ppu_ctlr0_b
@@ -228,16 +228,16 @@ eng_init_1_do:
 
 	jsr	sub_load_area_music
 	lda	#$38
-	sta	tbl_6E1+2
+	sta	sprite_strobe_amount+2
 	lda	#$48
-	sta	tbl_6E1+1
+	sta	sprite_strobe_amount+1
 	lda	#$58
-	sta	tbl_6E1
+	sta	sprite_strobe_amount
 
 	ldx	#(eng_init_data_0_end-eng_init_data_0)-1
 	: ; for (byte of eng_init_data_0) {
 		lda	eng_init_data_0, x
-		sta	tbl_6E4, x
+		sta	obj_data_offset_player, x
 		dex
 		bpl	:-
 	; }

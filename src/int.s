@@ -445,7 +445,7 @@ nmi:
 			beq	:++ ; if (fds_timer_irq) {
 				lda	ppu_ctlr0_b
 				and	#<~(ppu_ctlr0::obj_seg1)
-				ora	byte_77A
+				ora	player_count
 				sta	ppu_ctlr0_b
 				sta	PPU_CTLR0
 				lda	#0
@@ -546,43 +546,43 @@ nmi_oam_shuffle:
         sta     zp_byte_00
         ldx     #$0F-1
 	: ; for (x = 0xF-1; x >= 0; x--) {
-		lda     tbl_6E4, x
+		lda     obj_data_offset_player, x
 		cmp     zp_byte_00
 		bcc     :++ ; if () {
-			ldy     byte_6E0
+			ldy     sprite_strobe_offset
 			clc
-			adc     tbl_6E1, y
+			adc     sprite_strobe_amount, y
 			bcc     :+ ; if () {
 				clc
 				adc     zp_byte_00
 			: ; }
 
-			sta     tbl_6E4, x
+			sta     obj_data_offset_player, x
 		: ; }
 
 		dex
 		bpl     :---
 	; }
 
-        ldx     byte_6E0
+        ldx     sprite_strobe_offset
         inx
         cpx     #3
-        bne     :+ ; if (++byte_6E0 == 3) {
+        bne     :+ ; if (++sprite_strobe_offset == 3) {
 		ldx     #0
 	: ; }
-	stx     byte_6E0
+	stx     sprite_strobe_offset
 
         ldx     #(3*3)-1
         ldy     #3-1
 	: ; for (x = 8, y = 3-1; y >= 0; x -= 3, y--) {
-		lda     tbl_6E9, y
-		sta     tbl_6F1+0, x
+		lda     obj_data_offset_enemy+4, y
+		sta     obj_data_offset_proj+0, x
 		clc
 		adc     #8
-		sta     tbl_6F1+1, x
+		sta     obj_data_offset_proj+1, x
 		clc
 		adc     #8
-		sta     tbl_6F1+2, x
+		sta     obj_data_offset_proj+2, x
 
 		dex
 		dex
