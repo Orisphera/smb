@@ -1,6 +1,14 @@
 .ifndef	SOUND_I
 SOUND_I = 1
 
+	.enum	noise_event
+		flame		= 2
+	.endenum
+
+	.enum	pulse_queue
+		pulse_8		= 8
+	.endenum
+
 	.enum	music_event
 		game_over	= 2
 		victory_normal	= 4

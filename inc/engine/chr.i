@@ -50,6 +50,7 @@ CHR_I = 1
 		tree		= <((tile_bg_tree-chr_bg)/PPU_TILE_SIZE)
 		tree_trunk	= <((tile_bg_tree_trunk-chr_bg)/PPU_TILE_SIZE)
 		bridge_parts	= <((tile_bg_bridge_parts-chr_bg)/PPU_TILE_SIZE)
+		cursor		= <((tile_bg_cursor-chr_bg)/PPU_TILE_SIZE)
 		coin_b		= <((tile_bg_coin_b-chr_bg)/PPU_TILE_SIZE)
 		cannon		= <((tile_bg_cannon-chr_bg)/PPU_TILE_SIZE)
 		coral_b		= <((tile_bg_coral_b-chr_bg)/PPU_TILE_SIZE)

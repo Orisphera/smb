@@ -89,7 +89,7 @@ eng_init_0_do:
 	beq	:+ ; if (!eng_start_alt) {
 		lda	eng_startpage_init
 	: ; }
-	sta	eng_screen_left_hi
+	sta	pos_x_hi_screen_left
 	sta	eng_page_current
 	sta	eng_page_cached
 
@@ -214,8 +214,8 @@ eng_init_1_do:
 	sta	eng_page_cached
 
 	lda	#$FF
-	sta	ppu_nmi_buffer+$A0
-	lda	eng_screen_left_hi
+	sta	byte_3A0
+	lda	pos_x_hi_screen_left
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lsr	ppu_ctlr0_b
 		and	#$01
@@ -401,11 +401,11 @@ eng_timer_vals_b:
 ; ----------------------------
 	.export game_proc_start
 game_proc_start:
-	lda	eng_screen_left_hi
+	lda	pos_x_hi_screen_left
 	sta	pos_x_hi_player
-	lda	#$28
+	lda	#40
 	sta	player_gravity
-	lda	#PLAYER_DIR_RIGHT
+	lda	#MOTION_DIR_RIGHT
 	sta	player_dir
 	sta	pos_y_hi_player
 	lda	#player_state::ground
@@ -433,7 +433,7 @@ game_proc_start:
 	lda	player_start_y, x
 	sta	pos_y_lo_player
 	lda	player_bg_priority, x
-	sta	ppu_nmi_buffer+$C4
+	sta	player_attr
 	jsr	screen_color_player
 
 	ldy	course_timer_setting
@@ -475,7 +475,7 @@ game_proc_start:
 		sta	state_player
 		ldx	#0
 		jsr	obj_spec_block_initpos
-		lda	#$F0
+		lda	#<-16
 		sta	pos_y_lo_spec
 		ldx	#5
 		ldy	#0
@@ -567,7 +567,7 @@ game_proc_lifedown:
 		asl	a
 		tax
 		lda	eng_goals
-		and	#$02
+		and	#%00000010
 		beq	:+ ; if (eng_goals & 0x02) {
 			inx
 		: ; }
@@ -576,16 +576,16 @@ game_proc_lifedown:
 		lda	eng_goals
 		lsr	a
 		tya
-		bcs	:+ ; if (eng_goals % 1) {
+		bcs	:+ ; if (eng_goals & 0x01) {
 			lsr	a
 			lsr	a
 			lsr	a
 			lsr	a
 		: ; }
-		and	#$0F
-		cmp	eng_screen_left_hi
+		and	#%00001111
+		cmp	pos_x_hi_screen_left
 		beq	:+
-		bcc	:+ ; if (lifedown_starts > eng_screen_left_hi) {
+		bcc	:+ ; if (lifedown_starts > pos_x_hi_screen_left) {
 			lda	#0
 		: ; }
 		sta	eng_startpage_alt

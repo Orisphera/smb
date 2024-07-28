@@ -179,7 +179,7 @@ game_proc_scroll_save:
 			sbc	#GAME_SCROLL_END
 			sta	eng_scroll_h
 			lda	#0
-			sta	ppu_nmi_buffer+$40
+			sta	ppu_nmi_buffer_1_offset
 		: ; }
 		jsr	bg_proc
 	: ; }
@@ -189,7 +189,7 @@ game_proc_scroll_save:
 game_proc_scroll:
 	lda	player_scroll_x
 	clc
-	adc	ppu_nmi_buffer+$A1
+	adc	byte_3A1
 	sta	player_scroll_x
 	lda	eng_scroll_lock
 	bne	:+++
@@ -228,12 +228,12 @@ game_proc_scroll:
 		sta	eng_scroll_h
 		tya
 		clc
-		adc	eng_screen_left_lo
-		sta	eng_screen_left_lo
+		adc	pos_x_lo_screen_left
+		sta	pos_x_lo_screen_left
 		sta	eng_scc_h_b
-		lda	eng_screen_left_hi
+		lda	pos_x_hi_screen_left
 		adc	#0
-		sta	eng_screen_left_hi
+		sta	pos_x_hi_screen_left
 		and	#ppu_ctlr0::bg_parity
 		.if	.defined(SMB)|.defined(VS_SMB)
 			sta	zp_byte_00
@@ -267,11 +267,11 @@ game_proc_scroll:
 	and	#%00100000
 	beq	:++
 	: ; if (zp_byte_00 & 0xC0) {
-		lda	eng_screen_left_lo, y
+		lda	pos_x_lo_screen_left, y
 		sec
 		sbc	game_proc_scroll_off, y
 		sta	pos_x_lo_player
-		lda	eng_screen_left_hi, y
+		lda	pos_x_hi_screen_left, y
 		sbc	#0
 		sta	pos_x_hi_player
 		lda	GAME_PROC_BTN_L_R
@@ -283,11 +283,11 @@ game_proc_scroll:
 	; }
 
 	lda	#0
-	sta	ppu_nmi_buffer+$A1
+	sta	byte_3A1
 	rts
 ; ----------------------------
 game_proc_scroll_off:
-	.byte	$00, $10
+	.byte	0, 16
 
 game_proc_scroll_btn_mask:
 	.byte	joypad_button::right
@@ -295,13 +295,13 @@ game_proc_scroll_btn_mask:
 ; -----------------------------------------------------------
 	.export	game_proc_disp_pos
 game_proc_disp_pos:
-	lda	eng_screen_left_lo
+	lda	pos_x_lo_screen_left
 	clc
 	adc	#$FF
-	sta	eng_screen_right_lo
-	lda	eng_screen_left_hi
+	sta	pos_x_lo_screen_right
+	lda	pos_x_hi_screen_left
 	adc	#0
-	sta	eng_screen_right_hi
+	sta	pos_x_hi_screen_right
 	rts
 ; -----------------------------------------------------------
 game_proc_do:
@@ -327,15 +327,15 @@ game_proc_enter:
 	beq	:+++ ; if () {
 		lda	#joypad_button::none
 		ldy	pos_y_lo_player
-		cpy	#$30
+		cpy	#48
 		bcc	game_proc_auto
 		lda	course_enter_pos
 		cmp	#COURSE_DATA_ENTER_POS_B0_B_VAL
 		beq	:+
 		cmp	#COURSE_DATA_ENTER_POS_B0_C_VAL
 		bne	:++++++
-		: lda	ppu_nmi_buffer+$C4
-		bne	:+ ; if (course_enter_pos == 0xB0 && !ppu_nmi_buffer[0xC4]) {
+		: lda	player_attr
+		bne	:+ ; if (course_enter_pos == 0xB0 && !player_attr) {
 			lda	#joypad_button::right
 			jmp	game_proc_auto
 		: ; } else {
@@ -351,19 +351,19 @@ game_proc_enter:
 		lda	#$FF
 		jsr	game_pos_y_lo_player_add
 		lda	pos_y_lo_player
-		cmp	#$91
-		bcc	:+++ ; if (pos_y_lo_player >= 0x91) {
+		cmp	#145
+		bcc	:+++ ; if (pos_y_lo_player >= 145) {
 			rts
 		; }
 	: ; } else {
-		lda	ppu_nmi_buffer+$99
+		lda	byte_399
 		cmp	#$60
 		bne	game_proc_enter_rts
 		lda	pos_y_lo_player
-		cmp	#$99
+		cmp	#153
 		ldy	#0
 		lda	#joypad_button::right
-		bcc	:+ ; if (pos_y_lo_player >= 0x99) {
+		bcc	:+ ; if (pos_y_lo_player >= 153) {
 			lda	#player_state::climb
 			sta	state_player
 			iny
@@ -373,12 +373,12 @@ game_proc_enter:
 		sty	eng_col_off
 		jsr	game_proc_auto
 		lda	pos_x_lo_player
-		cmp	#$48
+		cmp	#72
 		bcc	game_proc_enter_rts
-	: ; } if ((!eng_joypad_override && pos_y_lo_player < 0x91) || (pos_x_lo_player >= 0x48)) {
+	: ; } if ((!eng_joypad_override && pos_y_lo_player < 0x91) || (pos_x_lo_player >= 72)) {
 		lda	#game_proc::ctrl
 		sta	game_proc_id
-		lda	#PLAYER_DIR_RIGHT
+		lda	#MOTION_DIR_RIGHT
 		sta	player_dir
 		lsr	a
 		sta	eng_start_alt
@@ -444,7 +444,7 @@ game_proc_ctrl:
 	: ; }
 	sty	col_box_player
 
-	lda	#PLAYER_DIR_RIGHT
+	lda	#MOTION_DIR_RIGHT
 	ldy	veloc_x_player
 	beq	:++
 	bpl	:+ ; if (veloc_x_player != 0) {
@@ -472,9 +472,9 @@ game_proc_ctrl:
 	beq	:+
 	cmp	#game_proc::pole
 	bcc	:+ ; if (player.pos_y.lo >= 0x40 && game_proc_id >= pole && game_proc_id.not_in(victory, enter)) {
-		lda	ppu_nmi_buffer+$C4
+		lda	player_attr
 		and	#<~(%00100000)
-		sta	ppu_nmi_buffer+$C4
+		sta	player_attr
 	: ; }
 
 	lda	pos_y_hi_player
@@ -668,18 +668,18 @@ game_proc_firefl:
 	game_proc_firefl_do:
 		and	#%00000011
 		sta	zp_byte_00
-		lda	ppu_nmi_buffer+$C4
+		lda	player_attr
 		and	#%11111100
 		ora	zp_byte_00
-		sta	ppu_nmi_buffer+$C4
+		sta	player_attr
 		rts
 	: ; } else {
 		jsr	game_proc_player_done
 
 	game_proc_firefl_do_2:
-		lda	ppu_nmi_buffer+$C4
+		lda	player_attr
 		and	#%11111100
-		sta	ppu_nmi_buffer+$C4
+		sta	player_attr
 	game_proc_firefl_rts:
 		rts
 	; }
@@ -760,7 +760,7 @@ game_proc_victory:
 		: ; }
 
 		lda	#$20
-		sta	ppu_nmi_buffer+$C4
+		sta	player_attr
 	: ; }
 
 	lda	eng_task_star_flag
@@ -1423,7 +1423,7 @@ game_proc_proj_do:
 		jsr	col_proj_box
 		jsr	col_proj_proc
 
-		lda	ppu_nmi_buffer+$D2
+		lda	byte_3D2
 		and	#%11001100
 		bne	:+ ; if () {
 			jsr	col_proj_actor_proc
@@ -1853,14 +1853,14 @@ game_proc_vine_init:
 
 	lda	pos_y_lo_spec, y
 	sta	pos_y_lo_actor, x
-	ldy	ppu_nmi_buffer+$98
-	bne	:+ ; if (!ppu_nmi_buffer[0x98]) {
-		sta	ppu_nmi_buffer+$9D
+	ldy	eng_vine_flag
+	bne	:+ ; if (!eng_vine_flag) {
+		sta	byte_39D
 	: ; }
 
 	txa
-	sta	ppu_nmi_buffer+$9A, y
-	inc	ppu_nmi_buffer+$98
+	sta	byte_39A, y
+	inc	eng_vine_flag
 	lda	#4
 	sta	apu_pulse2_queue
 	rts
@@ -1885,55 +1885,55 @@ game_proc_vine_do:
 		rts
 	: ; }
 .endif
-		ldy	ppu_nmi_buffer+$98
+		ldy	eng_vine_flag
 		dey
-		lda	ppu_nmi_buffer+$99
+		lda	byte_399
 		cmp	game_proc_vine_heights, y
 		beq	:+
 		lda	frame_count
 		lsr	a
 		lsr	a
-		bcc	:+ ; if (ppu_nmi_buffer[0x99] != game_proc_vine_heights[ppu_nmi_buffer[0x98]-1] && frame_count % 4) {
+		bcc	:+ ; if (byte_399 != game_proc_vine_heights[ppu_nmi_buffer[0x98]-1] && frame_count % 4) {
 			lda	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
 			sbc	#1
 			sta	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
-			inc	ppu_nmi_buffer+$99
+			inc	byte_399
 		: ; }
 	
-		lda	ppu_nmi_buffer+$99
+		lda	byte_399
 		cmp	#8
-		bcc	:++++ ; if (ppu_nmi_buffer[0x99] >= 8) {
+		bcc	:++++ ; if (byte_399 >= 8) {
 			jsr	lib_calc_actor_pos
 			jsr	lib_actor_bits_get
 
 			ldy	#0
-			: ; for (y = 0; y < ppu_nmi_buffer[0x98]; y++) {
+			: ; for (y = 0; y < eng_vine_flag; y++) {
 				jsr	render_vine
 
 				iny
-				cpy	ppu_nmi_buffer+$98
+				cpy	eng_vine_flag
 				bne	:-
 			; }
 		
-			lda	ppu_nmi_buffer+$D1
+			lda	byte_3D1
 			and	#%00001100
-			beq	:++ ; if (ppu_nmi_buffer[0xD1] & 0x0C) {
+			beq	:++ ; if (byte_3D1 & 0x0C) {
 				dey
-				: ; for (y = ppu_nmi_buffer[0x98] - 1; y >= 0; y--) {
-					ldx	ppu_nmi_buffer+$9A, y
+				: ; for (y = eng_vine_flag - 1; y >= 0; y--) {
+					ldx	byte_39A, y
 					jsr	actor_erase
 
 					dey
 					bpl	:-
 				; }
 
-				sta	ppu_nmi_buffer+$98
-				sta	ppu_nmi_buffer+$99
+				sta	eng_vine_flag
+				sta	byte_399
 			: ; }
 		
-			lda	ppu_nmi_buffer+$99
+			lda	byte_399
 			cmp	#$20
-			bcc	:+ ; if (ppu_nmi_buffer[0x99] >= 0x20) {
+			bcc	:+ ; if (byte_399 >= 0x20) {
 				ldx	#$06
 				lda	#$01
 				ldy	#$1B
@@ -1954,14 +1954,14 @@ game_proc_vine_do:
 	.if	.defined(VS_SMB)|.defined(SMB2M)
 		lda	pos_x_lo_actor+GAME_PROC_VINE_ACTOR_ID
 		sec
-		sbc	eng_screen_left_lo
+		sbc	pos_x_lo_screen_left
 		tay
 		lda	pos_x_hi_actor+GAME_PROC_VINE_ACTOR_ID
-		sbc	eng_screen_left_hi
+		sbc	pos_x_hi_screen_left
 		bmi	:+
 		cpy	#9
 		bcs	:++++
-		: ; if (eng_screen_left_hi < 0 || (this.pos_x.lo - eng_screen_left_lo) < 9) {
+		: ; if (pos_x_hi_screen_left < 0 || (this.pos_x.lo - pos_x_lo_screen_left) < 9) {
 			lda	#actor_modes::free
 			sta	actor_mode+GAME_PROC_VINE_ACTOR_ID
 			lda	pos_x_hi_actor+GAME_PROC_VINE_ACTOR_ID
@@ -2086,11 +2086,11 @@ game_proc_bullet:
 	bne	:++++ ; if (!eng_timer_ctl) {
 		lda	state_actor, x
 		bne	:++ ; if (this.state == 0) {
-			lda	ppu_nmi_buffer+$D1
+			lda	byte_3D1
 			and	#%00001100
 			cmp	#%00001100
-			beq	:+++++ ; if ((ppu_nmi_buffer[0xD1] & 0x0C) != 0x0C) {
-				ldy	#PLAYER_DIR_RIGHT
+			beq	:+++++ ; if ((byte_3D1 & 0x0C) != 0x0C) {
+				ldy	#MOTION_DIR_RIGHT
 				jsr	col_player_bullet_diff
 				bmi	:+ ; if (col_player_bullet_diff() >= 0) {
 					iny

@@ -39,7 +39,7 @@ obj_spec_powerup_init:
 	: ; }
 
 	lda	#$20
-	sta	ppu_nmi_buffer+$CA
+	sta	byte_3CA
 	lda	#$02
 	sta	apu_pulse2_queue
 	rts
@@ -86,7 +86,7 @@ obj_spec_powerup_do:
 					lda	#$80
 					sta	state_actor+OBJ_MISC_POWERUP_ACTOR
 					asl	a
-					sta	ppu_nmi_buffer+$CA
+					sta	byte_3CA
 					rol	a
 					sta	motion_dir_actor, x
 				; }
@@ -116,7 +116,7 @@ obj_spec_block_punch:
 	pha
 
 	lda	#$11
-	ldx	ppu_nmi_buffer+$EE
+	ldx	byte_3EE
 	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		lda	#$12
@@ -125,12 +125,12 @@ obj_spec_block_punch:
 
 	jsr	gfx_meta_destroy
 
-	ldx	ppu_nmi_buffer+$EE
+	ldx	byte_3EE
 	lda	zp_byte_02
-	sta	ppu_nmi_buffer+$E4, x
+	sta	byte_3E4, x
 	tay
 	lda	eng_buffer_ptr
-	sta	ppu_nmi_buffer+$E6, x
+	sta	byte_3E6, x
 	lda	(eng_buffer_ptr), y
 	jsr	obj_spec_block_is_tile
 	sta	zp_byte_00
@@ -209,12 +209,12 @@ obj_spec_block_initpos:
 	lda	pos_x_lo_player
 	clc
 	adc	#8
-	and	#$F0
+	and	#%11110000
 	sta	pos_x_lo_spec, x
 	lda	pos_x_hi_player
 	adc	#0
 	sta	pos_x_hi_spec, x
-	sta	ppu_nmi_buffer+$EA, x
+	sta	byte_3EA, x
 	lda	pos_y_hi_player
 	sta	pos_y_hi_spec, x
 	rts
@@ -317,7 +317,7 @@ obj_spec_block_powerup:
 ; -----------------------------
 obj_spec_block_vine:
 	ldx	#$05
-	ldy	ppu_nmi_buffer+$EE
+	ldy	byte_3EE
 	jsr	game_proc_vine_init
 
 obj_spec_block_item_rts:
@@ -387,7 +387,7 @@ obj_spec_block_break:
 	rts
 ; ------------------------------------------------------------
 obj_spec_block_top_check:
-	ldx	ppu_nmi_buffer+$EE
+	ldx	byte_3EE
 	ldy	zp_byte_02
 	beq	:+ ; if (zp_byte_02) {
 		tya
@@ -509,10 +509,10 @@ obj_spec_block_flatten:
 	: ; for (block of blocks) {
 		stx	actor_index
 
-		lda	ppu_nmi_buffer_0_data+0
+		lda	ppu_nmi_buffer_0_data
 		bne	:+
 		lda	byte_3EC, x
-		beq	:+ ; if (!ppu_nmi_buffer[0] && byte_3EC[actor_index]) {
+		beq	:+ ; if (*ppu_nmi_buffer == NMI_DATA_END && byte_3EC[actor_index]) {
 			lda	byte_3E6, x
 			sta	eng_buffer_ptr
 			lda	#5

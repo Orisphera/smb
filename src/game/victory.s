@@ -210,7 +210,7 @@ victory_init:
 		: ; }
 	.endif
 
-	ldx	eng_screen_right_hi
+	ldx	pos_x_hi_screen_right
 	inx
 	stx	victory_screen_hi
 
@@ -270,9 +270,9 @@ victory_proc:
 	tya
 	jsr	game_proc_auto
 
-	lda	eng_screen_left_hi
+	lda	pos_x_hi_screen_left
 	cmp	victory_screen_hi
-	beq	:+ ; if (eng_screen_left_hi != victory_screen_hi) {
+	beq	:+ ; if (pos_x_hi_screen_left != victory_screen_hi) {
 		lda	eng_scroll_subpix
 		clc
 		adc	#VICTORY_SCROLL
@@ -536,7 +536,7 @@ sub_84CF:
 			ldx	#(pal_8492_end-pal_8492)-1
 			: ; for (color of pal_8492) {
 				lda	pal_8492, x
-				sta	ppu_nmi_buffer+1, x
+				sta	ppu_nmi_buffer_0_data+0, x
 
 				dex
 				bpl	:-
@@ -546,7 +546,7 @@ sub_84CF:
 			ldy	VS_RAM_ARENA0+$22
 			: ; for (x = 12; x > 0; x -= 4) {
 				lda	pal_84A6, y
-				sta	ppu_nmi_buffer+4, x
+				sta	ppu_nmi_buffer_0_data+3, x
 
 				dex
 				dex
@@ -570,7 +570,7 @@ sub_8526:
 	ldx	#(ppu_84AA_end-ppu_84AA)-1
 	: ; for (entry of ppu_84AA) {
 		lda	ppu_84AA, x
-		sta	ppu_nmi_buffer+1, x
+		sta	ppu_nmi_buffer_0_data, x
 		dex
 		bpl	:-
 	; }
@@ -643,7 +643,7 @@ sub_8552:
 				lda	actor_pos_y_lo_84C0, x
 				sta	pos_y_lo_actor
 				lda	ppu_84C7, x
-				sta	ppu_nmi_buffer+$AE
+				sta	pos_x_rel_actor
 				ldx	#0
 				stx	course_no
 				stx	actor_index
@@ -917,7 +917,7 @@ screen_score_disp:
 	cmp	#2
 	bcs	:++
 	: ; if (actor.id == hammer_bro || actor.id >= div_height || actor.state < 2) {
-		ldx	ppu_nmi_buffer+$EE
+		ldx	byte_3EE
 		ldy	tbl_6EC, x
 		ldx	actor_index
 	: ; }

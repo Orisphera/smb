@@ -1,17 +1,19 @@
 .include	"../../inc/engine/mem.i"
+.include	"../../inc/engine/chr.i"
+.include	"../../inc/engine/charmap.i"
 
 .if	.defined(CONS)
 ; -----------------------------------------------------------
 title_cursor_data:
 	.byte   title_cursor_data_end-title_cursor_data_start
 title_cursor_data_start:
-        .byte   $22
-	.byte	$49
-	.byte	$83
-	.byte	$CE
-	.byte	$24
-	.byte	$24
-	.byte	0
+        .dbyt   PPU_VRAM_BG1+$249
+	.byte	%10000000|(title_cursor_data_string_end-title_cursor_data_string_start)
+title_cursor_data_string_start:
+	.byte	tile_bg::cursor
+	.byte	"  "
+title_cursor_data_string_end:
+	.byte	NMI_DATA_END
 title_cursor_data_end:
 ; ----------------------------
 	.export title_cursor_draw
@@ -27,9 +29,9 @@ title_cursor_draw:
 
         lda     player_count
         beq     :+ ; if (player_count) {
-		lda     #$24
+		lda     #' '
 		sta     ppu_nmi_buffer_0_data+3
-		lda     #$CE
+		lda     #tile_bg::cursor
 		sta     ppu_nmi_buffer_0_data+5
 	: ; }
 

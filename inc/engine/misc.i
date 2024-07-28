@@ -219,12 +219,13 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		koopa_para_fly_red = $0F
 		koopa_para_fly_green = $10
 		lakitu		= $11
-		spiny		= $12
 
+		swarm_start	= $12
+		spiny		= $12
+		swarm_null	= $13
 		cheep_fly	= $14
 
 		actors_page_b	= $15
-
 		bowser_flame	= $15
 		fireworks	= $16
 		bullet_cheep_swarm = $17
@@ -232,6 +233,8 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 
 		actor_1B	= $1B
 		actor_1D	= $1D
+
+		plat_start	= $24
 		actor_28	= $28
 		unk_00		= $29
 		bowser		= $2D
@@ -243,7 +246,9 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		bullet		= $33
 		toad		= $35
 
+		group_start	= $37
 		goomba_trio	= $37
+		actor_3B	= $3B
 		actor_3F	= $3F
 	.endenum
 

@@ -129,7 +129,7 @@ obj_misc_block_coin_a:
 ; -----------------------------
 obj_misc_block_coin_b:
 	jsr	obj_misc_block_alloc
-	lda	ppu_nmi_buffer+$EA, x
+	lda	byte_3EA, x
 	sta	pos_x_hi_misc, y
 	lda	zp_byte_06
 	asl	a
@@ -326,7 +326,7 @@ obj_misc_update_stats:
 
 obj_misc_add_score:
 	jsr	eng_stats_print_num
-	ldy	ppu_nmi_buffer+$00
+	ldy	ppu_nmi_buffer_0_offset
 	lda	OAM_DMA_BUFFER+$FB, y
 	bne	:+ ; if (!OAM_DMA_BUFFER[0xFB]) {
 		lda	#$24

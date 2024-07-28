@@ -13,8 +13,8 @@ JOYPAD_I = 1
 		none	= 0
 	.endenum
 
-	PLAYER_DIR_RIGHT	= joypad_button::right
-	PLAYER_DIR_LEFT		= joypad_button::left
+	MOTION_DIR_RIGHT	= joypad_button::right
+	MOTION_DIR_LEFT		= joypad_button::left
 
 	PLAYER_COL_NONE		= joypad_button::none
 	PLAYER_COL_RIGHT	= joypad_button::right

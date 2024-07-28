@@ -387,26 +387,26 @@ gfx_clear_put:
 
 gfx_clear_put_do:
 	lda	gfx_clear_blocks, x
-	sta	ppu_nmi_buffer+$03, y
+	sta	ppu_nmi_buffer_0_data+2, y
 	lda	gfx_clear_blocks+1, x
-	sta	ppu_nmi_buffer+$04, y
+	sta	ppu_nmi_buffer_0_data+3, y
 	lda	gfx_clear_blocks+2, x
-	sta	ppu_nmi_buffer+$08, y
+	sta	ppu_nmi_buffer_0_data+7, y
 	lda	gfx_clear_blocks+3, x
-	sta	ppu_nmi_buffer+$09, y
+	sta	ppu_nmi_buffer_0_data+8, y
 	lda	zp_addr_04
-	sta	ppu_nmi_buffer+$01, y
+	sta	ppu_nmi_buffer_0_data+0, y
 	clc
 	adc	#>PPU_VRAM_BG1
-	sta	ppu_nmi_buffer+$06, y
+	sta	ppu_nmi_buffer_0_data+5, y
 	lda	zp_addr_04+1
-	sta	ppu_nmi_buffer+$00, y
-	sta	ppu_nmi_buffer+$05, y
+	sta	ppu_nmi_buffer_0_offset, y
+	sta	ppu_nmi_buffer_0_data+4, y
 	lda	#2
-	sta	ppu_nmi_buffer+$02, y
-	sta	ppu_nmi_buffer+$07, y
+	sta	ppu_nmi_buffer_0_data+1, y
+	sta	ppu_nmi_buffer_0_data+6, y
 	lda	#0
-	sta	ppu_nmi_buffer+$0A, y
+	sta	ppu_nmi_buffer_0_data+9, y
 
 	ldx	zp_byte_00
 	rts

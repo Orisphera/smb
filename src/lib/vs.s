@@ -59,17 +59,26 @@ vs_read_dips:
 	rts
 ; -----------------------------------------------------------
 sub_92E1_data_0:
-	.dbyt	$C23
-	.byte	$94, $09, $0C, $1B
-	.byte	$0E, $0D, $12, $1D
-	.byte	$24, $00, $00, $00
+	.byte	sub_92E1_data_0_string_end-sub_92E1_data_0_start
+sub_92E1_data_0_start:
+	.dbyt	PPU_VRAM_BG1+$394
+	.byte	sub_92E1_data_0_string_end-sub_92E1_data_0_string_start
+sub_92E1_data_0_string_start:
+	.byte	"CREDIT 00"
+sub_92E1_data_0_string_end:
+	.byte	NMI_DATA_END
 sub_92E1_data_0_end:
 
 sub_92E1_data_1:
-	.dbyt	$C23
-	.byte	$94, $09, $0F, $1B
-	.byte	$0E, $0E, $24, $19
-	.byte	$15, $0A, $22, $00
+	.byte	sub_92E1_data_1_string_end-sub_92E1_data_1_start
+sub_92E1_data_1_start:
+	.dbyt	PPU_VRAM_BG1+$394
+	.byte	sub_92E1_data_1_string_end-sub_92E1_data_1_string_start
+sub_92E1_data_1_string_start:
+	.byte	"FREE PLAY"
+sub_92E1_data_1_string_end:
+	.byte	NMI_DATA_END
+sub_92E1_data_1_end:
 ; ----------------------------
 	.export	sub_92E1
 sub_92E1:
@@ -81,7 +90,7 @@ sub_92E1:
 	bne	:++ ; if (vs_ram_arena0[6] == 7) {
 		: ; for (x = 13; x > 0; x--) {
 			lda	sub_92E1_data_1, x
-			sta	ppu_nmi_buffer, x
+			sta	ppu_nmi_buffer_0, x
 
 			dex
 			bpl	:-
@@ -91,7 +100,7 @@ sub_92E1:
 	: ; } else {
 		: ; for (x = 13; x > 0; x--) {
 			lda	sub_92E1_data_0, x
-			sta	ppu_nmi_buffer, x
+			sta	ppu_nmi_buffer_0, x
 
 			dex
 			bpl	:-
@@ -102,14 +111,14 @@ sub_92E1:
 			cmp	#10
 			bmi	:+
 
-			inc	ppu_nmi_buffer+$0B
+			inc	ppu_nmi_buffer_0_data+10
 
 			sec
 			sbc	#10
 			jmp	:-
 		: ; }
 
-		sta	ppu_nmi_buffer+$0C
+		sta	ppu_nmi_buffer_0_data+11
 		rts
 	; }
 ; -----------------------------------------------------------
@@ -374,12 +383,12 @@ sub_947A:
 				sta	VS_RAM_ARENA0+$26
 
 				ldx	#0
-				ldy	ppu_nmi_buffer
+				ldy	ppu_nmi_buffer_0_offset
 				lda	VS_RAM_ARENA0+$27
 				bne	:++ ; if () {
 					: ; for (x = 0, y = ppu_nmi_count; x < 16; x++, y++) {
 						lda	sub_947A_text_push, x
-						sta	ppu_nmi_buffer+1, y
+						sta	ppu_nmi_buffer_0_data+0, y
 
 						iny
 						inx
@@ -390,7 +399,7 @@ sub_947A:
 				; } else {
 					: ; for (x = 0, y = ppu_nmi_count; x < 5; x++, y++) {
 						lda	sub_947A_text_empty, x
-						sta	ppu_nmi_buffer+1, y
+						sta	ppu_nmi_buffer_0_data+0, y
 
 						iny
 						inx

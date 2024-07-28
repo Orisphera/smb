@@ -24,19 +24,16 @@ SMB2M_NMI_TIMER	= $1658
 
 	.export nmi
 ; -----------------------------------------------------------
-	nmi_buffer_0	= (ppu_nmi_buffer+$00)
-	nmi_buffer_1	= (ppu_nmi_buffer+$40)
-
 	.if	.defined(SMB)|.defined(VS_SMB)
 		nmi_addrs_low:
-			.byte	<(nmi_buffer_0+1)
+			.byte	<(ppu_nmi_buffer_0_data)
 			.byte	<(palette_underwater)
 			.byte	<(palette_overworld)
 			.byte	<(palette_underground)
 			.byte	<(palette_castle)
-			.byte	<(nmi_buffer_0+0)
-			.byte	<(nmi_buffer_1+1)
-			.byte	<(nmi_buffer_1+1)
+			.byte	<(ppu_nmi_buffer_0_offset)
+			.byte	<(ppu_nmi_buffer_1_data)
+			.byte	<(ppu_nmi_buffer_1_data)
 			.byte	<(palette_koopa)
 			.byte	<(palette_snow_day)
 			.byte	<(palette_snow_night)
@@ -77,14 +74,14 @@ SMB2M_NMI_TIMER	= $1658
 		.endif
 
 		nmi_addrs_high:
-			.byte   >(nmi_buffer_0+1)
+			.byte   >(ppu_nmi_buffer_0_data)
 			.byte	>(palette_underwater)
 			.byte	>(palette_overworld)
 			.byte	>(palette_underground)
 			.byte	>(palette_castle)
-			.byte	>(nmi_buffer_0+0)
-			.byte	>(nmi_buffer_1+1)
-			.byte	>(nmi_buffer_1+1)
+			.byte	>(ppu_nmi_buffer_0_offset)
+			.byte	>(ppu_nmi_buffer_1_data)
+			.byte	>(ppu_nmi_buffer_1_data)
 			.byte	>(palette_koopa)
 			.byte	>(palette_snow_day)
 			.byte	>(palette_snow_night)
@@ -125,14 +122,14 @@ SMB2M_NMI_TIMER	= $1658
 		.endif
 	.elseif	.defined(SMB2M)
 		nmi_addrs:
-			.addr   (nmi_buffer_0+1)
+			.addr   (ppu_nmi_buffer_0_data)
 			.addr	(palette_underwater)
 			.addr	(palette_overworld)
 			.addr	(palette_underground)
 			.addr	(palette_castle)
 			.addr	(data_C62B)
-			.addr	(nmi_buffer_1+1)
-			.addr	(nmi_buffer_1+1)
+			.addr	(ppu_nmi_buffer_1_data)
+			.addr	(ppu_nmi_buffer_1_data)
 			.addr	(palette_koopa)
 			.addr	(palette_snow_day)
 			.addr	(palette_snow_night)
@@ -176,8 +173,8 @@ SMB2M_NMI_TIMER	= $1658
 	.endif
 
 	nmi_buffer_offset:
-		.byte	<nmi_buffer_0
-		.byte	<nmi_buffer_1
+		.byte	<ppu_nmi_buffer_0
+		.byte	<ppu_nmi_buffer_1
 ; ----------------------------
 	.export nmi
 nmi:
@@ -232,19 +229,19 @@ nmi:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldx     nmi_addrs_ctl
-		lda     nmi_addrs_low,x
+		lda     nmi_addrs_low, x
 		sta     eng_screen_update_addr
-		lda     nmi_addrs_high,x
+		lda     nmi_addrs_high, x
 		sta     eng_screen_update_addr+1
 		jsr	eng_screen_update
 	.elseif	.defined(SMB2M)
 		lda     nmi_addrs_ctl
 		asl	a
 		tax
-		lda     nmi_addrs,x
+		lda     nmi_addrs, x
 		sta     eng_screen_update_addr
 		inx
-		lda     nmi_addrs,x
+		lda     nmi_addrs, x
 		sta     eng_screen_update_addr+1
 		jsr	eng_screen_update
 	.endif
@@ -255,10 +252,10 @@ nmi:
         bne     :+ ; if (nmi_addrs_ctl == buffer_11_A) {
 		iny
 	: ; }
-	ldx     nmi_buffer_offset,y
+	ldx     nmi_buffer_offset, y
         lda     #nmi_addr::buffer_01_A
-        sta     ppu_nmi_buffer,x
-        sta     ppu_nmi_buffer+1,x
+        sta     ppu_nmi_buffer, x
+        sta     ppu_nmi_buffer+1, x
         sta     nmi_addrs_ctl
         lda     ppu_ctlr1_b
         sta     PPU_CTLR1
@@ -305,9 +302,9 @@ nmi:
 			: ; }
 
 			: ; for (x; x >= 0; x--) {
-				lda     eng_timers_nmi,x
+				lda     eng_timers_nmi, x
 				beq     :+ ; if (eng_timers_nmi[x]) {
-					dec     eng_timers_nmi,x
+					dec     eng_timers_nmi, x
 				: ; }
 
 				dex
