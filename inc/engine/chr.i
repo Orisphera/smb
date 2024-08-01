@@ -1,7 +1,7 @@
 .ifndef	CHR_I
 CHR_I = 1
 
-.include	"../system/ppu.i"
+.include	"system/ppu.i"
 
 	.enum	tile_obj
 		fire_koopa	= <((tile_obj_fire_koopa-chr_obj)/PPU_TILE_SIZE)

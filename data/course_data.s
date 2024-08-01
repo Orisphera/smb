@@ -1,4 +1,4 @@
-.include	"../inc/engine/course_flags.i"
+.include	"engine/course_flags.i"
 
 .if	.defined(VS)
 	.segment	"COURSEDATA"

@@ -1,17 +1,17 @@
-.include	"../inc/system/ppu.i"
-.include	"../inc/system/apu.i"
+.include	"system/ppu.i"
+.include	"system/apu.i"
 
 .if	.defined(FDS)
-	.include	"../inc/system/fds.i"
+	.include	"system/fds.i"
 .elseif	.defined(VS)
-	.include	"../inc/system/vs.i"
+	.include	"system/vs.i"
 .endif
 
-.include	"../inc/engine/mem.i"
-.include	"../inc/engine/tunables.i"
-.include	"../inc/engine/misc.i"
+.include	"engine/mem.i"
+.include	"engine/tunables.i"
+.include	"engine/misc.i"
 
-.include	"../inc/engine/unk.i"
+.include	"engine/unk.i"
 
 .segment	"VECTORS"
 

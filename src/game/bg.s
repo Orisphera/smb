@@ -1,10 +1,10 @@
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/course_flags.i"
-.include	"../../inc/engine/misc.i"
-.include	"../../inc/engine/tunables.i"
-.include	"../../inc/engine/tiles.i"
+.include	"engine/mem.i"
+.include	"engine/course_flags.i"
+.include	"engine/misc.i"
+.include	"engine/tunables.i"
+.include	"engine/tiles.i"
 
-.include	"../../inc/engine/unk.i"
+.include	"engine/unk.i"
  
 BG_PROC_METATILE_ID	= zp_byte_07
 

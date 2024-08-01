@@ -1,10 +1,10 @@
-.include	"../../inc/system/cpu.i"
+.include	"system/cpu.i"
 
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/course_flags.i"
-.include	"../../inc/engine/misc.i"
+.include	"engine/mem.i"
+.include	"engine/course_flags.i"
+.include	"engine/misc.i"
 
-.include	"../../inc/engine/unk.i"
+.include	"engine/unk.i"
 
 .if	.defined(CONS)
 .define	COURSE_ACTOR_DATA_ADDR_LO	courses_actor_addr_lo,y

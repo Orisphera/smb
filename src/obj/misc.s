@@ -1,8 +1,8 @@
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/tunables.i"
-.include	"../../inc/engine/sound.i"
+.include	"engine/mem.i"
+.include	"engine/tunables.i"
+.include	"engine/sound.i"
 
-.include	"../../inc/engine/unk.i"
+.include	"engine/unk.i"
 
 ; ------------------------------------------------------------
 obj_hammer_actor_id:

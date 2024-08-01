@@ -1,10 +1,10 @@
 .ifndef TUNABLES_I
 TUNABLES_I = 1
 
-.include	"../system/cpu.i"
-.include	"../system/ppu.i"
+.include	"system/cpu.i"
+.include	"system/ppu.i"
 
-.include	"../engine/misc.i"
+.include	"engine/misc.i"
 
 ENG_FONT_TILE_BASE = 0
 

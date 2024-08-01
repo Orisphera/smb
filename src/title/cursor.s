@@ -1,6 +1,6 @@
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/chr.i"
-.include	"../../inc/engine/charmap.i"
+.include	"engine/mem.i"
+.include	"engine/chr.i"
+.include	"engine/charmap.i"
 
 .if	.defined(CONS)
 ; -----------------------------------------------------------

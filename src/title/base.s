@@ -1,7 +1,7 @@
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/joypad.i"
-.include	"../../inc/engine/misc.i"
-.include	"../../inc/engine/tunables.i"
+.include	"engine/mem.i"
+.include	"engine/joypad.i"
+.include	"engine/misc.i"
+.include	"engine/tunables.i"
 
 	.export eng_title
 eng_title:

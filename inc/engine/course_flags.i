@@ -1,8 +1,8 @@
 .ifndef	COURSE_FLAGS_I
 COURSE_FLAGS_I = 1
 
-.include "../system/cpu.i"
-.include "../system/ppu.i"
+.include	"system/cpu.i"
+.include	"system/ppu.i"
 .include "./misc.i"
 
 COURSE_AREA_OFFSET_MAX	= $1F

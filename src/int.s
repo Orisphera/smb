@@ -1,18 +1,18 @@
-.include	"../inc/system/ppu.i"
-.include	"../inc/system/palettes.i"
+.include	"system/ppu.i"
+.include	"system/palettes.i"
 
 .if	.defined(FDS)
-	.include	"../inc/system/fds.i"
+	.include	"system/fds.i"
 .elseif	.defined(VS)
-	.include	"../inc/system/vs.i"
+	.include	"system/vs.i"
 .endif
 
-.include	"../inc/engine/mem.i"
-.include	"../inc/engine/joypad.i"
-.include	"../inc/engine/misc.i"
-.include	"../inc/engine/tunables.i"
+.include	"engine/mem.i"
+.include	"engine/joypad.i"
+.include	"engine/misc.i"
+.include	"engine/tunables.i"
 
-.include	"../inc/engine/unk.i"
+.include	"engine/unk.i"
 
 SMB2M_NMI_TIMER	= $1658
 

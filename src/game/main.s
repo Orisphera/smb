@@ -1,13 +1,13 @@
-.include	"../../inc/system/cpu.i"
+.include	"system/cpu.i"
 
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/course_flags.i"
-.include	"../../inc/engine/joypad.i"
-.include	"../../inc/engine/sound.i"
-.include	"../../inc/engine/tunables.i"
-.include	"../../inc/engine/misc.i"
+.include	"engine/mem.i"
+.include	"engine/course_flags.i"
+.include	"engine/joypad.i"
+.include	"engine/sound.i"
+.include	"engine/tunables.i"
+.include	"engine/misc.i"
 
-.include	"../../inc/engine/unk.i"
+.include	"engine/unk.i"
 
 	.export	eng_game
 eng_game:

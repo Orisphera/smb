@@ -1,8 +1,8 @@
-.include	"../../inc/system/cpu.i"
-.include	"../../inc/system/ppu.i"
+.include	"system/cpu.i"
+.include	"system/ppu.i"
 
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/tunables.i"
+.include	"engine/mem.i"
+.include	"engine/tunables.i"
 
 SKIP_TO_nmi_init_do	= BIT_ABS_OPCODE
 

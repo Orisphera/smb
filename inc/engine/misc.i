@@ -1,7 +1,7 @@
 .ifndef	MISC_I
 MISC_I = 1
 
-.include	"../system/cpu.i"
+.include	"system/cpu.i"
 
 METATILE_SIZE	= 4
 

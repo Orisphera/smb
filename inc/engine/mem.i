@@ -1,8 +1,8 @@
 .ifndef	MEM_I
 MEM_I	= 1
 
-.include "../system/cpu.i"
-.include "../system/vs.i"
+.include	"system/cpu.i"
+.include	"system/vs.i"
 .include "./tunables.i"
 
 zp_byte_00		= $00

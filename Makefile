@@ -20,7 +20,7 @@ ASFLAGS_VS	=	-DVS -DVS_SMB
 ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
-ASFLAGS		=	-U $(ASFLAGS_FC)
+ASFLAGS		=	-U -I ./inc $(ASFLAGS_FC)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
@@ -106,7 +106,8 @@ COURSES_OBJS	=	data/course_data_loop_offsets.o \
 MAIN_OBJ	=	src/game/main.o
 
 ENTITY_OBJS	=	src/obj/misc.o \
-			src/obj/spec.o \
+			src/obj/actor/powerup.o \
+			src/obj/block.o \
 			src/obj/motion.o \
 			src/obj/actor.o
 

@@ -1,4 +1,4 @@
-.include	"../../inc/engine/mem.i"
+.include	"engine/mem.i"
 ; -----------------------------------------------------------
 .if	.defined(CONS)
 	SCREEN_TITLE_BG_SIZE	= $3A

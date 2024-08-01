@@ -1,12 +1,12 @@
-.include	"../../inc/system/cpu.i"
-.include	"../../inc/system/ppu.i"
-.include	"../../inc/system/ctrl.i"
+.include	"system/cpu.i"
+.include	"system/ppu.i"
+.include	"system/ctrl.i"
 .if	.defined(VS)
-	.include	"../../inc/system/vs.i"
+	.include	"system/vs.i"
 .endif
 
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/joypad.i"
+.include	"engine/mem.i"
+.include	"engine/joypad.i"
 
 	.export eng_farjump
 eng_farjump:

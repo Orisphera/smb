@@ -1,14 +1,14 @@
-.include	"../../inc/system/cpu.i"
-.include	"../../inc/system/ppu.i"
-.include	"../../inc/system/palettes.i"
+.include	"system/cpu.i"
+.include	"system/ppu.i"
+.include	"system/palettes.i"
 
-.include	"../../inc/engine/mem.i"
-.include	"../../inc/engine/course_flags.i"
-.include	"../../inc/engine/tunables.i"
-.include	"../../inc/engine/charmap.i"
-.include	"../../inc/engine/misc.i"
+.include	"engine/mem.i"
+.include	"engine/course_flags.i"
+.include	"engine/tunables.i"
+.include	"engine/charmap.i"
+.include	"engine/misc.i"
 
-.include	"../../inc/engine/unk.i"
+.include	"engine/unk.i"
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	screen_proc_continue = screen_proc_next
