@@ -108,13 +108,13 @@ game_proc:
 	jsr	lib_player_bits_get
 	jsr	lib_calc_player_pos
 	jsr	render_player
-	jsr	obj_spec_block_flatten
+	jsr	block_flatten
 	ldx	#ACTIVE_BLOCK_MAX-1
 	stx	actor_index
-	jsr	obj_spec_block_proc
+	jsr	block_proc
 	dex
 	stx	actor_index
-	jsr	obj_spec_block_proc
+	jsr	block_proc
 
 	jsr	obj_misc_routine
 
@@ -334,8 +334,8 @@ game_proc_enter:
 		beq	:+
 		cmp	#COURSE_DATA_ENTER_POS_B0_C_VAL
 		bne	:++++++
-		: lda	player_attr
-		bne	:+ ; if (course_enter_pos == 0xB0 && !player_attr) {
+		: lda	attr_player
+		bne	:+ ; if (course_enter_pos == 0xB0 && !attr_player) {
 			lda	#joypad_button::right
 			jmp	game_proc_auto
 		: ; } else {
@@ -472,9 +472,9 @@ game_proc_ctrl:
 	beq	:+
 	cmp	#game_proc::pole
 	bcc	:+ ; if (player.pos_y.lo >= 0x40 && game_proc_id >= pole && game_proc_id.not_in(victory, enter)) {
-		lda	player_attr
+		lda	attr_player
 		and	#<~(%00100000)
-		sta	player_attr
+		sta	attr_player
 	: ; }
 
 	lda	pos_y_hi_player
@@ -668,18 +668,18 @@ game_proc_firefl:
 	game_proc_firefl_do:
 		and	#%00000011
 		sta	zp_byte_00
-		lda	player_attr
+		lda	attr_player
 		and	#%11111100
 		ora	zp_byte_00
-		sta	player_attr
+		sta	attr_player
 		rts
 	: ; } else {
 		jsr	game_proc_player_done
 
 	game_proc_firefl_do_2:
-		lda	player_attr
+		lda	attr_player
 		and	#%11111100
-		sta	player_attr
+		sta	attr_player
 	game_proc_firefl_rts:
 		rts
 	; }
@@ -738,7 +738,7 @@ game_proc_victory:
 		lda	byte_7F6
 		bne	:+ ; if (!byte_7F6) {
 		.endif
-			lda	#music_event::event_20
+			lda	#music_event::level_end
 			sta	apu_music_event
 			.if	.defined(SMB)|.defined(VS_SMB)
 				lda	#0
@@ -760,7 +760,7 @@ game_proc_victory:
 		: ; }
 
 		lda	#$20
-		sta	player_attr
+		sta	attr_player
 	: ; }
 
 	lda	actor_proc_flag_victory_id
@@ -1133,7 +1133,7 @@ game_proc_player_physics:
 
 		lda	player_swimming
 		beq	:+ ; if (player.swimming) {
-			lda	#$04
+			lda	#sfx_pulse1::stomp
 			sta	apu_pulse1_queue
 	
 			lda	pos_y_lo_player
@@ -1144,10 +1144,10 @@ game_proc_player_physics:
 				jmp	:+++
 			; }
 		: ; } else {
-			lda	#$01
+			lda	#sfx_pulse1::jump_big
 			ldy	player_size
 			beq	:+ ; if (player.size == small) {
-				lda	#$80
+				lda	#sfx_pulse1::jump_small
 			: ; }
 			sta	apu_pulse1_queue
 		; }
@@ -1338,7 +1338,7 @@ game_proc_proj:
 			;	&& !eng_crouch
 			;	&& player.state != climb
 			; ) {
-			lda	#$20
+			lda	#sfx_pulse1::proj
 			sta	apu_pulse1_queue
 			lda	#2
 			sta	state_proj, x
@@ -1528,7 +1528,7 @@ game_proc_timer:
 			lda	ENG_TIMER_DISP+1
 			ora	ENG_TIMER_DISP+2
 			bne	:+ ; if (--eng_timer_disp == 0) {
-				lda	#music_event::event_40
+				lda	#music_event::hurry_up
 				sta	apu_music_event
 			: ; }
 
@@ -1728,7 +1728,7 @@ game_proc_pole_b:
 		cpy	#5
 		bne	:+ ; if (SMB2M && STACK_BASE[15] == 5) {
 			inc	eng_lives
-			lda	#pulse_queue::pulse_64
+			lda	#sfx_pulse2::oneup
 			sta	apu_pulse2_queue
 			jmp	:++
 		.endif
@@ -1848,12 +1848,12 @@ game_proc_vine_init:
 	sta	actor_id, x
 	lda	#actor_modes::active
 	sta	actor_mode, x
-	lda	pos_x_hi_spec, y
+	lda	pos_x_hi_block, y
 	sta	pos_x_hi_actor, x
-	lda	pos_x_lo_spec, y
+	lda	pos_x_lo_block, y
 	sta	pos_x_lo_actor, x
 
-	lda	pos_y_lo_spec, y
+	lda	pos_y_lo_block, y
 	sta	pos_y_lo_actor, x
 	ldy	actor_vine_flag
 	bne	:+ ; if (!actor_vine_flag) {
@@ -1863,7 +1863,7 @@ game_proc_vine_init:
 	txa
 	sta	actor_vine_offset, y
 	inc	actor_vine_flag
-	lda	#pulse_queue::pulse_4
+	lda	#sfx_pulse2::spawn_vine
 	sta	apu_pulse2_queue
 	rts
 ; -----------------------------
@@ -2088,7 +2088,7 @@ game_proc_bullet:
 	lda	eng_timer_ctl
 	bne	:++++ ; if (!eng_timer_ctl) {
 		lda	state_actor, x
-		bne	:++ ; if (this.state == state_00) {
+		bne	:++ ; if (this.state == dead) {
 			lda	bits_offscr_actor
 			and	#%00001100
 			cmp	#%00001100
@@ -2110,15 +2110,15 @@ game_proc_bullet:
 					sta	state_actor, x
 					lda	#10
 					sta	eng_timer_actor_ani, x
-					lda	#pulse_queue::pulse_8
+					lda	#sfx_pulse2::blast
 					sta	apu_pulse2_queue
 				; }
 			; }
 		: ; }
 
 		lda	state_actor, x
-		and	#%00100000
-		beq	:+ ; if (this.state & 0x20) {
+		and	#actor_states::bit_5
+		beq	:+ ; if (this.state & bit_5) {
 			jsr	motion_y
 		: ; }
 	

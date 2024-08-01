@@ -600,7 +600,7 @@ sub_8552:
 			and	#$1F
 			bne	:++ ; if (!(vs_ram_arena0[0x18] & 0x1F)) {
 				inc	VS_RAM_ARENA0+$22
-				lda	#pulse_queue::pulse_1
+				lda	#sfx_pulse2::coin_01
 				sta	apu_pulse2_queue
 				jmp	:++
 			; }
@@ -742,7 +742,7 @@ victory_end:
 		bne	:++ ; if (course_no == no_08 && eng_lives >= 0 && !eng_timer_select) {
 			lda	#$30
 			sta	eng_timer_select
-			lda	#pulse_queue::pulse_64
+			lda	#sfx_pulse2::oneup
 			sta	apu_pulse2_queue
 			dec	eng_lives
 			lda	#1
@@ -881,7 +881,7 @@ screen_score_disp:
 		.endif
 		bne	:+ ; if (stack[0x10] == 1UP) {
 			inc	eng_lives
-			lda	#pulse_queue::pulse_64
+			lda	#sfx_pulse2::oneup
 			sta	apu_pulse2_queue
 		: ; }
 
@@ -916,7 +916,7 @@ screen_score_disp:
 	bcs	:++
 	: ; if (actor.id == hammer_bro || actor.id >= div_height || actor.state < 2) {
 		ldx	obj_data_offset_ctl
-		ldy	obj_data_offset_spec, x
+		ldy	obj_data_offset_block, x
 		ldx	actor_index
 	: ; }
 

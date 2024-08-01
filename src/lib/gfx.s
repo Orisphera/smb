@@ -317,8 +317,8 @@ gfx_clear_small:
 	.export gfx_meta_replace
 gfx_meta_replace:
 	jsr	gfx_meta_write
-	inc	spec_counter_res
-	dec	spec_rep_flag, x
+	inc	block_counter_res
+	dec	block_rep_flag, x
 	rts
 ; ----------------------------
 	.export gfx_meta_destroy

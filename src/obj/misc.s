@@ -74,7 +74,7 @@ obj_hammer_do:
 				sta	veloc_y_misc, x
 
 				lda	state_actor, y
-				and	#<~(%00001000)
+				and	#<~actor_states::bit_3
 				sta	state_actor, y
 
 				ldx	motion_dir_actor, y
@@ -119,19 +119,19 @@ obj_hammer_do:
 	.export obj_misc_block_coin_a, obj_misc_block_coin_b
 obj_misc_block_coin_a:
 	jsr	obj_misc_block_alloc
-	lda	pos_x_hi_spec, x
+	lda	pos_x_hi_block, x
 	sta	pos_x_hi_misc, y
-	lda	pos_x_lo_spec, x
+	lda	pos_x_lo_block, x
 	ora	#%00000101
 	sta	pos_x_lo_misc, y
-	lda	pos_y_lo_spec, x
+	lda	pos_y_lo_block, x
 	sbc	#16
 	sta	pos_y_lo_misc, y
 	jmp	obj_misc_block_coin
 ; -----------------------------
 obj_misc_block_coin_b:
 	jsr	obj_misc_block_alloc
-	lda	spec_page_loc_b, x
+	lda	block_page_loc, x
 	sta	pos_x_hi_misc, y
 	lda	zp_byte_06
 	asl	a
@@ -147,7 +147,7 @@ obj_misc_block_coin_b:
 obj_misc_block_coin:
 	lda	#<-5
 	sta	veloc_y_misc, y
-	lda	#1 ; pulse_queue::pulse_1
+	lda	#sfx_pulse2::coin_01
 	sta	pos_y_hi_misc, y
 	sta	state_misc, y
 	sta	apu_pulse2_queue
@@ -302,7 +302,7 @@ obj_misc_add_coin:
 		.endif
 
 		inc	eng_lives
-		lda	#pulse_queue::pulse_64
+		lda	#sfx_pulse2::oneup
 		sta	apu_pulse2_queue
 	: ; }
 

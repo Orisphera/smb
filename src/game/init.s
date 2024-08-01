@@ -434,7 +434,7 @@ game_proc_start:
 	lda	player_start_y, x
 	sta	pos_y_lo_player
 	lda	player_bg_priority, x
-	sta	player_attr
+	sta	attr_player
 	jsr	screen_color_player
 
 	ldy	course_timer_setting
@@ -475,9 +475,9 @@ game_proc_start:
 		lda	#player_state::climb
 		sta	state_player
 		ldx	#0
-		jsr	obj_spec_block_initpos
+		jsr	block_initpos
 		lda	#<-16
-		sta	pos_y_lo_spec
+		sta	pos_y_lo_block
 		ldx	#5
 		ldy	#0
 		jsr	game_proc_vine_init

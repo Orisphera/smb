@@ -1,40 +1,41 @@
 .include	"system/cpu.i"
 
+.include	"engine/math.i"
 .include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/tiles.i"
+.include	"engine/misc.i"
 .include	"engine/sound.i"
 
 .include	"engine/unk.i"
 
-OBJ_MISC_POWERUP_ACTOR	= (ENG_ACTOR_MAX-1)
+POWERUP_ACTOR_IDX	= (ENG_ACTOR_MAX-1)
+POWERUP_OFFSET_BLOCK_Y	= 8
+POWERUP_COL_BOX		= 3
 
-	.export obj_spec_powerup_init
-	.export obj_spec_powerup_init_b
-obj_spec_powerup_init:
+	.export actor_init_powerup, actor_init_powerup_b
+actor_init_powerup_b:
 	lda	#actor::power_up
-	sta	actor_id+OBJ_MISC_POWERUP_ACTOR
-	lda	pos_x_hi_spec, x
-	sta	pos_x_hi_actor+OBJ_MISC_POWERUP_ACTOR
-	lda	pos_x_lo_spec, x
-	sta	pos_x_lo_actor+OBJ_MISC_POWERUP_ACTOR
+	sta	actor_id+POWERUP_ACTOR_IDX
+	lda	pos_x_hi_block, x
+	sta	pos_x_hi_actor+POWERUP_ACTOR_IDX
+	lda	pos_x_lo_block, x
+	sta	pos_x_lo_actor+POWERUP_ACTOR_IDX
 	lda	#1
-	sta	pos_y_hi_actor+OBJ_MISC_POWERUP_ACTOR
-	lda	pos_y_lo_spec, x
+	sta	pos_y_hi_actor+POWERUP_ACTOR_IDX
+	lda	pos_y_lo_block, x
 	sec
-	sbc	#8
-	sta	pos_y_lo_actor+OBJ_MISC_POWERUP_ACTOR
+	sbc	#POWERUP_OFFSET_BLOCK_Y
+	sta	pos_y_lo_actor+POWERUP_ACTOR_IDX
 
-obj_spec_powerup_init_b:
+actor_init_powerup:
 	lda	#actor_modes::active
-	sta	state_actor+OBJ_MISC_POWERUP_ACTOR
-	sta	actor_mode+OBJ_MISC_POWERUP_ACTOR
-	lda	#3
-	sta	col_box_actor+OBJ_MISC_POWERUP_ACTOR
+	sta	state_actor+POWERUP_ACTOR_IDX
+	sta	actor_mode+POWERUP_ACTOR_IDX
+	lda	#POWERUP_COL_BOX
+	sta	col_box_actor+POWERUP_ACTOR_IDX
 
 	lda	eng_powerup_type
 	cmp	#powerup_type::star
-	bcs	:++ ; if (powerup.type < star) {
+	bcs	:++ ; if (this.type < star) {
 		lda	player_status
 		cmp	#2
 		bcc	:+ ; if (player.status >= 2) {
@@ -43,18 +44,18 @@ obj_spec_powerup_init_b:
 		sta	eng_powerup_type
 	: ; }
 
-	lda	#$20
-	sta	byte_3CA
-	lda	#pulse_queue::pulse_2
+	lda	#obj_attr::priority_low|obj_attr::color0
+	sta	attr_actor+POWERUP_ACTOR_IDX
+	lda	#sfx_pulse2::spawn_powerup
 	sta	apu_pulse2_queue
 	rts
 ; ------------------------------------------------------------
-	.export obj_spec_powerup_do
-obj_spec_powerup_do:
-	ldx	#OBJ_MISC_POWERUP_ACTOR
+	.export actor_proc_powerup
+actor_proc_powerup:
+	ldx	#POWERUP_ACTOR_IDX
 	stx	actor_index
-	lda	state_actor+OBJ_MISC_POWERUP_ACTOR
-	beq	:+++++ ; if (powerup.state != state_00) {
+	lda	state_actor+POWERUP_ACTOR_IDX
+	beq	:+++++ ; if (this.state != dead) {
 		asl	a
 		bcc	:++
 		lda	eng_timer_ctl
@@ -70,40 +71,40 @@ obj_spec_powerup_do:
 			beq	:+
 		.endif
 		cmp	#powerup_type::star
-		bne	:++++ ; if ((powerup.state & 0x80) && !eng_timer_ctl && powerup.type == star) {
+		bne	:++++ ; if (this.spawned && !eng_timer_ctl && this.type == star) {
 			jsr	actor_proc_bounce
 			jsr	col_actor_bounce_proc
 			jmp	:++++
-		: ; } else if ((powerup.state & 0x80) && !eng_timer_ctl && powerup.type.in(mushroom_a, mushroom_b, type_03, type_04)) {
+		: ; } else if (this.spawned && !eng_timer_ctl && this.type.in(mushroom_a, mushroom_b, type_03, type_04)) {
 			jsr	actor_proc_base
 			jsr	col_actor_ground_proc
 			jmp	:+++
-		: ; } else if (!eng_timer_ctl) {
+		: ; } else if (!(powerup.state & 0x80)) {
 			lda	frame_count
-			and	#3
+			and	#MOD_4
 			bne	:+ ; if (frame_count % 4) {
-				dec	pos_y_lo_actor+OBJ_MISC_POWERUP_ACTOR
-				lda	state_actor+OBJ_MISC_POWERUP_ACTOR
-				inc	state_actor+OBJ_MISC_POWERUP_ACTOR
+				dec	pos_y_lo_actor+POWERUP_ACTOR_IDX
+				lda	state_actor+POWERUP_ACTOR_IDX
+				inc	state_actor+POWERUP_ACTOR_IDX
 				cmp	#%00010000|actor_states::state_1
-				bcc	:+ ; if (powerup.state >= 0x11) {
+				bcc	:+ ; if (this.state >= 0x11) {
 					lda	#16
 					sta	veloc_x_actor, x
-					lda	#%10000000
-					sta	state_actor+OBJ_MISC_POWERUP_ACTOR
+					lda	#actor_states::spawned
+					sta	state_actor+POWERUP_ACTOR_IDX
 					asl	a
-					sta	byte_3CA
+					sta	attr_actor+POWERUP_ACTOR_IDX
 					rol	a
 					sta	motion_dir_actor, x
 				; }
 			: ; }
 
-			lda	state_actor+OBJ_MISC_POWERUP_ACTOR
+			lda	state_actor+POWERUP_ACTOR_IDX
 			cmp	#actor_states::state_6
 			bcc	:++
 		: ; }
 
-		; if ((!(powerup.state & 0x80) && eng_timer_ctl) || powerup.type.in(mushroom_a, star, mushroom_b) || powerup.state >= 6) {
+		; if ((!(powerup.state & 0x80) && eng_timer_ctl) || powerup.state >= 6) {
 			jsr	lib_calc_actor_pos
 			jsr	lib_actor_bits_get
 			jsr	col_actor_box

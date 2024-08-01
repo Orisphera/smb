@@ -1,28 +1,41 @@
 .ifndef	SOUND_I
 SOUND_I = 1
 
-	.enum	noise_event
-		bowser_die	= 1
+	.enum	sfx_noise
+		block_break_01	= 1
 		flame		= 2
 	.endenum
 
-	.enum	pulse_queue
-		pulse_1		= 1
-		pulse_2		= 2
-		pulse_4		= 4
-		pulse_8		= 8
-		pulse_16	= 16
-		pulse_32	= 32
-		pulse_64	= 64
-		pulse_128	= 128
+	.enum	sfx_pulse1
+		jump_big	= 1
+		bump		= 2
+		stomp		= 4
+		smack		= 8
+		pipe_entry	= 16
+		proj		= 32
+		pole		= 64
+		jump_small	= 128
+	.endenum
+
+	.enum	sfx_pulse2
+		coin_01		= 1
+		spawn_powerup	= 2
+		spawn_vine	= 4
+		blast		= 8
+		tick		= 16
+		powerup		= 32
+		oneup		= 64
+		bowser_fall	= 128
 	.endenum
 
 	.enum	music_event
+		death		= 1
 		game_over	= 2
 		victory_normal	= 4
 		victory_castle	= 8
-		event_20	= 32
-		event_40	= 64
+		game_over_alt	= 16
+		level_end	= 32
+		hurry_up	= 64
 		none		= 128
 	.endenum
 

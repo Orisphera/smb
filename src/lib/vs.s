@@ -245,7 +245,7 @@ sub_9389_do:
 sub_93E0:
 	jsr	vs_setbank_low
 
-	lda	#pulse_queue::pulse_1
+	lda	#pulse_queue::coin_01
 	sta	apu_pulse2_queue
 ; ----------------------------
 sub_93E7:

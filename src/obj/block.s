@@ -7,10 +7,10 @@
 
 .include	"engine/unk.i"
 
-obj_spec_block_punch_off_y:
-	.byte	$04, $12
+block_punch_off_y:
+	.byte	4, 18
 ; -----------------------------
-obj_spec_block_punch:
+block_punch:
 	pha
 
 	lda	#$11
@@ -19,26 +19,26 @@ obj_spec_block_punch:
 	bne	:+ ; if (player.size == large) {
 		lda	#$12
 	: ; }
-	sta	state_spec, x
+	sta	state_block, x
 
 	jsr	gfx_meta_destroy
 
 	ldx	obj_data_offset_ctl
 	lda	zp_byte_02
-	sta	pos_y_orig_spec, x
+	sta	pos_y_orig_block, x
 	tay
 	lda	eng_buffer_ptr
-	sta	spec_buf_lo, x
+	sta	block_buffer_idx, x
 	lda	(eng_buffer_ptr), y
-	jsr	obj_spec_block_is_tile
+	jsr	block_is_tile
 	sta	zp_byte_00
 	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		tya
 	: ; }
-	bcc	:++++ ; if (this.is_tile) {
+	bcc	:++++ ; if (block.is_tile) {
 		ldy	#$11
-		sty	state_spec, x
+		sty	state_block, x
 
 		lda	#metatile_3::axe_block
 		ldy	zp_byte_00
@@ -46,7 +46,7 @@ obj_spec_block_punch:
 		beq	:+
 		cpy	#metatile_1::brick_l
 		bne	:++++
-		: ; if (this.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
+		: ; if (block.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
 			lda	eng_block_time
 			bne	:+ ; if (!eng_block_timer) {
 				lda	#$0B
@@ -61,8 +61,8 @@ obj_spec_block_punch:
 			tya
 		; }
 	: ; }
-	sta	spec_tile, x
-	jsr	obj_spec_block_initpos
+	sta	block_tile, x
+	jsr	block_initpos
 
 	ldy	zp_byte_02
 	lda	#metatile_0::blank_d
@@ -84,17 +84,17 @@ obj_spec_block_punch:
 
 	lda	pos_y_lo_player
 	clc
-	adc	obj_spec_block_punch_off_y, y
-	and	#$F0
-	sta	pos_y_lo_spec, x
+	adc	block_punch_off_y, y
+	and	#%11110000
+	sta	pos_y_lo_block, x
 
-	ldy	state_spec, x
+	ldy	state_block, x
 	cpy	#$11
-	beq	:+ ; if (this.state != 0x11) {
-		jsr	obj_spec_block_break
+	beq	:+ ; if (block.state != 0x11) {
+		jsr	block_break
 		jmp	:++
 	: ; } else {
-		jsr	obj_spec_block_item
+		jsr	block_item
 	: ; }
 
 	lda	obj_data_offset_ctl
@@ -102,127 +102,127 @@ obj_spec_block_punch:
 	sta	obj_data_offset_ctl
 	rts
 ; ------------------------------------------------------------
-	.export obj_spec_block_initpos
-obj_spec_block_initpos:
+	.export block_initpos
+block_initpos:
 	lda	pos_x_lo_player
 	clc
 	adc	#8
 	and	#%11110000
-	sta	pos_x_lo_spec, x
+	sta	pos_x_lo_block, x
 	lda	pos_x_hi_player
 	adc	#0
-	sta	pos_x_hi_spec, x
-	sta	spec_page_loc_b, x
+	sta	pos_x_hi_block, x
+	sta	block_page_loc, x
 	lda	pos_y_hi_player
-	sta	pos_y_hi_spec, x
+	sta	pos_y_hi_block, x
 	rts
 ; ------------------------------------------------------------
-obj_spec_block_item:
-	jsr	obj_spec_block_top_check
+block_item:
+	jsr	block_top_check
 
-	lda	#$02
+	lda	#sfx_pulse1::bump
 	sta	apu_pulse1_queue
 
 	lda	#0
-	sta	veloc_x_spec, x
-	sta	accel_y_spec, x
+	sta	veloc_x_block, x
+	sta	accel_y_block, x
 	sta	veloc_y_player
 	lda	#<-2
-	sta	veloc_y_spec, x
+	sta	veloc_y_block, x
 
 	lda	zp_byte_05
-	jsr	obj_spec_block_is_tile
-	bcc	obj_spec_block_item_rts ; if (this.is_tile) {
+	jsr	block_is_tile
+	bcc	block_item_rts ; if (this.is_tile) {
 		tya
-		cmp	#(obj_spec_block_item_end-obj_spec_block_item_start)/2
+		cmp	#(block_item_end-block_item_start)/2
 		bcc	:+ ; if (y >= end) {
 			.if	.defined(SMBM)|.defined(VS_SMB)
-			sbc	#(obj_spec_block_item_mid-obj_spec_block_item_start)/2
+			sbc	#(block_item_mid-block_item_start)/2
 			.elseif	.defined(SMB2)
-			sbc	#(obj_spec_block_item_mid_b-obj_spec_block_item_start)/2
+			sbc	#(block_item_mid_b-block_item_start)/2
 			.endif
 		: ; }
 		jsr	eng_farjump
-		obj_spec_block_item_start:
-		.addr	obj_spec_block_mushroom_a
+		block_item_start:
+		.addr	block_mushroom_a
 
 		.if	.defined(SMB2)
-			.addr	obj_spec_block_powerup_4
+			.addr	block_powerup_4
 		.endif
 
 		.addr	obj_misc_block_coin_a
 		.addr	obj_misc_block_coin_a
-		.addr	obj_spec_block_mushroom_b
+		.addr	block_mushroom_b
 
 		.if	.defined(SMB2)
-			.addr	obj_spec_block_powerup_4
+			.addr	block_powerup_4
 		.endif
 
-		obj_spec_block_item_mid_b:
-		.addr	obj_spec_block_mushroom_a
+		block_item_mid_b:
+		.addr	block_mushroom_a
 
-		obj_spec_block_item_mid:
+		block_item_mid:
 		.if	.defined(SMB2M)
-			.addr	obj_spec_block_mushroom_a
+			.addr	block_mushroom_a
 		.endif
 
 		.if	.defined(SMB2)
-			.addr	obj_spec_block_powerup_4
+			.addr	block_powerup_4
 		.endif
 
-		.addr	obj_spec_block_vine
-		.addr	obj_spec_block_star
+		.addr	block_vine
+		.addr	block_star
 		.addr	obj_misc_block_coin_a
-		.addr	obj_spec_block_mushroom_b
-		obj_spec_block_item_end:
+		.addr	block_mushroom_b
+		block_item_end:
 	; }
 ; -----------------------------
-obj_spec_block_mushroom_a:
+block_mushroom_a:
 	lda	#powerup_type::mushroom_a
 
 .if	.defined(CONS)
 	.byte	BIT_ABS_OPCODE
 .elseif	.defined(VS)
-	jmp	obj_spec_block_powerup
+	jmp	block_powerup
 .endif
 
-obj_spec_block_star:
+block_star:
 	lda	#powerup_type::star
 
 .if	.defined(CONS)
 	.byte	BIT_ABS_OPCODE
 .elseif	.defined(VS)
-	jmp	obj_spec_block_powerup
+	jmp	block_powerup
 .endif
 
 .if	.defined(SMB2)
-obj_spec_block_powerup_4:
+block_powerup_4:
 	lda	#powerup_type::type_04
 
 	.if	.defined(CONS)
 		.byte	BIT_ABS_OPCODE
 	.elseif	.defined(VS)
-		jmp	obj_spec_block_powerup
+		jmp	block_powerup
 	.endif
 .endif
 
-obj_spec_block_mushroom_b:
+block_mushroom_b:
 	lda	#powerup_type::mushroom_b
 
-obj_spec_block_powerup:
+block_powerup:
 	sta	eng_powerup_type
-	jmp	obj_spec_powerup_init
+	jmp	actor_init_powerup_b
 ; -----------------------------
-obj_spec_block_vine:
+block_vine:
 	ldx	#$05
 	ldy	obj_data_offset_ctl
 	jsr	game_proc_vine_init
 
-obj_spec_block_item_rts:
+block_item_rts:
 	rts
 ; ------------------------------------------------------------
-	.export obj_spec_block_tiles
-obj_spec_block_tiles:
+	.export block_tiles
+block_tiles:
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.byte	metatile_3::block_q_b, metatile_3::block_q_a
 	.elseif	.defined(SMB2)
@@ -254,12 +254,12 @@ obj_spec_block_tiles:
 	.byte	metatile_1::brick_i, metatile_1::brick_j
 	.byte	metatile_1::brick_k, metatile_1::brick_l
 	.byte	metatile_1::brick_m
-obj_spec_block_tiles_end:
+block_tiles_end:
 ; -----------------------------
-obj_spec_block_is_tile:
-	ldy	#(obj_spec_block_tiles_end-obj_spec_block_tiles)-1
-	: ; for (tile of obj_spec_block_tiles) {
-		cmp	obj_spec_block_tiles, y
+block_is_tile:
+	ldy	#(block_tiles_end-block_tiles)-1
+	: ; for (tile of block_tiles) {
+		cmp	block_tiles, y
 		beq	:+
 	
 		dey
@@ -270,12 +270,12 @@ obj_spec_block_is_tile:
 
 	rts
 ; ------------------------------------------------------------
-obj_spec_block_break:
-	jsr	obj_spec_block_top_check
-	lda	#1
-	sta	spec_rep_flag, x
+block_break:
+	jsr	block_top_check
+	lda	#sfx_noise::block_break_01
+	sta	block_rep_flag, x
 	sta	apu_noise_event
-	jsr	obj_spec_block_bits_init
+	jsr	block_bits_init
 	lda	#<-2
 	sta	veloc_y_player
 	lda	#5
@@ -284,7 +284,7 @@ obj_spec_block_break:
 	ldx	obj_data_offset_ctl
 	rts
 ; ------------------------------------------------------------
-obj_spec_block_top_check:
+block_top_check:
 	ldx	obj_data_offset_ctl
 	ldy	zp_byte_02
 	beq	:+ ; if (zp_byte_02) {
@@ -306,34 +306,34 @@ obj_spec_block_top_check:
 
 	rts
 ; ------------------------------------------------------------
-obj_spec_block_bits_init:
-	lda	pos_x_lo_spec, x
-	sta	pos_x_orig_spec, x
+block_bits_init:
+	lda	pos_x_lo_block, x
+	sta	pos_x_orig_block, x
 	lda	#<-16
-	sta	veloc_x_spec, x
-	sta	veloc_x_spec+2, x
+	sta	veloc_x_block, x
+	sta	veloc_x_block+2, x
 	lda	#<-6
-	sta	veloc_y_spec, x
+	sta	veloc_y_block, x
 	lda	#<-4
-	sta	veloc_y_spec+2, x
+	sta	veloc_y_block+2, x
 	lda	#0
-	sta	accel_y_spec, x
-	sta	accel_y_spec+2, x
-	lda	pos_x_hi_spec, x
-	sta	pos_x_hi_spec+2, x
-	lda	pos_x_lo_spec, x
-	sta	pos_x_lo_spec+2, x
-	lda	pos_y_lo_spec, x
+	sta	accel_y_block, x
+	sta	accel_y_block+2, x
+	lda	pos_x_hi_block, x
+	sta	pos_x_hi_block+2, x
+	lda	pos_x_lo_block, x
+	sta	pos_x_lo_block+2, x
+	lda	pos_y_lo_block, x
 	clc
 	adc	#8
-	sta	pos_y_lo_spec+2, x
+	sta	pos_y_lo_block+2, x
 	lda	#<-6
-	sta	veloc_y_spec, x
+	sta	veloc_y_block, x
 	rts
 ; ------------------------------------------------------------
-	.export obj_spec_block_proc
-obj_spec_block_proc:
-	lda	state_spec, x
+	.export block_proc
+block_proc:
+	lda	state_block, x
 	beq	:++++ ; if (this.state != 0) {
 		and	#%00001111
 		pha
@@ -355,22 +355,22 @@ obj_spec_block_proc:
 			jsr	motion_x_do
 
 			ldx	actor_index
-			jsr	lib_calc_spec_pos
-			jsr	lib_spec_bits_get
+			jsr	lib_calc_block_pos
+			jsr	lib_block_bits_get
 			jsr	render_block_bits
 
 			pla
-			ldy	pos_y_hi_spec, x
-			beq	:++++ ; if (this.pos_y.hi) {
+			ldy	pos_y_hi_block, x
+			beq	:++++ ; if (block.pos_y.hi) {
 				pha
 
 				lda	#$F0
-				cmp	pos_y_lo_spec+2, x
+				cmp	pos_y_lo_block+2, x
 				bcs	:+ ; if (that.pos_y.lo < 0xF0) {
-					sta	pos_y_lo_spec+2, x
+					sta	pos_y_lo_block+2, x
 				: ; }
 		
-				lda	pos_y_lo_spec, x
+				lda	pos_y_lo_block, x
 				cmp	#$F0
 
 				pla
@@ -380,17 +380,17 @@ obj_spec_block_proc:
 		: ; } else {
 			jsr	motion_block_fall_fast
 			ldx	actor_index
-			jsr	lib_calc_spec_pos
-			jsr	lib_spec_bits_get
+			jsr	lib_calc_block_pos
+			jsr	lib_block_bits_get
 			jsr	render_block
-			lda	pos_y_lo_spec, x
+			lda	pos_y_lo_block, x
 			and	#%00001111
 			cmp	#5
 
 			pla
 			bcs	:++ ; if ((this.pos_y.lo & 0xF) < 5) {
 				lda	#1
-				sta	spec_rep_flag, x
+				sta	block_rep_flag, x
 			; }
 		; }
 	: ; }
@@ -398,32 +398,32 @@ obj_spec_block_proc:
 	; if () {
 		lda	#0
 	: ; }
-	sta	state_spec, x
+	sta	state_block, x
 	rts
 ; ------------------------------------------------------------
-	.export obj_spec_block_flatten
-obj_spec_block_flatten:
+	.export block_flatten
+block_flatten:
 	ldx	#ACTIVE_BLOCK_MAX-1
 	: ; for (block of blocks) {
 		stx	actor_index
 
 		lda	ppu_nmi_buffer_0_data
 		bne	:+
-		lda	spec_rep_flag, x
-		beq	:+ ; if (*ppu_nmi_buffer == NMI_DATA_END && spec_rep_flag[actor_index]) {
-			lda	spec_buf_lo, x
+		lda	block_rep_flag, x
+		beq	:+ ; if (*ppu_nmi_buffer == NMI_DATA_END && block_rep_flag[actor_index]) {
+			lda	block_buffer_idx, x
 			sta	eng_buffer_ptr
 			lda	#5
 			sta	eng_buffer_ptr+1
-			lda	pos_y_orig_spec, x
+			lda	pos_y_orig_block, x
 			sta	zp_byte_02
 			tay
-			lda	spec_tile, x
+			lda	block_tile, x
 			sta	(eng_buffer_ptr), y
 			jsr	gfx_meta_replace
 
 			lda	#0
-			sta	spec_rep_flag, x
+			sta	block_rep_flag, x
 		: ; }
 
 		dex

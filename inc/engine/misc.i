@@ -21,6 +21,14 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		state_4
 		state_5
 		state_6
+		state_mask = 7
+
+		bit_3	= 8
+		bit_4	= 16
+		bit_5	= 32
+		bit_6	= 64
+
+		spawned	= 128
 	.endenum
 
 	.enum	victory_flag_proc

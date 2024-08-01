@@ -2,6 +2,7 @@
 .include	"system/ppu.i"
 .include	"system/vs.i"
 
+.include	"engine/math.i"
 .include	"engine/mem.i"
 .include	"engine/tunables.i"
 .include	"engine/chr.i"
@@ -665,8 +666,8 @@ actor_init_do:
 	.addr	actor_init_plat_s_up
 	.addr	actor_init_plat_s_down
 	.addr	actor_init_bowser
+	.addr	actor_init_powerup
 
-	.addr	obj_spec_powerup_init_b
 	.addr	game_proc_vine_init
 
 	.addr	actor_init_null
@@ -913,7 +914,7 @@ actor_spiny_do:
 	cmp	#SPINY_PLAYER_Y_CUTOFF
 	bcc	:-
 	lda	state_actor, y
-	bne	:- ; if (player.pos_y >= SPINY_PLAYER_Y_CUTOFF && actor.state == state_0) {
+	bne	:- ; if (player.pos_y >= SPINY_PLAYER_Y_CUTOFF && actor.state == dead) {
 		lda	pos_x_hi_actor, y
 		sta	pos_x_hi_actor, x
 		lda	pos_x_lo_actor, y
@@ -1221,7 +1222,7 @@ actor_init_bowser_flame:
 	bne	actor_init_dup_rts ; if (eng_timer_swarm == 0) {
 		sta	accel_y_actor_c, x
 		lda	apu_noise_event
-		ora	#noise_event::flame
+		ora	#sfx_noise::flame
 		sta	apu_noise_event
 		ldy	ppu_nmi_buffer_1_data+$27
 		lda	actor_id, y
@@ -1442,7 +1443,7 @@ actor_init_bullet_cheep:
 			rts
 		: ; } else {
 			lda	apu_pulse2_queue
-			ora	#pulse_queue::pulse_8
+			ora	#sfx_pulse2::blast
 			sta	apu_pulse2_queue
 		
 			lda	#actor::bullet_swarm
@@ -1545,7 +1546,7 @@ actor_init_bullet_cheep:
 		; }
 	; } else rts;
 ; -----------------------------------------------------------
-PIRANHA_PLANT_VELOC_X	= 1
+PIRANHA_PLANT_VELOC_X_1	= 1
 PIRANHA_PLANT_OFFSET_Y	= 24
 	.export actor_init_piranha_plant
 actor_init_piranha_plant:
@@ -1571,7 +1572,7 @@ actor_init_piranha_plant:
 	        sta     actor_proc_piranha_plant_smb2_cmp+1
 	.endif
 
-	lda	#PIRANHA_PLANT_VELOC_X
+	lda	#PIRANHA_PLANT_VELOC_X_1
 	sta	veloc_x_actor, x
 	lsr	a
 	sta	state_actor, x
@@ -1810,8 +1811,8 @@ actor_proc_do:
 	.addr	actor_proc_plat_small
 	.addr	actor_proc_plat_small
 	.addr	actor_proc_bowser
+	.addr	actor_proc_powerup
 
-	.addr	obj_spec_powerup_do
 	.addr	game_proc_vine_do
 
 	.addr	actor_proc_null
@@ -1837,7 +1838,7 @@ actor_proc_toad:
 ; -----------------------------------------------------------
 actor_proc_enemy:
 	lda	#0
-	sta	actor_attr, x
+	sta	attr_actor, x
 	jsr	lib_actor_bits_get
 	jsr	lib_calc_actor_pos
 	jsr	render_actor
@@ -1954,7 +1955,7 @@ actor_erase:
 	sta	STACK_BASE+$10, x
 	sta	eng_timer_actor, x
 	sta	STACK_BASE+$25, x
-	sta	actor_attr, x
+	sta	attr_actor, x
 	sta	eng_timer_actor_ani, x
 
 	rts
@@ -1990,7 +1991,7 @@ actor_proc_veloc_x:
 ; ------------------------------
 actor_proc_hammer_bro:
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	beq	:+ ; if (actor.state & 0x20) {
 		jmp	actor_proc_base_defeated
 	: ; } else {
@@ -2008,7 +2009,7 @@ actor_proc_hammer_bro:
 					jsr	obj_hammer_init
 					bcc	:+ ; if (obj_hammer_init()) {
 						lda	state_actor, x
-						ora	#%00001000
+						ora	#actor_states::bit_3
 						sta	state_actor, x
 						jmp	actor_proc_hammer_bro_move_h
 					; }
@@ -2027,7 +2028,7 @@ actor_proc_hammer_bro_jump_rand	= zp_byte_00
 
 actor_proc_hammer_bro_jump:
 	lda	state_actor, x
-	and	#%00000111
+	and	#actor_states::state_mask
 	cmp	#actor_states::state_1
 	beq	:+++ ; if (actor.state != state_1) {
 		lda	#0
@@ -2093,16 +2094,16 @@ actor_proc_hammer_bro_move_h:
 actor_proc_base:
 	ldy	#0
 	lda	state_actor, x
-	and	#%01000000
+	and	#actor_states::bit_6
 	bne	:+
 	lda	state_actor, x
 	asl	a
 	bcs	:++++
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	bne	actor_proc_base_defeated
 	lda	state_actor, x
-	and	#%00000111
+	and	#actor_states::state_mask
 	beq	:++++
 	cmp	#actor_states::state_5
 	beq	:+
@@ -2115,7 +2116,7 @@ actor_proc_base:
 	lda	state_actor, x
 	cmp	#actor_states::state_2
 	beq	:+
-	and	#%01000000
+	and	#actor_states::bit_6
 	beq	:+++
 	lda	actor_id, x
 	cmp	#actor::power_up
@@ -2148,7 +2149,7 @@ actor_proc_base:
 		bne	:++ ; if (actor.timer == 0) {
 			sta	state_actor, x
 			lda	frame_count
-			and	#%00000001
+			and	#MOD_2
 			tay
 			iny
 			sty	motion_dir_actor, x
@@ -2295,7 +2296,7 @@ actor_proc_blooper_flip_chance:
 ; ----------------------------
 actor_proc_bloober:
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	bne	:++++++ ; if (!(actor.state & 0x20)) {
 		ldy	eng_hard_mode_b
 		lda	eng_rand_seed+1, x
@@ -2422,7 +2423,7 @@ actor_proc_swim:
 ; -----------------------------------------------------------
 actor_proc_bullet:
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	beq	:+ ; if (actor_state & 0x20) {
 		jmp	motion_fall_mid
 	: ; } else {
@@ -2446,7 +2447,7 @@ actor_proc_cheep_accel_x:
 ; -----------------------------
 actor_proc_cheep:
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	beq	:+ ; if (actor.state & 0x20) {
 		jmp	motion_fall_slow
 	: ; } else {
@@ -2852,10 +2853,10 @@ actor_cheep_fly_attr:
 ; -----------------------------
 actor_proc_cheep_fly:
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	beq	:+ ; if () {
 		lda	#0
-		sta	actor_attr, x
+		sta	attr_actor, x
 		jmp	motion_fall_mid
 	: ; } else {
 		jsr	motion_x
@@ -2891,7 +2892,7 @@ actor_proc_cheep_fly:
 		: ; }
 	
 		lda	actor_cheep_fly_attr, y
-		sta	actor_attr, x
+		sta	attr_actor, x
 		rts
 	; }
 ; -----------------------------------------------------------
@@ -2900,12 +2901,12 @@ actor_proc_lakitu_data:
 ; -----------------------------
 actor_proc_lakitu:
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	beq	:+ ; if (actor.state & 0x20) {
 		jmp	motion_y
 	: ; } else {
 		lda	state_actor, x
-		beq	:+ ; if (actor_state != state_0) {
+		beq	:+ ; if (actor_state != dead) {
 			lda	#0
 			sta	veloc_y_actor, x
 			sta	actor_swarm_buffer
@@ -3034,7 +3035,7 @@ actor_bowser_ending:
 	stx	actor_index
 	lda	state_actor, x
 	beq	:+++
-	and	#%01000000
+	and	#actor_states::bit_6
 	beq	:+
 	lda	pos_y_lo_actor, x
 	cmp	#<-32
@@ -3066,18 +3067,18 @@ actor_bowser_ending:
 			jsr	gfx_clear_put_do
 			ldx	actor_index
 			jsr	gfx_meta_step
-			lda	#pulse_queue::pulse_8
+			lda	#sfx_pulse2::blast
 			sta	apu_pulse2_queue
-			lda	#noise_event::bowser_die
+			lda	#sfx_noise::block_break_01
 			sta	apu_noise_event
 			inc	ppu_nmi_buffer_1_data+$28
 			lda	ppu_nmi_buffer_1_data+$28
 			cmp	#$0F
 			bne	:+ ; if () {
 				jsr	actor_init_veloc_y
-				lda	#%01000000
+				lda	#actor_states::bit_6
 				sta	state_actor, x
-				lda	#pulse_queue::pulse_128
+				lda	#sfx_pulse2::bowser_fall
 				sta	apu_pulse2_queue
 			; }
 		: ; }
@@ -3090,7 +3091,7 @@ actor_proc_bowser_timer_data:
 ; ----------------------------
 actor_proc_bowser:
 	lda	state_actor, x
-	and	#%00100000
+	and	#actor_states::bit_5
 	beq	:++
 	lda	pos_y_lo_actor, x
 	cmp	#<-32
@@ -3290,7 +3291,7 @@ actor_proc_bowser_col:
 	inc	ppu_nmi_buffer_1_data+$29
 	jsr	actor_proc_toad
 	lda	state_actor, x
-	bne	:- ; if (actor.state == state_0) {
+	bne	:- ; if (actor.state == dead) {
 		lda	#10
 		sta	col_box_actor, x
 		jsr	col_actor_box
@@ -3443,7 +3444,7 @@ actor_proc_fireworks:
 	: ; } else {
 		lda	#actor_modes::free
 		sta	actor_mode, x
-		lda	#pulse_queue::pulse_8
+		lda	#sfx_pulse2::blast
 		sta	apu_pulse2_queue
 		lda	#$05
 		sta	STACK_BASE+$38
@@ -3561,7 +3562,7 @@ actor_proc_flag_victory_timer_score_do:
 	lda	frame_count
 	and	#%00000100
 	beq	:+ ; if ((frame_count % 8) >= 4) {
-		lda	#pulse_queue::pulse_16
+		lda	#sfx_pulse2::tick
 		sta	apu_pulse2_queue
 	: ; }
 
@@ -3669,7 +3670,7 @@ actor_proc_piranha_plant:
 	lda	state_actor, x
 	bne	:++++++
 	lda	eng_timer_actor_ani, x
-	bne	:++++++ ; if (actor_state == state_0 && eng_timer_actor_ani == 0) {
+	bne	:++++++ ; if (actor_state == dead && eng_timer_actor_ani == 0) {
 		lda	veloc_y_actor, x
 		bne	:+++
 		lda	veloc_x_actor, x
@@ -3733,7 +3734,7 @@ actor_proc_piranha_plant:
 	: ; }
 
 	lda	#%00100000
-	sta	actor_attr, x
+	sta	attr_actor, x
 	rts
 ; -----------------------------------------------------------
 actor_proc_firebar_spin_accel_x	= zp_byte_07
@@ -3770,7 +3771,7 @@ actor_proc_plat_bal:
 		jmp	actor_erase
 	: lda	state_actor, x
 	bpl	:++
-	: ; } else if (actor.state & 0x80 || actor.id != plat_bal) {
+	: ; } else if (actor.state & spawned || actor.id != plat_bal) {
 		rts
 	: ; }
 	tay

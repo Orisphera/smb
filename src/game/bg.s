@@ -2000,7 +2000,7 @@ bg_areaobj_block_item:
 	tay
 
 bg_areaobj_block_draw:
-	lda	obj_spec_block_tiles, y
+	lda	block_tiles, y
 	pha
 	jsr	eng_loadobjattr
 	jmp	bg_areaobj_draw_row
