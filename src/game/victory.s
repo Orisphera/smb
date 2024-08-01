@@ -901,7 +901,7 @@ screen_score_disp:
 		lda	screen_score_disp_incs, y
 		and	#SCORE_DIGIT_MASK
 		sta	STACK_BASE+$34, x
-		jsr	obj_misc_update_score
+		jsr	misc_proc_coin_update_score
 	: ; }
 
 	ldy	obj_data_offset_enemy, x

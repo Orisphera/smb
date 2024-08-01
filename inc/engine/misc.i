@@ -14,7 +14,7 @@ ACTOR_MODE_CHILD_BIT	= %10000000
 ACTOR_MODE_PARENT_MASK	= %00001111
 
 	.enum	actor_states
-		state_0
+		init
 		state_1
 		state_2
 		state_3
@@ -29,6 +29,19 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		bit_6	= 64
 
 		spawned	= 128
+	.endenum
+
+	.enum	col_boxes
+		box_0
+		box_1
+		box_2
+		box_3
+		box_4
+		box_5
+		box_6
+		box_7
+		box_8
+		box_9
 	.endenum
 
 	.enum	victory_flag_proc

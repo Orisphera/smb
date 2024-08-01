@@ -7,16 +7,18 @@
 
 .include	"engine/unk.i"
 
+; -----------------------------------------------------------
 POWERUP_ACTOR_IDX	= (ENG_ACTOR_MAX-1)
 POWERUP_OFFSET_BLOCK_Y	= 8
 POWERUP_VELOC_Y		= 16
-POWERUP_COL_BOX		= 3
+POWERUP_COL_BOX		= col_boxes::box_3
+
 POWERUP_CUE_DISPLAY_FRAMES	= 24
 POWERUP_CUE_SPAWNED_FRAMES	= 68
 POWERUP_CUE_UNITS		= (MOD_4+1)
-POWERUP_CUE_DISPLAY	= (POWERUP_CUE_DISPLAY_FRAMES/POWERUP_CUE_UNITS)
-POWERUP_CUE_SPAWNED	= (POWERUP_CUE_SPAWNED_FRAMES/POWERUP_CUE_UNITS)
-
+POWERUP_CUE_DISPLAY		= (POWERUP_CUE_DISPLAY_FRAMES/POWERUP_CUE_UNITS)
+POWERUP_CUE_SPAWNED		= (POWERUP_CUE_SPAWNED_FRAMES/POWERUP_CUE_UNITS)
+; -----------------------------------------------------------
 	.export actor_init_powerup, actor_init_powerup_b
 actor_init_powerup_b:
 	lda	#actor::power_up

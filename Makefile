@@ -105,10 +105,14 @@ COURSES_OBJS	=	data/course_data_loop_offsets.o \
 
 MAIN_OBJ	=	src/game/main.o
 
-ENTITY_OBJS	=	src/obj/misc.o \
+ENTITY_OBJS	=	src/obj/misc/hammer.o \
+			src/obj/misc/coin_init.o \
+			src/obj/misc/proc.o \
+			src/obj/misc/coin_proc.o \
 			src/obj/actor/powerup.o \
 			src/obj/block.o \
 			src/obj/motion.o \
+			src/obj/actor/common_init.o \
 			src/obj/actor.o
 
 SECURITY_OBJS	=	data/security.o

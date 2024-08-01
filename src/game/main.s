@@ -116,7 +116,7 @@ game_proc:
 	stx	actor_index
 	jsr	block_proc
 
-	jsr	obj_misc_routine
+	jsr	misc_proc
 
 	jsr	game_proc_cannon
 	jsr	game_proc_whirlpool
@@ -1736,7 +1736,7 @@ game_proc_pole_b:
 			lda	game_proc_pole_score_hi, y
 			ldx	game_proc_pole_digit_count, y
 			sta	STACK_BASE+$34, x
-			jsr	obj_misc_update_score
+			jsr	misc_proc_coin_update_score
 		: ; }
 
 		lda	#game_proc::victory

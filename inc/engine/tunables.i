@@ -103,4 +103,7 @@ NMI_DATA_END	= 0
 	LOOP_VAL_COUNT	= 10
 .endif
 
+ACTOR_SWAPPABLE_EASY	= actor::goomba
+ACTOR_SWAPPABLE_HARD	= actor::buzzy_beetle
+
 .endif	; TUNABLES_I

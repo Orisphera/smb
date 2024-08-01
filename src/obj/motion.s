@@ -242,7 +242,7 @@ motion_gravity:
 	pla
 	beq	:+ ; if (a) {
 		lda	motion_gravity_veloc_y_max_abs
-		eor	#$FF
+		eor	#<-1
 		tay
 		iny
 		sty	zp_byte_07

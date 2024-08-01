@@ -113,7 +113,7 @@ screen_proc_next:
 ; ----------------------------
 screen_title_score:
 	lda	#$FA
-	jsr	obj_misc_add_score
+	jsr	misc_proc_coin_add_score
 
 	.export screen_title_end
 screen_title_end:

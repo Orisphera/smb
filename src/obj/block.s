@@ -1,5 +1,6 @@
 .include	"system/cpu.i"
 
+.include	"engine/math.i"
 .include	"engine/mem.i"
 .include	"engine/tunables.i"
 .include	"engine/tiles.i"
@@ -7,6 +8,18 @@
 
 .include	"engine/unk.i"
 
+; -----------------------------------------------------------
+BLOCK_TIMER_VAL		= 11
+BLOCK_TIMER_BOUNCE	= 16
+BLOCK_PLAYER_OFFSET_X	= 8
+BLOCK_ITEM_VELOC_Y	= <-2
+BLOCK_PLAYER_VELOC_Y	= <-2
+
+BLOCK_BITS_B_OFFSET_Y	= 8
+BLOCK_BITS_VELOC_X	= <-16
+BLOCK_BITS_VELOC_Y	= <-6
+BLOCK_BITS_B_VELOC_Y	= <-4
+; -----------------------------------------------------------
 block_punch_off_y:
 	.byte	4, 18
 ; -----------------------------
@@ -49,7 +62,7 @@ block_punch:
 		: ; if (block.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
 			lda	eng_block_time
 			bne	:+ ; if (!eng_block_timer) {
-				lda	#$0B
+				lda	#BLOCK_TIMER_VAL
 				sta	eng_timer_block
 				inc	eng_block_time
 			: ; }
@@ -67,7 +80,7 @@ block_punch:
 	ldy	zp_byte_02
 	lda	#metatile_0::blank_d
 	sta	(eng_buffer_ptr), y
-	lda	#$10
+	lda	#BLOCK_TIMER_BOUNCE
 	sta	eng_timer_block_bounce	
 
 	pla
@@ -85,7 +98,7 @@ block_punch:
 	lda	pos_y_lo_player
 	clc
 	adc	block_punch_off_y, y
-	and	#%11110000
+	and	#CLAMP_16
 	sta	pos_y_lo_block, x
 
 	ldy	state_block, x
@@ -106,11 +119,11 @@ block_punch:
 block_initpos:
 	lda	pos_x_lo_player
 	clc
-	adc	#8
-	and	#%11110000
+	adc	#<BLOCK_PLAYER_OFFSET_X
+	and	#CLAMP_16
 	sta	pos_x_lo_block, x
 	lda	pos_x_hi_player
-	adc	#0
+	adc	#>BLOCK_PLAYER_OFFSET_X
 	sta	pos_x_hi_block, x
 	sta	block_page_loc, x
 	lda	pos_y_hi_player
@@ -127,7 +140,7 @@ block_item:
 	sta	veloc_x_block, x
 	sta	accel_y_block, x
 	sta	veloc_y_player
-	lda	#<-2
+	lda	#BLOCK_ITEM_VELOC_Y
 	sta	veloc_y_block, x
 
 	lda	zp_byte_05
@@ -150,8 +163,8 @@ block_item:
 			.addr	block_powerup_4
 		.endif
 
-		.addr	obj_misc_block_coin_a
-		.addr	obj_misc_block_coin_a
+		.addr	misc_init_coin_a
+		.addr	misc_init_coin_a
 		.addr	block_mushroom_b
 
 		.if	.defined(SMB2)
@@ -172,7 +185,7 @@ block_item:
 
 		.addr	block_vine
 		.addr	block_star
-		.addr	obj_misc_block_coin_a
+		.addr	misc_init_coin_a
 		.addr	block_mushroom_b
 		block_item_end:
 	; }
@@ -276,11 +289,11 @@ block_break:
 	sta	block_rep_flag, x
 	sta	apu_noise_event
 	jsr	block_bits_init
-	lda	#<-2
+	lda	#BLOCK_PLAYER_VELOC_Y
 	sta	veloc_y_player
 	lda	#5
 	sta	STACK_BASE+$39
-	jsr	obj_misc_update_score
+	jsr	misc_proc_coin_update_score
 	ldx	obj_data_offset_ctl
 	rts
 ; ------------------------------------------------------------
@@ -300,7 +313,7 @@ block_top_check:
 			sta	(eng_buffer_ptr), y
 			jsr	gfx_clear_small
 			ldx	obj_data_offset_ctl
-			jsr	obj_misc_block_coin_b
+			jsr	misc_init_coin_b
 		; }
 	: ; }
 
@@ -309,12 +322,12 @@ block_top_check:
 block_bits_init:
 	lda	pos_x_lo_block, x
 	sta	pos_x_orig_block, x
-	lda	#<-16
+	lda	#BLOCK_BITS_VELOC_X
 	sta	veloc_x_block, x
 	sta	veloc_x_block+2, x
-	lda	#<-6
+	lda	#BLOCK_BITS_VELOC_Y
 	sta	veloc_y_block, x
-	lda	#<-4
+	lda	#BLOCK_BITS_B_VELOC_Y
 	sta	veloc_y_block+2, x
 	lda	#0
 	sta	accel_y_block, x
@@ -325,9 +338,9 @@ block_bits_init:
 	sta	pos_x_lo_block+2, x
 	lda	pos_y_lo_block, x
 	clc
-	adc	#8
+	adc	#BLOCK_BITS_B_OFFSET_Y
 	sta	pos_y_lo_block+2, x
-	lda	#<-6
+	lda	#BLOCK_BITS_VELOC_Y
 	sta	veloc_y_block, x
 	rts
 ; ------------------------------------------------------------
@@ -364,14 +377,14 @@ block_proc:
 			beq	:++++ ; if (block.pos_y.hi) {
 				pha
 
-				lda	#$F0
+				lda	#<-16
 				cmp	pos_y_lo_block+2, x
-				bcs	:+ ; if (that.pos_y.lo < 0xF0) {
+				bcs	:+ ; if (that.pos_y.lo < -16) {
 					sta	pos_y_lo_block+2, x
 				: ; }
 		
 				lda	pos_y_lo_block, x
-				cmp	#$F0
+				cmp	#<-16
 
 				pla
 				bcc	:+++
@@ -384,11 +397,11 @@ block_proc:
 			jsr	lib_block_bits_get
 			jsr	render_block
 			lda	pos_y_lo_block, x
-			and	#%00001111
+			and	#MOD_16
 			cmp	#5
 
 			pla
-			bcs	:++ ; if ((this.pos_y.lo & 0xF) < 5) {
+			bcs	:++ ; if ((this.pos_y.lo % 16) < 5) {
 				lda	#1
 				sta	block_rep_flag, x
 			; }
@@ -396,7 +409,7 @@ block_proc:
 	: ; }
 
 	; if () {
-		lda	#0
+		lda	#actor_states::init
 	: ; }
 	sta	state_block, x
 	rts
