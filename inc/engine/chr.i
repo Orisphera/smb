@@ -3,6 +3,12 @@ CHR_I = 1
 
 .include	"../system/ppu.i"
 
+	.enum	tile_obj
+		fire_koopa	= <((tile_obj_fire_koopa-chr_obj)/PPU_TILE_SIZE)
+		fire_koopa_end	= <((tile_obj_fire_koopa_end-chr_obj)/PPU_TILE_SIZE)
+		flag_victory	= <((tile_obj_flag_victory-chr_obj)/PPU_TILE_SIZE)
+	.endenum
+
 	.enum	tile_bg
 		blanks		= <((tile_bg_blanks-chr_bg)/PPU_TILE_SIZE)
 		cannon_base_left = <((tile_bg_cannon_base_left-chr_bg)/PPU_TILE_SIZE)

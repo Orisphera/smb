@@ -2,11 +2,19 @@
 SOUND_I = 1
 
 	.enum	noise_event
+		bowser_die	= 1
 		flame		= 2
 	.endenum
 
 	.enum	pulse_queue
+		pulse_1		= 1
+		pulse_2		= 2
+		pulse_4		= 4
 		pulse_8		= 8
+		pulse_16	= 16
+		pulse_32	= 32
+		pulse_64	= 64
+		pulse_128	= 128
 	.endenum
 
 	.enum	music_event

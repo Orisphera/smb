@@ -265,27 +265,36 @@ gfx_color_rotate:
 
 	rts
 ; -----------------------------------------------------------
+	.export gfx_clear_blocks
+	.export gfx_clear_blocks_brick_a, gfx_clear_blocks_brick_b
+	.export gfx_clear_blocks_block_empty
+	.export gfx_clear_blocks_blank_a, gfx_clear_blocks_blank_b
 gfx_clear_blocks:
+gfx_clear_blocks_brick_a:
 	.byte	tile_bg::brick_a
 	.byte	tile_bg::brick_a
 	.byte	tile_bg::brick_b
 	.byte	tile_bg::brick_b
-; ---
+
+gfx_clear_blocks_brick_b:
 	.byte	tile_bg::brick_b
 	.byte	tile_bg::brick_b
 	.byte	tile_bg::brick_b
 	.byte	tile_bg::brick_b
-; ---
+
+gfx_clear_blocks_block_empty:
 	.byte	tile_bg::block_empty
 	.byte	tile_bg::block_empty+1
 	.byte	tile_bg::block_empty+2
 	.byte	tile_bg::block_empty+3
-; ---
+
+gfx_clear_blocks_blank_a:
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
-; ---
+
+gfx_clear_blocks_blank_b:
 	.byte	tile_bg::blanks+2
 	.byte	tile_bg::blanks+2
 	.byte	tile_bg::blanks+2
@@ -293,11 +302,11 @@ gfx_clear_blocks:
 ; ----------------------------
 	.export gfx_clear_small
 gfx_clear_small:
-	ldy	#$41
-	lda	#3
+	ldy	#ppu_nmi_buffer_1_data-ppu_nmi_buffer
+	lda	#clear_blocks::blank_a
 	ldx	course_type
 	bne	:+ ; if (course_type == water) {
-		lda	#4
+		lda	#clear_blocks::blank_b
 	: ; }
 
 	jsr	gfx_clear_put
@@ -313,13 +322,14 @@ gfx_meta_replace:
 	rts
 ; ----------------------------
 	.export gfx_meta_destroy
+	.export gfx_meta_step
 gfx_meta_destroy:
 	lda	#0
 gfx_meta_write:
-	ldy	#3
+	ldy	#clear_blocks::blank_a
 	cmp	#metatile_0::blank_a
 	beq	:+ ; if (tile != metatile_0::blank_a) {
-		ldy	#0
+		ldy	#clear_blocks::brick_a
 		cmp	#metatile_1::brick_g
 		beq	:+
 		cmp	#metatile_1::brick_a

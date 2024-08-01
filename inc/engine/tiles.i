@@ -1,6 +1,8 @@
 .ifndef	TILES_I
 TILES_I = 1
 
+.include	"./misc.i"
+
 TILE_PAGE_BIT_OFFSET = 6
 TILE_PAGE_0	= (0<<TILE_PAGE_BIT_OFFSET)
 TILE_PAGE_1	= (1<<TILE_PAGE_BIT_OFFSET)
@@ -8,7 +10,6 @@ TILE_PAGE_2	= (2<<TILE_PAGE_BIT_OFFSET)
 TILE_PAGE_3	= (3<<TILE_PAGE_BIT_OFFSET)
 TILE_PAGE_BITS	= %11000000
 TILE_ENTRY_BITS	= %00111111
-METATILE_SIZE	= 4
 
 	.enum	metatile_0
 		blank_a		= <((gfx_meta_block_0_blank_a-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0

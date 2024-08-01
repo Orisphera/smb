@@ -481,9 +481,9 @@ bg_proc_main:
 	
 		ldy	#0
 		: ; for (y = 0; x < 0xD && y < 8; x++, y++) {
-			lda	actor_C69C_data_a, y
+			lda	actor_init_bullet_cheep_data_a, y
 			bit	zp_byte_00
-			beq	:+ ; if ((actor_C69C_data_a[y] & fg_mask)) {
+			beq	:+ ; if ((actor_init_bullet_cheep_data_a[y] & fg_mask)) {
 				lda	BG_PROC_METATILE_ID
 				sta	gfx_metatile, x
 			: ; }
@@ -552,7 +552,7 @@ bg_area:
 	.if	.defined(VS)
 		jsr	vs_setbank_low
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
+		sta	VS_REQ
 	.endif
 	bg_areaobj_outer_loop: ; while (eng_area_bg_flag || eng_page_cached) {
 		ldx	#3-1
@@ -563,7 +563,7 @@ bg_area:
 			ldy	eng_area_offset
 			.if	.defined(VS)
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-				sta	VS_SR
+				sta	VS_REQ
 			.endif
 			lda	(course_data_addr), y
 			cmp	#COURSE_DATA_END
@@ -583,7 +583,7 @@ bg_area:
 				dey
 				.if	.defined(VS)
 					lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-					sta	VS_SR
+					sta	VS_REQ
 				.endif
 				lda	(course_data_addr), y
 				and	#<COURSE_DATA_TYPE_MASK
@@ -599,7 +599,7 @@ bg_area:
 					iny
 					.if	.defined(VS)
 						lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-						sta	VS_SR
+						sta	VS_REQ
 					.endif
 					lda	(course_data_addr), y
 					and	#>COURSE_DATA_TYPE_D_LOC_MASK
@@ -689,7 +689,7 @@ bg_area_decode:
 	ldx	#(bg_obj_spec_B-bg_obj_tbl)/WORD_SIZE
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
+		sta	VS_REQ
 	.endif
 	lda	(course_data_addr), y
 	cmp	#COURSE_DATA_END
@@ -719,7 +719,7 @@ bg_area_decode:
 		iny
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-			sta	VS_SR
+			sta	VS_REQ
 		.endif
 		lda	(course_data_addr), y
 		and	#>COURSE_DATA_TYPE_D_MASK
@@ -738,7 +738,7 @@ bg_area_decode:
 		iny
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-			sta	VS_SR
+			sta	VS_REQ
 		.endif
 		lda	(course_data_addr), y
 		and	#>(COURSE_AREAOBJ_MASK)
@@ -755,7 +755,7 @@ bg_area_decode:
 			bne	:+
 			.if	.defined(VS)
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-				sta	VS_SR
+				sta	VS_REQ
 			.endif
 			lda	(course_data_addr), y
 			and	#%00001000
@@ -774,7 +774,7 @@ bg_area_decode:
 			iny
 			.if	.defined(VS)
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-				sta	VS_SR
+				sta	VS_REQ
 			.endif
 			lda	(course_data_addr), y
 			and	#>COURSE_AREAOBJ_MASK
@@ -797,7 +797,7 @@ bg_obj_set_base:
 	ldy	eng_area_offset
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
+		sta	VS_REQ
 	.endif
 	lda	(course_data_addr), y
 	and	#<COURSE_DATA_TYPE_MASK
@@ -820,7 +820,7 @@ bg_area_decode_rts:
 		ldy	eng_area_offset
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-			sta	VS_SR
+			sta	VS_REQ
 		.endif
 		lda	(course_data_addr), y
 		and	#<COURSE_DATA_POSX_MASK
@@ -1075,7 +1075,7 @@ bg_areaobj_set_attr:
 	iny
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
+		sta	VS_REQ
 	.endif
 	lda	(course_data_addr), y
 	pha
@@ -2104,7 +2104,7 @@ eng_loadobjlen_b:
 eng_loadobjattr:
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
+		sta	VS_REQ
 	.endif
 	ldy	eng_areaobj_offset_0, x
 	lda	(course_data_addr), y

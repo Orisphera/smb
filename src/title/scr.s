@@ -57,7 +57,7 @@ screen_title_bg:
 		.export sub_88F7
 	sub_88F7:
 		lda	#vs_req::chr_high|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
+		sta	VS_REQ
 		lda	screen_title_bg_addr_hi, y
 		sta	PPU_VRAM_AR
 		lda	screen_title_bg_addr_lo, y
@@ -86,7 +86,7 @@ screen_title_bg:
 
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
-		sta	VS_SR
+		sta	VS_REQ
 	.endif
 
 	lda	#PPU_COLOR_ROSE0

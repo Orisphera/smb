@@ -99,7 +99,7 @@ GAME_OBJS	=	src/game/init.o \
 			src/game/gameover.o \
 			src/game/bg.o
 
-COURSES_OBJS	=	data/course_data_head.o \
+COURSES_OBJS	=	data/course_data_loop_offsets.o \
 			src/game/courses.o \
 			data/course_data.o
 
@@ -107,7 +107,8 @@ MAIN_OBJ	=	src/game/main.o
 
 ENTITY_OBJS	=	src/obj/misc.o \
 			src/obj/spec.o \
-			src/obj/motion.o
+			src/obj/motion.o \
+			src/obj/actor.o
 
 SECURITY_OBJS	=	data/security.o
 

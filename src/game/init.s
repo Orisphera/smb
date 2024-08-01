@@ -407,11 +407,11 @@ game_proc_start:
 	lda	#40
 	sta	player_gravity
 	lda	#MOTION_DIR_RIGHT
-	sta	player_dir
+	sta	disp_dir_player
 	sta	pos_y_hi_player
 	lda	#player_state::ground
 	sta	state_player
-	dec	player_collision
+	dec	collision_player
 
 	ldy	#0
 	sty	eng_startpage_alt

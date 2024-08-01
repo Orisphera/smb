@@ -92,6 +92,12 @@ METATILE_MAX	= 13
 
 NMI_DATA_END	= 0
 
-LOOP_VAL_COUNT	= 11
+.if	.defined(SMB)|.defined(VS_SMB)
+	LOOP_VAL_COUNT	= 11
+.elseif	.defined(SMB2)
+	LOOP_VAL_COUNT	= 12
+.elseif	.defined(ANN)
+	LOOP_VAL_COUNT	= 10
+.endif
 
 .endif	; TUNABLES_I

@@ -4,6 +4,7 @@
 .include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/charmap.i"
 .include	"../../inc/engine/joypad.i"
+.include	"../../inc/engine/sound.i"
 
 	.export vs_read_dips
 vs_read_dips:
@@ -244,7 +245,7 @@ sub_9389_do:
 sub_93E0:
 	jsr	vs_setbank_low
 
-	lda	#1
+	lda	#pulse_queue::pulse_1
 	sta	apu_pulse2_queue
 ; ----------------------------
 sub_93E7:

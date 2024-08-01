@@ -1,5 +1,6 @@
 .include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/tunables.i"
+.include	"../../inc/engine/sound.i"
 
 .include	"../../inc/engine/unk.i"
 
@@ -11,6 +12,7 @@ obj_hammer_actor_id_end:
 obj_hammer_veloc_x:
 	.byte	16, <-16
 ; -----------------------------
+	.export obj_hammer_init
 obj_hammer_init:
 	lda	eng_rand_seed+1
 	and	#(obj_hammer_actor_id_end-obj_hammer_actor_id)-2
@@ -145,7 +147,7 @@ obj_misc_block_coin_b:
 obj_misc_block_coin:
 	lda	#<-5
 	sta	veloc_y_misc, y
-	lda	#1
+	lda	#1 ; pulse_queue::pulse_1
 	sta	pos_y_hi_misc, y
 	sta	state_misc, y
 	sta	apu_pulse2_queue
@@ -300,7 +302,7 @@ obj_misc_add_coin:
 		.endif
 
 		inc	eng_lives
-		lda	#$40
+		lda	#pulse_queue::pulse_64
 		sta	apu_pulse2_queue
 	: ; }
 

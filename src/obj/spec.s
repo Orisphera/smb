@@ -3,11 +3,14 @@
 .include	"../../inc/engine/mem.i"
 .include	"../../inc/engine/tunables.i"
 .include	"../../inc/engine/tiles.i"
+.include	"../../inc/engine/sound.i"
 
 .include	"../../inc/engine/unk.i"
 
 OBJ_MISC_POWERUP_ACTOR	= (ENG_ACTOR_MAX-1)
 
+	.export obj_spec_powerup_init
+	.export obj_spec_powerup_init_b
 obj_spec_powerup_init:
 	lda	#actor::power_up
 	sta	actor_id+OBJ_MISC_POWERUP_ACTOR
@@ -21,6 +24,8 @@ obj_spec_powerup_init:
 	sec
 	sbc	#8
 	sta	pos_y_lo_actor+OBJ_MISC_POWERUP_ACTOR
+
+obj_spec_powerup_init_b:
 	lda	#actor_modes::active
 	sta	state_actor+OBJ_MISC_POWERUP_ACTOR
 	sta	actor_mode+OBJ_MISC_POWERUP_ACTOR
@@ -40,10 +45,11 @@ obj_spec_powerup_init:
 
 	lda	#$20
 	sta	byte_3CA
-	lda	#$02
+	lda	#pulse_queue::pulse_2
 	sta	apu_pulse2_queue
 	rts
 ; ------------------------------------------------------------
+	.export obj_spec_powerup_do
 obj_spec_powerup_do:
 	ldx	#OBJ_MISC_POWERUP_ACTOR
 	stx	actor_index
@@ -65,11 +71,11 @@ obj_spec_powerup_do:
 		.endif
 		cmp	#powerup_type::star
 		bne	:++++ ; if ((powerup.state & 0x80) && !eng_timer_ctl && powerup.type == star) {
-			jsr	actor_bounce
+			jsr	actor_proc_bounce
 			jsr	col_actor_bounce_proc
 			jmp	:++++
 		: ; } else if ((powerup.state & 0x80) && !eng_timer_ctl && powerup.type.in(mushroom_a, mushroom_b, type_03, type_04)) {
-			jsr	actor_move
+			jsr	actor_proc_base
 			jsr	col_actor_ground_proc
 			jmp	:+++
 		: ; } else if (!eng_timer_ctl) {

@@ -3,6 +3,8 @@ MISC_I = 1
 
 .include	"../system/cpu.i"
 
+METATILE_SIZE	= 4
+
 	.enum	actor_modes
 		free
 		active
@@ -19,6 +21,15 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		state_4
 		state_5
 		state_6
+	.endenum
+
+	.enum	victory_flag_proc
+		null		= (actor_proc_flag_victory_tbl_null-actor_proc_flag_victory_tbl)/WORD_SIZE
+		fireworks	= (actor_proc_flag_victory_tbl_fireworks-actor_proc_flag_victory_tbl)/WORD_SIZE
+		score		= (actor_proc_flag_victory_tbl_timer_score-actor_proc_flag_victory_tbl)/WORD_SIZE
+		raise		= (actor_proc_flag_victory_tbl_raise-actor_proc_flag_victory_tbl)/WORD_SIZE
+		delay		= (actor_proc_flag_victory_tbl_delay-actor_proc_flag_victory_tbl)/WORD_SIZE
+		done		= (actor_proc_flag_victory_tbl_done-actor_proc_flag_victory_tbl)/WORD_SIZE
 	.endenum
 
 	.enum	game_mode
@@ -212,8 +223,10 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 
 		div_height	= $09
 
+		cheep		= $0A
 		cheep_grey	= $0A
 		cheep_red	= $0B
+
 		podoboo		= $0C
 		piranha_plant	= $0D
 		koopa_para_jump_green = $0E
@@ -223,7 +236,7 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 
 		swarm_start	= $12
 		spiny		= $12
-		swarm_null	= $13
+
 		cheep_fly	= $14
 
 		actors_page_b	= $15
@@ -232,12 +245,25 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		bullet_cheep_swarm = $17
 		swarm_stop	= $18
 
-		actor_1B	= $1B
-		actor_1D	= $1D
+		firebar_start	= $1B
+		firebar_clock_slow	= $1B
+		firebar_clock_fast	= $1C
+		firebar_counter_slow	= $1D
+		firebar_counter_fast	= $1E
+		firebar_long	= $1F
+		firebar_end	= $20
 
 		plat_start	= $24
-		actor_28	= $28
-		unk_00		= $29
+		plat_bal	= $24
+		plat_std_v	= $25
+		plat_l_up	= $26
+		plat_l_down	= $27
+		plat_std_h	= $28
+		plat_drop	= $29
+		plat_std_h_b	= $2A
+		plat_s_up	= $2B
+		plat_s_down	= $2C
+
 		bowser		= $2D
 		power_up	= $2E
 		vine		= $2F
@@ -245,12 +271,19 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		flag_victory	= $31
 		jump_spring	= $32
 		bullet		= $33
+		warp		= $34
 		toad		= $35
 
 		group_start	= $37
-		goomba_trio	= $37
-		actor_3B	= $3B
-		actor_3F	= $3F
+		goomba_trio_lo	= $37
+		goomba_duo_lo	= $38
+		goomba_trio_hi	= $39
+		goomba_duo_hi	= $3A
+		koopa_trio_lo	= $3B
+		koopa_duo_lo	= $3C
+		koopa_trio_hi	= $3D
+		koopa_duo_hi	= $3E
+		group_end	= $3F
 	.endenum
 
 	.enum	course
@@ -341,6 +374,14 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		large
 		small
 		crouch
+	.endenum
+
+	.enum	clear_blocks
+		brick_a		= <((gfx_clear_blocks_brick_a-gfx_clear_blocks)/METATILE_SIZE)
+		brick_b		= <((gfx_clear_blocks_brick_b-gfx_clear_blocks)/METATILE_SIZE)
+		block_empty	= <((gfx_clear_blocks_block_empty-gfx_clear_blocks)/METATILE_SIZE)
+		blank_a		= <((gfx_clear_blocks_blank_a-gfx_clear_blocks)/METATILE_SIZE)
+		blank_b		= <((gfx_clear_blocks_blank_b-gfx_clear_blocks)/METATILE_SIZE)
 	.endenum
 
 	.enum	bg_procs

@@ -116,8 +116,6 @@ start:
 		lda	#fds_irqmode::game_vec
 		sta	FDS_STACK_IRQMODE
 	.elseif	.defined(VS_SMB)
-		vs_setbank_low = $820C
-
 		jsr     vs_setbank_low
 		lda     #0
 		ldx     #0

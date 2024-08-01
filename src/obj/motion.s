@@ -65,6 +65,7 @@ motion_x_check_spring:
 	rts
 ; ------------------------------------------------------------
 	.export motion_y_check_spring, motion_y
+	.export motion_y_state_5
 motion_y_check_spring:
 	ldx	#0
 
@@ -84,10 +85,13 @@ motion_y:
 	lda	state_actor, x
 	cmp	#actor_states::state_5
 	bne	:+ ; if (this.state == state_05) {
+	motion_y_state_5:
 		ldy	#$20
 	: ; }
 	jmp	motion_fall_max_hi
 ; ------------------------------------------------------------
+	.export motion_bounce_down, motion_bounce_up
+	.export motion_bounce
 motion_bounce_down:
 	ldy	#0
 	jmp	motion_bounce
@@ -106,6 +110,8 @@ motion_bounce:
 	tya
 	jmp	motion_bounce_gravity_do
 ; ------------------------------------------------------------
+	.export motion_fall_fast, motion_fall_slow
+	.export motion_fall_mid, motion_fall
 motion_fall_fast:
 	ldy	#$7F
 	bne	motion_fall_max_lo
@@ -131,7 +137,7 @@ motion_fall:
 	rts
 ; ------------------------------------------------------------
 motion_block_veloc_y_max:
-	.byte	$06, $08
+	.byte	6, 8
 ; -----------------------------
 	.export motion_block_fall_fast
 motion_block_fall_slow:
@@ -156,6 +162,7 @@ motion_gravity_do:
 	lda	#0
 	jmp	motion_gravity
 ; ------------------------------------------------------------
+	.export motion_platform_down, motion_platform_up
 motion_platform_down:
 	lda	#0
 
@@ -174,8 +181,8 @@ motion_platform:
 	ldy	actor_id, x
 	inx
 	lda	#5
-	cpy	#actor::unk_00
-	bne	:+ ; if (this.actor_id == unk_00) {
+	cpy	#actor::plat_drop
+	bne	:+ ; if (this.actor_id == plat_drop) {
 		lda	#9
 	: ; }
 	sta	motion_gravity_accel_y_inc

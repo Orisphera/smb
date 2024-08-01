@@ -444,10 +444,8 @@ victory_msg_notick:
 		lda	eng_timer_victory
 		cmp	#SUB_63AF_TIMER_CUTOFF
 		bcs	:++ ; if (eng_timer_victory < 6) {
-			.if	.defined(SMB2)
-				jsr	sub_9F57
-			.elseif	.defined(VS_SMB)
-				jsr	sub_D260
+			.if	.defined(VS_SMB)|.defined(SMB2)
+				jsr	actor_proc_flag_victory_timer_score_do
 			.endif
 
 			lda	ENG_TIMER_DISP
@@ -457,7 +455,7 @@ victory_msg_notick:
 				bne	:++ ; if (!(VAR_0|VAR_1|VAR_2)) {
 			.elseif	.defined(ANN)
 				beq	:+ ; if (VAR_0|VAR_1|VAR_2) {
-					jmp	sub_9F5B
+					jmp	actor_proc_flag_victory_timer_score_do
 				; } else {
 			.endif
 			: ; if (!(VAR_0|VAR_1|VAR_2)) {
@@ -602,7 +600,7 @@ sub_8552:
 			and	#$1F
 			bne	:++ ; if (!(vs_ram_arena0[0x18] & 0x1F)) {
 				inc	VS_RAM_ARENA0+$22
-				lda	#1
+				lda	#pulse_queue::pulse_1
 				sta	apu_pulse2_queue
 				jmp	:++
 			; }
@@ -744,12 +742,12 @@ victory_end:
 		bne	:++ ; if (course_no == no_08 && eng_lives >= 0 && !eng_timer_select) {
 			lda	#$30
 			sta	eng_timer_select
-			lda	#%01000000
+			lda	#pulse_queue::pulse_64
 			sta	apu_pulse2_queue
 			dec	eng_lives
 			lda	#1
 			sta	STACK_BASE+$35
-			jmp	sub_D279
+			jmp	actor_proc_course_end_stats
 		: ; } else if (course_no != no_08 || eng_lives < 0) {
 			inc	eng_gameplay_mode
 		: ; }
@@ -883,7 +881,7 @@ screen_score_disp:
 		.endif
 		bne	:+ ; if (stack[0x10] == 1UP) {
 			inc	eng_lives
-			lda	#%01000000
+			lda	#pulse_queue::pulse_64
 			sta	apu_pulse2_queue
 		: ; }
 
