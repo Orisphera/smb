@@ -14,135 +14,6 @@
 
 .include	"engine/unk.i"
 
-	.export actor_init_goomba
-actor_init_goomba:
-	jsr	actor_init_base
-	jmp	actor_init_col_small
-; -----------------------------------------------------------
-	.export actor_init_podoboo
-actor_init_podoboo:
-	lda	#2
-	sta	pos_y_hi_actor, x
-	sta	pos_y_lo_actor, x
-	lsr	a
-	sta	eng_timer_actor, x
-	lsr	a
-	sta	state_actor, x
-	jmp	actor_init_col_small
-; -----------------------------------------------------------
-TOAD_POS_Y_LO	= <-72
-
-	.export actor_init_toad
-actor_init_toad:
-	lda	#TOAD_POS_Y_LO
-	sta	pos_y_lo_actor, x
-	rts
-; -----------------------------------------------------------
-ACTOR_BASE_VELOC_X	= 8
-ACTOR_BASE_VELOC_X_HARD	= 12
-
-actor_init_base_veloc_x:
-	.byte	<-ACTOR_BASE_VELOC_X, <-ACTOR_BASE_VELOC_X_HARD
-; ------------------------------
-	.export actor_init_base
-actor_init_base:
-	ldy	#1
-	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		lda	eng_hard_mode
-	.elseif	.defined(ANN)
-		lda	byte_77D
-	.endif
-	bne	:+ ; if (!eng_hard_mode) {
-		dey
-	: ; }
-	lda	actor_init_base_veloc_x, y
-; ------------------------------
-actor_init_veloc_x:
-	sta	veloc_x_actor, x
-	jmp	actor_init_col_large
-; -----------------------------------------------------------
-	.export actor_init_koopa_red
-actor_init_koopa_red:
-	jsr	actor_init_base
-	lda	#actor_states::state_1
-	sta	state_actor, x
-	rts
-; -----------------------------------------------------------
-HAMMER_BRO_COL_SIZE	= 11
-HAMMER_BRO_TIMER_VS	= 255
-HAMMER_BRO_TIMER_EASY	= 128
-HAMMER_BRO_TIMER_HARD	= 80
-
-.if	.defined(CONS)
-actor_init_hammer_bro_timer:
-	.byte	HAMMER_BRO_TIMER_EASY, HAMMER_BRO_TIMER_HARD
-.endif
-; ------------------------------
-	.export actor_init_hammer_bro
-actor_init_hammer_bro:
-	lda	#0
-	sta	eng_timer_hammer_throw, x
-	sta	veloc_x_actor, x
-
-	.if	.defined(SMB2M)
-		lda	course_no
-		cmp	#course::no_07
-		bcs	:+
-	.endif ; if (!SMB2M || course_no < no_07) {
-		.if	.defined(CONS)
-			ldy	eng_hard_mode_b
-			lda	actor_init_hammer_bro_timer, y
-		.elseif	.defined(VS)
-			lda	#HAMMER_BRO_TIMER_VS
-		.endif
-		sta	eng_timer_actor, x
-	: ; }
-	lda	#HAMMER_BRO_COL_SIZE
-	jmp	actor_init_col
-; -----------------------------------------------------------
-	.export actor_init_veloc_x_none
-actor_init_veloc_x_none:
-	lda	#0
-	jmp	actor_init_veloc_x
-; -----------------------------------------------------------
-	.export actor_init_bloober
-actor_init_bloober:
-	lda	#0
-	sta	veloc_x_actor, x
-; ------------------------------
-actor_init_col_small:
-	lda	#col_boxes::box_9
-	bne	actor_init_col
-; ------------------------------
-ACTOR_KOOPA_RED_ACCEL_X_RIGHT	= 48
-ACTOR_KOOPA_RED_ACCEL_X_LEFT	= 32
-
-	.export actor_init_koopa_red_fly
-actor_init_koopa_red_fly:
-	ldy	#ACTOR_KOOPA_RED_ACCEL_X_RIGHT
-	lda	pos_y_lo_actor, x
-	sta	accel_x_actor, x
-	bpl	:+ ; if (actor.accel_x < 0) {
-		ldy	#<-ACTOR_KOOPA_RED_ACCEL_X_LEFT
-	: ; }
-	tya
-	adc	pos_y_lo_actor, x
-	sta	veloc_x_actor, x
-; ------------------------------
-actor_init_col_large:
-	lda	#col_boxes::box_3
-
-actor_init_col:
-	sta	col_box_actor, x
-	lda	#MOTION_DIR_LEFT
-	sta	motion_dir_actor, x
-
-actor_init_veloc_y:
-	lda	#0
-	sta	veloc_y_actor, x
-	sta	accel_y_actor_c, x
-	rts
-; -----------------------------------------------------------
 	.export actor_init_bullet
 actor_init_bullet:
 	lda	#MOTION_DIR_LEFT
@@ -1108,7 +979,7 @@ actor_init_plat_s_down:
 	rts
 ; -----------------------------------------------------------
 actor_plat_pos_data_a:
-	.byte	ACTOR_BASE_VELOC_X, ACTOR_BASE_VELOC_X_HARD, <-ACTOR_BASE_VELOC_X
+	.byte	8, 12, <-8
 
 actor_plat_pos_data_b:
 	.byte	0, 0, <-1
@@ -1401,7 +1272,7 @@ actor_proc_hammer_bro_jump:
 		ldy	#<-3
 		cmp	#112
 		inc	actor_proc_hammer_bro_jump_rand
-		bcc	:+ ; if (actor.pos_y.lo > 112)
+		bcc	:+ ; if (actor.pos_y.lo > 112) {
 			dec	actor_proc_hammer_bro_jump_rand
 			lda	eng_rand_seed+1, x
 			and	#%00000001
@@ -1446,7 +1317,7 @@ actor_proc_hammer_bro_move_h:
 		iny
 		lda	eng_timer_actor, x
 		bne	:+ ; if (!actor.timer) {
-			lda	#<-ACTOR_BASE_VELOC_X
+			lda	#<-8
 			sta	veloc_x_actor, x
 		; }
 	: ; }

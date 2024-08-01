@@ -113,6 +113,14 @@ ENTITY_OBJS	=	src/obj/misc/hammer.o \
 			src/obj/block.o \
 			src/obj/motion.o \
 			src/obj/actor/common_init.o \
+			src/obj/actor/goomba_init.o \
+			src/obj/actor/podoboo_init.o \
+			src/obj/actor/toad_init.o \
+			src/obj/actor/base_init.o \
+			src/obj/actor/koopa_red_init.o \
+			src/obj/actor/hammer_bro_init.o \
+			src/obj/actor/veloc_x_none_init.o \
+			src/obj/actor/bloober_para_red_col_init.o \
 			src/obj/actor.o
 
 SECURITY_OBJS	=	data/security.o
