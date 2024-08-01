@@ -3,6 +3,7 @@
 .include	"system/palettes.i"
 
 .include	"engine/mem.i"
+.include	"engine/charmap.i"
 .include	"engine/joypad.i"
 .include	"engine/sound.i"
 .include	"engine/tunables.i"
@@ -485,9 +486,15 @@ pal_84A6:
 	.byte	PPU_COLOR_AZURE0, PPU_COLOR_BLUE0, PPU_COLOR_AZURE1, PPU_COLOR_AZURE2
 
 ppu_84AA:
-	.byte	$26, $86, $55, $24
-	.byte	$26, $A6, $55, $24
-	.byte	$00
+	.dbyt	PPU_VRAM_BG2+$286
+	.byte	NMI_REPEAT|21
+	.byte	" "
+
+	.dbyt	PPU_VRAM_BG2+$2A6
+	.byte	NMI_REPEAT|21
+	.byte	" "
+
+	.byte	NMI_DATA_END
 ppu_84AA_end:
 
 obj_data_offset_enemy_84B3:

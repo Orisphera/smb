@@ -1896,7 +1896,7 @@ game_proc_vine_do:
 		lda	frame_count
 		lsr	a
 		lsr	a
-		bcc	:+ ; if (height_vine != game_proc_vine_heights[ppu_nmi_buffer[0x98]-1] && frame_count % 4) {
+		bcc	:+ ; if (height_vine != game_proc_vine_heights[actor_vine_flag] && frame_count % 4) {
 			lda	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
 			sbc	#1
 			sta	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
@@ -2125,7 +2125,7 @@ game_proc_bullet:
 		jsr	motion_x
 	: ; }
 
-	; if (eng_timer_ctl || this.state != 0 || ((ppu_nmi_buffer[0xD1] & 0x0C) != 0x0C && (zp_byte_00 + 0x28) >= 0x50)) {
+	; if (eng_timer_ctl || this.state != 0 || ((bits_offscr_actor & 0x0C) != 0x0C && (zp_byte_00 + 0x28) >= 0x50)) {
 		jsr	lib_actor_bits_get
 		jsr	lib_calc_actor_pos
 		jsr	col_actor_box

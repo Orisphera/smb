@@ -1166,7 +1166,7 @@ sub_A01B:
 		rts
 	: ; } else {
 		jsr	sub_A075
-		jsr	sub_92E1
+		jsr	vs_disp_credit_msg
 		ldx	#$0C
 
 		lda	VS_RAM_ARENA0+$22

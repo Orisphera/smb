@@ -9,7 +9,13 @@
 
 POWERUP_ACTOR_IDX	= (ENG_ACTOR_MAX-1)
 POWERUP_OFFSET_BLOCK_Y	= 8
+POWERUP_VELOC_Y		= 16
 POWERUP_COL_BOX		= 3
+POWERUP_CUE_DISPLAY_FRAMES	= 24
+POWERUP_CUE_SPAWNED_FRAMES	= 68
+POWERUP_CUE_UNITS		= (MOD_4+1)
+POWERUP_CUE_DISPLAY	= (POWERUP_CUE_DISPLAY_FRAMES/POWERUP_CUE_UNITS)
+POWERUP_CUE_SPAWNED	= (POWERUP_CUE_SPAWNED_FRAMES/POWERUP_CUE_UNITS)
 
 	.export actor_init_powerup, actor_init_powerup_b
 actor_init_powerup_b:
@@ -79,16 +85,16 @@ actor_proc_powerup:
 			jsr	actor_proc_base
 			jsr	col_actor_ground_proc
 			jmp	:+++
-		: ; } else if (!(powerup.state & 0x80)) {
+		: ; } else if (!this.spawned) {
 			lda	frame_count
 			and	#MOD_4
-			bne	:+ ; if (frame_count % 4) {
+			bne	:+ ; if (!(frame_count % 4)) {
 				dec	pos_y_lo_actor+POWERUP_ACTOR_IDX
 				lda	state_actor+POWERUP_ACTOR_IDX
 				inc	state_actor+POWERUP_ACTOR_IDX
-				cmp	#actor_states::bit_4|actor_states::state_1
-				bcc	:+ ; if (this.state >= 0x11) {
-					lda	#16
+				cmp	#POWERUP_CUE_SPAWNED
+				bcc	:+ ; if (this.state >= cue_spawned) {
+					lda	#POWERUP_VELOC_Y
 					sta	veloc_x_actor, x
 					lda	#actor_states::spawned
 					sta	state_actor+POWERUP_ACTOR_IDX
@@ -100,11 +106,11 @@ actor_proc_powerup:
 			: ; }
 
 			lda	state_actor+POWERUP_ACTOR_IDX
-			cmp	#actor_states::state_6
+			cmp	#POWERUP_CUE_DISPLAY
 			bcc	:++
 		: ; }
 
-		; if ((!(powerup.state & 0x80) && eng_timer_ctl) || powerup.state >= 6) {
+		; if (this.state > cue_display) {
 			jsr	lib_calc_actor_pos
 			jsr	lib_actor_bits_get
 			jsr	col_actor_box

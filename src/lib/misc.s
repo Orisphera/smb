@@ -125,35 +125,35 @@ joypad_read_do:
 eng_screen_update_buf:
 	sta	PPU_VRAM_AR
 	iny
-	lda	(zp_addr_00), y
+	lda	(eng_screen_update_addr), y
 	sta	PPU_VRAM_AR
 	iny
-	lda	(zp_addr_00), y
+	lda	(eng_screen_update_addr), y
 	asl	a
 	pha
 	lda	ppu_ctlr0_b
 	ora	#ppu_ctlr0::inc_32
-	bcs	:+ ; if (zp_addr_00[y] & 0x80) {
+	bcs	:+ ; if (!(eng_screen_update_addr.attr & 0x80)) {
 		and	#<~ppu_ctlr0::inc_32
 	: ; }
 
 	jsr	eng_sta_ppu_ctlr0
 	pla
 	asl	a
-	bcc	:+ ; if (!(zp_addr_00[y] & 0x80)) {
-		ora	#$02
+	bcc	:+ ; if ((eng_screen_update_addr.attr & 0x40)) {
+		ora	#1<<1
 		iny
 	: ; }
 
 	lsr	a
 	lsr	a
 	tax
-	: ; for (x = (zp_addr_00[y] / 2); x > 0; x--) {
-		bcs	:+ ; if (!(zp_addr_00 % 2)) {
+	: ; for (x = (eng_screen_update_addr[y] & 0x3F); x > 0; x--) {
+		bcs	:+ ; if (!(eng_screen_update_addr.attr & 0x40)) {
 			iny
 		: ; }
 
-		lda	(zp_addr_00), y
+		lda	(eng_screen_update_addr), y
 		sta	PPU_VRAM_IO
 
 		dex
@@ -162,11 +162,11 @@ eng_screen_update_buf:
 
 	sec
 	tya
-	adc	zp_addr_00
-	sta	zp_addr_00
+	adc	eng_screen_update_addr
+	sta	eng_screen_update_addr
 	lda	#0
-	adc	zp_addr_00+1
-	sta	zp_addr_00+1
+	adc	eng_screen_update_addr+1
+	sta	eng_screen_update_addr+1
 	lda	#>PPU_VRAM_COLOR
 	sta	PPU_VRAM_AR
 	lda	#<PPU_VRAM_COLOR
@@ -178,7 +178,7 @@ eng_screen_update_buf:
 eng_screen_update:
 	ldx	PPU_SR
 	ldy	#0
-	lda	(zp_addr_00), y
+	lda	(eng_screen_update_addr), y
 	bne	eng_screen_update_buf
 ; ----------------------------
 	.export eng_sta_ppu_scc_h_v
@@ -195,32 +195,32 @@ eng_sta_ppu_ctlr0:
 ; -----------------------------------------------------------
 stats_data:
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.byte	$F0, $06
+		.byte	$F0, 6
 	.elseif	.defined(SMB2)
-		.byte	$EF, $06
+		.byte	$EF, 6
 	.elseif	.defined(ANN)
-		.byte	$F1, $06
+		.byte	$F1, 6
 	.endif
 
-	.byte	$62, $06
+	.byte	$62, 6
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.byte	$62, $06
+		.byte	$62, 6
 	.endif
 
 	.if	.defined(CONS)
-		.byte	$6D, $02
+		.byte	$6D, 2
 		.if	.defined(SMB)
-			.byte	$6D, $02
+			.byte	$6D, 2
 		.endif
 	.elseif	.defined(VS)
-		.byte	$6D, $03
+		.byte	$6D, 3
 		.if	.defined(VS_SMB)
-			.byte	$6D, $03
+			.byte	$6D, 3
 		.endif
 	.endif
 
-	.byte	$7A, $03
+	.byte	$7A, 3
 
 stats_offsets:
 	.byte	$06, $0C, $12, $18
@@ -248,10 +248,10 @@ print_num:
 		asl	a
 		tay
 		ldx	ppu_nmi_buffer_0_offset
-		lda	#$20
+		lda	#>PPU_VRAM_BG1
 		cpy	#0
 		bne	:+ ; if ((2*arg) == 0) {
-			lda	#$22
+			lda	#>(PPU_VRAM_BG1+$200)
 		: ; }
 		sta	ppu_nmi_buffer_0_data+0, x
 
@@ -278,7 +278,7 @@ print_num:
 			bne	:-
 		; }
 
-		lda	#0
+		lda	#NMI_DATA_END
 		sta	ppu_nmi_buffer_0_data+3, x
 		inx
 		inx

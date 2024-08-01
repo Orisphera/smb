@@ -164,7 +164,7 @@ screen_color_player:
 	sta	ppu_nmi_buffer_0_data+1, x
 	lda	#PPU_COLOR_LINE_SIZE
 	sta	ppu_nmi_buffer_0_data+2, x
-	lda	#0
+	lda	#NMI_DATA_END
 	sta	ppu_nmi_buffer_0_data+7, x
 	txa
 	clc
@@ -218,7 +218,7 @@ screen_text_draw_splash:
 	iny
 	tya
 	sta	ppu_nmi_buffer_0_data+5, x
-	lda	#0
+	lda	#NMI_DATA_END
 	sta	ppu_nmi_buffer_0_data+6, x
 	txa
 	clc
@@ -381,9 +381,13 @@ screen_text_stats:
 screen_text_stats_end:
 
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+0
-	.byte	$7F, $AA
+	.byte	NMI_REPEAT|63, $AA
+
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+2
-	.byte	$01, $EA
+	.byte	screen_text_fill_end-screen_text_fill
+screen_text_fill:
+	.byte	$EA
+screen_text_fill_end:
 	.byte	screen_text_end_val
 
 screen_text_splash:
@@ -400,9 +404,13 @@ screen_text_world:
 screen_text_world_end:
 
 	.dbyt	PPU_VRAM_BG1+$20C
-	.byte	$47, " "
+	.byte	NMI_REPEAT|7, " "
+
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$1C
-	.byte	$01, $BA
+	.byte	screen_text_fill_b_end-screen_text_fill_b
+screen_text_fill_b:
+	.byte	$BA
+screen_text_fill_b_end:
 	.byte	screen_text_end_val
 
 screen_text_timeup_screen:
@@ -447,7 +455,7 @@ screen_text_gameover_end:
 	screen_text_continue_end:
 
 		.dbyt	PPU_VRAM_BG1+$20C
-		.byte	$47, " "
+		.byte	NMI_REPEAT|7, " "
 
 		.dbyt	PPU_VRAM_BG1+$24B
 		.byte	screen_text_retry_end-screen_text_retry
@@ -487,13 +495,14 @@ screen_text_warp_pipe_m_end:
 .endif
 
 	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_VIS+$19
-	.byte	$46, $AA
+	.byte	NMI_REPEAT|6, $AA
+
 	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_VIS+$21
-	.byte	$45, $AA
+	.byte	NMI_REPEAT|5, $AA
 .if	.defined(SMB)|.defined(VS_SMB)
 		.byte	screen_text_end_val
 .elseif	.defined(SMB2M)
-		.byte	0
+		.byte	NMI_DATA_END
 .endif
 
 .if	.defined(SMB)|.defined(VS_SMB)
@@ -594,7 +603,7 @@ screen_text_draw:
 		bne	:-
 	: ; }
 
-	lda	#0
+	lda	#NMI_DATA_END
 	sta	ppu_nmi_buffer_0_data+0, y
 	pla
 

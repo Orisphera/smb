@@ -1,4 +1,5 @@
 .include	"engine/mem.i"
+.include	"engine/tunables.i"
 .include	"engine/chr.i"
 .include	"engine/charmap.i"
 
@@ -8,7 +9,7 @@ title_cursor_data:
 	.byte   title_cursor_data_end-title_cursor_data_start
 title_cursor_data_start:
         .dbyt   PPU_VRAM_BG1+$249
-	.byte	%10000000|(title_cursor_data_string_end-title_cursor_data_string_start)
+	.byte	NMI_INC_ROW|(title_cursor_data_string_end-title_cursor_data_string_start)
 title_cursor_data_string_start:
 	.byte	tile_bg::cursor
 	.byte	"  "

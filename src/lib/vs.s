@@ -59,38 +59,38 @@ vs_read_dips:
 	sta	VS_RAM_ARENA0+$06
 	rts
 ; -----------------------------------------------------------
-sub_92E1_data_0:
-	.byte	sub_92E1_data_0_string_end-sub_92E1_data_0_start
-sub_92E1_data_0_start:
+vs_text_credit_count:
+	.byte	vs_text_credit_count_string_end-vs_text_credit_count_start
+vs_text_credit_count_start:
 	.dbyt	PPU_VRAM_BG1+$394
-	.byte	sub_92E1_data_0_string_end-sub_92E1_data_0_string_start
-sub_92E1_data_0_string_start:
+	.byte	vs_text_credit_count_string_end-vs_text_credit_count_string_start
+vs_text_credit_count_string_start:
 	.byte	"CREDIT 00"
-sub_92E1_data_0_string_end:
+vs_text_credit_count_string_end:
 	.byte	NMI_DATA_END
-sub_92E1_data_0_end:
+vs_text_credit_count_end:
 
-sub_92E1_data_1:
-	.byte	sub_92E1_data_1_string_end-sub_92E1_data_1_start
-sub_92E1_data_1_start:
+vs_text_free_play:
+	.byte	vs_text_free_play_string_end-vs_text_free_play_start
+vs_text_free_play_start:
 	.dbyt	PPU_VRAM_BG1+$394
-	.byte	sub_92E1_data_1_string_end-sub_92E1_data_1_string_start
-sub_92E1_data_1_string_start:
+	.byte	vs_text_free_play_string_end-vs_text_free_play_string_start
+vs_text_free_play_string_start:
 	.byte	"FREE PLAY"
-sub_92E1_data_1_string_end:
+vs_text_free_play_string_end:
 	.byte	NMI_DATA_END
-sub_92E1_data_1_end:
+vs_text_free_play_end:
 ; ----------------------------
-	.export	sub_92E1
-sub_92E1:
+	.export	vs_disp_credit_msg
+vs_disp_credit_msg:
 	jsr	vs_setbank_low
 
-	ldx	#(sub_92E1_data_0_end-sub_92E1_data_0)-1
+	ldx	#(vs_text_credit_count_end-vs_text_credit_count)-1
 	lda	VS_RAM_ARENA0+$06
 	cmp	#7
 	bne	:++ ; if (vs_ram_arena0[6] == 7) {
 		: ; for (x = 13; x > 0; x--) {
-			lda	sub_92E1_data_1, x
+			lda	vs_text_free_play, x
 			sta	ppu_nmi_buffer_0, x
 
 			dex
@@ -100,7 +100,7 @@ sub_92E1:
 		rts
 	: ; } else {
 		: ; for (x = 13; x > 0; x--) {
-			lda	sub_92E1_data_0, x
+			lda	vs_text_credit_count, x
 			sta	ppu_nmi_buffer_0, x
 
 			dex
@@ -245,7 +245,7 @@ sub_9389_do:
 sub_93E0:
 	jsr	vs_setbank_low
 
-	lda	#pulse_queue::coin_01
+	lda	#sfx_pulse2::coin_01
 	sta	apu_pulse2_queue
 ; ----------------------------
 sub_93E7:
@@ -333,13 +333,13 @@ sub_947A_text_push:
 sub_947A_text_push_start:
 	.byte	"PUSH BUTTON"
 sub_947A_text_push_end:
-	.byte	0
+	.byte	NMI_DATA_END
 sub_947A_text_push_def_end:
 
 sub_947A_text_empty:
 	.dbyt	PPU_VRAM_BG1+$EA
-	.byte	$4B, " "
-	.byte	0
+	.byte	NMI_REPEAT|(sub_947A_text_push_end-sub_947A_text_push_start), " "
+	.byte	NMI_DATA_END
 sub_947A_text_empty_def_end:
 ; ----------------------------
 sub_947A:
@@ -376,7 +376,7 @@ sub_947A:
 		lda	frame_count
 		and	#1
 		beq	:+++++ ; if (frame_count % 1) {
-			jsr	sub_92E1
+			jsr	vs_disp_credit_msg
 			dec	VS_RAM_ARENA0+$26
 			bne	:++++ ; if (--vs_ram_arena0[38] == 0) {
 				ldx	VS_RAM_ARENA0+$27
