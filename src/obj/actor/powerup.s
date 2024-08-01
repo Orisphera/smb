@@ -86,7 +86,7 @@ actor_proc_powerup:
 				dec	pos_y_lo_actor+POWERUP_ACTOR_IDX
 				lda	state_actor+POWERUP_ACTOR_IDX
 				inc	state_actor+POWERUP_ACTOR_IDX
-				cmp	#%00010000|actor_states::state_1
+				cmp	#actor_states::bit_4|actor_states::state_1
 				bcc	:+ ; if (this.state >= 0x11) {
 					lda	#16
 					sta	veloc_x_actor, x
