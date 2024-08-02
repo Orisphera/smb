@@ -42,6 +42,7 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		box_7
 		box_8
 		box_9
+		box_10
 	.endenum
 
 	.enum	victory_flag_proc

@@ -1,0 +1,38 @@
+.include	"system/cpu.i"
+
+.include	"engine/mem.i"
+.include	"engine/misc.i"
+.include	"engine/sound.i"
+
+.include	"engine/unk.i"
+
+; -----------------------------------------------------------
+	.export actor_proc_fireworks
+actor_proc_fireworks:
+	dec	veloc_y_actor, x
+	bne	:+
+	lda	#8
+	sta	veloc_y_actor, x
+	inc	veloc_x_actor, x
+	lda	veloc_x_actor, x
+	cmp	#3
+	bcs	:++
+	: ; if (--actor.veloc_y > 0 || ++actor.veloc_x < 3) {
+		jsr	lib_calc_actor_pos
+		lda	pos_y_rel_actor
+		sta	pos_y_rel_proj
+		lda	pos_x_rel_actor
+		sta	pos_x_rel_proj
+		ldy	obj_data_offset_enemy, x
+		lda	veloc_x_actor, x
+		jsr	render_fireworks
+		rts
+	: ; } else {
+		lda	#actor_modes::free
+		sta	actor_mode, x
+		lda	#sfx_pulse2::blast
+		sta	apu_pulse2_queue
+		lda	#$05
+		sta	STACK_BASE+$38
+		jmp	actor_proc_course_end_stats
+	; }

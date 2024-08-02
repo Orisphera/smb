@@ -7,6 +7,7 @@
 MISC_HAMMER_ACCEL_Y_INC		= 16
 MISC_HAMMER_ACCEL_Y_DEC		= 15
 MISC_HAMMER_VELOC_Y_MAX_ABS	= 4
+MISC_HAMMER_VELOC_X_INIT_ABS	= 16
 MISC_HAMMER_VELOC_Y_INIT	= <-2
 MISC_HAMMER_GRAVITY_INIT 	= 0
 MISC_HAMMER_COL_BOX		= col_boxes::box_7
@@ -19,7 +20,7 @@ misc_hammer_actor_id:
 misc_hammer_actor_id_end:
 
 misc_hammer_veloc_x:
-	.byte	16, <-16
+	.byte	MISC_HAMMER_VELOC_X_INIT_ABS, <-MISC_HAMMER_VELOC_X_INIT_ABS
 ; -----------------------------
 	.export misc_init_hammer
 misc_init_hammer:

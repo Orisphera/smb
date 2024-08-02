@@ -380,7 +380,15 @@ player_start_y_F0:
 	.byte	$F0
 
 player_bg_priority:
-	.byte	$00, $20, $00, $00, $00, $00, $00, $00, $20
+	.byte	obj_attr::priority_high|obj_attr::color0
+	.byte	obj_attr::priority_low|obj_attr::color0
+	.byte	obj_attr::priority_high|obj_attr::color0
+	.byte	obj_attr::priority_high|obj_attr::color0
+	.byte	obj_attr::priority_high|obj_attr::color0
+	.byte	obj_attr::priority_high|obj_attr::color0
+	.byte	obj_attr::priority_high|obj_attr::color0
+	.byte	obj_attr::priority_high|obj_attr::color0
+	.byte	obj_attr::priority_low|obj_attr::color0
 
 enter_timer_vals:
 .if	.defined(CONS)
@@ -476,7 +484,7 @@ game_proc_start:
 		sta	state_player
 		ldx	#0
 		jsr	block_initpos
-		lda	#<-16
+		lda	#240
 		sta	pos_y_lo_block
 		ldx	#5
 		ldy	#0

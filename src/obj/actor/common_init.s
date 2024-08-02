@@ -108,12 +108,10 @@ actor_loop_course_pages:
 
 actor_loop_pos_y_lo:
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.byte	64
-		.byte	<-80
-		.byte	<-80
+		.byte	64, 176, 176
 	
 		.if	.defined(SMB)
-			.byte	<-128
+			.byte	128
 		.elseif	.defined(VS_SMB)
 			.byte	64
 		.endif
@@ -122,41 +120,41 @@ actor_loop_pos_y_lo:
 	
 		.if	.defined(SMB)
 			.byte	64
-			.byte	<-128
+			.byte	128
 			.byte	64
 		.elseif	.defined(VS_SMB)
-			.byte	<-80
+			.byte	176
 			.byte	64
-			.byte	<-128
+			.byte	128
 		.endif
 	
-		.byte	<-16
-		.byte	<-16
-		.byte	<-16
+		.byte	240
+		.byte	240
+		.byte	240
 	.elseif	.defined(SMB2)
-		.byte	<-80
-		.byte	<-80
+		.byte	176
+		.byte	176
 		.byte	64
 		.byte	48
-		.byte	<-80
+		.byte	176
 		.byte	48
-		.byte	<-80
-		.byte	<-80
-		.byte	<-16
-		.byte	<-16
-		.byte	<-80
-		.byte	<-16
+		.byte	176
+		.byte	176
+		.byte	240
+		.byte	240
+		.byte	176
+		.byte	240
 	.elseif	.defined(ANN)
-		.byte	<-80
+		.byte	176
 		.byte	64
 		.byte	64
 		.byte	64
 		.byte	64
 		.byte	64
-		.byte	<-128
-		.byte	<-128
-		.byte	<-16
-		.byte	<-80
+		.byte	128
+		.byte	128
+		.byte	240
+		.byte	176
 	.endif
 
 .if	.defined(SMB)|.defined(VS_SMB)

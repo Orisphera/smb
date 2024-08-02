@@ -121,7 +121,41 @@ ENTITY_OBJS	=	src/obj/misc/hammer.o \
 			src/obj/actor/hammer_bro_init.o \
 			src/obj/actor/veloc_x_none_init.o \
 			src/obj/actor/bloober_para_red_col_init.o \
-			src/obj/actor.o
+			src/obj/actor/bullet_init.o \
+			src/obj/actor/cheep_init.o \
+			src/obj/actor/lakitu_spiny_firebar_cheep_fly_init.o \
+			src/obj/actor/bowser_init.o \
+			src/obj/actor/dup_bowser_flame_init.o \
+			src/obj/actor/fireworks_init.o \
+			src/obj/actor/bullet_cheep_init.o \
+			src/obj/actor/piranha_plant_init.o \
+			src/obj/actor/swarm_base_init.o \
+			src/obj/actor/koopa_green_bounce_init.o \
+			src/obj/actor/plat_init.o \
+			src/obj/actor/common_proc.o \
+			src/obj/actor/toad_proc.o \
+			src/obj/actor/enemy_proc.o \
+			src/obj/actor/bowser_flame_vec.o \
+			src/obj/actor/firebar_proc_vec.o \
+			src/obj/actor/plat_proc_vec.o \
+			src/obj/actor/erase_proc.o \
+			src/obj/actor/podoboo_proc.o \
+			src/obj/actor/hammer_bro_base_proc.o \
+			src/obj/actor/koopa_para_proc.o \
+			src/obj/actor/floater_proc.o \
+			src/obj/actor/bloober_proc.o \
+			src/obj/actor/bullet_proc.o \
+			src/obj/actor/cheep_proc.o \
+			src/obj/actor/firebar_proc.o \
+			src/obj/actor/cheep_fly_proc.o \
+			src/obj/actor/lakitu_proc.o \
+			src/obj/actor/bowser_proc.o \
+			src/obj/actor/bowser_flame_proc.o \
+			src/obj/actor/fireworks_proc.o \
+			src/obj/actor/flag_victory.o \
+			src/obj/actor/piranha_plant_proc.o \
+			src/obj/actor/firebar_spin_proc.o \
+			src/obj/actor/plat_proc.o
 
 SECURITY_OBJS	=	data/security.o
 

@@ -1476,7 +1476,7 @@ bg_areaobj_castle:
 			lda	#actor_modes::active
 			sta	pos_y_hi_actor, x
 			sta	actor_mode, x
-			lda	#<-112
+			lda	#144
 			sta	pos_y_lo_actor, x
 			lda	#actor::flag_victory
 			sta	actor_id, x

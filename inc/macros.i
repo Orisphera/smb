@@ -27,4 +27,17 @@ MACROS_I = 1
 	sta	PPU_VRAM_AR
 .endmacro
 
+; negate the accumulator
+.macro	neg_m
+	eor	#<-1
+	clc
+	adc	#1
+.endmacro
+
+; negate the accumulator, assuming carry is clear
+.macro	neg_m_cc
+	eor	#<-1
+	adc	#1
+.endmacro
+
 .endif	; MACROS_I

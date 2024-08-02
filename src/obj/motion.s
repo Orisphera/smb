@@ -241,11 +241,13 @@ motion_gravity:
 
 	pla
 	beq	:+ ; if (a) {
+	motion_gravity_veloc_y_max_neg	= zp_byte_07
+
 		lda	motion_gravity_veloc_y_max_abs
 		eor	#<-1
 		tay
 		iny
-		sty	zp_byte_07
+		sty	motion_gravity_veloc_y_max_neg
 
 		lda	accel_y_actor, x
 		sec
@@ -255,12 +257,12 @@ motion_gravity:
 		lda	veloc_y_player, x
 		sbc	#0
 		sta	veloc_y_player, x
-		cmp	zp_byte_07
+		cmp	motion_gravity_veloc_y_max_neg
 		bpl	:+
 		lda	accel_y_actor, x
-		cmp	#$80
+		cmp	#<-128
 		bcs	:+ ; if (abs(this.veloc_y) > abs(motion_gravity_veloc_y_max_abs) && this.accel_y >= 0) {
-			lda	zp_byte_07
+			lda	motion_gravity_veloc_y_max_neg
 			sta	veloc_y_player, x
 			lda	#<-1
 			sta	accel_y_actor, x

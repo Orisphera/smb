@@ -33,3 +33,4 @@ actor_init_hammer_bro:
 	: ; }
 	lda	#HAMMER_BRO_COL_SIZE
 	jmp	actor_init_col
+

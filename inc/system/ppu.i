@@ -18,9 +18,11 @@ PPU_I = 1
 		color1		= 1
 		color2		= 2
 		color3		= 3
+		color_bits	= 3
 
 		priority_high	= $00
 		priority_low	= $20
+		priority_bit	= $20
 		h_flip		= $40
 		v_flip		= $80
 	.endenum

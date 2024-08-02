@@ -119,7 +119,7 @@ gfx_render_area:
 		lda	#$80
 		sta	eng_bg_addr_lo
 		lda	eng_bg_addr_hi
-		eor	#$04
+		eor	#%00000100
 		sta	eng_bg_addr_hi
 	: ; }
 
@@ -135,11 +135,11 @@ gfx_render_attr:
 	sta	zp_byte_01
 	lda	eng_bg_addr_hi
 	bcs	:+ ; if ((eng_bg_addr_lo & 0x1F) < 4) {
-		eor	#$04
+		eor	#%00000100
 	: ; }
 
-	and	#$04
-	ora	#$23
+	and	#%00000100
+	ora	#%00100011
 	sta	zp_byte_00
 	lda	zp_byte_01
 	lsr	a

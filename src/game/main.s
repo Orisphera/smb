@@ -9,6 +9,8 @@
 
 .include	"engine/unk.i"
 
+.include	"macros.i"
+
 	.export	eng_game
 eng_game:
 	lda	eng_gameplay_mode
@@ -335,7 +337,7 @@ game_proc_enter:
 		cmp	#COURSE_DATA_ENTER_POS_B0_C_VAL
 		bne	:++++++
 		: lda	attr_player
-		bne	:+ ; if (course_enter_pos == 0xB0 && !attr_player) {
+		bne	:+ ; if (course.enter_pos == 0xB0 && player.priority == high && player.flip == none) {
 			lda	#joypad_button::right
 			jmp	game_proc_auto
 		: ; } else {
@@ -473,7 +475,7 @@ game_proc_ctrl:
 	cmp	#game_proc::pole
 	bcc	:+ ; if (player.pos_y.lo >= 0x40 && game_proc_id >= pole && game_proc_id.not_in(victory, enter)) {
 		lda	attr_player
-		and	#<~(%00100000)
+		and	#<~obj_attr::priority_bit
 		sta	attr_player
 	: ; }
 
@@ -666,10 +668,10 @@ game_proc_firefl:
 		lsr	a
 
 	game_proc_firefl_do:
-		and	#%00000011
+		and	#obj_attr::color_bits
 		sta	zp_byte_00
 		lda	attr_player
-		and	#%11111100
+		and	#<~obj_attr::color_bits
 		ora	zp_byte_00
 		sta	attr_player
 		rts
@@ -678,7 +680,7 @@ game_proc_firefl:
 
 	game_proc_firefl_do_2:
 		lda	attr_player
-		and	#%11111100
+		and	#<~obj_attr::color_bits|obj_attr::color0
 		sta	attr_player
 	game_proc_firefl_rts:
 		rts
@@ -759,7 +761,7 @@ game_proc_victory:
 			inc	actor_proc_flag_victory_id
 		: ; }
 
-		lda	#$20
+		lda	#obj_attr::priority_low|obj_attr::color0
 		sta	attr_player
 	: ; }
 
@@ -930,11 +932,14 @@ game_proc_player_jump_swim_do:
 
 	jmp	motion_y_check_spring
 ; -----------------------------------------------------------
-game_proc_player_climb_pos_lo:
-	.byte	<14, <4, <-4, <-14
+CLIMB_OFFSET_SMALL	= 4
+CLIMB_OFFSET_LARGE	= 14
 
-game_proc_player_climb_pos_hi:
-	.byte	>14, >4, >-4, >-14
+game_proc_player_climb_offset_x_lo:
+	.byte	<CLIMB_OFFSET_LARGE, <CLIMB_OFFSET_SMALL, <-CLIMB_OFFSET_SMALL, <-CLIMB_OFFSET_LARGE
+
+game_proc_player_climb_offset_x_hi:
+	.byte	>CLIMB_OFFSET_LARGE, >CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_LARGE
 ; -----------------------------
 game_proc_player_climb:
 	lda	accel_y_actor_b
@@ -975,10 +980,10 @@ game_proc_player_climb:
 		
 			lda	pos_x_lo_player
 			clc
-			adc	game_proc_player_climb_pos_lo, x
+			adc	game_proc_player_climb_offset_x_lo, x
 			sta	pos_x_lo_player
 			lda	pos_x_hi_player
-			adc	game_proc_player_climb_pos_hi, x
+			adc	game_proc_player_climb_offset_x_hi, x
 			sta	pos_x_hi_player
 			lda	GAME_PROC_BTN_L_R
 			eor	#joypad_button::left|joypad_button::right
@@ -1300,9 +1305,7 @@ game_proc_player_friction:
 	: ; } if () {
 		cmp	#0
 		bpl	:+ ; if (veloc_x_player < 0) {
-			eor	#$FF
-			clc
-			adc	#1
+			neg_m
 		; }
 	: ; }
 
@@ -1372,8 +1375,10 @@ game_proc_proj:
 	: ; }
 	rts
 ; -----------------------------------------------------------
+PROJ_VELOC_X_ABS	= 64
+
 game_proc_veloc_x_proj:
-	.byte	$40, <-$40
+	.byte	PROJ_VELOC_X_ABS, <-PROJ_VELOC_X_ABS
 ; -----------------------------
 game_proc_proj_do:
 	stx	actor_index
@@ -1491,10 +1496,10 @@ game_proc_bubble_do:
 	rts
 ; -----------------------------
 game_proc_bubble_accel_y:
-	.byte	<-1, $50
+	.byte	<-1, 80
 
 game_proc_bubble_timers:
-	.byte	$40, $20
+	.byte	64, 32
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
 	ENG_TIMER_DISP	= eng_timer_disp
@@ -2081,8 +2086,10 @@ game_proc_cannon:
 
 	rts
 ; -----------------------------------------------------------
+BULLET_VELOC_X_ABS	= 24
+
 game_proc_bullet_veloc_x:
-	.byte	$18, <-$18
+	.byte	BULLET_VELOC_X_ABS, <-BULLET_VELOC_X_ABS
 ; -----------------------------
 game_proc_bullet:
 	lda	eng_timer_ctl

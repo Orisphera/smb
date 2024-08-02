@@ -517,7 +517,7 @@ nmi:
 			and     #joypad_button::start
 			beq     :+ ; if (joypad1_start) {
 				lda     eng_pause_status
-				and     #$80
+				and     #%10000000
 				bne     :+++ ; if (!(eng_pause_status & 0x80)) {
 					lda     #$2B
 					sta     eng_pause_ticks
@@ -525,13 +525,13 @@ nmi:
 					tay
 					iny
 					sty     apu_sfx_flag_pause
-					eor     #$01
-					ora     #$80
+					eor     #1
+					ora     #%10000000
 					bne     :++
 				; }
 			: ; } else {
 				lda     eng_pause_status
-				and     #<~($80)
+				and     #<~(%10000000)
 			: ; }
 
 			sta     eng_pause_status

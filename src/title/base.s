@@ -90,7 +90,7 @@ title_proc:
 					cpy	#1
 					beq	:+ ; if (!joypad_face_b) {
 						lda	player_count
-						eor	#%00000001
+						eor	#1
 						sta	player_count
 						jsr	title_cursor_draw
 						jmp	:+++

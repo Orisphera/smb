@@ -1,10 +1,9 @@
-.include    "engine/mem.i"
-.include    "engine/misc.i"
-.include    "engine/joypad.i"
+.include	"engine/mem.i"
+.include	"engine/tunables.i"
+.include	"engine/misc.i"
+.include	"engine/joypad.i"
 
 ; -----------------------------------------------------------
-ACTOR_COL_BOX_SMALL	= col_boxes::box_9
-ACTOR_COL_BOX_LARGE	= col_boxes::box_3
 BLOOBER_VELOC_X		= 0
 KOOPA_RED_ACCEL_X_RIGHT	= 48
 KOOPA_RED_ACCEL_X_LEFT	= <-32
@@ -45,3 +44,4 @@ actor_init_veloc_y:
 	sta	veloc_y_actor, x
 	sta	accel_y_actor_c, x
 	rts
+

@@ -377,14 +377,14 @@ block_proc:
 			beq	:++++ ; if (block.pos_y.hi) {
 				pha
 
-				lda	#<-16
+				lda	#240
 				cmp	pos_y_lo_block+2, x
-				bcs	:+ ; if (that.pos_y.lo < -16) {
+				bcs	:+ ; if (that.pos_y.lo < 240) {
 					sta	pos_y_lo_block+2, x
 				: ; }
 		
 				lda	pos_y_lo_block, x
-				cmp	#<-16
+				cmp	#240
 
 				pla
 				bcc	:+++
