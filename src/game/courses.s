@@ -124,28 +124,28 @@ course_load:
 	
 		ldy	#0
 		lda	PPU_VRAM_IO
-		: ; for (y = 0; vs_area_data[y] != COURSE_DATA_END) {
+		: ; for (y = 0; vs_area_data[y] != COURSE_SCENERY_END) {
 			lda	PPU_VRAM_IO
 			sta	vs_area_data, y
 	
 			iny
-			cmp	#COURSE_DATA_END
+			cmp	#COURSE_SCENERY_END
 			bne	:-
 		; }
 	.endif
 
 	lda	COURSE_AREA_DATA_ADDR_LO
-	sta	course_data_addr
+	sta	course_scenery_addr
 	lda	COURSE_AREA_DATA_ADDR_HI
-	sta	course_data_addr+1
+	sta	course_scenery_addr+1
 
 	ldy	#0
-	lda	(course_data_addr), y
+	lda	(course_scenery_addr), y
 	pha
 
 	and	#(COURSE_DATA_BG_COL_MAX<<COURSE_DATA_FG_BG_SHIFT)
 	cmp	#(COURSE_DATA_FG_MAX+1)
-	bcc	:+ ; if ((course_data_addr.data_bg_fg) >= (COURSE_DATA_FG_MAX+1)) {
+	bcc	:+ ; if ((course_scenery_addr.data_bg_fg) >= (COURSE_DATA_FG_MAX+1)) {
 		sta	course_bg_col
 		lda	#COURSE_DATA_FG_NONE
 	: ; }
@@ -169,7 +169,7 @@ course_load:
 	sta	course_timer_setting
 
 	iny
-	lda	(course_data_addr), y
+	lda	(course_scenery_addr), y
 	pha
 
 	and	#(COURSE_FG_MASK_MAX<<(COURSE_FG_MASK_SHIFT-8))
@@ -198,13 +198,13 @@ course_load:
 	: ; }
 	sta	course_ledge_type
 
-	lda	course_data_addr
+	lda	course_scenery_addr
 	clc
 	adc	#<WORD_SIZE
-	sta	course_data_addr
-	lda	course_data_addr+1
+	sta	course_scenery_addr
+	lda	course_scenery_addr+1
 	adc	#>WORD_SIZE
-	sta	course_data_addr+1
+	sta	course_scenery_addr+1
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ

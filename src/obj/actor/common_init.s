@@ -188,13 +188,13 @@ actor_area_loop:
 	sec
 	sbc	#ACTOR_LOOP_SCROLL_INC
 	sta	pos_x_hi_screen_right
-	lda	eng_areaobj_page_loc
+	lda	scenery_page_loc
 	sec
 	sbc	#ACTOR_LOOP_SCROLL_INC
-	sta	eng_areaobj_page_loc
+	sta	scenery_page_loc
 	lda	#0
 	sta	actor_page_on
-	sta	eng_areaobj_page_on
+	sta	scenery_page_on
 	sta	actor_offset
 	sta	actor_page_loc
 
@@ -204,7 +204,7 @@ actor_area_loop:
 	.endif
 
 	lda	COURSE_DATA_LOOP_OFFSETS, y
-	sta	eng_area_offset
+	sta	scenery_offset
 
 	rts
 ; ------------------------------

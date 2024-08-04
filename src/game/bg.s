@@ -554,75 +554,82 @@ bg_area:
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
 	.endif
+
 	bg_areaobj_outer_loop: ; while (eng_area_bg_flag || eng_page_cached) {
 		ldx	#3-1
 		bg_areaobj_loop: ; for (actor_index = 3-1; actor_index >= 0; x--) {
 			stx	actor_index
 			lda	#0
 			sta	eng_area_bg_flag
-			ldy	eng_area_offset
+			ldy	scenery_offset
+
 			.if	.defined(VS)
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 				sta	VS_REQ
 			.endif
-			lda	(course_data_addr), y
-			cmp	#COURSE_DATA_END
+
+			lda	(course_scenery_addr), y
+			cmp	#COURSE_SCENERY_END
 			beq	:++++
-			lda	eng_lenareaobj_0, x
-			bpl	:++++ ; if (course_data_byte_0 != COURSE_DATA_END && (eng_lenareaobj & 0x80)) {
+			lda	scenery_length, x
+			bpl	:++++ ; if (course_data_byte_0 != COURSE_SCENERY_END && (scenery_length & 0x80)) {
 				iny
-				lda	(course_data_addr), y
+				lda	(course_scenery_addr), y
 				asl	a
 				bcc	:+
-				lda	eng_areaobj_page_on
-				bne	:+ ; if ((course_data_byte_1 & 0x80) && !eng_area_obj_page_on) {
-					inc	eng_areaobj_page_on
-					inc	eng_areaobj_page_loc
+				lda	scenery_page_on
+				bne	:+ ; if (scenery.next_page && !scenery.page_on) {
+					inc	scenery_page_on
+					inc	scenery_page_loc
 				: ; }
 			
 				dey
+
 				.if	.defined(VS)
 					lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 					sta	VS_REQ
 				.endif
-				lda	(course_data_addr), y
+
+				lda	(course_scenery_addr), y
 				and	#<COURSE_DATA_TYPE_MASK
 				cmp	#<COURSE_DATA_TYPE_D
 				bne	:+
 				iny
-				lda	(course_data_addr), y
+				lda	(course_scenery_addr), y
 				dey
 				and	#>COURSE_DATA_TYPE_D_MASK
 				bne	:++
-				lda	eng_areaobj_page_on
-				bne	:++ ; if ((course_data_byte_0 & 0xF) == 0xD && !(course_data_byte_1 & 0x40) && !eng_areaobj_page_on) {
+				lda	scenery_page_on
+				bne	:++ ; if (scenery.type == 0xD && !scenery.is_D_object && !scenery.page_on) {
 					iny
+
 					.if	.defined(VS)
 						lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 						sta	VS_REQ
 					.endif
-					lda	(course_data_addr), y
+
+					lda	(course_scenery_addr), y
 					and	#>COURSE_DATA_TYPE_D_LOC_MASK
-					sta	eng_areaobj_page_loc
-					inc	eng_areaobj_page_on
+					sta	scenery_page_loc
+					inc	scenery_page_on
 					jmp	:+++++
 				: ; }
 				cmp	#<COURSE_DATA_TYPE_E
 				bne	:+
 				lda	eng_page_cached
 				bne	:++
-				: lda	eng_areaobj_page_loc
+				: lda	scenery_page_loc
 				cmp	eng_page_current
 				bcc	:++
 			; }
 			: ; if (
-			;	course_data_byte == COURSE_DATA_END
-			;	|| !(eng_lenareaobj & 0x80)
-			;	|| (((course_data_byte & 0xF) == 0xE && eng_page_cached)
-			;	|| eng_areaobj_page_loc >= eng_page_current)) {
+			;	course_data_byte == COURSE_SCENERY_END
+			;	|| !(scenery_length & 0x80)
+			;	|| ((course_data_byte & 0xF) == 0xE && eng_page_cached)
+			;	|| scenery_page_loc >= eng_page_current) {
 				jsr	bg_area_decode
 				jmp	:+++
-			: ; } else if (eng_areaobj_page_loc < eng_page_current) {
+			: ; } else if (scenery_page_loc < eng_page_current) {
 				inc	eng_area_bg_flag
 			: ; }
 			; if (needs_increment) {
@@ -630,9 +637,9 @@ bg_area:
 			: ; }
 		
 			ldx	actor_index
-			lda	eng_lenareaobj_0, x
-			bmi	:+ ; if (!(eng_lenareaobj & 0x80)) {
-				dec	eng_lenareaobj_0, x
+			lda	scenery_length, x
+			bmi	:+ ; if (!(scenery_length & 0x80)) {
+				dec	scenery_length, x
 			: ; }
 		
 			dex
@@ -671,28 +678,30 @@ bg_area_rts:
 	rts
 ; ------------------------------------------------------------
 bg_buffer_inc:
-	inc	eng_area_offset
-	inc	eng_area_offset
+	inc	scenery_offset
+	inc	scenery_offset
 	lda	#0
-	sta	eng_areaobj_page_on
+	sta	scenery_page_on
 	rts
 ; ------------------------------------------------------------
 BG_OBJ_TBL_BASE		= zp_byte_00
 BG_OBJ_TBL_OFFSET	= zp_byte_07
 
 bg_area_decode:
-	lda	eng_lenareaobj_0, x
-	bmi	:+ ; if (!(eng_lenareaobj & 0x80)) {
-		ldy	eng_areaobj_offset_0, x
+	lda	scenery_length, x
+	bmi	:+ ; if (!(scenery_length & 0x80)) {
+		ldy	scenery_offset+1, x
 	: ; }
 
 	ldx	#(bg_obj_spec_B-bg_obj_tbl)/WORD_SIZE
+
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
 	.endif
-	lda	(course_data_addr), y
-	cmp	#COURSE_DATA_END
+
+	lda	(course_scenery_addr), y
+	cmp	#COURSE_SCENERY_END
 	beq	bg_area_rts
 	and	#<COURSE_DATA_TYPE_MASK
 	cmp	#<COURSE_DATA_TYPE_F
@@ -717,17 +726,19 @@ bg_area_decode:
 		sta	BG_OBJ_TBL_OFFSET
 
 		iny
+
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_REQ
 		.endif
-		lda	(course_data_addr), y
+
+		lda	(course_scenery_addr), y
 		and	#>COURSE_DATA_TYPE_D_MASK
-		beq	bg_area_decode_rts ; if (course_data_byte_1 & 0x40) {
-			lda	(course_data_addr), y
+		beq	bg_area_decode_rts ; if (scenery.is_D_object) {
+			lda	(course_scenery_addr), y
 			and	#>(COURSE_DATA_TYPE_D_OBJ_MASK|COURSE_DATA_TYPE_D_MASK)
 			cmp	#>(COURSE_OBJ_D_LOOP|COURSE_DATA_TYPE_D_MASK)
-			bne	:+ ; if ((course_data_byte_1 & obj_mask) == rts) {
+			bne	:+ ; if (scenery.type_D_type == loop) {
 				inc	eng_loop_flag
 			: ; }
 			and	#>COURSE_DATA_TYPE_D_OBJ_MASK
@@ -736,28 +747,32 @@ bg_area_decode:
 	: cmp	#<COURSE_DATA_TYPE_C
 	bcs	:+++ ; } else if (course_data_type < 0xC) {
 		iny
+
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_REQ
 		.endif
-		lda	(course_data_addr), y
-		and	#>(COURSE_AREAOBJ_MASK)
-		bne	:+ ; if (!(course_data_byte_1 & COURSE_AREAOBJ_MASK)) {
+
+		lda	(course_scenery_addr), y
+		and	#>(COURSE_SCENERY_OBJ_MASK)
+		bne	:+ ; if (!(course_data_byte_1 & COURSE_SCENERY_OBJ_MASK)) {
 			lda	#(bg_obj_spec_C-bg_obj_tbl)/WORD_SIZE
 			sta	BG_OBJ_TBL_OFFSET
 	
-			lda	(course_data_addr), y
+			lda	(course_scenery_addr), y
 			and	#%00001111
 			jmp	bg_obj_set_base
 		: ; } else {
 			sta	BG_OBJ_TBL_BASE
-			cmp	#>(COURSE_AREAOBJ_MASK)
+			cmp	#>(COURSE_SCENERY_OBJ_MASK)
 			bne	:+
+	
 			.if	.defined(VS)
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 				sta	VS_REQ
 			.endif
-			lda	(course_data_addr), y
+
+			lda	(course_scenery_addr), y
 			and	#%00001000
 			beq	:+ ; if (BG_OBJ_TBL_BASE == 0x70 && (course_data_byte_1 & 0x08)) {
 				lda	#(bg_obj_tbl_pipe_vert_a-bg_obj_tbl)/WORD_SIZE
@@ -772,12 +787,14 @@ bg_area_decode:
 	; if () {
 		; if () {
 			iny
+
 			.if	.defined(VS)
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 				sta	VS_REQ
 			.endif
-			lda	(course_data_addr), y
-			and	#>COURSE_AREAOBJ_MASK
+
+			lda	(course_scenery_addr), y
+			and	#>COURSE_SCENERY_OBJ_MASK
 		: ; }
 
 		lsr	a
@@ -789,24 +806,26 @@ bg_area_decode:
 bg_obj_set_base:
 	sta	BG_OBJ_TBL_BASE
 
-	lda	eng_lenareaobj_0, x
+	lda	scenery_length, x
 	bpl	:++++
-	lda	eng_areaobj_page_loc
+	lda	scenery_page_loc
 	cmp	eng_page_current
 	beq	:+
-	ldy	eng_area_offset
+	ldy	scenery_offset
+
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
 	.endif
-	lda	(course_data_addr), y
+
+	lda	(course_scenery_addr), y
 	and	#<COURSE_DATA_TYPE_MASK
 	cmp	#<COURSE_DATA_TYPE_E
 	bne	bg_area_decode_rts
 	lda	eng_page_cached
 	bne	:+++
 bg_area_decode_rts:
-	; if ((eng_lenareaobj & 0x80) && eng_areaobj_page_loc != eng_page_current && (((course_data_byte_0 & 0xF) != 0xE) || !eng_page_cached)) {
+	; if ((scenery_length & 0x80) && scenery_page_loc != eng_page_current && (((course_data_byte_0 & 0xF) != 0xE) || !eng_page_cached)) {
 		rts
 	: lda	eng_page_cached
 	beq	:+ ; } else if (eng_page_cached) {
@@ -817,12 +836,12 @@ bg_area_decode_rts:
 	bg_area_decode_rts2:
 		rts
 	: ; } else {
-		ldy	eng_area_offset
+		ldy	scenery_offset
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_REQ
 		.endif
-		lda	(course_data_addr), y
+		lda	(course_scenery_addr), y
 		and	#<COURSE_DATA_POSX_MASK
 		lsr	a
 		lsr	a
@@ -832,8 +851,8 @@ bg_area_decode_rts:
 		bne	bg_area_decode_rts
 	: ; }
 	; if () {
-		lda	eng_area_offset
-		sta	eng_areaobj_offset_0, x
+		lda	scenery_offset
+		sta	scenery_offset+1, x
 		jsr	bg_buffer_inc
 	: ; }
 
@@ -1071,13 +1090,13 @@ bg_obj_tbl_set_attr:
 	.addr	bg_areaobj_set_attr
 ; ------------------------------------------------------------
 bg_areaobj_set_attr:
-	ldy	eng_areaobj_offset_0, x
+	ldy	scenery_offset+1, x
 	iny
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
 	.endif
-	lda	(course_data_addr), y
+	lda	(course_scenery_addr), y
 	pha
 	and	#%01000000
 	bne	:+ ; if ((course_data_byte_1 & 0x40)) {
@@ -1266,12 +1285,12 @@ bg_areaobj_ledge_tbl_cannon:
 ; --------------
 bg_areaobj_ledge_tree:
 	jsr	eng_loadobjattr
-	lda	eng_lenareaobj_0, x
+	lda	scenery_length, x
 	beq	:++	
-	bpl	:+ ; if (eng_lenareaobj) {
-		; if (eng_lenareaobj_bit_7) {
+	bpl	:+ ; if (scenery_length) {
+		; if (scenery_length_bit_7) {
 			tya
-			sta	eng_lenareaobj_0, x
+			sta	scenery_length, x
 			lda	eng_page_current
 			ora	eng_pos_x
 			beq	:+ ; if (eng_page_current|eng_pos_x) {
@@ -1294,15 +1313,15 @@ bg_areaobj_ledge_mushroom:
 	jsr	eng_loadobjlen
 	sty	zp_byte_06
 	bcc	:+ ; if (eng_loadobjlen()) {
-		lda	eng_lenareaobj_0, x
+		lda	scenery_length, x
 		lsr	a
 		sta	eng_ledge_dims, x
 		lda	#METATILE_PLAT_A_A
 		jmp	bg_areaobj_ledge_no_base
 	: ; } else {
 		lda	#METATILE_PLAT_A_C
-		ldy	eng_lenareaobj_0, x
-		beq	bg_areaobj_ledge_no_base ; if (eng_lenareaobj) {
+		ldy	scenery_length, x
+		beq	bg_areaobj_ledge_no_base ; if (scenery_length) {
 			lda	eng_ledge_dims, x
 			sta	zp_byte_06
 			ldx	BG_PROC_METATILE_ID
@@ -1310,7 +1329,7 @@ bg_areaobj_ledge_mushroom:
 			sta	gfx_metatile, x
 			.if	.defined(SMBM)|.defined(VS_SMB)
 				cpy	zp_byte_06
-				bne	bg_areaobj_pulley_rts ; if (eng_lenareaobj == tbl_736_obj) {
+				bne	bg_areaobj_pulley_rts ; if (scenery_length == tbl_736_obj) {
 					inx
 					lda	#metatile_1::tree_a
 					sta	gfx_metatile, x
@@ -1343,8 +1362,8 @@ bg_areaobj_pulley:
 	bcs	:+ ; if (!eng_loadobjlen()) {
 		iny
 
-		lda	eng_lenareaobj_0, x
-		bne	:+ ; if (!eng_lenareaobj) {
+		lda	scenery_length, x
+		bne	:+ ; if (!scenery_length) {
 			iny
 		; }
 	: ; }
@@ -1429,7 +1448,7 @@ bg_areaobj_castle:
 	txa
 	pha
 
-	ldy	eng_lenareaobj_0, x
+	ldy	scenery_length, x
 	ldx	zp_byte_07
 	lda	#$0B
 	sta	zp_byte_06
@@ -1455,7 +1474,7 @@ bg_areaobj_castle:
 	tax
 	lda	eng_page_current
 	beq	:+++ ; if (eng_page_current) {
-		lda	eng_lenareaobj_0, x
+		lda	scenery_length, x
 		cmp	#1
 		beq	:++
 		ldy	BG_PROC_METATILE_ID
@@ -1463,7 +1482,7 @@ bg_areaobj_castle:
 		cmp	#3
 		beq	:++
 		: cmp	#2
-		bne	:++ ; if (eng_lenareaobj == 2) {
+		bne	:++ ; if (scenery_length == 2) {
 			jsr	bg_objpos_x_get
 			pha
 
@@ -1481,7 +1500,7 @@ bg_areaobj_castle:
 			lda	#actor::flag_victory
 			sta	actor_id, x
 			rts
-		: ; } else if (eng_lenareaobj == 1 || (tile_id && eng_lenareaobj != 2) || eng_lenareaobj == 3) {
+		: ; } else if (scenery_length == 1 || (tile_id && scenery_length != 2) || scenery_length == 3) {
 			ldy	#metatile_1::brick_b
 			sty	gfx_metatile+10
 		; }
@@ -1491,7 +1510,7 @@ bg_areaobj_castle:
 ; -----------------------------
 bg_areaobj_pipe_water:
 	jsr	eng_loadobjattr
-	ldy	eng_lenareaobj_0, x
+	ldy	scenery_length, x
 	ldx	BG_PROC_METATILE_ID
 	lda	#metatile_1::pipe_water_a
 	sta	gfx_metatile+0, x
@@ -1547,13 +1566,13 @@ bg_areaobj_pipe_horiz:
 	dey
 	dey
 	sty	zp_byte_05
-	ldy	eng_lenareaobj_0, x
+	ldy	scenery_length, x
 	sty	zp_byte_06
 	ldx	zp_byte_05
 	inx
 	lda	bg_areaobj_pipe_horiz_m, y
 	cmp	#0
-	beq	:+ ; if (bg_reaobj_pipe_horiz_m[eng_lenareaobj]) {
+	beq	:+ ; if (bg_reaobj_pipe_horiz_m[scenery_length]) {
 		ldx	#0
 		ldy	zp_byte_05
 		jsr	bg_objrenderbase
@@ -1591,10 +1610,10 @@ bg_areaobj_pipe_vert:
 		beq	:+
 	.endif
 
-	ldy	eng_lenareaobj_0, x
+	ldy	scenery_length, x
 	beq	:+
 	jsr	bg_obj_alloc
-	bcs	:+ ; if ((course_sub|course_no) && eng_lenareaobj && !bg_obj_alloc()) {
+	bcs	:+ ; if ((course_sub|course_no) && scenery_length && !bg_obj_alloc()) {
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jsr	bg_objpos_x_get
 			clc
@@ -1643,7 +1662,7 @@ bg_areaobj_pipe_h:
 	tya
 	and	#%00000111
 	sta	zp_byte_06
-	ldy	eng_lenareaobj_0, x
+	ldy	scenery_length, x
 	rts
 ; -------------
 .if	.defined(SMB2M)
@@ -2091,11 +2110,11 @@ eng_loadobjlen:
 	jsr	eng_loadobjattr
 
 eng_loadobjlen_b:
-	lda	eng_lenareaobj_0, x
+	lda	scenery_length, x
 	clc
 	bpl	:+ ; if () {
 		tya
-		sta	eng_lenareaobj_0, x
+		sta	scenery_length, x
 		sec
 	: ; }
 
@@ -2106,12 +2125,12 @@ eng_loadobjattr:
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
 	.endif
-	ldy	eng_areaobj_offset_0, x
-	lda	(course_data_addr), y
+	ldy	scenery_offset+1, x
+	lda	(course_scenery_addr), y
 	and	#%00001111
 	sta	BG_PROC_METATILE_ID
 	iny
-	lda	(course_data_addr), y
+	lda	(course_scenery_addr), y
 	and	#%00001111
 	tay
 	rts

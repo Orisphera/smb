@@ -108,9 +108,9 @@ eng_init_0_do:
 	asl	a
 	sta	disp_buff_col
 
-	dec	eng_lenareaobj_0
-	dec	eng_lenareaobj_1
-	dec	eng_lenareaobj_2
+	dec	scenery_length
+	dec	scenery_length+1
+	dec	scenery_length+2
 
 	lda	#$0B
 	sta	eng_columnsets
