@@ -2721,3 +2721,11 @@ col_box_buffer:
 	sta	col_box_buffer_tbl_offset
 	lda	col_box_buffer_old_tile
 	rts
+
+.if	.defined(FC_SMB)
+	.res	1, $FF
+.elseif	.defined(VS_SMB)
+	.res	6, $FF
+.elseif	.defined(SMB2)
+	.res	7, $FF
+.endif
