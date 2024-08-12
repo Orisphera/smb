@@ -30,7 +30,7 @@ actor_proc_bloober:
 
 				bcs	:++
 			: ; } else {
-				ldy	#MOTION_DIR_LEFT
+				ldy	#DIR_LEFT
 
 				jsr	col_player_bullet_diff
 				bpl	:+ ; if (col_player_bullet_diff() < 0) {

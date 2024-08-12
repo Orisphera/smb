@@ -414,7 +414,7 @@ game_proc_start:
 	sta	pos_x_hi_player
 	lda	#40
 	sta	player_gravity
-	lda	#MOTION_DIR_RIGHT
+	lda	#DIR_RIGHT
 	sta	disp_dir_player
 	sta	pos_y_hi_player
 	lda	#player_state::ground

@@ -41,7 +41,7 @@ actor_floater_move:
 	lda	veloc_x_actor, x
 	pha
 
-	ldy	#MOTION_DIR_RIGHT
+	ldy	#DIR_RIGHT
 	lda	veloc_y_actor, x
 	and	#MOD_4_2_UP
 	bne	:+ ; if ((actor.veloc_y % 4) < 2) {
@@ -49,7 +49,7 @@ actor_floater_move:
 		neg_m
 		sta	veloc_x_actor, x
 
-		ldy	#MOTION_DIR_LEFT
+		ldy	#DIR_LEFT
 	: ; }
 	sty	motion_dir_actor, x
 	jsr	motion_x

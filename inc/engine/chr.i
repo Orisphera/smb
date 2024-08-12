@@ -4,9 +4,18 @@ CHR_I = 1
 .include	"system/ppu.i"
 
 	.enum	tile_obj
+		digits_00	= <((tile_obj_digits_00-chr_obj)/PPU_TILE_SIZE)
 		fire_koopa	= <((tile_obj_fire_koopa-chr_obj)/PPU_TILE_SIZE)
 		fire_koopa_end	= <((tile_obj_fire_koopa_end-chr_obj)/PPU_TILE_SIZE)
 		flag_victory	= <((tile_obj_flag_victory-chr_obj)/PPU_TILE_SIZE)
+		digits_10	= <((tile_obj_digits_10-chr_obj)/PPU_TILE_SIZE)
+		digits_20	= <((tile_obj_digits_20-chr_obj)/PPU_TILE_SIZE)
+		digits_40	= <((tile_obj_digits_40-chr_obj)/PPU_TILE_SIZE)
+		digits_50	= <((tile_obj_digits_50-chr_obj)/PPU_TILE_SIZE)
+		digits_80	= <((tile_obj_digits_80-chr_obj)/PPU_TILE_SIZE)
+		digits_0	= <((tile_obj_digits_0-chr_obj)/PPU_TILE_SIZE)
+		oneup_left	= <((tile_obj_oneup_left-chr_obj)/PPU_TILE_SIZE)
+		oneup_right	= <((tile_obj_oneup_right-chr_obj)/PPU_TILE_SIZE)
 	.endenum
 
 	.enum	tile_bg

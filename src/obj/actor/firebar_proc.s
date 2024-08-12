@@ -263,7 +263,7 @@ actor_firebar_col:
 			: ; }
 	
 			; if (hit_detected) {
-				ldx	#MOTION_DIR_RIGHT
+				ldx	#DIR_RIGHT
 				lda	actor_firebar_col_player_pos_x
 				cmp	actor_firebar_pos_x_rel
 				bcs	:+ ; if (player.pos_x < this.pos_x) {
@@ -275,7 +275,7 @@ actor_firebar_col:
 				lda	actor_firebar_loop_idx
 				pha
 			
-				jsr	col_player_harm_proc_b
+				jsr	col_player_harm_proc
 			
 				pla
 				sta	actor_firebar_loop_idx

@@ -167,7 +167,7 @@ actor_proc_spiny:
 		: ; }
 	
 		jsr	actor_init_col_small
-		ldy	#MOTION_DIR_LEFT
+		ldy	#DIR_LEFT
 		sta	veloc_x_actor, x
 		cmp	#0
 		bmi	:+ ; if (this.veloc_x > 0) {
@@ -294,7 +294,7 @@ actor_init_cheep_fly:
 			tay
 			lda	actor_cheep_fly_veloc_x, y
 			sta	veloc_x_actor, x
-			lda	#MOTION_DIR_RIGHT
+			lda	#DIR_RIGHT
 			sta	motion_dir_actor, x
 		
 			lda	veloc_x_player

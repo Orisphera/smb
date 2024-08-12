@@ -40,5 +40,5 @@ do
 	I=`expr $I + 1`
 done
 
-# SMMAIN2
-dd if=$1 bs=1 skip=30704 count=10616 >data/prg1.fds.bin
+# SMMAIN
+dd if=$1 bs=1 skip=34213 count=7107 >data/prg1.fds.bin

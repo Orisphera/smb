@@ -157,6 +157,8 @@ ENTITY_OBJS	=	src/obj/misc/hammer.o \
 			src/obj/actor/firebar_spin_proc.o \
 			src/obj/actor/plat_proc.o
 
+ACTOR_SUPPORT_OBJS =	src/obj/collision.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_OBJS	=	data/save.o
@@ -172,6 +174,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_SUPPORT_OBJS) \
 			data/prg.fc.o
 
 CHR_OBJS_FC	=	data/chr.o
@@ -187,6 +190,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_SUPPORT_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.o \
@@ -202,6 +206,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_SUPPORT_OBJS) \
 			data/prg.fds.o
 
 CHR_OBJS_FDS	=	data/chr.o
@@ -224,6 +229,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(GAME_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_SUPPORT_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -255,6 +261,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(GAME_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_SUPPORT_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

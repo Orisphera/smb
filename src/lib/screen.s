@@ -511,6 +511,7 @@ screen_text_warp_pipe_m_end:
 	screen_text_player_2_end:
 .endif
 
+	.export screen_text_warps
 screen_text_warps:
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.byte	"4", "3", "2", 0

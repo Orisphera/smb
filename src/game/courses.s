@@ -211,6 +211,7 @@ course_load:
 	.endif
 	rts
 ; ---------------------------------------
+	.export courses_world_offsets, courses_area_offsets
 courses_world_offsets:
 	.byte	course_01_areas-courses_area_offsets
 	.byte   course_02_areas-courses_area_offsets

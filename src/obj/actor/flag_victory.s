@@ -84,12 +84,12 @@ actor_proc_flag_victory_fireworks:
 	        cmp     byte_7E8
 	        bne     :++
 	        and     #MOD_2
-	        beq     :+ ; if ((byte_7EE == byte_7E8) && (byte_7EE % 2)) {
+	        beq     :+ ; if ((ENG_TIMER_DISP[2] == byte_7E8) && (ENG_TIMER_DISP[2] % 2)) {
 	        	ldy     #actor_states::state_3
 	        	lda     #3
 
 	        	bne     :+++
-		: ; } else if ((byte_7EE == byte_7E8) && !(byte_7EE % 2)) {
+		: ; } else if ((ENG_TIMER_DISP[2] == byte_7E8) && !(ENG_TIMER_DISP[2] % 2)) {
 	        	ldy     #actor_states::init
 	        	lda     #6
 

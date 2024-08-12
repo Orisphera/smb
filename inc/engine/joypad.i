@@ -13,13 +13,14 @@ JOYPAD_I = 1
 		none	= 0
 	.endenum
 
-	MOTION_DIR_RIGHT	= joypad_button::right
-	MOTION_DIR_LEFT		= joypad_button::left
+	DIR_RIGHT	= joypad_button::right
+	DIR_LEFT	= joypad_button::left
+	DIR_MASK	= (DIR_LEFT|DIR_RIGHT)
 
-	PLAYER_COL_NONE		= joypad_button::none
-	PLAYER_COL_RIGHT	= joypad_button::right
-	PLAYER_COL_LEFT		= joypad_button::left
-	PLAYER_COL_BOTTOM	= joypad_button::down
-	PLAYER_COL_TOP		= joypad_button::up
+	COL_NONE	= joypad_button::none
+	COL_RIGHT	= joypad_button::right
+	COL_LEFT	= joypad_button::left
+	COL_BOTTOM	= joypad_button::down
+	COL_TOP		= joypad_button::up
 
 .endif	; JOYPAD_I

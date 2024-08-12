@@ -2,6 +2,7 @@
 
 .include	"engine/math.i"
 .include	"engine/mem.i"
+.include	"engine/misc.i"
 .include	"engine/charmap.i"
 .include	"engine/tunables.i"
 .include	"engine/chr.i"
@@ -33,7 +34,7 @@ actor_proc_plat_bal:
 		bne	:--
 	.endif
 
-	lda	eng_timer_hammer_throw, x
+	lda	actor_plat_col_flag, x
 	sta	zp_byte_00
 	lda	motion_dir_actor, x
 	beq	:+ ; if (actor.motion_dir != 0) {
@@ -42,7 +43,7 @@ actor_proc_plat_bal:
 	cmp	pos_y_lo_actor, x
 	bcc	:++
 	cpy	zp_byte_00
-	beq	:+ ; } else if (actor.pos_y >= 45 && actor.state != eng_timer_hammer_throw) {
+	beq	:+ ; } else if (actor.pos_y >= 45 && actor.state != actor_plat_col_flag) {
 		clc
 		adc	#2
 		sta	pos_y_lo_actor, x
@@ -62,7 +63,7 @@ actor_proc_plat_bal:
 	lda	pos_y_lo_actor, x
 	pha
 
-	lda	eng_timer_hammer_throw, x
+	lda	actor_plat_col_flag, x
 	bpl	:+
 	lda	accel_y_actor_c, x
 	clc
@@ -78,11 +79,14 @@ actor_proc_plat_bal:
 	bcs	:++
 	: cmp	actor_index
 	beq	:+++
-	: ; if () {
+	: ; if (
+	;	(!(actor.plat_col & 0x80) && (actor.plat_col != actor_index))
+	;	|| ((actor.veloc_y > 0) && ((actor.accel_y_c + 5) >= 11))
+	; ) {
 		jsr	motion_platform_up
 
 		jmp	:+++
-	: ; } else if () {
+	: ; } else if (!(actor.plat_col & 0x80) && actor.veloc_y > 0 && ((actor.accel_y_c + 5) < 11) {
 		jsr	actor_proc_plat_stop
 
 		jmp	:++
@@ -98,10 +102,10 @@ actor_proc_plat_bal:
 	clc
 	adc	pos_y_lo_actor, y
 	sta	pos_y_lo_actor, y
-	lda	eng_timer_hammer_throw, x
-	bmi	:+ ; if () {
+	lda	actor_plat_col_flag, x
+	bmi	:+ ; if (!(actor.plat_col & 0x80)) {
 		tax
-		jsr	col_DC21
+		jsr	col_plat_player_pos
 	: ; }
 
 	ldy	actor_index
@@ -242,13 +246,13 @@ actor_init_plat_fall:
 	tya
 	tax
 	jsr	lib_actor_bits_get
-	lda	#6
-	jsr	col_DA11
+	lda	#scores::value_1000
+	jsr	col_score_do
 	lda	pos_x_rel_player
 	sta	STACK_BASE+$17, x
 	lda	pos_y_lo_player
 	sta	STACK_BASE+$1E, x
-	lda	#MOTION_DIR_RIGHT
+	lda	#DIR_RIGHT
 	sta	motion_dir_actor, x
 ; ------------------------------
 actor_proc_plat_stop:
@@ -268,10 +272,10 @@ actor_proc_plat_fall_do:
 	jsr	motion_y_state_5
 
 	ldx	actor_index
-	lda	eng_timer_hammer_throw, x
-	bmi	:+ ; if (eng_timer_hammer_throw >= 0) {
+	lda	actor_plat_col_flag, x
+	bmi	:+ ; if (!(actor.plat_col & 0x80)) {
 		tax
-		jsr	col_DC21
+		jsr	col_plat_player_pos
 	: ; }
 
 	ldx	actor_index
@@ -306,9 +310,9 @@ actor_proc_plat_mov_v:
 	; }
 ; ------------------------------
 actor_proc_plat_lift_player:
-	lda	eng_timer_hammer_throw, x
-	bmi	:+ ; if (eng_timer_hammer_throw >= 0) {
-		jsr	col_DC21
+	lda	actor_plat_col_flag, x
+	bmi	:+ ; if (!(actor.plat_col & 0x80)) {
+		jsr	col_plat_player_pos
 	: ; }
 
 	rts
@@ -318,8 +322,8 @@ actor_proc_plat_move_h:
 	lda	#14
 	jsr	actor_floater_do
 	jsr	actor_floater_move
-	lda	eng_timer_hammer_throw, x
-	bmi	:+++ ; if (hammer_throw_timer >= 0) {
+	lda	actor_plat_col_flag, x
+	bmi	:+++ ; if (!(actor.plat_col & 0x80)) {
 	actor_proc_plat_move_player_h:
 		lda	pos_x_lo_player
 		clc
@@ -336,17 +340,17 @@ actor_proc_plat_move_h:
 		: ; }
 		sta	pos_x_hi_player
 		sty	actor_plat_scroll_x
-		jsr	col_DC21
+		jsr	col_plat_player_pos
 	: ; }
 
 	rts
 ; -----------------------------------------------------------
 	.export actor_proc_plat_drop
 actor_proc_plat_drop:
-	lda	eng_timer_hammer_throw, x
-	bmi	:+ ; if () {
+	lda	actor_plat_col_flag, x
+	bmi	:+ ; if (!(actor.plat_col & 0x80)) {
 		jsr	motion_fall_fast
-		jsr	col_DC21
+		jsr	col_plat_player_pos
 	: ; }
 
 	rts
@@ -355,8 +359,8 @@ actor_proc_plat_drop:
 actor_proc_plat_right:
 	jsr	motion_x
 	sta	zp_byte_00
-	lda	eng_timer_hammer_throw, x
-	bmi	:+ ; if () {
+	lda	actor_plat_col_flag, x
+	bmi	:+ ; if (!(actor.plat_col & 0x80)) {
 		lda	#16
 		sta	veloc_x_actor, x
 		jsr	actor_proc_plat_move_player_h
@@ -388,9 +392,9 @@ actor_proc_plat_lift_move:
 	; } else rts;
 ; -----------------------------
 actor_proc_plat_lift_col:
-	lda	eng_timer_hammer_throw, x
-	beq	:+ ; if () {
-		jsr	col_DC19
+	lda	actor_plat_col_flag, x
+	beq	:+ ; if (actor.plat_col != 0) {
+		jsr	col_plat_s_player_pos
 	: ; }
 
 actor_proc_plat_lift_col_rts:

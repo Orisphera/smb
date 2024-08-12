@@ -3,11 +3,11 @@
 
 .include	"macros.i"
 ; -----------------------------------------------------------
-PLAT_DROP_TIMER		= 255
 PLAT_V_INC		= 64
 PLAT_SIZE_EASY		= 6
 PLAT_SIZE_HARD		= 5
 PLAT_ACCEL_Y_ABS	= 16
+PLAT_COL_FLAG		= %11111111
 PLAT_COL_BOX		= col_boxes::box_4
 ; -----------------------------------------------------------
 	.export actor_init_plat_bal
@@ -37,8 +37,8 @@ actor_init_plat_bal:
 ; ------------------------------
 	.export actor_init_plat_drop
 actor_init_plat_drop:
-	lda	#PLAT_DROP_TIMER
-	sta	eng_timer_hammer_throw, x
+	lda	#PLAT_COL_FLAG
+	sta	actor_plat_col_flag, x
 	jmp	actor_init_plat_std_do
 ; ------------------------------
 	.export actor_init_plat_std_h

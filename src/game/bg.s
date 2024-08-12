@@ -1226,6 +1226,7 @@ bg_areaobj_lock:
 	sta	eng_scroll_lock
 	rts
 ; -----------------------------
+	.export bg_actor_kill
 bg_actor_kill:
 	sta	zp_byte_00
 	lda	#actor_modes::free
@@ -2160,6 +2161,7 @@ bg_buffer_ptr_lo:
 bg_buffer_ptr_hi:
 	.byte	>bg_buffer_0, >bg_buffer_1
 ; --------------
+	.export bg_get_buffer_ptr
 bg_get_buffer_ptr:
 	pha
 	lsr	a

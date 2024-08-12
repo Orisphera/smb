@@ -31,18 +31,21 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		spawned	= 128
 	.endenum
 
+COL_BOX_SIZE	= 4
+
 	.enum	col_boxes
-		box_0
-		box_1
-		box_2
-		box_3
-		box_4
-		box_5
-		box_6
-		box_7
-		box_8
-		box_9
-		box_10
+		box_0		= <((col_box_0-col_box_tbl)/COL_BOX_SIZE)
+		box_1		= <((col_box_1-col_box_tbl)/COL_BOX_SIZE)
+		box_2		= <((col_box_2-col_box_tbl)/COL_BOX_SIZE)
+		box_3		= <((col_box_3-col_box_tbl)/COL_BOX_SIZE)
+		box_4		= <((col_box_4-col_box_tbl)/COL_BOX_SIZE)
+		box_5		= <((col_box_5-col_box_tbl)/COL_BOX_SIZE)
+		box_6		= <((col_box_6-col_box_tbl)/COL_BOX_SIZE)
+		box_7		= <((col_box_7-col_box_tbl)/COL_BOX_SIZE)
+		box_8		= <((col_box_8-col_box_tbl)/COL_BOX_SIZE)
+		box_9		= <((col_box_9-col_box_tbl)/COL_BOX_SIZE)
+		box_10		= <((col_box_10-col_box_tbl)/COL_BOX_SIZE)
+		box_11		= <((col_box_11-col_box_tbl)/COL_BOX_SIZE)
 	.endenum
 
 	.enum	victory_flag_proc
@@ -89,10 +92,10 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 	.endenum
 
 	.enum	powerup_type
-		mushroom_a
+		mushroom_reg
 		firefl
 		star
-		mushroom_b
+		mushroom_oneup
 		.if	.defined(SMB2M)
 			type_04
 			type_05
@@ -112,6 +115,7 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		vine
 		pipe_h
 		pipe_v
+
 		pole
 		victory
 		lifedown
@@ -121,6 +125,20 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		hurt
 		death
 		firefl
+	.endenum
+
+	.enum	scores
+		value_100	= <(screen_score_value_100-screen_score_disp_incs)
+		value_200	= <(screen_score_value_200-screen_score_disp_incs)
+		value_400	= <(screen_score_value_400-screen_score_disp_incs)
+		value_500	= <(screen_score_value_500-screen_score_disp_incs)
+		value_800	= <(screen_score_value_800-screen_score_disp_incs)
+		value_1000	= <(screen_score_value_1000-screen_score_disp_incs)
+		value_2000	= <(screen_score_value_2000-screen_score_disp_incs)
+		value_4000	= <(screen_score_value_4000-screen_score_disp_incs)
+		value_5000	= <(screen_score_value_5000-screen_score_disp_incs)
+		value_8000	= <(screen_score_value_8000-screen_score_disp_incs)
+		value_oneup	= <(screen_score_value_oneup-screen_score_disp_incs)
 	.endenum
 
 	.enum	screen_proc
@@ -151,6 +169,12 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		jump_swim
 		fall
 		climb
+	.endenum
+
+	.enum	player_statuses
+		power_none
+		power_mushroom
+		power_firefl
 	.endenum
 
 	.enum	screen_text
@@ -235,11 +259,16 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 	.enum	actor
 		koopa_green	= $00
 
+		koopa_mask	= $01
+
 		buzzy_beetle	= $02
 		koopa_red	= $03
 
+		actor_04	= $04
+
 		hammer_bro	= $05
 		goomba		= $06
+
 		bloober		= $07
 		bullet_swarm	= $08
 
@@ -283,6 +312,7 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		plat_std_h	= $28
 		plat_drop	= $29
 		plat_std_h_b	= $2A
+
 		plat_s_up	= $2B
 		plat_s_down	= $2C
 

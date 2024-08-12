@@ -48,8 +48,10 @@ TILE_ENTRY_BITS	= %00111111
 		pipe_h_f	= <((gfx_meta_block_0_pipe_h_f-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		coral		= <((gfx_meta_block_0_coral-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		blank_d		= <((gfx_meta_block_0_blank_d-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+
 		flag_ball	= <((gfx_meta_block_0_flag_ball-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		pole		= <((gfx_meta_block_0_pole-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		climb_blank	= <((gfx_meta_block_0_climb_blank-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		.if	.defined(SMBM)|.defined(VS_SMB)
 			plat_a_a	= <((gfx_meta_block_0_plat_a_a-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 			plat_a_b	= <((gfx_meta_block_0_plat_a_b-gfx_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
@@ -94,6 +96,7 @@ TILE_ENTRY_BITS	= %00111111
 		brick_m		= <((gfx_meta_block_1_brick_m-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		blank_b		= <((gfx_meta_block_1_blank_b-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		blank_c		= <((gfx_meta_block_1_blank_c-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
+
 		stair		= <((gfx_meta_block_1_stair-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		floor_castle	= <((gfx_meta_block_1_floor_castle-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		bridge_base	= <((gfx_meta_block_1_bridge_base-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
@@ -135,6 +138,12 @@ TILE_ENTRY_BITS	= %00111111
 			plat_a_b	= <((gfx_meta_block_2_plat_a_b-gfx_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
 			plat_a_c	= <((gfx_meta_block_2_plat_a_c-gfx_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
 		.endif
+
+		.if	.defined(SMBM)|.defined(VS_SMB)|.defined(ANN)
+			end	= bridge_castle+1
+		.elseif	.defined(SMB2)
+			end = plat_a_c+1
+		.endif
 	.endenum
 
 	.enum	metatile_3
@@ -148,8 +157,11 @@ TILE_ENTRY_BITS	= %00111111
 		.endif
 		coin_a		= <((gfx_meta_block_3_coin_a-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 		coin_b		= <((gfx_meta_block_3_coin_b-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+
 		axe_block	= <((gfx_meta_block_3_axe_block-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 		axe	= <((gfx_meta_block_3_axe-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+
+		end	= axe+1
 	.endenum
 
 .if	.defined(SMBM)|.defined(VS_SMB)

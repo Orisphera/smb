@@ -4,7 +4,7 @@
 
 	.export actor_init_bullet
 actor_init_bullet:
-	lda	#MOTION_DIR_LEFT
+	lda	#DIR_LEFT
 	sta	motion_dir_actor, x
 	lda	#col_boxes::box_9
 	sta	col_box_actor, x

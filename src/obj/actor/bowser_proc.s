@@ -126,7 +126,7 @@ actor_proc_bowser:
 		lda	frame_count
 		and	#MOD_16
 		bne	:+ ; if (!(frame_count % 16))
-			lda	#MOTION_DIR_LEFT
+			lda	#DIR_LEFT
 			sta	motion_dir_actor, x
 		: ; }
 	
@@ -134,7 +134,7 @@ actor_proc_bowser:
 		beq	:+
 		jsr	col_player_bullet_diff
 		bpl	:+ ; if (eng_timer_actor_ani && col_player_bullet_dif() < 0) {
-			lda	#MOTION_DIR_RIGHT
+			lda	#DIR_RIGHT
 			sta	motion_dir_actor, x
 			lda	#$02
 			sta	ppu_nmi_buffer_1_data+$24
@@ -164,7 +164,7 @@ actor_proc_bowser:
 			adc	ppu_nmi_buffer_1_data+$24
 			sta	pos_x_lo_actor, x
 			ldy	motion_dir_actor, x
-			cpy	#MOTION_DIR_RIGHT
+			cpy	#DIR_RIGHT
 			beq	:++ ; if (actor.motion_dir == right) {
 				ldy	#<-1
 				sec

@@ -45,8 +45,8 @@ actor_init_powerup:
 	cmp	#powerup_type::star
 	bcs	:++ ; if (this.type < star) {
 		lda	player_status
-		cmp	#2
-		bcc	:+ ; if (player.status >= 2) {
+		cmp	#player_statuses::power_firefl
+		bcc	:+ ; if (player.status >= firefl) {
 			lsr	a
 		: ; }
 		sta	eng_powerup_type
@@ -70,7 +70,7 @@ actor_proc_powerup:
 		bne	:++++
 		lda	eng_powerup_type
 		beq	:+
-		cmp	#powerup_type::mushroom_b
+		cmp	#powerup_type::mushroom_oneup
 		beq	:+
 		.if	.defined(SMB2M)
 			cmp	#powerup_type::type_04
@@ -83,7 +83,7 @@ actor_proc_powerup:
 			jsr	actor_proc_bounce
 			jsr	col_actor_bounce_proc
 			jmp	:++++
-		: ; } else if (this.spawned && !eng_timer_ctl && this.type.in(mushroom_a, mushroom_b, type_03, type_04)) {
+		: ; } else if (this.spawned && !eng_timer_ctl && this.type.in(mushroom_reg, mushroom_oneup, type_03, type_04)) {
 			jsr	actor_proc_base
 			jsr	col_actor_ground_proc
 			jmp	:+++

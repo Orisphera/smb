@@ -36,7 +36,7 @@ actor_init_col_large:
 
 actor_init_col:
 	sta	col_box_actor, x
-	lda	#MOTION_DIR_LEFT
+	lda	#DIR_LEFT
 	sta	motion_dir_actor, x
 
 actor_init_veloc_y:

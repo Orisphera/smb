@@ -12,7 +12,7 @@
 ; -----------------------------------------------------------
 	.export actor_init_koopa_green_bounce
 actor_init_koopa_green_bounce:
-	lda	#MOTION_DIR_LEFT
+	lda	#DIR_LEFT
 	sta	motion_dir_actor, x
 	lda	#KOOPA_GREEN_BOUNCE_VELOC_X
 	sta	veloc_x_actor, x

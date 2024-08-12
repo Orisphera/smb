@@ -3,6 +3,7 @@
 .include	"system/palettes.i"
 
 .include	"engine/mem.i"
+.include	"engine/chr.i"
 .include	"engine/charmap.i"
 .include	"engine/joypad.i"
 .include	"engine/sound.i"
@@ -818,42 +819,62 @@ SCORE_DIGIT_MASK	= $0F
 screen_score_disp_tiles:
 	.byte	$FF, $FF
 
-	.byte	$F6, $FB
-	.byte	$F7, $FB
-	.byte	$F8, $FB
-	.byte	$F9, $FB
-	.byte	$FA, $FB
-	.byte	$F6, $50
-	.byte	$F7, $50
-	.byte	$F8, $50
-	.byte	$F9, $50
-	.byte	$FA, $50
+	.byte	tile_obj::digits_10, tile_obj::digits_0
+	.byte	tile_obj::digits_20, tile_obj::digits_0
+	.byte	tile_obj::digits_40, tile_obj::digits_0
+	.byte	tile_obj::digits_50, tile_obj::digits_0
+	.byte	tile_obj::digits_80, tile_obj::digits_0
+	.byte	tile_obj::digits_10, tile_obj::digits_00
+	.byte	tile_obj::digits_20, tile_obj::digits_00
+	.byte	tile_obj::digits_40, tile_obj::digits_00
+	.byte	tile_obj::digits_50, tile_obj::digits_00
+	.byte	tile_obj::digits_80, tile_obj::digits_00
 
-	.byte	$FD, $FE
+	.byte	tile_obj::oneup_left, tile_obj::oneup_right
 
 	.if	.defined(VS_SMB)
-		.byte	$FA, $50
+		.byte	tile_obj::digits_80, tile_obj::digits_00
 	.endif
 screen_score_disp_tiles_end:
 
+	.export screen_score_disp_incs
+	.export screen_score_value_100, screen_score_value_200
+	.export screen_score_value_400, screen_score_value_500
+	.export screen_score_value_800, screen_score_value_1000
+	.export screen_score_value_2000, screen_score_value_4000
+	.export screen_score_value_5000, screen_score_value_8000
+	.export screen_score_value_oneup
 screen_score_disp_incs:
 	.byte	$FF
 
-	.byte	$41
-	.byte	$42
-	.byte	$44
-	.byte	$45
-	.byte	$48
-	.byte	$31
-	.byte	$32
-	.byte	$34
-	.byte	$35
-	.byte	$38
+SCORE_DIGIT_PLACE_100	= (((SCORE_DIGITS_MAX-1)-2)<<4)
+SCORE_DIGIT_PLACE_1000	= (((SCORE_DIGITS_MAX-1)-3)<<4)
 
-	.byte	$00
+screen_score_value_100:
+	.byte	1|SCORE_DIGIT_PLACE_100
+screen_score_value_200:
+	.byte	2|SCORE_DIGIT_PLACE_100
+screen_score_value_400:
+	.byte	4|SCORE_DIGIT_PLACE_100
+screen_score_value_500:
+	.byte	5|SCORE_DIGIT_PLACE_100
+screen_score_value_800:
+	.byte	8|SCORE_DIGIT_PLACE_100
+screen_score_value_1000:
+	.byte	1|SCORE_DIGIT_PLACE_1000
+screen_score_value_2000:
+	.byte	2|SCORE_DIGIT_PLACE_1000
+screen_score_value_4000:
+	.byte	4|SCORE_DIGIT_PLACE_1000
+screen_score_value_5000:
+	.byte	5|SCORE_DIGIT_PLACE_1000
+screen_score_value_8000:
+	.byte	8|SCORE_DIGIT_PLACE_1000
+screen_score_value_oneup:
+	.byte	0
 
 	.if	.defined(VS_SMB)
-		.byte	$38
+		.byte	8|SCORE_DIGIT_PLACE_1000
 	.endif
 screen_score_disp_incs_end:
 ; ----------------------------

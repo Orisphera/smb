@@ -86,6 +86,9 @@ actor_proc_hammer_bro_jump:
 				ldy	#HAMMER_BRO_VELOC_X_A
 			; }
 		: ; }
+
+		.export actor_proc_hammer_bro_jump_do
+	actor_proc_hammer_bro_jump_do:
 		sty	veloc_y_actor, x
 	
 		lda	state_actor, x
@@ -115,7 +118,7 @@ actor_proc_hammer_bro_move_h:
 	: ; }
 	sty	veloc_x_actor, x
 
-	ldy	#MOTION_DIR_RIGHT
+	ldy	#DIR_RIGHT
 	jsr	col_player_bullet_diff
 	bmi	:+ ; if (col_player_bullet_diff() >= 0) {
 		iny

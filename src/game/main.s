@@ -42,11 +42,6 @@ game_vs_init:
 	rts
 .endif
 ; -----------------------------------------------------------
-GAME_PROC_BTN_A_B	= zp_byte_0A
-GAME_PROC_BTN_U_D	= zp_byte_0B
-GAME_PROC_BTN_L_R	= zp_byte_0C
-GAME_PROC_BTN_A_B_HELD	= zp_byte_0D
-
 	.export	game_proc, game_proc_scroll_save
 game_proc:
 	.if	.defined(VS_SMB)
@@ -160,10 +155,10 @@ game_proc:
 		jsr	game_proc_firefl_do_2
 	: ; }
 
-	lda	GAME_PROC_BTN_A_B
-	sta	GAME_PROC_BTN_A_B_HELD
+	lda	joypad_a_b
+	sta	joypad_a_b_held
 	lda	#joypad_button::none
-	sta	GAME_PROC_BTN_L_R
+	sta	joypad_l_r
 
 GAME_SCROLL_END	= $20
 
@@ -276,9 +271,9 @@ game_proc_scroll:
 		lda	pos_x_hi_screen_left, y
 		sbc	#0
 		sta	pos_x_hi_player
-		lda	GAME_PROC_BTN_L_R
+		lda	joypad_l_r
 		cmp	game_proc_scroll_btn_mask, y
-		beq	:+ ; if (GAME_PROC_BTN_L_R != game_proc_scroll_btn_mask[y]) {
+		beq	:+ ; if (joypad_l_r != game_proc_scroll_btn_mask[y]) {
 			lda	#0
 			sta	veloc_x_player
 		: ; }
@@ -380,7 +375,7 @@ game_proc_enter:
 	: ; } if ((!eng_joypad_override && pos_y_lo_player < 0x91) || (pos_x_lo_player >= 72)) {
 		lda	#game_proc::ctrl
 		sta	game_proc_id
-		lda	#MOTION_DIR_RIGHT
+		lda	#DIR_RIGHT
 		sta	disp_dir_player
 		lsr	a
 		sta	eng_start_alt
@@ -413,22 +408,22 @@ game_proc_ctrl:
 	
 		lda	joypad_p1
 		and	#(joypad_button::face_a|joypad_button::face_b)
-		sta	GAME_PROC_BTN_A_B
+		sta	joypad_a_b
 		lda	joypad_p1
 		and	#(joypad_button::left|joypad_button::right)
-		sta	GAME_PROC_BTN_L_R
+		sta	joypad_l_r
 		lda	joypad_p1
 		and	#(joypad_button::up|joypad_button::down)
-		sta	GAME_PROC_BTN_U_D
+		sta	joypad_u_d
 		and	#joypad_button::down
 		beq	:+
 		lda	state_player
 		bne	:+
-		ldy	GAME_PROC_BTN_L_R
-		beq	:+ ; if ((GAME_PROC_BTN_U_D & down) && player.state == ground && GAME_PROC_BTN_L_R) {
+		ldy	joypad_l_r
+		beq	:+ ; if ((joypad_u_d & down) && player.state == ground && joypad_l_r) {
 			lda	#joypad_button::none
-			sta	GAME_PROC_BTN_L_R
-			sta	GAME_PROC_BTN_U_D
+			sta	joypad_l_r
+			sta	joypad_u_d
 		; }
 	: ; }
 
@@ -446,7 +441,7 @@ game_proc_ctrl:
 	: ; }
 	sty	col_box_player
 
-	lda	#MOTION_DIR_RIGHT
+	lda	#DIR_RIGHT
 	ldy	veloc_x_player
 	beq	:++
 	bpl	:+ ; if (veloc_x_player != 0) {
@@ -817,7 +812,7 @@ game_proc_player_move:
 	lda	state_player
 	bne	:++ ; if (player.size == small || player.state == ground) {
 		; if (player.size == large) {
-			lda	GAME_PROC_BTN_U_D
+			lda	joypad_u_d
 			and	#joypad_button::down
 		: ; }
 		sta	eng_crouch
@@ -846,8 +841,8 @@ game_proc_player_move:
 game_proc_player_ground:
 	jsr	game_proc_player_ani_speed
 
-	lda	GAME_PROC_BTN_L_R
-	beq	:+ ; if (GAME_PROC_BTN_L_R) {
+	lda	joypad_l_r
+	beq	:+ ; if (joypad_l_r) {
 		sta	disp_dir_player
 	: ; }
 
@@ -874,9 +869,9 @@ game_proc_player_fall:
 game_proc_player_jump_swim:
 	ldy	veloc_y_player
 	bpl	:+
-	lda	GAME_PROC_BTN_A_B
+	lda	joypad_a_b
 	and	#joypad_button::face_a
-	and	GAME_PROC_BTN_A_B_HELD
+	and	joypad_a_b_held
 	bne	:++
 	lda	player_jump_org_y_lo
 	sec
@@ -886,7 +881,7 @@ game_proc_player_jump_swim:
 	: ; if (
 	;	!(veloc_y_player & 0x80)
 	;	|| (
-	;		!((GAME_PROC_BTN_A_B & GAME_PROC_BTN_A_B_HELD) & face_a)
+	;		!((joypad_a_b & joypad_a_b_held) & face_a)
 	;		&& ((player_jump_org_y_lo - pos_y_lo_player) >= player_mid_jump_y)
 	;	)
 	; ) {
@@ -904,15 +899,15 @@ game_proc_player_jump_swim:
 			sta	accel_y_player
 		: ; }
 	
-		lda	GAME_PROC_BTN_L_R
-		beq	:+ ; if (GAME_PROC_BTN_L_R) {
+		lda	joypad_l_r
+		beq	:+ ; if (joypad_l_r) {
 			sta	disp_dir_player
 		; }
 	: ; }
 
 game_proc_player_jump_swim_do:
-	lda	GAME_PROC_BTN_L_R
-	beq	:+ ; if (GAME_PROC_BTN_L_R) {
+	lda	joypad_l_r
+	beq	:+ ; if (joypad_l_r) {
 		jsr	game_proc_player_friction
 	: ; }
 
@@ -959,22 +954,22 @@ game_proc_player_climb:
 	adc	zp_byte_00
 	sta	pos_y_hi_player
 
-	lda	GAME_PROC_BTN_L_R
+	lda	joypad_l_r
 	and	collision_player
-	beq	:++++ ; if (GAME_PROC_BTN_L_R & collision_player) {
+	beq	:++++ ; if ((joypad.l_r & player.collision) != none) {
 		ldy	eng_timer_climb_side
-		bne	:+++ ; if (!eng_timer_climb_side) {
-			ldy	#$18
+		bne	:+++ ; if (player.timer_climb_slide == 0) {
+			ldy	#24
 			sty	eng_timer_climb_side
 			ldx	#0
 			ldy	disp_dir_player
 			lsr	a
-			bcs	:+ ; if ((GAME_PROC_BTN_L_R & collision_player) & right) {
+			bcs	:+ ; if ((joypad.l_r & player.collision) & right) {
 				inx
 				inx
 			: ; }
 			dey
-			beq	:+ ; if (disp_dir_player == right) {
+			beq	:+ ; if (player.disp_dir == right) {
 				inx
 			: ; }
 		
@@ -985,7 +980,7 @@ game_proc_player_climb:
 			lda	pos_x_hi_player
 			adc	game_proc_player_climb_offset_x_hi, x
 			sta	pos_x_hi_player
-			lda	GAME_PROC_BTN_L_R
+			lda	joypad_l_r
 			eor	#joypad_button::left|joypad_button::right
 			sta	disp_dir_player
 		: ; }
@@ -1046,12 +1041,12 @@ game_proc_player_physics:
 	cmp	#player_state::climb
 	bne	:+++ ; if (player.state == climb) {
 		ldy	#0
-		lda	GAME_PROC_BTN_U_D
+		lda	joypad_u_d
 		and	collision_player
-		beq	:+ ; if (player.collision & GAME_PROC_BTN_U_D) {
+		beq	:+ ; if ((player.collision & joypad.u_d) != none) {
 			iny
-			and	#PLAYER_COL_TOP
-			bne	:+ ; if (!(player.collision & GAME_PROC_BTN_U_D & top)) {
+			and	#COL_TOP
+			bne	:+ ; if ((player.collision & joypad.u_d) != top) {
 				iny
 			; }
 		: ; }
@@ -1061,7 +1056,7 @@ game_proc_player_physics:
 		lda	#8
 		ldx	game_proc_player_climb_veloc_y, y
 		stx	veloc_y_player
-		bmi	:+ ; (veloc_y_player >= 0) { 
+		bmi	:+ ; (player.veloc_y >= 0) { 
 			lsr	a
 		: ; }
 		sta	timer_player_ani
@@ -1069,10 +1064,10 @@ game_proc_player_physics:
 		rts
 	: lda	eng_spring_ani
 	bne	:+
-	lda	GAME_PROC_BTN_A_B
+	lda	joypad_a_b
 	and	#joypad_button::face_a
 	beq	:+
-	and	GAME_PROC_BTN_A_B_HELD
+	and	joypad_a_b_held
 	beq	:++
 	: ; } else if (eng_spring_ani || pressed_a || held_a || (player.state != ground && !player.swimming)) {
 		jmp	:+++++++
@@ -1171,10 +1166,10 @@ game_proc_player_physics:
 		lda	course_type
 		beq	:+ ; if (course_type != water) {
 			dey
-			lda	GAME_PROC_BTN_L_R
+			lda	joypad_l_r
 			cmp	motion_dir_player
 			bne	:+ ; if (player_button == motion_dir) {
-				lda	GAME_PROC_BTN_A_B
+				lda	joypad_a_b
 				and	#joypad_button::face_b
 				bne	:+++
 				lda	eng_timer_run
@@ -1267,7 +1262,7 @@ game_proc_player_ani_speed:
 ; -----------------------------------------------------------
 game_proc_player_friction:
 	and	collision_player
-	cmp	#PLAYER_COL_NONE
+	cmp	#COL_NONE
 	bne	:+
 	lda	veloc_x_player
 	beq	:+++++
@@ -1275,7 +1270,7 @@ game_proc_player_friction:
 	bmi	:++
 	: lsr	a
 	bcc	:++
-	: ; if (collision_player_none && veloc_x_player < 0) {
+	: ; if (player.collision == none && player.veloc_x < 0) {
 		lda	accel_x_player
 		clc
 		adc	eng_friction_add_lo
@@ -1284,7 +1279,7 @@ game_proc_player_friction:
 		adc	eng_friction_add_hi
 		sta	veloc_x_player
 		cmp	player_max_veloc_right
-		bmi	:++ ; if (veloc_x_player > player_max_veloc_right) {
+		bmi	:++ ; if (player.veloc_x > player_max_veloc_right) {
 			lda	player_max_veloc_right
 			sta	veloc_x_player
 			jmp	:+++
@@ -1298,13 +1293,13 @@ game_proc_player_friction:
 		sbc	eng_friction_add_hi
 		sta	veloc_x_player
 		cmp	player_max_veloc_left
-		bpl	:+ ; if (veloc_x_player < player_max_veloc_left) {
+		bpl	:+ ; if (player.veloc_x < player_max_veloc_left) {
 			lda	player_max_veloc_left
 			sta	veloc_x_player
 		; }
 	: ; } if () {
 		cmp	#0
-		bpl	:+ ; if (veloc_x_player < 0) {
+		bpl	:+ ; if (player.veloc_x < 0) {
 			neg_m
 		; }
 	: ; }
@@ -1316,10 +1311,10 @@ game_proc_proj:
 	lda	player_status
 	cmp	#2
 	bcc	:++ ; if (player_status >= 2) {
-		lda	GAME_PROC_BTN_A_B
+		lda	joypad_a_b
 		and	#joypad_button::face_b
 		beq	:+
-		and	GAME_PROC_BTN_A_B_HELD
+		and	joypad_a_b_held
 		bne	:+
 		lda	eng_fireball_counter
 		and	#1
@@ -1565,7 +1560,7 @@ game_proc_timer:
 			jmp	eng_stats_print_num
 		: ; } else {
 			sta	player_status
-			jsr	col_player_harm_proc
+			jsr	col_player_harm_proc_do
 			inc	eng_done_timer
 		; }
 	: ; }
@@ -1671,7 +1666,7 @@ game_proc_whirlpool_do:
 			adc	#0
 		: ; }
 
-		; if (this.pos_y.hi >= this.pos_x.hi || player.collision.right) {
+		; if (this.pos_y.hi >= this.pos_x.hi || player.collision == right) {
 			sta	pos_x_hi_player
 		; }
 	: ; }
@@ -1785,11 +1780,11 @@ game_proc_spring:
 
 		cpy	#1
 		bcc	game_proc_spring_skip_accel
-		lda	GAME_PROC_BTN_A_B
+		lda	joypad_a_b
 		and	#joypad_button::face_a
 		beq	game_proc_spring_skip_accel
-		and	GAME_PROC_BTN_A_B_HELD
-		bne	game_proc_spring_skip_accel ; if ((eng_spring_ani - 1) >= 1 && (GAME_PROC_BTN_A_B & 0x80) && !(GAME_PROC_BTN_A_B & 0x80 & GAME_PROC_BTN_A_B_HELD)) {
+		and	joypad_a_b_held
+		bne	game_proc_spring_skip_accel ; if ((eng_spring_ani - 1) >= 1 && (joypad_a_b & 0x80) && !(joypad_a_b & joypad_a_b_held 0x80)) {
 			.if	.defined(SMB2M)
 				tya
 				pha
@@ -2100,7 +2095,7 @@ game_proc_bullet:
 			and	#%00001100
 			cmp	#%00001100
 			beq	:+++++ ; if ((bits_offscr_actor & 0x0C) != 0x0C) {
-				ldy	#MOTION_DIR_RIGHT
+				ldy	#DIR_RIGHT
 				jsr	col_player_bullet_diff
 				bmi	:+ ; if (col_player_bullet_diff() >= 0) {
 					iny
@@ -2109,10 +2104,10 @@ game_proc_bullet:
 				dey
 				lda	game_proc_bullet_veloc_x, y
 				sta	veloc_x_actor, x
-				lda	zp_byte_00
-				adc	#$28
-				cmp	#$50
-				bcc	:++++ ; if ((zp_byte_00 + 0x28) >= 0x50) {
+				lda	col_player_bullet_diff_pos_x_rel
+				adc	#40
+				cmp	#80
+				bcc	:++++ ; if ((col_player_bullet_diff_pos_x_rel + 40) >= 80) {
 					lda	#actor_states::state_1
 					sta	state_actor, x
 					lda	#10

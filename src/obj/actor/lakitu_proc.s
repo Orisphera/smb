@@ -43,7 +43,7 @@ actor_proc_lakitu:
 		: ; }
 		sta	veloc_x_actor, x
 
-		ldy	#MOTION_DIR_RIGHT
+		ldy	#DIR_RIGHT
 		lda	veloc_y_actor, x
 		and	#MOD_2
 		bne	:+ ; if (!(actor.veloc_y % 2)) {
@@ -56,21 +56,23 @@ actor_proc_lakitu:
 		jmp	motion_x
 	; }
 ; -----------------------------
+actor_proc_lakitu_spiny_pos_x_rel_abs	= zp_byte_00
+
 actor_proc_lakitu_spiny:
 	ldy	#0
 	jsr	col_player_bullet_diff
 	bpl	:+ ; if (col_player_bullet_diff() < 0) {
 		iny
-		lda	zp_byte_00
+		lda	col_player_bullet_diff_pos_x_rel
 		neg_m
-		sta	zp_byte_00
+		sta	actor_proc_lakitu_spiny_pos_x_rel_abs
 	: ; }
 
-	lda	zp_byte_00
+	lda	actor_proc_lakitu_spiny_pos_x_rel_abs
 	cmp	#$3C
 	bcc	:++
 	lda	#$3C
-	sta	zp_byte_00
+	sta	actor_proc_lakitu_spiny_pos_x_rel_abs
 	lda	actor_id, x
 	cmp	#actor::lakitu
 	bne	:++
@@ -82,17 +84,17 @@ actor_proc_lakitu_spiny:
 	dec	veloc_x_actor, x
 	lda	veloc_x_actor, x
 	bne	:+++++++
-	: ; if (zp_byte_00 < 0x3C || actor.id != lakitu || actor.veloc_y == dir_parity || actor.veloc_y == 0 || --actor.veloc_x == 0) {
+	: ; if (actor_proc_lakitu_spiny_pos_x_rel_abs < 0x3C || actor.id != lakitu || actor.veloc_y == dir_parity || actor.veloc_y == 0 || --actor.veloc_x == 0) {
 		; if (actor.veloc_y == 0 || actor.veloc_x == 0) {
 			tya
 			sta	veloc_y_actor, x
 		: ; }
 
-		lda	zp_byte_00
+		lda	actor_proc_lakitu_spiny_pos_x_rel_abs
 		and	#%00111100
 		lsr	a
 		lsr	a
-		sta	zp_byte_00
+		sta	actor_proc_lakitu_spiny_pos_x_rel_abs
 		ldy	#0
 		lda	veloc_x_player
 		beq	:+++
@@ -120,7 +122,7 @@ actor_proc_lakitu_spiny:
 		: ; }
 
 		lda	zp_byte_01, y
-		ldy	zp_byte_00
+		ldy	actor_proc_lakitu_spiny_pos_x_rel_abs
 		: ; for (i = zp_byte_00; i >= 0; i--) {
 			sec
 			sbc	#1

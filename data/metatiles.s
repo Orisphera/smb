@@ -272,6 +272,8 @@ gfx_meta_block_0_pole:
 	.byte	tile_bg::pole+1
 	.byte	tile_bg::pole+1
 ; ---
+	.export gfx_meta_block_0_climb_blank
+gfx_meta_block_0_climb_blank:
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks
 	.byte	tile_bg::blanks

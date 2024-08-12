@@ -14,6 +14,8 @@ PIRANHA_PLANT_CUTOFF_A	= 19
 .endif
 PIRANHA_PLANT_TIMER_ANI	= 64
 ; -----------------------------------------------------------
+actor_proc_piranha_plant_pos_x_rel_abs	= zp_byte_00
+
 	.export actor_proc_piranha_plant
 	.export actor_proc_piranha_plant_smb2_cmp
 actor_proc_piranha_plant:
@@ -27,18 +29,18 @@ actor_proc_piranha_plant:
 		bmi	:++ ; if (actor.veloc_y == 0 && actor.veloc_x >= 0) {
 			jsr	col_player_bullet_diff
 			bpl	:+ ; if (col_player_bullet_diff() < 0) {
-				lda	zp_byte_00
+				lda	col_player_bullet_diff_pos_x_rel
 				neg_m
-				sta	zp_byte_00
+				sta	actor_proc_piranha_plant_pos_x_rel_abs
 			: ; }
 		
-			lda	zp_byte_00
+			lda	actor_proc_piranha_plant_pos_x_rel_abs
 			actor_proc_piranha_plant_smb2_cmp:
 			cmp	#PIRANHA_PLANT_CUTOFF_A
 			bcc	:+++++
 		: ; }
 	
-		; if (actor.veloc_y != 0 || actor.veloc_x < 0 || zp_byte_00_abs >= 0x21) {
+		; if (actor.veloc_y != 0 || actor.veloc_x < 0 || actor_proc_piranha_plant_pos_x_rel_abs >= cutoff) {
 			; if (actor.veloc_y == 0) {
 				lda	veloc_x_actor, x
 				neg_m

@@ -23,6 +23,7 @@ BLOCK_BITS_B_VELOC_Y	= <-4
 block_punch_off_y:
 	.byte	4, 18
 ; -----------------------------
+	.export block_punch
 block_punch:
 	pha
 
@@ -157,7 +158,7 @@ block_item:
 		: ; }
 		jsr	eng_farjump
 		block_item_start:
-		.addr	block_mushroom_a
+		.addr	block_mushroom_reg
 
 		.if	.defined(SMB2)
 			.addr	block_powerup_4
@@ -165,18 +166,18 @@ block_item:
 
 		.addr	misc_init_coin_a
 		.addr	misc_init_coin_a
-		.addr	block_mushroom_b
+		.addr	block_mushroom_oneup
 
 		.if	.defined(SMB2)
 			.addr	block_powerup_4
 		.endif
 
 		block_item_mid_b:
-		.addr	block_mushroom_a
+		.addr	block_mushroom_reg
 
 		block_item_mid:
 		.if	.defined(SMB2M)
-			.addr	block_mushroom_a
+			.addr	block_mushroom_reg
 		.endif
 
 		.if	.defined(SMB2)
@@ -186,12 +187,12 @@ block_item:
 		.addr	block_vine
 		.addr	block_star
 		.addr	misc_init_coin_a
-		.addr	block_mushroom_b
+		.addr	block_mushroom_oneup
 		block_item_end:
 	; }
 ; -----------------------------
-block_mushroom_a:
-	lda	#powerup_type::mushroom_a
+block_mushroom_reg:
+	lda	#powerup_type::mushroom_reg
 
 .if	.defined(CONS)
 	.byte	BIT_ABS_OPCODE
@@ -219,8 +220,8 @@ block_powerup_4:
 	.endif
 .endif
 
-block_mushroom_b:
-	lda	#powerup_type::mushroom_b
+block_mushroom_oneup:
+	lda	#powerup_type::mushroom_oneup
 
 block_powerup:
 	sta	eng_powerup_type
