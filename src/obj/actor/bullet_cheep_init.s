@@ -28,12 +28,12 @@ bullet_cheep_actor_ids:
 ; ------------------------------
 	.export actor_init_bullet_cheep, actor_group_do
 actor_init_bullet_cheep:
-	lda	eng_timer_swarm
+	lda	timer_swarm
 	bne	actor_init_bullet_cheep_rts
 	lda	course_type
 	bne	:++++++
 	cpx	#BULLET_CHEEP_SLOTS
-	bcs	actor_init_bullet_cheep_rts ; if (eng_timer_swarm == 0 && course_type == water && actor_index < BULLET_CHEEP_SLOTS) {
+	bcs	actor_init_bullet_cheep_rts ; if (timer_swarm == 0 && course_type == water && actor_index < BULLET_CHEEP_SLOTS) {
 		ldy	#0
 		lda	eng_rand_seed, x
 		cmp	#BULLET_CHEEP_RED_CHANCE
@@ -53,18 +53,18 @@ actor_init_bullet_cheep:
 	actor_init_bullet_cheep_do:
 		sta	actor_id, x
 
-		lda	byte_6DD
-		cmp	#$FF
-		bne	:+ ; if (byte_6DD == max) {
+		lda	actor_bullet_cheep_mask
+		cmp	#%11111111
+		bne	:+ ; if (actor_bullet_cheep_mask == max) {
 			lda	#0
-			sta	byte_6DD
+			sta	actor_bullet_cheep_mask
 		: ; }
 		lda	eng_rand_seed, x
 		and	#MOD_8
-		: ; for (i = rand_seed % 8; (actor_init_bullet_cheep_data_a[i] & byte_6DD); i = ((i + 1) % 8)) {
+		: ; for (i = rand_seed % 8; (actor_init_bullet_cheep_data_a[i] & actor_bullet_cheep_mask); i = ((i + 1) % 8)) {
 			tay
 			lda	actor_init_bullet_cheep_data_a, y
-			bit	byte_6DD
+			bit	actor_bullet_cheep_mask
 			beq	:+
 	
 			iny
@@ -73,16 +73,16 @@ actor_init_bullet_cheep:
 	
 			jmp	:-
 		: ; }
-		ora	byte_6DD
-		sta	byte_6DD
+		ora	actor_bullet_cheep_mask
+		sta	actor_bullet_cheep_mask
 
 		lda	bullet_cheep_pos_x_lo, y
 		jsr	actor_init_right_side
 		sta	pos_y_actor, x
 		lda	#BULLET_CHEEP_TIMER_INIT
-		sta	eng_timer_swarm
+		sta	timer_swarm
 		jmp	actor_init_do
-	: ; } else if (eng_timer_swarm == 0 && course.type != water) {
+	: ; } else if (timer_swarm == 0 && course.type != water) {
 		ldy	#<-1
 		: ; for (y = 0; y < (ENG_ACTOR_MAX-1) && (actor[y].mode == free || actor[y].id != bullet_swarm); y++) {
 			iny
@@ -123,14 +123,14 @@ actor_init_bullet_cheep:
 					ldy	#ACTOR_SWAPPABLE_EASY
 
 					.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-					lda	eng_hard_mode
+					lda	game_hard_mode
 					beq	:+
 					.elseif	.defined(ANN)
 					lda	byte_77D
 					beq	:+
-					lda	byte_7FB
+					lda	ENG_HARDMODE_VAR
 					bne	:+
-					.endif ; if ((!ANN && eng_hard_mode) || (ANN && byte_77D && !byte_7FB)) {
+					.endif ; if ((!ANN && game_hard_mode) || (ANN && byte_77D && !hard_mode)) {
 						ldy	#ACTOR_SWAPPABLE_HARD
 					: ; }
 

@@ -8,26 +8,28 @@ PIRANHA_PLANT_VELOC_X_1	= 1
 PIRANHA_PLANT_OFFSET_Y	= 24
 PIRANHA_PLANT_COL_BOX	= col_boxes::box_9
 ; -----------------------------------------------------------
+actor_init_piranha_plant_attr	= zp_byte_00
+
 	.export actor_init_piranha_plant
 actor_init_piranha_plant:
 	.if	.defined(SMB2)
-	        lda     #$22
-	        sta     zp_byte_00
+	        lda     #obj_attr::priority_low|obj_attr::color2
+	        sta     actor_init_piranha_plant_attr
 	        lda     #$13
 	        sta     zp_byte_01
 
-	        lda     byte_7FB
+	        lda     ENG_HARDMODE_VAR
 	        bne     :+
 	        lda     course_no
 	        cmp     #course::no_04
-	        bcs     :+ ; if (!byte_7FB && course_no < no_04) {
-		        dec     zp_byte_00
+	        bcs     :+ ; if (!game.hard_mode && course_no < no_04) {
+		        dec     actor_init_piranha_plant_attr
 		        lda     #$21
 		        sta     zp_byte_01
 		: ; }
 
-	        lda     zp_byte_00
-	        sta     data_B517
+	        lda     actor_init_piranha_plant_attr
+	        sta     render_actor_attrs_piranha_plant
 	        lda     zp_byte_01
 	        sta     actor_proc_piranha_plant_smb2_cmp+1
 	.endif

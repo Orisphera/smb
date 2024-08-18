@@ -8,11 +8,11 @@ actor_erase:
 	sta	actor_mode, x
 	sta	actor_id, x
 	sta	state_actor, x
-	sta	STACK_BASE+$10, x
-	sta	eng_timer_actor, x
-	sta	STACK_BASE+$25, x
+	sta	screen_score_ctl, x
+	sta	timer_actor, x
+	sta	stomp_counter, x
 	sta	attr_actor, x
-	sta	eng_timer_actor_ani, x
+	sta	timer_ani_actor, x
 
 	rts
 

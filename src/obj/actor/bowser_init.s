@@ -34,11 +34,11 @@ actor_init_bowser:
 	lda	pos_x_lo_actor, x
 	sta	ppu_nmi_buffer_1_data+$25
 	lda	#BOWSER_FLAME_TIMER_INIT
-	sta	eng_timer_bowser_flame
+	sta	timer_bowser_flame
 	sta	motion_dir_actor, x
 	lda	#$20
 	sta	ppu_nmi_buffer_1_data+$23
-	sta	eng_timer_actor_ani, x
+	sta	timer_ani_actor, x
 	lda	#BOWSER_HP
 	sta	hp_bowser
 	lsr	a

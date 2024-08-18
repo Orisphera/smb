@@ -8,6 +8,7 @@ MISC_ACCEL_Y_INC		= 80
 MISC_VELOC_Y_MAX_ABS_6		= 6
 MISC_GRAVITY_INIT		= 0
 MISC_VELOC_Y_STATE_CUTOFF	= 5
+MISC_SCORE_DURATION		= 48
 ; -----------------------------------------------------------
 	.export	misc_proc
 misc_proc:
@@ -17,13 +18,13 @@ misc_proc:
 		lda	state_misc, x
 		beq	:++++
 		asl	a
-		bcc	:+ ; if (this.spawned) {
+		bcc	:+ ; if (this.is_hammer) {
 			jsr	misc_proc_hammer
 			jmp	:++++
-		: ; } else if (this.state != init) {
+		: ; } else if (this.state != inactive) {
 			ldy	state_misc, x
 			dey
-			beq	:+ ; if (this.state != 1) {
+			beq	:+ ; if (this.state >= score) {
 				inc	state_misc, x
 
 				lda	pos_x_lo_misc, x
@@ -35,9 +36,9 @@ misc_proc:
 				sta	pos_x_hi_misc, x
 
 				lda	state_misc, x
-				cmp	#actor_states::bit_5|actor_states::bit_4|actor_states::init
-				bne	:++ ; if (this.state_bit_5 & this.state_bit_4 && this.state == init) {
-					lda	#actor_states::init
+				cmp	#MISC_SCORE_DURATION
+				bne	:++ ; if (this.state < score_duration) {
+					lda	#misc_states::inactive
 					sta	state_misc, x
 					jmp	:+++
 				; }
@@ -64,7 +65,7 @@ misc_proc:
 				; }
 			; }
 
-			: ; if (this.state < 0x30) {
+			: ; if (this.state < cutoff) {
 				jsr	lib_calc_misc_pos
 				jsr	lib_misc_bits_get
 				jsr	col_misc_box

@@ -780,13 +780,14 @@ gfx_meta_block_3_coin_b:
 	.byte	tile_bg::coin_b+1
 	.byte	tile_bg::coin_b+3
 ; ---
-	.export gfx_meta_block_3_axe_block, gfx_meta_block_3_axe
-gfx_meta_block_3_axe_block:
+	.export gfx_meta_block_3_block_invis
+gfx_meta_block_3_block_invis:
 	.byte	tile_bg::block_empty
 	.byte	tile_bg::block_empty+2
 	.byte	tile_bg::block_empty+1
 	.byte	tile_bg::block_empty+3
-
+; ---
+	.export gfx_meta_block_3_axe
 gfx_meta_block_3_axe:
 	.byte	tile_bg::axe
 	.byte	tile_bg::axe+2

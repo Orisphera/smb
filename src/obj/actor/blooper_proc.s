@@ -5,21 +5,21 @@
 .include	"engine/unk.i"
 
 ; -----------------------------------------------------------
-BLOOBER_ACCEL_OFFSET_Y		= 1
-BLOOBER_MOTION_TIMER		= 2
-BLOOBER_PLAYER_MOTION_OFFSET_Y	= 16
-BLOOBER_VELOC_X_Y_OFFSET	= 2
-BLOOBER_ACCEL_Y_THRESH		= 32
+BLOOPER_ACCEL_OFFSET_Y		= 1
+BLOOPER_MOTION_TIMER		= 2
+BLOOPER_PLAYER_MOTION_OFFSET_Y	= 16
+BLOOPER_VELOC_X_Y_OFFSET	= 2
+BLOOPER_ACCEL_Y_THRESH		= 32
 ; -----------------------------------------------------------
 actor_proc_blooper_flip_chance:
 	.byte	MOD_64, MOD_4
 ; ----------------------------
-	.export actor_proc_bloober
-actor_proc_bloober:
+	.export actor_proc_blooper
+actor_proc_blooper:
 	lda	state_actor, x
 	and	#actor_states::bit_5
 	bne	:++++++ ; if (!(actor.state & 0x20)) {
-		ldy	eng_hard_mode_b
+		ldy	game_hard_mode_b
 		lda	eng_rand_seed+1, x
 		and	actor_proc_blooper_flip_chance, y
 		bne	:+++ ; if (!(flip_chance[is_hard] & eng_rand_seed[1])) {
@@ -45,7 +45,7 @@ actor_proc_bloober:
 		lda	pos_y_lo_actor, x
 		sec
 		sbc	accel_y_actor_c, x
-		cmp	#BLOOBER_ACCEL_Y_THRESH
+		cmp	#BLOOPER_ACCEL_Y_THRESH
 		bcc	:+ ; if ((actor.pos_y.lo - actor.accel_y) >= threshold) {
 			sta	pos_y_lo_actor, x
 		: ; }
@@ -80,23 +80,23 @@ actor_proc_bloober:
 actor_proc_swim:
 	lda	veloc_y_actor, x
 	and	#MOD_4_2_UP
-	bne	:++++ ; if ((actor.veloc_y % 4) >= 2) {
+	bne	:++++ ; if ((this.veloc_y % 4) >= 2) {
 		lda	frame_count
 		and	#MOD_8
 		pha
 
 		lda	veloc_y_actor, x
 		lsr	a
-		bcs	:++ ; if (!(actor.veloc_y % 2)) {
+		bcs	:++ ; if (!(this.veloc_y % 2)) {
 			pla
 			bne	:+ ; if (!(frame_count % 8)) {
 				lda	accel_y_actor_c, x
 				clc
-				adc	#BLOOBER_ACCEL_OFFSET_Y
+				adc	#BLOOPER_ACCEL_OFFSET_Y
 				sta	accel_y_actor_c, x
 				sta	veloc_x_actor, x
-				cmp	#BLOOBER_VELOC_X_Y_OFFSET
-				bne	:+ ; if (actor.veloc_x == veloc_x_y_offset) {
+				cmp	#BLOOPER_VELOC_X_Y_OFFSET
+				bne	:+ ; if (this.veloc_x == veloc_x_y_offset) {
 					inc	veloc_y_actor, x
 				; }
 			: ; }
@@ -107,23 +107,23 @@ actor_proc_swim:
 			bne	:+ ; if (!(frame_count % 8)) {
 				lda	accel_y_actor_c, x
 				sec
-				sbc	#BLOOBER_ACCEL_OFFSET_Y
+				sbc	#BLOOPER_ACCEL_OFFSET_Y
 				sta	accel_y_actor_c, x
 				sta	veloc_x_actor, x
-				bne	:+ ; if (actor.veloc_x == 0) {
+				bne	:+ ; if (this.veloc_x == 0) {
 					inc	veloc_y_actor, x
 
-					lda	#BLOOBER_MOTION_TIMER
-					sta	eng_timer_actor, x
+					lda	#BLOOPER_MOTION_TIMER
+					sta	timer_actor, x
 				; }
 			: ; }
 
 			rts
 		; }
 	: ; } else {
-		lda	eng_timer_actor, x
+		lda	timer_actor, x
 		beq	:+++
-		: ; if (actor.timer != 0 || (actor.pos_y + 16) < player.pos_y) {
+		: ; if (this.timer != 0 || (this.pos_y + 16) < player.pos_y) {
 			lda	frame_count
 			lsr	a
 			bcs	:+ ; if (!(frame_count % 2)) {
@@ -132,7 +132,7 @@ actor_proc_swim:
 
 			rts
 		: lda	pos_y_lo_actor, x
-		adc	#BLOOBER_PLAYER_MOTION_OFFSET_Y
+		adc	#BLOOPER_PLAYER_MOTION_OFFSET_Y
 		cmp	pos_y_lo_player
 		bcc	:--- ; } else {
 			lda	#0

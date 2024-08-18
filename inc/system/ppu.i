@@ -25,6 +25,7 @@ PPU_I = 1
 		priority_bit	= $20
 		h_flip		= $40
 		v_flip		= $80
+		no_flip		= $00
 	.endenum
 
 ; Control Register 0 [1](11.2.2)(p. 6)

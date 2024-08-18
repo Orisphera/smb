@@ -13,10 +13,10 @@ fireworks_pos_y:	.byte	96, 64, 112, 64, 96, 48
 ; ------------------------------
 	.export actor_init_fireworks
 actor_init_fireworks:
-	lda	eng_timer_swarm
-	bne	:++ ; if (eng_timer_swarm == 0) {
+	lda	timer_swarm
+	bne	:++ ; if (timer_swarm == 0) {
 		lda	#FIREWORKS_SWARM_TIMER
-		sta	eng_timer_swarm
+		sta	timer_swarm
 		dec	actor_firework_counter
 
 		ldy	#ENG_ACTOR_MAX

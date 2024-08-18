@@ -15,8 +15,8 @@ actor_init_plat_bal:
 	dec	pos_y_lo_actor, x
 	dec	pos_y_lo_actor, x
 
-	ldy	eng_hard_mode_b
-	bne	:+ ; if (!eng_hard_mode_b) {
+	ldy	game_hard_mode_b
+	bne	:+ ; if (!game_hard_mode_b) {
 		ldy	#2
 		jsr	actor_plat_pos
 	: ; }
@@ -70,8 +70,8 @@ actor_init_plat_do:
 	ldy	course_type
 	cpy	#course_types::castle
 	beq	:+
-	ldy	eng_hard_mode_b
-	bne	:+ ; if (course_type != castle && !eng_hard_mode_b) {
+	ldy	game_hard_mode_b
+	bne	:+ ; if (course_type != castle && !game_hard_mode_b) {
 		lda	#PLAT_SIZE_EASY
 	: ; }
 	sta	col_box_actor, x

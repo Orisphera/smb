@@ -33,8 +33,8 @@ actor_proc_bowser_flame_do:
 	lda	eng_timer_ctl
 	bne	:++ ; if (eng_timer_ctl == 0) {
 		lda	#BOWSER_FLAME_ACCEL_X_OFFSET
-		ldy	eng_hard_mode_b
-		beq	:+ ; if (eng_hard_mode_b) {
+		ldy	game_hard_mode_b
+		beq	:+ ; if (game_hard_mode_b) {
 			lda	#BOWSER_FLAME_ACCEL_X_OFFSET_HARD
 		: ; }
 		sta	actor_proc_bowser_flame_accel_x_offset
@@ -62,7 +62,7 @@ actor_proc_bowser_flame_do:
 	jsr	lib_calc_actor_pos
 	lda	state_actor, x
 	bne	:---
-	lda	#tile_obj::fire_koopa
+	lda	#tile_obj::bowser_flame
 	sta	actor_proc_bowser_flame_obj_tile
 
 	ldy	#obj_attr::color2
@@ -73,7 +73,7 @@ actor_proc_bowser_flame_do:
 	: ; }
 	sty	actor_proc_bowser_flame_obj_attr
 
-	ldy	obj_data_offset_enemy, x
+	ldy	obj_data_offset_actor, x
 	ldx	#0
 	: ; for (tile of bowser_flame) {
 		lda	pos_y_rel_actor
@@ -94,14 +94,14 @@ actor_proc_bowser_flame_do:
 		iny
 		iny
 		inx
-		cpx	#tile_obj::fire_koopa_end-tile_obj::fire_koopa
+		cpx	#tile_obj::bowser_flame_end-tile_obj::bowser_flame
 		bcc	:-
 	; }
 
 	ldx	actor_index
 	jsr	lib_actor_bits_get
 
-	ldy	obj_data_offset_enemy, x
+	ldy	obj_data_offset_actor, x
 	lda	bits_offscr_actor
 	lsr	a
 	pha

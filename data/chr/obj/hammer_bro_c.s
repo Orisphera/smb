@@ -1,6 +1,8 @@
 .ifndef	HAMMER_BRO_C
 HAMMER_BRO_C = 1
 
+	.export tile_obj_hammer_bro_c
+tile_obj_hammer_bro_c:
 	.incbin	"../../chr.smb/tile_obj_D1.bin"
 	.incbin	"../../chr.smb/tile_obj_D2.bin"
 	.incbin	"../../chr.smb/tile_obj_D3.bin"

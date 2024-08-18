@@ -36,7 +36,7 @@ actor_proc_enemy_do:
 
 	.addr	actor_proc_hammer_bro
 	.addr	actor_proc_base
-	.addr	actor_proc_bloober
+	.addr	actor_proc_blooper
 	.addr	actor_proc_bullet
 	.addr	actor_proc_null_b
 	.addr	actor_proc_cheep

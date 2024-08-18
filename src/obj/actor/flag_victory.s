@@ -126,10 +126,10 @@ actor_proc_flag_victory_timer_score_do:
 
 	ldy	#ACTOR_PROC_FLAG_VICTORY_TIMER_VAL
 	lda	#$FF
-	sta	STACK_BASE+$39
+	sta	score_digit_mod+6
 	jsr	eng_stats_math
-	lda	#$05
-	sta	STACK_BASE+$39
+	lda	#5
+	sta	score_digit_mod+6
 ; ------------------------------
 actor_proc_course_end_stats:
 	ldy	#$0B
@@ -171,7 +171,7 @@ actor_proc_flag_victory_raise:
 ; ------------------------------
 actor_proc_flag_victory_draw:
 	jsr	lib_calc_actor_pos
-	ldy	obj_data_offset_enemy, x
+	ldy	obj_data_offset_actor, x
 	ldx	#(actor_proc_flag_chr_nos_end-actor_proc_flag_chr_nos)-1
 	: ; for () {
 		lda	pos_y_rel_actor
@@ -201,7 +201,7 @@ actor_proc_flag_victory_draw:
 actor_proc_flag_victory_start_flag:
 	jsr	actor_proc_flag_victory_draw
 	lda	#6
-	sta	eng_timer_actor, x
+	sta	timer_actor, x
 
 actor_proc_flag_victory_next:
 	inc	actor_proc_flag_victory_id
@@ -210,7 +210,7 @@ actor_proc_flag_victory_next:
 actor_proc_flag_victory_delay:
 	jsr	actor_proc_flag_victory_draw
 
-	lda	eng_timer_actor, x
+	lda	timer_actor, x
 	bne	:+ ; if (actor.timer == 0) {
 		lda	snd_ram+1
 		beq	actor_proc_flag_victory_next

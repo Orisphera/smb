@@ -283,7 +283,7 @@ screen_text_draw_intermission:
 		lda	eng_disable_b
 		bne	:+++
 		: ; if (!eng_start_alt && (course_type == castle || !eng_disable_b)) {
-			jsr	sub_EFA4
+			jsr	render_player_course_card
 			lda	#screen_text::splash
 			.if	.defined(SMB)|.defined(VS_SMB)
 			sub_86C7:
@@ -309,7 +309,7 @@ screen_text_draw_intermission:
 	: ; } else if (eng_game_mode == 3) {
 		.if	.defined(SMB)|.defined(VS_SMB)
 			lda	#$12
-			sta	eng_timer_screen
+			sta	timer_screen
 		.endif
 
 		lda	#screen_text::gameover
@@ -621,11 +621,11 @@ screen_text_draw:
 
 	dex
 	bne	:++ ; if ((a < 4 || !SMB) && a > 1) {
-		lda	eng_lives
+		lda	player_lives
 		clc
 		adc	#1
 		cmp	#10
-		bcc	:+ ; if (++eng_lives >= 10) {
+		bcc	:+ ; if (++player_lives >= 10) {
 			sbc	#10
 			ldy	#$9F
 			sty	ppu_nmi_buffer_0_data+7
@@ -660,9 +660,9 @@ screen_text_draw:
 				bne	:+
 				ldy	eng_game_mode
 				cpy	#game_mode::game_over
-				beq	:+ ; if (!game_over && (!VS_SMB || eng_lives_b >= 0)) {
+				beq	:+ ; if (!game_over && (!VS_SMB || player_lives_b >= 0)) {
 				.if	.defined(VS_SMB)
-					ldy	eng_lives_b
+					ldy	player_lives_b
 					bmi	:+
 				.endif
 					eor	#1
@@ -735,12 +735,12 @@ screen_text_draw:
 ; }
 ; -----------------------------------------------------------
 screen_timer_clear_check:
-	lda	eng_timer_screen
-	bne	:+ ; if (!eng_timer_screen) {
+	lda	timer_screen
+	bne	:+ ; if (!timer_screen) {
 		jsr	oam_init
 	screen_timer_reset:
 		lda	#7
-		sta	eng_timer_screen
+		sta	timer_screen
 		inc	eng_screen_proc_id
 	: ; }
 	rts

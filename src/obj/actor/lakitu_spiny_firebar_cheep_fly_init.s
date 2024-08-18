@@ -49,12 +49,12 @@ actor_spiny_data:
 ; ------------------------------
 	.export actor_init_lakitu_spiny
 actor_init_lakitu_spiny:
-	lda	eng_timer_swarm
+	lda	timer_swarm
 	bne	:+++++
 	cpx	#ENG_ACTOR_MAX-1
-	bcs	:+++++ ; if (eng_timer_swarm == 0 && this.idx < (ENG_ACTOR_MAX-1)) {
+	bcs	:+++++ ; if (timer_swarm == 0 && this.idx < (ENG_ACTOR_MAX-1)) {
 		lda	#LAKITU_SPINY_SWARM_TIMER
-		sta	eng_timer_swarm
+		sta	timer_swarm
 		ldy	#ENG_ACTOR_MAX-2
 		: ; for (y = ENG_ACTOR_MAX-2; y >= 0; y--) {
 			lda	actor_id, y
@@ -88,7 +88,7 @@ actor_init_lakitu_spiny:
 					lda	#LAKITU_OFFSET_X
 
 					.if	.defined(SMB2M)
-						ldy	byte_7FB
+						ldy	ENG_HARDMODE_VAR
 
 						.if	.defined(SMB2)
 						bne	actor_init_lakitu_offset_x_b
@@ -98,7 +98,7 @@ actor_init_lakitu_spiny:
 						.elseif	.defined(ANN)
 						beq	actor_init_lakitu_offset_x_b_skip
 						.endif
-						; if (byte_7FB || (SMB2 && course_no >= no_07)) {
+						; if (game.hard_mode || (SMB2 && course_no >= no_07)) {
 						actor_init_lakitu_offset_x_b:
 							lda	#LAKITU_OFFSET_X_B
 						actor_init_lakitu_offset_x_b_skip: ; }
@@ -240,24 +240,24 @@ actor_cheep_fly_timers:
 ; ------------------------------
 	.export actor_init_cheep_fly
 actor_init_cheep_fly:
-	lda	eng_timer_swarm
-	bne	actor_spiny_rts ; if (eng_timer_swarm == 0) {
+	lda	timer_swarm
+	bne	actor_spiny_rts ; if (timer_swarm == 0) {
 		jsr	actor_init_col_small
 	
 		lda	eng_rand_seed+1, x
 		and	#MOD_4
 		tay
 		lda	actor_cheep_fly_timers, y
-		sta	eng_timer_swarm
+		sta	timer_swarm
 	
 		ldy	#CHEEP_FLY_COUNT_BASE
-		lda	eng_hard_mode_b
-		beq	:+ ; if (eng_hard_mode_b) {
+		lda	game_hard_mode_b
+		beq	:+ ; if (game_hard_mode_b) {
 			iny
 		: ; }
 		sty	actor_cheep_fly_count
 		cpx	actor_cheep_fly_count
-		bcs	actor_spiny_rts ; if (this.idx < 3 || (eng_hard_mode_b && this.idx < 4)) {
+		bcs	actor_spiny_rts ; if (this.idx < 3 || (game_hard_mode_b && this.idx < 4)) {
 			lda	eng_rand_seed, x
 			and	#MOD_4
 			sta	actor_cheep_fly_offset_rand

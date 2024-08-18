@@ -1,6 +1,8 @@
 .ifndef	KOOPA
 KOOPA = 1
 
+	.export tile_obj_bowser
+tile_obj_bowser:
 	.incbin	"../../chr.smb/tile_obj_BE.bin"
 	.incbin	"../../chr.smb/tile_obj_BF.bin"
 	.incbin	"../../chr.smb/tile_obj_C0.bin"

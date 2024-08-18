@@ -20,6 +20,9 @@ BLOCK_BITS_VELOC_X	= <-16
 BLOCK_BITS_VELOC_Y	= <-6
 BLOCK_BITS_B_VELOC_Y	= <-4
 ; -----------------------------------------------------------
+block_punch_tile_id_b	= zp_byte_00
+block_punch_tile_id_a	= zp_byte_05
+
 block_punch_off_y:
 	.byte	4, 18
 ; -----------------------------
@@ -27,50 +30,50 @@ block_punch_off_y:
 block_punch:
 	pha
 
-	lda	#$11
+	lda	#block_states::punch_bump
 	ldx	obj_data_offset_ctl
 	ldy	player_size
 	bne	:+ ; if (player.size == large) {
-		lda	#$12
+		lda	#block_states::punch_break
 	: ; }
 	sta	state_block, x
 
 	jsr	gfx_meta_destroy
 
 	ldx	obj_data_offset_ctl
-	lda	zp_byte_02
+	lda	pos_y_block_proc
 	sta	pos_y_orig_block, x
 	tay
 	lda	eng_buffer_ptr
 	sta	block_buffer_idx, x
 	lda	(eng_buffer_ptr), y
 	jsr	block_is_tile
-	sta	zp_byte_00
+	sta	block_punch_tile_id_b
 	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		tya
 	: ; }
-	bcc	:++++ ; if (block.is_tile) {
-		ldy	#$11
+	bcc	:++++ ; if (this.is_block) {
+		ldy	#block_states::punch_bump
 		sty	state_block, x
 
-		lda	#metatile_3::axe_block
-		ldy	zp_byte_00
+		lda	#metatile_3::block_invis
+		ldy	block_punch_tile_id_b
 		cpy	#metatile_1::brick_g
 		beq	:+
 		cpy	#metatile_1::brick_l
 		bne	:++++
-		: ; if (block.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
+		: ; if (this.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
 			lda	eng_block_time
-			bne	:+ ; if (!eng_block_timer) {
+			bne	:+ ; if (this.block_time == 0) {
 				lda	#BLOCK_TIMER_VAL
-				sta	eng_timer_block
+				sta	timer_block
 				inc	eng_block_time
 			: ; }
 		
-			lda	eng_timer_block
-			bne	:+ ; if (!eng_timer_block) {
-				ldy	#metatile_3::axe_block
+			lda	timer_block
+			bne	:+ ; if (this.timer == 0) {
+				ldy	#metatile_3::block_invis
 			: ; }
 			tya
 		; }
@@ -78,21 +81,21 @@ block_punch:
 	sta	block_tile, x
 	jsr	block_initpos
 
-	ldy	zp_byte_02
+	ldy	pos_y_block_proc
 	lda	#metatile_0::blank_d
 	sta	(eng_buffer_ptr), y
 	lda	#BLOCK_TIMER_BOUNCE
-	sta	eng_timer_block_bounce	
+	sta	timer_block_bounce	
 
 	pla
-	sta	zp_byte_05
+	sta	block_punch_tile_id_a
 
 	ldy	#0
-	lda	eng_crouch
+	lda	player_crouch
 	bne	:+
 	lda	player_size
 	beq	:++
-	: ; if (eng_crouch || player.size == small) {
+	: ; if (player.crouch || player.size == small) {
 		iny
 	: ; }
 
@@ -103,8 +106,8 @@ block_punch:
 	sta	pos_y_lo_block, x
 
 	ldy	state_block, x
-	cpy	#$11
-	beq	:+ ; if (block.state != 0x11) {
+	cpy	#block_states::punch_bump
+	beq	:+ ; if (this.state != punch_bump) {
 		jsr	block_break
 		jmp	:++
 	: ; } else {
@@ -144,9 +147,9 @@ block_item:
 	lda	#BLOCK_ITEM_VELOC_Y
 	sta	veloc_y_block, x
 
-	lda	zp_byte_05
+	lda	block_punch_tile_id_a
 	jsr	block_is_tile
-	bcc	block_item_rts ; if (this.is_tile) {
+	bcc	block_item_rts ; if (this.is_block) {
 		tya
 		cmp	#(block_item_end-block_item_start)/2
 		bcc	:+ ; if (y >= end) {
@@ -161,7 +164,7 @@ block_item:
 		.addr	block_mushroom_reg
 
 		.if	.defined(SMB2)
-			.addr	block_powerup_4
+			.addr	block_mushroom_poison
 		.endif
 
 		.addr	misc_init_coin_a
@@ -169,7 +172,7 @@ block_item:
 		.addr	block_mushroom_oneup
 
 		.if	.defined(SMB2)
-			.addr	block_powerup_4
+			.addr	block_mushroom_poison
 		.endif
 
 		block_item_mid_b:
@@ -181,7 +184,7 @@ block_item:
 		.endif
 
 		.if	.defined(SMB2)
-			.addr	block_powerup_4
+			.addr	block_mushroom_poison
 		.endif
 
 		.addr	block_vine
@@ -210,8 +213,8 @@ block_star:
 .endif
 
 .if	.defined(SMB2)
-block_powerup_4:
-	lda	#powerup_type::type_04
+block_mushroom_poison:
+	lda	#powerup_type::mushroom_poison
 
 	.if	.defined(CONS)
 		.byte	BIT_ABS_OPCODE
@@ -293,26 +296,29 @@ block_break:
 	lda	#BLOCK_PLAYER_VELOC_Y
 	sta	veloc_y_player
 	lda	#5
-	sta	STACK_BASE+$39
+	sta	score_digit_mod+6
 	jsr	misc_proc_coin_update_score
 	ldx	obj_data_offset_ctl
 	rts
 ; ------------------------------------------------------------
+BLOCK_TOP_MISC_OFFSET_Y	= 16
+; ------------------------------------------------------------
 block_top_check:
 	ldx	obj_data_offset_ctl
-	ldy	zp_byte_02
-	beq	:+ ; if (zp_byte_02) {
+	ldy	pos_y_block_proc
+	beq	:+ ; if (pos_y_block_proc) {
 		tya
 		sec
-		sbc	#16
-		sta	zp_byte_02
+		sbc	#BLOCK_TOP_MISC_OFFSET_Y
+		sta	pos_y_block_proc
 		tay
 		lda	(eng_buffer_ptr), y
 		cmp	#metatile_3::coin_a
-		bne	:+ ; if (eng_buffer_ptr[zp_byte_02-0x10] == metatile_3::coin_a) {
-			lda	#0
+		bne	:+ ; if (eng_buffer_ptr[block_proc.pos_y-offset.y] == metatile_3::coin_a) {
+			lda	#metatile_0::blank_a
 			sta	(eng_buffer_ptr), y
 			jsr	gfx_clear_small
+
 			ldx	obj_data_offset_ctl
 			jsr	misc_init_coin_b
 		; }
@@ -348,14 +354,14 @@ block_bits_init:
 	.export block_proc
 block_proc:
 	lda	state_block, x
-	beq	:++++ ; if (this.state != 0) {
-		and	#%00001111
+	beq	:++++ ; if (this.state != inactive) {
+		and	#BLOCK_STATE_PROC_MASK
 		pha
 
 		tay
 		txa
 		clc
-		adc	#ENG_SPECIAL_OFF
+		adc	#ENG_BLOCK_OFF
 		tax
 		dey
 		beq	:++ ; if ((this.state & 0xF) == 1) {
@@ -410,7 +416,7 @@ block_proc:
 	: ; }
 
 	; if () {
-		lda	#actor_states::init
+		lda	#block_states::inactive
 	: ; }
 	sta	state_block, x
 	rts
@@ -430,7 +436,7 @@ block_flatten:
 			lda	#5
 			sta	eng_buffer_ptr+1
 			lda	pos_y_orig_block, x
-			sta	zp_byte_02
+			sta	pos_y_block_proc
 			tay
 			lda	block_tile, x
 			sta	(eng_buffer_ptr), y

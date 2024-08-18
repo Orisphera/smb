@@ -1,6 +1,8 @@
 .ifndef	LAKITU
 LAKITU = 1
 
+	.export tile_obj_lakitu
+tile_obj_lakitu:
 	.incbin	"../../chr.smb/tile_obj_B8.bin"
 	.incbin	"../../chr.smb/tile_obj_B9.bin"
 	.incbin	"../../chr.smb/tile_obj_BA.bin"

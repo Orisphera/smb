@@ -1129,8 +1129,8 @@ bg_areaobj_lock_warp:
 		ldx	#4
 	.elseif	.defined(SMB2M)
 		ldx	#$80
-		lda	byte_7FB
-		bne	bg_areaobj_lock_warp_7FB_set
+		lda	ENG_HARDMODE_VAR
+		bne	bg_areaobj_lock_warp_hard_mode
 	.endif
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -1145,7 +1145,7 @@ bg_areaobj_lock_warp:
 			.if	.defined(ANN)
 				jmp	:+
 
-			bg_areaobj_lock_warp_7FB_set:
+			bg_areaobj_lock_warp_hard_mode:
 				ldx	#$84
 				lda	course_no
 				bne	:+ ; if (course_no == no_01) {
@@ -1163,7 +1163,7 @@ bg_areaobj_lock_warp:
 		txa
 	.elseif	.defined(SMB2)
 		lda	course_no
-		bne	:+++ ; if (!byte_7FB && course_no == no_01) {
+		bne	:+++ ; if (!hard_mode && course_no == no_01) {
 			ldy	course_type
 			dey
 			beq	:+
@@ -1176,7 +1176,7 @@ bg_areaobj_lock_warp:
 				inx
 			: ; }
 			jmp	bg_areaobj_lock_warp_load
-		bg_areaobj_lock_warp_7FB_set: ; } else if (byte_7FB) {
+		bg_areaobj_lock_warp_hard_mode: ; } else if (hard_mode) {
 			lda	#$87
 			clc
 			adc	eng_goals
@@ -1205,7 +1205,7 @@ bg_areaobj_lock_warp:
 			; }
 		; }
 
-		bg_areaobj_lock_warp_load: ; if (!byte_7FB) {
+		bg_areaobj_lock_warp_load: ; if (!hard_mode) {
 			txa
 		bg_areaobj_lock_warp_do: ; }
 	.endif
@@ -1631,7 +1631,7 @@ bg_areaobj_pipe_vert:
 		.elseif	.defined(ANN)
 			lda	course_no
 			ora	course_sub
-			ora	byte_7FB
+			ora	ENG_HARDMODE_VAR
 			beq	:+
 		.endif
 
@@ -1785,8 +1785,8 @@ bg_areaobj_pole:
 	sta	pos_x_hi_actor+ENG_ACTOR_MAX-1
 	lda	#48
 	sta	pos_y_lo_actor+ENG_ACTOR_MAX-1
-	lda	#$B0
-	sta	STACK_BASE+$0D
+	lda	#176
+	sta	render_flag_score_pos_y
 	lda	#actor::flag_enemy
 	sta	actor_id+ENG_ACTOR_MAX-1
 	inc	actor_mode+ENG_ACTOR_MAX-1
@@ -1851,7 +1851,7 @@ bg_areaobj_castle_bridge_draw:
 bg_areaobj_empty_draw:
 	jsr	eng_loadobjattr
 	ldx	BG_PROC_METATILE_ID
-	lda	#metatile_3::axe_block
+	lda	#metatile_3::block_invis
 
 bg_areaobj_castle_bridge_draw_do:
 	ldy	#0
@@ -1976,7 +1976,7 @@ bg_areaobj_spring:
 		jsr	bg_objpos_y_get
 		sta	pos_y_lo_actor, x
 		sta	veloc_x_actor, x
-		lda	#actor::jump_spring
+		lda	#actor::spring
 		sta	actor_id, x
 		ldy	#1
 		sty	pos_y_hi_actor, x

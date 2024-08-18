@@ -120,7 +120,7 @@ ENTITY_OBJS	=	src/obj/misc/hammer.o \
 			src/obj/actor/koopa_red_init.o \
 			src/obj/actor/hammer_bro_init.o \
 			src/obj/actor/veloc_x_none_init.o \
-			src/obj/actor/bloober_para_red_col_init.o \
+			src/obj/actor/blooper_para_red_col_init.o \
 			src/obj/actor/bullet_init.o \
 			src/obj/actor/cheep_init.o \
 			src/obj/actor/lakitu_spiny_firebar_cheep_fly_init.o \
@@ -143,7 +143,7 @@ ENTITY_OBJS	=	src/obj/misc/hammer.o \
 			src/obj/actor/hammer_bro_base_proc.o \
 			src/obj/actor/koopa_para_proc.o \
 			src/obj/actor/floater_proc.o \
-			src/obj/actor/bloober_proc.o \
+			src/obj/actor/blooper_proc.o \
 			src/obj/actor/bullet_proc.o \
 			src/obj/actor/cheep_proc.o \
 			src/obj/actor/firebar_proc.o \
@@ -157,7 +157,21 @@ ENTITY_OBJS	=	src/obj/misc/hammer.o \
 			src/obj/actor/firebar_spin_proc.o \
 			src/obj/actor/plat_proc.o
 
-ACTOR_SUPPORT_OBJS =	src/obj/collision.o
+ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
+			src/obj/actor/vine_render.o \
+			src/obj/misc/hammer_render.o \
+			src/obj/actor/flag_enemy_render.o \
+			src/obj/actor/plat_large_render.o \
+			src/obj/misc/coin_score_render.o \
+			src/obj/actor/powerup_render.o \
+			data/sprites_actor.o \
+			src/obj/actor/common_render.o \
+			src/obj/block_render.o \
+			src/obj/actor/proj_firebar_render.o \
+			src/obj/actor/plat_small_render.o \
+			src/obj/bubble_render.o \
+			data/sprites_player.o \
+			src/obj/player_render.o
 
 SECURITY_OBJS	=	data/security.o
 

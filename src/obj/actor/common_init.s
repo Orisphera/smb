@@ -450,9 +450,9 @@ actor_loop:
 						.if	.defined(CONS)
 						and	#>COURSE_ACTORS_HARD_ONLY
 						beq	:+
-						lda	eng_hard_mode_b
+						lda	game_hard_mode_b
 						beq	actor_special_do
-						: ; if (!actor.hard_only || eng_hard_mode_b || CONS) {
+						: ; if (!actor.hard_only || game_hard_mode_b || CONS) {
 							lda	(course_actor_addr), y
 						.endif
 
@@ -466,16 +466,16 @@ actor_loop:
 									cmp	#ACTOR_SWAPPABLE_EASY
 									bne	:+
 									.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-									ldy	eng_hard_mode
+									ldy	game_hard_mode
 									beq	:+
 									.elseif	.defined(ANN)
 									ldy	byte_77D
 									beq	:+
-									ldy	byte_7FB
+									ldy	ENG_HARDMODE_VAR
 									bne	:+
 									.endif ; if (
 									;	actor == ACTOR_SWAPPABLE_EASY
-									;	&& ((!ANN && eng_hard_mode) || (ANN && byte_77D && !byte_7FB))
+									;	&& ((!ANN && game.hard_mode) || (ANN && byte_77D && !game.hard_mode))
 									; ) {
 										lda	#ACTOR_SWAPPABLE_HARD
 									: ; }
@@ -614,7 +614,7 @@ actor_init_do:
 
 	.addr	actor_init_hammer_bro
 	.addr	actor_init_goomba
-	.addr	actor_init_bloober
+	.addr	actor_init_blooper
 	.addr	actor_init_bullet
 	.addr	actor_init_null
 	.addr	actor_init_cheep

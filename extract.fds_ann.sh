@@ -253,11 +253,11 @@ done
 
 # NSMCHAR2
 BANKBASE=8541
-BANKLEN=1120
+BANKLEN=736
 TILES=`expr $BANKLEN / $TILE_SIZE`
 
 I=0
-J=133
+J=118
 while [ $J -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
         dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.ann/tile_obj_`printf "%.2X" $J`.bin
@@ -266,7 +266,7 @@ do
 done
 
 # NSMMAIN
-dd if=$1 bs=1 skip=30384 count=12056 >data/prg.ann.bin
+dd if=$1 bs=1 skip=33773 count=8667 >data/prg.ann.bin
 
 # NSMDATA2
 dd if=$1 bs=1 skip=42447 count=3584 >data/data2.ann.bin

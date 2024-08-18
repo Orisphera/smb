@@ -61,9 +61,9 @@ title_proc:
 		: ; if (!joypads_start && !joypads_a_start) {
 			cmp	#joypad_button::select
 			beq	:++ ; if (!joypads_select) {
-				ldx	eng_timer_demo
-				bne	:+ ; if (!eng_timer_demo) {
-					sta	eng_timer_select
+				ldx	timer_demo
+				bne	:+ ; if (!timer_demo) {
+					sta	timer_select
 					jsr	title_demo
 
 					bcs	title_recycle
@@ -77,15 +77,15 @@ title_proc:
 				iny
 			: ; }
 
-			lda	eng_timer_demo
-			beq	title_recycle ; if (eng_timer_demo) {
+			lda	timer_demo
+			beq	title_recycle ; if (timer_demo) {
 				lda	#TITLE_DEMO_TIMER
-				sta	eng_timer_demo
+				sta	timer_demo
 
-				lda	eng_timer_select
-				bne	:++++ ; if (!eng_timer_select) {
+				lda	timer_select
+				bne	:++++ ; if (!timer_select) {
 					lda	#TITLE_SELECT_TIMER
-					sta	eng_timer_select
+					sta	timer_select
 
 					cpy	#1
 					beq	:+ ; if (!joypad_face_b) {
@@ -121,8 +121,8 @@ title_proc:
 
 			: ; }
 	.elseif	.defined(VS)
-		ldx	eng_timer_demo
-		bne	:+ ; if (!eng_timer_demo) {
+		ldx	timer_demo
+		bne	:+ ; if (!timer_demo) {
 			jsr	title_demo
 			bcs	title_next
 			jmp	:++
@@ -158,8 +158,8 @@ title_proc:
 		.export title_exit
 	title_exit: ; } else {
 		.if	.defined(CONS)
-		ldy	eng_timer_demo
-		beq	title_recycle ; if (eng_timer_demo) {
+		ldy	timer_demo
+		beq	title_recycle ; if (timer_demo) {
 		.endif
 			asl	a
 			bcc	:+ ; if (joypad_face_a) {
@@ -180,7 +180,7 @@ title_proc:
 			sta	ENG_HARDMODE_VAR
 			lda	#gameplay_mode::init_0
 			sta	eng_gameplay_mode
-			sta	eng_timer_demo
+			sta	timer_demo
 
 			ldx	#(eng_stats_end-eng_stats)-1
 			lda	#0

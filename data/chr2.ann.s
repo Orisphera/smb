@@ -1,5 +1,31 @@
 .segment	"CHR1DATA"
 
+.include	"system/ppu.i"
+
+	.export tile_obj_princess_a
+	.export tile_obj_princess_b
+	.export tile_obj_princess_c
+tile_obj_princess_a:
+	.incbin	"data/chr2.ann/tile_obj_76.bin"
+	.incbin	"data/chr2.ann/tile_obj_77.bin"
+
+tile_obj_princess_b:
+	.incbin	"data/chr2.ann/tile_obj_78.bin"
+
+tile_obj_princess_c:
+	.incbin	"data/chr2.ann/tile_obj_79.bin"
+
+	.incbin	"data/chr2.ann/tile_obj_7A.bin"
+	.incbin	"data/chr2.ann/tile_obj_7B.bin"
+	.incbin	"data/chr2.ann/tile_obj_7C.bin"
+	.incbin	"data/chr2.ann/tile_obj_7D.bin"
+	.incbin	"data/chr2.ann/tile_obj_7E.bin"
+	.incbin	"data/chr2.ann/tile_obj_7F.bin"
+	.incbin	"data/chr2.ann/tile_obj_80.bin"
+	.incbin	"data/chr2.ann/tile_obj_81.bin"
+	.incbin	"data/chr2.ann/tile_obj_82.bin"
+	.incbin	"data/chr2.ann/tile_obj_83.bin"
+	.incbin	"data/chr2.ann/tile_obj_84.bin"
 	.incbin	"data/chr2.ann/tile_obj_85.bin"
 	.incbin	"data/chr2.ann/tile_obj_86.bin"
 	.incbin	"data/chr2.ann/tile_obj_87.bin"
@@ -31,42 +57,5 @@
 	.incbin	"data/chr2.ann/tile_obj_A1.bin"
 	.incbin	"data/chr2.ann/tile_obj_A2.bin"
 	.incbin	"data/chr2.ann/tile_obj_A3.bin"
-	.incbin	"data/chr2.ann/tile_obj_A4.bin"
-	.incbin	"data/chr2.ann/tile_obj_A5.bin"
-	.incbin	"data/chr2.ann/tile_obj_A6.bin"
-	.incbin	"data/chr2.ann/tile_obj_A7.bin"
-	.incbin	"data/chr2.ann/tile_obj_A8.bin"
-	.incbin	"data/chr2.ann/tile_obj_A9.bin"
-	.incbin	"data/chr2.ann/tile_obj_AA.bin"
-	.incbin	"data/chr2.ann/tile_obj_AB.bin"
-	.incbin	"data/chr2.ann/tile_obj_AC.bin"
-	.incbin	"data/chr2.ann/tile_obj_AD.bin"
-	.incbin	"data/chr2.ann/tile_obj_AE.bin"
-	.incbin	"data/chr2.ann/tile_obj_AF.bin"
-	.incbin	"data/chr2.ann/tile_obj_B0.bin"
-	.incbin	"data/chr2.ann/tile_obj_B1.bin"
-	.incbin	"data/chr2.ann/tile_obj_B2.bin"
-	.incbin	"data/chr2.ann/tile_obj_B3.bin"
-	.incbin	"data/chr2.ann/tile_obj_B4.bin"
-	.incbin	"data/chr2.ann/tile_obj_B5.bin"
-	.incbin	"data/chr2.ann/tile_obj_B6.bin"
-	.incbin	"data/chr2.ann/tile_obj_B7.bin"
-	.incbin	"data/chr2.ann/tile_obj_B8.bin"
-	.incbin	"data/chr2.ann/tile_obj_B9.bin"
-	.incbin	"data/chr2.ann/tile_obj_BA.bin"
-	.incbin	"data/chr2.ann/tile_obj_BB.bin"
-	.incbin	"data/chr2.ann/tile_obj_BC.bin"
-	.incbin	"data/chr2.ann/tile_obj_BD.bin"
-	.incbin	"data/chr2.ann/tile_obj_BE.bin"
-	.incbin	"data/chr2.ann/tile_obj_BF.bin"
-	.incbin	"data/chr2.ann/tile_obj_C0.bin"
-	.incbin	"data/chr2.ann/tile_obj_C1.bin"
-	.incbin	"data/chr2.ann/tile_obj_C2.bin"
-	.incbin	"data/chr2.ann/tile_obj_C3.bin"
-	.incbin	"data/chr2.ann/tile_obj_C4.bin"
-	.incbin	"data/chr2.ann/tile_obj_C5.bin"
-	.incbin	"data/chr2.ann/tile_obj_C6.bin"
-	.incbin	"data/chr2.ann/tile_obj_C7.bin"
-	.incbin	"data/chr2.ann/tile_obj_C8.bin"
-	.incbin	"data/chr2.ann/tile_obj_C9.bin"
-	.incbin	"data/chr2.ann/tile_obj_CA.bin"
+
+	.res	24*PPU_TILE_SIZE, 0

@@ -42,7 +42,7 @@ actor_proc_hammer_bro:
 			bne	actor_proc_hammer_bro_move_h ; if (!(bits_offscr_actor & 0x0C)) {
 				lda	eng_timer_hammer_throw, x
 				bne	:+ ; if (eng_timer_hammer_throw == 0) {
-					ldy	eng_hard_mode_b
+					ldy	game_hard_mode_b
 					lda	actor_hammer_bro_timers, y
 					sta	eng_timer_hammer_throw, x
 					jsr	misc_init_hammer
@@ -98,12 +98,12 @@ actor_proc_hammer_bro_jump:
 		lda	actor_proc_hammer_bro_jump_rand
 		and	eng_rand_seed+2, x
 		tay
-		lda	eng_hard_mode_b
-		bne	:+ ; if (!eng_hard_mode_b) {
+		lda	game_hard_mode_b
+		bne	:+ ; if (!game_hard_mode_b) {
 			tay
 		: ; }
 		lda	hammer_bro_jump_timers, y
-		sta	eng_timer_actor_ani, x
+		sta	timer_ani_actor, x
 		lda	eng_rand_seed+1, x
 		ora	#%11000000
 		sta	eng_timer_hammer_bro_jump, x
@@ -122,7 +122,7 @@ actor_proc_hammer_bro_move_h:
 	jsr	col_player_bullet_diff
 	bmi	:+ ; if (col_player_bullet_diff() >= 0) {
 		iny
-		lda	eng_timer_actor, x
+		lda	timer_actor, x
 		bne	:+ ; if (!actor.timer) {
 			lda	#HAMMER_BRO_VELOC_X_D
 			sta	veloc_x_actor, x
@@ -185,7 +185,7 @@ actor_proc_base:
 		sta	veloc_x_actor, x
 		rts
 	: ; } else {
-		lda	eng_timer_actor, x
+		lda	timer_actor, x
 		bne	:++ ; if (actor.timer == 0) {
 			sta	state_actor, x
 			lda	frame_count
@@ -195,14 +195,14 @@ actor_proc_base:
 			sty	motion_dir_actor, x
 			dey
 			.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-			lda	eng_hard_mode
+			lda	game_hard_mode
 			beq	:+
 			.elseif	.defined(ANN)
 			lda	byte_77D
 			beq	:+
-			lda	byte_7FB
+			lda	ENG_HARDMODE_VAR
 			bne	:+
-			.endif ; if ((!ANN && eng_hard_mode) || (ANN && byte_77D && !byte_7FB)) {
+			.endif ; if ((!ANN && game.hard_mode) || (ANN && byte_77D && !game.hard_mode)) {
 				iny
 				iny
 			: ; }

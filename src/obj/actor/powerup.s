@@ -2,13 +2,13 @@
 
 .include	"engine/math.i"
 .include	"engine/mem.i"
+.include	"engine/tunables.i"
 .include	"engine/misc.i"
 .include	"engine/sound.i"
 
 .include	"engine/unk.i"
 
 ; -----------------------------------------------------------
-POWERUP_ACTOR_IDX	= (ENG_ACTOR_MAX-1)
 POWERUP_OFFSET_BLOCK_Y	= 8
 POWERUP_VELOC_Y		= 16
 POWERUP_COL_BOX		= col_boxes::box_3
@@ -73,7 +73,7 @@ actor_proc_powerup:
 		cmp	#powerup_type::mushroom_oneup
 		beq	:+
 		.if	.defined(SMB2M)
-			cmp	#powerup_type::type_04
+			cmp	#powerup_type::mushroom_poison
 			beq	:+
 			cmp	#powerup_type::type_05
 			beq	:+
@@ -83,7 +83,7 @@ actor_proc_powerup:
 			jsr	actor_proc_bounce
 			jsr	col_actor_bounce_proc
 			jmp	:++++
-		: ; } else if (this.spawned && !eng_timer_ctl && this.type.in(mushroom_reg, mushroom_oneup, type_03, type_04)) {
+		: ; } else if (this.spawned && !eng_timer_ctl && this.type.in(mushroom, type_05)) {
 			jsr	actor_proc_base
 			jsr	col_actor_ground_proc
 			jmp	:+++

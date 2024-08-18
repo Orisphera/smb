@@ -184,8 +184,8 @@ actor_init_plat_rope:
 	lda	pos_x_lo_actor, y
 	clc
 	adc	#PLAT_ROPE_OFFSET_X
-	ldx	eng_hard_mode_b
-	bne	:+ ; if (!eng_hard_mode_b)) {
+	ldx	game_hard_mode_b
+	bne	:+ ; if (!game_hard_mode_b)) {
 		clc
 		adc	#PLAT_ROPE_OFFSET_X_HARD
 	: ; }
@@ -249,9 +249,9 @@ actor_init_plat_fall:
 	lda	#scores::value_1000
 	jsr	col_score_do
 	lda	pos_x_rel_player
-	sta	STACK_BASE+$17, x
+	sta	screen_score_pos_x, x
 	lda	pos_y_lo_player
-	sta	STACK_BASE+$1E, x
+	sta	screen_score_pos_y, x
 	lda	#DIR_RIGHT
 	sta	motion_dir_actor, x
 ; ------------------------------

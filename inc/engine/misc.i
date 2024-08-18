@@ -10,6 +10,38 @@ METATILE_SIZE	= 4
 		active
 	.endenum
 
+	.enum	block_states
+		inactive
+		punch_bump	= $11
+		punch_break	= $12
+	.endenum
+
+BLOCK_STATE_PROC_MASK	= %00001111
+
+	.enum	misc_states
+		inactive
+		init
+		throw
+		bit_4	= 16
+		bit_5	= 32
+		hammer	= 128
+
+		coin_01	= init
+		score	= throw
+	.endenum
+
+	.enum	proj_states
+		inactive
+		state_1
+		state_2
+		state_3
+		state_mask	= 7
+
+		bit_7	= 128
+	.endenum
+
+MISC_MODE_HIGH_BIT		= %10000000
+
 ACTOR_MODE_CHILD_BIT	= %10000000
 ACTOR_MODE_PARENT_MASK	= %00001111
 
@@ -97,7 +129,7 @@ COL_BOX_SIZE	= 4
 		star
 		mushroom_oneup
 		.if	.defined(SMB2M)
-			type_04
+			mushroom_poison
 			type_05
 		.endif
 	.endenum
@@ -121,6 +153,7 @@ COL_BOX_SIZE	= 4
 		lifedown
 		enter
 		ctrl
+
 		size_chg
 		hurt
 		death
@@ -264,12 +297,13 @@ COL_BOX_SIZE	= 4
 		buzzy_beetle	= $02
 		koopa_red	= $03
 
+		koopa_cutoff	= $04
 		actor_04	= $04
 
 		hammer_bro	= $05
 		goomba		= $06
 
-		bloober		= $07
+		blooper		= $07
 		bullet_swarm	= $08
 
 		div_height	= $09
@@ -296,11 +330,15 @@ COL_BOX_SIZE	= 4
 		bullet_cheep_swarm = $17
 		swarm_stop	= $18
 
+		spring_ani_a	= $18
+		spring_ani_b	= $19
+		spring_ani_c	= $1A
+
 		firebar_start	= $1B
-		firebar_clock_slow	= $1B
-		firebar_clock_fast	= $1C
-		firebar_counter_slow	= $1D
-		firebar_counter_fast	= $1E
+		firebar_clock_slow = $1B
+		firebar_clock_fast = $1C
+		firebar_counter_slow = $1D
+		firebar_counter_fast = $1E
 		firebar_long	= $1F
 		firebar_end	= $20
 
@@ -321,7 +359,7 @@ COL_BOX_SIZE	= 4
 		vine		= $2F
 		flag_enemy	= $30
 		flag_victory	= $31
-		jump_spring	= $32
+		spring	= $32
 		bullet		= $33
 		warp		= $34
 		toad		= $35

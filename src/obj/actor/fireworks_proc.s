@@ -23,7 +23,7 @@ actor_proc_fireworks:
 		sta	pos_y_rel_proj
 		lda	pos_x_rel_actor
 		sta	pos_x_rel_proj
-		ldy	obj_data_offset_enemy, x
+		ldy	obj_data_offset_actor, x
 		lda	veloc_x_actor, x
 		jsr	render_fireworks
 		rts
@@ -32,7 +32,7 @@ actor_proc_fireworks:
 		sta	actor_mode, x
 		lda	#sfx_pulse2::blast
 		sta	apu_pulse2_queue
-		lda	#$05
-		sta	STACK_BASE+$38
+		lda	#5
+		sta	score_digit_mod+5
 		jmp	actor_proc_course_end_stats
 	; }

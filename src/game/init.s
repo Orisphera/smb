@@ -57,7 +57,7 @@ eng_init_oam_end:
 		.endif
 
 		lda	#TITLE_DEMO_TIMER
-		sta	eng_timer_demo
+		sta	timer_demo
 		jsr	course_descriptor_load
 	.elseif	.defined(SMB2M)
 	eng_init_0:
@@ -68,10 +68,10 @@ eng_init_0_do:
 	ldy	#$4B
 	jsr	sub_clearram
 
-	ldx	#(eng_timers_nmi_end-eng_timers_nmi)-1
+	ldx	#(timers_nmi_end-timers_nmi)-3
 	lda	#0
-	: ; for (timer of eng_timers_nmi) {
-		sta	eng_timers_nmi, x
+	: ; for (timer of timers_nmi) {
+		sta	timers_nmi, x
 
 		dex
 		bpl	:-
@@ -80,7 +80,7 @@ eng_init_0_do:
 	.if	.defined(VS_SMB)
 		sta	frame_count
 		lda	nmi_timer_int_init+1
-		sta	eng_timer_int
+		sta	timer_nmi_tick
 		sta	eng_rand_seed
 	.endif
 
@@ -126,7 +126,7 @@ eng_init_0_do:
 	cmp	#ENG_HARDMODE_B_GOAL
 	bcc	:++
 	: ; if (hard_mode || eng_course.eng_goal >= hard_mode_course.hard_mode_goal) {
-		inc	eng_hard_mode_b
+		inc	game_hard_mode_b
 	: ; }
 
 	lda	eng_startpage_alt
@@ -173,8 +173,8 @@ eng_init_0_do:
 		.endif
 			lda	#2
 		: ; }
-		sta	eng_lives
-		sta	eng_lives_b
+		sta	player_lives
+		sta	player_lives_b
 
 		.if	.defined(VS_SMB)
 		rts
@@ -475,7 +475,7 @@ game_proc_start:
 			lda	#0
 		.endif
 		sta	eng_req_timer
-		sta	eng_timer_star
+		sta	timer_player_star
 	: ; }
 
 	ldy	eng_joypad_override
@@ -564,8 +564,8 @@ game_proc_lifedown:
 	sta	eng_sprite_overlap
 	lda	#music_event::none
 	sta	apu_music_event
-	dec	eng_lives
-	bpl	:+ ; if (--eng_lives < 0) {
+	dec	player_lives
+	bpl	:+ ; if (--player_lives < 0) {
 		lda	#gameplay_mode::init_0
 		sta	eng_gameplay_mode
 		lda	#game_mode::game_over

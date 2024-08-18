@@ -36,11 +36,11 @@ misc_init_hammer:
 	bne	:+
 	ldx	misc_hammer_actor_id, y
 	lda	actor_mode, x
-	bne	:+ ; if (this.state == init && this.mode == free) {
+	bne	:+ ; if (this.state == inactive && this.mode == free) {
 		ldx	actor_index
 		txa
 		sta	misc_actor_id, y
-		lda	#actor_states::spawned|actor_states::bit_4
+		lda	#misc_states::hammer|misc_states::bit_4
 		sta	state_misc, y
 		lda	#MISC_HAMMER_COL_BOX
 		sta	col_box_misc, y
@@ -55,13 +55,13 @@ misc_init_hammer:
 	.export misc_proc_hammer
 misc_proc_hammer:
 	lda	eng_timer_ctl
-	bne	:++++ ; if (!eng_timer_ctl) {
+	bne	:++++ ; if (eng_timer_ctl == 0) {
 		lda	state_misc, x
-		and	#<~actor_states::spawned
+		and	#<~misc_states::hammer
 		ldy	misc_actor_id, x
-		cmp	#2
+		cmp	#misc_states::throw
 		beq	:+
-		bcs	:++ ; if ((this.state & ~spawned) < 2) {
+		bcs	:++ ; if (this.state == init) {
 			txa
 			clc
 			adc	#ENG_MISC_OFF
@@ -80,7 +80,7 @@ misc_proc_hammer:
 			ldx	actor_index
 			jmp	:+++
 		: ; } else {
-			; if (this.state == state_2) {
+			; if (this.state == throw) {
 				lda	#MISC_HAMMER_VELOC_Y_INIT
 				sta	veloc_y_misc, x
 
@@ -116,7 +116,7 @@ misc_proc_hammer:
 			bne	:++
 		: ; }
 
-		; if (this.actor_id.in(0, 1)) {
+		; if (this.off_y) {
 			jsr	col_player_hammer_proc
 		; }
 	: ; }
@@ -125,4 +125,5 @@ misc_proc_hammer:
 	jsr	lib_calc_misc_pos
 	jsr	col_misc_box
 	jsr	render_hammer
+
 	rts

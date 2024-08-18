@@ -1,6 +1,8 @@
 .ifndef	SPINY
 SPINY = 1
 
+	.export tile_obj_spiny
+tile_obj_spiny:
 	.incbin	"../../chr.smb/tile_obj_96.bin"
 	.incbin	"../../chr.smb/tile_obj_97.bin"
 	.incbin	"../../chr.smb/tile_obj_98.bin"

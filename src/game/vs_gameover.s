@@ -28,8 +28,8 @@ sub_98F2:
 sub_9902:
 	lda	#0
 	sta	eng_disp_disable
-	lda	eng_timer_screen
-	bne	:+ ; if (!eng_timer_screen) {
+	lda	timer_screen
+	bne	:+ ; if (!timer_screen) {
 		lda	#music_event::none
 		sta	apu_music_event
 		inc	eng_gameplay_mode
@@ -1144,7 +1144,7 @@ sub_A01B:
 		: ; } else {
 			lda	#3
 		: ; }
-		sta	eng_lives
+		sta	player_lives
 	
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
@@ -1194,7 +1194,7 @@ sub_A075:
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
 		sta	byte_7FC
-		sta	eng_hard_mode
+		sta	ENG_HARDMODE_VAR
 		inc	eng_gameplay_mode
 		rts
 	: lda	VS_RAM_ARENA0+$1B

@@ -29,7 +29,7 @@
 	.export misc_proc_coin_add_score
 misc_proc_coin_add:
 	lda	#1
-	sta	STACK_BASE+$39
+	sta	score_digit_mod+6
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldx	player_id
 		ldy	misc_coin_coin_players, x
@@ -65,13 +65,13 @@ misc_proc_coin_add:
 			:
 		.endif
 
-		inc	eng_lives
+		inc	player_lives
 		lda	#sfx_pulse2::oneup
 		sta	apu_pulse2_queue
 	: ; }
 
-	lda	#$02
-	sta	STACK_BASE+$38
+	lda	#2
+	sta	score_digit_mod+5
 
 misc_proc_coin_update_score:
 	.if	.defined(SMB)|.defined(VS_SMB)

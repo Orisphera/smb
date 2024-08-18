@@ -105,7 +105,7 @@ actor_proc_firebar_do:
 	
 		jsr	lib_calc_actor_pos
 		jsr	actor_firebar_get_pos
-		ldy	obj_data_offset_enemy, x
+		ldy	obj_data_offset_actor, x
 		lda	pos_y_rel_actor
 		sta	OAM_DMA_BUFFER+OBJ_POS_V, y
 		sta	actor_firebar_pos_y_rel
@@ -135,7 +135,7 @@ actor_proc_firebar_do:
 			cmp	#4
 			bne	:+ ; if (actor_firebar_loop_idx == 4) {
 				ldy	actor_dup_offset
-				lda	obj_data_offset_enemy, y
+				lda	obj_data_offset_actor, y
 				sta	actor_firebar_pos_x_rel
 			: ; }
 
@@ -200,9 +200,9 @@ actor_firebar_col:
 	tya
 	pha
 
-	lda	eng_timer_star
+	lda	timer_player_star
 	ora	eng_timer_ctl
-	bne	:+++++++++ ; if (eng_timer_star == 0 && eng_timer_ctl == 0) {
+	bne	:+++++++++ ; if (player.timer_star == 0 && eng_timer_ctl == 0) {
 		sta	actor_firebar_col_pos_y_rel_idx
 	
 		ldy	pos_y_hi_player
@@ -211,9 +211,9 @@ actor_firebar_col:
 			ldy	pos_y_lo_player
 			lda	player_size
 			bne	:+
-			lda	eng_crouch
+			lda	player_crouch
 			beq	:++
-			: ; if (player_size != large || eng_crouch) {
+			: ; if (player_size != large || player_crouch) {
 				.repeat	FIREBAR_POS_Y_CHECK_COUNT-1
 					inc	actor_firebar_col_pos_y_rel_idx
 				.endrepeat

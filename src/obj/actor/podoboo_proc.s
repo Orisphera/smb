@@ -6,7 +6,7 @@ PODOBOO_VELOC_Y	= <-7
 ; -----------------------------------------------------------
 	.export actor_proc_podoboo
 actor_proc_podoboo:
-	lda	eng_timer_actor, x
+	lda	timer_actor, x
 	bne	:+ ; if (actor.timer == 0) {
 		jsr	actor_init_podoboo
 		lda	eng_rand_seed+1, x
@@ -14,7 +14,7 @@ actor_proc_podoboo:
 		sta	accel_y_actor_c, x
 		and	#MOD_16
 		ora	#%00000110
-		sta	eng_timer_actor, x
+		sta	timer_actor, x
 		lda	#PODOBOO_VELOC_Y
 		sta	veloc_y_actor, x
 	: ; }

@@ -1,8 +1,10 @@
-.ifndef	MARIO_B
-MARIO_B = 1
+.ifndef	PLAYER_CROUCH
+PLAYER_CROUCH = 1
 
+	.export tile_obj_player_crouch
+tile_obj_player_crouch:
 	.incbin	"../../chr.smb/tile_obj_58.bin"
 	.incbin	"../../chr.smb/tile_obj_59.bin"
 	.incbin	"../../chr.smb/tile_obj_5A.bin"
 
-.endif	; MARIO_B
+.endif	; PLAYER_CROUCH

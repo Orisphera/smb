@@ -21,8 +21,8 @@ actor_proc_piranha_plant_pos_x_rel_abs	= zp_byte_00
 actor_proc_piranha_plant:
 	lda	state_actor, x
 	bne	:++++++
-	lda	eng_timer_actor_ani, x
-	bne	:++++++ ; if (actor_state == dead && eng_timer_actor_ani == 0) {
+	lda	timer_ani_actor, x
+	bne	:++++++ ; if (actor_state == dead && timer_ani_actor == 0) {
 		lda	veloc_y_actor, x
 		bne	:+++
 		lda	veloc_x_actor, x
@@ -56,8 +56,8 @@ actor_proc_piranha_plant:
 			sta	zp_byte_00
 
 			.if	.defined(SMB2)
-				lda	data_B517
-				cmp	#$22
+				lda	render_actor_attrs_piranha_plant
+				cmp	#obj_attr::priority_low|obj_attr::color2
 				beq	:+
 			.endif
 		
@@ -65,7 +65,7 @@ actor_proc_piranha_plant:
 			lsr	a
 			bcc	:++
 			: lda	eng_timer_ctl
-			bne	:+ ; if (((SMB2 && data_B517 == 0x22) || ((frame_count % 2)) && eng_timer_ctl == 0) {
+			bne	:+ ; if ((((SMB2 && this.color == color2) || ((frame_count % 2))) && eng_timer_ctl == 0) {
 				lda	pos_y_lo_actor, x
 				clc
 				adc	veloc_x_actor, x
@@ -75,7 +75,7 @@ actor_proc_piranha_plant:
 					lda	#0
 					sta	veloc_y_actor, x
 					lda	#PIRANHA_PLANT_TIMER_ANI
-					sta	eng_timer_actor_ani, x
+					sta	timer_ani_actor, x
 				; }
 			; }
 		; }

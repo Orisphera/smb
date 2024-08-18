@@ -1,6 +1,8 @@
 .ifndef	TROOPA_B
 TROOPA_B = 1
 
+	.export tile_obj_koopa_b
+tile_obj_koopa_b:
 	.incbin	"../../chr.smb/tile_obj_A0.bin"
 	.incbin	"../../chr.smb/tile_obj_A1.bin"
 	.incbin	"../../chr.smb/tile_obj_A2.bin"

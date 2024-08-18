@@ -413,7 +413,7 @@ victory_msg_notick:
 		bcc	:+ ; if (victory_msg_timer_hi >= end) {
 	.endif
 		lda	#VICTORY_TIMER_SET
-		sta	eng_timer_victory
+		sta	timer_victory
 
 	victory_next:
 		inc	eng_gameplay_mode
@@ -443,9 +443,9 @@ victory_msg_notick:
 	.endif
 
 	sub_63AF:
-		lda	eng_timer_victory
+		lda	timer_victory
 		cmp	#SUB_63AF_TIMER_CUTOFF
-		bcs	:++ ; if (eng_timer_victory < 6) {
+		bcs	:++ ; if (timer_victory < 6) {
 			.if	.defined(VS_SMB)|.defined(SMB2)
 				jsr	actor_proc_flag_victory_timer_score_do
 			.endif
@@ -462,10 +462,10 @@ victory_msg_notick:
 			.endif
 			: ; if (!(VAR_0|VAR_1|VAR_2)) {
 				lda	#$30
-				sta	eng_timer_select
+				sta	timer_select
 				.if	.defined(SMB2M)
 					lda	#6
-					sta	eng_timer_victory
+					sta	timer_victory
 				.endif
 				inc	eng_gameplay_mode
 			; }
@@ -498,11 +498,11 @@ ppu_84AA:
 	.byte	NMI_DATA_END
 ppu_84AA_end:
 
-obj_data_offset_enemy_84B3:
+obj_data_offset_actor_84B3:
 	.byte	$50, $B0, $E0, $68
 	.byte	$98, $C8
 
-obj_data_offset_enemy_84B9:
+obj_data_offset_actor_84B9:
 	.byte	$80, $50, $68, $80
 	.byte	$98, $B0, $C8
 
@@ -590,7 +590,7 @@ sub_8526:
 	sta	VS_RAM_ARENA0+$18
 	sta	VS_RAM_ARENA0+$1F
 	lda	#6
-	sta	eng_timer_victory
+	sta	timer_victory
 	lda	#$60
 	sta	VS_RAM_ARENA0+$2A
 	rts
@@ -638,12 +638,12 @@ sub_8552:
 			bcc	:+
 			sbc	#4
 			tay
-			lda	obj_data_offset_enemy_84B3, y
-			cmp	obj_data_offset_enemy_84B9, x
+			lda	obj_data_offset_actor_84B3, y
+			cmp	obj_data_offset_actor_84B9, x
 			beq	:++
-			: ; if ((vs_ram_arena0[0x1F] < 4) || (obj_data_offset_enemy_84B3[vs_ram_arena[0x1F]-4] != obj_data_offset_enemy_84B9[vs_ram_arena0[0x22]])) {
-				ldy	obj_data_offset_enemy_84B9, x
-				sty	obj_data_offset_enemy
+			: ; if ((vs_ram_arena0[0x1F] < 4) || (obj_data_offset_actor_84B3[vs_ram_arena[0x1F]-4] != obj_data_offset_actor_84B9[vs_ram_arena0[0x22]])) {
+				ldy	obj_data_offset_actor_84B9, x
+				sty	obj_data_offset_actor
 				lda	#$35
 				sta	actor_id
 				lda	actor_pos_y_lo_84C0, x
@@ -666,7 +666,7 @@ sub_8552:
 		pla
 		sta	course_no
 		lda	#$30
-		sta	obj_data_offset_enemy
+		sta	obj_data_offset_actor
 		lda	#$B8
 		sta	pos_y_lo_actor
 		rts
@@ -679,12 +679,12 @@ sub_85E0:
 		jsr	sub_8552
 	: ; }
 
-	lda	eng_timer_victory
+	lda	timer_victory
 	bne	:+
 	ldy	course_no
 	cpy	#course::no_08
-	bcs	:++ ; if (!eng_timer_victory || course_no < no_08) {
-		; if (!eng_timer_victory) {
+	bcs	:++ ; if (!timer_victory || course_no < no_08) {
+		; if (!timer_victory) {
 			lda	#0
 			sta	course_sub
 			sta	eng_goals
@@ -701,14 +701,14 @@ sub_85E0:
 		lda	#0
 		sta	eng_timer_ctl
 		lda	#$1C
-		sta	eng_timer_actor+1
+		sta	timer_actor+1
 		inc	eng_gameplay_mode
 		rts
 	; }
 	.endif
 ; -----------------------------------------------------------
 victory_end:
-	lda	eng_timer_victory
+	lda	timer_victory
 	bne	victory_end_rts
 
 	.if	.defined(CONS)
@@ -744,19 +744,19 @@ victory_end:
 		lda	course_no
 		cmp	#course::no_08
 		bne	:+
-		lda	eng_lives
+		lda	player_lives
 		bmi	:+
-		lda	eng_timer_select
-		bne	:++ ; if (course_no == no_08 && eng_lives >= 0 && !eng_timer_select) {
-			lda	#$30
-			sta	eng_timer_select
+		lda	timer_select
+		bne	:++ ; if (course.no == no_08 && player.lives >= 0 && !timer_select) {
+			lda	#48
+			sta	timer_select
 			lda	#sfx_pulse2::oneup
 			sta	apu_pulse2_queue
-			dec	eng_lives
+			dec	player_lives
 			lda	#1
-			sta	STACK_BASE+$35
+			sta	score_digit_mod+2
 			jmp	actor_proc_course_end_stats
-		: ; } else if (course_no != no_08 || eng_lives < 0) {
+		: ; } else if (course.no != no_08 || player.lives < 0) {
 			inc	eng_gameplay_mode
 		: ; }
 	.endif
@@ -773,7 +773,7 @@ victory_end:
 				lda	#1
 				sta	eng_course_sel_on
 				lda	#255
-				sta	eng_lives
+				sta	player_lives
 				jsr	eng_next_game
 			: ; }
 
@@ -785,24 +785,24 @@ victory_end:
 sub_864C:
 	jsr	sub_8552
 
-	lda	eng_timer_actor+1
-	bne	sub_865D_rts ; if (!eng_timer_actor+1) {
+	lda	timer_actor+1
+	bne	sub_865D_rts ; if (!actor.timer+1) {
 		inc	eng_gameplay_mode
 		lda	#$D8
-		sta	eng_timer_select
+		sta	timer_select
 		rts
 	; } else rts;
 ; -----------------------------------------------------------
 sub_865D:
 	jsr	sub_8552
 
-	lda	eng_timer_select
+	lda	timer_select
 	bne	:+
 	lda	snd_ram+1
-	bne	:+ ; if (!eng_timer_select && !snd_ram[1]) {
+	bne	:+ ; if (!timer_select && !snd_ram[1]) {
 		sta	byte_7FC
 		lda	#255
-		sta	eng_lives
+		sta	player_lives
 		lda	#game_mode::game_over
 		sta	eng_game_mode
 		lda	#gameplay_mode::vs_init
@@ -880,7 +880,7 @@ screen_score_disp_incs_end:
 ; ----------------------------
 	.export screen_score_disp, screen_score_disp_end
 screen_score_disp:
-	lda	STACK_BASE+$10, x
+	lda	screen_score_ctl, x
 	.if	.defined(CONS)
 		beq	victory_end_rts
 	.elseif	.defined(VS)
@@ -889,26 +889,26 @@ screen_score_disp:
 	cmp	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
 	bcc	:+ ; if (stack[0x10] >= sizeof (disp_tiles))) {
 		lda	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
-		sta	STACK_BASE+$10, x
+		sta	screen_score_ctl, x
 	: ; }
 	tay
 
-	lda	STACK_BASE+$2C, x
-	bne	:+ ; if (!stack[0x2C]) {
-		sta	STACK_BASE+$10, x
+	lda	timer_score, x
+	bne	:+ ; if (score.timer == 0) {
+		sta	screen_score_ctl, x
 		rts
 	: ; }
 
-	dec	STACK_BASE+$2C, x
-	cmp	#$2B
-	bne	:++ ; if (stack[0x2C] == 0x2B) {
+	dec	timer_score, x
+	cmp	#43
+	bne	:++ ; if (stack[0x2C] == 43) {
 		.if	.defined(CONS)
 			cpy	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
 		.elseif	.defined(VS)
 			cpy	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-2
 		.endif
 		bne	:+ ; if (stack[0x10] == 1UP) {
-			inc	eng_lives
+			inc	player_lives
 			lda	#sfx_pulse2::oneup
 			sta	apu_pulse2_queue
 		: ; }
@@ -921,11 +921,11 @@ screen_score_disp:
 		tax
 		lda	screen_score_disp_incs, y
 		and	#SCORE_DIGIT_MASK
-		sta	STACK_BASE+$34, x
+		sta	score_digit_mod+1, x
 		jsr	misc_proc_coin_update_score
 	: ; }
 
-	ldy	obj_data_offset_enemy, x
+	ldy	obj_data_offset_actor, x
 	lda	actor_id, x
 	cmp	#actor::spiny
 	beq	:++
@@ -948,17 +948,17 @@ screen_score_disp:
 		ldx	actor_index
 	: ; }
 
-	lda	STACK_BASE+$1E, x
-	cmp	#$18
-	bcc	:+ ; if (stack[0x1E] >= 0x18) {
+	lda	screen_score_pos_y, x
+	cmp	#24
+	bcc	:+ ; if (score.pos_y >= 24) {
 		sbc	#1
-		sta	STACK_BASE+$1E, x
+		sta	screen_score_pos_y, x
 	: ; }
 
-	lda	STACK_BASE+$1E, x
-	sbc	#8
-	jsr	sub_E5C1
-	lda	STACK_BASE+$17, x
+	lda	screen_score_pos_y, x
+	sbc	#PPU_TILE_HEIGHT_PX
+	jsr	render_set_two_sprites_v
+	lda	screen_score_pos_x, x
 	sta	OAM_DMA_BUFFER+OBJ_POS_H, y
 	clc
 	adc	#PPU_TILE_HEIGHT_PX
@@ -966,7 +966,7 @@ screen_score_disp:
 	lda	#(obj_attr::priority_high|obj_attr::color2)
 	sta	OAM_DMA_BUFFER+OBJ_ATTR, y
 	sta	OAM_DMA_BUFFER+OBJ_ATTR+OBJ_SIZE, y
-	lda	STACK_BASE+$10, x
+	lda	screen_score_ctl, x
 	asl	a
 	tax
 	lda	screen_score_disp_tiles, x

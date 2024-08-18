@@ -158,7 +158,7 @@ TILE_ENTRY_BITS	= %00111111
 		coin_a		= <((gfx_meta_block_3_coin_a-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 		coin_b		= <((gfx_meta_block_3_coin_b-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 
-		axe_block	= <((gfx_meta_block_3_axe_block-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+		block_invis	= <((gfx_meta_block_3_block_invis-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 		axe	= <((gfx_meta_block_3_axe-gfx_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 
 		end	= axe+1

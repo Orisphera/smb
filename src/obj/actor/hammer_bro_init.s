@@ -24,12 +24,12 @@ actor_init_hammer_bro:
 		bcs	:+
 	.endif ; if (!SMB2M || course_no < no_07) {
 		.if	.defined(CONS)
-			ldy	eng_hard_mode_b
+			ldy	game_hard_mode_b
 			lda	actor_init_hammer_bro_timer, y
 		.elseif	.defined(VS)
 			lda	#HAMMER_BRO_TIMER_VS
 		.endif
-		sta	eng_timer_actor, x
+		sta	timer_actor, x
 	: ; }
 	lda	#HAMMER_BRO_COL_SIZE
 	jmp	actor_init_col

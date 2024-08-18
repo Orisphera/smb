@@ -1,5 +1,8 @@
 .ifndef	BUZZY
 BUZZY = 1
+
+	.export tile_obj_buzzy_a
+tile_obj_buzzy_a:
 	.incbin	"../../chr.smb/tile_obj_AA.bin"
 	.incbin	"../../chr.smb/tile_obj_AB.bin"
 	.incbin	"../../chr.smb/tile_obj_AC.bin"

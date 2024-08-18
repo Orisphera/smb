@@ -2,9 +2,9 @@
 
 	.export chr_obj, chr_bg
 chr_obj:
-	.include	"chr/obj/mario_a.s"
+	.include	"chr/obj/player_misc.s"
 	.include	"chr/obj/digits_a.s"
-	.include	"chr/obj/fire_koopa.s"
+	.include	"chr/obj/bowser_flame.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 		.include	"chr/obj/flag_victory.s"
@@ -12,7 +12,7 @@ chr_obj:
 		.include	"chr/obj/flag_victory_nsm.s"
 	.endif
 
-	.include	"chr/obj/mario_b.s"
+	.include	"chr/obj/player_crouch.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/plat_a.s"
@@ -20,11 +20,11 @@ chr_obj:
 		.include	"chr/obj/plat_c.s"
 	.endif
 
-	.include	"chr/obj/mario_c.s"
+	.include	"chr/obj/player_climb_large.s"
 	.include	"chr/obj/coin.s"
 	.include	"chr/obj/fire_ball.s"
 	.include	"chr/obj/fire_hit.s"
-	.include	"chr/obj/troopa_a.s"
+	.include	"chr/obj/koopa_a.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 		.include	"chr/obj/goomba_a.s"
@@ -64,21 +64,21 @@ chr_obj:
 	.include	"chr/obj/hammer_bro_b.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.include	"chr/obj/star_a.s"
+		.include	"chr/obj/star_top.s"
 	.elseif	.defined(ANN)
-		.include	"chr/obj/star_nsm_a.s"
+		.include	"chr/obj/star_nsm_top.s"
 	.endif
 
 	.include	"chr/obj/spiny_egg_a.s"
-	.include	"chr/obj/mario_d.s"
+	.include	"chr/obj/player_climb_small.s"
 	.include	"chr/obj/spiny_egg_b.s"
 	.include	"chr/obj/spiny.s"
-	.include	"chr/obj/mario_e.s"
-	.include	"chr/obj/troopa_b.s"
+	.include	"chr/obj/player_death.s"
+	.include	"chr/obj/koopa_b.s"
 	.include	"chr/obj/buzzy_a.s"
 	.include	"chr/obj/cheep.s"
 	.include	"chr/obj/lakitu.s"
-	.include	"chr/obj/koopa.s"
+	.include	"chr/obj/bowser.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 		.include	"chr/obj/toad.s"
@@ -86,10 +86,10 @@ chr_obj:
 		.include	"chr/obj/nsm_guy_b.s"
 	.endif
 
-	.include	"chr/obj/podobo_a.s"
+	.include	"chr/obj/podoboo_a.s"
 	.include	"chr/obj/hammer_bro_c.s"
-	.include	"chr/obj/firefl_a.s"
-	.include	"chr/obj/podobo_b.s"
+	.include	"chr/obj/firefl_top.s"
+	.include	"chr/obj/podoboo_b.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/princess_b.s"
@@ -97,7 +97,7 @@ chr_obj:
 		.include	"chr/obj/mushroom_new_a.s"
 	.endif
 
-	.include	"chr/obj/firefl_b.s"
+	.include	"chr/obj/firefl_stem.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/princess_c.s"
@@ -110,10 +110,10 @@ chr_obj:
 	.include	"chr/obj/hammer_bro_d.s"
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.include	"chr/obj/star_b.s"
+		.include	"chr/obj/star_bottom.s"
 		.include	"chr/obj/piranha_a.s"
 	.elseif	.defined(ANN)
-		.include	"chr/obj/star_nsm_b.s"
+		.include	"chr/obj/star_nsm_bottom.s"
 		.include	"chr/obj/piranha_nsm_a.s"
 	.endif
 

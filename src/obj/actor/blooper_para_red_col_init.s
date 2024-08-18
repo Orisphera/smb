@@ -4,16 +4,16 @@
 .include	"engine/joypad.i"
 
 ; -----------------------------------------------------------
-BLOOBER_VELOC_X		= 0
+BLOOPER_VELOC_X		= 0
 KOOPA_RED_ACCEL_X_RIGHT	= 48
 KOOPA_RED_ACCEL_X_LEFT	= <-32
 ; -----------------------------------------------------------
-	.export actor_init_bloober
+	.export actor_init_blooper
 	.export actor_init_koopa_red_fly
 	.export actor_init_col_small, actor_init_col_large, actor_init_col
 	.export actor_init_veloc_y
-actor_init_bloober:
-	lda	#BLOOBER_VELOC_X
+actor_init_blooper:
+	lda	#BLOOPER_VELOC_X
 	sta	veloc_x_actor, x
 ; ------------------------------
 actor_init_col_small:

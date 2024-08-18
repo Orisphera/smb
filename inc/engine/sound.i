@@ -4,6 +4,7 @@ SOUND_I = 1
 	.enum	sfx_noise
 		block_break_01	= 1
 		flame		= 2
+		none		= 128
 	.endenum
 
 	.enum	sfx_pulse1

@@ -74,7 +74,7 @@ eng_game_over_run:
 	.endif
 
 	.if	.defined(SMB)|.defined(SMB2)
-		lda	eng_timer_screen
+		lda	timer_screen
 		bne	GAME_OVER_TIMER_RTS
 	.endif
 
@@ -90,7 +90,7 @@ eng_game_over_run:
 	jsr	player_switch
 	bcc	eng_game_continue ; if () {
 	.if	.defined(VS_SMB)
-		lda	eng_lives
+		lda	player_lives
 		bpl	eng_game_continue
 	.endif
 		lda	course_no
@@ -104,7 +104,7 @@ eng_game_over_run:
 	.endif
 
 		sta	eng_gameplay_mode
-		sta	eng_timer_screen
+		sta	timer_screen
 		sta	eng_game_mode
 	eng_next_game_rts_a:
 		rts
@@ -130,19 +130,19 @@ player_switch:
 	sec
 	lda	player_count
 	beq	:++
-	lda	eng_lives_b
+	lda	player_lives_b
 	bmi	:++ ; if () {
 		lda	player_id
 		eor	#1
 		sta	player_id
-		ldx	#(eng_lives_b-eng_lives)-1
+		ldx	#(player_lives_b-player_lives)-1
 		: ; for (value of per_player_values) {
-			lda	eng_lives, x
+			lda	player_lives, x
 			pha
-			lda	eng_lives_b, x
-			sta	eng_lives, x
+			lda	player_lives_b, x
+			sta	player_lives, x
 			pla
-			sta	eng_lives_b, x
+			sta	player_lives_b, x
 
 			dex
 			bpl	:-

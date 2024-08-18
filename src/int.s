@@ -290,21 +290,21 @@ nmi:
 		dec     eng_timer_ctl
 		bne     :+++++
 		: ; if (!(eng_timer_ctl--) || !eng_timer_ctl) {
-			ldx     #$14
+			ldx     #(timer_scroll-timers_nmi)-1
 
-			dec     eng_timer_int
-			bpl     :+ ; if (--eng_timer_int < 0) {
+			dec     timer_nmi_tick
+			bpl     :+ ; if (--timer_nmi_tick < 0) {
 				.export nmi_timer_int_init
 			nmi_timer_int_init:
-				lda     #$14
-				sta     eng_timer_int
-				ldx     #$23
+				lda     #TIMERS_ALL_FRAME_COUNT
+				sta     timer_nmi_tick
+				ldx     #(timers_nmi_end-timers_nmi)-1
 			: ; }
 
 			: ; for (x; x >= 0; x--) {
-				lda     eng_timers_nmi, x
-				beq     :+ ; if (eng_timers_nmi[x]) {
-					dec     eng_timers_nmi, x
+				lda     timers_nmi, x
+				beq     :+ ; if (timers_nmi[x]) {
+					dec     timers_nmi, x
 				: ; }
 
 				dex
@@ -575,7 +575,7 @@ nmi_oam_shuffle:
         ldx     #(3*3)-1
         ldy     #3-1
 	: ; for (x = 8, y = 3-1; y >= 0; x -= 3, y--) {
-		lda     obj_data_offset_enemy+4, y
+		lda     obj_data_offset_actor+4, y
 		sta     obj_data_offset_proj+0, x
 		clc
 		adc     #8

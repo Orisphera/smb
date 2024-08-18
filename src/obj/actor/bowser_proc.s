@@ -130,17 +130,17 @@ actor_proc_bowser:
 			sta	motion_dir_actor, x
 		: ; }
 	
-		lda	eng_timer_actor_ani, x
+		lda	timer_ani_actor, x
 		beq	:+
 		jsr	col_player_bullet_diff
-		bpl	:+ ; if (eng_timer_actor_ani && col_player_bullet_dif() < 0) {
+		bpl	:+ ; if (timer_ani_actor && col_player_bullet_dif() < 0) {
 			lda	#DIR_RIGHT
 			sta	motion_dir_actor, x
 			lda	#$02
 			sta	ppu_nmi_buffer_1_data+$24
 			lda	#32
-			sta	eng_timer_actor_ani, x
-			sta	eng_timer_bowser_flame
+			sta	timer_ani_actor, x
+			sta	timer_bowser_flame
 			lda	pos_x_lo_actor, x
 			cmp	#200
 			bcs	:++++
@@ -148,7 +148,7 @@ actor_proc_bowser:
 	
 		lda	frame_count
 		and	#MOD_4
-		bne	:+++ ; if ((!eng_timer_actor_ani || col_player_bullet_diff() >= 0 || (this.pos_x < 200)) && !(frame_count % 4)) {
+		bne	:+++ ; if ((!timer_ani_actor || col_player_bullet_diff() >= 0 || (this.pos_x < 200)) && !(frame_count % 4)) {
 			lda	pos_x_lo_actor, x
 			cmp	ppu_nmi_buffer_1_data+$25
 			bne	:+ ; if () {
@@ -182,7 +182,7 @@ actor_proc_bowser:
 		; }
 	: ; }
 
-	lda	eng_timer_actor_ani, x
+	lda	timer_ani_actor, x
 	bne	:++
 
 	jsr	motion_fall_slow
@@ -203,13 +203,13 @@ actor_proc_bowser:
 		and	#MOD_4
 		tay
 		lda	actor_proc_bowser_timer_data, y
-		sta	eng_timer_actor_ani, x
+		sta	timer_ani_actor, x
 	; }
 
 actor_proc_bowser_motion_skip:
 	jmp	:++
 	: cmp	#1
-	bne	:+ ; if (eng_timer_actor_ani == 1) {
+	bne	:+ ; if (timer_ani_actor == 1) {
 		dec	pos_y_lo_actor, x
 		jsr	actor_init_veloc_y
 		lda	#BOWSER_VELOC_Y_NEG
@@ -222,10 +222,10 @@ actor_proc_bowser_motion_skip:
 		beq	:+
 		cmp	#course::no_06
 		bcs	actor_proc_bowser_finish
-		: lda	eng_timer_bowser_flame
-		bne	actor_proc_bowser_finish ; if (course_no != no_07 && eng_timer_bowser_flame == 0) {
+		: lda	timer_bowser_flame
+		bne	actor_proc_bowser_finish ; if (course_no != no_07 && timer_bowser_flame == 0) {
 			lda	#ACTOR_BOWSER_FLAME_TIMER
-			sta	eng_timer_bowser_flame
+			sta	timer_bowser_flame
 			lda	ppu_nmi_buffer_1_data+$22
 			eor	#%10000000
 			sta	ppu_nmi_buffer_1_data+$22
@@ -235,12 +235,12 @@ actor_proc_bowser_motion_skip:
 
 	; if () {
 		jsr	actor_proc_bowser_flame_timer_init
-		ldy	eng_hard_mode_b
-		beq	:+ ; if (eng_hard_mode_b) {
+		ldy	game_hard_mode_b
+		beq	:+ ; if (game_hard_mode_b) {
 			sec
 			sbc	#ACTOR_BOWSER_FLAME_TIMER_HARD_OFFSET
 		: ; }
-		sta	eng_timer_bowser_flame
+		sta	timer_bowser_flame
 	
 		lda	#actor::bowser_flame
 		sta	actor_swarm_buffer

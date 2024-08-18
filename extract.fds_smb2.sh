@@ -192,7 +192,7 @@ BANKLEN=64
 TILES=`expr $BANKLEN / $TILE_SIZE`
 
 I=0
-J=133
+J=118
 while [ $J -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
         dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.smb2/tile_obj_`printf "%.2X" $J`.bin
@@ -201,7 +201,7 @@ do
 done
 
 # SM2MAIN
-dd if=$1 bs=1 skip=29317 count=12067 >data/prg.smb2.bin
+dd if=$1 bs=1 skip=32701 count=8683 >data/prg.smb2.bin
 
 # SM2DATA2
 dd if=$1 bs=1 skip=41407 count=3631 >data/data2.smb2.bin

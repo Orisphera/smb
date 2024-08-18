@@ -49,8 +49,8 @@ bowser_flame_accel_y:
 ; ------------------------------
 	.export actor_init_bowser_flame, actor_init_right_side
 actor_init_bowser_flame:
-	lda	eng_timer_swarm
-	bne	actor_init_dup_rts ; if (eng_timer_swarm == 0) {
+	lda	timer_swarm
+	bne	actor_init_dup_rts ; if (timer_swarm == 0) {
 		sta	accel_y_actor_c, x
 		lda	apu_noise_event
 		ora	#sfx_noise::flame
@@ -62,12 +62,12 @@ actor_init_bowser_flame:
 			jsr	actor_proc_bowser_flame_timer_init
 			clc
 			adc	#ACTOR_BOWSER_FLAME_TIMER
-			ldy	eng_hard_mode_b
-			beq	:+ ; if (eng_hard_mode_b) {
+			ldy	game_hard_mode_b
+			beq	:+ ; if (game_hard_mode_b) {
 				sec
 				sbc	#ACTOR_BOWSER_FLAME_TIMER_HARD_OFFSET
 			: ; }
-			sta	eng_timer_swarm
+			sta	timer_swarm
 		
 			lda	eng_rand_seed, x
 			and	#MOD_4

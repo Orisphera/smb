@@ -297,7 +297,7 @@ eng_stats_math:
 	beq	:++ ; if (eng_game_mode != 0) {
 		ldx	#5
 		: ; for (x = 5; x >= 0; x--, y--) {
-			lda	STACK_BASE+$34, x
+			lda	score_digit_mod+1, x
 			clc
 			adc	eng_score, y
 			bmi	stats_math_dec
@@ -316,7 +316,7 @@ eng_stats_math:
 	lda	#0
 	ldx	#6
 	: ; for (x = 6; x >= 0; x--) {
-		sta	STACK_BASE+$33, x
+		sta	score_digit_mod, x
 
 		dex
 		bpl	:-
@@ -325,14 +325,14 @@ eng_stats_math:
 	rts
 ; ----------------------------
 stats_math_dec:
-	dec	STACK_BASE+$33, x
+	dec	score_digit_mod, x
 	lda	#9
 	bne	eng_stats_math_store
 
 stats_math_inc:
 	sec
 	sbc	#10
-	inc	STACK_BASE+$33, x
+	inc	score_digit_mod, x
 	jmp	eng_stats_math_store
 ; -----------------------------------------------------------
 	.export eng_score_calc
