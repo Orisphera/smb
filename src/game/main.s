@@ -254,7 +254,7 @@ game_proc_scroll:
 	: ; }
 
 	ldx	#0
-	jsr	lib_player_bits_h_get
+	jsr	lib_bits_get_do_x
 	sta	zp_byte_00
 	ldy	#0
 	asl	a

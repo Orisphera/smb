@@ -171,7 +171,8 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/actor/plat_small_render.o \
 			src/obj/bubble_render.o \
 			data/sprites_player.o \
-			src/obj/player_render.o
+			src/obj/player_render.o \
+			src/obj/lib_bits.o
 
 SECURITY_OBJS	=	data/security.o
 

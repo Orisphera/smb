@@ -16,7 +16,7 @@ CHR_PATH_VS="chr.vs"
 
 mkdir -p data/${CHR_PATH_BASE} data/${CHR_PATH_VS} data/chr2.vs
 
-dd if=$1 bs=1 skip=28831 count=3947 >data/prg.vs.bin
+dd if=$1 bs=1 skip=29254 count=3524 >data/prg.vs.bin
 
 # CHR Common
 TILE_SIZE=16

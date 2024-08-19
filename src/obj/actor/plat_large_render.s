@@ -43,7 +43,7 @@ render_plat_large:
 	iny
 	jsr	render_set_six_sprites
 	inx
-	jsr	lib_player_bits_h_get
+	jsr	lib_bits_get_do_x
 	dex
 	ldy	obj_data_offset_actor, x
 	asl	a

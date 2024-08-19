@@ -2,76 +2,20 @@
 UNK_I = 1
 
 	.if	.defined(FC_SMB)
-		lib_calc_player_pos	= $F12A
-		lib_calc_bubble_pos	= $F131
-		lib_calc_proj_pos	= $F13B
-		lib_calc_misc_pos	= $F148
-		lib_calc_actor_pos	= $F152
-		lib_calc_block_pos	= $F159
-		lib_player_bits_get	= $F180
-		lib_proj_bits_get	= $F187
-		lib_bubble_bits_get	= $F191
-		lib_misc_bits_get	= $F19B
-		lib_actor_bits_get	= $F1AF
-		lib_block_bits_get	= $F1B6
-		lib_player_bits_h_get	= $F1F6
-		render_chr_pair_do	= $F282
 		apu_cycle		= $F2D0
 		irq			= $FFF0
 	.endif
 
 	.if	.defined(VS_SMB)
-		lib_calc_player_pos	= $F08F
-		lib_calc_bubble_pos	= $F096
-		lib_calc_proj_pos	= $F0A0
-		lib_calc_misc_pos	= $F0AD
-		lib_calc_actor_pos	= $F0B7
-		lib_calc_block_pos	= $F0BE
-		lib_player_bits_get	= $F0E5
-		lib_proj_bits_get	= $F0EC
-		lib_bubble_bits_get	= $F0F6
-		lib_misc_bits_get	= $F100
-		lib_actor_bits_get	= $F114
-		lib_block_bits_get	= $F11B
-		lib_player_bits_h_get	= $F15B
-		render_chr_pair_do	= $F1E7
 		apu_cycle		= $F236
 	.endif	
 
 	.if	.defined(FDS_SMB)
-		lib_calc_player_pos	= $D12E
-		lib_calc_bubble_pos	= $D135
-		lib_calc_proj_pos	= $D13F
-		lib_calc_misc_pos	= $D14C
-		lib_calc_actor_pos	= $D156
-		lib_calc_block_pos	= $D15D
-		lib_player_bits_get	= $D184
-		lib_proj_bits_get	= $D18B
-		lib_bubble_bits_get	= $D195
-		lib_misc_bits_get	= $D19F
-		lib_actor_bits_get	= $D1B3
-		lib_block_bits_get	= $D1BA
-		lib_player_bits_h_get	= $D1FA
-		render_chr_pair_do	= $D286
 		apu_cycle		= $D2D0
 		irq			= $FFF0
 	.endif
 
 	.if	.defined(SMB2)
-		lib_calc_player_pos	= $BE0F
-		lib_calc_bubble_pos	= $BE16
-		lib_calc_proj_pos	= $BE20
-		lib_calc_misc_pos	= $BE2D
-		lib_calc_actor_pos	= $BE37
-		lib_calc_block_pos	= $BE3E
-		lib_player_bits_get	= $BE65
-		lib_proj_bits_get	= $BE6C
-		lib_bubble_bits_get	= $BE76
-		lib_misc_bits_get	= $BE80
-		lib_actor_bits_get	= $BE94
-		lib_block_bits_get	= $BE9B
-		lib_player_bits_h_get	= $BEDB
-		render_chr_pair_do	= $BF67
 		sub_C04D		= $C04D
 		sub_C081		= $C081
 		sub_C088		= $C088
@@ -125,20 +69,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		lib_calc_player_pos	= $BE1F
-		lib_calc_bubble_pos	= $BE26
-		lib_calc_proj_pos	= $BE30
-		lib_calc_misc_pos	= $BE3D
-		lib_calc_actor_pos	= $BE47
-		lib_calc_block_pos	= $BE4E
-		lib_player_bits_get	= $BE75
-		lib_proj_bits_get	= $BE7C
-		lib_bubble_bits_get	= $BE86
-		lib_misc_bits_get	= $BE90
-		lib_actor_bits_get	= $BEA4
-		lib_block_bits_get	= $BEAB
-		lib_player_bits_h_get	= $BEEB
-		render_chr_pair_do	= $BF77
 		eng_title		= $BFBF
 		sub_C04D		= $C05E
 		sub_C081		= $C092
