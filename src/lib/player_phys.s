@@ -5,22 +5,12 @@
 
 ; ------------------------------------------------------------
 player_phys_data:
-	.byte	$20, $20, $1E, $28, $28
-	.byte	$0D, $04
-
-	.byte	$70, $70, $60, $90, $90
-	.byte	$0A, $09
-
-	.byte	$E4, $98, $D0
+	.include	"../../data/player_a_accel.s"
+	.include	"../../data/player_a_friction.s"
 player_phys_data_a_end:
 
-	.byte	$18, $18, $18, $22, $22
-	.byte	$0D, $04
-
-	.byte	$42, $42, $3E, $5D, $5D
-	.byte	$0A, $09
-
-	.byte	$B4, $68, $A0
+	.include	"../../data/player_b_accel.s"
+	.include	"../../data/player_b_friction.s"
 player_phys_data_b_end:
 ; -----------------------------
 	.export player_phys_load, player_phys_load_default

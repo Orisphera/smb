@@ -999,21 +999,14 @@ game_proc_player_climb:
 		rts
 	; }
 ; -----------------------------------------------------------
+STATS_BASE_INCLUDE	= 1
+
 	.export	game_proc_player_stats
 game_proc_player_stats:
-game_proc_player_jump_accel_y:
-	.byte	$20, $20, $1E, $28, $28
-
-	.byte	$0D, $04
-
-game_proc_player_grav_accel_y:
-	.byte	$70, $70, $60, $90, $90
-
-	.byte	$0A, $09
+	.include	"../../data/player_a_accel.s"
 
 .if	.defined(SMB2M)
-	game_proc_player_data_friction:
-		.byte	<-$1C, <-$68, <-$30
+	.include	"../../data/player_a_friction.s"
 .endif
 
 game_proc_veloc_y_player:
@@ -1036,8 +1029,7 @@ game_proc_player_max_veloc_right_enter:
 	.byte	$0C
 
 .if	.defined(SMB)|.defined(VS_SMB)
-	game_proc_player_data_friction:
-		.byte	<-$1C, <-$68, <-$30
+	.include	"../../data/player_a_friction.s"
 .endif
 
 game_proc_player_climb_veloc_y:
