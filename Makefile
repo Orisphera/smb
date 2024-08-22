@@ -174,7 +174,9 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/player_render.o \
 			src/obj/lib_bits.o
 
-FDS_LIB_OBJS	=	src/lib/disk.o
+FDS_LIB_OBJS	=	src/lib/disk.o \
+			src/game/fds_gameover.o \
+			src/lib/player_phys.o
 
 SECURITY_OBJS	=	data/security.o
 

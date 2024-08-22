@@ -16,10 +16,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		sub_C1C2		= $C1C2
-		sub_C241		= $C241
-		sub_C24A		= $C24A
-
 		course_descriptor_load	= $C2A4
 
 		data4_start		= $C2B4
@@ -79,10 +75,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		sub_C1C2		= $C1D8
-		sub_C241		= $C252
-		sub_C24A		= $C25B
-
 		course_descriptor_load	= $C286
 
 		data4_start		= $C296

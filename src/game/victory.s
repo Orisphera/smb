@@ -219,8 +219,8 @@ victory_init:
 	.if	.defined(SMB2)
 		ldy	course_no
 		lda	victory_init_mask, y
-		ora	byte_7FA
-		sta	byte_7FA
+		ora	game_courses_cleared
+		sta	game_courses_cleared
 	.endif
 
 	.if	.defined(SMB2M)

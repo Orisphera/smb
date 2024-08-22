@@ -1514,7 +1514,7 @@ col_bg_proc_axe_do:
 	sta	eng_game_mode
 
 	.if	.defined(SMB2M)
-		jsr	sub_C24A
+		jsr	player_phys_load_default
 	.endif
 
 	lda	#AXE_PLAYER_VELOC_X

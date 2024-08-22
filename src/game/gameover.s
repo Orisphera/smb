@@ -30,7 +30,7 @@ eng_game_over_init:
 	sta	eng_sprite_overlap
 
 .if	.defined(SMB2M)
-	sta	byte_7F8
+	sta	eng_game_over_choice
 .endif
 
 	lda	#music_event::game_over
@@ -66,7 +66,7 @@ eng_game_over_run:
 			beq     :+ ; if (course_no != no_09) {
 		.endif
 
-		jmp     sub_C1C2
+		jmp     eng_game_over_menu
 
 		.if	.defined(SMB2)
 			: ; }

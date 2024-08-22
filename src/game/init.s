@@ -141,7 +141,7 @@ eng_init_0_do:
 	sta	eng_disp_disable
 
 	.if	.defined(SMB2M)
-		jsr	sub_C241
+		jsr	player_phys_load
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
