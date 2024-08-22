@@ -131,7 +131,7 @@ player_switch:
 	lda	player_count
 	beq	:++
 	lda	player_lives_b
-	bmi	:++ ; if () {
+	bmi	:++ ; if (player_count > 0 && player_lives_b >= 0) {
 		lda	player_id
 		eor	#1
 		sta	player_id

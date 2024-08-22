@@ -675,7 +675,7 @@ sub_9D3C:
 ; ----------------------------
 sub_9D4D:
 	lda	player_count
-	beq	:+ ; if (player_count) {
+	beq	:+ ; if (player_count > 0) {
 		ldx	player_id
 		lda	joypad_p1, x
 		jmp	:++
@@ -1193,7 +1193,7 @@ sub_A075:
 	bne	:+ ; if () {
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
-		sta	byte_7FC
+		sta	eng_course_sel_on
 		sta	ENG_HARDMODE_VAR
 		inc	eng_gameplay_mode
 		rts

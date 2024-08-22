@@ -583,7 +583,7 @@ screen_text_draw:
 			: ; }
 
 			lda	player_count
-			bne	:+ ; if (!player_count) {
+			bne	:+ ; if (player_count == 0) {
 				iny
 			: ; }
 		; }
@@ -654,7 +654,7 @@ screen_text_draw:
 		rts
 		: ; } else if (a <= 1) {
 			lda	player_count
-			beq	:+++ ; if (player_count) {
+			beq	:+++ ; if (player_count > 0) {
 				lda	player_id
 				dex
 				bne	:+

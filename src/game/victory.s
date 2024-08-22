@@ -67,9 +67,9 @@ victory_enter:
 		.addr	actor_bowser_ending
 		.addr	victory_init
 		.addr	victory_proc
-		.addr	sub_C081
-		.addr	sub_C088
-		.addr	sub_C08E
+		.addr	disk_loader_victory_init
+		.addr	disk_loader_victory_check
+		.addr	disk_loader_data3
 		.addr	sub_C5FE
 		.addr	sub_C642
 		.addr	sub_63AF
@@ -800,7 +800,7 @@ sub_865D:
 	bne	:+
 	lda	snd_ram+1
 	bne	:+ ; if (!timer_select && !snd_ram[1]) {
-		sta	byte_7FC
+		sta	eng_course_sel_on
 		lda	#255
 		sta	player_lives
 		lda	#game_mode::game_over

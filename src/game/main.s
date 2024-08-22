@@ -19,7 +19,7 @@ eng_game:
 	.if	.defined(VS_SMB)
 		.addr	game_vs_init
 	.elseif	.defined(SMB2M)
-		.addr	sub_C04D
+		.addr	disk_loader_data2
 	.endif
 
 	.addr	eng_init_0_do
@@ -46,7 +46,7 @@ game_vs_init:
 game_proc:
 	.if	.defined(VS_SMB)
 		lda	player_count
-		beq	:+ ; if (player_count) {
+		beq	:+ ; if (player_count > 0) {
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)
@@ -123,8 +123,8 @@ game_proc:
 	jsr	gfx_color_rotate
 
 	.if	.defined(SMB2)
-		lda	byte_7F7
-		beq	:+ ; if (byte_7F7) {
+		lda	disk_loader_file_id
+		beq	:+ ; if (disk_loader_file_id != main) {
 			jsr	sub_C550
 		: ; }
 	.endif
@@ -240,7 +240,7 @@ game_proc_scroll:
 			ora	zp_byte_00
 			sta	ppu_ctlr0_b
 		.elseif	.defined(SMB2M)
-			sta	player_count
+			sta	ppu_ctlr0_bg
 		.endif
 
 		jsr	game_proc_disp_pos
@@ -861,8 +861,8 @@ game_proc_player_ground_b:
 	sta	player_scroll_x
 
 	.if	.defined(SMB2)
-		lda	byte_7F7
-		beq	:+ ; if (byte_7F7) {
+		lda	disk_loader_file_id
+		beq	:+ ; if (disk_loader_file_id != main) {
 			jsr	sub_C4FE
 		: ; }
 	.endif
@@ -999,6 +999,8 @@ game_proc_player_climb:
 		rts
 	; }
 ; -----------------------------------------------------------
+	.export	game_proc_player_stats
+game_proc_player_stats:
 game_proc_player_jump_accel_y:
 	.byte	$20, $20, $1E, $28, $28
 
@@ -1221,6 +1223,8 @@ game_proc_player_physics:
 	lda	disp_dir_player
 	cmp	motion_dir_player
 	beq	:+ ; if (player.dir != player.motion_dir) {
+		.export game_proc_player_physics_friction_shift
+	game_proc_player_physics_friction_shift:
 		asl	eng_friction_add_lo
 		rol	eng_friction_add_hi
 	: ; }

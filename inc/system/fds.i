@@ -116,4 +116,11 @@ FDS_VENDOR_NINTENDO	= $01
 
 fds_ctlr_b	= $FA
 
+	.enum	fds_errnos
+		disk_set	= $01
+		battery		= $02
+		ab_side		= $07
+		errno_40	= $40
+	.endenum
+
 .endif	; FDS_I

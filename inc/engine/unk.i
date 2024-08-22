@@ -16,31 +16,36 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		sub_C04D		= $C04D
-		sub_C081		= $C081
-		sub_C088		= $C088
-		sub_C08E		= $C08E
-		data_C10B		= $C10B
-		data_C149		= $C149
 		sub_C1C2		= $C1C2
 		sub_C241		= $C241
 		sub_C24A		= $C24A
+
 		course_descriptor_load	= $C2A4
+
+		data4_start		= $C2B4
 		course_load		= $C2C3
 		courses_world_offsets	= $C357
 		courses_area_offsets	= $C360
 		course_data_loop_offsets = $C388
-		sub_C4C0		= $C4C0
+		sub_C3D6		= $C3D6
+		sub_C46E		= $C46E
+
+		data2_start		= $C470
 		bg_areaobj_C470		= $C470
 		bg_areaobj_C475		= $C475
+		sub_C4C0		= $C4C0
 		sub_C4FE		= $C4FE
 		data_C511		= $C511
 		sub_C550		= $C550
 		screen_title_cursor	= $C573
 		screen_title_score	= $C58A
+		sub_C592		= $C592
 		bg_areaobj_C5BE		= $C5BE
 		bg_areaobj_C5C2		= $C5C2
+
+		data3_start		= $C5D0
 		sub_C5D0		= $C5D0
+		sub_C5DB		= $C5DB
 		sub_C5FE		= $C5FE
 		data_C62B		= $C62B
 		sub_C642		= $C642
@@ -49,6 +54,7 @@ UNK_I = 1
 		sub_C710		= $C710
 		sub_C727		= $C727
 		sub_C738		= $C738
+		sub_C858		= $C858
 		data_C876		= $C876
 		data_C87F		= $C87F
 		data_C893		= $C893
@@ -63,27 +69,31 @@ UNK_I = 1
 		data_C95C		= $C95C
 		data_C97D		= $C97D
 		data_C9C0		= $C9C0
-		sub_EFA4		= $BC7F
-		eng_title		= $BFB0
+
+		data4_end		= $D200
+
+		data2_end		= $D29F
+		data3_end		= $D29F
+
 		apu_cycle		= $D2A0
 	.endif
 
 	.if	.defined(ANN)
-		eng_title		= $BFBF
-		sub_C04D		= $C05E
-		sub_C081		= $C092
-		sub_C088		= $C099
-		sub_C08E		= $C09F
-		data_C10B		= $C121
-		data_C149		= $C15F
 		sub_C1C2		= $C1D8
 		sub_C241		= $C252
 		sub_C24A		= $C25B
+
 		course_descriptor_load	= $C286
+
+		data4_start		= $C296
 		course_load		= $C2A5
 		courses_world_offsets	= $C339
 		courses_area_offsets	= $C341
 		course_data_loop_offsets = $C365
+		sub_C3D6		= $C3B7
+		sub_C46E		= $C42B
+
+		data2_start		= $C470
 		bg_areaobj_C470		= $C470
 		bg_areaobj_C475		= $C475
 		sub_C4C0		= $C4C0
@@ -92,6 +102,10 @@ UNK_I = 1
 		sub_C50C		= $C50C
 		screen_title_cursor	= $C531
 		screen_title_score	= $C548
+		sub_C592		= $C550
+		sub_C5DB		= $C596
+
+		data3_start		= $C5D0
 		sub_C5FE		= $C5D0
 		data_C62B		= $C5E6
 		sub_C642		= $C61F
@@ -100,6 +114,7 @@ UNK_I = 1
 		sub_C710		= $C6F7
 		sub_C727		= $C713
 		sub_C738		= $C72E
+		sub_C858		= $C86F
 		data_C876		= $C88D
 		data_C87F		= $C896
 		data_C893		= $C8AA
@@ -120,6 +135,7 @@ UNK_I = 1
 		data_D1FE		= $D1FE
 		data_D20F		= $D20F
 		data_D25E		= $D25E
+
 		apu_cycle		= $D2E5
 	.endif
 

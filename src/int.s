@@ -147,8 +147,8 @@ SMB2M_NMI_TIMER	= $1658
 			.addr	(data_C913)
 			.addr	(data_C92B)
 			.addr	(data_C943)
-			.addr	(data_C149)
-			.addr	(data_C10B)
+			.addr	(disk_text_error_buffer)
+			.addr	(disk_perror_pal)
 			.addr	(data_C95C)
 			.addr	(data_C511)
 			.addr	(data_C97D)
@@ -445,7 +445,7 @@ nmi:
 			beq	:++ ; if (fds_timer_irq) {
 				lda	ppu_ctlr0_b
 				and	#<~(ppu_ctlr0::obj_seg1)
-				ora	player_count
+				ora	ppu_ctlr0_bg
 				sta	ppu_ctlr0_b
 				sta	PPU_CTLR0
 				lda	#0
@@ -596,10 +596,16 @@ nmi_oam_shuffle:
 nmi_gamemode_enter:
 	lda     eng_game_mode
         jsr     eng_farjump
-	.addr	eng_title
+	.if	.defined(SMB)|.defined(VS_SMB)
+		.addr	eng_title
+	.elseif	.defined(SMB2M)
+		.addr	disk_loader
+	.endif
+
 	.if	.defined(VS_SMB)
 		.addr	sub_941E
 	.endif
+
 	.addr	eng_game
 	.addr	eng_victory
 	.addr	eng_game_over

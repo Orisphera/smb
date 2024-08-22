@@ -280,8 +280,8 @@ COL_BOX_SIZE	= 4
 			addr_C913
 			addr_C92B
 			addr_C943
-			addr_C149
-			addr_C10B
+			disk_text_error_buffer
+			disk_perror_pal
 			addr_C95C
 			addr_C511
 			addr_C97D
@@ -485,6 +485,21 @@ COL_BOX_SIZE	= 4
 		gfx_render_area_d	= (((bg_proc_gfx_render_area_d-bg_proc_tbl)/WORD_SIZE)+1)
 		main_b			= (((bg_proc_main_b-bg_proc_tbl)/WORD_SIZE)+1)
 		mask			= $07
+	.endenum
+
+	.enum	fds_loader_procs
+		prompt_00
+		load_file
+		wait_eject
+		wait_insert
+		bootstrap
+	.endenum
+
+	.enum	fds_file_ids
+		main
+		data2
+		data3
+		data4
 	.endenum
 
 	.endif	; MISC_I

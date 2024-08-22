@@ -3,6 +3,8 @@
 .include	"engine/misc.i"
 .include	"engine/tunables.i"
 
+.include	"engine/unk.i"
+
 	.export eng_title
 eng_title:
 	.if	.defined(VS)
@@ -172,11 +174,7 @@ title_proc:
 			inc	eng_hidden_one_up_b
 			inc	eng_req_timer
 			inc	eng_game_mode
-			.if	.defined(CONS)
-				lda	eng_course_sel_on
-			.elseif	.defined(VS)
-				lda	byte_7FC
-			.endif
+			lda	eng_course_sel_on
 			sta	ENG_HARDMODE_VAR
 			lda	#gameplay_mode::init_0
 			sta	eng_gameplay_mode

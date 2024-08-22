@@ -219,12 +219,12 @@ eng_init_1_do:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lsr	ppu_ctlr0_b
 	.endif
-	and	#1
+	and	#ppu_ctlr0::bg_parity
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ror	a
 		rol	ppu_ctlr0_b
 	.elseif	.defined(SMB2M)
-		sta	player_count
+		sta	ppu_ctlr0_bg
 	.endif
 
 	jsr	sub_load_area_music

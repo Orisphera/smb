@@ -174,6 +174,8 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/player_render.o \
 			src/obj/lib_bits.o
 
+FDS_LIB_OBJS	=	src/lib/disk.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_OBJS	=	data/save.o
@@ -245,6 +247,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
+			$(FDS_LIB_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -277,6 +280,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
+			$(FDS_LIB_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

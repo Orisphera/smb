@@ -90,7 +90,8 @@ start:
         sta     eng_game_mode
 
 	.if	.defined(SMB2M)
-		sta	byte_7FC
+		sta	disk_loader_proc
+
 		pla
 		sta	course_no
 	.endif
