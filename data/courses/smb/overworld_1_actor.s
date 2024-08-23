@@ -1,5 +1,7 @@
 .include	"engine/course_flags.i"
 
+	.export course_actor_overworld_1
+course_actor_overworld_1:
 	.if	.defined(SMB)
 		.word	(COURSE_ACTORS_POS_Y_5|COURSE_ACTORS_POS_X_A|COURSE_ACTORS_NEW_PAGE|COURSE_ACTORS_ID_GOOMBA)
 	.elseif	.defined(VS_SMB)

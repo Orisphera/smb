@@ -400,10 +400,15 @@ COL_BOX_SIZE	= 4
 
 	.enum	course_water
 		no_01
-		no_02
+		.if	.defined(SMB)
+			no_02
+		.elseif	.defined(VS_SMB)
+			no_02_vs
+		.endif
 		no_03
+
 		.if	.defined(VS_SMB)
-			no_04
+			no_02
 		.endif
 	.endenum
 
@@ -414,8 +419,13 @@ COL_BOX_SIZE	= 4
 		no_04
 		no_05
 		no_06
-		no_07
-		no_08
+		.if	.defined(SMB)
+			no_07
+			no_08
+		.elseif	.defined(VS_SMB)
+			no_07_vs
+			no_08_vs
+		.endif
 		no_09
 		no_10
 		no_11
@@ -429,10 +439,15 @@ COL_BOX_SIZE	= 4
 		no_19
 		no_20
 		no_21
-		no_22
+		.if	.defined(SMB)
+			no_22
+		.elseif	.defined(VS_SMB)
+			no_22_vs
+		.endif
+
 		.if	.defined(VS_SMB)
-			no_23
-			no_24
+			no_07
+			no_08
 		.endif
 	.endenum
 
@@ -443,15 +458,24 @@ COL_BOX_SIZE	= 4
 	.endenum
 
 	.enum	course_castle
-		no_01
+		.if	.defined(SMB)
+			no_01
+		.elseif	.defined(VS_SMB)
+			no_01_vs
+		.endif
 		no_02
-		no_03
+		.if	.defined(SMB)
+			no_03
+		.elseif	.defined(VS_SMB)
+			no_01
+		.endif
 		no_04
 		no_05
 		no_06
+
 		.if	.defined(VS_SMB)
-			no_07
-			no_08
+			no_07_vs
+			no_03
 		.endif
 	.endenum
 

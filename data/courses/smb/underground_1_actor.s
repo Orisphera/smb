@@ -1,5 +1,7 @@
 .include	"engine/course_flags.i"
 
+	.export course_actor_underground_1
+course_actor_underground_1:
 	.word	(COURSE_ACTORS_POS_Y_B|COURSE_ACTORS_POS_X_0|COURSE_ACTORS_NEW_PAGE|COURSE_ACTORS_ID_GOOMBA)
 	.word	(COURSE_ACTORS_POS_Y_A|COURSE_ACTORS_POS_X_1|COURSE_ACTORS_ID_GOOMBA)
 	.if	.defined(SMB)

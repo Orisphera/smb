@@ -7,15 +7,15 @@
 .include	"engine/unk.i"
 
 .if	.defined(CONS)
-.define	COURSE_ACTOR_DATA_ADDR_LO	courses_actor_addr_lo,y
-.define COURSE_ACTOR_DATA_ADDR_HI	courses_actor_addr_hi,y
-.define COURSE_AREA_DATA_ADDR_LO	courses_scenery_addr_lo,y
-.define COURSE_AREA_DATA_ADDR_HI	courses_scenery_addr_hi,y
+.define	COURSE_ACTOR_DATA_ADDR_LO	course_actor_addr_lo,y
+.define COURSE_ACTOR_DATA_ADDR_HI	course_actor_addr_hi,y
+.define COURSE_SCENERY_DATA_ADDR_LO	course_scenery_addr_lo,y
+.define COURSE_SCENERY_DATA_ADDR_HI	course_scenery_addr_hi,y
 .elseif	.defined(VS)
 .define COURSE_ACTOR_DATA_ADDR_LO	#<vs_actor_data
 .define COURSE_ACTOR_DATA_ADDR_HI	#>vs_actor_data
-.define COURSE_AREA_DATA_ADDR_LO	#<vs_area_data
-.define COURSE_AREA_DATA_ADDR_HI	#>vs_area_data
+.define COURSE_SCENERY_DATA_ADDR_LO	#<vs_scenery_data
+.define COURSE_SCENERY_DATA_ADDR_HI	#>vs_scenery_data
 .endif
 
 ; ------------------------------------------------------------
@@ -71,9 +71,9 @@ course_load:
 
 	.if	.defined(VS)
 		lda	PPU_SR
-		lda	courses_actor_addr_lo+1, y
+		lda	course_actor_addr_lo+1, y
 		sta	PPU_VRAM_AR
-		lda	courses_actor_addr_lo, y
+		lda	course_actor_addr_lo, y
 		sta	PPU_VRAM_AR
 	
 		ldy	#0
@@ -104,16 +104,16 @@ course_load:
 
 	.if	.defined(VS)
 		lda	PPU_SR
-		lda	courses_scenery_addr_lo+1, y
+		lda	course_scenery_addr_lo+1, y
 		sta	PPU_VRAM_AR
-		lda	courses_scenery_addr_lo, y
+		lda	course_scenery_addr_lo, y
 		sta	PPU_VRAM_AR
 	
 		ldy	#0
 		lda	PPU_VRAM_IO
-		: ; for (y = 0; vs_area_data[y] != COURSE_SCENERY_END) {
+		: ; for (y = 0; vs_scenery_data[y] != COURSE_SCENERY_END) {
 			lda	PPU_VRAM_IO
-			sta	vs_area_data, y
+			sta	vs_scenery_data, y
 	
 			iny
 			cmp	#COURSE_SCENERY_END
@@ -121,9 +121,9 @@ course_load:
 		; }
 	.endif
 
-	lda	COURSE_AREA_DATA_ADDR_LO
+	lda	COURSE_SCENERY_DATA_ADDR_LO
 	sta	course_scenery_addr
-	lda	COURSE_AREA_DATA_ADDR_HI
+	lda	COURSE_SCENERY_DATA_ADDR_HI
 	sta	course_scenery_addr+1
 
 	ldy	#0
@@ -214,30 +214,31 @@ course_01_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_06
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
 		.byte	COURSE_TYPE_UNDERGROUND_B|(%100)<<5|course_underground::no_01
-.if	.defined(SMB)
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01
-.elseif	.defined(VS_SMB)
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_23
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_07
-.endif
+	.if	.defined(SMB)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01
+	.elseif	.defined(VS_SMB)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_07_vs
+	.endif
 
 course_02_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_09
-.if	.defined(SMB)
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
 		.byte	COURSE_TYPE_WATER_B|course_water::no_02
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08
-.elseif	.defined(VS_SMB)
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
-		.byte	COURSE_TYPE_WATER_B|course_water::no_04
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_24
-.endif
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_03
+	.if	.defined(SMB)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_03
+	.elseif	.defined(VS_SMB)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01
+	.endif
 
 course_03_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_05
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_22
+	.if	.defined(SMB)
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_22
+	.elseif	.defined(VS_SMB)
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_22_vs
+	.endif
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_01
 	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_04
 
@@ -246,38 +247,44 @@ course_04_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
 		.byte	COURSE_TYPE_UNDERGROUND_B|course_underground::no_02
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_13
-.if	.defined(SMB)
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02
-.elseif	.defined(VS_SMB)
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_08
-.endif
+	.if	.defined(SMB)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02
+	.elseif	.defined(VS_SMB)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_03
+	.endif
 
 course_05_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_11
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_18
-.if	.defined(SMB)
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_03
-.elseif	.defined(VS_SMB)
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02
-.endif
+	.if	.defined(SMB)
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_03
+	.elseif	.defined(VS_SMB)
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02
+	.endif
 
 course_06_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_15
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_04
-.if	.defined(SMB)
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
-.elseif	.defined(VS_SMB)
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
-.endif
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01
+	.if	.defined(SMB)
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01
+	.elseif	.defined(VS_SMB)
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07_vs
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01_vs
+	.endif
 
 course_07_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_20
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
-		.byte	COURSE_TYPE_WATER_B|course_water::no_02
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08
+	.if	.defined(SMB)
+			.byte	COURSE_TYPE_WATER_B|course_water::no_02
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08
+	.elseif	.defined(VS_SMB)
+			.byte	COURSE_TYPE_WATER_B|course_water::no_02_vs
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08_vs
+	.endif
 	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_05
 
 course_08_areas:
@@ -292,211 +299,404 @@ course_08_areas:
 	COURSE_OFFSET_INC_SIZE	= WORD_SIZE
 .endif
 course_actor_pages:
-	.byte	(courses_actor_addr_lo_water-courses_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
-	.byte	(courses_actor_addr_lo_overworld-courses_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
-	.byte	(courses_actor_addr_lo_underground-courses_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
-	.byte	(courses_actor_addr_lo_castle-courses_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_actor_addr_lo_water-course_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_actor_addr_lo_overworld-course_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_actor_addr_lo_underground-course_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_actor_addr_lo_castle-course_actor_addr_lo)/COURSE_OFFSET_INC_SIZE
 
 .if	.defined(CONS)
-	courses_actor_addr_lo:
-	courses_actor_addr_lo_castle:
-		.byte	<courses_actor_castle_1, <courses_actor_castle_2
-		.byte	<courses_actor_castle_3, <courses_actor_castle_4
-		.byte	<courses_actor_castle_5, <courses_actor_castle_6
+	course_actor_addr_lo:
+	course_actor_addr_lo_castle:
+		.if	.defined(SMB)
+			.byte	<course_actor_castle_1
+		.elseif	.defined(VS_SMB)
+			.byte	<course_actor_castle_1_vs
+		.endif
+		.byte	<course_actor_castle_2
+		.if	.defined(SMB)
+			.byte	<course_actor_castle_3
+		.elseif	.defined(VS_SMB)
+			.byte	<course_actor_castle_1
+		.endif
+		.byte	<course_actor_castle_4
+		.byte	<course_actor_castle_5, <course_actor_castle_6
+
+		.if	.defined(VS_SMB)
+			.byte	<course_actor_castle_7_vs, <course_actor_castle_3
+		.endif
 	
-	courses_actor_addr_lo_overworld:
-		.byte	<courses_actor_overworld_1, <courses_actor_overworld_2
-		.byte	<courses_actor_overworld_3, <courses_actor_overworld_4
-		.byte	<courses_actor_overworld_5, <courses_actor_overworld_6
-		.byte	<courses_actor_overworld_7, <courses_actor_overworld_8
-		.byte	<courses_actor_overworld_9, <courses_actor_overworld_10
-		.byte	<courses_actor_overworld_11, <courses_actor_overworld_12
-		.byte	<courses_actor_overworld_13, <courses_actor_overworld_14
-		.byte	<courses_actor_overworld_15, <courses_actor_overworld_16
-		.byte	<courses_actor_overworld_17, <courses_actor_overworld_18
-		.byte	<courses_actor_overworld_19, <courses_actor_overworld_20
-		.byte	<courses_actor_overworld_21, <courses_actor_overworld_22
+	course_actor_addr_lo_overworld:
+		.byte	<course_actor_overworld_1, <course_actor_overworld_2
+		.byte	<course_actor_overworld_3, <course_actor_overworld_4
+		.byte	<course_actor_overworld_5, <course_actor_overworld_6
+		.if	.defined(SMB)
+			.byte	<course_actor_overworld_7, <course_actor_overworld_8
+		.elseif	.defined(VS_SMB)
+			.byte	<course_actor_overworld_7_vs, <course_actor_overworld_8_vs
+		.endif
+		.byte	<course_actor_overworld_9, <course_actor_overworld_10
+		.byte	<course_actor_overworld_11, <course_actor_overworld_12
+		.byte	<course_actor_overworld_13, <course_actor_overworld_14
+		.byte	<course_actor_overworld_15, <course_actor_overworld_16
+		.byte	<course_actor_overworld_17, <course_actor_overworld_18
+		.byte	<course_actor_overworld_19, <course_actor_overworld_20
+		.byte	<course_actor_overworld_21
+		.if	.defined(SMB)
+			.byte	<course_actor_overworld_22
+		.elseif	.defined(VS_SMB)
+			.byte	<course_actor_overworld_22_vs
+		.endif
+
+		.if	.defined(VS_SMB)
+			.byte	<course_actor_overworld_7, <course_actor_overworld_8
+		.endif
 	
-	courses_actor_addr_lo_underground:
-		.byte	<courses_actor_underground_1
-		.byte	<courses_actor_underground_2
-		.byte	<courses_actor_underground_3
+	course_actor_addr_lo_underground:
+		.byte	<course_actor_underground_1
+		.byte	<course_actor_underground_2
+		.byte	<course_actor_underground_3
 	
-	courses_actor_addr_lo_water:
-		.byte	<courses_actor_water_1
-		.byte	<courses_actor_water_2
-		.byte	<courses_actor_water_3
+	course_actor_addr_lo_water:
+		.byte	<course_actor_water_1
+		.if	.defined(SMB)
+			.byte	<course_actor_water_2
+		.elseif	.defined(VS_SMB)
+			.byte	<course_actor_water_2_vs
+		.endif
+		.byte	<course_actor_water_3
+
+		.if	.defined(VS_SMB)
+			.byte	<course_actor_water_2
+		.endif
 	
-	courses_actor_addr_hi:
-	courses_actor_addr_hi_castle:
-		.byte	>courses_actor_castle_1, >courses_actor_castle_2
-		.byte	>courses_actor_castle_3, >courses_actor_castle_4
-		.byte	>courses_actor_castle_5, >courses_actor_castle_6
+	course_actor_addr_hi:
+	course_actor_addr_hi_castle:
+		.if	.defined(SMB)
+			.byte	>course_actor_castle_1
+		.elseif	.defined(VS_SMB)
+			.byte	>course_actor_castle_1_vs
+		.endif
+		.byte	>course_actor_castle_2
+		.if	.defined(SMB)
+			.byte	>course_actor_castle_3
+		.elseif	.defined(VS_SMB)
+			.byte	>course_actor_castle_1
+		.endif
+		.byte	>course_actor_castle_4
+		.byte	>course_actor_castle_5, >course_actor_castle_6
+
+		.if	.defined(VS_SMB)
+			.byte	>course_actor_castle_7_vs, >course_actor_castle_3
+		.endif
 	
-	courses_actor_addr_hi_overworld:
-		.byte	>courses_actor_overworld_1, >courses_actor_overworld_2
-		.byte	>courses_actor_overworld_3, >courses_actor_overworld_4
-		.byte	>courses_actor_overworld_5, >courses_actor_overworld_6
-		.byte	>courses_actor_overworld_7, >courses_actor_overworld_8
-		.byte	>courses_actor_overworld_9, >courses_actor_overworld_10
-		.byte	>courses_actor_overworld_11, >courses_actor_overworld_12
-		.byte	>courses_actor_overworld_13, >courses_actor_overworld_14
-		.byte	>courses_actor_overworld_15, >courses_actor_overworld_16
-		.byte	>courses_actor_overworld_17, >courses_actor_overworld_18
-		.byte	>courses_actor_overworld_19, >courses_actor_overworld_20
-		.byte	>courses_actor_overworld_21, >courses_actor_overworld_22
+	course_actor_addr_hi_overworld:
+		.byte	>course_actor_overworld_1, >course_actor_overworld_2
+		.byte	>course_actor_overworld_3, >course_actor_overworld_4
+		.byte	>course_actor_overworld_5, >course_actor_overworld_6
+		.if	.defined(SMB)
+			.byte	>course_actor_overworld_7, >course_actor_overworld_8
+		.elseif	.defined(VS_SMB)
+			.byte	>course_actor_overworld_7_vs, >course_actor_overworld_8_vs
+		.endif
+		.byte	>course_actor_overworld_9, >course_actor_overworld_10
+		.byte	>course_actor_overworld_11, >course_actor_overworld_12
+		.byte	>course_actor_overworld_13, >course_actor_overworld_14
+		.byte	>course_actor_overworld_15, >course_actor_overworld_16
+		.byte	>course_actor_overworld_17, >course_actor_overworld_18
+		.byte	>course_actor_overworld_19, >course_actor_overworld_20
+		.byte	>course_actor_overworld_21
+		.if	.defined(SMB)
+			.byte	>course_actor_overworld_22
+		.elseif	.defined(VS_SMB)
+			.byte	>course_actor_overworld_22_vs
+		.endif
+
+		.if	.defined(VS_SMB)
+			.byte	>course_actor_overworld_7, >course_actor_overworld_8
+		.endif
 	
-	courses_actor_addr_hi_underground:
-		.byte	>courses_actor_underground_1
-		.byte	>courses_actor_underground_2
-		.byte	>courses_actor_underground_3
+	course_actor_addr_hi_underground:
+		.byte	>course_actor_underground_1
+		.byte	>course_actor_underground_2
+		.byte	>course_actor_underground_3
 	
-	courses_actor_addr_hi_water:
-		.byte	>courses_actor_water_1
-		.byte	>courses_actor_water_2
-		.byte	>courses_actor_water_3
+	course_actor_addr_hi_water:
+		.byte	>course_actor_water_1
+		.if	.defined(SMB)
+			.byte	>course_actor_water_2
+		.elseif	.defined(VS_SMB)
+			.byte	>course_actor_water_2_vs
+		.endif
+		.byte	>course_actor_water_3
+
+		.if	.defined(VS_SMB)
+			.byte	>course_actor_water_2
+		.endif
 .elseif	.defined(VS)
-	courses_actor_addr_lo:
-	courses_actor_addr_lo_castle:
-		.addr	courses_actor_castle_1, courses_actor_castle_2
-		.addr	courses_actor_castle_3, courses_actor_castle_4
-		.addr	courses_actor_castle_5, courses_actor_castle_6
-	.if	.defined(VS_SMB)
-		.addr	courses_actor_castle_7, courses_actor_castle_8
-	.endif
+	course_actor_addr_lo:
+	course_actor_addr_lo_castle:
+		.if	.defined(SMB)
+			.addr	course_actor_castle_1
+		.elseif	.defined(VS_SMB)
+			.addr	course_actor_castle_1_vs
+		.endif
+		.addr	course_actor_castle_2
+		.if	.defined(SMB)
+			.addr	course_actor_castle_3
+		.elseif	.defined(VS_SMB)
+			.addr	course_actor_castle_1
+		.endif
+		.addr	course_actor_castle_4
+		.addr	course_actor_castle_5, course_actor_castle_6
 
-	courses_actor_addr_lo_overworld:
-		.addr	courses_actor_overworld_1, courses_actor_overworld_2
-		.addr	courses_actor_overworld_3, courses_actor_overworld_4
-		.addr	courses_actor_overworld_5, courses_actor_overworld_6
-		.addr	courses_actor_overworld_7, courses_actor_overworld_8
-		.addr	courses_actor_overworld_9, courses_actor_overworld_10
-		.addr	courses_actor_overworld_11, courses_actor_overworld_12
-		.addr	courses_actor_overworld_13, courses_actor_overworld_14
-		.addr	courses_actor_overworld_15, courses_actor_overworld_16
-		.addr	courses_actor_overworld_17, courses_actor_overworld_18
-		.addr	courses_actor_overworld_19, courses_actor_overworld_20
-		.addr	courses_actor_overworld_21, courses_actor_overworld_22
-	.if	.defined(VS_SMB)
-		.addr	courses_actor_overworld_23, courses_actor_overworld_24
-	.endif
+		.if	.defined(VS_SMB)
+			.addr	course_actor_castle_7_vs, course_actor_castle_3
+		.endif
 
-	courses_actor_addr_lo_underground:
-		.addr	courses_actor_underground_1
-		.addr	courses_actor_underground_2
-		.addr	courses_actor_underground_3
+	course_actor_addr_lo_overworld:
+		.addr	course_actor_overworld_1, course_actor_overworld_2
+		.addr	course_actor_overworld_3, course_actor_overworld_4
+		.addr	course_actor_overworld_5, course_actor_overworld_6
+		.if	.defined(SMB)
+			.addr	course_actor_overworld_7, course_actor_overworld_8
+		.elseif	.defined(VS_SMB)
+			.addr	course_actor_overworld_7_vs, course_actor_overworld_8_vs
+		.endif
+		.addr	course_actor_overworld_9, course_actor_overworld_10
+		.addr	course_actor_overworld_11, course_actor_overworld_12
+		.addr	course_actor_overworld_13, course_actor_overworld_14
+		.addr	course_actor_overworld_15, course_actor_overworld_16
+		.addr	course_actor_overworld_17, course_actor_overworld_18
+		.addr	course_actor_overworld_19, course_actor_overworld_20
+		.addr	course_actor_overworld_21
+		.if	.defined(SMB)
+			.addr	course_actor_overworld_22
+		.elseif	.defined(VS_SMB)
+			.addr	course_actor_overworld_22_vs
+		.endif
 
-	courses_actor_addr_lo_water:
-		.addr	courses_actor_water_1
-		.addr	courses_actor_water_2
-		.addr	courses_actor_water_3
-	.if	.defined(VS_SMB)
-		.addr	courses_actor_water_4
-	.endif
+		.if	.defined(VS_SMB)
+			.addr	course_actor_overworld_7, course_actor_overworld_8
+		.endif
+
+	course_actor_addr_lo_underground:
+		.addr	course_actor_underground_1
+		.addr	course_actor_underground_2
+		.addr	course_actor_underground_3
+
+	course_actor_addr_lo_water:
+		.addr	course_actor_water_1
+		.if	.defined(SMB)
+			.addr	course_actor_water_2
+		.elseif	.defined(VS_SMB)
+			.addr	course_actor_water_2_vs
+		.endif
+		.addr	course_actor_water_3
+
+		.if	.defined(VS_SMB)
+			.addr	course_actor_water_2
+		.endif
 .endif
 ; --------------
 course_scenery_pages:
-	.byte	(courses_scenery_addr_lo_water-courses_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
-	.byte	(courses_scenery_addr_lo_overworld-courses_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
-	.byte	(courses_scenery_addr_lo_underground-courses_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
-	.byte	(courses_scenery_addr_lo_castle-courses_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_scenery_addr_lo_water-course_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_scenery_addr_lo_overworld-course_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_scenery_addr_lo_underground-course_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
+	.byte	(course_scenery_addr_lo_castle-course_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE
 
 .if	.defined(CONS)
-	courses_scenery_addr_lo:
-	courses_scenery_addr_lo_water:
-		.byte	<courses_scenery_water_1
-		.byte	<courses_scenery_water_2
-		.byte	<courses_scenery_water_3
+	course_scenery_addr_lo:
+	course_scenery_addr_lo_water:
+		.byte	<course_scenery_water_1
+		.if	.defined(SMB)
+			.byte	<course_scenery_water_2
+		.elseif	.defined(VS_SMB)
+			.byte	<course_scenery_water_2_vs
+		.endif
+		.byte	<course_scenery_water_3
+
+		.if	.defined(VS_SMB)
+			.byte	<course_scenery_water_2
+		.endif
 	
-	courses_scenery_addr_lo_overworld:
-		.byte	<courses_scenery_overworld_1, <courses_scenery_overworld_2
-		.byte	<courses_scenery_overworld_3, <courses_scenery_overworld_4
-		.byte	<courses_scenery_overworld_5, <courses_scenery_overworld_6
-		.byte	<courses_scenery_overworld_7, <courses_scenery_overworld_8
-		.byte	<courses_scenery_overworld_9, <courses_scenery_overworld_10
-		.byte	<courses_scenery_overworld_11, <courses_scenery_overworld_12
-		.byte	<courses_scenery_overworld_13, <courses_scenery_overworld_14
-		.byte	<courses_scenery_overworld_15, <courses_scenery_overworld_16
-		.byte	<courses_scenery_overworld_17, <courses_scenery_overworld_18
-		.byte	<courses_scenery_overworld_19, <courses_scenery_overworld_20
-		.byte	<courses_scenery_overworld_21, <courses_scenery_overworld_22
+	course_scenery_addr_lo_overworld:
+		.byte	<course_scenery_overworld_1, <course_scenery_overworld_2
+		.byte	<course_scenery_overworld_3, <course_scenery_overworld_4
+		.byte	<course_scenery_overworld_5, <course_scenery_overworld_6
+		.if	.defined(SMB)
+			.byte	<course_scenery_overworld_7, <course_scenery_overworld_8
+		.elseif	.defined(VS_SMB)
+			.byte	<course_scenery_overworld_7_vs, <course_scenery_overworld_8_vs
+		.endif
+		.byte	<course_scenery_overworld_9, <course_scenery_overworld_10
+		.byte	<course_scenery_overworld_11, <course_scenery_overworld_12
+		.byte	<course_scenery_overworld_13, <course_scenery_overworld_14
+		.byte	<course_scenery_overworld_15, <course_scenery_overworld_16
+		.byte	<course_scenery_overworld_17, <course_scenery_overworld_18
+		.byte	<course_scenery_overworld_19, <course_scenery_overworld_20
+		.byte	<course_scenery_overworld_21
+		.if	.defined(SMB)
+			.byte	<course_scenery_overworld_22
+		.elseif	.defined(VS_SMB)
+			.byte	<course_scenery_overworld_22_vs
+		.endif
+
+		.if	.defined(VS_SMB)
+			.byte	<course_scenery_overworld_7, <course_scenery_overworld_8
+		.endif
 	
-	courses_scenery_addr_lo_underground:
-		.byte	<courses_scenery_underground_1
-		.byte	<courses_scenery_underground_2
-		.byte	<courses_scenery_underground_3
+	course_scenery_addr_lo_underground:
+		.byte	<course_scenery_underground_1
+		.byte	<course_scenery_underground_2
+		.byte	<course_scenery_underground_3
 	
-	courses_scenery_addr_lo_castle:
-		.byte	<courses_scenery_castle_1, <courses_scenery_castle_2
-		.byte	<courses_scenery_castle_3, <courses_scenery_castle_4
-		.byte	<courses_scenery_castle_5, <courses_scenery_castle_6
+	course_scenery_addr_lo_castle:
+		.if	.defined(SMB)
+			.byte	<course_scenery_castle_1
+		.elseif	.defined(VS_SMB)
+			.byte	<course_scenery_castle_1_vs
+		.endif
+		.byte	<course_scenery_castle_2
+		.if	.defined(SMB)
+			.byte	<course_scenery_castle_3
+		.elseif	.defined(VS_SMB)
+			.byte	<course_scenery_castle_1
+		.endif
+		.byte	<course_scenery_castle_4
+		.byte	<course_scenery_castle_5, <course_scenery_castle_6
+
+		.if	.defined(VS_SMB)
+			.byte	<course_scenery_castle_7_vs, <course_scenery_castle_3
+		.endif
 	
-	courses_scenery_addr_hi:
-	courses_scenery_addr_hi_water:
-		.byte	>courses_scenery_water_1
-		.byte	>courses_scenery_water_2
-		.byte	>courses_scenery_water_3
+	course_scenery_addr_hi:
+	course_scenery_addr_hi_water:
+		.byte	>course_scenery_water_1
+		.if	.defined(SMB)
+			.byte	>course_scenery_water_2
+		.elseif	.defined(VS_SMB)
+			.byte	>course_scenery_water_2_vs
+		.endif
+		.byte	>course_scenery_water_3
+
+		.if	.defined(VS_SMB)
+			.byte	>course_scenery_water_2
+		.endif
 	
-	courses_scenery_addr_hi_overworld:
-		.byte	>courses_scenery_overworld_1, >courses_scenery_overworld_2
-		.byte	>courses_scenery_overworld_3, >courses_scenery_overworld_4
-		.byte	>courses_scenery_overworld_5, >courses_scenery_overworld_6
-		.byte	>courses_scenery_overworld_7, >courses_scenery_overworld_8
-		.byte	>courses_scenery_overworld_9, >courses_scenery_overworld_10
-		.byte	>courses_scenery_overworld_11, >courses_scenery_overworld_12
-		.byte	>courses_scenery_overworld_13, >courses_scenery_overworld_14
-		.byte	>courses_scenery_overworld_15, >courses_scenery_overworld_16
-		.byte	>courses_scenery_overworld_17, >courses_scenery_overworld_18
-		.byte	>courses_scenery_overworld_19, >courses_scenery_overworld_20
-		.byte	>courses_scenery_overworld_21, >courses_scenery_overworld_22
+	course_scenery_addr_hi_overworld:
+		.byte	>course_scenery_overworld_1, >course_scenery_overworld_2
+		.byte	>course_scenery_overworld_3, >course_scenery_overworld_4
+		.byte	>course_scenery_overworld_5, >course_scenery_overworld_6
+		.if	.defined(SMB)
+			.byte	>course_scenery_overworld_7, >course_scenery_overworld_8
+		.elseif	.defined(VS_SMB)
+			.byte	>course_scenery_overworld_7_vs, >course_scenery_overworld_8_vs
+		.endif
+		.byte	>course_scenery_overworld_9, >course_scenery_overworld_10
+		.byte	>course_scenery_overworld_11, >course_scenery_overworld_12
+		.byte	>course_scenery_overworld_13, >course_scenery_overworld_14
+		.byte	>course_scenery_overworld_15, >course_scenery_overworld_16
+		.byte	>course_scenery_overworld_17, >course_scenery_overworld_18
+		.byte	>course_scenery_overworld_19, >course_scenery_overworld_20
+		.byte	>course_scenery_overworld_21
+
+		.if	.defined(SMB)
+			.byte	>course_scenery_overworld_22
+		.elseif	.defined(VS_SMB)
+			.byte	>course_scenery_overworld_22_vs
+		.endif
+
+		.if	.defined(VS_SMB)
+			.byte	>course_scenery_overworld_7, >course_scenery_overworld_8
+		.endif
 	
-	courses_scenery_addr_hi_underground:
-		.byte	>courses_scenery_underground_1
-		.byte	>courses_scenery_underground_2
-		.byte	>courses_scenery_underground_3
+	course_scenery_addr_hi_underground:
+		.byte	>course_scenery_underground_1
+		.byte	>course_scenery_underground_2
+		.byte	>course_scenery_underground_3
 	
-	courses_scenery_addr_hi_castle:
-		.byte	>courses_scenery_castle_1, >courses_scenery_castle_2
-		.byte	>courses_scenery_castle_3, >courses_scenery_castle_4
-		.byte	>courses_scenery_castle_5, >courses_scenery_castle_6
+	course_scenery_addr_hi_castle:
+		.if	.defined(SMB)
+			.byte	>course_scenery_castle_1
+		.elseif	.defined(VS_SMB)
+			.byte	>course_scenery_castle_1_vs
+		.endif
+		.byte	>course_scenery_castle_2
+		.if	.defined(SMB)
+			.byte	>course_scenery_castle_3
+		.elseif	.defined(VS_SMB)
+			.byte	>course_scenery_castle_1
+		.endif
+		.byte	>course_scenery_castle_4
+		.byte	>course_scenery_castle_5, >course_scenery_castle_6
+
+		.if	.defined(VS_SMB)
+			.byte	>course_scenery_castle_7_vs, >course_scenery_castle_3
+		.endif
 .elseif	.defined(VS)
-	courses_scenery_addr_lo:
-	courses_scenery_addr_lo_water:
-		.addr	courses_scenery_water_1
-		.addr	courses_scenery_water_2
-		.addr	courses_scenery_water_3
-	.if	.defined(VS_SMB)
-		.addr	courses_scenery_water_4
-	.endif
+	course_scenery_addr_lo:
+	course_scenery_addr_lo_water:
+		.addr	course_scenery_water_1
+		.if	.defined(SMB)
+			.addr	course_scenery_water_2
+		.elseif	.defined(VS_SMB)
+			.addr	course_scenery_water_2_vs
+		.endif
+		.addr	course_scenery_water_3
 
-	courses_scenery_addr_lo_overworld:
-		.addr	courses_scenery_overworld_1, courses_scenery_overworld_2
-		.addr	courses_scenery_overworld_3, courses_scenery_overworld_4
-		.addr	courses_scenery_overworld_5, courses_scenery_overworld_6
-		.addr	courses_scenery_overworld_7, courses_scenery_overworld_8
-		.addr	courses_scenery_overworld_9, courses_scenery_overworld_10
-		.addr	courses_scenery_overworld_11, courses_scenery_overworld_12
-		.addr	courses_scenery_overworld_13, courses_scenery_overworld_14
-		.addr	courses_scenery_overworld_15, courses_scenery_overworld_16
-		.addr	courses_scenery_overworld_17, courses_scenery_overworld_18
-		.addr	courses_scenery_overworld_19, courses_scenery_overworld_20
-		.addr	courses_scenery_overworld_21, courses_scenery_overworld_22
-	.if	.defined(VS_SMB)
-		.addr	courses_scenery_overworld_23, courses_scenery_overworld_24
-	.endif
+		.if	.defined(VS_SMB)
+			.addr	course_scenery_water_2
+		.endif
 
-	courses_scenery_addr_lo_underground:
-		.addr	courses_scenery_underground_1
-		.addr	courses_scenery_underground_2
-		.addr	courses_scenery_underground_3
+	course_scenery_addr_lo_overworld:
+		.addr	course_scenery_overworld_1, course_scenery_overworld_2
+		.addr	course_scenery_overworld_3, course_scenery_overworld_4
+		.addr	course_scenery_overworld_5, course_scenery_overworld_6
+		.if	.defined(SMB)
+			.addr	course_scenery_overworld_7, course_scenery_overworld_8
+		.elseif	.defined(VS_SMB)
+			.addr	course_scenery_overworld_7_vs, course_scenery_overworld_8_vs
+		.endif
+		.addr	course_scenery_overworld_9, course_scenery_overworld_10
+		.addr	course_scenery_overworld_11, course_scenery_overworld_12
+		.addr	course_scenery_overworld_13, course_scenery_overworld_14
+		.addr	course_scenery_overworld_15, course_scenery_overworld_16
+		.addr	course_scenery_overworld_17, course_scenery_overworld_18
+		.addr	course_scenery_overworld_19, course_scenery_overworld_20
+		.addr	course_scenery_overworld_21
+		.if	.defined(SMB)
+			.addr	course_scenery_overworld_22
+		.elseif	.defined(VS_SMB)
+			.addr	course_scenery_overworld_22_vs
+		.endif
 
-	courses_scenery_addr_lo_castle:
-		.addr	courses_scenery_castle_1, courses_scenery_castle_2
-		.addr	courses_scenery_castle_3, courses_scenery_castle_4
-		.addr	courses_scenery_castle_5, courses_scenery_castle_6
-	.if	.defined(VS_SMB)
-		.addr	courses_scenery_castle_7, courses_scenery_castle_8
-	.endif
+		.if	.defined(VS_SMB)
+			.addr	course_scenery_overworld_7, course_scenery_overworld_8
+		.endif
+
+	course_scenery_addr_lo_underground:
+		.addr	course_scenery_underground_1
+		.addr	course_scenery_underground_2
+		.addr	course_scenery_underground_3
+
+	course_scenery_addr_lo_castle:
+		.if	.defined(SMB)
+			.addr	course_scenery_castle_1
+		.elseif	.defined(VS_SMB)
+			.addr	course_scenery_castle_1_vs
+		.endif
+		.addr	course_scenery_castle_2
+		.if	.defined(SMB)
+			.addr	course_scenery_castle_3
+		.elseif	.defined(VS_SMB)
+			.addr	course_scenery_castle_1
+		.endif
+		.addr	course_scenery_castle_4
+		.addr	course_scenery_castle_5, course_scenery_castle_6
+
+		.if	.defined(VS_SMB)
+			.addr	course_scenery_castle_7_vs, course_scenery_castle_3
+		.endif
 .endif
 
 .if	.defined(VS_SMB)

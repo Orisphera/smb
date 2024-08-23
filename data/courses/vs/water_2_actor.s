@@ -1,5 +1,7 @@
 .include	"engine/course_flags.i"
 
+	.export course_actor_water_2_vs
+course_actor_water_2_vs:
 	.word	(COURSE_ACTORS_TYPE_F|COURSE_ACTORS_POS_X_0|COURSE_ACTORS_PAGE_LOC_01)
 
 	.word	(COURSE_ACTORS_TYPE_E|COURSE_ACTORS_POS_X_2|COURSE_ACTORS_SUBSPACE_OVERWORLD|COURSE_ACTORS_SUBSPACE_OVERWORLD_06)

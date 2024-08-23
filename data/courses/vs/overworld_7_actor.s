@@ -1,5 +1,7 @@
 .include	"engine/course_flags.i"
 
+	.export course_actor_overworld_7_vs
+course_actor_overworld_7_vs:
 	.word	(COURSE_ACTORS_POS_Y_6|COURSE_ACTORS_POS_X_E|COURSE_ACTORS_NEW_PAGE|COURSE_ACTORS_ID_PLAT_DROP)
 	
 	.word	(COURSE_ACTORS_POS_Y_7|COURSE_ACTORS_POS_X_5|COURSE_ACTORS_NEW_PAGE|COURSE_ACTORS_ID_PLAT_STD_H)

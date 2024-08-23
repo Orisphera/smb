@@ -488,7 +488,7 @@ eng_boot_flag		= $7FF
 .if	.defined(VS_SMB)
 	nmi_addr_1D	= VS_RAM+$000
 	vs_actor_data	= VS_RAM+$100
-	vs_area_data	= VS_RAM+$200
+	vs_scenery_data	= VS_RAM+$200
 	nmi_addr_1C	= VS_RAM+$300
 
 	title_tbl_400	= $6400

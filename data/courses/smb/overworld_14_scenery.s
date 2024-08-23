@@ -1,5 +1,7 @@
 .include	"engine/course_flags.i"
 
+	.export course_scenery_overworld_14
+course_scenery_overworld_14:
 .if	.defined(SMB)
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_CLOUD|COURSE_FG_MASK_1|COURSE_TIMER_SETTING_2|COURSE_SCENERY_ENTER_POS_B0_A|COURSE_SCENERY_BG_COL_UNDERGROUND)
 .elseif	.defined(VS_SMB)

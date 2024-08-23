@@ -1,5 +1,7 @@
 .include	"engine/course_flags.i"
 
+	.export course_scenery_underground_2
+course_scenery_underground_2:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_15|COURSE_TIMER_SETTING_1|COURSE_SCENERY_ENTER_POS_20|COURSE_SCENERY_FG_NONE)
 
 	.word	(COURSE_SCENERY_TYPE_E|COURSE_SCENERY_POS_X_0|(COURSE_BG_NONE_VAL<<12)|(COURSE_FG_MASK_1_VAL<<8))
