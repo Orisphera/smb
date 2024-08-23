@@ -1,0 +1,33 @@
+.TH ACTORDIS65 1
+.SH NAME
+actordis65 \- SMB actor object decoder
+.SH SYNOPSIS
+.B actordis65
+.SH DESCRIPTION
+.I Actordis65
+is a filter that decodes actor object data
+typical of the Super Mario Bros. engine as produced
+by SRD for the Famicom.
+This utility accepts on the standard input a binary
+file consisting of the actor description of a given
+course.
+Each word is decoded into the object and properties
+it describes.
+The decoding in this case involves converting each word
+into a series of OR'd constants compatible with
+the
+.I segaloco
+Super Mario Bros. disassembly.
+While these constants will only assemble if defined,
+the decoded level data is intended to be a roughly
+human-readable description of the actor
+object layout.
+.SH "SEE ALSO"
+ca65(1),
+scenerydis65(1)
+.SH BUGS
+This utility does not handle actor assignment changes
+in the SMB2 engine.
+As such it is currently only applicable to the original
+release and versions based directly on its code.
+
