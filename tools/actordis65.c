@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	int c;
 
 	while ((c = getchar()) != EOF) {
-		if (c == 0xFF) {
+		if (c == END_CHAR) {
 			printf("\t.byte\tCOURSE_ACTORS_END\n\n");
 			continue;
 		}
