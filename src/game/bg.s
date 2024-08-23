@@ -889,6 +889,10 @@ bg_scenery_decode_rts:
 	.export	bg_obj_tbl_stairs
 	.export	bg_obj_tbl_pipe_exit
 	.export	bg_obj_tbl_pole_tip
+	.if	.defined(SMB2M)
+		.export	bg_obj_tbl_C470
+		.export	bg_obj_tbl_C475
+	.endif
 
 	.export	bg_obj_spec_C
 	.export	bg_obj_tbl_block_q_a
@@ -925,6 +929,10 @@ bg_scenery_decode_rts:
 	.export	bg_obj_tbl_swarm_b
 	.export	bg_obj_tbl_swarm_c
 	.export	bg_obj_tbl_decode_rts
+	.if	.defined(SMB2)
+		.export	bg_obj_tbl_C5BE
+		.export	bg_obj_tbl_C5C2
+	.endif
 bg_obj_tbl:
 bg_obj_norm:
 bg_obj_tbl_pipe_vert_a:
@@ -996,7 +1004,9 @@ bg_obj_tbl_pole_tip:
 	.addr	bg_scenery_pole_tip
 
 	.if	.defined(SMB2M)
+	bg_obj_tbl_C470:
 		.addr	bg_scenery_C470
+	bg_obj_tbl_C475:
 		.addr	bg_scenery_C475
 	.endif
 
@@ -1082,7 +1092,9 @@ bg_obj_tbl_decode_rts:
 	.addr	bg_scenery_decode_rts2
 
 	.if	.defined(SMB2)
+	bg_obj_tbl_C5BE:
 		.addr	bg_scenery_C5BE
+	bg_obj_tbl_C5C2:
 		.addr	bg_scenery_C5C2
 	.endif
 

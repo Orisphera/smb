@@ -16,9 +16,8 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		course_descriptor_load	= $C2A4
-
 		data4_start		= $C2B4
+		course_descriptor_get	= $C2B4
 		course_load		= $C2C3
 		courses_world_offsets	= $C357
 		courses_area_offsets	= $C360
@@ -75,9 +74,8 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		course_descriptor_load	= $C286
-
 		data4_start		= $C296
+		course_descriptor_get	= $C296
 		course_load		= $C2A5
 		courses_world_offsets	= $C339
 		courses_area_offsets	= $C341

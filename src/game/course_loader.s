@@ -8,7 +8,7 @@
 
 .if	.defined(CONS)
 .define	COURSE_ACTOR_DATA_ADDR_LO	courses_actor_addr_lo,y
-.define COURSE_ACTOR_DATA_ADDR_HI       courses_actor_addr_hi,y
+.define COURSE_ACTOR_DATA_ADDR_HI	courses_actor_addr_hi,y
 .define COURSE_AREA_DATA_ADDR_LO	courses_scenery_addr_lo,y
 .define COURSE_AREA_DATA_ADDR_HI	courses_scenery_addr_hi,y
 .elseif	.defined(VS)
@@ -18,21 +18,8 @@
 .define COURSE_AREA_DATA_ADDR_HI	#>vs_area_data
 .endif
 
-; -----------------------------------------------------------
-	.export	course_descriptor_load
-course_descriptor_load:
-	jsr	course_descriptor_get
-	sta	course_descriptor
-
-course_type_get:
-	and	#(course_types::MAX<<COURSE_DESC_TYPE_BIT)
-	asl	a
-	rol	a
-	rol	a
-	rol	a
-	sta	course_type
-	rts
-; --------------
+; ------------------------------------------------------------
+	.export course_descriptor_get
 course_descriptor_get:
 	ldy	course_no
 	lda	courses_world_offsets, y
@@ -41,29 +28,29 @@ course_descriptor_get:
 	tay
 	lda	courses_area_offsets, y
 	rts
-; -----------------------------
+; ------------------------------------------------------------
 	.export	course_load
 course_load:
 	.if	.defined(VS)
-	        jsr     vs_setbank_low
-	        lda     #vs_req::chr_high|vs_req::irq_rel|vs_req::ctrl_rel
-	        sta     VS_REQ
-	        lda     PPU_SR
-	        lda     zp_addr_00
-	        sta     PPU_VRAM_AR
-	        lda     zp_addr_00
-	        sta     PPU_VRAM_AR
+		jsr	vs_setbank_low
+		lda	#vs_req::chr_high|vs_req::irq_rel|vs_req::ctrl_rel
+		sta	VS_REQ
+		lda	PPU_SR
+		lda	zp_addr_00
+		sta	PPU_VRAM_AR
+		lda	zp_addr_00
+		sta	PPU_VRAM_AR
 	
-	        ldy     #0
-	        lda     PPU_VRAM_IO
-	        : ; for (y = 0; y < 0x20; y++) {
-	                lda     PPU_VRAM_IO
-	                sta     VS_RAM, y
+		ldy	#0
+		lda	PPU_VRAM_IO
+		: ; for (y = 0; y < 0x20; y++) {
+			lda	PPU_VRAM_IO
+			sta	VS_RAM, y
 	
-	                iny
-	                cpy     #$20
-	                bne     :-
-	        ; }
+			iny
+			cpy	#$20
+			bne	:-
+		; }
 	.endif
 
 	lda	course_descriptor
@@ -77,7 +64,7 @@ course_load:
 	lda	course_actor_pages, y
 	clc
 	adc	course_page_offset
-	.if	.defined(VS)
+	.if	.defined(VS_SMB)
 		asl	a
 	.endif
 	tay
@@ -110,7 +97,7 @@ course_load:
 	lda	course_scenery_pages, y
 	clc
 	adc	course_page_offset
-	.if	.defined(VS)
+	.if	.defined(VS_SMB)
 		asl	a
 	.endif
 	tay
@@ -214,13 +201,13 @@ course_load:
 	.export courses_world_offsets, courses_area_offsets
 courses_world_offsets:
 	.byte	course_01_areas-courses_area_offsets
-	.byte   course_02_areas-courses_area_offsets
-	.byte   course_03_areas-courses_area_offsets
-	.byte   course_04_areas-courses_area_offsets
-	.byte   course_05_areas-courses_area_offsets
-	.byte   course_06_areas-courses_area_offsets
-	.byte   course_07_areas-courses_area_offsets
-	.byte   course_08_areas-courses_area_offsets
+	.byte	course_02_areas-courses_area_offsets
+	.byte	course_03_areas-courses_area_offsets
+	.byte	course_04_areas-courses_area_offsets
+	.byte	course_05_areas-courses_area_offsets
+	.byte	course_06_areas-courses_area_offsets
+	.byte	course_07_areas-courses_area_offsets
+	.byte	course_08_areas-courses_area_offsets
 ; --------------
 courses_area_offsets:
 course_01_areas:
@@ -319,16 +306,16 @@ course_actor_pages:
 	
 	courses_actor_addr_lo_overworld:
 		.byte	<courses_actor_overworld_1, <courses_actor_overworld_2
-		.byte   <courses_actor_overworld_3, <courses_actor_overworld_4
-		.byte   <courses_actor_overworld_5, <courses_actor_overworld_6
-		.byte   <courses_actor_overworld_7, <courses_actor_overworld_8
-		.byte   <courses_actor_overworld_9, <courses_actor_overworld_10
-		.byte   <courses_actor_overworld_11, <courses_actor_overworld_12
-		.byte   <courses_actor_overworld_13, <courses_actor_overworld_14
-		.byte   <courses_actor_overworld_15, <courses_actor_overworld_16
-		.byte   <courses_actor_overworld_17, <courses_actor_overworld_18
-		.byte   <courses_actor_overworld_19, <courses_actor_overworld_20
-		.byte   <courses_actor_overworld_21, <courses_actor_overworld_22
+		.byte	<courses_actor_overworld_3, <courses_actor_overworld_4
+		.byte	<courses_actor_overworld_5, <courses_actor_overworld_6
+		.byte	<courses_actor_overworld_7, <courses_actor_overworld_8
+		.byte	<courses_actor_overworld_9, <courses_actor_overworld_10
+		.byte	<courses_actor_overworld_11, <courses_actor_overworld_12
+		.byte	<courses_actor_overworld_13, <courses_actor_overworld_14
+		.byte	<courses_actor_overworld_15, <courses_actor_overworld_16
+		.byte	<courses_actor_overworld_17, <courses_actor_overworld_18
+		.byte	<courses_actor_overworld_19, <courses_actor_overworld_20
+		.byte	<courses_actor_overworld_21, <courses_actor_overworld_22
 	
 	courses_actor_addr_lo_underground:
 		.byte	<courses_actor_underground_1
@@ -348,16 +335,16 @@ course_actor_pages:
 	
 	courses_actor_addr_hi_overworld:
 		.byte	>courses_actor_overworld_1, >courses_actor_overworld_2
-		.byte   >courses_actor_overworld_3, >courses_actor_overworld_4
-		.byte   >courses_actor_overworld_5, >courses_actor_overworld_6
-		.byte   >courses_actor_overworld_7, >courses_actor_overworld_8
-		.byte   >courses_actor_overworld_9, >courses_actor_overworld_10
-		.byte   >courses_actor_overworld_11, >courses_actor_overworld_12
-		.byte   >courses_actor_overworld_13, >courses_actor_overworld_14
-		.byte   >courses_actor_overworld_15, >courses_actor_overworld_16
-		.byte   >courses_actor_overworld_17, >courses_actor_overworld_18
-		.byte   >courses_actor_overworld_19, >courses_actor_overworld_20
-		.byte   >courses_actor_overworld_21, >courses_actor_overworld_22
+		.byte	>courses_actor_overworld_3, >courses_actor_overworld_4
+		.byte	>courses_actor_overworld_5, >courses_actor_overworld_6
+		.byte	>courses_actor_overworld_7, >courses_actor_overworld_8
+		.byte	>courses_actor_overworld_9, >courses_actor_overworld_10
+		.byte	>courses_actor_overworld_11, >courses_actor_overworld_12
+		.byte	>courses_actor_overworld_13, >courses_actor_overworld_14
+		.byte	>courses_actor_overworld_15, >courses_actor_overworld_16
+		.byte	>courses_actor_overworld_17, >courses_actor_overworld_18
+		.byte	>courses_actor_overworld_19, >courses_actor_overworld_20
+		.byte	>courses_actor_overworld_21, >courses_actor_overworld_22
 	
 	courses_actor_addr_hi_underground:
 		.byte	>courses_actor_underground_1
@@ -423,16 +410,16 @@ course_scenery_pages:
 	
 	courses_scenery_addr_lo_overworld:
 		.byte	<courses_scenery_overworld_1, <courses_scenery_overworld_2
-		.byte   <courses_scenery_overworld_3, <courses_scenery_overworld_4
-		.byte   <courses_scenery_overworld_5, <courses_scenery_overworld_6
-		.byte   <courses_scenery_overworld_7, <courses_scenery_overworld_8
-		.byte   <courses_scenery_overworld_9, <courses_scenery_overworld_10
-		.byte   <courses_scenery_overworld_11, <courses_scenery_overworld_12
-		.byte   <courses_scenery_overworld_13, <courses_scenery_overworld_14
-		.byte   <courses_scenery_overworld_15, <courses_scenery_overworld_16
-		.byte   <courses_scenery_overworld_17, <courses_scenery_overworld_18
-		.byte   <courses_scenery_overworld_19, <courses_scenery_overworld_20
-		.byte   <courses_scenery_overworld_21, <courses_scenery_overworld_22
+		.byte	<courses_scenery_overworld_3, <courses_scenery_overworld_4
+		.byte	<courses_scenery_overworld_5, <courses_scenery_overworld_6
+		.byte	<courses_scenery_overworld_7, <courses_scenery_overworld_8
+		.byte	<courses_scenery_overworld_9, <courses_scenery_overworld_10
+		.byte	<courses_scenery_overworld_11, <courses_scenery_overworld_12
+		.byte	<courses_scenery_overworld_13, <courses_scenery_overworld_14
+		.byte	<courses_scenery_overworld_15, <courses_scenery_overworld_16
+		.byte	<courses_scenery_overworld_17, <courses_scenery_overworld_18
+		.byte	<courses_scenery_overworld_19, <courses_scenery_overworld_20
+		.byte	<courses_scenery_overworld_21, <courses_scenery_overworld_22
 	
 	courses_scenery_addr_lo_underground:
 		.byte	<courses_scenery_underground_1
@@ -452,16 +439,16 @@ course_scenery_pages:
 	
 	courses_scenery_addr_hi_overworld:
 		.byte	>courses_scenery_overworld_1, >courses_scenery_overworld_2
-		.byte   >courses_scenery_overworld_3, >courses_scenery_overworld_4
-		.byte   >courses_scenery_overworld_5, >courses_scenery_overworld_6
-		.byte   >courses_scenery_overworld_7, >courses_scenery_overworld_8
-		.byte   >courses_scenery_overworld_9, >courses_scenery_overworld_10
-		.byte   >courses_scenery_overworld_11, >courses_scenery_overworld_12
-		.byte   >courses_scenery_overworld_13, >courses_scenery_overworld_14
-		.byte   >courses_scenery_overworld_15, >courses_scenery_overworld_16
-		.byte   >courses_scenery_overworld_17, >courses_scenery_overworld_18
-		.byte   >courses_scenery_overworld_19, >courses_scenery_overworld_20
-		.byte   >courses_scenery_overworld_21, >courses_scenery_overworld_22
+		.byte	>courses_scenery_overworld_3, >courses_scenery_overworld_4
+		.byte	>courses_scenery_overworld_5, >courses_scenery_overworld_6
+		.byte	>courses_scenery_overworld_7, >courses_scenery_overworld_8
+		.byte	>courses_scenery_overworld_9, >courses_scenery_overworld_10
+		.byte	>courses_scenery_overworld_11, >courses_scenery_overworld_12
+		.byte	>courses_scenery_overworld_13, >courses_scenery_overworld_14
+		.byte	>courses_scenery_overworld_15, >courses_scenery_overworld_16
+		.byte	>courses_scenery_overworld_17, >courses_scenery_overworld_18
+		.byte	>courses_scenery_overworld_19, >courses_scenery_overworld_20
+		.byte	>courses_scenery_overworld_21, >courses_scenery_overworld_22
 	
 	courses_scenery_addr_hi_underground:
 		.byte	>courses_scenery_underground_1

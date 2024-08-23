@@ -99,8 +99,10 @@ GAME_OBJS	=	src/game/init.o \
 			src/game/gameover.o \
 			src/game/bg.o
 
-COURSES_OBJS	=	data/course_scenery_loop_offsets.o \
-			src/game/courses.o \
+COURSE_LOOP_OBJS =	data/course_scenery_loop_offsets.o
+
+COURSES_OBJS	=	src/game/course_base.o \
+			src/game/course_loader.o \
 			data/course_data.o
 
 MAIN_OBJ	=	src/game/main.o
@@ -190,6 +192,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
+			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
@@ -206,6 +209,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			src/lib/vs.o \
 			$(GAME_OBJS) \
+			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
@@ -222,6 +226,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
+			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
@@ -250,6 +255,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(FDS_LIB_OBJS) \
+			src/game/course_base.o \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -283,6 +289,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(FDS_LIB_OBJS) \
+			src/game/course_base.o \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

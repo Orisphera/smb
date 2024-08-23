@@ -223,6 +223,10 @@ COURSE_OBJ_D_SWARM_A	= (((bg_obj_tbl_swarm_a-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BI
 COURSE_OBJ_D_SWARM_B	= (((bg_obj_tbl_swarm_b-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
 COURSE_OBJ_D_SWARM_C	= (((bg_obj_tbl_swarm_c-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
 COURSE_OBJ_D_LOOP		= (((bg_obj_tbl_decode_rts-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+.if	.defined(SMB2)
+	COURSE_OBJ_D_C5BE		= (((bg_obj_tbl_C5BE-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+	COURSE_OBJ_D_C5C2		= (((bg_obj_tbl_C5C2-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+.endif
 
 COURSE_SCENERY_OBJ_MASK	= $7000
 
@@ -233,6 +237,10 @@ COURSE_OBJ_B_CASTLE	= (((bg_obj_tbl_castle-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_STAIRS	= (((bg_obj_tbl_stairs-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_PIPE_EXIT	= (((bg_obj_tbl_pipe_exit-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_POLE_TIP	= (((bg_obj_tbl_pole_tip-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
+.if	.defined(SMB2M)
+COURSE_OBJ_B_C470	= (((bg_obj_tbl_C470-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
+COURSE_OBJ_B_C475	= (((bg_obj_tbl_C475-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
+.endif
 
 OBJ_C_BIT	= 8
 COURSE_OBJ_C_BLOCK_Q_A		= (((bg_obj_tbl_block_q_a-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)

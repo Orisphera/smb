@@ -2,6 +2,7 @@
 .include	"engine/joypad.i"
 .include	"engine/misc.i"
 .include	"engine/tunables.i"
+.include	"engine/charmap.i"
 
 .include	"engine/unk.i"
 
@@ -46,7 +47,14 @@ eng_title:
 	.endif
 ; -----------------------------------------------------------
 title_course_no:
-	.byte	$04, $20, $73, $01, $00, $00
+	.byte	title_course_no_data_end-title_course_no_data_start
+title_course_no_data_start:
+	.dbyt	PPU_VRAM_BG1+$73
+	.byte	title_course_no_data_end-title_course_no_start
+title_course_no_start:
+	.byte	"0"
+title_course_no_data_end:
+	.byte	0
 title_course_no_end:
 ; ----------------------------
 title_proc:
