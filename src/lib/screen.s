@@ -58,7 +58,7 @@ screen_color_init_1:
 
 	lda	#0
 	sta	player_status
-	lda	#COURSE_DATA_BG_COL_OVERWORLD_VAL
+	lda	#COURSE_SCENERY_BG_COL_OVERWORLD_VAL
 	sta	course_bg_col
 	jsr	screen_color_player
 

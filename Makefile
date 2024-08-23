@@ -99,7 +99,7 @@ GAME_OBJS	=	src/game/init.o \
 			src/game/gameover.o \
 			src/game/bg.o
 
-COURSES_OBJS	=	data/course_data_loop_offsets.o \
+COURSES_OBJS	=	data/course_scenery_loop_offsets.o \
 			src/game/courses.o \
 			data/course_data.o
 

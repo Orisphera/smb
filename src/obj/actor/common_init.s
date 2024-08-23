@@ -15,9 +15,9 @@ ACTOR_LOOP_SCROLL_INC	= 4
 ACTOR_LOOP_OFFSET_X	= 48
 
 .if	.defined(CONS)
-	COURSE_DATA_LOOP_OFFSETS	= course_data_loop_offsets
+	COURSE_SCENERY_LOOP_OFFSETS	= course_scenery_loop_offsets
 .elseif	.defined(VS)
-	COURSE_DATA_LOOP_OFFSETS	= VS_RAM
+	COURSE_SCENERY_LOOP_OFFSETS	= VS_RAM
 .endif
 ; -----------------------------------------------------------
 	.export actor_proc
@@ -203,7 +203,7 @@ actor_area_loop:
 		sta	VS_REQ
 	.endif
 
-	lda	COURSE_DATA_LOOP_OFFSETS, y
+	lda	COURSE_SCENERY_LOOP_OFFSETS, y
 	sta	scenery_offset
 
 	rts

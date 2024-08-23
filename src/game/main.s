@@ -327,9 +327,9 @@ game_proc_enter:
 		cpy	#48
 		bcc	game_proc_auto
 		lda	course_enter_pos
-		cmp	#COURSE_DATA_ENTER_POS_B0_B_VAL
+		cmp	#COURSE_SCENERY_ENTER_POS_B0_B_VAL
 		beq	:+
-		cmp	#COURSE_DATA_ENTER_POS_B0_C_VAL
+		cmp	#COURSE_SCENERY_ENTER_POS_B0_C_VAL
 		bne	:++++++
 		: lda	attr_player
 		bne	:+ ; if (course.enter_pos == 0xB0 && player.priority == high && player.flip == none) {

@@ -131,7 +131,7 @@ eng_init_0_do:
 
 	lda	eng_startpage_alt
 	beq	:+ ; if (eng_startpage_alt) {
-		lda	#COURSE_DATA_ENTER_POS_B0_A_VAL
+		lda	#COURSE_SCENERY_ENTER_POS_B0_A_VAL
 		sta	course_enter_pos
 	: ; }
 
@@ -321,9 +321,9 @@ sub_load_area_music:
 		beq	:+
 		ldy	#area_music_data_pipe_intro-area_music_data
 		lda	course_enter_pos
-		cmp	#COURSE_DATA_ENTER_POS_B0_B_VAL
+		cmp	#COURSE_SCENERY_ENTER_POS_B0_B_VAL
 		beq	:++
-		cmp	#COURSE_DATA_ENTER_POS_B0_C_VAL
+		cmp	#COURSE_SCENERY_ENTER_POS_B0_C_VAL
 		beq	:++
 		: ; if (eng_start_alt == 2 || course_enter_pos != 0xB0) {
 			ldy	course_type
@@ -343,8 +343,8 @@ player_start_x:
 	.byte	$28, $18, $38, $28
 
 player_alt_y:
-	.byte	COURSE_DATA_ENTER_POS_F0_VAL
-	.byte	COURSE_DATA_ENTER_POS_00_A_VAL
+	.byte	COURSE_SCENERY_ENTER_POS_F0_VAL
+	.byte	COURSE_SCENERY_ENTER_POS_00_A_VAL
 
 	.export player_start_y
 	.export player_start_y_00_A, player_start_y_00_B, player_start_y_00_C
