@@ -267,17 +267,17 @@ sub_9A4E:
         : ; } else if (vs_ram_arena0[0x22].in(1, 2, 3)) {
                 cmp	#1
                 bne	:+ ; if (vs_ram_arena0[0x22] == 1) {
-                        ldy	#4
+                        ldy	#vschar1_bg_data::data_4
                         jmp	:+++
                 : cmp	#2
                 bne	:+ ; } else if (vs_ram_arena0[0x22] == 2) {
-                        ldy	#2
+                        ldy	#vschar1_bg_data::data_2
                         jmp	:++
                 : cmp	#3
-                bne	:++ ; } else if (vs_ram_arena0[0x22] == 3) {
-                        ldy	#3
+                bne	:++ ; } else {
+                        ldy	#vschar1_bg_data::data_3
                 : ; }
-                jsr	sub_88F7
+                jsr	screen_vschar1_load
                 inc	VS_RAM_ARENA0+$22
                 rts
         : ; } else {
@@ -1029,8 +1029,8 @@ sub_9F3B:
 		jmp	sub_9F24
 	: cmp	#3
 	bne	:+ ; case 3: 
-		ldy	#5
-		jsr	sub_88F7
+		ldy	#vschar1_bg_data::data_5
+		jsr	screen_vschar1_load
 		inc	VS_RAM_ARENA0+$22
 		rts
 	: ; default:
@@ -1094,8 +1094,8 @@ sub_9FC1:
 		inc	VS_RAM_ARENA0+$18
 		rts
 	: ; else if () {
-		ldy	#$06
-		jsr	sub_88F7
+		ldy	#vschar1_bg_data::data_6
+		jsr	screen_vschar1_load
 		jsr	sub_9DF7
 		lda	#0
 		sta	VS_RAM_ARENA0+$1A

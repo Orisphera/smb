@@ -54,7 +54,7 @@ title_course_no_data_start:
 title_course_no_start:
 	.byte	"0"
 title_course_no_data_end:
-	.byte	0
+	.byte	NMI_DATA_END
 title_course_no_end:
 ; ----------------------------
 title_proc:

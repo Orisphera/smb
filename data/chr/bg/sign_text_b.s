@@ -1,6 +1,8 @@
 .ifndef	SIGN_TEXT_B
 SIGN_TEXT_B = 1
 
+	.export tile_bg_sign_text_b
+tile_bg_sign_text_b:
 	.incbin	"data/chr.smb/tile_bg_D0.bin"
 	.incbin	"data/chr.smb/tile_bg_D1.bin"
 	.incbin	"data/chr.smb/tile_bg_D2.bin"

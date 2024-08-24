@@ -47,5 +47,8 @@ CHARMAP_I = 1
 	;   stock art set
 	.charmap	'$', ENG_FONT_TILE_BASE+$2E
 	.charmap	'.', ENG_FONT_TILE_BASE+$AF
+	; NOTE: This is the copyright icon in the
+	;   stock art set
+	.charmap	'c', ENG_FONT_TILE_BASE+$CF
 
 .endif	; CHARMAP_I

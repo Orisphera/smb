@@ -1,7 +1,7 @@
 .include	"engine/course_flags.i"
 
 .if	.defined(VS)
-	.segment	"COURSEDATA"
+	.segment	"CHR1DATA"
 .endif
 
 .if	.defined(SMB)
@@ -158,5 +158,5 @@
 .if	.defined(SMB)
 	.res	1, $FF
 .elseif	.defined(VS_SMB)
-	.res	9, $FF
+	.res	836, $FF
 .endif

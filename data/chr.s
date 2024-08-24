@@ -228,8 +228,7 @@ chr_bg:
 	.include	"chr/bg/pulley_a.s"
 	.include	"chr/bg/cannon_base_right.s"
 	.include	"chr/bg/water.s"
-	.include	"chr/bg/edge_a.s"
-	.include	"chr/bg/sign_nw.s"
+	.include	"chr/bg/sign_letter_edge_nw.s"
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.include	"chr/bg/brick_a.s"
@@ -367,18 +366,16 @@ chr_bg:
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.include	"chr/bg/font_i.s"
+		.include	"chr/bg/copyright.s"
 	.elseif	.defined(SMB2M)
-		.include	"chr/bg/font_i.smb2.s"
+		.include	"chr/bg/copyright.smb2.s"
 	.endif
 
 	.include	"chr/bg/sign_text_b.s"
 	.include	"chr/bg/coral_b.s"
 
-	.if	.defined(SMB)
-		.include	"chr/bg/padding.s"
-	.elseif	.defined(VS_SMB)
-		.include	"chr/bg/sign_text_g.s"
+	.if	.defined(VS_SMB)
+		.include	"chr/bg/sign_text_vs.s"
 		.include	"chr/bg/window.s"
 	.elseif	.defined(SMB2)
 		.include	"chr/bg/sign_text_c.s"
@@ -398,5 +395,6 @@ chr_bg:
 		.include	"chr/bg/sign_text_f.s"
 	.endif
 
-	.include	"chr/bg/line_c.s"
-
+	.if	.defined(VS_SMB)|.defined(SMB2M)
+		.byte	0
+	.endif

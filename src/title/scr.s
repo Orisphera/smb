@@ -1,19 +1,22 @@
 .include	"engine/mem.i"
+
 ; -----------------------------------------------------------
 .if	.defined(CONS)
-	SCREEN_TITLE_BG_SIZE	= $3A
+	LARGEST_DATA_SIZE	= (title_map_end-title_map+9)
 	TITLE_NMI_BUFFER_END	= ppu_nmi_buffer_title_end
 	TITLE_NMI_ADDR		= ppu_nmi_buffer
 .elseif	.defined(VS)
-	SCREEN_TITLE_BG_SIZE	= $5A
-	TITLE_NMI_BUFFER_END	= VS_RAM+$400
-	TITLE_NMI_ADDR		= nmi_addr_1C
+	LARGEST_DATA_SIZE	= $15A
+	TITLE_NMI_BUFFER_END	= vs_ppu_nmi_buffer_end
+	TITLE_NMI_ADDR		= vs_ppu_nmi_buffer
 .endif
 
-.if	.defined(CONS)
-SCREEN_TITLE_BG_ADDR	= $1EC0
-.elseif	.defined(VS)
-SCREEN_TITLE_BG_ADDR_0	= $1EA0
+SCREEN_TITLE_BG_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
+
+screen_title_bg_nmi_addr	= zp_addr_00
+
+.if	.defined(VS)
+title_map		= $1EA0
 SCREEN_TITLE_BG_ADDR_1	= $1A00
 SCREEN_TITLE_BG_ADDR_2	= $1A60
 SCREEN_TITLE_BG_ADDR_3	= $1AC0
@@ -21,9 +24,9 @@ SCREEN_TITLE_BG_ADDR_4	= $1B10
 SCREEN_TITLE_BG_ADDR_5	= $1B80
 SCREEN_TITLE_BG_ADDR_6	= $1C00
 SCREEN_TITLE_BG_ADDR_7	= $1C80
-
+; -----------------------------------------------------------
 screen_title_bg_addr_hi:
-	.byte	>(SCREEN_TITLE_BG_ADDR_0)
+	.byte	>title_map
 	.byte	>(SCREEN_TITLE_BG_ADDR_1)
 	.byte	>(SCREEN_TITLE_BG_ADDR_2)
 	.byte	>(SCREEN_TITLE_BG_ADDR_3)
@@ -33,7 +36,7 @@ screen_title_bg_addr_hi:
 	.byte	>(SCREEN_TITLE_BG_ADDR_7)
 
 screen_title_bg_addr_lo:
-	.byte	<(SCREEN_TITLE_BG_ADDR_0)
+	.byte	<title_map
 	.byte	<(SCREEN_TITLE_BG_ADDR_1)
 	.byte	<(SCREEN_TITLE_BG_ADDR_2)
 	.byte	<(SCREEN_TITLE_BG_ADDR_3)
@@ -42,20 +45,21 @@ screen_title_bg_addr_lo:
 	.byte	<(SCREEN_TITLE_BG_ADDR_6)
 	.byte	<(SCREEN_TITLE_BG_ADDR_7)
 .endif
-
+; -----------------------------
 screen_title_bg:
 	lda	eng_game_mode
 	bne	screen_title_end
 
 	.if	.defined(CONS)
-		lda	#>(SCREEN_TITLE_BG_ADDR)
+		lda	#>title_map
 		sta	PPU_VRAM_AR
-		lda	#<(SCREEN_TITLE_BG_ADDR)
+		lda	#<title_map
 		sta	PPU_VRAM_AR
 	.elseif	.defined(VS)
-		ldy	#0
-		.export sub_88F7
-	sub_88F7:
+		ldy	#vschar1_bg_data::map_title
+
+		.export screen_vschar1_load
+	screen_vschar1_load:
 		lda	#vs_req::chr_high|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
 		lda	screen_title_bg_addr_hi, y
@@ -65,19 +69,18 @@ screen_title_bg:
 	.endif
 
 	lda	#>(TITLE_NMI_ADDR)
-	sta	zp_addr_00+1
+	sta	screen_title_bg_nmi_addr+1
 	ldy	#<(TITLE_NMI_ADDR)
-	sty	zp_addr_00
+	sty	screen_title_bg_nmi_addr
 	lda	PPU_VRAM_IO
 	: ; for (entry of nmi_buffer) {
 		lda	PPU_VRAM_IO
-		sta	(zp_addr_00), y
+		sta	(screen_title_bg_nmi_addr), y
+
 		iny
 		bne	:+
-		inc	zp_addr_00+1
-		:
-
-		lda	zp_addr_00+1
+		inc	screen_title_bg_nmi_addr+1
+		: lda	screen_title_bg_nmi_addr+1
 		cmp	#>(TITLE_NMI_BUFFER_END)
 		bne	:--
 		cpy	#SCREEN_TITLE_BG_SIZE

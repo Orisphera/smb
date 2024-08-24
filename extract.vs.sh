@@ -71,4 +71,4 @@ do
 done
 
 # CHR bank 01
-dd if=$1 bs=1 skip=47632 count=1536 >data/chr2.vs.bin
+dd if=$1 bs=1 skip=47632 count=1184 >data/chr2.vs.bin

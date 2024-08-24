@@ -8,7 +8,6 @@
 .if	.defined(SMB2)
 course_actor_overworld_28:
 .endif
-course_actor_overworld_10:
 course_actor_overworld_21:
 	.include	"../../data/courses/smb/overworld_10_actor.s"
 
@@ -17,7 +16,6 @@ course_scenery_overworld_28:
 	.include	"../../data/courses/smb2/overworld_28_scenery.s"
 .endif
 
-course_scenery_overworld_10:
 	.include	"../../data/courses/smb/overworld_10_scenery.s"
 
 course_scenery_overworld_21:

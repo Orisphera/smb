@@ -489,9 +489,9 @@ eng_boot_flag		= $7FF
 	nmi_addr_1D	= VS_RAM+$000
 	vs_actor_data	= VS_RAM+$100
 	vs_scenery_data	= VS_RAM+$200
-	nmi_addr_1C	= VS_RAM+$300
-
-	title_tbl_400	= $6400
+	vs_ppu_nmi_buffer = VS_RAM+$300
+	vs_ppu_nmi_buffer_end = vs_ppu_nmi_buffer+$100
+	title_tbl_400	= VS_RAM+$400
 
 	VS_RAM_ARENA0           = (VS_RAM+$600)
 

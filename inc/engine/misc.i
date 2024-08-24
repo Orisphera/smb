@@ -257,7 +257,7 @@ COL_BOX_SIZE	= 4
 			vsend_6
 			vsend_7
 			vsend_8
-			addr_1C
+			vs_ppu_nmi_buffer
 			addr_1D_A
 			addr_1D_B
 			addr_1E_A
@@ -524,6 +524,17 @@ COL_BOX_SIZE	= 4
 		data2
 		data3
 		data4
+	.endenum
+
+	.enum	vschar1_bg_data
+		map_title
+		data_1
+		data_2
+		data_3
+		data_4
+		data_5
+		data_6
+		data_7
 	.endenum
 
 	.endif	; MISC_I

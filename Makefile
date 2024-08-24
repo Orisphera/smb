@@ -102,8 +102,9 @@ GAME_OBJS	=	src/game/init.o \
 COURSE_LOOP_OBJS =	data/course_scenery_loop_offsets.o
 
 COURSES_OBJS	=	src/game/course_base.o \
-			src/game/course_loader.o \
-			data/course_data.o
+			src/game/course_loader.o
+
+COURSE_DATA_OBJS =	data/course_data.o
 
 MAIN_OBJ	=	src/game/main.o
 
@@ -180,6 +181,8 @@ FDS_LIB_OBJS	=	src/lib/disk.o \
 			src/game/fds_gameover.o \
 			src/lib/player_phys.o
 
+TITLE_MAP_OBJS	=	data/title_map.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_OBJS	=	data/save.o
@@ -194,12 +197,14 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
+			$(COURSE_DATA_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			data/prg.fc.o
 
-CHR_OBJS_FC	=	data/chr.o
+CHR_OBJS_FC	=	data/chr.o \
+			$(TITLE_MAP_OBJS)
 
 OBJS_FC		=	$(PRG_OBJS_FC) \
 			$(CHR_OBJS_FC)
@@ -209,7 +214,6 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			src/lib/vs.o \
 			$(GAME_OBJS) \
-			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
@@ -217,7 +221,10 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			data/prg.vs.o
 
 CHR_OBJS_VS	=	data/chr.o \
-			data/chr2.vs.o
+			$(COURSE_LOOP_OBJS) \
+			$(COURSE_DATA_OBJS) \
+			data/chr2.vs.o \
+			$(TITLE_MAP_OBJS)
 
 OBJS_VS		=	$(PRG_OBJS_VS) \
 			$(CHR_OBJS_VS)
@@ -228,12 +235,14 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
+			$(COURSE_DATA_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			data/prg.fds.o
 
-CHR_OBJS_FDS	=	data/chr.o
+CHR_OBJS_FDS	=	data/chr.o \
+			$(TITLE_MAP_OBJS)
 
 OBJS_FDS	=	$(PRG_OBJS_FDS) \
 			$(CHR_OBJS_FDS) \

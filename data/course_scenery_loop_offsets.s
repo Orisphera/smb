@@ -1,5 +1,5 @@
 .if	.defined(VS)
-	.segment "COURSEDATA"
+	.segment "CHR1DATA"
 .endif
 	.export course_scenery_loop_offsets 
 course_scenery_loop_offsets:
