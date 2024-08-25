@@ -17,12 +17,14 @@ UNK_I = 1
 
 	.if	.defined(SMB2)
 		data4_start		= $C2B4
-		course_descriptor_get	= $C2B4
-		course_load		= $C2C3
 		courses_world_offsets	= $C357
 		courses_area_offsets	= $C360
 		course_scenery_loop_offsets = $C388
+		course_actor_pages	= $C394
+		course_actor_addr_lo	= $C398
 		sub_C3D6		= $C3D6
+		course_scenery_pages	= $C400
+		course_scenery_addr_lo	= $C404
 		sub_C46E		= $C46E
 
 		data2_start		= $C470
@@ -75,12 +77,14 @@ UNK_I = 1
 
 	.if	.defined(ANN)
 		data4_start		= $C296
-		course_descriptor_get	= $C296
-		course_load		= $C2A5
 		courses_world_offsets	= $C339
 		courses_area_offsets	= $C341
 		course_scenery_loop_offsets = $C365
+		course_actor_pages	= $C36F
+		course_actor_addr_lo	= $C373
 		sub_C3D6		= $C3B7
+		course_scenery_pages	= $C3CD
+		course_scenery_addr_lo	= $C3D1
 		sub_C46E		= $C42B
 
 		data2_start		= $C470

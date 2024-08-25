@@ -281,7 +281,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
-			src/game/course_base.o \
+			$(COURSES_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -315,7 +315,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
-			src/game/course_base.o \
+			$(COURSES_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

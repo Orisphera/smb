@@ -6,16 +6,21 @@
 
 .include	"engine/unk.i"
 
-.if	.defined(CONS)
+.if	.defined(SMB)
 .define	COURSE_ACTOR_DATA_ADDR_LO	course_actor_addr_lo,y
 .define COURSE_ACTOR_DATA_ADDR_HI	course_actor_addr_hi,y
 .define COURSE_SCENERY_DATA_ADDR_LO	course_scenery_addr_lo,y
 .define COURSE_SCENERY_DATA_ADDR_HI	course_scenery_addr_hi,y
-.elseif	.defined(VS)
+.elseif	.defined(VS_SMB)
 .define COURSE_ACTOR_DATA_ADDR_LO	#<vs_actor_data
 .define COURSE_ACTOR_DATA_ADDR_HI	#>vs_actor_data
 .define COURSE_SCENERY_DATA_ADDR_LO	#<vs_scenery_data
 .define COURSE_SCENERY_DATA_ADDR_HI	#>vs_scenery_data
+.elseif	.defined(SMB2M)
+.define	COURSE_ACTOR_DATA_ADDR_LO	course_actor_addr_lo,y
+.define COURSE_ACTOR_DATA_ADDR_HI	course_actor_addr_lo+1,y
+.define COURSE_SCENERY_DATA_ADDR_LO	course_scenery_addr_lo,y
+.define COURSE_SCENERY_DATA_ADDR_HI	course_scenery_addr_lo+1,y
 .endif
 
 ; ------------------------------------------------------------
@@ -64,7 +69,7 @@ course_load:
 	lda	course_actor_pages, y
 	clc
 	adc	course_page_offset
-	.if	.defined(VS_SMB)
+	.if	.defined(VS_SMB)|.defined(SMB2M)
 		asl	a
 	.endif
 	tay
@@ -88,16 +93,23 @@ course_load:
 		; }
 	.endif
 
-	lda	COURSE_ACTOR_DATA_ADDR_LO
-	sta	course_actor_addr
-	lda	COURSE_ACTOR_DATA_ADDR_HI
-	sta	course_actor_addr+1
+	.if	.defined(SMB)|.defined(VS_SMB)
+		lda	COURSE_ACTOR_DATA_ADDR_LO
+		sta	course_actor_addr
+		lda	COURSE_ACTOR_DATA_ADDR_HI
+		sta	course_actor_addr+1
+	.elseif	.defined(SMB2M)
+		lda	COURSE_ACTOR_DATA_ADDR_HI
+		sta	course_actor_addr+1
+		lda	COURSE_ACTOR_DATA_ADDR_LO
+		sta	course_actor_addr
+	.endif
 
 	ldy	course_type
 	lda	course_scenery_pages, y
 	clc
 	adc	course_page_offset
-	.if	.defined(VS_SMB)
+	.if	.defined(VS_SMB)|.defined(SMB2M)
 		asl	a
 	.endif
 	tay
@@ -121,10 +133,17 @@ course_load:
 		; }
 	.endif
 
-	lda	COURSE_SCENERY_DATA_ADDR_LO
-	sta	course_scenery_addr
-	lda	COURSE_SCENERY_DATA_ADDR_HI
-	sta	course_scenery_addr+1
+	.if	.defined(SMB)|.defined(VS_SMB)
+		lda	COURSE_SCENERY_DATA_ADDR_LO
+		sta	course_scenery_addr
+		lda	COURSE_SCENERY_DATA_ADDR_HI
+		sta	course_scenery_addr+1
+	.elseif	.defined(SMB2M)
+		lda	COURSE_SCENERY_DATA_ADDR_HI
+		sta	course_scenery_addr+1
+		lda	COURSE_SCENERY_DATA_ADDR_LO
+		sta	course_scenery_addr
+	.endif
 
 	ldy	#0
 	lda	(course_scenery_addr), y
