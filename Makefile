@@ -95,6 +95,8 @@ LIB_OBJS	=	src/game/victory.o \
 			data/nmi_data.o \
 			src/lib/misc.o
 
+LIB_VS_OBJS	=	src/lib/vs.o
+
 GAME_OBJS	=	src/game/init.o \
 			src/game/gameover.o \
 			src/game/bg.o
@@ -177,15 +179,19 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/player_render.o \
 			src/obj/lib_bits.o
 
-FDS_LIB_OBJS	=	src/lib/disk.o \
+LIB_FDS_OBJS	=	src/lib/disk.o \
 			src/game/fds_gameover.o \
 			src/lib/player_phys.o
 
 TITLE_MAP_OBJS	=	data/title_map.o
 
+VS_PPU_OBJS	=	data/vs_ppu_data.o
+
 SECURITY_OBJS	=	data/security.o
 
-SAVE_OBJS	=	data/save.o
+SAVE_VS_OBJS	=	data/save.vs.o
+
+SAVE_FDS_OBJS	=	data/save.fds.o
 
 HEADER_FC	=	data/header.fc.bin
 HEADER_VS	=	data/header.vs.bin
@@ -212,7 +218,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(LIB_OBJS) \
-			src/lib/vs.o \
+			$(LIB_VS_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSES_OBJS) \
 			$(MAIN_OBJ) \
@@ -223,7 +229,8 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 CHR_OBJS_VS	=	data/chr.o \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSE_DATA_OBJS) \
-			data/chr2.vs.o \
+			$(VS_PPU_OBJS) \
+			$(SAVE_VS_OBJS) \
 			$(TITLE_MAP_OBJS)
 
 OBJS_VS		=	$(PRG_OBJS_VS) \
@@ -263,14 +270,14 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
-			$(FDS_LIB_OBJS) \
+			$(LIB_FDS_OBJS) \
 			src/game/course_base.o \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
 			data/data4.smb2.o \
 			$(SECURITY_OBJS) \
-			$(SAVE_OBJS)
+			$(SAVE_FDS_OBJS)
 
 CHR_OBJS_SMB2	=	data/chr.o \
 			data/chr2.smb2.o
@@ -297,14 +304,14 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
-			$(FDS_LIB_OBJS) \
+			$(LIB_FDS_OBJS) \
 			src/game/course_base.o \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \
 			data/data4.ann.o \
 			$(SECURITY_OBJS) \
-			$(SAVE_OBJS)
+			$(SAVE_FDS_OBJS)
 
 CHR_OBJS_ANN	=	data/chr.o \
 			data/chr2.ann.o

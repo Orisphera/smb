@@ -129,22 +129,22 @@ start:
 
 		lda     #vs_req::chr_high|vs_req::irq_rel
 		sta     VS_REQ
-		lda     #>(VS_SAVEDAT_ADDR)
-		sta     PPU_VRAM_AR
-		lda     #<(VS_SAVEDAT_ADDR)
-		sta     PPU_VRAM_AR
-		lda     PPU_VRAM_IO
-		ldy     #(VS_SAVEDAT-VS_RAM_ARENA0)
-		: ; for (y = 0x74; y < 0x100, y++) {
+			lda     #>vs_save_data
+			sta     PPU_VRAM_AR
+			lda     #<vs_save_data
+			sta     PPU_VRAM_AR
 			lda     PPU_VRAM_IO
-			sta     VS_RAM_ARENA0, y
-
-			iny
-			bne     :-
-		; }
-
+			ldy     #(VS_SAVEDAT-VS_RAM_ARENA0)
+			: ; for (y = 0x74; y < 0x100, y++) {
+				lda     PPU_VRAM_IO
+				sta     VS_RAM_ARENA0, y
+	
+				iny
+				bne     :-
+			; }
 		lda     #vs_req::chr_low|vs_req::irq_rel
 		sta     VS_REQ
+
 		ldy     #(eng_score_end-eng_score)-1
 		: ; for (byte of score) {
 			lda     VS_SAVEDAT_SCORE, y

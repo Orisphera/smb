@@ -155,6 +155,9 @@ CHR_I = 1
 		coral_b		= <((tile_bg_coral_b-chr_bg)/PPU_TILE_SIZE)
 		.if	.defined(VS_SMB)
 			sign_text_vs	= <((tile_bg_sign_text_vs-chr_bg)/PPU_TILE_SIZE)
+			window_button	= <((tile_bg_window_button-chr_bg)/PPU_TILE_SIZE)
+			window_rub	= <((tile_bg_window_rub-chr_bg)/PPU_TILE_SIZE)
+			window_end	= <((tile_bg_window_end-chr_bg)/PPU_TILE_SIZE)
 		.endif
 	.endenum
 

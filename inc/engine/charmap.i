@@ -50,5 +50,8 @@ CHARMAP_I = 1
 	; NOTE: This is the copyright icon in the
 	;   stock art set
 	.charmap	'c', ENG_FONT_TILE_BASE+$CF
+	.if	.defined(VS_SMB)
+	.charmap	$27, ENG_FONT_TILE_BASE+$FA
+	.endif
 
 .endif	; CHARMAP_I

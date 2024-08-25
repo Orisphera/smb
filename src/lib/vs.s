@@ -302,7 +302,7 @@ sub_942C:
 ; ----------------------------
 sub_943E:
 	jsr	nt_init
-	ldy	#vschar1_bg_data::data_1
+	ldy	#vschar1_bg_data::player_select
 	jsr	screen_vschar1_load
 	lda	#0
 	sta	VS_RAM_ARENA0+$27
@@ -454,7 +454,7 @@ sub_953B:
 			jmp	:++
 		: cmp	#1
 		bne	:++ ; } else {
-			ldy	#vschar1_bg_data::data_7
+			ldy	#vschar1_bg_data::super_players
 			jsr	screen_vschar1_load
 		: ; }
 

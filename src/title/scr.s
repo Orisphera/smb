@@ -12,37 +12,29 @@
 .endif
 
 SCREEN_TITLE_BG_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
-
+; -----------------------------------------------------------
 screen_title_bg_nmi_addr	= zp_addr_00
 
 .if	.defined(VS)
-SCREEN_TITLE_BG_ADDR_1	= $1A00
-SCREEN_TITLE_BG_ADDR_2	= $1A60
-SCREEN_TITLE_BG_ADDR_3	= $1AC0
-SCREEN_TITLE_BG_ADDR_4	= $1B10
-SCREEN_TITLE_BG_ADDR_5	= $1B80
-SCREEN_TITLE_BG_ADDR_6	= $1C00
-SCREEN_TITLE_BG_ADDR_7	= $1C80
-; -----------------------------------------------------------
 screen_title_bg_addr_hi:
 	.byte	>title_map
-	.byte	>(SCREEN_TITLE_BG_ADDR_1)
-	.byte	>(SCREEN_TITLE_BG_ADDR_2)
-	.byte	>(SCREEN_TITLE_BG_ADDR_3)
-	.byte	>(SCREEN_TITLE_BG_ADDR_4)
-	.byte	>(SCREEN_TITLE_BG_ADDR_5)
-	.byte	>(SCREEN_TITLE_BG_ADDR_6)
-	.byte	>(SCREEN_TITLE_BG_ADDR_7)
+	.byte	>vs_player_select_bg
+	.byte	>vs_name_register_bg
+	.byte	>vs_stats_bg
+	.byte	>vs_box_bg
+	.byte	>vs_insert_coin_bg
+	.byte	>vs_continue_bg
+	.byte	>vs_super_players_bg
 
 screen_title_bg_addr_lo:
 	.byte	<title_map
-	.byte	<(SCREEN_TITLE_BG_ADDR_1)
-	.byte	<(SCREEN_TITLE_BG_ADDR_2)
-	.byte	<(SCREEN_TITLE_BG_ADDR_3)
-	.byte	<(SCREEN_TITLE_BG_ADDR_4)
-	.byte	<(SCREEN_TITLE_BG_ADDR_5)
-	.byte	<(SCREEN_TITLE_BG_ADDR_6)
-	.byte	<(SCREEN_TITLE_BG_ADDR_7)
+	.byte	<vs_player_select_bg
+	.byte	<vs_name_register_bg
+	.byte	<vs_stats_bg
+	.byte	<vs_box_bg
+	.byte	<vs_insert_coin_bg
+	.byte	<vs_continue_bg
+	.byte	<vs_super_players_bg
 .endif
 ; -----------------------------
 screen_title_bg:

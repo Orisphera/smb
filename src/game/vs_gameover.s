@@ -267,15 +267,15 @@ sub_9A4E:
         : ; } else if (vs_ram_arena0[0x22].in(1, 2, 3)) {
                 cmp	#1
                 bne	:+ ; if (vs_ram_arena0[0x22] == 1) {
-                        ldy	#vschar1_bg_data::data_4
+                        ldy	#vschar1_bg_data::box
                         jmp	:+++
                 : cmp	#2
                 bne	:+ ; } else if (vs_ram_arena0[0x22] == 2) {
-                        ldy	#vschar1_bg_data::data_2
+                        ldy	#vschar1_bg_data::name_register
                         jmp	:++
                 : cmp	#3
                 bne	:++ ; } else {
-                        ldy	#vschar1_bg_data::data_3
+                        ldy	#vschar1_bg_data::stats
                 : ; }
                 jsr	screen_vschar1_load
                 inc	VS_RAM_ARENA0+$22
@@ -1029,7 +1029,7 @@ sub_9F3B:
 		jmp	sub_9F24
 	: cmp	#3
 	bne	:+ ; case 3: 
-		ldy	#vschar1_bg_data::data_5
+		ldy	#vschar1_bg_data::insert_coin
 		jsr	screen_vschar1_load
 		inc	VS_RAM_ARENA0+$22
 		rts
@@ -1094,7 +1094,7 @@ sub_9FC1:
 		inc	VS_RAM_ARENA0+$18
 		rts
 	: ; else if () {
-		ldy	#vschar1_bg_data::data_6
+		ldy	#vschar1_bg_data::continue
 		jsr	screen_vschar1_load
 		jsr	sub_9DF7
 		lda	#0

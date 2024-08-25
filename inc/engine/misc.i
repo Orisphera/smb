@@ -528,13 +528,13 @@ COL_BOX_SIZE	= 4
 
 	.enum	vschar1_bg_data
 		map_title
-		data_1
-		data_2
-		data_3
-		data_4
-		data_5
-		data_6
-		data_7
+		player_select
+		name_register
+		stats
+		box
+		insert_coin
+		continue
+		super_players
 	.endenum
 
 	.endif	; MISC_I

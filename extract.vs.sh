@@ -24,7 +24,7 @@ BG_BANK=256
 
 # CHR bank 00
 BANKBASE=32784
-BANKLEN=8192
+BANKLEN=8176
 TILES=`expr $BANKLEN / $TILE_SIZE`
 
 TILE_ONEUP_LEFT=253
@@ -69,6 +69,3 @@ do
         dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
-
-# CHR bank 01
-dd if=$1 bs=1 skip=47632 count=1184 >data/chr2.vs.bin
