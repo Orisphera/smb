@@ -6,7 +6,7 @@
 	TITLE_NMI_BUFFER_END	= ppu_nmi_buffer_title_end
 	TITLE_NMI_ADDR		= ppu_nmi_buffer
 .elseif	.defined(VS)
-	LARGEST_DATA_SIZE	= $15A
+	LARGEST_DATA_SIZE	= (title_map_end-title_map+29)
 	TITLE_NMI_BUFFER_END	= vs_ppu_nmi_buffer_end
 	TITLE_NMI_ADDR		= vs_ppu_nmi_buffer
 .endif
