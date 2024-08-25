@@ -60,25 +60,19 @@ vs_read_dips:
 	rts
 ; -----------------------------------------------------------
 vs_text_credit_count:
-	.byte	vs_text_credit_count_string_end-vs_text_credit_count_start
-vs_text_credit_count_start:
-	.dbyt	PPU_VRAM_BG1+$394
-	.byte	vs_text_credit_count_string_end-vs_text_credit_count_string_start
-vs_text_credit_count_string_start:
-	.byte	"CREDIT 00"
-vs_text_credit_count_string_end:
-	.byte	NMI_DATA_END
+	.byte	(:+++)-(:+)
+	: .dbyt	PPU_VRAM_BG1+$394
+	.byte	(:++)-(:+)
+	: .byte	"CREDIT 00"
+	: .byte	NMI_DATA_END
 vs_text_credit_count_end:
 
 vs_text_free_play:
-	.byte	vs_text_free_play_string_end-vs_text_free_play_start
-vs_text_free_play_start:
-	.dbyt	PPU_VRAM_BG1+$394
-	.byte	vs_text_free_play_string_end-vs_text_free_play_string_start
-vs_text_free_play_string_start:
-	.byte	"FREE PLAY"
-vs_text_free_play_string_end:
-	.byte	NMI_DATA_END
+	.byte	(:+++)-(:+)
+	: .dbyt	PPU_VRAM_BG1+$394
+	.byte	(:++)-(:+)
+	: .byte	"FREE PLAY"
+	: .byte	NMI_DATA_END
 vs_text_free_play_end:
 ; ----------------------------
 	.export	vs_disp_credit_msg

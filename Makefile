@@ -106,6 +106,10 @@ COURSE_LOOP_OBJS =	data/course_scenery_loop_offsets.o
 COURSES_OBJS	=	src/game/course_base.o \
 			src/game/course_loader.o
 
+COURSE_SEQ_OBJS	=	data/course_seq.o
+
+COURSE_PTR_OBJS	=	data/course_ptrs.o
+
 COURSE_DATA_OBJS =	data/course_data.o
 
 MAIN_OBJ	=	src/game/main.o
@@ -203,6 +207,8 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
+			$(COURSE_SEQ_OBJS) \
+			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
@@ -221,6 +227,8 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(LIB_VS_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSES_OBJS) \
+			$(COURSE_SEQ_OBJS) \
+			$(COURSE_PTR_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
@@ -242,6 +250,8 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSES_OBJS) \
+			$(COURSE_SEQ_OBJS) \
+			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \

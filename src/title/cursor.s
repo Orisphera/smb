@@ -6,15 +6,14 @@
 .if	.defined(CONS)
 ; -----------------------------------------------------------
 title_cursor_data:
-	.byte   title_cursor_data_end-title_cursor_data_start
-title_cursor_data_start:
-        .dbyt   PPU_VRAM_BG1+$249
-	.byte	NMI_INC_ROW|(title_cursor_data_string_end-title_cursor_data_string_start)
-title_cursor_data_string_start:
-	.byte	tile_bg::cursor
-	.byte	"  "
-title_cursor_data_string_end:
-	.byte	NMI_DATA_END
+	.byte   (:++++)-(:+)
+        : .dbyt   PPU_VRAM_BG1+$249
+	.byte	NMI_INC_ROW|((:++)-(:+))
+	: .byte	tile_bg::cursor
+	.byte	" "
+	.byte	" "
+	: .byte	NMI_DATA_END
+	:
 title_cursor_data_end:
 ; ----------------------------
 	.export title_cursor_draw

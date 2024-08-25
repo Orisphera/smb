@@ -47,13 +47,12 @@ eng_title:
 	.endif
 ; -----------------------------------------------------------
 title_course_no:
-	.byte	title_course_no_data_end-title_course_no_data_start
-title_course_no_data_start:
-	.dbyt	PPU_VRAM_BG1+$73
-	.byte	title_course_no_data_end-title_course_no_start
-title_course_no_start:
-	.byte	"0"
-title_course_no_data_end:
+	.byte	(:+++)-(:+)
+	: .dbyt	PPU_VRAM_BG1+$73
+	.byte	(:++)-(:+)
+	: .byte	"0"
+	:
+
 	.byte	NMI_DATA_END
 title_course_no_end:
 ; ----------------------------

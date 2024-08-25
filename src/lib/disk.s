@@ -270,15 +270,12 @@ fileptr_filetbl:
 
 	rts
 ; ------------------------------------------------------------
-
 	.export	disk_perror_pal
 disk_perror_pal:
 	.dbyt	PPU_VRAM_COLOR
-	.byte	disk_perror_pal_end-disk_perror_pal_start
-disk_perror_pal_start:
-	.byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3, PPU_COLOR_GREY3, PPU_COLOR_PITCH0
-disk_perror_pal_end:
-	.byte	0
+	.byte	((:++)-(:+))
+	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3, PPU_COLOR_GREY3, PPU_COLOR_PITCH0
+	: .byte	NMI_DATA_END
 ; ------------------------------------------------------------
 disk_loader_prompt:
 	lda	#ppu_ctlr1::objblk_on|ppu_ctlr1::bgblk_on|ppu_ctlr1::objlblk_on|ppu_ctlr1::bglblk_on|ppu_ctlr1::color
