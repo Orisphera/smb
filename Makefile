@@ -103,6 +103,8 @@ GAME_OBJS	=	src/game/init.o \
 
 COURSE_LOOP_OBJS =	data/course_scenery_loop_offsets.o
 
+COURSE_LOOP_SMB2_OBJS =	data/course_scenery_loop_offsets.smb2.o
+
 COURSES_OBJS	=	src/game/course_base.o \
 			src/game/course_loader.o
 
@@ -285,6 +287,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(LIB_FDS_OBJS) \
 			$(COURSES_OBJS) \
 			$(COURSE_SEQ_SMB2_OBJS) \
+			$(COURSE_LOOP_SMB2_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -320,6 +323,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(LIB_FDS_OBJS) \
 			$(COURSES_OBJS) \
 			$(COURSE_SEQ_OBJS) \
+			$(COURSE_LOOP_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

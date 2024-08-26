@@ -201,7 +201,7 @@ do
 done
 
 # SM2MAIN
-dd if=$1 bs=1 skip=34102 count=7282 >data/prg.smb2.bin
+dd if=$1 bs=1 skip=34114 count=7270 >data/prg.smb2.bin
 
 # SM2DATA2
 dd if=$1 bs=1 skip=41407 count=3631 >data/data2.smb2.bin
