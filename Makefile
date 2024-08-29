@@ -114,6 +114,8 @@ COURSE_SEQ_SMB2_OBJS =	data/course_seq.smb2.o
 
 COURSE_PTR_OBJS	=	data/course_ptrs.o
 
+COURSE_PTR_SMB2_OBJS =	data/course_ptrs.smb2.o
+
 COURSE_DATA_OBJS =	data/course_data.o
 
 MAIN_OBJ	=	src/game/main.o
@@ -288,6 +290,8 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(COURSES_OBJS) \
 			$(COURSE_SEQ_SMB2_OBJS) \
 			$(COURSE_LOOP_SMB2_OBJS) \
+			$(COURSE_PTR_SMB2_OBJS) \
+			$(TITLE_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -324,6 +328,8 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(COURSES_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_LOOP_OBJS) \
+			$(COURSE_PTR_OBJS) \
+			$(TITLE_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

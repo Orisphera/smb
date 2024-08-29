@@ -150,7 +150,7 @@ SMB2M_NMI_TIMER	= $1658
 			.addr	(disk_text_error_buffer)
 			.addr	(disk_perror_pal)
 			.addr	(data_C95C)
-			.addr	(data_C511)
+			.addr	(title_cursor_data)
 			.addr	(data_C97D)
 			.addr	(data_C9C0)
 	.endif

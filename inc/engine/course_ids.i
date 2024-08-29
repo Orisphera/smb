@@ -15,6 +15,10 @@ COURSE_IDS_I = 1
 		.elseif	.defined(ANN)
 			no_04_ann
 		.endif
+
+		.if	.defined(ANN)
+			no_05_ann
+		.endif
 	.endenum
 
 	.enum	course_water_smb2
@@ -55,9 +59,9 @@ COURSE_IDS_I = 1
 		no_19
 		no_20
 		no_21
-		.if	.defined(SMB)
+		.if	.defined(SMBM)
 			no_22
-		.elseif	.defined(VS_SMB)|.defined(ANN)
+		.elseif	.defined(VS_SMB)
 			no_22_vs
 		.endif
 
@@ -70,7 +74,7 @@ COURSE_IDS_I = 1
 		.endif
 
 		.if	.defined(ANN)
-			no_25_ann
+			no_28_smb2
 			no_26_ann
 			no_27_ann
 			no_28_ann
@@ -106,12 +110,17 @@ COURSE_IDS_I = 1
 		no_26
 		no_27
 		no_28
+		no_29
 	.endenum
 
 	.enum	course_underground
 		no_01
 		no_02
 		no_03
+
+		.if	.defined(ANN)
+			no_04_ann
+		.endif
 	.endenum
 
 	.enum	course_underground_smb2
@@ -119,6 +128,7 @@ COURSE_IDS_I = 1
 		no_02
 		no_03
 		no_04
+		no_05
 	.endenum
 
 	.enum	course_castle
@@ -156,6 +166,7 @@ COURSE_IDS_I = 1
 		no_07
 		no_08
 		no_09
+		no_10
 	.endenum
 
 .endif	; COURSE_IDS_I

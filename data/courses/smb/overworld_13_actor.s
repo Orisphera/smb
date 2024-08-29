@@ -26,4 +26,10 @@ course_actor_overworld_13:
 
 	.word	(COURSE_ACTORS_TYPE_F|COURSE_ACTORS_POS_X_0|COURSE_ACTORS_PAGE_LOC_08)
 	.word	(COURSE_ACTORS_POS_Y_5|COURSE_ACTORS_POS_X_8|COURSE_ACTORS_ID_PLAT_STD_V)
+
+; NOTE: used as empty actor list by ANN
+.if	.defined(ANN)
+	.export course_actor_overworld_16
+course_actor_overworld_16:
+.endif
 	.byte	COURSE_ACTORS_END

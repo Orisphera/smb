@@ -1,5 +1,7 @@
 .include	"engine/course_flags.i"
 
+	.export course_scenery_overworld_21_smb2
+course_scenery_overworld_21_smb2:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_0|COURSE_TIMER_SETTING_0|COURSE_SCENERY_ENTER_POS_B0_A|COURSE_SCENERY_FG_NONE)
 
 	.word	(COURSE_SCENERY_POS_Y_B|COURSE_SCENERY_POS_X_0|COURSE_OBJ_LEDGE|COURSE_OBJ_DIM_4)

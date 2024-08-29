@@ -30,4 +30,9 @@ course_actor_overworld_22:
 	.word	(COURSE_ACTORS_POS_Y_B|COURSE_ACTORS_POS_X_6|COURSE_ACTORS_NEW_PAGE|COURSE_ACTORS_ID_GOOMBA_DUO_LO)
 	.word	(COURSE_ACTORS_POS_Y_B|COURSE_ACTORS_POS_X_F|COURSE_ACTORS_ID_GOOMBA_DUO_LO)
 
+; NOTE: used as empty actor list by ANN
+.if	.defined(ANN)
+	.export course_actor_overworld_22_end
+course_actor_overworld_22_end:
+.endif
 	.byte	COURSE_ACTORS_END

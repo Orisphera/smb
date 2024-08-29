@@ -3,6 +3,7 @@
 
 ; -----------------------------------------------------------
 title_demo_buttons:
+.if	.defined(SMB)|.defined(VS_SMB)
 	.byte	joypad_button::right
 	.byte	joypad_button::face_a
 	.byte	joypad_button::left
@@ -23,9 +24,49 @@ title_demo_buttons:
 	.byte	joypad_button::right
 	.byte	joypad_button::left
 	.byte	joypad_button::face_a
-	.byte	0
+	.byte	joypad_button::none
+.elseif	.defined(SMB2)
+	.byte	joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::left
+	.byte	joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::none
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::none
+	.byte	joypad_button::face_a
+	.byte	joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::right
+	.byte	joypad_button::none
+.elseif	.defined(ANN)
+	.byte	joypad_button::right
+	.byte	joypad_button::none
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::face_b|joypad_button::left
+	.byte	joypad_button::face_a|joypad_button::face_b|joypad_button::left
+	.byte	joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::right
+	.byte	joypad_button::none
+	.byte	joypad_button::face_a|joypad_button::face_b|joypad_button::right
+	.byte	joypad_button::face_b|joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::face_b|joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::face_b|joypad_button::left
+	.byte	joypad_button::face_b|joypad_button::right
+	.byte	joypad_button::face_a|joypad_button::face_b|joypad_button::right
+	.byte	joypad_button::face_b|joypad_button::left
+	.byte	joypad_button::face_a|joypad_button::face_b|joypad_button::left
+	.byte	joypad_button::none
+.endif
 
 title_demo_timers:
+.if	.defined(SMB)|.defined(VS_SMB)
 	.byte	$9B
 	.byte	$10
 	.byte	$18
@@ -48,6 +89,47 @@ title_demo_timers:
 	.byte	$01
 	.byte	$FF
 	.byte	$00
+.elseif	.defined(SMB2)
+	.byte	$B0
+	.byte	$10
+	.byte	$10
+	.byte	$10
+	.byte	$28
+	.byte	$10
+	.byte	$28
+	.byte	$06
+	.byte	$10
+	.byte	$10
+	.byte	$0C
+	.byte	$80
+	.byte	$10
+	.byte	$28
+	.byte	$08
+	.byte	$90
+	.byte	$FF
+	.byte	$00
+.elseif	.defined(ANN)
+	.byte	$90
+	.byte	$70
+	.byte	$40
+	.byte	$18
+	.byte	$20
+	.byte	$10
+	.byte	$2C
+	.byte	$10
+	.byte	$1C
+	.byte	$70
+	.byte	$78
+	.byte	$08
+	.byte	$40
+	.byte	$20
+	.byte	$20
+	.byte	$40
+	.byte	$40
+	.byte	$20
+	.byte	$B0
+	.byte	$00
+.endif
 ; ----------------------------
 	.export title_demo
 title_demo:

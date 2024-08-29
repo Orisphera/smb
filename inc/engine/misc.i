@@ -283,7 +283,7 @@ COL_BOX_SIZE	= 4
 			disk_text_error_buffer
 			disk_perror_pal
 			addr_C95C
-			addr_C511
+			title_cursor_data
 			addr_C97D
 			addr_C9C0
 		.endif

@@ -21,7 +21,7 @@ disk_loader:
 
 	.addr	screen_proc
 	.addr	sub_C5DB
-	.addr	sub_C46E
+	.addr	title_proc
 	.addr	disk_loader_data4
 ; ------------------------------------------------------------
 disk_loader_data4:

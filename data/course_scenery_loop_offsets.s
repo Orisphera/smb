@@ -8,6 +8,6 @@ course_scenery_loop_offsets:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	10, 38, 64
 	.elseif	.defined(ANN)
-		.byte	12, 84, 40
+		.byte	12, 84
 	.endif
 

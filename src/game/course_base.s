@@ -5,25 +5,20 @@
 .include	"engine/unk.i"
 
 .if	.defined(SMB2M)
-.if	.defined(SMB2)
-course_actor_overworld_28:
-.endif
-course_actor_overworld_21:
 	.include	"../../data/courses/smb/overworld_10_actor.s"
 
 .if	.defined(SMB2)
-course_scenery_overworld_28:
 	.include	"../../data/courses/smb2/overworld_28_scenery.s"
 .endif
 
 	.include	"../../data/courses/smb/overworld_10_scenery.s"
 
-course_scenery_overworld_21:
-	.if	.defined(SMB2)
-		.include	"../../data/courses/smb2/overworld_21_scenery.s"
-	.elseif	.defined(ANN)
-		.include	"../../data/courses/smb2/overworld_28_scenery.s"
-	.endif
+.if	.defined(SMB2)
+	.include	"../../data/courses/smb2/overworld_21_scenery.s"
+.elseif	.defined(ANN)
+	.include	"../../data/courses/smb2/overworld_28_scenery.s"
+.endif
+
 .endif
 ; -----------------------------------------------------------
 	.export	course_descriptor_load, course_type_get

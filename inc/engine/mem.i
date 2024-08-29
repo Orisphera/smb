@@ -471,6 +471,7 @@ eng_score_end		= $7DD
 eng_stats		= $7DD
 byte_7E7		= $7E7
 byte_7E8		= $7E8
+eng_stats_end_b		= $7E9
 eng_timer_disp_b	= $7EC
 eng_stats_end		= $7F5
 byte_7F6		= $7F6
