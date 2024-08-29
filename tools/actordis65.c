@@ -159,7 +159,7 @@ static char *names[] = {
 	"04",
 	"HAMMER_BRO",
 	"GOOMBA",
-	"BLOOBER",
+	"BLOOPER",
 	"BULLET_SWARM",
 	"09",
 	"CHEEP_GREY",
