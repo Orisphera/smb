@@ -88,6 +88,10 @@ TITLE_OBJS	=	src/title/base.o \
 			src/title/cursor.o \
 			src/title/demo.o
 
+TITLE_SCR_OBJS	=	src/title/scr.o
+
+TITLE_INIT_OBJS	=	src/title/init.o
+
 LIB_OBJS	=	src/game/victory.o \
 			src/lib/screen.o \
 			src/lib/gfx.o \
@@ -292,6 +296,8 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(COURSE_LOOP_SMB2_OBJS) \
 			$(COURSE_PTR_SMB2_OBJS) \
 			$(TITLE_OBJS) \
+			$(TITLE_SCR_OBJS) \
+			$(TITLE_INIT_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -330,6 +336,8 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(TITLE_OBJS) \
+			$(TITLE_SCR_OBJS) \
+			$(TITLE_INIT_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

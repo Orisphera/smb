@@ -103,6 +103,7 @@ screen_color_bg_data_overworld:
 screen_color_bg_data_underground:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
 
+	.export screen_color_player_data
 screen_color_player_data:
 screen_color_player_1:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_RED1, PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1

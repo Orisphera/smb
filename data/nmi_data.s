@@ -105,11 +105,15 @@ palette_koopa_end:
 	.byte	NMI_DATA_END
 
 	.export msg_thankyou_mario
+	.export msg_thankyou_player_name
 msg_thankyou_mario:
 	.dbyt	PPU_VRAM_BG2+$148
 	.byte	msg_thankyou_mario_end-msg_thankyou_mario_start
 msg_thankyou_mario_start:
-	.byte	"THANK YOU MARIO!"
+	.byte	"THANK YOU "
+msg_thankyou_player_name:
+	.byte	"MARIO"
+	.byte	"!"
 msg_thankyou_mario_end:
 	.byte	NMI_DATA_END
 

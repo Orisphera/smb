@@ -259,7 +259,7 @@ title_proc:
 			.elseif	.defined(SMB2M)
 				inc	eng_gameplay_mode
 
-				jsr	sub_C5BA
+				jsr	title_patch_player
 
 				lda	#course::no_01
 				sta	course_no

@@ -159,6 +159,9 @@ CHR_I = 1
 			window_rub	= <((tile_bg_window_rub-chr_bg)/PPU_TILE_SIZE)
 			window_end	= <((tile_bg_window_end-chr_bg)/PPU_TILE_SIZE)
 		.endif
+		.if	.defined(SMB2M)
+		star_title		= <((tile_bg_star_title-chr_bg)/PPU_TILE_SIZE)
+		.endif
 	.endenum
 
 .endif	; CHR_I

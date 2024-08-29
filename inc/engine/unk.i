@@ -16,12 +16,7 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		title_cursor_draw	= $C51B
-		title_demo		= $C553
-		screen_title_cursor	= $C573
-		screen_title_score	= $C58A
-		sub_C5BA		= $C5FF
-
+		title_map	= $C62B
 		course_actor_castle_1_smb2	= $C790
 		course_actor_castle_2_smb2	= $C7AF
 		course_actor_castle_3_smb2	= $C7D6
@@ -62,7 +57,8 @@ UNK_I = 1
 		course_scenery_underground_3_smb2	= $D11D
 		course_scenery_water_1_smb2	= $D168
 		course_scenery_water_3_smb2	= $D21B
-
+		apu_cycle		= $D2A0
+		; ---
 		data4_start		= $C2B4
 		sub_C3D6		= $C3D6
 
@@ -140,13 +136,11 @@ UNK_I = 1
 		sub_C4C0		= $C4C0
 		sub_C4FE		= $C4FE
 		sub_C550		= $C550
-		sub_C592		= $C592
 		bg_scenery_C5BE		= $C5BE
 		bg_scenery_C5C2		= $C5C2
 
 		data3_start		= $C5D0
 		sub_C5D0		= $C5D0
-		sub_C5DB		= $C5DB
 		sub_C5FE		= $C5FE
 		data_C62B		= $C62B
 		sub_C642		= $C642
@@ -175,17 +169,10 @@ UNK_I = 1
 
 		data2_end		= $D29F
 		data3_end		= $D29F
-
-		apu_cycle		= $D2A0
 	.endif
 
 	.if	.defined(ANN)
-		title_cursor_draw	= $C4D5
-		title_demo		= $C511
-		screen_title_cursor	= $C531
-		screen_title_score	= $C548
-		sub_C5BA		= $C5BA
-
+		title_map	= $C5E6
 		course_actor_castle_1	= $C745
 		course_actor_castle_2	= $C762
 		course_actor_castle_3	= $C77B
@@ -228,7 +215,8 @@ UNK_I = 1
 		course_scenery_underground_2 = $CF91
 		course_scenery_underground_3 = $D036
 		course_scenery_water_2 = $D0C3
-
+		apu_cycle		= $D2E5
+		; ---
 		data4_start		= $C296
 		sub_C3D6		= $C3B7
 		course_actor_castle_7_ann = $C5D0
@@ -280,8 +268,6 @@ UNK_I = 1
 		sub_C4C0		= $C4C0
 		sub_C4FE_b		= $C4FE
 		sub_C50C		= $C50C
-		sub_C592		= $C550
-		sub_C5DB		= $C596
 
 		data3_start		= $C5D0
 		sub_C5FE		= $C5D0
@@ -314,8 +300,6 @@ UNK_I = 1
 		data_D1FE		= $D1FE
 		data_D20F		= $D20F
 		data_D25E		= $D25E
-
-		apu_cycle		= $D2E5
 	.endif
 
 .endif	; UNK_I

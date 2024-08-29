@@ -4,10 +4,12 @@
 .include	"engine/tunables.i"
 
 	.export screen_text
+	.export screen_text_header_player_name
 screen_text:
 screen_text_header:
 	.dbyt	PPU_VRAM_BG1+$43
 	.byte	(:++)-(:+)
+screen_text_header_player_name:
 	: .byte	"MARIO"
 	:
 

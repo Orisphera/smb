@@ -13,14 +13,14 @@ disk_loader:
 	lda	eng_gameplay_mode
 	jsr	eng_farjump
 	.addr	disk_loader_main
-	.addr	sub_C592
+	.addr	title_init_0
 	
 	.if	.defined(ANN)
 		.addr	disk_loader_gameplay_next
 	.endif
 
 	.addr	screen_proc
-	.addr	sub_C5DB
+	.addr	title_init_1
 	.addr	title_proc
 	.addr	disk_loader_data4
 ; ------------------------------------------------------------
