@@ -55,7 +55,14 @@ int main(int argc, char *argv[])
 	while ((c = getchar()) != EOF) {
 		if (c == END_CHAR) {
 			printf("\t.byte\tCOURSE_SCENERY_END\n\n");
-			continue;
+
+			if ((c = getchar()) != EOF) {
+				ungetc(c, stdin);
+				print_header();
+				continue;
+			} else {
+				break;
+			}
 		}
 
 		pos_x = (c >> 4);
