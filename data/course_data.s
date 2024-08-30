@@ -149,7 +149,11 @@
 	.include	"./courses/smb/overworld_9_scenery.s"
 
 .if	.defined(SMB)|.defined(VS_SMB)
+	.macro	OVERWORLD_10_SCENERY_A
+		1
+	.endmacro
 	.include	"./courses/smb/overworld_10_scenery.s"
+	.delmac	OVERWORLD_10_SCENERY_A
 	.include	"./courses/smb/overworld_11_scenery.s"
 .endif
 
@@ -159,12 +163,15 @@
 .if	.defined(SMB)|.defined(VS_SMB)
 	.include	"./courses/smb/overworld_14_scenery.s"
 	.include	"./courses/smb/overworld_15_scenery.s"
+.endif
+
 	.include	"./courses/smb/overworld_16_scenery.s"
 
-	.if	.defined(VS_SMB)
-		.res	4, $EA
-	.endif
+.if	.defined(VS_SMB)
+	.res	4, $EA
+.endif
 
+.if	.defined(SMB)|.defined(VS_SMB)
 	.include	"./courses/smb/overworld_17_scenery.s"
 	.include	"./courses/smb/overworld_18_scenery.s"
 	.include	"./courses/smb/overworld_19_scenery.s"
@@ -176,6 +183,14 @@
 	.include	"./courses/smb/overworld_22_scenery.s"
 .elseif	.defined(VS_SMB)
 	.include	"./courses/vs/overworld_22_scenery.s"
+.endif
+
+.if	.defined(ANN)
+	.macro	OVERWORLD_10_SCENERY_B
+		1
+	.endmacro
+	.include	"./courses/smb/overworld_10_scenery.s"
+	.delmac	OVERWORLD_10_SCENERY_B
 .endif
 
 .if	.defined(VS_SMB)

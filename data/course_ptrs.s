@@ -83,7 +83,7 @@ course_actor_pages:
 	
 	course_actor_addr_lo_water:
 		.byte	<course_actor_water_1
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			.byte	<course_actor_water_2
 		.elseif	.defined(VS_SMB)
 			.byte	<course_actor_water_2_vs
@@ -168,7 +168,7 @@ course_actor_pages:
 
 	course_actor_addr_hi_water:
 		.byte	>course_actor_water_1
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			.byte	>course_actor_water_2
 		.elseif	.defined(VS_SMB)
 			.byte	>course_actor_water_2_vs
@@ -255,7 +255,7 @@ course_actor_pages:
 
 	course_actor_addr_lo_water:
 		.addr	course_actor_water_1
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			.addr	course_actor_water_2
 		.elseif	.defined(VS_SMB)
 			.addr	course_actor_water_2_vs
@@ -285,7 +285,7 @@ course_scenery_pages:
 	course_scenery_addr_lo:
 	course_scenery_addr_lo_water:
 		.byte	<course_scenery_water_1
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			.byte	<course_scenery_water_2
 		.elseif	.defined(VS_SMB)
 			.byte	<course_scenery_water_2_vs
@@ -334,7 +334,7 @@ course_scenery_pages:
 			.byte	<course_scenery_overworld_28_smb2
 			.byte	<course_scenery_overworld_26_ann
 			.byte	<course_scenery_overworld_27_ann
-			.byte	<course_scenery_overworld_28_ann
+			.byte	<course_scenery_overworld_10_b
 		.endif
 	
 	course_scenery_addr_lo_underground:
@@ -372,7 +372,7 @@ course_scenery_pages:
 	course_scenery_addr_hi:
 	course_scenery_addr_hi_water:
 		.byte	>course_scenery_water_1
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			.byte	>course_scenery_water_2
 		.elseif	.defined(VS_SMB)
 			.byte	>course_scenery_water_2_vs
@@ -421,7 +421,7 @@ course_scenery_pages:
 			byte	>course_scenery_overworld_28_smb2
 			byte	>course_scenery_overworld_26_ann
 			byte	>course_scenery_overworld_27_ann
-			byte	>course_scenery_overworld_28_ann
+			byte	>course_scenery_overworld_10_b
 		.endif
 	
 	course_scenery_addr_hi_underground:
@@ -459,7 +459,7 @@ course_scenery_pages:
 	course_scenery_addr_lo:
 	course_scenery_addr_lo_water:
 		.addr	course_scenery_water_1
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			.addr	course_scenery_water_2
 		.elseif	.defined(VS_SMB)
 			.addr	course_scenery_water_2_vs
@@ -508,7 +508,7 @@ course_scenery_pages:
 			.addr	course_scenery_overworld_28_smb2
 			.addr	course_scenery_overworld_26_ann
 			.addr	course_scenery_overworld_27_ann
-			.addr	course_scenery_overworld_28_ann
+			.addr	course_scenery_overworld_10_b
 		.endif
 
 	course_scenery_addr_lo_underground:
@@ -598,7 +598,7 @@ course_scenery_pages:
 			.addr	course_scenery_overworld_28_smb2
 			.addr	course_scenery_overworld_26_ann
 			.addr	course_scenery_overworld_27_ann
-			.addr	course_scenery_overworld_28_ann
+			.addr	course_scenery_overworld_10_b
 		.endif
 
 	course_scenery_addr_lo_underground:
@@ -612,7 +612,7 @@ course_scenery_pages:
 
 	course_scenery_addr_lo_water:
 		.addr	course_scenery_water_1
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			.addr	course_scenery_water_2
 		.elseif	.defined(VS_SMB)
 			.addr	course_scenery_water_2_vs

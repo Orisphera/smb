@@ -340,6 +340,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(TITLE_SCR_OBJS) \
 			$(TITLE_INIT_OBJS) \
 			$(TITLE_MAP_OBJS) \
+			$(COURSE_DATA_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

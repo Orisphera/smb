@@ -11,7 +11,11 @@
 	.include	"../../data/courses/smb2/overworld_28_scenery.s"
 .endif
 
+	.macro	OVERWORLD_10_SCENERY_A
+		1
+	.endmacro
 	.include	"../../data/courses/smb/overworld_10_scenery.s"
+	.delmac	OVERWORLD_10_SCENERY_A	
 
 .if	.defined(SMB2)
 	.include	"../../data/courses/smb2/overworld_21_scenery.s"

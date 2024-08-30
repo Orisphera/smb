@@ -327,18 +327,20 @@ static const char *obj_c[] = {
 	"BLOCK_Q_C",
 #ifdef	SMB2
 	"BLOCK_Q_D",
-	"BLOCK_Q_F",
-	"BLOCK_ITEM_E",
 #endif
+	"HIDDEN_ONE_UP",
 #ifdef	SMB2M
 	"BLOCK_Q_E",
 #endif
-	"HIDDEN_ONE_UP",
+#ifdef	SMB2
+	"BLOCK_Q_F",
+	"BLOCK_ITEM_E",
+#endif
 	"BLOCK_ITEM_A",
 	"BLOCK_ITEM_B",
 	"BLOCK_ITEM_C",
-	"BLOCK_ITEM_D",
 	"BLOCK_COIN",
+	"BLOCK_ITEM_D",
 	"PIPE_WATER",
 	"EMPTY_DRAW",
 	"SPRING"

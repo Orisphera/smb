@@ -171,48 +171,13 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		course_actor_castle_1	= $C745
-		course_actor_castle_2	= $C762
-		course_actor_castle_3	= $C77B
-		course_actor_castle_4	= $C79E
-		course_actor_overworld_1 = $C7C7
-		course_actor_overworld_3 = $C7E8
-		course_actor_overworld_5 = $C7F8
-		course_actor_overworld_6 = $C829
-		course_actor_overworld_7 = $C847
-		course_actor_overworld_8 = $C860
-		course_actor_overworld_9 = $C867
-		course_actor_overworld_12 = $C896
-		course_actor_overworld_13 = $C89C
-		course_actor_overworld_16 = $C8C0
-		course_actor_overworld_21 = $C8C1
-		course_actor_overworld_22 = $C8C7
-		course_actor_overworld_22_end = $C8EB
-		course_actor_underground_1 = $C8EC
-		course_actor_underground_2 = $C919
-		course_actor_underground_3 = $C947
-		course_actor_water_2 = $C962
-		course_scenery_castle_1	= $C97B
-		course_scenery_castle_2	= $C9D2
-		course_scenery_castle_3	= $CA53
-		course_scenery_castle_4	= $CAC2
-		course_scenery_overworld_1 = $CB2D
-		course_scenery_overworld_3 = $CB8A
-		course_scenery_overworld_5 = $CBDD
-		course_scenery_overworld_6 = $CC4E
-		course_scenery_overworld_7 = $CCB3
-		course_scenery_overworld_8 = $CD08
-		course_scenery_overworld_9 = $CD85
-		course_scenery_overworld_12 = $CDE8
-		course_scenery_overworld_13 = $CDFD
-		course_scenery_overworld_16 = $CE54
-		course_scenery_overworld_21 = $CE85
-		course_scenery_overworld_22 = $CEB0
-		course_scenery_overworld_28_ann = $CEE7
-		course_scenery_underground_1 = $CEF0
-		course_scenery_underground_2 = $CF91
-		course_scenery_underground_3 = $D036
-		course_scenery_water_2 = $D0C3
+		data_D13E		= $D13E
+		data_D14F		= $D14F
+		data_D19E		= $D19E
+		data_D1AF		= $D1AF
+		data_D1FE		= $D1FE
+		data_D20F		= $D20F
+		data_D25E		= $D25E
 		apu_cycle		= $D2E5
 		; ---
 		data4_start		= $C296
@@ -290,14 +255,6 @@ UNK_I = 1
 		data_C943		= $C95A
 		data_C9C0		= $C973
 		data_C95C		= $C983
-
-		data_D13E		= $D13E
-		data_D14F		= $D14F
-		data_D19E		= $D19E
-		data_D1AF		= $D1AF
-		data_D1FE		= $D1FE
-		data_D20F		= $D20F
-		data_D25E		= $D25E
 	.endif
 
 .endif	; UNK_I
