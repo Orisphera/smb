@@ -159,8 +159,16 @@ CHR_I = 1
 			window_rub	= <((tile_bg_window_rub-chr_bg)/PPU_TILE_SIZE)
 			window_end	= <((tile_bg_window_end-chr_bg)/PPU_TILE_SIZE)
 		.endif
+		.if	.defined(SMB2)
+		sign_text_smb2	= <((tile_bg_sign_text_smb2-chr_bg)/PPU_TILE_SIZE)
+		.elseif	.defined(ANN)
+		sign_text_ann_a	= <((tile_bg_sign_text_ann_a-chr_bg)/PPU_TILE_SIZE)
+		.endif
 		.if	.defined(SMB2M)
 		star_title		= <((tile_bg_star_title-chr_bg)/PPU_TILE_SIZE)
+		.endif
+		.if	.defined(ANN)
+		sign_text_ann_b	= <((tile_bg_sign_text_ann_b-chr_bg)/PPU_TILE_SIZE)
 		.endif
 	.endenum
 

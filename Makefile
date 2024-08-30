@@ -298,6 +298,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(TITLE_SCR_OBJS) \
 			$(TITLE_INIT_OBJS) \
+			$(TITLE_MAP_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -338,6 +339,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
 			$(TITLE_SCR_OBJS) \
 			$(TITLE_INIT_OBJS) \
+			$(TITLE_MAP_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

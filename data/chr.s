@@ -378,19 +378,17 @@ chr_bg:
 		.include	"chr/bg/sign_text_vs.s"
 		.include	"chr/bg/window.s"
 	.elseif	.defined(SMB2)
-		.include	"chr/bg/sign_text_c.s"
-		.include	"chr/bg/line_b.s"
+		.include	"chr/bg/sign_text_smb2.s"
 		.include	"chr/bg/star_smb2.s"
 		.include	"chr/bg/font_j.smb2.s"
 		.include	"chr/bg/floor_un0.s"
 		.include	"chr/bg/cactus.s"
 		.include	"chr/bg/floor_un1.s"
 	.elseif	.defined(ANN)
-		.include	"chr/bg/sign_text_d.s"
-		.include	"chr/bg/line_b.s"
+		.include	"chr/bg/sign_text_ann_a.s"
 		.include	"chr/bg/star_smb2.s"
 		.include	"chr/bg/font_j.smb2.s"
-		.include	"chr/bg/sign_text_e.s"
+		.include	"chr/bg/sign_text_ann_b.s"
 		.include	"chr/bg/quotes.s"
 		.include	"chr/bg/sign_text_f.s"
 	.endif
