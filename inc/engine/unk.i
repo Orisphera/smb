@@ -16,7 +16,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(SMB2)
-		title_map	= $C62B
 		course_actor_castle_1_smb2	= $C790
 		course_actor_castle_2_smb2	= $C7AF
 		course_actor_castle_3_smb2	= $C7D6
@@ -172,7 +171,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		title_map	= $C5E6
 		course_actor_castle_1	= $C745
 		course_actor_castle_2	= $C762
 		course_actor_castle_3	= $C77B
