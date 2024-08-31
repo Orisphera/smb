@@ -298,7 +298,12 @@ COL_BOX_SIZE	= 4
 		koopa_red	= $03
 
 		koopa_cutoff	= $04
+
+		.if		.defined(SMB)|.defined(VS_SMB)
 		actor_04	= $04
+		.elseif	.defined(SMB2M)
+		piranha_plant_b	= $04
+		.endif
 
 		hammer_bro	= $05
 		goomba		= $06

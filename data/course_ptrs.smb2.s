@@ -14,7 +14,7 @@ course_actor_pages:
 	.export course_actor_addr_lo
 course_actor_addr_lo:
 course_actor_addr_lo_castle:
-	.addr	course_actor_castle_1_smb2
+	.addr	course_actor_castle_7_vs
 	.addr	course_actor_castle_2_smb2
 	.addr	course_actor_castle_3_smb2
 	.addr	course_actor_castle_4_smb2
@@ -27,11 +27,11 @@ course_actor_addr_lo_castle:
 
 course_actor_addr_lo_overworld:
 	.addr	course_actor_overworld_1_smb2, course_actor_overworld_2_smb2
-	.addr	course_actor_overworld_3_smb2, course_actor_overworld_4_smb2
+	.addr	course_actor_overworld_3_smb2, course_actor_overworld_22_vs
 	.addr	course_actor_overworld_5_smb2, course_actor_overworld_6_smb2
 	.addr	course_actor_overworld_7_smb2, course_actor_overworld_8_smb2
 	.addr	course_actor_overworld_9_smb2, course_actor_overworld_10
-	.addr	course_actor_overworld_11_smb2, course_actor_overworld_12_smb2
+	.addr	course_actor_overworld_7_vs, course_actor_overworld_12_smb2
 	.addr	course_actor_overworld_13_smb2, course_actor_overworld_14_smb2
 	.addr	course_actor_overworld_15_smb2, course_actor_overworld_16_smb2
 	.addr	course_actor_overworld_17_smb2, course_actor_overworld_18_smb2
@@ -69,7 +69,7 @@ course_scenery_pages:
 	.export course_scenery_addr_lo
 course_scenery_addr_lo:
 course_scenery_addr_lo_castle:
-	.addr	course_scenery_castle_1_smb2
+	.addr	course_scenery_castle_7_vs
 	.addr	course_scenery_castle_2_smb2
 	.addr	course_scenery_castle_3_smb2
 	.addr	course_scenery_castle_4_smb2
@@ -82,11 +82,11 @@ course_scenery_addr_lo_castle:
 
 course_scenery_addr_lo_overworld:
 	.addr	course_scenery_overworld_1_smb2, course_scenery_overworld_2_smb2
-	.addr	course_scenery_overworld_3_smb2, course_scenery_overworld_4_smb2
+	.addr	course_scenery_overworld_3_smb2, course_scenery_overworld_22_vs
 	.addr	course_scenery_overworld_5_smb2, course_scenery_overworld_6_smb2
 	.addr	course_scenery_overworld_7_smb2, course_scenery_overworld_8_smb2
 	.addr	course_scenery_overworld_9_smb2, course_scenery_overworld_10
-	.addr	course_scenery_overworld_11_smb2, course_scenery_overworld_12_smb2
+	.addr	course_scenery_overworld_7_vs, course_scenery_overworld_12_smb2
 	.addr	course_scenery_overworld_13_smb2, course_scenery_overworld_14_smb2
 	.addr	course_scenery_overworld_15_smb2, course_scenery_overworld_16_smb2
 	.addr	course_scenery_overworld_17_smb2, course_scenery_overworld_18_smb2

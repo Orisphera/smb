@@ -333,7 +333,7 @@ render_actor_ani_check:
 render_actor_ani_do:
 	.if	.defined(SMB2M)
 		lda	render_actor_id
-		cmp	#actor::actor_04
+		cmp	#actor::piranha_plant_b
 		beq	:+
 	.endif
 	lda	render_actor_state_prev
@@ -342,7 +342,7 @@ render_actor_ani_do:
 	lda	render_actor_id
 	cmp	#actor::koopa_cutoff
 	bcc	:++
-	: ; if ((SMB2M && this.id == actor_04) || ((this.state & bit_5) && this.id >= koopa_cutoff)) {
+	: ; if ((SMB2M && this.id == piranha_plant_b) || ((this.state & bit_5) && this.id >= koopa_cutoff)) {
 		ldy	#1
 		sty	render_actor_flipped
 		dey
@@ -381,13 +381,13 @@ render_actor_clear_b:
 			cmp	#actor::hammer_bro
 			beq	:+
 			.if	.defined(SMB2M)
-				cmp	#actor::actor_04
+				cmp	#actor::piranha_plant_b
 				beq	:+
 			.endif
 			cmp	#actor::lakitu
 			beq	:+
 			cmp	#actor::actors_page_b
-			bcs	:+ ; if (this.id.not_in(hammer_bro, lakitu) && (!SMB2 || this.id != actor_04) && this.id < actors_page_b) {
+			bcs	:+ ; if (this.id.not_in(hammer_bro, lakitu) && (!SMB2 || this.id != piranha_plant_b) && this.id < actors_page_b) {
 				txa
 				clc
 				adc	#2*OBJ_SIZE
@@ -420,7 +420,7 @@ render_actor_clear_b:
 			cmp	#actor::piranha_plant
 			beq	:+++
 			.if	.defined(SMB2M)
-				cmp	#actor::actor_04
+				cmp	#actor::piranha_plant_b
 				beq	:+++
 			.endif
 			cmp	#actor::podoboo
@@ -429,7 +429,7 @@ render_actor_clear_b:
 			bne	:+
 			cpx	#actor_states::state_5
 			bne	:+++++
-			: ; if (this.id.not_in(blooper, piranha_plant, podoboo) && (!SMB2M || this.id != actor_04) && (this.id != spiny || this.state_next == state_5)) {
+			: ; if (this.id.not_in(blooper, piranha_plant, podoboo) && (!SMB2M || this.id != piranha_plant_b) && (this.id != spiny || this.state_next == state_5)) {
 				cmp	#actor::bowser_flame
 				bne	:+ ; if (this.id == bowser_flame) {
 					lda	#obj_attr::h_flip|obj_attr::priority_high|obj_attr::color2

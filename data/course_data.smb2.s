@@ -1,0 +1,52 @@
+.include	"engine/course_flags.i"
+
+; ------------------------------
+	.include	"./courses/vs/castle_7_actor.s"
+	.include	"./courses/smb2/castle_2_actor.s"
+	.include	"./courses/smb2/castle_3_actor.s"
+	.include	"./courses/smb2/castle_4_actor.s"
+; --------------
+	.include	"./courses/smb2/overworld_1_actor.s"
+	.include	"./courses/smb2/overworld_2_actor.s"
+	.include	"./courses/smb2/overworld_3_actor.s"
+	.include	"./courses/vs/overworld_22_actor.s"
+	.include	"./courses/smb2/overworld_5_actor.s"
+	.include	"./courses/smb2/overworld_6_actor.s"
+	.include	"./courses/smb2/overworld_7_actor.s"
+	.include	"./courses/smb2/overworld_8_actor.s"
+	.include	"./courses/smb2/overworld_9_actor.s"
+	.include	"./courses/vs/overworld_7_actor.s"
+	.include	"./courses/smb2/overworld_20_actor.s"
+; --------------
+	.include	"./courses/smb2/underground_1_actor.s"
+	.include	"./courses/smb2/underground_2_actor.s"
+	.include	"./courses/smb2/underground_3_actor.s"
+; --------------
+	.include	"./courses/smb2/water_1_actor.s"
+	.include	"./courses/smb2/water_3_actor.s"
+; ------------------------------
+	.include	"./courses/vs/castle_7_scenery.s"
+	.include	"./courses/smb2/castle_2_scenery.s"
+	.include	"./courses/smb2/castle_3_scenery.s"
+	.include	"./courses/smb2/castle_4_scenery.s"
+; --------------
+	.include	"./courses/smb2/overworld_1_scenery.s"
+	.include	"./courses/smb2/overworld_2_scenery.s"
+	.include	"./courses/smb2/overworld_3_scenery.s"
+	.include	"./courses/vs/overworld_22_scenery.s"
+	.include	"./courses/smb2/overworld_5_scenery.s"
+	.include	"./courses/smb2/overworld_6_scenery.s"
+	.include	"./courses/smb2/overworld_7_scenery.s"
+	.include	"./courses/smb2/overworld_8_scenery.s"
+	.include	"./courses/smb2/overworld_9_scenery.s"
+	.include	"./courses/vs/overworld_7_scenery.s"
+	.include	"./courses/smb2/overworld_20_scenery.s"
+; --------------
+	.include	"./courses/smb2/underground_1_scenery.s"
+	.include	"./courses/smb2/underground_2_scenery.s"
+	.include	"./courses/smb2/underground_3_scenery.s"
+; --------------
+	.include	"./courses/smb2/water_1_scenery.s"
+	.include	"./courses/smb2/water_3_scenery.s"
+; ------------------------------
+	.res	83, $FF

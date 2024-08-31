@@ -122,6 +122,8 @@ COURSE_PTR_SMB2_OBJS =	data/course_ptrs.smb2.o
 
 COURSE_DATA_OBJS =	data/course_data.o
 
+COURSE_DATA_SMB2_OBJS =	data/course_data.smb2.o
+
 MAIN_OBJ	=	src/game/main.o
 
 ENTITY_OBJS	=	src/obj/misc/hammer.o \
@@ -208,6 +210,8 @@ SECURITY_OBJS	=	data/security.o
 SAVE_VS_OBJS	=	data/save.vs.o
 
 SAVE_FDS_OBJS	=	data/save.fds.o
+
+SAVE_B_FDS_OBJS	=	data/save_b.fds.o
 
 HEADER_FC	=	data/header.fc.bin
 HEADER_VS	=	data/header.vs.bin
@@ -301,6 +305,8 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(TITLE_SCR_OBJS) \
 			$(TITLE_INIT_OBJS) \
 			$(TITLE_MAP_OBJS) \
+			$(COURSE_DATA_SMB2_OBJS) \
+			$(SAVE_B_FDS_OBJS) \
 			data/prg.smb2.o \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
@@ -344,6 +350,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(TITLE_MAP_OBJS) \
 			$(COURSE_DATA_OBJS) \
 			$(ANN_TOADS_A_OBJS) \
+			$(SAVE_B_FDS_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

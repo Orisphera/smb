@@ -2,4 +2,4 @@
 
 	.export	save
 save:
-	.byte	0
+	.include	"./save.fds.data.s"

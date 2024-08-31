@@ -36,6 +36,8 @@
 
 #include <stdio.h>
 
+#define	SMB2
+
 #define	END_CHAR	0xFD
 
 static void print_header(void);
@@ -200,7 +202,7 @@ static const char *obj_d[] = {
 	"SWARM_B",
 	"SWARM_C",
 	"LOOP",
-#ifdef	SMB2
+#if		defined(SMB2)
 	"C5BE",
 	"C5C2"
 #endif
@@ -263,7 +265,7 @@ static void print_E(int pos_x)
 		printf("|COURSE_OBJ_E_FG_MASK");
 
 	if (non_mask) {
-		printf("|(COURSE_SCENERY_%s_VAL)<<8", non_mask_vals[id]);
+		printf("|(COURSE_SCENERY_%s)<<8", non_mask_vals[id]);
 	} else {
 		printf("|(COURSE_BG_%s_VAL<<12)", bg[id]);
 		printf("|(COURSE_FG_MASK_%d_VAL<<8)", mask_id);
@@ -279,7 +281,7 @@ static const char *obj_b[] = {
 	"STAIRS",
 	"PIPE_EXIT",
 	"POLE_TIP",
-#ifdef	SMB2M
+#if	defined(SMB2)||defined(ANN)
 	"C470",
 	"C475"
 #endif
@@ -325,14 +327,14 @@ static const char *obj_c[] = {
 	"BLOCK_Q_A",
 	"BLOCK_Q_B",
 	"BLOCK_Q_C",
-#ifdef	SMB2
+#if	defined(SMB2)
 	"BLOCK_Q_D",
 #endif
 	"HIDDEN_ONE_UP",
-#ifdef	SMB2M
+#if	defined(SMB2)||defined(ANN)
 	"BLOCK_Q_E",
 #endif
-#ifdef	SMB2
+#if	defined(SMB2)
 	"BLOCK_Q_F",
 	"BLOCK_ITEM_E",
 #endif

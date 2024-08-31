@@ -14,10 +14,15 @@
 .include	"engine/unk.i"
 
 .segment	"VECTORS"
+IRQ_NULL	= $FFF0
 
 	.addr	nmi
 	.addr	start
+.if	.defined(SMB)
+	.addr	IRQ_NULL
+.elseif	.defined(VS_SMB)|.defined(SMB2M)
 	.addr	irq
+.endif
 
 .code
 

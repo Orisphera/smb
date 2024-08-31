@@ -34,7 +34,7 @@ col_actor_oob_proc:
 		cpy	#actor::hammer_bro
 		beq	:+
 		.if	.defined(SMB2M)
-			cpy	#actor::actor_04
+			cpy	#actor::piranha_plant_b
 			beq	:+
 		.endif
 		cpy	#actor::piranha_plant
@@ -71,7 +71,7 @@ col_actor_oob_proc:
 		cpy	#actor::piranha_plant
 		beq	:++
 		.if	.defined(SMB2M)
-			cpy	#actor::actor_04
+			cpy	#actor::piranha_plant_b
 			beq	:++
 		.endif
 		cpy	#actor::flag_enemy
@@ -86,7 +86,7 @@ col_actor_oob_proc:
 		;		actor.pos_x >= screen.pos_x_right
 		;		&& actor.state &= state_5
 		;		&& actor.id.not_in(piranha_plant, flag_enemy, flag_victory, spring)
-		;		&& (!SMB2M || actor.id != actor_04)
+		;		&& (!SMB2M || actor.id != piranha_plant_b)
 		;	) {
 			jsr	actor_erase
 		: ; }
@@ -239,7 +239,7 @@ col_proj_actor_damage:
 	col_actor_kill:
 		lda	actor_id, x
 		.if	.defined(SMB2M)
-			cmp	#actor::actor_04
+			cmp	#actor::piranha_plant_b
 			beq	:+
 		.endif
 		cmp	#actor::piranha_plant
@@ -253,7 +253,7 @@ col_proj_actor_damage:
 			adc	#24
 
 			.if	.defined(SMB2M)
-				cpy	#actor::actor_04
+				cpy	#actor::piranha_plant_b
 				bne	:+ ; if () {
 					sbc	#49
 				; }
@@ -472,7 +472,7 @@ col_player_actor_proc_hit_do:
 	beq	col_player_harm_proc
 
 	.if	.defined(SMB2M)
-		cpy	#actor::actor_04
+		cpy	#actor::piranha_plant_b
 		beq	col_player_harm_proc
 	.endif	
 	
@@ -805,7 +805,7 @@ col_actor_actor_proc:
 		beq	:+++++
 
 		.if	.defined(SMB2M)
-			cmp	#actor::actor_04
+			cmp	#actor::piranha_plant_b
 			beq	:+++++
 		.endif
 
@@ -830,7 +830,7 @@ col_actor_actor_proc:
 			beq	:+++
 
 			.if	.defined(SMB2M)
-				cmp	#actor::actor_04
+				cmp	#actor::piranha_plant_b
 				beq	:+++
 			.endif
 
@@ -954,7 +954,7 @@ col_actor_calc_dir_check:
 	beq	:++
 
 	.if	.defined(SMB2M)
-		cmp	#actor::actor_04
+		cmp	#actor::piranha_plant_b
 		beq	:++
 	.endif
 
@@ -968,7 +968,7 @@ col_actor_calc_dir_check:
 	beq	:+
 	cmp	#actor::blooper
 	bcs	:++
-	: ; if (actor.id.in(piranha_plant, lakitu, hammer_bro, spiny, koopa_para_jump_green) || actor.id < blooper && (!SMB2M || actor.id != actor_04)) {
+	: ; if (actor.id.in(piranha_plant, lakitu, hammer_bro, spiny, koopa_para_jump_green) || actor.id < blooper && (!SMB2M || actor.id != piranha_plant_b)) {
 	col_actor_reverse:
 		lda	veloc_x_actor, x
 		eor	#<-1
@@ -1919,7 +1919,7 @@ col_actor_ground_proc:
 		beq	:+
 	
 		.if	.defined(SMB2M)
-			cpy	#actor::actor_04
+			cpy	#actor::piranha_plant_b
 			beq	col_actor_ground_proc_rts
 		.endif
 
@@ -1968,7 +1968,7 @@ col_actor_koopa_demote_check:
 	.if	.defined(SMB2M)
 		cmp	#actor::piranha_plant
 		beq	:++
-		cmp	#actor::actor_04
+		cmp	#actor::piranha_plant_b
 		beq	:++
 	.endif
 

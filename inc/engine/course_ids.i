@@ -85,14 +85,14 @@ COURSE_IDS_I = 1
 		no_01
 		no_02
 		no_03
-		no_04
+		no_22_vs
 		no_05
 		no_06
 		no_07
 		no_08
 		no_09
-		no_10
-		no_11
+		no_10_smb
+		no_07_vs
 		no_12
 		no_13
 		no_14
@@ -157,7 +157,7 @@ COURSE_IDS_I = 1
 	.endenum
 
 	.enum	course_castle_smb2
-		no_01
+		no_07_vs
 		no_02
 		no_03
 		no_04

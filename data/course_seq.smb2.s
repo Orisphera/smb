@@ -17,20 +17,20 @@ courses_world_offsets:
 courses_area_offsets:
 course_01_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_01
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10_smb
 		.byte	COURSE_TYPE_UNDERGROUND_B|course_underground_smb2::no_01
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_02
-	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_01
+	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_07_vs
 
 course_02_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_03
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_04
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_22_vs
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_05
 	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_02
 
 course_03_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_06
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10_smb
 		.byte	COURSE_TYPE_WATER_B|course_water_smb2::no_01
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_07
 	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_03
@@ -38,19 +38,19 @@ course_03_areas:
 course_04_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_08
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_09
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_11
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_07_vs
 	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_04
 
 course_05_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_12
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10_smb
 		.byte	COURSE_TYPE_UNDERGROUND_B|course_underground_smb2::no_04
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_13
 	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_05
 
 course_06_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_14
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10_smb
 		.byte	COURSE_TYPE_WATER_B|course_water_smb2::no_02
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_15
 	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_06

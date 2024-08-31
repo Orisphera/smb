@@ -3,7 +3,6 @@ UNK_I = 1
 
 	.if	.defined(FC_SMB)
 		apu_cycle		= $F2D0
-		irq			= $FFF0
 	.endif
 
 	.if	.defined(VS_SMB)
@@ -12,50 +11,9 @@ UNK_I = 1
 
 	.if	.defined(FDS_SMB)
 		apu_cycle		= $D2D0
-		irq			= $FFF0
 	.endif
 
 	.if	.defined(SMB2)
-		course_actor_castle_1_smb2	= $C790
-		course_actor_castle_2_smb2	= $C7AF
-		course_actor_castle_3_smb2	= $C7D6
-		course_actor_castle_4_smb2	= $C7E9
-		course_actor_overworld_1_smb2	= $C81E
-		course_actor_overworld_2_smb2	= $C844
-		course_actor_overworld_3_smb2	= $C867
-		course_actor_overworld_4_smb2	= $C890
-		course_actor_overworld_5_smb2	= $C8C6
-		course_actor_overworld_6_smb2	= $C8DD
-		course_actor_overworld_7_smb2	= $C907
-		course_actor_overworld_8_smb2	= $C92C
-		course_actor_overworld_9_smb2	= $C943
-		course_actor_overworld_11_smb2	= $C965
-		course_actor_overworld_20_smb2	= $C988
-		course_actor_underground_1_smb2	= $C994
-		course_actor_underground_2_smb2	= $C9BA
-		course_actor_underground_3_smb2	= $C9C4
-		course_actor_water_1_smb2	= $C9DE
-		course_actor_water_3_smb2	= $CA04
-		course_scenery_castle_1_smb2	= $CA14
-		course_scenery_castle_2_smb2	= $CA73
-		course_scenery_castle_3_smb2	= $CAFE
-		course_scenery_castle_4_smb2	= $CB95
-		course_scenery_overworld_1_smb2	= $CC0A
-		course_scenery_overworld_2_smb2	= $CC65
-		course_scenery_overworld_3_smb2	= $CCB4
-		course_scenery_overworld_4_smb2	= $CD2D
-		course_scenery_overworld_5_smb2	= $CDAA
-		course_scenery_overworld_6_smb2	= $CE09
-		course_scenery_overworld_7_smb2	= $CE88
-		course_scenery_overworld_8_smb2	= $CEE7
-		course_scenery_overworld_9_smb2	= $CF5E
-		course_scenery_overworld_11_smb2	= $CFBF
-		course_scenery_overworld_20_smb2	= $D008
-		course_scenery_underground_1_smb2	= $D021
-		course_scenery_underground_2_smb2	= $D0E2
-		course_scenery_underground_3_smb2	= $D11D
-		course_scenery_water_1_smb2	= $D168
-		course_scenery_water_3_smb2	= $D21B
 		apu_cycle		= $D2A0
 		; ---
 		data4_start		= $C2B4
@@ -175,6 +133,7 @@ UNK_I = 1
 		; ---
 		data4_start		= $C296
 		sub_C3D6		= $C3B7
+
 		course_actor_castle_7_ann = $C5D0
 		course_actor_castle_8_ann = $C605
 		course_actor_castle_5	= $C62C
