@@ -161,7 +161,7 @@ UNK_I = 1
 		data_C92B		= $C92B
 		data_C943		= $C943
 		data_C95C		= $C95C
-		data_C97D		= $C97D
+		ann_toad_pal_common	= $C97D
 		data_C9C0		= $C9C0
 
 		data4_end		= $D200
@@ -171,13 +171,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		data_D13E		= $D13E
-		data_D14F		= $D14F
-		data_D19E		= $D19E
-		data_D1AF		= $D1AF
-		data_D1FE		= $D1FE
-		data_D20F		= $D20F
-		data_D25E		= $D25E
 		apu_cycle		= $D2E5
 		; ---
 		data4_start		= $C296
@@ -224,6 +217,9 @@ UNK_I = 1
 		course_scenery_water_1 = $D02C
 		course_scenery_water_4_ann = $D06D
 		course_scenery_water_3 = $D136
+		ann_toad_5		= $D14F
+		ann_toad_6		= $D1AF
+		ann_toad_7		= $D20F
 
 		data2_start		= $C470
 		bg_scenery_C470		= $C470

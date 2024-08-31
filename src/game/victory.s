@@ -82,32 +82,28 @@ victory_enter:
 	.endif
 ; -----------------------------------------------------------
 	.if	.defined(ANN)
-	vram_addr_7A0	= $7A0
-	vram_addr_CD0	= $CD0
-	vram_addr_EE0	= $EE0
+	ann_toads:
+		.addr	ann_toad_1
+		.addr	ann_toad_2
+		.addr	ann_toad_3
+		.addr	ann_toad_4
+		.addr	ann_toad_5
+		.addr	ann_toad_6
+		.addr	ann_toad_7
 
-	data_62FA:
-		.addr	data_D13E
-		.addr	data_D19E
-		.addr	data_D1FE
-		.addr	data_D25E
-		.addr	data_D14F
-		.addr	data_D1AF
-		.addr	data_D20F
-
-	data_6308:
-		.byte	>vram_addr_CD0
-		.byte	>vram_addr_7A0
-		.byte	>vram_addr_EE0
-	data_630B:
-		.byte	<vram_addr_CD0
-		.byte	<vram_addr_7A0
-		.byte	<vram_addr_EE0
-	data_630E:
+	ann_toads_hi:
+		.byte	>tile_obj_toad
+		.byte	>tile_obj_toads_chr2
+		.byte	>tile_obj_nsm_char_c
+	ann_toads_lo:
+		.byte	<tile_obj_toad
+		.byte	<tile_obj_toads_chr2
+		.byte	<tile_obj_nsm_char_c
+	ann_toads_size:
 		.byte	$30, $50, $60
 ; ----------------------------
-		.export sub_6311
-	sub_6311:
+		.export ann_toad_load
+	ann_toad_load:
 		lda	eng_goals
 		cmp	#ENG_HARDMODE_B_GOAL
 		bne	:+++
@@ -118,24 +114,24 @@ victory_enter:
 			lda	course_no
 			asl	a
 			tax
-			lda	data_62FA, x
+			lda	ann_toads, x
 			sta	zp_addr_00
 			inx
-			lda	data_62FA, x
+			lda	ann_toads, x
 			sta	zp_addr_00+1
 			: ; for (i = 0; i < 3; i++) {
 				ldx	zp_byte_06
-				lda	data_6308, x
+				lda	ann_toads_hi, x
 				sta	PPU_VRAM_AR
-				lda	data_630B, x
+				lda	ann_toads_lo, x
 				sta	PPU_VRAM_AR
-				: ; for (j; j != data_630E[j]; j++) {
+				: ; for (j; j != ann_toads_size[j]; j++) {
 					lda	(zp_addr_00), y
 					sta	PPU_VRAM_IO
 
 					iny
 					tya
-					cmp	data_630E, x
+					cmp	ann_toads_size, x
 					bne	:-
 				; }
 
@@ -154,35 +150,46 @@ victory_enter:
 		.byte	1<<0, 1<<1, 1<<2, 1<<3
 		.byte	1<<4, 1<<5, 1<<6, 1<<7
 	.elseif	.defined(ANN)
-		.export data_C97D
-	data_6354:
-		.addr	data_6363
-		.addr	data_6365
-		.addr	data_6367
-		.addr	data_6369
+		.export ann_toad_pal_common
+	ann_toads_pal_a:
+	ann_toads_pal_a_1:
+		.addr	ann_toad_pal_1
+	ann_toads_pal_a_2:
+		.addr	ann_toad_pal_2
+	ann_toads_pal_a_3:
+		.addr	ann_toad_pal_3
+	ann_toads_pal_a_4:
+		.addr	ann_toad_pal_4
 
-	data_635C:
-		.byte	$04, $02, $00, $04
-		.byte	$02, $00, $08
+	ann_toads_pal_offsets:
+		.byte	ann_toads_pal_a_3-ann_toads_pal_a
+		.byte	ann_toads_pal_a_2-ann_toads_pal_a
+		.byte	ann_toads_pal_a_1-ann_toads_pal_a
+		.byte	ann_toads_pal_a_3-ann_toads_pal_a
+		.byte	ann_toads_pal_a_2-ann_toads_pal_a
+		.byte	ann_toads_pal_a_1-ann_toads_pal_a
+		.byte	$08
 
-	data_6363:
-		.byte	$30, $12
+	ann_toad_pal_base:
+	ann_toad_pal_1:
+		.byte	PPU_COLOR_GREY3, PPU_COLOR_BLUE1
 
-	data_6365:
-		.byte	$30, $1A
+	ann_toad_pal_2:
+		.byte	PPU_COLOR_GREY3, PPU_COLOR_GREEN1
 
-	data_6367:
-		.byte	$30, $16
+	ann_toad_pal_3:
+		.byte	PPU_COLOR_GREY3, PPU_COLOR_RED1
 
-	data_6369:
-		.byte	$17, $2A
+	ann_toad_pal_4:
+		.byte	PPU_COLOR_ORANGE1, PPU_COLOR_GREEN2
 
-	data_C97D:
-		.byte	$3F, $18, $04, $0F, $36
+	ann_toad_pal_common:
+		.byte	PPU_COLOR_PITCH3, PPU_COLOR_YELLOW1
+		.byte	PPU_COLOR_MAGENTA0, PPU_COLOR_PITCH0, PPU_COLOR_RED3
 
-	data_6370:
-		.byte	0, 0, 0
-	data_6370_end:
+	ann_toad_pal_buf:
+		.byte	PPU_COLOR_GREY0, PPU_COLOR_GREY0, PPU_COLOR_GREY0
+	ann_toad_pal_buf_end:
 	.endif
 ; ----------------------------
 victory_init:
@@ -192,22 +199,22 @@ victory_init:
 		ldx	course_no
 		cpx	#course::no_08
 		beq	:++ ; if (!ENG_HARDMODE_VAR && course_no != course_08) {
-			ldy	data_635C, x
-			lda	data_6354, y
+			ldy	ann_toads_pal_offsets, x
+			lda	ann_toads_pal_a, y
 			sta	zp_addr_00
 			iny
-			lda	data_6354, y
+			lda	ann_toads_pal_a, y
 			sta	zp_addr_00+1
 			ldy	#0
-			: ; for (byte of data_6370) {
+			: ; for (byte of ann_toad_pal_buf) {
 				lda	(zp_addr_00), y
-				sta	data_6370, y
+				sta	ann_toad_pal_buf, y
 				iny
-				cpy	#(data_6370_end-data_6370)-1
+				cpy	#(ann_toad_pal_buf_end-ann_toad_pal_buf)-1
 				bne	:-
 			; }
 
-			lda	#nmi_addr::addr_C97D
+			lda	#nmi_addr::ann_toad_pal_common
 			sta	nmi_addrs_ctl
 		: ; }
 	.endif

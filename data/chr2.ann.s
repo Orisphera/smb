@@ -15,6 +15,8 @@ tile_obj_princess_b:
 tile_obj_princess_c:
 	.incbin	"data/chr2.ann/tile_obj_79.bin"
 
+	.export tile_obj_toads_chr2
+tile_obj_toads_chr2:
 	.incbin	"data/chr2.ann/tile_obj_7A.bin"
 	.incbin	"data/chr2.ann/tile_obj_7B.bin"
 	.incbin	"data/chr2.ann/tile_obj_7C.bin"

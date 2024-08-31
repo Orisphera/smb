@@ -4,10 +4,10 @@
 # KYODAKU- - skip=91    count=224
 # NSMCHAR1 - skip=332   count=8192
 # NSMCHAR2 - skip=8541  count=1120
-# NSMMAIN  - skip=8622  count=32768
-# NSMDATA2 - skip=41407 count=3631
-# NSMDATA3 - skip=45055 count=3279
-# NSMDATA2 - skip=48351 count=3916
+# NSMMAIN  - skip=9678  count=32768
+# NSMDATA2 - skip=42447 count=3584
+# NSMDATA3 - skip=46048 count=3346
+# NSMDATA2 - skip=49411 count=3568
 
 if [ -z $1 ]
 then
@@ -265,8 +265,20 @@ do
 	J=`expr $J + 1`
 done
 
+# NSMMAIN.CHR
+BANKBASE=38668
+BANKLEN=384
+TILES=`expr $BANKLEN / $TILE_SIZE`
+
+I=0
+while [ $I -ne $TILES ]
+do
+        dd if=raw/ann.fds bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/tile_obj_`printf "%.2X" $I`.bin
+        I=`expr $I + 1`
+done
+
 # NSMMAIN
-dd if=$1 bs=1 skip=38668 count=3772 >data/prg.ann.bin
+dd if=$1 bs=1 skip=39089 count=3351 >data/prg.ann.bin
 
 # NSMDATA2
 dd if=$1 bs=1 skip=42447 count=3584 >data/data2.ann.bin

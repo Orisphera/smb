@@ -201,6 +201,8 @@ TITLE_MAP_OBJS	=	data/title_map.o
 
 VS_PPU_OBJS	=	data/vs_ppu_data.o
 
+ANN_TOADS_A_OBJS =	data/ann_toads_a.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_VS_OBJS	=	data/save.vs.o
@@ -341,6 +343,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(TITLE_INIT_OBJS) \
 			$(TITLE_MAP_OBJS) \
 			$(COURSE_DATA_OBJS) \
+			$(ANN_TOADS_A_OBJS) \
 			data/prg.ann.o \
 			data/data2.ann.o \
 			data/data3.ann.o \

@@ -284,7 +284,7 @@ COL_BOX_SIZE	= 4
 			disk_perror_pal
 			addr_C95C
 			title_cursor_data
-			addr_C97D
+			ann_toad_pal_common
 			addr_C9C0
 		.endif
 	.endenum

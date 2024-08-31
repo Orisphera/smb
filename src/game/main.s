@@ -25,7 +25,7 @@ eng_game:
 	.addr	eng_init_0_do
 
 	.if	.defined(ANN)
-		.addr	sub_6311
+		.addr	ann_toad_load
 	.endif
 
 	.addr	screen_proc
