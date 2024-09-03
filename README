@@ -25,7 +25,16 @@ of these definitions will produce one of the titles
 in question.  Note, a complete title cannot be produced without
 at least some subset of these definitions.  As such,
 the provided Makefile includes the definitions required
-to build Super Mario Bros. for the Famicom.
+to build Super Mario Bros. for the Famicom.  To build other
+titles, you will need to change which set of ASFLAGS are
+included in the Makefile and then issue make for the specific
+variant desired as follows:
+
+Super Mario Bros. (FC)  - make smb.nes
+Super Mario Bros. (FDS) - make smb.fds
+Super Mario Bros. 2     - make smb2.fds
+ANN Super Mario Bros.   - make ann.fds
+Vs. Super Mario Bros.   - make smb.vs
 
 Some such directives are not specific to releases
 but rather the game or console environment involved, such
@@ -62,5 +71,10 @@ and timestamps.  In other words, the disk image is fully functional,
 but the disk superlabel may not compare 1:1 with a disk pressed
 in the factory in the 80s, particularly regarding the creation
 date and some file naming details.
+
+This disassembly contains significant commentary in the form of
+C-like control flow annotations to better indicate conditional
+execution and looping.  This commentary may contain inaccuracies
+and where commentary and code disagree, the code is correct.
 
 This will take some time...
