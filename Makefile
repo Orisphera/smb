@@ -205,6 +205,35 @@ VS_PPU_OBJS	=	data/vs_ppu_data.o
 
 ANN_TOADS_A_OBJS =	data/ann_toads_a.o
 
+APU_OBJS	=	src/apu/proc.o \
+			src/apu/store.o \
+			src/apu/sfx_pulse_1.o \
+			src/apu/sfx_pulse_2.o \
+			src/apu/sfx_noise.o \
+			src/apu/music.o \
+			src/apu/load.o \
+			data/apu/offsets.o \
+
+APU_MUSIC_VS_A_OBJS =	data/apu/music/vs_super_star.o
+
+APU_MUSIC_OBJS =	data/apu/music/super_star.o \
+			data/apu/music/overworld.o \
+			data/apu/music/castle.o \
+			data/apu/music/game_over.o \
+			data/apu/music/hurry_up.o \
+			data/apu/music/level_end.o \
+			data/apu/music/underground.o \
+			data/apu/music/underwater.o \
+			data/apu/music/victory_castle.o
+
+APU_MUSIC_VICTORY_NORMAL_OBJS = data/apu/music/victory_normal.o
+
+APU_MUSIC_VS_B_OBJS =	data/apu/music/vs_game_over.o
+
+APU_DATA_OBJS	=	data/apu/notes.o \
+			data/apu/lengths_misc.o \
+			data/apu/envelopes_misc.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_VS_OBJS	=	data/save.vs.o
@@ -229,7 +258,10 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
-			data/prg.fc.o
+			$(APU_OBJS) \
+			$(APU_MUSIC_OBJS) \
+			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
+			$(APU_DATA_OBJS)
 
 CHR_OBJS_FC	=	data/chr.o \
 			$(TITLE_MAP_OBJS)
@@ -248,7 +280,12 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
-			data/prg.vs.o
+			$(APU_OBJS) \
+			$(APU_MUSIC_VS_A_OBJS) \
+			$(APU_MUSIC_OBJS) \
+			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
+			$(APU_MUSIC_VS_B_OBJS) \
+			$(APU_DATA_OBJS)
 
 CHR_OBJS_VS	=	data/chr.o \
 			$(COURSE_LOOP_OBJS) \
@@ -272,7 +309,10 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(MAIN_OBJ) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
-			data/prg.fds.o
+			$(APU_OBJS) \
+			$(APU_MUSIC_OBJS) \
+			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
+			$(APU_DATA_OBJS)
 
 CHR_OBJS_FDS	=	data/chr.o \
 			$(TITLE_MAP_OBJS)
@@ -307,7 +347,9 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(TITLE_MAP_OBJS) \
 			$(COURSE_DATA_SMB2_OBJS) \
 			$(SAVE_B_FDS_OBJS) \
-			data/prg.smb2.o \
+			$(APU_OBJS) \
+			$(APU_MUSIC_OBJS) \
+			$(APU_DATA_OBJS) \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
 			data/data4.smb2.o \
@@ -351,7 +393,9 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(COURSE_DATA_OBJS) \
 			$(ANN_TOADS_A_OBJS) \
 			$(SAVE_B_FDS_OBJS) \
-			data/prg.ann.o \
+			$(APU_OBJS) \
+			$(APU_MUSIC_OBJS) \
+			$(APU_DATA_OBJS) \
 			data/data2.ann.o \
 			data/data3.ann.o \
 			data/data4.ann.o \

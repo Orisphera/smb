@@ -1,18 +1,6 @@
 .ifndef UNK_I
 UNK_I = 1
 
-	.if	.defined(FC_SMB)
-		apu_cycle		= $F2D0
-	.endif
-
-	.if	.defined(VS_SMB)
-		apu_cycle		= $F236
-	.endif	
-
-	.if	.defined(FDS_SMB)
-		apu_cycle		= $D2D0
-	.endif
-
 	.if	.defined(SMB2)
 		apu_cycle		= $D2A0
 		; ---
@@ -129,8 +117,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		apu_cycle		= $D2E5
-		; ---
 		data4_start		= $C296
 		sub_C3D6		= $C3B7
 

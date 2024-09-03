@@ -12,8 +12,6 @@ fi
 
 mkdir -p data/chr.smb
 
-dd if=$1 bs=1 skip=29408 count=3370 >data/prg.fc.bin
-
 # CHR Common
 TILE_SIZE=16
 BG_BANK=256
@@ -36,3 +34,4 @@ do
         dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
+
