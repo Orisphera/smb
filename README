@@ -87,4 +87,7 @@ C-like control flow annotations to better indicate conditional
 execution and looping.  This commentary may contain inaccuracies
 and where commentary and code disagree, the code is correct.
 
-This will take some time...
+This disassembly currently encompasses all areas of the original
+Super Mario Bros. as well as the Vs. System release.  Work pertaining
+to the secondary data files in Super Mario Bros. 2 and
+All Night Nippon is ongoing.
