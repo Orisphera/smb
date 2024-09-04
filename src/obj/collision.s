@@ -95,6 +95,9 @@ col_actor_oob_proc:
 	rts
 ; ------------------------------------------------------------
 .if	.defined(FC_SMB)
+	.if	.defined(PAL)
+		.res	56, $FF
+	.endif
 	.res	3, $FF
 .elseif	.defined(VS_SMB)
 	.res	23, $FF
@@ -403,7 +406,7 @@ LD84D:
 	.byte	24, <-24
 
 col_player_actor_kick_veloc_x:
-	.byte	48, <-48
+	.byte	KICK_VELOC_X_ABS, <-KICK_VELOC_X_ABS
 
 col_player_stomp_veloc_x:
 	.byte	8, <-8
@@ -536,12 +539,24 @@ col_player_actor_proc_hit_do:
 			dey
 			bpl	col_player_actor_stomp
 		.endif
-		: lda	actor_id, x
-		cmp	#actor::blooper
-		bcc	:+
-		lda	pos_y_lo_player
-		clc
-		adc	#12
+		:
+		.ifndef	PAL
+			lda	actor_id, x
+			cmp	#actor::blooper
+			bcc	:+
+			lda	pos_y_lo_player
+			clc
+			adc	#12
+		.else
+			lda	#20
+			ldy	actor_id, x
+			cpy	#actor::cheep_fly
+			bne	:+ ; if (actor.id == cheep_fly) {
+				lda	#7
+			: ; }
+			adc	pos_y_lo_player
+		.endif
+
 		cmp	pos_y_lo_actor, x
 		bcc	col_player_actor_stomp
 		: lda	timer_actor_stun
@@ -578,7 +593,11 @@ col_player_harm_proc_do:
 			sta	player_status
 			lda	#(sfx_pulse1::pipe_entry_16)>>1
 			sta	timer_player_injury
-			asl	a
+			.ifndef	PAL
+				asl	a
+			.else
+				lda	#sfx_pulse1::pipe_entry_16
+			.endif
 			sta	apu_pulse1_queue
 			jsr	screen_color_player
 			lda	#game_proc::hurt
@@ -696,7 +715,11 @@ col_player_actor_stomp:
 		.endif
 ; -----------------------------
 col_actor_stomp_resurrect_timer:
-	.byte	16, 11
+	.ifndef	PAL
+		.byte	16, 11
+	.else
+		.byte	13, 9
+	.endif
 ; -----------------------------
 	: ; } else {
 		lda	#actor_states::state_4
@@ -1312,8 +1335,17 @@ col_bg_proc_do:
 				sta	apu_pulse1_queue
 			: ; }
 	
-			lda	#1
-			sta	veloc_y_player
+			.ifndef	PAL
+				lda	#1
+				sta	veloc_y_player
+			.else
+				ldy	#1
+				lda	course_type
+				bne	col_bg_proc_not_water ; if (course.type == underwater) {
+					dey
+			col_bg_proc_not_water: ; }
+				sty	veloc_y_player
+			.endif
 		; }
 	: ; }
 
@@ -1360,7 +1392,7 @@ col_bg_proc_ground_type:
 			ldy	eng_spring_ani
 			bne	:++ ; if (!eng_spring_ani) {
 				ldy	zp_byte_04
-				cpy	#5
+				cpy	#GROUND_PROC_LIMIT
 				bcc	:+ ; if (zp_byte_04 >= 5) {
 					lda	motion_dir_player
 					sta	col_bg_proc_player_halt_dir
@@ -1498,7 +1530,11 @@ col_bg_proc_side_do:
 	; } else rts;
 ; -----------------------------
 col_bg_timer_scene_trans:
-	.byte	160, 52
+	.ifndef	PAL
+		.byte	160, 52
+	.else
+		.byte	133, 43
+	.endif
 ; -----------------------------
 col_bg_proc_coin_do:
 	jsr	col_bg_proc_bg_tile_blank
@@ -1678,7 +1714,7 @@ col_bg_proc_spring:
 			sta	player_gravity
 		.endif
 
-		lda	#<-7
+		lda	#SPRING_ACCEL_Y_COL
 		sta	accel_y_spring
 		lda	#3
 		sta	timer_spring
@@ -1713,7 +1749,7 @@ col_bg_proc_pipe_v_do:
 	lda	col_bg_proc_pipe_v_metatile_b
 	cmp	#metatile_0::pipe_v_a
 	bne	:+++ ; if ((joypad_u_d & down) && zp_byte_00 == pipe_v_b && zp_byte_01 == pipe_v_a) {
-		lda	#48
+		lda	#PIPE_TRANSITION_TIME
 		sta	eng_timer_scene_trans
 		lda	#game_proc::pipe_v
 		sta	game_proc_id
@@ -2346,10 +2382,20 @@ col_box_7:
 col_box_8:
 	.byte	6, 4, 10, 8
 col_box_9:
+	.byte	3
+
+	.ifndef	PAL
+		.byte	14
+	.else
+		.byte	12
+	.endif
+
+	.byte	13
+
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.byte	3, 14, 13, 20
+		.byte	20
 	.elseif	.defined(SMB2M)
-		.byte	3, 14, 13, 22
+		.byte	22
 	.endif
 col_box_10:
 	.byte	0, 2, 16, 21
@@ -2723,7 +2769,9 @@ col_box_buffer:
 	rts
 
 .if	.defined(FC_SMB)
+	.ifndef	PAL
 	.res	1, $FF
+	.endif
 .elseif	.defined(VS_SMB)
 	.res	6, $FF
 .elseif	.defined(SMB2)

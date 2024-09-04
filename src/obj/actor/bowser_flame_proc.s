@@ -7,12 +7,14 @@
 .include	"engine/unk.i"
 
 ; -----------------------------------------------------------
-BOWSER_FLAME_ACCEL_X_OFFSET		= 64
-BOWSER_FLAME_ACCEL_X_OFFSET_HARD	= 96
 BOWSER_FLAME_POS_X_OFFSET		= 1
 ; -----------------------------------------------------------
 actor_proc_bowser_flame_timer_data:
-	.byte	191, 64, 191, 191, 191, 64, 64, 191
+	.ifndef	PAL
+		.byte	191, 64, 191, 191, 191, 64, 64, 191
+	.else
+		.byte	128, 48, 48, 128, 128, 128, 48, 80
+	.endif
 ; ----------------------------
 	.export actor_proc_bowser_flame_timer_init
 actor_proc_bowser_flame_timer_init:

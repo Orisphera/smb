@@ -4,11 +4,8 @@
 
 .include	"engine/unk.i"
 ; ------------------------------------------------------------
-MISC_HAMMER_ACCEL_Y_INC		= 16
 MISC_HAMMER_ACCEL_Y_DEC		= 15
 MISC_HAMMER_VELOC_Y_MAX_ABS	= 4
-MISC_HAMMER_VELOC_X_INIT_ABS	= 16
-MISC_HAMMER_VELOC_Y_INIT	= <-2
 MISC_HAMMER_GRAVITY_INIT 	= 0
 MISC_HAMMER_COL_BOX		= col_boxes::box_7
 

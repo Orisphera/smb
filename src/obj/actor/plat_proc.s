@@ -361,7 +361,7 @@ actor_proc_plat_right:
 	sta	zp_byte_00
 	lda	actor_plat_col_flag, x
 	bmi	:+ ; if (!(actor.plat_col & 0x80)) {
-		lda	#16
+		lda	#PLAT_RIGHT_VELOC_X
 		sta	veloc_x_actor, x
 		jsr	actor_proc_plat_move_player_h
 	: ; }

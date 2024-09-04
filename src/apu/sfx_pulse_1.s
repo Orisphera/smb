@@ -126,7 +126,11 @@ apu_stomp_continued:
 	sta	PULSE1_VOL
 	cpy	#6
 	bne	:+ ; if (this.len == 6) {
-		lda	#apu_chromatic_scale::F5-2
+		.ifndef	PAL
+			lda	#apu_chromatic_scale::F5-2
+		.else
+			lda	#apu_chromatic_scale::E5+1
+		.endif
 		sta	PULSE1_TIMER
 	: ; }
 ; --------------
@@ -146,7 +150,11 @@ apu_smack_continued:
 	ldy	snd_sfx_pulse_1_len
 	cpy	#8
 	bne	:+ ; if (this.len == 8) {
-		lda	#apu_chromatic_scale::F5
+		.ifndef	PAL
+			lda	#apu_chromatic_scale::F5
+		.else
+			lda	#apu_chromatic_scale::E5+3
+		.endif
 		sta	PULSE1_TIMER
 		lda	#channel_vol::duty_500|channel_vol::constant_vol|15
 		bne	:++

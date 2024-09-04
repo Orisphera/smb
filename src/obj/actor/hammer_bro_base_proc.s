@@ -9,12 +9,9 @@
 ; -----------------------------------------------------------
 HAMMER_BRO_VELOC_X_A		= <-6
 HAMMER_BRO_VELOC_X_B		= <-3
-HAMMER_BRO_VELOC_X_C_ABS	= 4
-HAMMER_BRO_VELOC_X_D		= <-8
 HAMMER_BRO_VELOC_CUTOFF_POS_Y	= 112
 
 ACTOR_ACCEL_X_ABS	= 24
-GOOMBA_ERASE_CUE	= 14
 ; -----------------------------------------------------------
 actor_hammer_bro_timers:
 	.byte	48, 28
@@ -24,8 +21,8 @@ actor_proc_accel_x:
 	.byte	0, ACTOR_ACCEL_X_ABS
 
 actor_proc_veloc_x:
-	.byte	ACTOR_BASE_VELOC_X, <-ACTOR_BASE_VELOC_X
-	.byte	ACTOR_BASE_VELOC_X_HARD, <-ACTOR_BASE_VELOC_X_HARD
+	.byte	ACTOR_HAMMER_BRO_VELOC_X, <-ACTOR_HAMMER_BRO_VELOC_X
+	.byte	ACTOR_HAMMER_BRO_VELOC_X_HARD, <-ACTOR_HAMMER_BRO_VELOC_X_HARD
 ; ------------------------------
 	.export actor_proc_hammer_bro
 actor_proc_hammer_bro:

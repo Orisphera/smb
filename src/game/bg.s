@@ -1978,7 +1978,7 @@ bg_scenery_stairs:
 bg_scenery_spring:
 	jsr	eng_loadobjattr
 	jsr	bg_obj_alloc
-		.if	.defined(VS_SMB)|.defined(SMB2M)
+		.if	.defined(VS_SMB)|.defined(SMB2M)|.defined(PAL)
 		bcs	:+ ; if () {
 		.endif
 		jsr	bg_objpos_x_get
@@ -1998,7 +1998,7 @@ bg_scenery_spring:
 		sta	gfx_metatile, x
 		lda	#metatile_1::spring_bg_b
 		sta	gfx_metatile+1, x
-		.if	.defined(VS_SMB)|.defined(SMB2M)
+		.if	.defined(VS_SMB)|.defined(SMB2M)|.defined(PAL)
 		: ; }
 		.endif
 	rts
@@ -2191,7 +2191,9 @@ bg_get_buffer_ptr:
 	rts
 ; -----------------------------
 .if	.defined(FC_SMB)
-	.res	2, $FF
+	.ifndef	PAL
+		.res	2, $FF
+	.endif
 .elseif	.defined(VS_SMB)
 	.res	55, $FF
 .endif

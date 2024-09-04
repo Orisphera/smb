@@ -412,7 +412,7 @@ eng_timer_vals_b:
 game_proc_start:
 	lda	pos_x_hi_screen_left
 	sta	pos_x_hi_player
-	lda	#40
+	lda	#PLAYER_GRAVITY_INIT
 	sta	player_gravity
 	lda	#DIR_RIGHT
 	sta	disp_dir_player

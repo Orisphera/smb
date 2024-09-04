@@ -5,7 +5,11 @@
 
 ; -----------------------------------------------------------
 .if	.defined(SMBM)|.defined(VS_SMB)
-	KOOPA_GREEN_BOUNCE_VELOC_X	= <-8
+	.ifndef	PAL
+		KOOPA_GREEN_BOUNCE_VELOC_X	= <-8
+	.else
+		KOOPA_GREEN_BOUNCE_VELOC_X	= <-10
+	.endif
 .elseif	.defined(SMB2)
 	KOOPA_GREEN_BOUNCE_VELOC_X	= <-12
 .endif

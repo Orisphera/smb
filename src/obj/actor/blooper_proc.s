@@ -7,12 +7,15 @@
 ; -----------------------------------------------------------
 BLOOPER_ACCEL_OFFSET_Y		= 1
 BLOOPER_MOTION_TIMER		= 2
-BLOOPER_PLAYER_MOTION_OFFSET_Y	= 16
 BLOOPER_VELOC_X_Y_OFFSET	= 2
 BLOOPER_ACCEL_Y_THRESH		= 32
 ; -----------------------------------------------------------
 actor_proc_blooper_flip_chance:
-	.byte	MOD_64, MOD_4
+	.ifndef	PAL
+		.byte	MOD_64, MOD_4
+	.else
+		.byte	MOD_8, MOD_2
+	.endif
 ; ----------------------------
 	.export actor_proc_blooper
 actor_proc_blooper:

@@ -1,16 +1,17 @@
 Super Mario Bros. Meta-Disassembly
 
 This repository consists of a single code-base disassembly of
-five flavors of the original Super Mario Bros. engine
+six flavors of the original Super Mario Bros. engine
 as developed by SRD:
 
 - Super Mario Bros.
+- Super Mario Bros. (PAL)
 - Super Mario Bros. (Famicom Disk System Reissue)
 - Super Mario Bros. 2
 - All Night Nippon Super Mario Bros.
 - Vs. Super Mario Bros.
 
-These represent five released specimens of this
+These represent six released specimens of this
 particular engine for Nintendo's 6502-based 8-bit platforms.
 
 The utilities required to compile the FDS image are included
@@ -25,12 +26,17 @@ of these definitions will produce one of the titles
 in question.  Note, a complete title cannot be produced without
 at least some subset of these definitions.  As such,
 the provided Makefile includes the definitions required
-to build Super Mario Bros. for the Famicom.  To build other
-titles, you will need to change which set of ASFLAGS are
+to build Super Mario Bros. for the Famicom.
+
+Additionally, the ASFLAGS_PAL Makefile variable can be added
+to ASFLAGS to pull in PAL-specific changes.
+
+To build other titles, you will need to change which set of ASFLAGS are
 included in the Makefile and then issue make for the specific
 variant desired as follows:
 
 Super Mario Bros. (FC)  - make smb.nes
+Super Mario Bros. (PAL) - make smb.nes
 Super Mario Bros. (FDS) - make smb.fds
 Super Mario Bros. 2     - make smb2.fds
 ANN Super Mario Bros.   - make ann.fds

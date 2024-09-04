@@ -1009,34 +1009,13 @@ game_proc_player_stats:
 	.include	"../../data/player_a_friction.s"
 .endif
 
-game_proc_veloc_y_player:
-	.byte	<-4, <-4, <-4, <-5, <-5
-
-	.byte	<-2, <-1
-
-game_proc_player_init_accel_y:
-	.byte	0, 0, 0, 0, 0
-
-	.byte	$80, $00
-
-game_proc_player_max_veloc_left:
-	.byte	<-$28, <-$18, <-$10
-
-game_proc_player_max_veloc_right:
-	.byte	$28, $18, $10
-
-game_proc_player_max_veloc_right_enter:
-	.byte	$0C
+	.include	"../../data/player_phys.s"
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	.include	"../../data/player_a_friction.s"
 .endif
 
-game_proc_player_climb_veloc_y:
-	.byte	0, <-1, 1
-
-game_proc_player_climb_accel_y:
-	.byte	0, 32, <-1
+	.include	"../../data/player_phys_climb.s"
 ; ------------------------
 game_proc_player_physics:
 	lda	state_player
@@ -1096,17 +1075,17 @@ game_proc_player_physics:
 		lda	#player_state::jump_swim
 		sta	state_player
 		lda	veloc_x_player_abs
-		cmp	#$09
-		bcc	:+ ; if (abs(player.veloc_x) >= 0x9) {
+		cmp	#JUMP_VELOC_X_CUTOFF_A
+		bcc	:+ ; if (abs(player.veloc_x) >= cutoff_a) {
 			iny
-			cmp	#$10
-			bcc	:+ ; if (abs(player.veloc_x) >= 0x10) {
+			cmp	#JUMP_VELOC_X_CUTOFF_B
+			bcc	:+ ; if (abs(player.veloc_x) >= cutoff_b) {
 				iny
-				cmp	#$19
-				bcc	:+ ; if (abs(player.veloc_x) >= 0x19) {
+				cmp	#JUMP_VELOC_X_CUTOFF_C
+				bcc	:+ ; if (abs(player.veloc_x) >= cutoff_c) {
 					iny
-					cmp	#$1C
-					bcc	:+ ; if (abs(player.veloc_x) >= 0x1C) {
+					cmp	#JUMP_VELOC_X_CUTOFF_D
+					bcc	:+ ; if (abs(player.veloc_x) >= cutoff_d) {
 						iny
 					; }
 				; }
@@ -1160,7 +1139,7 @@ game_proc_player_physics:
 	lda	state_player
 	beq	:+ ; if (player.state != ground) {
 		lda	veloc_x_player_abs
-		cmp	#$19
+		cmp	#JUMP_VELOC_X_CUTOFF_C
 		bcs	:+++++
 		bcc	:++
 	: ; } else {
@@ -1189,7 +1168,7 @@ game_proc_player_physics:
 		lda	player_veloc_run
 		bne	:+
 		lda	veloc_x_player_abs
-		cmp	#$21
+		cmp	#PLAYER_VELOC_X_CAP_SLOW
 		bcc	:+++
 		: inc	zp_byte_00
 		jmp	:++
@@ -1210,7 +1189,7 @@ game_proc_player_physics:
 	ldy	zp_byte_00
 	lda	game_proc_player_data_friction, y
 	sta	eng_friction_add_lo
-	lda	#0
+	lda	#PLAYER_FRICTION_ADD_HI
 	sta	eng_friction_add_hi
 	lda	disp_dir_player
 	cmp	motion_dir_player
@@ -1224,16 +1203,22 @@ game_proc_player_physics:
 	rts
 ; -----------------------------------------------------------
 game_proc_player_ani_timers:
-	.byte	$02, $04, $07
+	.byte	2
+
+	.ifndef	PAL
+		.byte	4, 7
+	.else
+		.byte	3, 5
+	.endif
 ; ---------------------------
 game_proc_player_ani_speed:
 	ldy	#0
 	lda	veloc_x_player_abs
-	cmp	#$1C
-	bcs	:++ ; if (veloc_x_player_abs < 0x1C) {
+	cmp	#ANI_VELOC_X_CUTOFF_A
+	bcs	:++ ; if (veloc_x_player_abs < cutoff_a) {
 		iny
-		cmp	#$0E
-		bcs	:+ ; if (veloc_x_player_abs < 0x0E) {
+		cmp	#ANI_VELOC_X_CUTOFF_B
+		bcs	:+ ; if (veloc_x_player_abs < cutoff_b) {
 			iny
 		: ; }
 
@@ -1250,8 +1235,8 @@ game_proc_player_ani_speed:
 		jmp	:++
 	: ; } else {
 		lda	veloc_x_player_abs
-		cmp	#$0B
-		bcs	:+ ; if (veloc_x_player_abs < 0x0B) {
+		cmp	#ANI_VELOC_X_CUTOFF_C
+		bcs	:+ ; if (veloc_x_player_abs < cutoff_c) {
 			lda	disp_dir_player
 			sta	motion_dir_player
 			lda	#0
@@ -1374,8 +1359,6 @@ game_proc_proj:
 	: ; }
 	rts
 ; -----------------------------------------------------------
-PROJ_VELOC_X_ABS	= 64
-
 game_proc_veloc_x_proj:
 	.byte	PROJ_VELOC_X_ABS, <-PROJ_VELOC_X_ABS
 ; -----------------------------
@@ -1402,7 +1385,7 @@ game_proc_proj_do:
 			dey
 			lda	game_proc_veloc_x_proj, y
 			sta	veloc_x_proj, x
-			lda	#4
+			lda	#PROJ_VELOC_Y
 			sta	veloc_y_proj, x
 			lda	#7
 			sta	col_box_proj, x
@@ -1413,9 +1396,9 @@ game_proc_proj_do:
 		adc	#ENG_PROJ_OFF
 		tax
 
-		lda	#$50
+		lda	#PROJ_ACCEL_Y_INC
 		sta	motion_gravity_accel_y_inc
-		lda	#3
+		lda	#PROJ_VELOC_Y_MAX
 		sta	motion_gravity_veloc_y_max_abs
 		lda	#0
 		jsr	motion_gravity
@@ -1537,7 +1520,7 @@ game_proc_timer:
 			: ; }
 
 			.if	.defined(CONS)
-				lda	#$18
+				lda	#GAME_TIMER_CTL
 				:
 			.elseif	.defined(VS)
 				lda	#$11
@@ -1768,7 +1751,7 @@ game_proc_pole_b_rts:
 	rts
 ; -----------------------------------------------------------
 game_proc_spring_pos_y:
-	.byte	$08, $10, $08, $00
+	.byte	8, 16, 8, 0
 ; -----------------------------
 	.export game_proc_spring
 game_proc_spring:
@@ -1807,7 +1790,7 @@ game_proc_spring:
 				pha
 			.endif
 
-			lda	#$F4
+			lda	#SPRING_ACCEL_Y
 
 			.if	.defined(SMB2)
 				ldy	course_no
@@ -1818,7 +1801,7 @@ game_proc_spring:
 				cpy	#course::no_07
 				bne	:++
 				: ; if (SMB2M && course_no.in(2, 3, 7)) {
-					lda	#$E0
+					lda	#<-32
 				: ; }
 			.elseif	.defined(ANN)
 				ldy	ENG_HARDMODE_VAR
@@ -1838,6 +1821,12 @@ game_proc_spring:
 		bne	:+ ; if ((eng_spring_ani - 1) == 3) {
 			lda	accel_y_spring
 			sta	veloc_y_player
+
+			.if	.defined(PAL)
+				lda	#64
+				sta	accel_y_player
+			.endif
+
 			lda	#0
 			sta	eng_spring_ani
 		; }
@@ -2098,8 +2087,6 @@ game_proc_cannon:
 
 	rts
 ; -----------------------------------------------------------
-BULLET_VELOC_X_ABS	= 24
-
 game_proc_bullet_veloc_x:
 	.byte	BULLET_VELOC_X_ABS, <-BULLET_VELOC_X_ABS
 ; -----------------------------
@@ -2127,7 +2114,7 @@ game_proc_bullet:
 				bcc	:++++ ; if ((col_player_bullet_diff_pos_x_rel + 40) >= 80) {
 					lda	#actor_states::state_1
 					sta	state_actor, x
-					lda	#10
+					lda	#BULLET_ANI_TIMER
 					sta	timer_ani_actor, x
 					lda	#sfx_pulse2::blast
 					sta	apu_pulse2_queue

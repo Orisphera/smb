@@ -338,7 +338,9 @@ render_chr_pair_do:
 	rts
 ; --------------------------------------------------------------
 	.if	.defined(FC_SMB)
-		.res	6, $FF
+		.ifndef	PAL
+			.res	6, $FF
+		.endif
 	.elseif	.defined(FDS_SMB)
 		.res	2, $FF
 	.elseif	.defined(VS_SMB)

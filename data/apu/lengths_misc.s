@@ -1,3 +1,5 @@
+.include	"engine/sound.i"
+
 	.export	apu_note_lengths
 apu_note_lengths:
 
@@ -12,21 +14,21 @@ apu_note_lengths:
 	.export	apu_note_length_a_fortieth
 apu_note_lengths_a:
 apu_note_length_a_sixteenth:
-	.byte	5
+	snd_region_len	5, 4
 apu_note_length_a_eighth:
-	.byte	10
+	snd_region_len	10, 8
 apu_note_length_a_quarter:
-	.byte	20
+	snd_region_len	20, 16
 apu_note_length_a_half:
-	.byte	40
+	snd_region_len	40, 32
 apu_note_length_a_whole:
-	.byte	80
+	snd_region_len	80, 64
 apu_note_length_a_quarterdot:
-	.byte	30
+	snd_region_len	30, 24
 apu_note_length_a_halfdot:
-	.byte	60
+	snd_region_len	60, 48
 apu_note_length_a_fortieth:
-	.byte	2
+	snd_region_len	2, 12
 
 	.export	apu_note_lengths_b
 	.export	apu_note_length_b_sixteenth
@@ -39,21 +41,21 @@ apu_note_length_a_fortieth:
 	.export	apu_note_length_b_eighthdot
 apu_note_lengths_b:
 apu_note_length_b_sixteenth:
-	.byte	4
+	snd_region_len	4, 3
 apu_note_length_b_eighth:
-	.byte	8
+	snd_region_len	8, 6
 apu_note_length_b_quarter:
-	.byte	16
+	snd_region_len	16, 12
 apu_note_length_b_half:
-	.byte	32
+	snd_region_len	32, 24
 apu_note_length_b_whole:
-	.byte	64
+	snd_region_len	64, 48
 apu_note_length_b_quarterdot:
-	.byte	24
+	snd_region_len	24, 18
 apu_note_length_b_halfdot:
-	.byte	48
+	snd_region_len	48, 36
 apu_note_length_b_eighthdot:
-	.byte	12
+	snd_region_len	12, 8
 
 	.export	apu_note_lengths_c
 	.export	apu_note_length_c_sixteenth
@@ -66,21 +68,21 @@ apu_note_length_b_eighthdot:
 	.export	apu_note_length_c_eighthdot
 apu_note_lengths_c:
 apu_note_length_c_sixteenth:
-	.byte	3
+	snd_region_len	3, 3
 apu_note_length_c_eighth:
-	.byte	6
+	snd_region_len	6, 6
 apu_note_length_c_quarter:
-	.byte	12
+	snd_region_len	12, 12
 apu_note_length_c_half:
-	.byte	24
+	snd_region_len	24, 24
 apu_note_length_c_whole:
-	.byte	48
+	snd_region_len	48, 48
 apu_note_length_c_quarterdot:
-	.byte	18
+	snd_region_len	18, 18
 apu_note_length_c_halfdot:
-	.byte	36
+	snd_region_len	36, 36
 apu_note_length_c_eighthdot:
-	.byte	8
+	snd_region_len	8, 8
 
 	.if	.defined(VS)
 	.export	apu_note_lengths_vs
@@ -94,21 +96,21 @@ apu_note_length_c_eighthdot:
 	.export	apu_note_length_vs_ninth_double_b
 apu_note_lengths_vs:
 apu_note_length_vs_whole:
-	.byte	81
+	snd_region_len	81, 81
 apu_note_length_vs_ninth_double:
-	.byte	18
+	snd_region_len	18, 18
 apu_note_length_vs_ninthdot:
-	.byte	13
+	snd_region_len	13, 13
 apu_note_length_vs_ninth:
-	.byte	9
+	snd_region_len	9, 9
 apu_note_length_vs_third:
-	.byte	27
+	snd_region_len	27, 27
 apu_note_length_vs_half:
-	.byte	40
+	snd_region_len	40, 40
 apu_note_length_vs_third_double:
-	.byte	54
+	snd_region_len	54, 54
 apu_note_length_vs_ninth_double_b:
-	.byte	18
+	snd_region_len	18, 18
 	.endif
 
 	.export	apu_note_lengths_d
@@ -122,21 +124,21 @@ apu_note_length_vs_ninth_double_b:
 	.export	apu_note_length_d_third
 apu_note_lengths_d:
 apu_note_length_d_wholedot:
-	.byte	54
+	snd_region_len	54, 36
 apu_note_length_d_twelfth:
-	.byte	3
+	snd_region_len	3, 2
 apu_note_length_d_quarter:
-	.byte	9
+	snd_region_len	9, 6
 apu_note_length_d_sixth:
-	.byte	6
+	snd_region_len	6, 4
 apu_note_length_d_half:
-	.byte	18
+	snd_region_len	18, 12
 apu_note_length_d_halfdot:
-	.byte	27
+	snd_region_len	27, 18
 apu_note_length_d_whole:
-	.byte	36
+	snd_region_len	36, 24
 apu_note_length_d_third:
-	.byte	12
+	snd_region_len	12, 8
 
 	.export	apu_note_lengths_e
 	.export	apu_note_length_e_wholedot
@@ -149,21 +151,21 @@ apu_note_length_d_third:
 	.export	apu_note_length_e_third
 apu_note_lengths_e:
 apu_note_length_e_wholedot:
-	.byte	36
+	snd_region_len	36, 27
 apu_note_length_e_twelfth:
-	.byte	2
+	snd_region_len	2, 1
 apu_note_length_e_quarter:
-	.byte	6
+	snd_region_len	6, 5
 apu_note_length_e_sixth:
-	.byte	4
+	snd_region_len	4, 3
 apu_note_length_e_half:
-	.byte	12
+	snd_region_len	12, 9
 apu_note_length_e_halfdot:
-	.byte	18
+	snd_region_len	18, 13
 apu_note_length_e_whole:
-	.byte	24
+	snd_region_len	24, 18
 apu_note_length_e_third:
-	.byte	8
+	snd_region_len	8, 6
 
 	.export	apu_note_lengths_f
 	.export	apu_note_length_f_wholedot
@@ -176,18 +178,18 @@ apu_note_length_e_third:
 	.export	apu_note_length_f_third
 apu_note_lengths_f:
 apu_note_length_f_wholedot:
-	.byte	18
+	snd_region_len	18, 18
 apu_note_length_f_twelfth:
-	.byte	1
+	snd_region_len	1, 1
 apu_note_length_f_quarter:
-	.byte	3
+	snd_region_len	3, 3
 apu_note_length_f_sixth:
-	.byte	2
+	snd_region_len	2, 2
 apu_note_length_f_half:
-	.byte	6
+	snd_region_len	6, 6
 apu_note_length_f_halfdot:
-	.byte	9
+	snd_region_len	9, 9
 apu_note_length_f_whole:
-	.byte	12
+	snd_region_len	12, 12
 apu_note_length_f_third:
-	.byte	4
+	snd_region_len	4, 4

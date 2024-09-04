@@ -12,7 +12,6 @@ LAKITU_OFFSET_X			= 32
 LAKITU_OFFSET_X_B		= 96
 SPINY_PLAYER_Y_CUTOFF		= 44
 SPINY_LAKITU_OFFSET_Y		= 8
-SPINY_PLAYER_VELOC_X_CUTOFF	= 8
 SPINY_VELOC_Y			= <-3
 
 .if	.defined(SMB)|.defined(VS_SMB)
@@ -26,8 +25,6 @@ FIREBAR_OFFSET_X	= FIREBAR_OFFSET
 FIREBAR_OFFSET_Y	= FIREBAR_OFFSET
 
 CHEEP_FLY_COUNT_BASE	= 3
-CHEEP_FLY_VELOC_Y	= <-5
-CHEEP_FLY_PLAYER_VELOC_OFFSET_X	= 25
 ; -----------------------------------------------------------
 	.export actor_init_lakitu
 actor_init_lakitu:
@@ -187,7 +184,11 @@ actor_spiny_rts:
 
 ; -----------------------------------------------------------
 firebar_veloc_ang:
-	.byte	40, 56, 40, 56, 40
+	.byte	FIREBAR_ANG_VELOC_SLOW
+	.byte	FIREBAR_ANG_VELOC_FAST
+	.byte	FIREBAR_ANG_VELOC_SLOW
+	.byte	FIREBAR_ANG_VELOC_FAST
+	.byte	FIREBAR_ANG_VELOC_SLOW
 
 actor_firebar_victory_right_x_hi:
 	.byte	0, 0, 16, 16, 0
@@ -231,9 +232,15 @@ actor_cheep_fly_player_offset:
 	.byte	112, 64, <-112, 104
 
 actor_cheep_fly_veloc_x:
-	.byte	14, 5, 6, 14
-	.byte	28, 32, 16, 12
-	.byte	30, 34, 24, 20
+	.ifndef	PAL
+		.byte	14, 5, 6, 14
+		.byte	28, 32, 16, 12
+		.byte	30, 34, 24, 20
+	.else
+		.byte	17, 7, 8, 10
+		.byte	35, 40, 21, 16
+		.byte	34, 44, 31, 27
+	.endif
 
 actor_cheep_fly_timers:
 	.byte	16, 96, 32, 72

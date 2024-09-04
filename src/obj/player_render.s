@@ -10,7 +10,6 @@
 ; ------------------------------------------------------------
 PLAYER_START_SCREEN_POS_X	= 96
 PLAYER_START_SCREEN_POS_Y	= 88
-PLAYER_SKID_VELOC_X_CUTOFF	= 9
 PLAYER_RESIZE_FRAME_COUNT	= 10
 ; ------------------------------------------------------------
 render_player_ani_frames	= zp_byte_00

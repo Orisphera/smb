@@ -10,7 +10,6 @@
 
 ; -----------------------------------------------------------
 BLOCK_TIMER_VAL		= 11
-BLOCK_TIMER_BOUNCE	= 16
 BLOCK_PLAYER_OFFSET_X	= 8
 BLOCK_ITEM_VELOC_Y	= <-2
 BLOCK_PLAYER_VELOC_Y	= <-2

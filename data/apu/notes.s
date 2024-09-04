@@ -1,7 +1,11 @@
 .include	"system/apu.i"
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.res	3, $FF
+		.ifndef	PAL
+			.res	3, $FF
+		.else
+			.res	2, $FF
+		.endif
 	.elseif	.defined(SMB2)
 		.res	1, $FF
 	.endif
@@ -10,7 +14,11 @@
 apu_notes:
 	.export	apu_note_Gx5_b
 apu_note_Gx5_b:
-	.dbyt	apu_chromatic_scale::Gx5+1
+	.ifndef	PAL
+		.dbyt	apu_chromatic_scale::Gx5+1
+	.else
+		.dbyt	apu_chromatic_scale::Fx5-3
+	.endif
 
 	.export	apu_note_D7
 apu_note_D7:

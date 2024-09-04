@@ -102,7 +102,7 @@ actor_proc_lakitu_spiny:
 		beq	:+++ ; if (player.veloc_x != 0 && eng_scroll_amount != 0) {
 			iny
 			lda	veloc_x_player
-			cmp	#25
+			cmp	#LAKITU_SPINY_VELOC_X_PLAYER_CUTOFF
 			bcc	:+
 			lda	eng_scroll_amount
 			cmp	#2

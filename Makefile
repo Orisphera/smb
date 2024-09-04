@@ -2,24 +2,26 @@
 # (All Night Nippon) Super Mario Bros. (2) for the (Vs) Famicom (Disk System)
 #
 # Preprocessor Definitions:
-#   FC    - Famicom-specific
-#   VS    - Vs. System-specific
-#   FDS   - Famicom Disk System-specific
-#   CONS  - Home Console-specific
-#   SMB   - Super Mario Bros.
-#   FC_SMB - Famicom-specific Super Mario Bros.
-#   VS_SMB - Vs. Super Mario Bros.
+#   FC      - Famicom-specific
+#   VS      - Vs. System-specific
+#   FDS     - Famicom Disk System-specific
+#   CONS    - Home Console-specific
+#   SMB     - Super Mario Bros.
+#   FC_SMB  - Famicom-specific Super Mario Bros.
+#   VS_SMB  - Vs. Super Mario Bros.
 #   FDS_SMB - Famicom Disk System-specific Super Mario Bros.
-#   SMB2 - Super Mario Bros. 2
-#   ANN - All Night Nippon Super Mario Bros.
-#   SMBM - Super Mario Bros. "Meta" (SMB and ANN-commonalities)
-#   SMB2M - Super Mario Bros. 2 "Meta" (SMB2 and ANN-commonalities)
+#   SMB2    - Super Mario Bros. 2
+#   ANN     - All Night Nippon Super Mario Bros.
+#   SMBM    - Super Mario Bros. "Meta" (SMB and ANN-commonalities)
+#   SMB2M   - Super Mario Bros. 2 "Meta" (SMB2 and ANN-commonalities)
+#   PAL     - PAL-specific
 AS		=	ca65
 ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM
 ASFLAGS_VS	=	-DVS -DVS_SMB
 ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
+ASFLAGS_PAL	=	-DPAL
 ASFLAGS		=	-U -I ./inc $(ASFLAGS_FC)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld

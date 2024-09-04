@@ -76,7 +76,7 @@ motion_y_check_spring:
 	: ; if (eng_timer_ctl || !eng_spring_ani) {
 		lda	accel_y_player
 		sta	motion_gravity_accel_y_inc
-		lda	#4
+		lda	#MOTION_GRAVITY_VAL
 		jmp	motion_gravity_do
 	; } else rts;
 
@@ -117,17 +117,17 @@ motion_fall_fast:
 	bne	motion_fall_max_lo
 
 motion_fall_slow:
-	ldy	#$0F
+	ldy	#MOTION_FALL_SLOW
 
 motion_fall_max_lo:
 	lda	#2
 	bne	motion_fall
 
 motion_fall_mid:
-	ldy	#$1C
+	ldy	#MOTION_FALL_MID
 
 motion_fall_max_hi:
-	lda	#3
+	lda	#MOTION_FALL_MAX_HI
 
 motion_fall:
 	sty	motion_gravity_accel_y_inc
@@ -153,7 +153,7 @@ motion_block_fall_fast:
 	ldy	#1
 
 motion_block_fall:
-	lda	#$50
+	lda	#MOTION_BLOCK_FALL_ACCEL_Y_INC
 	sta	motion_gravity_accel_y_inc
 	lda	motion_block_veloc_y_max, y
 
@@ -271,7 +271,9 @@ motion_gravity:
 
 	rts
 
-.if	.defined(VS_SMB)
+.if	.defined(PAL)
+	.res	1, $FF
+.elseif	.defined(VS_SMB)
 	.res	6, $FF
 .elseif	.defined(SMB2)
 	.res	11, $FF

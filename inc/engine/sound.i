@@ -11,6 +11,14 @@ SOUND_I = 1
 		.byte	<(note|(len<<6)|(len>>2))
 	.endmacro
 
+	.macro	snd_region_len	ntsc, pal
+		.ifndef	PAL
+			.byte	ntsc
+		.else
+			.byte	pal
+		.endif
+	.endmacro
+
 	APU_COUNTER_OFFSET	= 0
 	APU_TIMER_OFFSET	= 1
 
