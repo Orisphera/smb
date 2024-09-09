@@ -61,7 +61,7 @@ vs_read_dips:
 ; -----------------------------------------------------------
 vs_text_credit_count:
 	.byte	(:+++)-(:+)
-	: .dbyt	PPU_VRAM_BG1+$394
+	: .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_28+PPU_BG_COL_20
 	.byte	(:++)-(:+)
 	: .byte	"CREDIT 00"
 	: .byte	NMI_LIST_END
@@ -69,7 +69,7 @@ vs_text_credit_count_end:
 
 vs_text_free_play:
 	.byte	(:+++)-(:+)
-	: .dbyt	PPU_VRAM_BG1+$394
+	: .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_28+PPU_BG_COL_20
 	.byte	(:++)-(:+)
 	: .byte	"FREE PLAY"
 	: .byte	NMI_LIST_END
@@ -322,7 +322,7 @@ sub_947A_data_0:
 	.byte	$0A, $05
 
 sub_947A_text_push:
-	.dbyt	PPU_VRAM_BG1+$EA
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_7+PPU_BG_COL_10
 	.byte	sub_947A_text_push_end-sub_947A_text_push_start
 sub_947A_text_push_start:
 	.byte	"PUSH BUTTON"

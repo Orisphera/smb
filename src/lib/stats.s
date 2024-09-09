@@ -99,7 +99,7 @@ stats_print_num_do:
 		lda	#>PPU_VRAM_BG1
 		cpy	#0
 		bne	:+ ; if ((2*arg) == 0) {
-			lda	#>(PPU_VRAM_BG1+$200)
+			lda	#>(PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_0)
 		: ; }
 		sta	nmi_list_0_addr_dbyt, x
 
