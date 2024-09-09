@@ -6,8 +6,6 @@
 .include	"charmap.i"
 .include	"tunables.i"
 
-.include	"unk.i"
-
 ; ------------------------------------------------------------
 .if	.defined(SMB2)
 GAMES_STARS_MAX		= 24
@@ -56,7 +54,7 @@ title_init_0:
 	; }
 
 	ldy	#$6F
-	jsr	sub_clearram
+	jsr	game_init_clearram
 
 	ldy	#(snd_ram_end-snd_ram)-1
 	: ; for (byte of sndram) {
@@ -69,7 +67,7 @@ title_init_0:
 	lda	#TITLE_DEMO_TIMER
 	sta	timer_demo
 	jsr	course_descriptor_load
-	jmp	eng_init_0
+	jmp	game_init_0
 ; -----------------------------
 	.export title_init_1
 title_init_1:
@@ -78,7 +76,7 @@ title_init_1:
 	sta	player_size
 	lda	#2
 	sta	player_lives
-	jmp	eng_init_1
+	jmp	game_init_1
 ; -----------------------------
 title_patch_player_name:
 	.byte	"MARIO"

@@ -11,8 +11,8 @@ VINE_HEIGHT_CUTOFF	= 100
 render_vine_part_idx	= zp_byte_00
 ; ------------------------------------------------------------
 render_vine_offset:
-	.byte	0*PPU_TILE_HEIGHT_PX
-	.byte	VINE_PART_COUNT*PPU_TILE_HEIGHT_PX
+	.byte	0*PPU_CHR_HEIGHT_PX
+	.byte	VINE_PART_COUNT*PPU_CHR_HEIGHT_PX
 ; -----------------------------
 	.export render_vine
 render_vine:
@@ -94,7 +94,7 @@ render_vine_column:
 		sta	OAM_DMA_BUFFER+OBJ_POS_V, y
 
 		clc
-		adc	#PPU_TILE_HEIGHT_PX
+		adc	#PPU_CHR_HEIGHT_PX
 
 		.repeat	OBJ_SIZE
 			iny

@@ -126,6 +126,8 @@ gfx_render_area:
 
 	jmp	gfx_render_attr_end
 ; ----------------------------
+gfx_render_attr_addr_dbyt	= zp_addr_00
+
 	.export gfx_render_attr
 gfx_render_attr:
 	lda	eng_bg_addr_lo
@@ -141,23 +143,23 @@ gfx_render_attr:
 
 	and	#%00000100
 	ora	#%00100011
-	sta	zp_byte_00
+	sta	gfx_render_attr_addr_dbyt
 	lda	zp_byte_01
 	lsr	a
 	lsr	a
 	adc	#$C0
-	sta	zp_byte_01
+	sta	gfx_render_attr_addr_dbyt+1
 
 	ldx	#0
 	ldy	nmi_list_1_offset
 	: ; for (x = 0, y = nmi_list_b_entry; x < 7; x++, y += 4) {
-		lda	zp_byte_00
+		lda	gfx_render_attr_addr_dbyt
 		sta	nmi_list_1_addr_dbyt, y
-		lda	zp_byte_01
+		lda	gfx_render_attr_addr_dbyt+1
 		clc
 		adc	#8
 		sta	nmi_list_1_addr_dbyt+1, y
-		sta	zp_byte_01
+		sta	gfx_render_attr_addr_dbyt+1
 		lda	eng_attr_buffer, x
 		sta	nmi_list_1_byte+1, y
 		lda	#1

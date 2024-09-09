@@ -4,8 +4,6 @@
 .include	"joypad.i"
 .include	"misc.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 HAMMER_BRO_VELOC_X_A		= <-6
 HAMMER_BRO_VELOC_X_B		= <-3
@@ -77,9 +75,9 @@ actor_proc_hammer_bro_jump:
 		inc	actor_proc_hammer_bro_jump_rand
 		bcc	:+ ; if (actor.pos_y.lo > veloc_cutoff_pos_y) {
 			dec	actor_proc_hammer_bro_jump_rand
-			lda	lib_rand+1, x
+			lda	srand+1, x
 			and	#MOD_2
-			bne	:+ ; if (!(lib_rand[1] % 2)) {
+			bne	:+ ; if (!(srand[1] % 2)) {
 				ldy	#HAMMER_BRO_VELOC_X_A
 			; }
 		: ; }
@@ -93,7 +91,7 @@ actor_proc_hammer_bro_jump:
 		sta	state_actor, x
 	
 		lda	actor_proc_hammer_bro_jump_rand
-		and	lib_rand+2, x
+		and	srand+2, x
 		tay
 		lda	game_hard_mode_b
 		bne	:+ ; if (!game_hard_mode_b) {
@@ -101,7 +99,7 @@ actor_proc_hammer_bro_jump:
 		: ; }
 		lda	hammer_bro_jump_timers, y
 		sta	timer_ani_actor, x
-		lda	lib_rand+1, x
+		lda	srand+1, x
 		ora	#%11000000
 		sta	eng_timer_hammer_bro_jump, x
 	: ; }

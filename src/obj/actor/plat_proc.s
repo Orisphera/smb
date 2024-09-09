@@ -9,8 +9,6 @@
 .include	"misc.i"
 .include	"joypad.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 PLAT_ROPE_OFFSET_X	= 8
 PLAT_ROPE_OFFSET_X_HARD	= 16

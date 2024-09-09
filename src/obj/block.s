@@ -6,8 +6,6 @@
 .include	"tiles.i"
 .include	"sound.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 BLOCK_TIMER_VAL		= 11
 BLOCK_PLAYER_OFFSET_X	= 8
@@ -232,7 +230,7 @@ block_powerup:
 block_vine:
 	ldx	#$05
 	ldy	obj_data_offset_ctl
-	jsr	game_proc_vine_init
+	jsr	player_proc_vine_init
 
 block_item_rts:
 	rts

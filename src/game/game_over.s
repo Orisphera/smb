@@ -5,32 +5,30 @@
 .include	"sound.i"
 .include	"misc.i"
 
-.include	"unk.i"
-
-	.export eng_game_over
-eng_game_over:
+	.export game_over
+game_over:
 	lda	game_state
 	jsr	tbljmp
-	.addr	eng_game_over_init
+	.addr	game_over_init
 	.addr	screen_proc
 	.if	.defined(VS_SMB)
 		.addr	sub_9902
 		.addr	sub_98DC
 		.addr	sub_98F2
 	.endif
-	.addr	eng_game_over_run
+	.addr	game_over_run
 ; ----------------------------
 .if	.defined(VS_SMB)
-	.include	"vs_gameover.s"
+	.include	"vs_game_over.s"
 .endif
 ; ----------------------------
-eng_game_over_init:
-	lda	#0
-	sta	eng_screen_proc_id
+game_over_init:
+	lda	#screen_procs::init
+	sta	screen_proc_id
 	sta	nmi_sprite_overlap
 
 .if	.defined(SMB2M)
-	sta	eng_game_over_choice
+	sta	game_over_choice
 .endif
 
 	lda	#music_event::game_over
@@ -44,7 +42,7 @@ eng_game_over_init:
 	jmp	screen_title_bg_finish
 .endif
 ; ----------------------------
-eng_game_over_run:
+game_over_run:
 .if	.defined(SMB)|.defined(SMB2M)
 	.if	.defined(SMB)
 		GAME_OVER_TIMER_RTS = eng_next_game_rts_b
@@ -66,7 +64,7 @@ eng_game_over_run:
 			beq     :+ ; if (course_no != no_09) {
 		.endif
 
-		jmp     eng_game_over_menu
+		jmp     game_over_menu
 
 		.if	.defined(SMB2)
 			: ; }
@@ -116,7 +114,7 @@ eng_game_over_run:
 		lda	#0
 		sta	eng_timer_ctl
 		sta	player_status
-		sta	game_proc_id
+		sta	player_proc_id
 		sta	game_state
 		lda	#game_modes::normal
 		sta	game_mode

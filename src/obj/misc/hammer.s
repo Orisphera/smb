@@ -2,7 +2,6 @@
 .include	"misc.i"
 .include	"tunables.i"
 
-.include	"unk.i"
 ; ------------------------------------------------------------
 MISC_HAMMER_ACCEL_Y_DEC		= 15
 MISC_HAMMER_VELOC_Y_MAX_ABS	= 4
@@ -21,10 +20,10 @@ misc_hammer_veloc_x:
 ; -----------------------------
 	.export misc_init_hammer
 misc_init_hammer:
-	lda	lib_rand+1
+	lda	srand+1
 	and	#(misc_hammer_actor_id_end-misc_hammer_actor_id)-2
-	bne	:+ ; if (!(lib_rand[1] % misc_hammer_actor_id_count)) {
-		lda	lib_rand+1
+	bne	:+ ; if (!(srand[1] % misc_hammer_actor_id_count)) {
+		lda	srand+1
 		and	#(misc_hammer_actor_id_end-misc_hammer_actor_id)-1
 	: ; }
 	tay

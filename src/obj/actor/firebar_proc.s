@@ -4,9 +4,6 @@
 .include	"mem.i"
 .include	"misc.i"
 .include	"joypad.i"
-
-.include	"unk.i"
-
 .include	"macros.i"
 
 ; -----------------------------------------------------------

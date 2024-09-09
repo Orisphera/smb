@@ -69,7 +69,7 @@ actor_init_bowser_flame:
 			: ; }
 			sta	timer_swarm
 		
-			lda	lib_rand, x
+			lda	srand, x
 			and	#MOD_4
 			sta	pos_y_actor, x
 			tay
@@ -98,7 +98,7 @@ actor_init_bowser_flame:
 			adc	#BOWSER_FLAME_SHOOT_OFFSET_Y
 			sta	pos_y_lo_actor, x
 		
-			lda	lib_rand, x
+			lda	srand, x
 			and	#MOD_4
 			sta	pos_y_actor, x
 			tay

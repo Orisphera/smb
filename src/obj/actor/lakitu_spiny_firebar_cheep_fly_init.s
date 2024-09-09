@@ -128,7 +128,7 @@ actor_proc_spiny:
 		sbc	#SPINY_LAKITU_OFFSET_Y
 		sta	pos_y_lo_actor, x
 	
-		lda	lib_rand, x
+		lda	srand, x
 		and	#MOD_4
 		tay
 		ldx	#3-1
@@ -151,9 +151,9 @@ actor_proc_spiny:
 		bcs	:++ ; if (player.veloc_x < SPINY_PLAYER_VELOC_X_CUTOFF) {
 			tay
 	
-			lda	lib_rand+1, x
+			lda	srand+1, x
 			and	#MOD_4
-			beq	:+ ; if (lib_rand[1] % 4) {
+			beq	:+ ; if (srand[1] % 4) {
 				tya
 				eor	#<-1
 				tay
@@ -251,7 +251,7 @@ actor_init_cheep_fly:
 	bne	actor_spiny_rts ; if (timer_swarm == 0) {
 		jsr	actor_init_col_small
 	
-		lda	lib_rand+1, x
+		lda	srand+1, x
 		and	#MOD_4
 		tay
 		lda	actor_cheep_fly_timers, y
@@ -265,7 +265,7 @@ actor_init_cheep_fly:
 		sty	actor_cheep_fly_count
 		cpx	actor_cheep_fly_count
 		bcs	actor_spiny_rts ; if (this.idx < 3 || (game_hard_mode_b && this.idx < 4)) {
-			lda	lib_rand, x
+			lda	srand, x
 			and	#MOD_4
 			sta	actor_cheep_fly_offset_rand
 			sta	actor_cheep_fly_veloc_x_rand
@@ -287,10 +287,10 @@ actor_init_cheep_fly:
 			clc
 			adc	actor_cheep_fly_offset_rand
 			sta	actor_cheep_fly_offset_rand
-			lda	lib_rand+1, x
+			lda	srand+1, x
 			and	#MOD_4
-			beq	:+ ; if (lib_rand[1] % 4) {
-				lda	lib_rand+2, x
+			beq	:+ ; if (srand[1] % 4) {
+				lda	srand+2, x
 				and	#MOD_16
 				sta	actor_cheep_fly_offset_rand
 			: ; }

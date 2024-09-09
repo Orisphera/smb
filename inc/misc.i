@@ -142,8 +142,8 @@ COL_BOX_SIZE	= 4
 		end
 	.endenum
 
-	.enum	game_proc
-		start
+	.enum	player_procs
+		init
 		vine
 		pipe_h
 		pipe_v
@@ -174,7 +174,7 @@ COL_BOX_SIZE	= 4
 		value_oneup	= <(screen_score_value_oneup-screen_score_disp_incs)
 	.endenum
 
-	.enum	screen_proc
+	.enum	screen_procs
 		init
 		color_init_1
 		stat_bg_0

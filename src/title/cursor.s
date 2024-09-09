@@ -18,6 +18,7 @@ title_cursor_data:
 	.endif
         : .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+TITLE_CURSOR_COL
 	.byte	NMI_INC_ROW|((:++)-(:+))
+title_cursor_data_tiles:
 	: .byte	chr_bg::cursor
 	.byte	" "
 	.byte	" "
@@ -61,9 +62,9 @@ title_cursor_draw_xfer:
 title_cursor_draw_xfer:
 	ldy	player_id
 	lda	title_cursor_tiles, y
-	sta	title_cursor_data+3
+	sta	title_cursor_data_tiles
 	lda	title_cursor_tiles+1, y
-	sta	title_cursor_data+5
+	sta	title_cursor_data_tiles+2
 .endif
 
 	rts

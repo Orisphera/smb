@@ -13,7 +13,7 @@ sub_98DC:
 	.addr	sub_9A4E
 	.addr	sub_9B38
 	.addr	sub_9A20
-	.addr	sub_953B
+	.addr	vs_super_players
 	.addr	sub_9E29
 
 sub_98F2:
@@ -599,7 +599,7 @@ L9CB0:
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V
 	clc
-	adc	#PPU_TILE_HEIGHT_PX
+	adc	#PPU_CHR_HEIGHT_PX
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V
 
@@ -624,7 +624,7 @@ L9CB0:
         sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_H
 	clc
-	adc	#PPU_TILE_HEIGHT_PX
+	adc	#PPU_CHR_HEIGHT_PX
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_H
 
@@ -1052,7 +1052,7 @@ sub_9F3B:
 				lda	zp_addr_00+1
 				sta	OAM_DMA_BUFFER+OBJ_POS_H-3, x
 				sec
-				sbc	#PPU_TILE_HEIGHT_PX
+				sbc	#PPU_CHR_HEIGHT_PX
 				sta	zp_addr_00+1
 				dex
 				lda	data_9F33, y

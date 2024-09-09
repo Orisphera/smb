@@ -1,5 +1,3 @@
-.include	"unk.i"
-
 	.export actor_proc_bowser_flame
 actor_proc_bowser_flame:
 	jsr	actor_proc_bowser_flame_do

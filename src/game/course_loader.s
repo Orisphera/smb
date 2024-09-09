@@ -4,8 +4,6 @@
 .include	"course_flags.i"
 .include	"misc.i"
 
-.include	"unk.i"
-
 .if	.defined(SMB)
 .define	COURSE_ACTOR_DATA_ADDR_LO	course_actor_addr_lo,y
 .define COURSE_ACTOR_DATA_ADDR_HI	course_actor_addr_hi,y

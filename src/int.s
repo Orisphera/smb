@@ -159,19 +159,19 @@ nmi_rand_buffer	= zp_byte_00
 
 	.if .defined(VS_SMB)
 	nmi_addr_1F:
-		.byte	PPU_COLOR_YGREEN0, PPU_COLOR_PITCH1,  PPU_COLOR_PITCH1, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_GREY3,	PPU_COLOR_YGREEN3, PPU_COLOR_CYAN0,  PPU_COLOR_YELLOW1
+		.byte	PPU_COLOR_YGREEN0, PPU_COLOR_PITCH1, PPU_COLOR_PITCH1, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_GREY3, PPU_COLOR_YGREEN3, PPU_COLOR_CYAN0, PPU_COLOR_YELLOW1
 
 	nmi_addr_1E:
 		.byte	PPU_COLOR_YGREEN0, PPU_COLOR_YELLOW1, PPU_COLOR_MAGENTA0, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_GREY3,	PPU_COLOR_GREY1,	PPU_COLOR_GREY0,	 PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_AZURE3,  PPU_COLOR_BLUE1,	PPU_COLOR_AZURE0,	PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_YGREEN3, PPU_COLOR_BLUE1,	PPU_COLOR_YGREEN0,  PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_RED3,	 PPU_COLOR_ORANGE1, PPU_COLOR_GREEN0,	PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_RED1,	 PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1,  PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_GREY3,	PPU_COLOR_ORANGE2, PPU_COLOR_YGREEN1,  PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1,	PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_RED1,	 PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1,  PPU_COLOR_YELLOW1
+		.byte	PPU_COLOR_GREY3, PPU_COLOR_GREY1, PPU_COLOR_GREY0, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_AZURE3, PPU_COLOR_BLUE1, PPU_COLOR_AZURE0, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_YGREEN3, PPU_COLOR_BLUE1, PPU_COLOR_YGREEN0, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_RED3, PPU_COLOR_ORANGE1, PPU_COLOR_GREEN0, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_RED1, PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_GREY3, PPU_COLOR_ORANGE2, PPU_COLOR_YGREEN1, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1, PPU_COLOR_PITCH0
+		.byte	PPU_COLOR_RED1,	PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW1
 	.endif
 
 	nmi_list_offset:
@@ -207,7 +207,7 @@ nmi:
 			sta	FDS_TIMER_DATA_HI
 			lda	#fds_timer_ctlr::irq
 			sta	FDS_TIMER_CTLR
-			inc	byte_77B
+			inc	fds_sprite_overlap_hit
 		: ; }
 	.endif
 
@@ -319,10 +319,10 @@ nmi:
 
 	ldx	#0
 	ldy	#7
-	lda	lib_rand
+	lda	srand
 	and	#%00000010
 	sta	nmi_rand_buffer
-	lda	lib_rand+1
+	lda	srand+1
 	and	#%00000010
 	eor	nmi_rand_buffer
 	clc
@@ -330,7 +330,7 @@ nmi:
 		sec
 	: ; }
 	: ; for (y = 7, x = 0; y > 0; y--, x++) {
-		ror	lib_rand, x
+		ror	srand, x
 		inx
 
 		dey
@@ -404,8 +404,8 @@ nmi:
 	: ; }
 
 	.if	.defined(SMB2M)
-		: ; while (byte_77B) {
-			lda	byte_77B
+		: ; while (fds_sprite_overlap_hit) {
+			lda	fds_sprite_overlap_hit
 			bne	:-
 		; }
 	.endif
@@ -457,7 +457,7 @@ nmi:
 				lda	ppu_scc_v_b
 				sta	PPU_SCC_H_V
 				lda	#0
-				sta	byte_77B
+				sta	fds_sprite_overlap_hit
 
 				jmp	:++
 			; }
@@ -601,15 +601,15 @@ nmi_game_mode_enter:
 	lda	game_mode
 	jsr	tbljmp
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.addr	eng_title
+		.addr	title
 	.elseif	.defined(SMB2M)
 		.addr	disk_loader
 	.endif
 
 	.if	.defined(VS_SMB)
-		.addr	sub_941E
+		.addr	vs_player_select
 	.endif
 
-	.addr	eng_game
-	.addr	eng_victory
-	.addr	eng_game_over
+	.addr	player_proc
+	.addr	victory
+	.addr	game_over

@@ -4,9 +4,6 @@
 .include	"misc.i"
 .include	"joypad.i"
 .include	"sound.i"
-
-.include	"unk.i"
-
 .include	"macros.i"
 
 ; -----------------------------------------------------------
@@ -152,7 +149,7 @@ actor_proc_bowser:
 			lda	pos_x_lo_actor, x
 			cmp	nmi_list_1_data+$25
 			bne	:+ ; if () {
-				lda	lib_rand, x
+				lda	srand, x
 				and	#MOD_4
 				tay
 				lda	actor_proc_bowser_timer_data, y
@@ -199,7 +196,7 @@ actor_proc_bowser:
 	lda	pos_y_lo_actor, x
 	cmp	#BOWSER_TIMER_START_POS_Y
 	bcc	:++ ; if (actor.pos_y >= timer_start_pos) {
-		lda	lib_rand, x
+		lda	srand, x
 		and	#MOD_4
 		tay
 		lda	actor_proc_bowser_timer_data, y

@@ -41,8 +41,8 @@ joypad_a_b		= frame_count+1
 joypad_u_d		= joypad_a_b+1
 joypad_l_r		= joypad_u_d+1
 joypad_a_b_held		= joypad_l_r+1
-game_proc_id		= joypad_a_b_held+1
-actor_mode		= game_proc_id+1
+player_proc_id		= joypad_a_b_held+1
+actor_mode		= player_proc_id+1
 actor_mode_end		= actor_mode+ENG_ACTOR_MAX
 zp_byte_15		= actor_mode_end
 actor_id		= zp_byte_15+1
@@ -384,7 +384,7 @@ eng_ledge_dims		= $736
 actor_offset		= $739
 actor_page_loc		= $73A
 actor_page_on		= $73B
-eng_screen_proc_id	= $73C
+screen_proc_id		= $73C
 game_scroll_h		= $73D
 ppu_scc_h_b		= $73F
 ppu_scc_v_b		= $740
@@ -443,7 +443,7 @@ ppu_ctlr0_b		= $778
 ppu_ctlr1_b		= $779
 player_count		= $77A
 ppu_ctlr0_bg		= $77A
-byte_77B		= $77B
+fds_sprite_overlap_hit	= $77B
 byte_77C		= $77C
 byte_77D		= $77D
 
@@ -478,7 +478,7 @@ timer_unk_c		= timer_demo+1
 timer_unk_d		= timer_unk_c+1
 timers_nmi_end		= timer_unk_d
 
-lib_rand		= $7A7
+srand		= $7A7
 
 snd_ram			= $7B0
 snd_noise_offset	= $7B0
@@ -540,7 +540,7 @@ stats_time_end		= (stats_time+STAT_LEN_MAX)
 .if	.defined(SMB2M)
 game_level_end_apu_on	= $7F6
 disk_loader_file_id	= $7F7
-eng_game_over_choice	= $7F8
+game_over_choice	= $7F8
 .endif
 .if	.defined(SMB2)
 byte_7F9		= $7F9

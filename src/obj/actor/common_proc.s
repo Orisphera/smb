@@ -42,16 +42,16 @@ actor_proc_do:
 	.addr	actor_proc_bowser
 	.addr	actor_proc_powerup
 
-	.addr	game_proc_vine_do
+	.addr	player_proc_vine_do
 
 	.addr	actor_proc_null
 	.addr	actor_proc_flag_victory
 
-	.addr	game_proc_spring
+	.addr	player_proc_spring
 
 	.addr	actor_proc_null
 
-	.addr	game_proc_warp
+	.addr	player_proc_warp
 
 	.addr	actor_proc_toad
 ; -----------------------------------------------------------

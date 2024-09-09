@@ -60,4 +60,4 @@ chr_obj_toads_chr2:
 	.incbin	"data/chr2.ann/chr_obj_A2.bin"
 	.incbin	"data/chr2.ann/chr_obj_A3.bin"
 
-	.res	24*PPU_TILE_SIZE, 0
+	.res	24*PPU_CHR_SIZE, 0

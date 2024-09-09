@@ -1,8 +1,6 @@
 .include	"mem.i"
 .include	"misc.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 PIRANHA_PLANT_VELOC_X_1	= 1
 PIRANHA_PLANT_OFFSET_Y	= 24

@@ -6,34 +6,33 @@
 .include	"sound.i"
 .include	"tunables.i"
 .include	"misc.i"
+.include	"macros.i"
 
 .include	"unk.i"
 
-.include	"macros.i"
-
-	.export	eng_game
-eng_game:
+	.export	player_proc
+player_proc:
 	lda	game_state
 	jsr	tbljmp
 
 	.if	.defined(VS_SMB)
-		.addr	game_vs_init
+		.addr	player_proc_vs_init
 	.elseif	.defined(SMB2M)
 		.addr	disk_loader_data2
 	.endif
 
-	.addr	eng_init_0_do
+	.addr	game_init_0_do
 
 	.if	.defined(ANN)
 		.addr	ann_toad_load
 	.endif
 
 	.addr	screen_proc
-	.addr	eng_init_1_do
-	.addr	game_proc
+	.addr	game_init_1_do
+	.addr	player_proc_main
 ; -----------------------------------------------------------
 .if	.defined(VS_SMB)
-game_vs_init:
+player_proc_vs_init:
 	inc	game_state
 	lda	#1
 	sta	nmi_disp_disable
@@ -42,8 +41,8 @@ game_vs_init:
 	rts
 .endif
 ; -----------------------------------------------------------
-	.export	game_proc, game_proc_scroll_save
-game_proc:
+	.export	player_proc_main, player_proc_scroll_save
+player_proc_main:
 	.if	.defined(VS_SMB)
 		lda	player_count
 		beq	:+ ; if (player_count > 0) {
@@ -79,7 +78,7 @@ game_proc:
 		: ; }
 	.endif
 
-	jsr	game_proc_do
+	jsr	player_proc_do
 	lda	game_state
 	.if	.defined(CONS)
 		cmp	#game_states::proc
@@ -90,7 +89,7 @@ game_proc:
 		rts
 	: ; }
 
-	jsr	game_proc_proj
+	jsr	player_proc_proj
 	ldx	#0
 	: ; for (actor_index = 0; actor_index < ENG_ACTOR_MAX; actor_index++) {
 		stx	actor_index
@@ -115,10 +114,10 @@ game_proc:
 
 	jsr	misc_proc
 
-	jsr	game_proc_cannon
-	jsr	game_proc_whirlpool
-	jsr	game_proc_pole_b
-	jsr	game_proc_timer
+	jsr	player_proc_cannon
+	jsr	player_proc_whirlpool
+	jsr	player_proc_pole_b
+	jsr	player_proc_timer
 
 	jsr	gfx_color_rotate
 
@@ -139,7 +138,7 @@ game_proc:
 	lda	timer_nmi_tick
 	bne	:+ ; if (player.timer_star) {
 		; if (player.pos_y.hi < 2 && player.timer_star == 4 && !timer_nmi_tick) {
-			jsr	sub_load_area_music
+			jsr	game_init_area_music
 		: ; }
 		ldy	timer_player_star
 		lda	frame_count
@@ -149,10 +148,10 @@ game_proc:
 			lsr	a
 		: ; }
 		lsr	a
-		jsr	game_proc_firefl_do
+		jsr	player_proc_firefl_do
 		jmp	:++
 	: ; } else {
-		jsr	game_proc_firefl_do_2
+		jsr	player_proc_firefl_do_2
 	: ; }
 
 	lda	joypad_a_b
@@ -162,7 +161,7 @@ game_proc:
 
 GAME_SCROLL_END	= $20
 
-game_proc_scroll_save:
+player_proc_scroll_save:
 	lda	nmi_addrs_ctl
 	cmp	#nmi_addr::buffer_11_A
 	beq	:++
@@ -182,8 +181,8 @@ game_proc_scroll_save:
 	: ; }
 	rts
 ; -----------------------------------------------------------
-	.export	game_proc_scroll_do
-game_proc_scroll:
+	.export	player_proc_scroll_do
+player_proc_scroll:
 	lda	player_scroll_x
 	clc
 	adc	actor_plat_scroll_x
@@ -210,11 +209,11 @@ game_proc_scroll:
 			ldy	player_scroll_x
 		: ; }
 	
-	game_proc_scroll_do:
+	player_proc_scroll_do:
 		.if	.defined(SMB2M)
-			; while (byte_77B) {
-				lda	byte_77B
-				bne	game_proc_scroll_do
+			; while (fds_sprite_overlap_hit) {
+				lda	fds_sprite_overlap_hit
+				bne	player_proc_scroll_do
 			; }
 		.endif
 
@@ -243,7 +242,7 @@ game_proc_scroll:
 			sta	ppu_ctlr0_bg
 		.endif
 
-		jsr	game_proc_disp_pos
+		jsr	player_proc_disp_pos
 
 		lda	#8
 		sta	timer_scroll
@@ -266,14 +265,14 @@ game_proc_scroll:
 	: ; if (zp_byte_00 & 0xC0) {
 		lda	pos_x_lo_screen_left, y
 		sec
-		sbc	game_proc_scroll_off, y
+		sbc	player_proc_scroll_off, y
 		sta	pos_x_lo_player
 		lda	pos_x_hi_screen_left, y
 		sbc	#0
 		sta	pos_x_hi_player
 		lda	joypad_l_r
-		cmp	game_proc_scroll_btn_mask, y
-		beq	:+ ; if (joypad_l_r != game_proc_scroll_btn_mask[y]) {
+		cmp	player_proc_scroll_btn_mask, y
+		beq	:+ ; if (joypad_l_r != player_proc_scroll_btn_mask[y]) {
 			lda	#0
 			sta	veloc_x_player
 		: ; }
@@ -283,15 +282,15 @@ game_proc_scroll:
 	sta	actor_plat_scroll_x
 	rts
 ; ----------------------------
-game_proc_scroll_off:
+player_proc_scroll_off:
 	.byte	0, 16
 
-game_proc_scroll_btn_mask:
+player_proc_scroll_btn_mask:
 	.byte	joypad_button::right
 	.byte	joypad_button::left
 ; -----------------------------------------------------------
-	.export	game_proc_disp_pos
-game_proc_disp_pos:
+	.export	player_proc_disp_pos
+player_proc_disp_pos:
 	lda	pos_x_lo_screen_left
 	clc
 	adc	#$FF
@@ -301,31 +300,31 @@ game_proc_disp_pos:
 	sta	pos_x_hi_screen_right
 	rts
 ; -----------------------------------------------------------
-game_proc_do:
-	lda	game_proc_id
+player_proc_do:
+	lda	player_proc_id
 	jsr	tbljmp
-	.addr	game_proc_start
-	.addr	game_proc_vine
-	.addr	game_proc_pipe_h
-	.addr	game_proc_pipe_v
-	.addr	game_proc_pole
-	.addr	game_proc_victory
-	.addr	game_proc_lifedown
-	.addr	game_proc_enter
-	.addr	game_proc_ctrl
-	.addr	game_proc_size_chg
-	.addr	game_proc_hurt
-	.addr	game_proc_death
-	.addr	game_proc_firefl
+	.addr	player_proc_init
+	.addr	player_proc_vine
+	.addr	player_proc_pipe_h
+	.addr	player_proc_pipe_v
+	.addr	player_proc_pole
+	.addr	player_proc_victory
+	.addr	player_proc_lifedown
+	.addr	player_proc_enter
+	.addr	player_proc_ctrl
+	.addr	player_proc_size_chg
+	.addr	player_proc_hurt
+	.addr	player_proc_death
+	.addr	player_proc_firefl
 ; -----------------------------------------------------------
-game_proc_enter:
+player_proc_enter:
 	lda	game_start_type
 	cmp	#2
 	beq	:+++ ; if (game_start_type != 2) {
 		lda	#joypad_button::none
 		ldy	pos_y_lo_player
 		cpy	#48
-		bcc	game_proc_auto
+		bcc	player_proc_auto
 		lda	course_enter_pos
 		cmp	#COURSE_SCENERY_ENTER_POS_B0_B_VAL
 		beq	:+
@@ -334,13 +333,13 @@ game_proc_enter:
 		: lda	attr_player
 		bne	:+ ; if (course.enter_pos == 0xB0 && player.priority == high && player.flip == none) {
 			lda	#joypad_button::right
-			jmp	game_proc_auto
+			jmp	player_proc_auto
 		: ; } else {
-			jsr	game_proc_pipe_h_enter
+			jsr	player_proc_pipe_h_enter
 			dec	eng_timer_scene_trans
-			bne	game_proc_enter_rts ; if (--eng_timer_scene_trans == 0) {
+			bne	player_proc_enter_rts ; if (--eng_timer_scene_trans == 0) {
 				inc	eng_disable_b
-				jmp	game_proc_victory_do
+				jmp	player_proc_victory_do
 			; } else rts;
 		; }
 	: lda	game_joypad_override
@@ -355,7 +354,7 @@ game_proc_enter:
 	: ; } else {
 		lda	height_vine
 		cmp	#$60
-		bne	game_proc_enter_rts
+		bne	player_proc_enter_rts
 		lda	pos_y_lo_player
 		cmp	#153
 		ldy	#0
@@ -368,32 +367,32 @@ game_proc_enter:
 			sta	bg_buffer_0+$B4
 		: ; }
 		sty	eng_col_off
-		jsr	game_proc_auto
+		jsr	player_proc_auto
 		lda	pos_x_lo_player
 		cmp	#72
-		bcc	game_proc_enter_rts
+		bcc	player_proc_enter_rts
 	: ; } if ((!joypad_override && pos_y_lo_player < 0x91) || (pos_x_lo_player >= 72)) {
-		lda	#game_proc::ctrl
-		sta	game_proc_id
+		lda	#player_procs::ctrl
+		sta	player_proc_id
 		lda	#DIR_RIGHT
 		sta	disp_dir_player
 		lsr	a
 		sta	game_start_type
 		sta	eng_col_off
 		sta	game_joypad_override
-	game_proc_enter_rts: ; }
+	player_proc_enter_rts: ; }
 
 	rts
 ; -----------------------------------------------------------
-game_proc_ctrl_fall_y_hi_cutoff	= zp_byte_07
+player_proc_ctrl_fall_y_hi_cutoff	= zp_byte_07
 
-	.export	game_proc_auto
-game_proc_auto:
+	.export	player_proc_auto
+player_proc_auto:
 	sta	joypad_p1
 ; ---------------------------
-game_proc_ctrl:
-	lda	game_proc_id
-	cmp	#game_proc::death
+player_proc_ctrl:
+	lda	player_proc_id
+	cmp	#player_procs::death
 	beq	:+++ ; if (game.proc_id != death) {
 		lda	course_type
 		bne	:++
@@ -429,7 +428,7 @@ game_proc_ctrl:
 		; }
 	: ; }
 
-	jsr	game_proc_player_move
+	jsr	player_proc_player_move
 
 	ldy	#col_box_type::small
 	lda	player_size
@@ -453,7 +452,7 @@ game_proc_ctrl:
 		sta	motion_dir_player
 	: ; }
 
-	jsr	game_proc_scroll
+	jsr	player_proc_scroll
 
 	jsr	lib_player_bits_get
 	jsr	lib_calc_player_pos
@@ -464,12 +463,12 @@ game_proc_ctrl:
 	lda	pos_y_lo_player
 	cmp	#64
 	bcc	:+
-	lda	game_proc_id
-	cmp	#game_proc::victory
+	lda	player_proc_id
+	cmp	#player_procs::victory
 	beq	:+
-	cmp	#game_proc::enter
+	cmp	#player_procs::enter
 	beq	:+
-	cmp	#game_proc::pole
+	cmp	#player_procs::pole
 	bcc	:+ ; if (player.pos_y.lo >= 64 && game.proc_id >= pole && game.proc_id.not_in(victory, enter)) {
 		lda	attr_player
 		and	#<~obj_attr::priority_bit
@@ -478,12 +477,12 @@ game_proc_ctrl:
 
 	lda	pos_y_hi_player
 	cmp	#2
-	bmi	game_proc_ctrl_rts ; if (player.pos_y.hi >= 2) {
+	bmi	player_proc_ctrl_rts ; if (player.pos_y.hi >= 2) {
 		ldx	#1
 		stx	game_scroll_lock
 
 		ldy	#4
-		sty	game_proc_ctrl_fall_y_hi_cutoff
+		sty	player_proc_ctrl_fall_y_hi_cutoff
 		ldx	#0
 
 		ldy	eng_done_timer
@@ -493,8 +492,8 @@ game_proc_ctrl:
 		: ; if (eng_done_timer != 0 || course.type != cloud) {
 			inx
 
-			ldy	game_proc_id
-			cpy	#game_proc::death
+			ldy	player_proc_id
+			cpy	#player_procs::death
 			beq	:++ ; if (game.proc_id != death) {
 				ldy	eng_music_event_death
 				bne	:+ ; if (!eng_music_event_death) {
@@ -504,33 +503,33 @@ game_proc_ctrl:
 				: ; }
 			
 				ldy	#6
-				sty	game_proc_ctrl_fall_y_hi_cutoff
+				sty	player_proc_ctrl_fall_y_hi_cutoff
 			; }
 		: ; }
 
-		cmp	game_proc_ctrl_fall_y_hi_cutoff
-		bmi	game_proc_ctrl_rts ; if (player.pos_y.hi >= fall_y_hi_cutoff) {
+		cmp	player_proc_ctrl_fall_y_hi_cutoff
+		bmi	player_proc_ctrl_rts ; if (player.pos_y.hi >= fall_y_hi_cutoff) {
 			dex
 			bmi	:++ ; if (x) {
 				ldy	snd_music_event_current
 				bne	:+ ; if (snd.music_event == null) {
-					lda	#game_proc::lifedown
-					sta	game_proc_id
+					lda	#player_procs::lifedown
+					sta	player_proc_id
 				: ; }
 	
-			game_proc_ctrl_rts:
+			player_proc_ctrl_rts:
 				rts
 			: ; } else {
 				lda	#joypad_button::none
 				sta	game_joypad_override
-				jsr	game_proc_vine_b
+				jsr	player_proc_vine_b
 				inc	game_start_type
 				rts
 			; }
 		; }
 	; }
 ; -----------------------------------------------------------
-game_proc_vine:
+player_proc_vine:
 	lda	pos_y_hi_player
 	bne	:+
 	lda	pos_y_lo_player
@@ -541,29 +540,29 @@ game_proc_vine:
 		sta	game_joypad_override
 		ldy	#player_state::climb
 		sty	state_player
-		jmp	game_proc_auto
+		jmp	player_proc_auto
 	: ; } else {
-	game_proc_vine_b:
+	player_proc_vine_b:
 		lda	#2
 		sta	game_start_type
-		jmp	game_proc_pipe_h_do_2
+		jmp	player_proc_pipe_h_do_2
 	; }
 ; -----------------------------------------------------------
-game_proc_pipe_v:
+player_proc_pipe_v:
 	lda	#1
 	jsr	game_pos_y_lo_player_add
 
-	jsr	game_proc_scroll
+	jsr	player_proc_scroll
 
 	ldy	#0
 	lda	eng_warp_ctrl
-	bne	game_proc_pipe_h_do ; if (!eng_warp_ctrl) {
+	bne	player_proc_pipe_h_do ; if (!eng_warp_ctrl) {
 		iny
 		lda	course_type
 		cmp	#course_types::castle
-		bne	game_proc_pipe_h_do ; if (course_type == castle) {
+		bne	player_proc_pipe_h_do ; if (course_type == castle) {
 			iny
-			jmp	game_proc_pipe_h_do
+			jmp	player_proc_pipe_h_do
 		; }
 	; }
 ; -----------------------------
@@ -573,16 +572,16 @@ game_pos_y_lo_player_add:
 	sta	pos_y_lo_player
 	rts
 ; -----------------------------------------------------------
-game_proc_pipe_h:
-	jsr	game_proc_pipe_h_enter
+player_proc_pipe_h:
+	jsr	player_proc_pipe_h_enter
 	ldy	#2
 
-game_proc_pipe_h_do:
+player_proc_pipe_h_do:
 	dec	eng_timer_scene_trans
 	bne	:+ ; if (--eng_timer_scene_trans == 0) {
 		sty	game_start_type
 	
-	game_proc_pipe_h_do_2:
+	player_proc_pipe_h_do_2:
 		inc	nmi_disp_disable
 		lda	#game_states::init_0
 		sta	game_state
@@ -591,7 +590,7 @@ game_proc_pipe_h_do:
 
 	rts
 ; ------------------------------
-game_proc_pipe_h_enter:
+player_proc_pipe_h_enter:
 	lda	#8
 	sta	veloc_x_player
 	ldy	#joypad_button::right
@@ -603,36 +602,36 @@ game_proc_pipe_h_enter:
 	: ; }
 	tya
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		jsr	game_proc_auto
+		jsr	player_proc_auto
 		rts
 	.elseif	.defined(ANN)
-		jmp	game_proc_auto
+		jmp	player_proc_auto
 	.endif
 ; -----------------------------------------------------------
-game_proc_size_chg:
+player_proc_size_chg:
 	lda	eng_timer_ctl
 	cmp	#$F8
 	bne	:+ ; if (eng_timer_ctl == 0xF8) {
-		jmp	game_proc_hurt_do
+		jmp	player_proc_hurt_do
 	: cmp	#$C4
 	bne	:+ ; } else if (eng_timer_ctl == 0xC4) {
-		jsr	game_proc_player_done
+		jsr	player_proc_player_done
 	: ; }
 
 	rts
 ; -----------------------------------------------------------
-game_proc_hurt:
+player_proc_hurt:
 	lda	eng_timer_ctl
 	cmp	#$F0
 	bcs	:+ ; if (eng_timer_ctl < 0xF0) {
 		cmp	#$C8 ; if (eng_timer_ctl == 0xC8) {
-			beq	game_proc_player_done
+			beq	player_proc_player_done
 		; } else {
-			jmp	game_proc_ctrl
+			jmp	player_proc_ctrl
 		; }
 	: ; }
 	bne	:+ ; } else if (eng_timer_ctl >= 0xF0) {
-	game_proc_hurt_do:
+	player_proc_hurt_do:
 		ldy	player_resizing
 		bne	:+ ; if (!player_resizing) {
 			sty	player_ani_frame
@@ -645,24 +644,24 @@ game_proc_hurt:
 
 	rts
 ; -----------------------------------------------------------
-game_proc_death:
+player_proc_death:
 	lda	eng_timer_ctl
 	cmp	#$F0
 	.if	.defined(SMB)|.defined(VS_SMB)
-		bcs	game_proc_player_rts
+		bcs	player_proc_player_rts
 	.elseif	.defined(SMB2M)
-		bcs	game_proc_firefl_rts
+		bcs	player_proc_firefl_rts
 	.endif
-	jmp	game_proc_ctrl
+	jmp	player_proc_ctrl
 ; -----------------------------------------------------------
-game_proc_player_done:
+player_proc_player_done:
 	lda	#0
 	sta	eng_timer_ctl
-	lda	#game_proc::ctrl
-	sta	game_proc_id
+	lda	#player_procs::ctrl
+	sta	player_proc_id
 	rts
 ; -----------------------------------------------------------
-game_proc_firefl:
+player_proc_firefl:
 	lda	eng_timer_ctl
 	cmp	#$C0
 	beq	:+ ; if (eng_timer_ctl != 0xC0) {
@@ -670,7 +669,7 @@ game_proc_firefl:
 		lsr	a
 		lsr	a
 
-	game_proc_firefl_do:
+	player_proc_firefl_do:
 		and	#obj_attr::color_bits
 		sta	zp_byte_00
 		lda	attr_player
@@ -679,22 +678,22 @@ game_proc_firefl:
 		sta	attr_player
 		rts
 	: ; } else {
-		jsr	game_proc_player_done
+		jsr	player_proc_player_done
 
-	game_proc_firefl_do_2:
+	player_proc_firefl_do_2:
 		lda	attr_player
 		and	#<~obj_attr::color_bits|obj_attr::color0
 		sta	attr_player
-	game_proc_firefl_rts:
+	player_proc_firefl_rts:
 		rts
 	; }
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
-game_proc_player_rts:
+player_proc_player_rts:
 	rts
 .endif
 ; -----------------------------------------------------------
-game_proc_pole:
+player_proc_pole:
 	lda	actor_id+(ENG_ACTOR_MAX-1)
 	cmp	#actor::flag_enemy
 	bne	:++ ; if (this.actor_id == flag_enemy) {
@@ -708,13 +707,13 @@ game_proc_pole:
 		bcs	:+ ; if (player.pos_y < 0x9E) {
 			lda	#joypad_button::down
 		: ; }
-		jmp	game_proc_auto
+		jmp	player_proc_auto
 	: ; } else {
-		inc	game_proc_id
+		inc	player_proc_id
 		rts
 	; }
 ; -----------------------------------------------------------
-game_proc_victory_oneup_tallies:
+player_proc_victory_oneup_tallies:
 .if	.defined(SMB)|.defined(VS_SMB)
 	.byte	$15, $23, $16, $1B
 	.byte	$17, $18, $23, $63
@@ -723,9 +722,9 @@ game_proc_victory_oneup_tallies:
 	.byte	$13, $18, $13, $63
 .endif
 ; ----------------------------
-game_proc_victory:
+player_proc_victory:
 	lda	#joypad_button::right
-	jsr	game_proc_auto
+	jsr	player_proc_auto
 
 	lda	pos_y_lo_player
 	cmp	#$AE
@@ -778,15 +777,15 @@ game_proc_victory:
 		ldy	course_no
 		lda	eng_bonus_oneup_tally
 		.if	.defined(SMB)|.defined(VS_SMB)|.defined(ANN)
-		cmp	game_proc_victory_oneup_tallies, y
+		cmp	player_proc_victory_oneup_tallies, y
 		.elseif	.defined(SMB2)
 		cmp	#$0A
 		.endif
-		bcc	:+ ; if (++player.goals == 3 && (eng_bonus_oneup_tally >= game_proc_victory_oneup_tallies[eng_course_no] || (SMB2M && eng_bonus_oneup_tally >= 0xA)) {
+		bcc	:+ ; if (++player.goals == 3 && (eng_bonus_oneup_tally >= player_proc_victory_oneup_tallies[eng_course_no] || (SMB2M && eng_bonus_oneup_tally >= 0xA)) {
 			inc	bg_hidden_one_up_req
 		: ; }
 
-	game_proc_victory_do:
+	player_proc_victory_do:
 		inc	course_sub
 
 		.if	.defined(SMB2)
@@ -805,7 +804,7 @@ game_proc_victory:
 
 		jsr	course_descriptor_load
 		inc	eng_req_timer
-		jsr	game_proc_pipe_h_do_2
+		jsr	player_proc_pipe_h_do_2
 		sta	pos_x_hi_alt_game
 		lda	#music_event::none
 		sta	apu_music_event
@@ -813,7 +812,7 @@ game_proc_victory:
 
 	rts
 ; -----------------------------------------------------------
-game_proc_player_move:
+player_proc_player_move:
 	lda	#0
 	ldy	player_size
 	bne	:+
@@ -826,7 +825,7 @@ game_proc_player_move:
 		sta	player_crouch
 	: ; }
 
-	jsr	game_proc_player_physics
+	jsr	player_proc_player_physics
 
 	lda	player_resizing
 	bne	:++ ; if (!player.resizing) {
@@ -838,25 +837,25 @@ game_proc_player_move:
 		: ; }
 
 		jsr	tbljmp
-		.addr	game_proc_player_ground
-		.addr	game_proc_player_jump_swim
-		.addr	game_proc_player_fall
-		.addr	game_proc_player_climb
+		.addr	player_proc_player_ground
+		.addr	player_proc_player_jump_swim
+		.addr	player_proc_player_fall
+		.addr	player_proc_player_climb
 	: ; }
 
 	rts
 ; -----------------------------------------------------------
-game_proc_player_ground:
-	jsr	game_proc_player_ani_speed
+player_proc_player_ground:
+	jsr	player_proc_player_ani_speed
 
 	lda	joypad_l_r
 	beq	:+ ; if (joypad_l_r) {
 		sta	disp_dir_player
 	: ; }
 
-	jsr	game_proc_player_friction
+	jsr	player_proc_player_friction
 
-game_proc_player_ground_b:
+player_proc_player_ground_b:
 	jsr	motion_x_check_spring
 	sta	player_scroll_x
 
@@ -869,12 +868,12 @@ game_proc_player_ground_b:
 
 	rts
 ; -----------------------------------------------------------
-game_proc_player_fall:
+player_proc_player_fall:
 	lda	player_gravity
 	sta	accel_y_player
-	jmp	game_proc_player_jump_swim_do
+	jmp	player_proc_player_jump_swim_do
 ; -----------------------------------------------------------
-game_proc_player_jump_swim:
+player_proc_player_jump_swim:
 	ldy	veloc_y_player
 	bpl	:+
 	lda	joypad_a_b
@@ -899,7 +898,7 @@ game_proc_player_jump_swim:
 
 	lda	player_swimming
 	beq	:++ ; if (player_swimming) {
-		jsr	game_proc_player_ani_speed
+		jsr	player_proc_player_ani_speed
 		lda	pos_y_lo_player
 		cmp	#$14
 		bcs	:+ ; if (player_pos_y < 0x14) {
@@ -913,22 +912,22 @@ game_proc_player_jump_swim:
 		; }
 	: ; }
 
-game_proc_player_jump_swim_do:
+player_proc_player_jump_swim_do:
 	lda	joypad_l_r
 	beq	:+ ; if (joypad_l_r) {
-		jsr	game_proc_player_friction
+		jsr	player_proc_player_friction
 	: ; }
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		jsr	motion_x_check_spring
 		sta	player_scroll_x
 	.elseif	.defined(SMB2M)
-		jsr	game_proc_player_ground_b
+		jsr	player_proc_player_ground_b
 	.endif
 
-	lda	game_proc_id
-	cmp	#game_proc::death
-	bne	:+ ; if (game_proc_id == death) {
+	lda	player_proc_id
+	cmp	#player_procs::death
+	bne	:+ ; if (player_proc_id == death) {
 		lda	#$28
 		sta	accel_y_player
 	: ; }
@@ -938,13 +937,13 @@ game_proc_player_jump_swim_do:
 CLIMB_OFFSET_SMALL	= 4
 CLIMB_OFFSET_LARGE	= 14
 
-game_proc_player_climb_offset_x_lo:
+player_proc_player_climb_offset_x_lo:
 	.byte	<CLIMB_OFFSET_LARGE, <CLIMB_OFFSET_SMALL, <-CLIMB_OFFSET_SMALL, <-CLIMB_OFFSET_LARGE
 
-game_proc_player_climb_offset_x_hi:
+player_proc_player_climb_offset_x_hi:
 	.byte	>CLIMB_OFFSET_LARGE, >CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_LARGE
 ; -----------------------------
-game_proc_player_climb:
+player_proc_player_climb:
 	lda	accel_y_actor_b
 	clc
 	adc	accel_y_actor
@@ -983,10 +982,10 @@ game_proc_player_climb:
 		
 			lda	pos_x_lo_player
 			clc
-			adc	game_proc_player_climb_offset_x_lo, x
+			adc	player_proc_player_climb_offset_x_lo, x
 			sta	pos_x_lo_player
 			lda	pos_x_hi_player
-			adc	game_proc_player_climb_offset_x_hi, x
+			adc	player_proc_player_climb_offset_x_hi, x
 			sta	pos_x_hi_player
 			lda	joypad_l_r
 			eor	#joypad_button::left|joypad_button::right
@@ -1001,23 +1000,23 @@ game_proc_player_climb:
 ; -----------------------------------------------------------
 STATS_BASE_INCLUDE	= 1
 
-	.export	game_proc_player_stats
-game_proc_player_stats:
-	.include	"../../data/player_a_accel.s"
+	.export	player_proc_player_stats
+player_proc_player_stats:
+	.include	"../../../data/player_a_accel.s"
 
 .if	.defined(SMB2M)
-	.include	"../../data/player_a_friction.s"
+	.include	"../../../data/player_a_friction.s"
 .endif
 
-	.include	"../../data/player_phys.s"
+	.include	"../../../data/player_phys.s"
 
 .if	.defined(SMB)|.defined(VS_SMB)
-	.include	"../../data/player_a_friction.s"
+	.include	"../../../data/player_a_friction.s"
 .endif
 
-	.include	"../../data/player_phys_climb.s"
+	.include	"../../../data/player_phys_climb.s"
 ; ------------------------
-game_proc_player_physics:
+player_proc_player_physics:
 	lda	state_player
 	cmp	#player_state::climb
 	bne	:+++ ; if (player.state == climb) {
@@ -1031,11 +1030,11 @@ game_proc_player_physics:
 				iny
 			; }
 		: ; }
-		ldx	game_proc_player_climb_accel_y, y
+		ldx	player_proc_player_climb_accel_y, y
 		stx	accel_y_actor
 	
 		lda	#8
-		ldx	game_proc_player_climb_veloc_y, y
+		ldx	player_proc_player_climb_veloc_y, y
 		stx	veloc_y_player
 		bmi	:+ ; (player.veloc_y >= 0) { 
 			lsr	a
@@ -1103,13 +1102,13 @@ game_proc_player_physics:
 			; }
 		: ; }
 
-		lda	game_proc_player_jump_accel_y, y
+		lda	player_proc_player_jump_accel_y, y
 		sta	accel_y_player
-		lda	game_proc_player_grav_accel_y, y
+		lda	player_proc_player_grav_accel_y, y
 		sta	player_gravity
-		lda	game_proc_player_init_accel_y, y
+		lda	player_proc_player_init_accel_y, y
 		sta	accel_y_actor
-		lda	game_proc_veloc_y_player, y
+		lda	player_proc_veloc_y_player, y
 		sta	veloc_y_player
 
 		lda	player_swimming
@@ -1177,32 +1176,32 @@ game_proc_player_physics:
 		sta	timer_player_run
 	: ; }
 
-	lda	game_proc_player_max_veloc_left, y
+	lda	player_proc_player_max_veloc_left, y
 	sta	player_max_veloc_left
-	lda	game_proc_id
-	cmp	#game_proc::enter
-	bne	:+ ; if (game_proc_id == enter) {
-		ldy	#game_proc_player_max_veloc_right_enter-game_proc_player_max_veloc_right
+	lda	player_proc_id
+	cmp	#player_procs::enter
+	bne	:+ ; if (player_proc_id == enter) {
+		ldy	#player_proc_player_max_veloc_right_enter-player_proc_player_max_veloc_right
 	: ; }
-	lda	game_proc_player_max_veloc_right, y
+	lda	player_proc_player_max_veloc_right, y
 	sta	player_max_veloc_right
 	ldy	zp_byte_00
-	lda	game_proc_player_data_friction, y
+	lda	player_proc_player_data_friction, y
 	sta	eng_friction_add_lo
 	lda	#PLAYER_FRICTION_ADD_HI
 	sta	eng_friction_add_hi
 	lda	disp_dir_player
 	cmp	motion_dir_player
 	beq	:+ ; if (player.dir != player.motion_dir) {
-		.export game_proc_player_physics_friction_shift
-	game_proc_player_physics_friction_shift:
+		.export player_proc_player_physics_friction_shift
+	player_proc_player_physics_friction_shift:
 		asl	eng_friction_add_lo
 		rol	eng_friction_add_hi
 	: ; }
 
 	rts
 ; -----------------------------------------------------------
-game_proc_player_ani_timers:
+player_proc_player_ani_timers:
 	.byte	2
 
 	.ifndef	PAL
@@ -1211,7 +1210,7 @@ game_proc_player_ani_timers:
 		.byte	3, 5
 	.endif
 ; ---------------------------
-game_proc_player_ani_speed:
+player_proc_player_ani_speed:
 	ldy	#0
 	lda	veloc_x_player_abs
 	cmp	#ANI_VELOC_X_CUTOFF_A
@@ -1245,11 +1244,11 @@ game_proc_player_ani_speed:
 		; }
 	: ; }
 
-	lda	game_proc_player_ani_timers, y
+	lda	player_proc_player_ani_timers, y
 	sta	timer_player_ani
 	rts
 ; -----------------------------------------------------------
-game_proc_player_friction:
+player_proc_player_friction:
 	and	collision_player
 	cmp	#COL_NONE
 	bne	:+
@@ -1296,7 +1295,7 @@ game_proc_player_friction:
 	sta	veloc_x_player_abs
 	rts
 ; -----------------------------------------------------------
-game_proc_proj:
+player_proc_proj:
 	lda	player_status
 	cmp	#2
 	bcc	:++ ; if (player_status >= 2) {
@@ -1337,9 +1336,9 @@ game_proc_proj:
 		: ; }
 	
 		ldx	#0
-		jsr	game_proc_proj_do
+		jsr	player_proc_proj_do
 		ldx	#1
-		jsr	game_proc_proj_do
+		jsr	player_proc_proj_do
 	: ; }
 
 	lda	course_type
@@ -1347,7 +1346,7 @@ game_proc_proj:
 		ldx	#3-1
 		: ; for (x = 3-1; x >= 0; x--) {
 			stx	actor_index
-			jsr	game_proc_bubble_do
+			jsr	player_proc_bubble_do
 
 			jsr	lib_calc_bubble_pos
 			jsr	lib_bubble_bits_get
@@ -1359,16 +1358,16 @@ game_proc_proj:
 	: ; }
 	rts
 ; -----------------------------------------------------------
-game_proc_veloc_x_proj:
+player_proc_veloc_x_proj:
 	.byte	PROJ_VELOC_X_ABS, <-PROJ_VELOC_X_ABS
 ; -----------------------------
-game_proc_proj_do:
+player_proc_proj_do:
 	stx	actor_index
 	lda	state_proj, x
 	asl	a
 	bcs	:+++ ; if (proj.bit_7) {
 		ldy	state_proj, x
-		beq	game_proc_proj_do_rts
+		beq	player_proc_proj_do_rts
 		dey
 		beq	:+ ; if (proj.state == state_1) {
 			lda	pos_x_lo_player
@@ -1383,7 +1382,7 @@ game_proc_proj_do:
 			sta	pos_y_hi_proj, x
 			ldy	disp_dir_player
 			dey
-			lda	game_proc_veloc_x_proj, y
+			lda	player_proc_veloc_x_proj, y
 			sta	veloc_x_proj, x
 			lda	#PROJ_VELOC_Y
 			sta	veloc_y_proj, x
@@ -1418,7 +1417,7 @@ game_proc_proj_do:
 		: ; } else {
 			lda	#proj_states::inactive
 			sta	state_proj, x
-		game_proc_proj_do_rts:
+		player_proc_proj_do_rts:
 			rts
 		; }
 	: ; } else {
@@ -1426,9 +1425,9 @@ game_proc_proj_do:
 		jmp	render_proj_hit
 	; }
 ; -----------------------------------------------------------
-	.export	game_proc_bubble_init
-game_proc_bubble_do:
-	lda	lib_rand+1, x
+	.export	player_proc_bubble_init
+player_proc_bubble_do:
+	lda	srand+1, x
 	and	#1
 	sta	zp_byte_07
 	lda	pos_y_lo_bubble, x
@@ -1437,7 +1436,7 @@ game_proc_bubble_do:
 	lda	timer_bubble
 	bne	:++++ ; if () {
 		; if () {
-		game_proc_bubble_init:
+		player_proc_bubble_init:
 			ldy	#0
 			lda	disp_dir_player
 			lsr	a
@@ -1457,14 +1456,14 @@ game_proc_bubble_do:
 			lda	#1
 			sta	pos_y_hi_bubble, x
 			ldy	zp_byte_07
-			lda	game_proc_bubble_timers, y
+			lda	player_proc_bubble_timers, y
 			sta	timer_bubble
 		: ; }
 
 		ldy	zp_byte_07
 		lda	accel_y_bubble, x
 		sec
-		sbc	game_proc_bubble_accel_y, y
+		sbc	player_proc_bubble_accel_y, y
 		sta	accel_y_bubble, x
 		lda	pos_y_lo_bubble, x
 		sbc	#0
@@ -1477,19 +1476,19 @@ game_proc_bubble_do:
 
 	rts
 ; -----------------------------
-game_proc_bubble_accel_y:
+player_proc_bubble_accel_y:
 	.byte	<-1, 80
 
-game_proc_bubble_timers:
+player_proc_bubble_timers:
 	.byte	64, 32
 ; -----------------------------------------------------------
-game_proc_timer:
+player_proc_timer:
 	lda	game_mode
 	beq	:++++
-	lda	game_proc_id
-	cmp	#game_proc::ctrl
+	lda	player_proc_id
+	cmp	#player_procs::ctrl
 	bcc	:++++
-	cmp	#game_proc::death
+	cmp	#player_procs::death
 	beq	:++++
 	lda	pos_y_hi_player
 	cmp	#2
@@ -1539,16 +1538,16 @@ game_proc_timer:
 		; }
 	: ; }
 
-game_proc_timer_rts:
+player_proc_timer_rts:
 	rts
 ; -----------------------------------------------------------
-	.export game_proc_warp
-game_proc_warp:
+	.export player_proc_warp
+player_proc_warp:
 	lda	game_scroll_lock
-	beq	game_proc_timer_rts
+	beq	player_proc_timer_rts
 	lda	pos_y_lo_player
 	and	pos_y_hi_player
-	bne	game_proc_timer_rts ; if (scroll_lock && player.pos_y == 0) {
+	bne	player_proc_timer_rts ; if (scroll_lock && player.pos_y == 0) {
 		sta	game_scroll_lock
 
 		.if	.defined(SMB)|.defined(VS_SMB)
@@ -1558,7 +1557,7 @@ game_proc_warp:
 		jmp	actor_erase
 	; } else rts;
 ; -----------------------------------------------------------
-game_proc_whirlpool:
+player_proc_whirlpool:
 	lda	course_type
 	bne	:+++ ; if (course_type == water) {
 		sta	game_whirlpool_flag
@@ -1588,7 +1587,7 @@ game_proc_whirlpool:
 						sbc	pos_x_lo_player
 						lda	zp_byte_01
 						sbc	pos_x_hi_player
-						bpl	game_proc_whirlpool_do
+						bpl	player_proc_whirlpool_do
 					; }
 				: ; }
 			
@@ -1600,7 +1599,7 @@ game_proc_whirlpool:
 
 	rts
 ; ------------------------------
-game_proc_whirlpool_do:
+player_proc_whirlpool_do:
 	lda	pos_y_lo_cannon, y
 	lsr	a
 	sta	zp_byte_00
@@ -1659,28 +1658,28 @@ SCORE_PLACE_THOUSANDS_DIV	= 1000
 SCORE_PLACE_HUNDREDS		= 4
 SCORE_PLACE_HUNDREDS_DIV	= 100
 
-game_proc_pole_score_hi:
+player_proc_pole_score_hi:
 	.byte	5000/(SCORE_PLACE_THOUSANDS_DIV)
 	.byte	2000/(SCORE_PLACE_THOUSANDS_DIV)
 	.byte	800/(SCORE_PLACE_HUNDREDS_DIV)
 	.byte	400/(SCORE_PLACE_HUNDREDS_DIV)
 	.byte	100/(SCORE_PLACE_HUNDREDS_DIV)
 
-game_proc_pole_digit_place:
+player_proc_pole_digit_place:
 	.byte	SCORE_PLACE_THOUSANDS
 	.byte	SCORE_PLACE_THOUSANDS
 	.byte	SCORE_PLACE_HUNDREDS
 	.byte	SCORE_PLACE_HUNDREDS
 	.byte	SCORE_PLACE_HUNDREDS
 ; -----------------------------
-game_proc_pole_b:
+player_proc_pole_b:
 	ldx	#5
 	stx	actor_index
 	lda	actor_id, x
 	cmp	#actor::flag_enemy
-	bne	game_proc_pole_b_rts
-	lda	game_proc_id
-	cmp	#game_proc::pole
+	bne	player_proc_pole_b_rts
+	lda	player_proc_id
+	cmp	#player_procs::pole
 	bne	:+
 	lda	state_player
 	cmp	#player_state::climb
@@ -1690,8 +1689,8 @@ game_proc_pole_b:
 	bcs	:++
 	lda	pos_y_lo_player
 	cmp	#162
-	bcs	:++ ; if (game_proc_id != pole || player.state != climb || (this.pos_y.lo < 0xAA && player.pos_y.lo < 0xA2)) {
-		; if (game_proc_id == pole && player.state == climb) {
+	bcs	:++ ; if (player_proc_id != pole || player.state != climb || (this.pos_y.lo < 0xAA && player.pos_y.lo < 0xA2)) {
+		; if (player_proc_id == pole && player.state == climb) {
 			lda	pos_y_actor, x
 			adc	#<-1
 			sta	pos_y_actor, x
@@ -1720,33 +1719,33 @@ game_proc_pole_b:
 			jmp	:++
 		.endif
 		: ; } else {
-			lda	game_proc_pole_score_hi, y
-			ldx	game_proc_pole_digit_place, y
+			lda	player_proc_pole_score_hi, y
+			ldx	player_proc_pole_digit_place, y
 			sta	score_digit_mod+1, x
 			jsr	misc_proc_coin_update_score
 		: ; }
 
-		lda	#game_proc::victory
-		sta	game_proc_id
+		lda	#player_procs::victory
+		sta	player_proc_id
 	: ; }
 
 	jsr	lib_actor_bits_get
 	jsr	lib_calc_actor_pos
 	jsr	render_flag_enemy
 
-game_proc_pole_b_rts:
+player_proc_pole_b_rts:
 	rts
 ; -----------------------------------------------------------
-game_proc_spring_pos_y:
+player_proc_spring_pos_y:
 	.byte	8, 16, 8, 0
 ; -----------------------------
-	.export game_proc_spring
-game_proc_spring:
+	.export player_proc_spring
+player_proc_spring:
 	jsr	lib_actor_bits_get
 	lda	eng_timer_ctl
-	bne	game_proc_spring_ctd
+	bne	player_proc_spring_ctd
 	lda	eng_spring_ani
-	beq	game_proc_spring_ctd ; if (!eng_timer_ctl && eng_spring_ani) {
+	beq	player_proc_spring_ctd ; if (!eng_timer_ctl && eng_spring_ani) {
 		tay
 		dey
 		tya
@@ -1762,16 +1761,16 @@ game_proc_spring:
 
 		lda	veloc_x_actor, x
 		clc
-		adc	game_proc_spring_pos_y, y
+		adc	player_proc_spring_pos_y, y
 		sta	pos_y_lo_actor, x
 
 		cpy	#1
-		bcc	game_proc_spring_skip_accel
+		bcc	player_proc_spring_skip_accel
 		lda	joypad_a_b
 		and	#joypad_button::face_a
-		beq	game_proc_spring_skip_accel
+		beq	player_proc_spring_skip_accel
 		and	joypad_a_b_held
-		bne	game_proc_spring_skip_accel ; if ((eng_spring_ani - 1) >= 1 && (joypad_a_b & 0x80) && !(joypad_a_b & joypad_a_b_held 0x80)) {
+		bne	player_proc_spring_skip_accel ; if ((eng_spring_ani - 1) >= 1 && (joypad_a_b & 0x80) && !(joypad_a_b & joypad_a_b_held 0x80)) {
 			.if	.defined(SMB2M)
 				tya
 				pha
@@ -1803,7 +1802,7 @@ game_proc_spring:
 				pla
 				tay
 			.endif
-		game_proc_spring_skip_accel: ; }
+		player_proc_spring_skip_accel: ; }
 		cpy	#3
 		bne	:+ ; if ((eng_spring_ani - 1) == 3) {
 			lda	accel_y_spring
@@ -1819,7 +1818,7 @@ game_proc_spring:
 		; }
 	: ; }
 
-game_proc_spring_ctd:
+player_proc_spring_ctd:
 	jsr	lib_calc_actor_pos
 	jsr	render_actor
 	jsr	col_actor_oob_proc
@@ -1835,8 +1834,8 @@ game_proc_spring_ctd:
 
 	rts
 ; -----------------------------------------------------------
-	.export game_proc_vine_init
-game_proc_vine_init:
+	.export player_proc_vine_init
+player_proc_vine_init:
 	lda	#actor::vine
 	sta	actor_id, x
 	lda	#actor_modes::active
@@ -1862,7 +1861,7 @@ game_proc_vine_init:
 ; -----------------------------
 GAME_PROC_VINE_ACTOR_ID	= (ENG_ACTOR_MAX-1)
 
-game_proc_vine_heights:
+player_proc_vine_heights:
 	.byte	$30, $60
 ; --------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(ANN)
@@ -1871,8 +1870,8 @@ VINE_DO_VAR0	= $26
 VINE_DO_VAR0	= $23
 .endif
 
-	.export game_proc_vine_do
-game_proc_vine_do:
+	.export player_proc_vine_do
+player_proc_vine_do:
 	cpx	#5
 .if	.defined(SMB)
 	bne	:+++++ ; if (x == 5) {
@@ -1884,12 +1883,12 @@ game_proc_vine_do:
 		ldy	actor_vine_flag
 		dey
 		lda	height_vine
-		cmp	game_proc_vine_heights, y
+		cmp	player_proc_vine_heights, y
 		beq	:+
 		lda	frame_count
 		lsr	a
 		lsr	a
-		bcc	:+ ; if (height_vine != game_proc_vine_heights[actor_vine_flag] && frame_count % 4) {
+		bcc	:+ ; if (height_vine != player_proc_vine_heights[actor_vine_flag] && frame_count % 4) {
 			lda	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
 			sbc	#1
 			sta	pos_y_lo_actor+GAME_PROC_VINE_ACTOR_ID
@@ -1997,11 +1996,11 @@ game_proc_vine_do:
 	ldx	actor_index
 	rts
 ; -----------------------------------------------------------
-game_proc_cannon_masks:
+player_proc_cannon_masks:
 	.byte	%00001111
 	.byte	%00000111
 ; -----------------------------
-game_proc_cannon:
+player_proc_cannon:
 	lda	course_type
 	beq	:+++++ ; if (course_type != water) {
 		ldx	#2
@@ -2009,17 +2008,17 @@ game_proc_cannon:
 			stx	actor_index
 			lda	actor_mode, x
 			bne	:++
-			lda	lib_rand+1, x
+			lda	srand+1, x
 			ldy	game_hard_mode_b
-			and	game_proc_cannon_masks, y
+			and	player_proc_cannon_masks, y
 			cmp	#6
 			bcs	:++
 			tay
 			lda	pos_y_hi_cannon, y
 			beq	:++ ; if (
 			;	this.mode == dead
-			;	&& (lib_rand[actor_index+1] & game_proc_cannon_masks[game_hard_mode_b]) < 6
-			;	&& (pos_y_hi_cannon[(lib_rand[actor_index+1])])
+			;	&& (srand[actor_index+1] & player_proc_cannon_masks[game_hard_mode_b]) < 6
+			;	&& (pos_y_hi_cannon[(srand[actor_index+1])])
 			; ) {
 				lda	timer_cannon, y
 				beq	:+ ; if (timer_cannon[rand_masked]) {
@@ -2062,7 +2061,7 @@ game_proc_cannon:
 					lda	actor_mode, x
 					beq	:+ ; if (this.mode != dead) {
 						jsr	lib_actor_bits_get
-						jsr	game_proc_bullet
+						jsr	player_proc_bullet
 					; }
 				; }
 			: ; }
@@ -2074,10 +2073,10 @@ game_proc_cannon:
 
 	rts
 ; -----------------------------------------------------------
-game_proc_bullet_veloc_x:
+player_proc_bullet_veloc_x:
 	.byte	BULLET_VELOC_X_ABS, <-BULLET_VELOC_X_ABS
 ; -----------------------------
-game_proc_bullet:
+player_proc_bullet:
 	lda	eng_timer_ctl
 	bne	:++++ ; if (!eng_timer_ctl) {
 		lda	state_actor, x
@@ -2093,7 +2092,7 @@ game_proc_bullet:
 				: ; }
 				sty	motion_dir_actor, x
 				dey
-				lda	game_proc_bullet_veloc_x, y
+				lda	player_proc_bullet_veloc_x, y
 				sta	veloc_x_actor, x
 				lda	col_player_bullet_diff_pos_x_rel
 				adc	#40

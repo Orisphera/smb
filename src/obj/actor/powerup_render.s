@@ -42,7 +42,7 @@ render_powerup:
 	ldy	obj_data_offset_actor+POWERUP_ACTOR_IDX
 	lda	pos_y_rel_actor
 	clc
-	adc	#PPU_TILE_HEIGHT_PX
+	adc	#PPU_CHR_HEIGHT_PX
 	sta	render_chr_pair_pos_y
 	lda	pos_x_rel_actor
 	sta	render_chr_pair_pos_x

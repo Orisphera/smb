@@ -1,7 +1,6 @@
 .include	"system/ppu.i"
 
 .include	"mem.i"
-
 .include	"macros.i"
 
 nmi_list_write_do:

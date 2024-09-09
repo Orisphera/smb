@@ -24,7 +24,7 @@ render_flag_enemy:
 	lda	pos_x_rel_actor
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
 	clc
-	adc	#PPU_TILE_WIDTH_PX
+	adc	#PPU_CHR_WIDTH_PX
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_H, y
 	clc
@@ -32,7 +32,7 @@ render_flag_enemy:
 	sta	render_chr_pair_pos_x
 	lda	pos_y_lo_actor, x
 	jsr	render_set_two_sprites_v
-	adc	#PPU_TILE_HEIGHT_PX
+	adc	#PPU_CHR_HEIGHT_PX
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
 	lda	render_flag_score_pos_y
 	sta	render_chr_pair_pos_y

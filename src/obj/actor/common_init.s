@@ -6,8 +6,6 @@
 .include	"misc.i"
 .include	"course_flags.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 ACTOR_PAGE_A_OFFSET_Y	= 8
 ACTOR_INIT_BITS_MASK	= %00000001
@@ -656,7 +654,7 @@ actor_init_do:
 	.addr	actor_init_bowser
 	.addr	actor_init_powerup
 
-	.addr	game_proc_vine_init
+	.addr	player_proc_vine_init
 
 	.addr	actor_init_null
 	.addr	actor_init_null

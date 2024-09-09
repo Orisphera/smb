@@ -1,8 +1,6 @@
 .include	"mem.i"
 .include	"tunables.i"
 
-.include	"unk.i"
-
 ; ----------------------------------------------------------
 MISC_ACCEL_Y_INC		= 80
 MISC_VELOC_Y_MAX_ABS_6		= 6

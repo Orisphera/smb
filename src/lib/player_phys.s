@@ -23,12 +23,12 @@ player_phys_load:
 		ldx	#ASL_ABS_OPCODE
 		ldy	#(player_phys_data_a_end-player_phys_data)-1
 	: ; }
-	stx	game_proc_player_physics_friction_shift
+	stx	player_proc_player_physics_friction_shift
 
 	ldx	#17-1
 	: ; for (entry of ptr) {
 		lda	player_phys_data, y
-		sta	game_proc_player_stats, x
+		sta	player_proc_player_stats, x
 
 		dey
 		dex

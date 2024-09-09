@@ -107,9 +107,17 @@ LIB_OBJS	=	src/game/victory.o \
 
 LIB_VS_OBJS	=	src/lib/vs.o
 
-GAME_OBJS	=	src/game/init.o \
-			src/game/gameover.o \
+GAME_INIT_OBJS	=	src/game/init.o
+
+PLAYER_LO_OBJS	=	src/obj/player/init.o \
+			src/obj/player/lifedown.o
+
+GAME_PROC_OBJS	=	src/game/game_over.o \
 			src/game/bg.o
+
+GAME_OBJS	=	$(GAME_INIT_OBJS) \
+			$(PLAYER_LO_OBJS) \
+			$(GAME_PROC_OBJS)
 
 COURSE_LOOP_OBJS =	data/course_scenery_loop_offsets.o
 
@@ -130,7 +138,7 @@ COURSE_DATA_OBJS =	data/course_data.o
 
 COURSE_DATA_SMB2_OBJS =	data/course_data.smb2.o
 
-MAIN_OBJ	=	src/game/main.o
+PLAYER_PROC_OBJS =	src/obj/player/proc.o
 
 ENTITY_OBJS	=	src/obj/misc/hammer.o \
 			src/obj/misc/coin_init.o \
@@ -198,11 +206,11 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/actor/plat_small_render.o \
 			src/obj/bubble_render.o \
 			data/sprites_player.o \
-			src/obj/player_render.o \
+			src/obj/player/render.o \
 			src/obj/lib_bits.o
 
 LIB_FDS_OBJS	=	src/lib/disk.o \
-			src/game/fds_gameover.o \
+			src/game/game_over_menu.o \
 			src/lib/player_phys.o
 
 TITLE_MAP_OBJS	=	data/title_map.o
@@ -261,7 +269,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
-			$(MAIN_OBJ) \
+			$(PLAYER_PROC_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
@@ -283,7 +291,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(COURSES_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
-			$(MAIN_OBJ) \
+			$(PLAYER_PROC_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
@@ -312,7 +320,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
-			$(MAIN_OBJ) \
+			$(PLAYER_PROC_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
@@ -339,7 +347,7 @@ FDT_FDS		=	smb.fdt
 PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
-			$(MAIN_OBJ) \
+			$(PLAYER_PROC_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
@@ -384,7 +392,7 @@ FDT_SMB2	=	smb2.fdt
 PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
-			$(MAIN_OBJ) \
+			$(PLAYER_PROC_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \

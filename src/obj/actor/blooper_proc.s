@@ -2,8 +2,6 @@
 .include	"mem.i"
 .include	"joypad.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 BLOOPER_ACCEL_OFFSET_Y		= 1
 BLOOPER_MOTION_TIMER		= 2
@@ -23,9 +21,9 @@ actor_proc_blooper:
 	and	#actor_states::bit_5
 	bne	:++++++ ; if (!(actor.state & 0x20)) {
 		ldy	game_hard_mode_b
-		lda	lib_rand+1, x
+		lda	srand+1, x
 		and	actor_proc_blooper_flip_chance, y
-		bne	:+++ ; if (!(flip_chance[is_hard] & lib_rand[1])) {
+		bne	:+++ ; if (!(flip_chance[is_hard] & srand[1])) {
 			txa
 			lsr	a
 			bcc	:+ ; if ((actor_index % 2)) {

@@ -1,5 +1,5 @@
-	.export	game_proc_veloc_y_player
-game_proc_veloc_y_player:
+	.export	player_proc_veloc_y_player
+player_proc_veloc_y_player:
 	.ifndef	PAL
 		.byte	<-4, <-4, <-4, <-5, <-5
 	.else
@@ -8,8 +8,8 @@ game_proc_veloc_y_player:
 
 	.byte	<-2, <-1
 
-	.export	game_proc_player_init_accel_y
-game_proc_player_init_accel_y:
+	.export	player_proc_player_init_accel_y
+player_proc_player_init_accel_y:
 	.ifndef	PAL
 		.byte	0, 0, 0
 	.else
@@ -20,24 +20,24 @@ game_proc_player_init_accel_y:
 
 	.byte	$80, $00
 
-	.export	game_proc_player_max_veloc_left
-game_proc_player_max_veloc_left:
+	.export	player_proc_player_max_veloc_left
+player_proc_player_max_veloc_left:
 	.ifndef	PAL
 		.byte	<-$28, <-$18, <-$10
 	.else
 		.byte	<-$30, <-$1C, <-$13
 	.endif
 
-	.export	game_proc_player_max_veloc_right
-game_proc_player_max_veloc_right:
+	.export	player_proc_player_max_veloc_right
+player_proc_player_max_veloc_right:
 	.ifndef	PAL
 		.byte	$28, $18, $10
 	.else
 		.byte	$30, $1C, $13
 	.endif
 
-	.export	game_proc_player_max_veloc_right_enter
-game_proc_player_max_veloc_right_enter:
+	.export	player_proc_player_max_veloc_right_enter
+player_proc_player_max_veloc_right_enter:
 	.ifndef	PAL
 		.byte	$0C
 	.else

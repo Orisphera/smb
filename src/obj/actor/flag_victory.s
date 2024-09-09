@@ -6,8 +6,6 @@
 .include	"chr.i"
 .include	"sound.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 actor_proc_flag_pos_y:
 	.byte	0, 0, 8, 8

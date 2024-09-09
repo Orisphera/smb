@@ -18,11 +18,11 @@ render_plat_small:
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_H, y
 	clc
-	adc	#PPU_TILE_WIDTH_PX
+	adc	#PPU_CHR_WIDTH_PX
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_H, y
 	clc
-	adc	#PPU_TILE_HEIGHT_PX
+	adc	#PPU_CHR_HEIGHT_PX
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_H, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_H, y
 	lda	pos_y_lo_actor, x

@@ -9,18 +9,18 @@ GAME_OVER_MENU_CURSOR_POS_X	= 72
 GAME_OVER_MENU_CURSOR_OPTION_A_POS_Y	= 119
 GAME_OVER_MENU_CURSOR_OPTION_B_POS_Y	= 143
 ; ------------------------------------------------------------
-eng_game_over_menu_attrs:
+game_over_menu_attrs:
 	.byte	chr_obj::plat_norm
 	.byte	obj_attr::priority_high|obj_attr::color2
 	.byte	GAME_OVER_MENU_CURSOR_POS_X
-eng_game_over_menu_attrs_end:
+game_over_menu_attrs_end:
 
-eng_game_over_menu_pos_y:
+game_over_menu_pos_y:
 	.byte	GAME_OVER_MENU_CURSOR_OPTION_A_POS_Y
 	.byte	GAME_OVER_MENU_CURSOR_OPTION_B_POS_Y
 ; -----------------------------
-	.export eng_game_over_menu
-eng_game_over_menu:
+	.export game_over_menu
+game_over_menu:
 	lda	joypad_p1
 	and	#joypad_button::start
 	bne	:+++ ; if (!joypad_p1.start) {
@@ -31,25 +31,25 @@ eng_game_over_menu:
 		bne	:+ ; if (joypad_p1.select && timer_select == 0) {
 			lsr	a
 			sta	timer_select
-			lda	eng_game_over_choice
+			lda	game_over_choice
 			eor	#1
-			sta	eng_game_over_choice
+			sta	game_over_choice
 		: ; }
 	
-		ldy	#(eng_game_over_menu_attrs_end-eng_game_over_menu_attrs)-1
+		ldy	#(game_over_menu_attrs_end-game_over_menu_attrs)-1
 		: ; for (entry of attrs) {
-			lda	eng_game_over_menu_attrs, y
+			lda	game_over_menu_attrs, y
 			sta	OAM_DMA_BUFFER+(0*OBJ_SIZE)+OBJ_CHR_NO, y
 			dey
 			bpl	:-
 		; }
 	
-		ldy	eng_game_over_choice
-		lda	eng_game_over_menu_pos_y, y
+		ldy	game_over_choice
+		lda	game_over_menu_pos_y, y
 		sta	OAM_DMA_BUFFER+(0*OBJ_SIZE)+OBJ_POS_V
 		rts
-	: lda	eng_game_over_choice
-	beq	:+ ; } else if (eng_game_over_choice != 0) {
+	: lda	game_over_choice
+	beq	:+ ; } else if (game_over_choice != 0) {
 		.if	.defined(SMB2)
 			lda	#0
 			sta	game_courses_cleared

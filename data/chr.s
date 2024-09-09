@@ -141,7 +141,7 @@ chr_obj:
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.include	"chr/obj/unk_a.s"
+		.include	"chr/obj/filler.s"
 	.elseif	.defined(SMB2M)
 		.include	"chr/obj/mushroom_new_c.s"
 	.endif

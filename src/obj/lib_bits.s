@@ -323,11 +323,11 @@ render_chr_pair_do:
 	lda	render_chr_pair_pos_x
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
 	clc
-	adc	#PPU_TILE_WIDTH_PX
+	adc	#PPU_CHR_WIDTH_PX
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
 	lda	render_chr_pair_pos_y
 	clc
-	adc	#PPU_TILE_HEIGHT_PX
+	adc	#PPU_CHR_HEIGHT_PX
 	sta	render_chr_pair_pos_y
 	tya
 	clc

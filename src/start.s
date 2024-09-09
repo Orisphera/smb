@@ -9,7 +9,6 @@
 .include	"mem.i"
 .include	"tunables.i"
 .include	"misc.i"
-
 .include	"macros.i"
 
 .segment	"VECTORS"
@@ -34,10 +33,13 @@ start:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		cld
+
 		lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)
 		sta     PPU_CTLR0
+
 		ldx     #$FF
 		txs
+
 		: ; while (!vblank) {
 			lda     PPU_SR
 			bpl     :-
@@ -90,7 +92,7 @@ start:
 	.endif
 	: ; }
 
-	jsr     sub_clearram
+	jsr     game_init_clearram
         sta     DMCDATA
         sta     game_mode
 
@@ -105,7 +107,7 @@ start:
 	.if	.defined(CONS)
         	sta     game_boot_flag
 	.endif
-        sta     lib_rand
+        sta     srand
 
         lda     #(dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2|dmcstatus::pulse_1)
 	sta	DMCSTATUS

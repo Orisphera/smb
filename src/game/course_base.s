@@ -2,8 +2,6 @@
 .include	"misc.i"
 .include	"course_flags.i"
 
-.include	"unk.i"
-
 .if	.defined(SMB2M)
 	.include	"../../data/courses/smb/overworld_10_actor.s"
 

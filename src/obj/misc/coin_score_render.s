@@ -20,7 +20,7 @@
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
 
 		clc
-		adc	#PPU_TILE_WIDTH_PX
+		adc	#PPU_CHR_WIDTH_PX
 
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
 
@@ -53,7 +53,7 @@ render_coin_score:
 
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
 		clc
-		adc	#PPU_TILE_HEIGHT_PX
+		adc	#PPU_CHR_HEIGHT_PX
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
 
 		lda	pos_x_rel_misc

@@ -2,6 +2,7 @@
 .include	"system/vs.i"
 
 .include	"mem.i"
+.include	"chr.i"
 .include	"charmap.i"
 .include	"joypad.i"
 .include	"sound.i"
@@ -275,26 +276,26 @@ sub_93E7:
 	: ; }
 	rts
 ; -----------------------------------------------------------
-	.export sub_941E
-sub_941E:
+	.export vs_player_select
+vs_player_select:
 	lda	game_state
 	jsr	tbljmp
-	.addr	sub_942C
-	.addr	sub_943E
-	.addr	sub_9454
-	.addr	sub_947A
+	.addr	vs_player_select_init_0
+	.addr	vs_player_select_scr
+	.addr	vs_player_select_init_1
+	.addr	vs_player_select_do
 ; ----------------------------
-	.export sub_942C
-sub_942C:
-	lda	#0
-	sta	eng_screen_proc_id
+	.export vs_player_select_init_0
+vs_player_select_init_0:
+	lda	#screen_procs::init
+	sta	screen_proc_id
 	sta	nmi_sprite_overlap
 	jsr	oam_init
 	inc	nmi_disp_disable
 	inc	game_state
 	rts
 ; ----------------------------
-sub_943E:
+vs_player_select_scr:
 	jsr	nt_init
 	ldy	#vschar1_bg_data::player_select
 	jsr	screen_vschar1_load
@@ -305,10 +306,10 @@ sub_943E:
 	inc	game_state
 	rts
 ; ----------------------------
-sub_9454:
+vs_player_select_init_1:
 	inc	game_state
 
-sub_9454_do:
+vs_player_select_init_1_do:
 	lda	VS_RAM_ARENA0+$10
 	cmp	#1
 	beq	:+ ; if (vs_ram_arena0[16] != 1) {
@@ -318,25 +319,25 @@ sub_9454_do:
 
 	rts
 ; ----------------------------
-sub_947A_data_0:
+vs_player_select_do_data_0:
 	.byte	$0A, $05
 
-sub_947A_text_push:
+vs_player_select_do_text_push:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_7+PPU_BG_COL_10
-	.byte	sub_947A_text_push_end-sub_947A_text_push_start
-sub_947A_text_push_start:
+	.byte	vs_player_select_do_text_push_end-vs_player_select_do_text_push_start
+vs_player_select_do_text_push_start:
 	.byte	"PUSH BUTTON"
-sub_947A_text_push_end:
+vs_player_select_do_text_push_end:
 	.byte	NMI_LIST_END
-sub_947A_text_push_def_end:
+vs_player_select_do_text_push_def_end:
 
-sub_947A_text_empty:
+vs_player_select_do_text_empty:
 	.dbyt	PPU_VRAM_BG1+$EA
-	.byte	NMI_REPEAT|(sub_947A_text_push_end-sub_947A_text_push_start), " "
+	.byte	NMI_REPEAT|(vs_player_select_do_text_push_end-vs_player_select_do_text_push_start), " "
 	.byte	NMI_LIST_END
-sub_947A_text_empty_def_end:
+vs_player_select_do_text_empty_def_end:
 ; ----------------------------
-sub_947A:
+vs_player_select_do:
 	jsr	vs_setbank_low
 
 	lda	#0
@@ -362,8 +363,8 @@ sub_947A:
 		sta	VS_RAM_ARENA0+$28
 		sta	VS_RAM_ARENA0+$29
 		dec	VS_RAM_ARENA0+$10
-		jsr	eng_init_ram
-		jsr	eng_init_setup
+		jsr	game_init_ram
+		jsr	game_init_setup
 		lda	joypad_p1
 		jmp	title_exit
 	: ; } else {
@@ -374,7 +375,7 @@ sub_947A:
 			dec	VS_RAM_ARENA0+$26
 			bne	:++++ ; if (--vs_ram_arena0[38] == 0) {
 				ldx	VS_RAM_ARENA0+$27
-				lda	sub_947A_data_0, x
+				lda	vs_player_select_do_data_0, x
 				sta	VS_RAM_ARENA0+$26
 
 				ldx	#0
@@ -382,23 +383,23 @@ sub_947A:
 				lda	VS_RAM_ARENA0+$27
 				bne	:++ ; if () {
 					: ; for (x = 0, y = ppu_nmi_count; x < 16; x++, y++) {
-						lda	sub_947A_text_push, x
+						lda	vs_player_select_do_text_push, x
 						sta	nmi_list_0_data+0, y
 
 						iny
 						inx
-						cpx	#(sub_947A_text_push_def_end-sub_947A_text_push)+1
+						cpx	#(vs_player_select_do_text_push_def_end-vs_player_select_do_text_push)+1
 						bne	:-
 					; }
 					beq	:++
 				; } else {
 					: ; for (x = 0, y = ppu_nmi_count; x < 5; x++, y++) {
-						lda	sub_947A_text_empty, x
+						lda	vs_player_select_do_text_empty, x
 						sta	nmi_list_0_data+0, y
 
 						iny
 						inx
-						cpx	#(sub_947A_text_empty_def_end-sub_947A_text_empty)
+						cpx	#(vs_player_select_do_text_empty_def_end-vs_player_select_do_text_empty)
 						bne	:-
 					; }
 				: ; }
@@ -410,7 +411,7 @@ sub_947A:
 
 			rts
 		: ; } else {
-			jmp	sub_9454_do
+			jmp	vs_player_select_init_1_do
 		; }
 	; }
 ; -----------------------------------------------------------
@@ -427,19 +428,20 @@ sub_9502:
 	inc	game_state
 	rts
 ; -----------------------------------------------------------
-sub_953B_oam:
-	.byte	$20, $32, obj_attr::color0, $30
-	.byte	$20, $41, obj_attr::color0, $38
-	.byte	$28, $42, obj_attr::color0, $30
-	.byte	$28, $43, obj_attr::color0, $38
-	.byte	$20, $41, obj_attr::h_flip|obj_attr::color1, $C0
-	.byte	$20, $32, obj_attr::h_flip|obj_attr::color1, $C8
-	.byte	$28, $43, obj_attr::h_flip|obj_attr::color1, $C0
-	.byte	$28, $42, obj_attr::h_flip|obj_attr::color1, $C8
-sub_953B_oam_end:
+vs_super_players_oam:
+	.byte	$20, chr_obj::player_walk_small, obj_attr::color0, $30
+	.byte	$20, chr_obj::player_jump_small+0, obj_attr::color0, $38
+	.byte	$28, chr_obj::player_jump_small+1, obj_attr::color0, $30
+	.byte	$28, chr_obj::player_jump_small+2, obj_attr::color0, $38
+
+	.byte	$20, chr_obj::player_jump_small+0, obj_attr::h_flip|obj_attr::color1, $C0
+	.byte	$20, chr_obj::player_walk_small, obj_attr::h_flip|obj_attr::color1, $C8
+	.byte	$28, chr_obj::player_jump_small+2, obj_attr::h_flip|obj_attr::color1, $C0
+	.byte	$28, chr_obj::player_jump_small+1, obj_attr::h_flip|obj_attr::color1, $C8
+vs_super_players_oam_end:
 ; ----------------------------
-	.export sub_953B
-sub_953B:
+	.export vs_super_players
+vs_super_players:
 	lda	VS_RAM_ARENA0+$22
 	bne	:+ ; if (vs_ram_arena0[34].in(0, 1)) {
 		; if (vs_ram_arena0[34] == 0) {
@@ -471,9 +473,9 @@ sub_953B:
 		lda	#nmi_addr::addr_1D_B
 		sta	nmi_addrs_ctl
 
-		ldy	#(sub_953B_oam_end-sub_953B_oam)-1
-		: ; for (entry of sub_953B_oam) {
-			lda	sub_953B_oam, y
+		ldy	#(vs_super_players_oam_end-vs_super_players_oam)-1
+		: ; for (entry of vs_super_players_oam) {
+			lda	vs_super_players_oam, y
 			sta	OAM_DMA_BUFFER, y
 
 			dey

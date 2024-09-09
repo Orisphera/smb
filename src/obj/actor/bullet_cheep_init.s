@@ -35,9 +35,9 @@ actor_init_bullet_cheep:
 	cpx	#BULLET_CHEEP_SLOTS
 	bcs	actor_init_bullet_cheep_rts ; if (timer_swarm == 0 && course_type == water && actor_index < BULLET_CHEEP_SLOTS) {
 		ldy	#0
-		lda	lib_rand, x
+		lda	srand, x
 		cmp	#BULLET_CHEEP_RED_CHANCE
-		bcc	:+ ; if (*lib_rand >= BULLET_CHEEP_RED_CHANCE) {
+		bcc	:+ ; if (*srand >= BULLET_CHEEP_RED_CHANCE) {
 			iny
 		: ; }
 		lda	course_no
@@ -59,7 +59,7 @@ actor_init_bullet_cheep:
 			lda	#0
 			sta	actor_bullet_cheep_mask
 		: ; }
-		lda	lib_rand, x
+		lda	srand, x
 		and	#MOD_8
 		: ; for (i = rand_seed % 8; (actor_init_bullet_cheep_data_a[i] & actor_bullet_cheep_mask); i = ((i + 1) % 8)) {
 			tay

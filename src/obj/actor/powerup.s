@@ -6,8 +6,6 @@
 .include	"misc.i"
 .include	"sound.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 POWERUP_OFFSET_BLOCK_Y	= 8
 POWERUP_VELOC_Y		= 16

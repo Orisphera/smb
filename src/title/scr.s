@@ -1,5 +1,4 @@
 .include	"mem.i"
-
 .include	"macros.i"
 
 .if	.defined(SMB)|.defined(VS_SMB)
@@ -105,7 +104,7 @@ screen_title_cursor:
 		jsr	title_cursor_draw
 	.endif
 screen_proc_next:
-	inc	eng_screen_proc_id
+	inc	screen_proc_id
 	rts
 ; ----------------------------
 	.export screen_title_score

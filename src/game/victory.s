@@ -12,8 +12,8 @@
 
 .include	"unk.i"
 
-	.export eng_victory
-eng_victory:
+	.export victory
+victory:
 	jsr	victory_enter
 
 	lda	game_state
@@ -23,9 +23,9 @@ eng_victory:
 		cpx	#course::no_08
 		bne	:+
 		cmp	#game_states::mode_5
-		beq	eng_victory-1
+		beq	victory-1
 		cmp	#game_states::mode_D
-		beq	eng_victory-1
+		beq	victory-1
 		; NOTE: This assumes this module follows an rts
 	.endif
 	: ; if (game_state != bridge && (course_no != course_08 || game_state.not_in(5, $D))) {
@@ -50,7 +50,7 @@ victory_enter:
 		.addr	victory_proc
 		.addr	victory_msg
 		.if	.defined(SMB2M)|.defined(VS_SMB)
-			.addr	sub_63AF
+			.addr	victory_time_tally
 		.endif
 		.addr	victory_end
 		.if	.defined(VS_SMB)
@@ -72,7 +72,7 @@ victory_enter:
 		.addr	disk_loader_data3
 		.addr	sub_C5FE
 		.addr	sub_C642
-		.addr	sub_63AF
+		.addr	victory_time_tally
 		.addr	sub_C686
 		.addr	sub_C6CA
 		.addr	sub_C710
@@ -277,7 +277,7 @@ victory_proc:
 		iny
 	: ; }
 	tya
-	jsr	game_proc_auto
+	jsr	player_proc_auto
 
 	lda	pos_x_hi_screen_left
 	cmp	pos_x_hi_victory_right
@@ -289,8 +289,8 @@ victory_proc:
 		lda	#1
 		adc	#0
 		tay
-		jsr	game_proc_scroll_do
-		jsr	game_proc_scroll_save
+		jsr	player_proc_scroll_do
+		jsr	player_proc_scroll_save
 		inc	victory_proc_ctrl
 	: ; }
 	lda	victory_proc_ctrl
@@ -438,15 +438,15 @@ victory_msg_notick:
 	.if	.defined(SMB2M)|.defined(VS_SMB)
 
 	.if	.defined(SMB2M)
-		SUB_63AF_TIMER_CUTOFF	= 6
+		TALLY_TIMER_CUTOFF	= 6
 	.elseif	.defined(VS_SMB)
-		SUB_63AF_TIMER_CUTOFF	= 10
+		TALLY_TIMER_CUTOFF	= 10
 	.endif
 
-	sub_63AF:
+	victory_time_tally:
 		lda	timer_victory
-		cmp	#SUB_63AF_TIMER_CUTOFF
-		bcs	:++ ; if (timer_victory < 6) {
+		cmp	#TALLY_TIMER_CUTOFF
+		bcs	:++ ; if (timer_victory < cutoff) {
 			.if	.defined(VS_SMB)|.defined(SMB2)
 				jsr	actor_proc_flag_victory_timer_score_do
 			.endif
@@ -957,12 +957,12 @@ screen_score_disp:
 	: ; }
 
 	lda	screen_score_pos_y, x
-	sbc	#PPU_TILE_HEIGHT_PX
+	sbc	#PPU_CHR_HEIGHT_PX
 	jsr	render_set_two_sprites_v
 	lda	screen_score_pos_x, x
 	sta	OAM_DMA_BUFFER+OBJ_POS_H, y
 	clc
-	adc	#PPU_TILE_HEIGHT_PX
+	adc	#PPU_CHR_HEIGHT_PX
 	sta	OAM_DMA_BUFFER+OBJ_POS_H+OBJ_SIZE, y
 	lda	#(obj_attr::priority_high|obj_attr::color2)
 	sta	OAM_DMA_BUFFER+OBJ_ATTR, y

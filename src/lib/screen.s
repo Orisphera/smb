@@ -18,7 +18,7 @@
 
 	.export screen_proc
 screen_proc:
-	lda	eng_screen_proc_id
+	lda	screen_proc_id
 	jsr	tbljmp
 	.addr	screen_init
 	.addr	screen_color_init_1
@@ -125,7 +125,7 @@ screen_color_init_3:
 		sta	nmi_addrs_ctl
 	: ; }
 
-	inc	eng_screen_proc_id
+	inc	screen_proc_id
 
 	.export screen_color_player
 screen_color_player:
@@ -254,7 +254,7 @@ screen_text_draw_timeup:
 		sta	eng_done_timer
 		lda	#screen_text::timeup
 		.if	.defined(SMB)|.defined(VS_SMB)
-			jmp	sub_86C7
+			jmp	screen_text_draw_timeup_end
 		.elseif	.defined(SMB2M)
 		screen_text_draw_timeup_end:
 			jsr	screen_text_draw
@@ -264,13 +264,13 @@ screen_text_draw_timeup:
 			rts
 		.endif
 	: ; } else {
-		inc	eng_screen_proc_id
+		inc	screen_proc_id
 
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	screen_proc_continue
 		.elseif	.defined(SMB2M)	
 		screen_text_draw_timeup_continue:
-			inc	eng_screen_proc_id
+			inc	screen_proc_id
 			rts
 		.endif
 	; }
@@ -291,7 +291,7 @@ screen_text_draw_intermission:
 			jsr	render_player_course_card
 			lda	#screen_text::splash
 			.if	.defined(SMB)|.defined(VS_SMB)
-			sub_86C7:
+			screen_text_draw_timeup_end:
 				jsr	screen_text_draw
 				jsr	screen_timer_reset
 				lda	#0
@@ -332,8 +332,8 @@ screen_text_draw_intermission:
 		.endif
 	: ; }
 
-	lda	#screen_proc::bg
-	sta	eng_screen_proc_id
+	lda	#screen_procs::bg
+	sta	screen_proc_id
 	rts
 ; ------------------------------------------------------------
 screen_bg:
@@ -347,7 +347,7 @@ screen_bg:
 
 	dec	eng_columnsets
 	bpl	:+ ; if (--eng_columnsets >= 0) {
-		inc	eng_screen_proc_id
+		inc	screen_proc_id
 	: ; }
 
 	lda	#nmi_addr::buffer_11_A
@@ -539,6 +539,6 @@ screen_timer_clear_check:
 	screen_timer_reset:
 		lda	#7
 		sta	timer_screen
-		inc	eng_screen_proc_id
+		inc	screen_proc_id
 	: ; }
 	rts

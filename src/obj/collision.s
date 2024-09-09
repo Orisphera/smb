@@ -7,9 +7,6 @@
 .include	"tiles.i"
 .include	"joypad.i"
 .include	"sound.i"
-
-.include	"unk.i"
-
 .include	"macros.i"
 
 ; ------------------------------------------------------------
@@ -380,7 +377,7 @@ col_player_powerup_proc:
 			sta	player_status
 			jsr	screen_color_player
 			ldx	actor_index
-			lda	#game_proc::firefl
+			lda	#player_procs::firefl
 			jmp	:+++
 		; }
 	: ; } else if (powerup.type == mushroom_oneup) {
@@ -393,7 +390,7 @@ col_player_powerup_proc:
 		; if (player.status == power_none) {
 			lda	#player_statuses::power_mushroom
 			sta	player_status
-			lda	#game_proc::size_chg
+			lda	#player_procs::size_chg
 		: ; }
 
 		ldy	#0
@@ -420,8 +417,8 @@ col_player_actor_proc:
 		bcs	:+
 		lda	actor_bits_mask, x
 		bne	:+
-		lda	game_proc_id
-		cmp	#game_proc::ctrl
+		lda	player_proc_id
+		cmp	#player_procs::ctrl
 		bne	:+
 		lda	state_actor, x
 		and	#actor_states::bit_5
@@ -600,13 +597,13 @@ col_player_harm_proc_do:
 			.endif
 			sta	apu_pulse1_queue
 			jsr	screen_color_player
-			lda	#game_proc::hurt
+			lda	#player_procs::hurt
 		: ; }
 
 		ldy	#1
 ; -----------------------------
 	col_player_harm_proc_proc_change:
-		sta	game_proc_id
+		sta	player_proc_id
 		sty	state_player
 		ldy	#%11111111
 		sty	eng_timer_ctl
@@ -625,7 +622,7 @@ col_player_harm_proc_end:
 		lda	#PLAYER_DEATH_VELOC_Y
 		sta	veloc_y_player
 
-		lda	#game_proc::death
+		lda	#player_procs::death
 		bne	:--
 	; }
 ; ------------------------------------------------------------
@@ -1181,8 +1178,8 @@ col_plat_player_pos:
 	lda	pos_y_lo_actor, x
 
 col_plat_player_pos_do:
-	ldy	game_proc_id
-	cpy	#game_proc::death
+	ldy	player_proc_id
+	cpy	#player_procs::death
 	beq	:+
 	ldy	pos_y_hi_actor, x
 	cpy	#1
@@ -1245,11 +1242,11 @@ col_bg_proc_player_pos_y_block_cutoff:
 col_bg_proc:
 	lda	eng_col_off
 	bne	col_bg_proc_rts
-	lda	game_proc_id
-	cmp	#game_proc::death
+	lda	player_proc_id
+	cmp	#player_procs::death
 	beq	col_bg_proc_rts
-	cmp	#game_proc::pole
-	bcc	col_bg_proc_rts ; if (!eng_col_off && game_proc_id != death && game_proc_id >= pole) {
+	cmp	#player_procs::pole
+	bcc	col_bg_proc_rts ; if (!eng_col_off && player_proc_id != death && player_proc_id >= pole) {
 		lda	#player_state::jump_swim
 		ldy	player_swimming
 		bne	:++
@@ -1509,13 +1506,13 @@ col_bg_proc_side_do:
 						sta	eng_timer_scene_trans
 					: ; }
 				
-					lda	game_proc_id
-					cmp	#game_proc::enter
+					lda	player_proc_id
+					cmp	#player_procs::enter
 					beq	:++
-					cmp	#game_proc::ctrl
+					cmp	#player_procs::ctrl
 					bne	:++ ; if (game.proc_id == ctrl) {
-						lda	#game_proc::pipe_h
-						sta	game_proc_id
+						lda	#player_procs::pipe_h
+						sta	player_proc_id
 						rts
 					; }
 				: ; }
@@ -1591,15 +1588,15 @@ col_bg_proc_climb_do:
 		beq	:+
 		cmp	#metatile_0::pole
 		bne	:++++++
-		: lda	game_proc_id
-		cmp	#game_proc::victory
+		: lda	player_proc_id
+		cmp	#player_procs::victory
 		beq	:++++++ ; if (tile.in(flag_ball, pole) && game.proc_id != victory) {
 			lda	#DIR_RIGHT
 			sta	disp_dir_player
 			inc	game_scroll_lock
 
-			lda	game_proc_id
-			cmp	#game_proc::pole
+			lda	player_proc_id
+			cmp	#player_procs::pole
 			beq	:++++ ; if (game.proc_id != pole) {
 				lda	#actor::bullet
 				jsr	bg_actor_kill
@@ -1633,8 +1630,8 @@ col_bg_proc_climb_do:
 			.endif
 			:
 		
-			lda	#game_proc::pole
-			sta	game_proc_id
+			lda	#player_procs::pole
+			sta	player_proc_id
 
 			jmp	:++
 		: cmp	#metatile_0::climb_blank
@@ -1642,8 +1639,8 @@ col_bg_proc_climb_do:
 		lda	pos_y_lo_player
 		cmp	#32
 		bcs	:+ ; } else if (tile == climb_blank && player.pos_y < 32) {
-			lda	#game_proc::vine
-			sta	game_proc_id
+			lda	#player_procs::vine
+			sta	player_proc_id
 		: ; }
 	
 		lda	#player_state::climb
@@ -1745,8 +1742,8 @@ col_bg_proc_pipe_v_do:
 	bne	:+++ ; if ((joypad_u_d & down) && zp_byte_00 == pipe_v_b && zp_byte_01 == pipe_v_a) {
 		lda	#PIPE_TRANSITION_TIME
 		sta	eng_timer_scene_trans
-		lda	#game_proc::pipe_v
-		sta	game_proc_id
+		lda	#player_procs::pipe_v
+		sta	player_proc_id
 		lda	#sfx_pulse1::pipe_entry_16
 		sta	apu_pulse1_queue
 		lda	#obj_attr::priority_low|obj_attr::color0

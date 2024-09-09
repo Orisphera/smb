@@ -34,8 +34,8 @@ render_player:
 	lsr	a
 	bcs	render_player_rts
 	: ; if (this.timer_injury == 0 || !(frame_count % 2)) {
-		lda	game_proc_id
-		cmp	#game_proc::death
+		lda	player_proc_id
+		cmp	#player_procs::death
 		beq	render_player_death
 		lda	player_resizing
 		bne	render_player_resizing
@@ -238,9 +238,9 @@ render_player_action:
 	; ) {
 		; if (this.state == ground && && skidding) {
 			.if	.defined(SMB2M)
-				lda	game_proc_id
-				cmp	#game_proc::size_chg
-				bcs	:+ ; if (game.proc_id < size_chg) {
+				lda	player_proc_id
+				cmp	#player_procs::size_chg
+				bcs	:+ ; if (this.proc_id < size_chg) {
 					lda	#sfx_noise::skid
 					sta	apu_noise_event
 				: ; }
@@ -393,8 +393,8 @@ render_player_resize:
 ; ------------------------------------------------------------
 render_player_tiles_mirror:
 	ldy	obj_data_offset_player
-	lda	game_proc_id
-	cmp	#game_proc::death
+	lda	player_proc_id
+	cmp	#player_procs::death
 	beq	:+
 	lda	render_player_spr_group
 	cmp	#<(render_player_tile_crouch_large-render_player_tile_data)
@@ -404,8 +404,8 @@ render_player_tiles_mirror:
 	cmp	#<(render_player_tile_stand_medium-render_player_tile_data)
 	beq	:++
 	cmp	#<(render_player_tile_stand_large-render_player_tile_data)
-	bne	:+++ ; if ((game.proc_id == death) || (render_player_spr_group.in(crouch, stand))) {
-		: ; if (game.proc_id == death) {
+	bne	:+++ ; if ((this.proc_id == death) || (render_player_spr_group.in(crouch, stand))) {
+		: ; if (this.proc_id == death) {
 			lda	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
 			and	#<~(obj_attr::v_flip|obj_attr::h_flip)
 			sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y

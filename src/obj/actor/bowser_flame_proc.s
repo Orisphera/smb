@@ -4,8 +4,6 @@
 .include	"mem.i"
 .include	"chr.i"
 
-.include	"unk.i"
-
 ; -----------------------------------------------------------
 BOWSER_FLAME_POS_X_OFFSET		= 1
 ; -----------------------------------------------------------
@@ -88,7 +86,7 @@ actor_proc_bowser_flame_do:
 		lda	pos_x_rel_actor
 		sta	OAM_DMA_BUFFER+OBJ_POS_H, y
 		clc
-		adc	#PPU_TILE_WIDTH_PX
+		adc	#PPU_CHR_WIDTH_PX
 		sta	pos_x_rel_actor
 
 		iny

@@ -4,11 +4,9 @@
 .include	"tunables.i"
 .include	"charmap.i"
 
-.include	"unk.i"
-
 .if	.defined(SMB)|.defined(VS_SMB)
-		.export eng_title
-	eng_title:
+		.export title
+	title:
 		.if	.defined(VS)
 			lda	VS_RAM_ARENA0+$10
 			beq	:+ ; if (VS_RAM_ARENA0[0x10]) {
@@ -27,14 +25,14 @@
 		.if	.defined(VS)
 			.addr	sub_82AF
 		.endif
-		.addr	eng_init_0
+		.addr	game_init_0
 		.addr	screen_proc
-		.addr	eng_init_1
+		.addr	game_init_1
 		.addr	title_proc
 		.if	.defined(VS)
-			.addr	sub_942C
+			.addr	vs_player_select_init_0
 			.addr	sub_9502
-			.addr	sub_953B
+			.addr	vs_super_players
 			.addr	sub_9588
 		; }
 	; ----------------------------
@@ -203,10 +201,10 @@ title_proc:
 		: ; }
 	.endif
 
-		jsr	game_proc
-		lda	game_proc_id
-		cmp	#game_proc::lifedown
-		bne	title_continue ; if (game.proc_id == lifedown) {
+		jsr	player_proc_main
+		lda	player_proc_id
+		cmp	#player_procs::lifedown
+		bne	title_continue ; if (player.proc_id == lifedown) {
 		.if	.defined(VS)
 		title_next:
 			inc	game_state

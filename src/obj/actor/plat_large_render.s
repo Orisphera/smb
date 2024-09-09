@@ -3,8 +3,6 @@
 .include	"mem.i"
 .include	"chr.i"
 
-.include	"unk.i"
-
 	.export render_plat_large
 render_plat_large:
 	ldy	obj_data_offset_actor, x
