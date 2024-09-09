@@ -44,7 +44,7 @@ render_player:
 		lda	state_player
 		cmp	#player_state::ground
 		beq	render_player_normal ; if (
-		;	game.proc_id != death
+		;	this.proc_id != death
 		;	&& !this.resizing
 		;	&& this.swimming
 		;	&& this.state != ground
@@ -69,8 +69,8 @@ render_player:
 				beq	:+
 				lda	OAM_DMA_BUFFER+(OBJ_SIZE*PLAYER_SPR_OFFSET_FOOT_LEFT)+OBJ_CHR_NO, y
 				cmp	render_player_tile_swim_small+(PLAYER_SPR_SIZE*PLAYER_SPR_SWIM_FOOT_ALTER_FRAME)+PLAYER_SPR_OFFSET_FOOT_LEFT
-				beq	:++ ; if (player_size == large || obj[foot_l_offset].chr_no != foot_left_swim_small_2) {
-					; if (player_size == small && obj[foot_l_offset].chr_no != foot_left_swim_small_2) {
+				beq	:++ ; if (this.size == large || obj[foot_l_offset].chr_no != foot_left_swim_small_2) {
+					; if (this.size == small && obj[foot_l_offset].chr_no != foot_left_swim_small_2) {
 						inx
 					: ; }
 
@@ -116,7 +116,7 @@ render_player_do:
 			ldy	#PLAYER_ROW_COUNT
 			lda	veloc_x_player
 			ora	joypad_l_r
-			beq	:+ ; if (player.veloc_x != 0 || joypad_l_r.in(left, right)) {
+			beq	:+ ; if (this.veloc_x != 0 || joypad_l_r.in(left, right)) {
 				dey
 			: ; }
 			tya

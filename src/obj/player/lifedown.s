@@ -81,7 +81,7 @@ player_proc_lifedown:
 		tax
 		lda	player_goals
 		and	#MOD_4_2_UP
-		beq	:+ ; if ((player.goals % 4) >= 2) {
+		beq	:+ ; if ((this.goals % 4) >= 2) {
 			inx
 		: ; }
 
@@ -89,7 +89,7 @@ player_proc_lifedown:
 		lda	player_goals
 		lsr	a
 		tya
-		bcs	:+ ; if ((player.goals % 2)) {
+		bcs	:+ ; if ((this.goals % 2)) {
 			lsr	a
 			lsr	a
 			lsr	a
