@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.export apu_music_overworld_a_data
 	.export	apu_music_overworld_a_pulse_2

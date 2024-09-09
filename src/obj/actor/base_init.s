@@ -1,5 +1,5 @@
-.include    "engine/mem.i"
-.include    "engine/tunables.i"
+.include    "mem.i"
+.include    "tunables.i"
 
 actor_init_base_veloc_x:
 	.byte	<-ACTOR_BASE_VELOC_X, <-ACTOR_BASE_VELOC_X_HARD

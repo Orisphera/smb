@@ -1,4 +1,4 @@
-.include	"engine/chr.i"
+.include	"chr.i"
 
         .export gfx_metatile_lo, gfx_metatile_hi
 gfx_metatile_lo:

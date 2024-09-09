@@ -1,7 +1,7 @@
 .include	"system/ppu.i"
 
-.include	"engine/charmap.i"
-.include	"engine/tunables.i"
+.include	"charmap.i"
+.include	"tunables.i"
 
 	.export screen_text
 	.export screen_text_header_player_name

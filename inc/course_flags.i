@@ -3,8 +3,9 @@ COURSE_FLAGS_I = 1
 
 .include	"system/cpu.i"
 .include	"system/ppu.i"
-.include	"./misc.i"
-.include	"./course_ids.i"
+
+.include	"misc.i"
+.include	"course_ids.i"
 
 COURSE_AREA_OFFSET_MAX	= $1F
 

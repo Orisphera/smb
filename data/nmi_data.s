@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 .include	"system/palettes.i"
 
-.include	"engine/charmap.i"
-.include	"engine/tunables.i"
+.include	"charmap.i"
+.include	"tunables.i"
 
 	.export palette_underwater
 palette_underwater:

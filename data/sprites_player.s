@@ -1,4 +1,4 @@
-.include	"engine/chr.i"
+.include	"chr.i"
 
 ; ------------------------------------------------------------
 	.export	render_player_tile_offsets

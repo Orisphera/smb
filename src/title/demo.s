@@ -1,5 +1,5 @@
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
+.include	"mem.i"
+.include	"joypad.i"
 
 ; -----------------------------------------------------------
 title_demo_buttons:

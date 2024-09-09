@@ -1,4 +1,4 @@
-.include	"engine/mem.i"
+.include	"mem.i"
 
 .include	"macros.i"
 

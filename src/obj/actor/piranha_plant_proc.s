@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
+.include	"mem.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 .include	"macros.i"
 

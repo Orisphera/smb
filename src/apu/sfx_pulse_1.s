@@ -1,8 +1,8 @@
 .include	"system/apu.i"
 
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/sound.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"sound.i"
 
 ; ------------------------------------------------------------
 	.include	"../data/apu/envelope_stomp.s"

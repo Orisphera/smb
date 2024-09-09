@@ -1,6 +1,6 @@
-.include	"engine/misc.i"
-.include	"engine/course_flags.i"
-.include	"engine/course_ids.i"
+.include	"misc.i"
+.include	"course_flags.i"
+.include	"course_ids.i"
 
 	.export courses_world_offsets, courses_area_offsets
 courses_world_offsets:

@@ -1,4 +1,4 @@
-.include	"engine/course_flags.i"
+.include	"course_flags.i"
 
 .if	.definedmacro(OVERWORLD_10_SCENERY_A)
 	.export course_scenery_overworld_10

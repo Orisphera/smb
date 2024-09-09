@@ -1,7 +1,7 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/charmap.i"
+.include	"mem.i"
+.include	"charmap.i"
 
 	.export	nt_init
 nt_init:

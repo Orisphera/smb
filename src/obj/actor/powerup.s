@@ -1,12 +1,12 @@
 .include	"system/cpu.i"
 
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/misc.i"
-.include	"engine/sound.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"misc.i"
+.include	"sound.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; -----------------------------------------------------------
 POWERUP_OFFSET_BLOCK_Y	= 8

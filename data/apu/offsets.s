@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.if	.defined(VS)
 		.include	"./envelope_victory_castle.s"

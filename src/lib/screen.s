@@ -2,13 +2,13 @@
 .include	"system/ppu.i"
 .include	"system/palettes.i"
 
-.include	"engine/mem.i"
-.include	"engine/course_flags.i"
-.include	"engine/tunables.i"
-.include	"engine/charmap.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"course_flags.i"
+.include	"tunables.i"
+.include	"charmap.i"
+.include	"misc.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	screen_proc_continue = screen_proc_next

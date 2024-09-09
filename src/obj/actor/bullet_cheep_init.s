@@ -1,7 +1,7 @@
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/sound.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"sound.i"
 
 ; -----------------------------------------------------------
 BULLET_CHEEP_SLOTS	= 3

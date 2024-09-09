@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
-.include	"engine/joypad.i"
+.include	"mem.i"
+.include	"chr.i"
+.include	"joypad.i"
 
 ; ------------------------------------------------------------
 GAME_OVER_MENU_CURSOR_POS_X	= 72

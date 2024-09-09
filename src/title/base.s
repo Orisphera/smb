@@ -1,10 +1,10 @@
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
-.include	"engine/misc.i"
-.include	"engine/tunables.i"
-.include	"engine/charmap.i"
+.include	"mem.i"
+.include	"joypad.i"
+.include	"misc.i"
+.include	"tunables.i"
+.include	"charmap.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 .if	.defined(SMB)|.defined(VS_SMB)
 		.export eng_title

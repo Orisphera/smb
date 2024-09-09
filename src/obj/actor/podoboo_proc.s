@@ -1,5 +1,5 @@
-.include	"engine/mem.i"
-.include	"engine/math.i"
+.include	"mem.i"
+.include	"math.i"
 
 ; -----------------------------------------------------------
 PODOBOO_VELOC_Y	= <-7

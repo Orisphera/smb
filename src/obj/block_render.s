@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
-.include	"engine/tiles.i"
+.include	"mem.i"
+.include	"chr.i"
+.include	"tiles.i"
 
 ; ------------------------------------------------------------
 BLOCK_BITS_OFFSET	= 6

@@ -477,4 +477,4 @@ COL_BOX_SIZE	= 4
 		time
 	.endenum
 
-	.endif	; MISC_I
+.endif	; MISC_I

@@ -1,6 +1,6 @@
-.include	"engine/mem.i"
+.include	"mem.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 	.export actor_proc_enemy
 actor_proc_enemy:

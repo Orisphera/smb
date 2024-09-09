@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.export	apu_music_underground_data
 	.export	apu_music_underground_pulse_triangle

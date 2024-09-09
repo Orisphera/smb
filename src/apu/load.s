@@ -1,7 +1,7 @@
 .include	"system/apu.i"
 
-.include	"engine/mem.i"
-.include	"engine/sound.i"
+.include	"mem.i"
+.include	"sound.i"
 
 	.export	apu_note_decomp, apu_note_length_load
 apu_note_decomp:

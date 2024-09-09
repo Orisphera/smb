@@ -1,7 +1,7 @@
 .include	"system/cpu.i"
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
+.include	"mem.i"
 
 ; ------------------------------------------------------------
 player_phys_data:

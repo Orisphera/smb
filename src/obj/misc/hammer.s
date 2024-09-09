@@ -1,8 +1,8 @@
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/tunables.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"tunables.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 ; ------------------------------------------------------------
 MISC_HAMMER_ACCEL_Y_DEC		= 15
 MISC_HAMMER_VELOC_Y_MAX_ABS	= 4

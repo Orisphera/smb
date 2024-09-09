@@ -1,6 +1,6 @@
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"misc.i"
 
 	.export actor_init_swarm
 actor_init_swarm:

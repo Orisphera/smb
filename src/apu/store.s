@@ -1,6 +1,6 @@
 .include	"system/apu.i"
 
-.include	"engine/sound.i"
+.include	"sound.i"
 ; ------------------------------------------------------------
 	.export	apu_write_base_pulse_1
 	.export	apu_write_pulse_1

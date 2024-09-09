@@ -1,8 +1,8 @@
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
-.include	"engine/tunables.i"
-.include	"engine/misc.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"joypad.i"
+.include	"tunables.i"
+.include	"misc.i"
 
 .include	"macros.i"
 

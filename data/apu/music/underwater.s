@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.export	apu_music_underwater_data
 	.export	apu_music_underwater_pulse_2

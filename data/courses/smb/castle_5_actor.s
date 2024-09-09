@@ -1,4 +1,4 @@
-.include	"engine/course_flags.i"
+.include	"course_flags.i"
 
 	.export course_actor_castle_5
 course_actor_castle_5:

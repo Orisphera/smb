@@ -1,7 +1,7 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
+.include	"mem.i"
+.include	"chr.i"
 
 ; ------------------------------------------------------------
 RENDER_POWERUP_HEIGHT	= 2

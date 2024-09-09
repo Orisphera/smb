@@ -5,8 +5,8 @@
 	.include	"system/vs.i"
 .endif
 
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
+.include	"mem.i"
+.include	"joypad.i"
 
 ; -----------------------------------------------------------
 STATS_UPPER_ROW	= PPU_BG_ROW_3

@@ -1,7 +1,7 @@
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/sound.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"sound.i"
+.include	"misc.i"
 
 ; ------------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)

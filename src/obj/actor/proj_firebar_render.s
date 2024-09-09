@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/math.i"
-.include	"engine/chr.i"
+.include	"mem.i"
+.include	"math.i"
+.include	"chr.i"
 
 ; ------------------------------------------------------------
 EXPLOSION_BASE_ATTR	= (obj_attr::priority_high|obj_attr::color2)

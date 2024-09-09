@@ -1,6 +1,6 @@
 .include	"system/cpu.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 COURSE_OFFSET_INC_SIZE	= WORD_SIZE
 

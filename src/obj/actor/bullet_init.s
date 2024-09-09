@@ -1,6 +1,6 @@
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/joypad.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"joypad.i"
 
 	.export actor_init_bullet
 actor_init_bullet:

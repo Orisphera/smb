@@ -1,7 +1,7 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"misc.i"
 
 .include	"macros.i"
 

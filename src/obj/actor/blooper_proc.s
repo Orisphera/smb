@@ -1,8 +1,8 @@
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"joypad.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; -----------------------------------------------------------
 BLOOPER_ACCEL_OFFSET_Y		= 1

@@ -4,7 +4,7 @@ TUNABLES_I = 1
 .include	"system/cpu.i"
 .include	"system/ppu.i"
 
-.include	"engine/misc.i"
+.include	"misc.i"
 
 ENG_FONT_TILE_BASE = 0
 

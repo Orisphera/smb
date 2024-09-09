@@ -1,5 +1,5 @@
-.include	"engine/math.i"
-.include	"engine/mem.i"
+.include	"math.i"
+.include	"mem.i"
 
 ; -----------------------------------------------------------
 KOOPA_GREEN_FLY_OFFSET_Y_ABS	= 1

@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.export	apu_music_game_over_vs_data
 	.export	apu_music_game_over_vs_pulse_2

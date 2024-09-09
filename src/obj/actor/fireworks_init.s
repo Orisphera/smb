@@ -1,5 +1,5 @@
-.include	"engine/mem.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"misc.i"
 
 ; -----------------------------------------------------------
 FIREWORKS_SWARM_TIMER		= 32

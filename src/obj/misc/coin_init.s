@@ -1,6 +1,6 @@
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/sound.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"sound.i"
 
 ; -----------------------------------------------------------
 MISC_COIN_BLOCK_OFFSET_Y	= 16

@@ -1,7 +1,7 @@
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
+.include	"mem.i"
+.include	"tunables.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; ----------------------------------------------------------
 MISC_ACCEL_Y_INC		= 80

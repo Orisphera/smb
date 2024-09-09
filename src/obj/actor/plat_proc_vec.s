@@ -1,6 +1,6 @@
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/unk.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"unk.i"
 
 	.export actor_proc_plat_small
 actor_proc_plat_small:

@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 
-.include	"engine/math.i"
-.include	"engine/misc.i"
-.include	"engine/chr.i"
+.include	"math.i"
+.include	"misc.i"
+.include	"chr.i"
 
 ; ------------------------------------------------------------
 	.export render_actor_tile_data

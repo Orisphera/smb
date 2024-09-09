@@ -1,11 +1,11 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
-.include	"engine/sound.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"joypad.i"
+.include	"sound.i"
+.include	"misc.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 	.export eng_game_over
 eng_game_over:

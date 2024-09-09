@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
-.include	"engine/sound.i"
+.include	"mem.i"
+.include	"joypad.i"
+.include	"sound.i"
 
 sub_98DC:
 	lda	VS_RAM_ARENA0+$17

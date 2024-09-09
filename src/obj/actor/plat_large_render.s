@@ -1,9 +1,9 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
+.include	"mem.i"
+.include	"chr.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 	.export render_plat_large
 render_plat_large:

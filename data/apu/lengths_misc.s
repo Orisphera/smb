@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.export	apu_note_lengths
 apu_note_lengths:

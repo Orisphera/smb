@@ -1,10 +1,10 @@
 .include	"system/ppu.i"
 .include	"system/vs.i"
 
-.include	"engine/mem.i"
-.include	"engine/charmap.i"
-.include	"engine/joypad.i"
-.include	"engine/sound.i"
+.include	"mem.i"
+.include	"charmap.i"
+.include	"joypad.i"
+.include	"sound.i"
 
 	.export vs_read_dips
 vs_read_dips:

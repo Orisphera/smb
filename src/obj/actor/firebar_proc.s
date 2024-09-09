@@ -1,11 +1,11 @@
 .include	"system/ppu.i"
 
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/joypad.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"joypad.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 .include	"macros.i"
 

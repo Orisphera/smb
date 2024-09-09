@@ -1,8 +1,8 @@
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/course_flags.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"course_flags.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 .if	.defined(SMB2M)
 	.include	"../../data/courses/smb/overworld_10_actor.s"

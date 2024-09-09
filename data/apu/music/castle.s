@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.export	apu_music_castle_data
 	.export	apu_music_castle_pulse_2

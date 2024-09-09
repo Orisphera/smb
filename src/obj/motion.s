@@ -1,7 +1,7 @@
 .include	"system/cpu.i"
 
-.include	"engine/mem.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"misc.i"
 
 	.export motion_x, motion_x_check_spring, motion_x_do
 motion_x:

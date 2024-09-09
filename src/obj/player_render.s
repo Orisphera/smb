@@ -1,11 +1,11 @@
 .include	"system/cpu.i"
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/math.i"
-.include	"engine/tunables.i"
-.include	"engine/chr.i"
-.include	"engine/sound.i"
+.include	"mem.i"
+.include	"math.i"
+.include	"tunables.i"
+.include	"chr.i"
+.include	"sound.i"
 
 ; ------------------------------------------------------------
 PLAYER_START_SCREEN_POS_X	= 96

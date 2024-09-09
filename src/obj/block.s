@@ -1,12 +1,12 @@
 .include	"system/cpu.i"
 
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/tiles.i"
-.include	"engine/sound.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"tiles.i"
+.include	"sound.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; -----------------------------------------------------------
 BLOCK_TIMER_VAL		= 11

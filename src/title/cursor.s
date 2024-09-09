@@ -1,7 +1,7 @@
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/chr.i"
-.include	"engine/charmap.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"chr.i"
+.include	"charmap.i"
 
 .if	.defined(CONS)
 ; -----------------------------------------------------------

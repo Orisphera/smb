@@ -1,5 +1,5 @@
-.include	"engine/mem.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"misc.i"
 
 ; --------------------------------------------------------------
 BULLET_VELOC_X	= <-24

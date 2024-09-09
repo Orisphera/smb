@@ -1,10 +1,10 @@
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/joypad.i"
-.include	"engine/misc.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"joypad.i"
+.include	"misc.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; -----------------------------------------------------------
 HAMMER_BRO_VELOC_X_A		= <-6

@@ -1,4 +1,4 @@
-.include	"engine/course_flags.i"
+.include	"course_flags.i"
 
 .if	.defined(VS)
 	.segment	"CHR1DATA"

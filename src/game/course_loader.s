@@ -1,10 +1,10 @@
 .include	"system/cpu.i"
 
-.include	"engine/mem.i"
-.include	"engine/course_flags.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"course_flags.i"
+.include	"misc.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 .if	.defined(SMB)
 .define	COURSE_ACTOR_DATA_ADDR_LO	course_actor_addr_lo,y

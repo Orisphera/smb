@@ -1,4 +1,4 @@
-.include	"engine/sound.i"
+.include	"sound.i"
 
 	.export	apu_music_super_star_data
 	.export	apu_music_super_star_pulse_2

@@ -1,4 +1,4 @@
-.include	"engine/mem.i"
+.include	"mem.i"
 
 ; ------------------------------------------------------------
 CHEEP_VELOC_X_RAND_MASK	= %00010000

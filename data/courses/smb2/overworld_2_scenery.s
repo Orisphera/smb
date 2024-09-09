@@ -1,4 +1,4 @@
-.include	"engine/course_flags.i"
+.include	"course_flags.i"
 
 	.export	course_scenery_overworld_2_smb2
 course_scenery_overworld_2_smb2:

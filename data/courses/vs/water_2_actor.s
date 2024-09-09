@@ -1,4 +1,4 @@
-.include	"engine/course_flags.i"
+.include	"course_flags.i"
 
 	.export course_actor_water_2_vs
 course_actor_water_2_vs:

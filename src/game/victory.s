@@ -2,15 +2,15 @@
 .include	"system/ppu.i"
 .include	"system/palettes.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
-.include	"engine/charmap.i"
-.include	"engine/joypad.i"
-.include	"engine/sound.i"
-.include	"engine/tunables.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"chr.i"
+.include	"charmap.i"
+.include	"joypad.i"
+.include	"sound.i"
+.include	"tunables.i"
+.include	"misc.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 	.export eng_victory
 eng_victory:

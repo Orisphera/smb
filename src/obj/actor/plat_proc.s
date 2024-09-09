@@ -1,15 +1,15 @@
 .include	"system/cpu.i"
 
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/charmap.i"
-.include	"engine/tunables.i"
-.include	"engine/chr.i"
-.include	"engine/misc.i"
-.include	"engine/joypad.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"charmap.i"
+.include	"tunables.i"
+.include	"chr.i"
+.include	"misc.i"
+.include	"joypad.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; -----------------------------------------------------------
 PLAT_ROPE_OFFSET_X	= 8

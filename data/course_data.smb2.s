@@ -1,4 +1,4 @@
-.include	"engine/course_flags.i"
+.include	"course_flags.i"
 
 ; ------------------------------
 	.include	"./courses/vs/castle_7_actor.s"

@@ -1,14 +1,14 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/course_flags.i"
-.include	"engine/joypad.i"
-.include	"engine/sound.i"
-.include	"engine/tunables.i"
-.include	"engine/misc.i"
-.include	"engine/math.i"
+.include	"mem.i"
+.include	"course_flags.i"
+.include	"joypad.i"
+.include	"sound.i"
+.include	"tunables.i"
+.include	"misc.i"
+.include	"math.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 	.if	.defined(SMB2)
 		.res	2, $FF

@@ -1,8 +1,8 @@
 .include	"system/cpu.i"
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
+.include	"mem.i"
+.include	"tunables.i"
 
 SKIP_TO_oam_init_do	= BIT_ABS_OPCODE
 

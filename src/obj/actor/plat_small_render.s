@@ -1,7 +1,7 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
+.include	"mem.i"
+.include	"chr.i"
 
 	.export render_plat_small
 render_plat_small:

@@ -1,12 +1,12 @@
 .include	"system/ppu.i"
 .include	"system/palettes.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
-.include	"engine/tiles.i"
-.include	"engine/tunables.i"
-.include	"engine/misc.i"
-.include	"engine/math.i"
+.include	"mem.i"
+.include	"chr.i"
+.include	"tiles.i"
+.include	"tunables.i"
+.include	"misc.i"
+.include	"math.i"
 
 gfx_render_area_offset		= zp_byte_00
 gfx_render_area_index		= zp_byte_01

@@ -1,4 +1,4 @@
-.include	"engine/course_flags.i"
+.include	"course_flags.i"
 
 	.export course_scenery_castle_7_vs
 course_scenery_castle_7_vs:

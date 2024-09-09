@@ -1,8 +1,8 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/math.i"
-.include	"engine/chr.i"
+.include	"mem.i"
+.include	"math.i"
+.include	"chr.i"
 
 ; ------------------------------------------------------------
 	: ; if (this.state > coin_01) {

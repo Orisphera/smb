@@ -1,4 +1,4 @@
-.include	"engine/mem.i"
+.include	"mem.i"
 
 ; -----------------------------------------------------------
 actor_proc_firebar_spin_accel_x	= zp_byte_07

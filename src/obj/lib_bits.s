@@ -1,5 +1,5 @@
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
+.include	"mem.i"
+.include	"tunables.i"
 
 ; --------------------------------------------------------------
 lib_calc_object_offset	= zp_byte_00

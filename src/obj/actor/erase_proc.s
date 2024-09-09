@@ -1,6 +1,6 @@
 .include	"system/cpu.i"
 
-.include	"engine/mem.i"
+.include	"mem.i"
 
 	.export actor_erase
 actor_erase:

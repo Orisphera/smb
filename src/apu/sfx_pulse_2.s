@@ -1,7 +1,7 @@
 .include	"system/apu.i"
 
-.include	"engine/mem.i"
-.include	"engine/sound.i"
+.include	"mem.i"
+.include	"sound.i"
 
 ; ------------------------------------------------------------
 	.include	"../data/apu/sfx_data.s"

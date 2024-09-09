@@ -1,10 +1,10 @@
 .include	"system/cpu.i"
 
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/sound.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"sound.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; -----------------------------------------------------------
 	.export actor_proc_fireworks

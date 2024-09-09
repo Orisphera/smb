@@ -2,11 +2,11 @@
 .include	"system/palettes.i"
 .include	"system/fds.i"
 
-.include	"engine/mem.i"
-.include	"engine/misc.i"
-.include	"engine/fileids.i"
+.include	"mem.i"
+.include	"misc.i"
+.include	"fileids.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 	.export disk_loader
 disk_loader:
@@ -315,7 +315,7 @@ disk_loader_bootstrap:
 	sta	disk_loader_file_id
 	rts
 ; ------------------------------------------------------------
-.include	"engine/charmap.i"
+.include	"charmap.i"
 
 	.export disk_text_error_buffer
 disk_text_error_buffer:

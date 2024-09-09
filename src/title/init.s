@@ -1,12 +1,12 @@
 .include	"system/ppu.i"
 .include	"system/palettes.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
-.include	"engine/charmap.i"
-.include	"engine/tunables.i"
+.include	"mem.i"
+.include	"chr.i"
+.include	"charmap.i"
+.include	"tunables.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; ------------------------------------------------------------
 .if	.defined(SMB2)

@@ -1,4 +1,4 @@
-.include	"engine/mem.i"
+.include	"mem.i"
 
 tbljmp_tbl_ptr		= zp_addr_04
 tbljmp_target_ptr	= zp_addr_06

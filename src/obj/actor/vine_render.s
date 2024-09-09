@@ -1,7 +1,7 @@
 .include	"system/ppu.i"
 
-.include	"engine/mem.i"
-.include	"engine/chr.i"
+.include	"mem.i"
+.include	"chr.i"
 
 ; ------------------------------------------------------------
 VINE_PART_COUNT		= 6

@@ -6,9 +6,9 @@
 	.include	"system/vs.i"
 .endif
 
-.include	"engine/mem.i"
-.include	"engine/tunables.i"
-.include	"engine/misc.i"
+.include	"mem.i"
+.include	"tunables.i"
+.include	"misc.i"
 
 .include	"macros.i"
 

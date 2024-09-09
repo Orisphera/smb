@@ -1,4 +1,4 @@
-.include    "engine/mem.i"
+.include    "mem.i"
 
 ; -----------------------------------------------------------
 PODOBOO_POS_Y_INIT_2    = 2

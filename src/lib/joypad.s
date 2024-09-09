@@ -3,8 +3,8 @@
 	.include	"system/vs.i"
 .endif
 
-.include	"engine/mem.i"
-.include	"engine/joypad.i"
+.include	"mem.i"
+.include	"joypad.i"
 
 joypad_read_buffer	= zp_byte_00
 

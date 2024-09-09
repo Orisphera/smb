@@ -1,10 +1,10 @@
 .include	"system/ppu.i"
 
-.include	"engine/math.i"
-.include	"engine/mem.i"
-.include	"engine/chr.i"
+.include	"math.i"
+.include	"mem.i"
+.include	"chr.i"
 
-.include	"engine/unk.i"
+.include	"unk.i"
 
 ; -----------------------------------------------------------
 BOWSER_FLAME_POS_X_OFFSET		= 1
