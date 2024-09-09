@@ -16,7 +16,7 @@ render_bubble:
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
 		lda	pos_y_rel_bubble
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
-		lda	#tile_obj::bubble
+		lda	#chr_obj::bubble
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
 		lda	#obj_attr::priority_high|obj_attr::color2
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y

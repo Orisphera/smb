@@ -30,10 +30,10 @@ render_plat_large:
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_V, y
 
-	lda	#tile_obj::plat_norm
+	lda	#chr_obj::plat_norm
 	ldx	course_type_cloud
 	beq	:+ ; if (course.type == cloud) {
-		lda	#tile_obj::plat_cloud
+		lda	#chr_obj::plat_cloud
 	: ; }
 	ldx	actor_index
 	iny

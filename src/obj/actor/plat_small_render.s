@@ -6,7 +6,7 @@
 	.export render_plat_small
 render_plat_small:
 	ldy	obj_data_offset_actor, x
-	lda	#tile_obj::plat_norm
+	lda	#chr_obj::plat_norm
 	iny
 	jsr	render_set_six_sprites
 	iny

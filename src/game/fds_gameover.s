@@ -10,7 +10,7 @@ GAME_OVER_MENU_CURSOR_OPTION_A_POS_Y	= 119
 GAME_OVER_MENU_CURSOR_OPTION_B_POS_Y	= 143
 ; ------------------------------------------------------------
 eng_game_over_menu_attrs:
-	.byte	tile_obj::plat_norm
+	.byte	chr_obj::plat_norm
 	.byte	obj_attr::priority_high|obj_attr::color2
 	.byte	GAME_OVER_MENU_CURSOR_POS_X
 eng_game_over_menu_attrs_end:

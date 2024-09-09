@@ -1,20 +1,20 @@
 .ifndef	MUSHROOM
 MUSHROOM = 1
 
-	.export tile_obj_mushroom_nw
-tile_obj_mushroom_nw:
-	.incbin	"../../chr.smb/tile_obj_76.bin"
+	.export chr_obj_mushroom_nw
+chr_obj_mushroom_nw:
+	.incbin	"../../chr.smb/chr_obj_76.bin"
 
-	.export tile_obj_mushroom_ne
-tile_obj_mushroom_ne:
-	.incbin	"../../chr.smb/tile_obj_77.bin"
+	.export chr_obj_mushroom_ne
+chr_obj_mushroom_ne:
+	.incbin	"../../chr.smb/chr_obj_77.bin"
 
-	.export tile_obj_mushroom_sw
-tile_obj_mushroom_sw:
-	.incbin	"../../chr.smb/tile_obj_78.bin"
+	.export chr_obj_mushroom_sw
+chr_obj_mushroom_sw:
+	.incbin	"../../chr.smb/chr_obj_78.bin"
 
-	.export tile_obj_mushroom_se
-tile_obj_mushroom_se:
-	.incbin	"../../chr.smb/tile_obj_79.bin"
+	.export chr_obj_mushroom_se
+chr_obj_mushroom_se:
+	.incbin	"../../chr.smb/chr_obj_79.bin"
 
 .endif	; MUSHROOM

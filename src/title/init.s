@@ -37,10 +37,10 @@ title_init_0:
 	sta	title_init_0_star_cutoff
 	ldx	#0
 	: ; for (game of completed_games) {
-		lda	#tile_bg::blanks+2
+		lda	#chr_bg::blanks+2
 		cpx	save
 		bcs	:+ ; if (x < save) {
-			lda	#tile_bg::star_title
+			lda	#chr_bg::star_title
 		: ; }
 		sta	title_map, y
 		iny

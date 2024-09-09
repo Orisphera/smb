@@ -22,7 +22,7 @@ render_firebar:
 	lsr	a
 	pha
 	and	#MOD_8_4_UP>>2
-	eor	#tile_obj::fire_ball
+	eor	#chr_obj::fire_ball
 	sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
 	pla
 	lsr	a
@@ -36,9 +36,9 @@ render_firebar:
 	rts
 ; ------------------------------------------------------------
 render_proj_hit_tiles:
-	.byte	tile_obj::fire_hit+2
-	.byte	tile_obj::fire_hit+1
-	.byte	tile_obj::fire_hit+0
+	.byte	chr_obj::fire_hit+2
+	.byte	chr_obj::fire_hit+1
+	.byte	chr_obj::fire_hit+0
 ; ------------------------------
 	.export render_proj_hit, render_fireworks
 render_proj_hit:

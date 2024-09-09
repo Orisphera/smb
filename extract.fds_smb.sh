@@ -29,14 +29,14 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 I=0
 while [ $I -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_obj_`printf "%.2X" $I`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
 while [ $I -ne $TILES ]
 do
 	J=`expr $I - $BG_BANK`
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/tile_bg_`printf "%.2X" $J`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
 

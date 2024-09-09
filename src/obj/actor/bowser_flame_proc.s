@@ -64,7 +64,7 @@ actor_proc_bowser_flame_do:
 	jsr	lib_calc_actor_pos
 	lda	state_actor, x
 	bne	:---
-	lda	#tile_obj::bowser_flame
+	lda	#chr_obj::bowser_flame
 	sta	actor_proc_bowser_flame_obj_tile
 
 	ldy	#obj_attr::color2
@@ -96,7 +96,7 @@ actor_proc_bowser_flame_do:
 		iny
 		iny
 		inx
-		cpx	#tile_obj::bowser_flame_end-tile_obj::bowser_flame
+		cpx	#chr_obj::bowser_flame_end-chr_obj::bowser_flame
 		bcc	:-
 	; }
 

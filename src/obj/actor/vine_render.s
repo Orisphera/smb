@@ -46,7 +46,7 @@ render_vine:
 
 	ldx	#VINE_PART_COUNT-1
 	: ; for (tile of vine) {
-		lda	#tile_obj::vine+1
+		lda	#chr_obj::vine+1
 		sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
 
 		.repeat	OBJ_SIZE
@@ -60,7 +60,7 @@ render_vine:
 	ldy	render_oam_idx
 	lda	render_vine_part_idx
 	bne	:+ ; if (render_vine_part_idx == 0) {
-		lda	#tile_obj::vine+0
+		lda	#chr_obj::vine+0
 		sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
 	: ; }
 

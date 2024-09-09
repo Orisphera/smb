@@ -10,21 +10,21 @@ render_powerup_type	= zp_byte_00
 render_powerup_row	= zp_byte_07
 ; ------------------------------------------------------------
 render_powerup_tiles:
-	.byte	tile_obj::mushroom_nw, tile_obj::mushroom_ne
-	.byte	tile_obj::mushroom_sw, tile_obj::mushroom_se
+	.byte	chr_obj::mushroom_nw, chr_obj::mushroom_ne
+	.byte	chr_obj::mushroom_sw, chr_obj::mushroom_se
 
-	.byte	tile_obj::firefl_top, tile_obj::firefl_top
-	.byte	tile_obj::firefl_stem, tile_obj::firefl_stem
+	.byte	chr_obj::firefl_top, chr_obj::firefl_top
+	.byte	chr_obj::firefl_stem, chr_obj::firefl_stem
 
-	.byte	tile_obj::star_top, tile_obj::star_top
-	.byte	tile_obj::star_bottom, tile_obj::star_bottom
+	.byte	chr_obj::star_top, chr_obj::star_top
+	.byte	chr_obj::star_bottom, chr_obj::star_bottom
 
-	.byte	tile_obj::mushroom_nw, tile_obj::mushroom_ne
-	.byte	tile_obj::mushroom_sw, tile_obj::mushroom_se
+	.byte	chr_obj::mushroom_nw, chr_obj::mushroom_ne
+	.byte	chr_obj::mushroom_sw, chr_obj::mushroom_se
 
 	.if	.defined(SMB2M)
-		.byte	tile_obj::mushroom_nw, tile_obj::mushroom_ne
-		.byte	tile_obj::mushroom_sw, tile_obj::mushroom_se
+		.byte	chr_obj::mushroom_nw, chr_obj::mushroom_ne
+		.byte	chr_obj::mushroom_sw, chr_obj::mushroom_se
 	.endif
 
 render_powerup_colors:

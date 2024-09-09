@@ -92,13 +92,13 @@ victory_enter:
 		.addr	ann_toad_7
 
 	ann_toads_hi:
-		.byte	>tile_obj_toad
-		.byte	>tile_obj_toads_chr2
-		.byte	>tile_obj_nsm_char_c
+		.byte	>chr_obj_toad
+		.byte	>chr_obj_toads_chr2
+		.byte	>chr_obj_nsm_char_c
 	ann_toads_lo:
-		.byte	<tile_obj_toad
-		.byte	<tile_obj_toads_chr2
-		.byte	<tile_obj_nsm_char_c
+		.byte	<chr_obj_toad
+		.byte	<chr_obj_toads_chr2
+		.byte	<chr_obj_nsm_char_c
 	ann_toads_size:
 		.byte	$30, $50, $60
 ; ----------------------------
@@ -820,21 +820,21 @@ SCORE_DIGIT_MASK	= $0F
 screen_score_disp_tiles:
 	.byte	$FF, $FF
 
-	.byte	tile_obj::digits_10, tile_obj::digits_0
-	.byte	tile_obj::digits_20, tile_obj::digits_0
-	.byte	tile_obj::digits_40, tile_obj::digits_0
-	.byte	tile_obj::digits_50, tile_obj::digits_0
-	.byte	tile_obj::digits_80, tile_obj::digits_0
-	.byte	tile_obj::digits_10, tile_obj::digits_00
-	.byte	tile_obj::digits_20, tile_obj::digits_00
-	.byte	tile_obj::digits_40, tile_obj::digits_00
-	.byte	tile_obj::digits_50, tile_obj::digits_00
-	.byte	tile_obj::digits_80, tile_obj::digits_00
+	.byte	chr_obj::digits_10, chr_obj::digits_0
+	.byte	chr_obj::digits_20, chr_obj::digits_0
+	.byte	chr_obj::digits_40, chr_obj::digits_0
+	.byte	chr_obj::digits_50, chr_obj::digits_0
+	.byte	chr_obj::digits_80, chr_obj::digits_0
+	.byte	chr_obj::digits_10, chr_obj::digits_00
+	.byte	chr_obj::digits_20, chr_obj::digits_00
+	.byte	chr_obj::digits_40, chr_obj::digits_00
+	.byte	chr_obj::digits_50, chr_obj::digits_00
+	.byte	chr_obj::digits_80, chr_obj::digits_00
 
-	.byte	tile_obj::oneup_left, tile_obj::oneup_right
+	.byte	chr_obj::oneup_left, chr_obj::oneup_right
 
 	.if	.defined(VS_SMB)
-		.byte	tile_obj::digits_80, tile_obj::digits_00
+		.byte	chr_obj::digits_80, chr_obj::digits_00
 	.endif
 screen_score_disp_tiles_end:
 

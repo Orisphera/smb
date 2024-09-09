@@ -97,7 +97,7 @@ do
         then
                 CHR_PATH=$CHR_PATH_NSM
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_obj_`printf "%.2X" $I`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
@@ -229,14 +229,14 @@ do
         then
                 CHR_PATH=$CHR_PATH_SMB2
                 
-                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_bg_75.bin
+                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_75.bin
 
                 DID_READ=1
         elif [ $J -eq $TEXT_NSM_QUOTES_LAST ]
         then
                 CHR_PATH=$CHR_PATH_SMB2
                 
-                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_bg_76.bin
+                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_76.bin
 
                 DID_READ=1
         elif [ $J -ge $TEXT_NSM_C_FIRST ] && [ $J -le $TEXT_NSM_C_LAST ]
@@ -246,7 +246,7 @@ do
 
         if [ $DID_READ -eq 0 ]
         then
-                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_bg_`printf "%.2X" $J`.bin
+                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
 	fi
         I=`expr $I + 1`
 done
@@ -260,7 +260,7 @@ I=0
 J=118
 while [ $J -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.ann/tile_obj_`printf "%.2X" $J`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.ann/chr_obj_`printf "%.2X" $J`.bin
         I=`expr $I + 1`
 	J=`expr $J + 1`
 done
@@ -273,7 +273,7 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 I=0
 while [ $I -ne $TILES ]
 do
-        dd if=raw/ann.fds bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/tile_obj_`printf "%.2X" $I`.bin
+        dd if=raw/ann.fds bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 

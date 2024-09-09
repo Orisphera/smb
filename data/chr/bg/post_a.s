@@ -1,9 +1,9 @@
 .ifndef	POST_A
 POST_A = 1
 
-	.export tile_bg_post_a
-tile_bg_post_a:
-	.incbin	"data/chr.smb/tile_bg_80.bin"
-	.incbin	"data/chr.smb/tile_bg_81.bin"
+	.export chr_bg_post_a
+chr_bg_post_a:
+	.incbin	"data/chr.smb/chr_bg_80.bin"
+	.incbin	"data/chr.smb/chr_bg_81.bin"
 
 .endif	; POST_A

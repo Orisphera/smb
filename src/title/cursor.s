@@ -18,7 +18,7 @@ title_cursor_data:
 	.endif
         : .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+TITLE_CURSOR_COL
 	.byte	NMI_INC_ROW|((:++)-(:+))
-	: .byte	tile_bg::cursor
+	: .byte	chr_bg::cursor
 	.byte	" "
 	.byte	" "
 	: .byte	NMI_LIST_END
@@ -27,9 +27,9 @@ title_cursor_data_end:
 
 .if	.defined(SMB2M)
 title_cursor_tiles:
-	.byte	tile_bg::cursor
+	.byte	chr_bg::cursor
 	.byte	" "
-	.byte	tile_bg::cursor
+	.byte	chr_bg::cursor
 .endif
 ; ----------------------------
 	.export title_cursor_draw
@@ -50,7 +50,7 @@ title_cursor_draw_xfer:
         beq     :+ ; if (player_count) {
 		lda     #' '
 		sta     nmi_list_0_tile+0
-		lda     #tile_bg::cursor
+		lda     #chr_bg::cursor
 		sta     nmi_list_0_tile+2
 	: ; }
 .elseif	.defined(SMB2M)

@@ -133,9 +133,9 @@ actor_proc_plat_bal:
 		sta	nmi_list_0_count, x
 		lda	veloc_y_actor, y
 		bmi	:+ ; if (this.veloc_y >= 0) {
-			lda	#tile_bg::pole
+			lda	#chr_bg::pole
 			sta	nmi_list_0_tile, x
-			lda	#tile_bg::pole+1
+			lda	#chr_bg::pole+1
 			sta	nmi_list_0_tile+1, x
 	
 			jmp	:++
@@ -161,9 +161,9 @@ actor_proc_plat_bal:
 
 		pla
 		bpl	:+ ; if (this.veloc_y < 0) {
-			lda	#tile_bg::pole
+			lda	#chr_bg::pole
 			sta	nmi_list_0_tile+0+(PLAT_ROPE_ENTRY_SIZE), x
-			lda	#tile_bg::pole+1
+			lda	#chr_bg::pole+1
 			sta	nmi_list_0_tile+1+(PLAT_ROPE_ENTRY_SIZE), x
 	
 			jmp	:++

@@ -274,34 +274,34 @@ gfx_color_rotate:
 	.export gfx_clear_blocks_blank_a, gfx_clear_blocks_blank_b
 gfx_clear_blocks:
 gfx_clear_blocks_brick_a:
-	.byte	tile_bg::brick_a
-	.byte	tile_bg::brick_a
-	.byte	tile_bg::brick_b
-	.byte	tile_bg::brick_b
+	.byte	chr_bg::brick_a
+	.byte	chr_bg::brick_a
+	.byte	chr_bg::brick_b
+	.byte	chr_bg::brick_b
 
 gfx_clear_blocks_brick_b:
-	.byte	tile_bg::brick_b
-	.byte	tile_bg::brick_b
-	.byte	tile_bg::brick_b
-	.byte	tile_bg::brick_b
+	.byte	chr_bg::brick_b
+	.byte	chr_bg::brick_b
+	.byte	chr_bg::brick_b
+	.byte	chr_bg::brick_b
 
 gfx_clear_blocks_block_empty:
-	.byte	tile_bg::block_empty
-	.byte	tile_bg::block_empty+1
-	.byte	tile_bg::block_empty+2
-	.byte	tile_bg::block_empty+3
+	.byte	chr_bg::block_empty
+	.byte	chr_bg::block_empty+1
+	.byte	chr_bg::block_empty+2
+	.byte	chr_bg::block_empty+3
 
 gfx_clear_blocks_blank_a:
-	.byte	tile_bg::blanks
-	.byte	tile_bg::blanks
-	.byte	tile_bg::blanks
-	.byte	tile_bg::blanks
+	.byte	chr_bg::blanks
+	.byte	chr_bg::blanks
+	.byte	chr_bg::blanks
+	.byte	chr_bg::blanks
 
 gfx_clear_blocks_blank_b:
-	.byte	tile_bg::blanks+2
-	.byte	tile_bg::blanks+2
-	.byte	tile_bg::blanks+2
-	.byte	tile_bg::blanks+2
+	.byte	chr_bg::blanks+2
+	.byte	chr_bg::blanks+2
+	.byte	chr_bg::blanks+2
+	.byte	chr_bg::blanks+2
 ; ----------------------------
 	.export gfx_clear_small
 gfx_clear_small:

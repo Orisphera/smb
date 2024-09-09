@@ -1,8 +1,8 @@
 .ifndef	COPYRIGHT_I_SMB2
 COPYRIGHT_I_SMB2 = 1
 
-	.export tile_bg_copyright
-tile_bg_copyright:
-		.incbin	"data/chr.smb2/tile_bg_CF.bin"
+	.export chr_bg_copyright
+chr_bg_copyright:
+		.incbin	"data/chr.smb2/chr_bg_CF.bin"
 
 .endif	; COPYRIGHT_I_SMB2

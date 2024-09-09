@@ -21,16 +21,16 @@ render_hammer_pos_y_b:
 	.byte	HAMMER_B_OFFSET, 0, HAMMER_B_OFFSET, 0
 
 render_hammer_chr_no_a:
-	.byte	tile_obj::hammer+0
-	.byte	tile_obj::hammer+2
-	.byte	tile_obj::hammer+1
-	.byte	tile_obj::hammer+3
+	.byte	chr_obj::hammer+0
+	.byte	chr_obj::hammer+2
+	.byte	chr_obj::hammer+1
+	.byte	chr_obj::hammer+3
 
 render_hammer_chr_no_b:
-	.byte	tile_obj::hammer+1
-	.byte	tile_obj::hammer+3
-	.byte	tile_obj::hammer+0
-	.byte	tile_obj::hammer+2
+	.byte	chr_obj::hammer+1
+	.byte	chr_obj::hammer+3
+	.byte	chr_obj::hammer+0
+	.byte	chr_obj::hammer+2
 
 render_hammer_attr:
 	.byte	obj_attr::priority_high|obj_attr::color3

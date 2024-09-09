@@ -16,10 +16,10 @@ actor_proc_flag_pos_x:
 	.byte	0, 8, 0, 8
 
 actor_proc_flag_chr_nos:
-	.byte	tile_obj::flag_victory
-	.byte	tile_obj::flag_victory+1
-	.byte	tile_obj::flag_victory+2
-	.byte	tile_obj::flag_victory+3
+	.byte	chr_obj::flag_victory
+	.byte	chr_obj::flag_victory+1
+	.byte	chr_obj::flag_victory+2
+	.byte	chr_obj::flag_victory+3
 actor_proc_flag_chr_nos_end:
 ; ----------------------------
 	.export actor_proc_flag_victory

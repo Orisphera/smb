@@ -11,10 +11,10 @@ render_block_bits_attr			= zp_byte_00
 render_block_bits_pos_x_orig_rel	= zp_byte_00
 ; ------------------------------------------------------------
 render_block_tile_data:
-	.byte	tile_obj::brick+0
-	.byte	tile_obj::brick+0
-	.byte	tile_obj::brick+1
-	.byte	tile_obj::brick+1
+	.byte	chr_obj::brick+0
+	.byte	chr_obj::brick+0
+	.byte	chr_obj::brick+1
+	.byte	chr_obj::brick+1
 render_block_tile_data_end:
 ; ------------------------------
 	.export render_block
@@ -45,7 +45,7 @@ render_block:
 	lda	course_type
 	cmp	#course_types::overworld
 	beq	:+ ; if (course.type != overworld) {
-		lda	#tile_obj::brick+1
+		lda	#chr_obj::brick+1
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 	: ; }
@@ -53,7 +53,7 @@ render_block:
 	lda	block_tile, x
 	cmp	#metatile_3::block_invis
 	bne	:++ ; if (bg_tile == block_invis) {
-		lda	#tile_obj::block_empty
+		lda	#chr_obj::block_empty
 
 		iny
 		jsr	render_set_four_sprites_v
@@ -103,13 +103,13 @@ render_offscr_check_top:
 render_block_bits:
 	lda	#obj_attr::priority_high|obj_attr::color2
 	sta	render_block_bits_attr
-	lda	#tile_obj::plat_cloud
+	lda	#chr_obj::plat_cloud
 	ldy	game_proc_id
 	cpy	#game_proc::victory
 	beq	:+ ; if (game.proc_id != victory) {
 		lda	#obj_attr::priority_high|obj_attr::color3
 		sta	render_block_bits_attr
-		lda	#tile_obj::brick_piece
+		lda	#chr_obj::brick_piece
 	: ; }
 
 	ldy	obj_data_offset_block, x

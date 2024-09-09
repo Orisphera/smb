@@ -29,19 +29,19 @@
 
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
 
-		lda	#tile_obj::digits_20
+		lda	#chr_obj::digits_20
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
-		lda	#tile_obj::digits_0
+		lda	#chr_obj::digits_0
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 
 		jmp	:+
 	; }
 ; -----------------------------
 render_coin_tiles:
-	.byte	tile_obj::coin+0
-	.byte	tile_obj::coin+1
-	.byte	tile_obj::coin+2
-	.byte	tile_obj::coin+3
+	.byte	chr_obj::coin+0
+	.byte	chr_obj::coin+1
+	.byte	chr_obj::coin+2
+	.byte	chr_obj::coin+3
 ; -----------------------------
 	.export render_coin_score
 render_coin_score:

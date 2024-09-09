@@ -36,7 +36,7 @@ do
         then
                 CHR_PATH=$CHR_PATH_VS
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_obj_`printf "%.2X" $I`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
@@ -64,6 +64,6 @@ do
         then
                 CHR_PATH=$CHR_PATH_VS
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_bg_`printf "%.2X" $J`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done

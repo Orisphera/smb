@@ -10,7 +10,7 @@
 .segment	"CHR1DATA"
 .endif
 
-SIGN_BLANK	= tile_bg::blanks+2
+SIGN_BLANK	= chr_bg::blanks+2
 
 	.export title_map, title_map_end
 title_map:
@@ -34,7 +34,7 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_4
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_nw
+	: .byte	chr_bg::sign_nw
 	:
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -49,7 +49,7 @@ title_map:
 	.elseif	.defined(ANN)
 		.byte	NMI_REPEAT|21
 	.endif
-	.byte	tile_bg::sign_n
+	.byte	chr_bg::sign_n
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_26
@@ -59,7 +59,7 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_27
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_ne
+	: .byte	chr_bg::sign_ne
 	:
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -67,7 +67,7 @@ title_map:
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_4
 	.endif
-	.byte	NMI_INC_ROW|NMI_REPEAT|9, tile_bg::sign_w
+	.byte	NMI_INC_ROW|NMI_REPEAT|9, chr_bg::sign_w
 
 	.if	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_5
@@ -81,7 +81,7 @@ title_map:
 	.elseif	.defined(ANN)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_27
 	.endif
-	.byte	NMI_INC_ROW|NMI_REPEAT|9, tile_bg::sign_e
+	.byte	NMI_INC_ROW|NMI_REPEAT|9, chr_bg::sign_e
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_6
@@ -90,35 +90,35 @@ title_map:
 	.endif
 	.byte	(:++)-(:+)
 	: .if	.defined(VS_SMB)
-		.byte	tile_bg::sign_text_b+8
-		.byte	tile_bg::sign_text_b+8
-		.byte	tile_bg::sign_text_b+0
-		.byte	tile_bg::sign_text_b+1
+		.byte	chr_bg::sign_text_b+8
+		.byte	chr_bg::sign_text_b+8
+		.byte	chr_bg::sign_text_b+0
+		.byte	chr_bg::sign_text_b+1
 		.byte	SIGN_BLANK
 		.byte	SIGN_BLANK
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_ann_a+0
-		.byte	tile_bg::sign_text_ann_a+1
-		.byte	tile_bg::sign_text_ann_a+2
-		.byte	tile_bg::sign_text_ann_a+3
-		.byte	tile_bg::sign_text_ann_b+0
-		.byte	tile_bg::sign_text_ann_b+1
-		.byte	tile_bg::sign_text_ann_b+2
-		.byte	tile_bg::sign_text_ann_b+3
-		.byte	tile_bg::sign_text_ann_b+4
-		.byte	tile_bg::sign_text_ann_b+5
+		.byte	chr_bg::sign_text_ann_a+0
+		.byte	chr_bg::sign_text_ann_a+1
+		.byte	chr_bg::sign_text_ann_a+2
+		.byte	chr_bg::sign_text_ann_a+3
+		.byte	chr_bg::sign_text_ann_b+0
+		.byte	chr_bg::sign_text_ann_b+1
+		.byte	chr_bg::sign_text_ann_b+2
+		.byte	chr_bg::sign_text_ann_b+3
+		.byte	chr_bg::sign_text_ann_b+4
+		.byte	chr_bg::sign_text_ann_b+5
 	.endif
 
-	.byte	tile_bg::sign_text_b+0
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+8
-	.byte	tile_bg::sign_text_b+8
-	.byte	tile_bg::sign_text_b+14
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+0
-	.byte	tile_bg::sign_text_b+10
-	.byte	tile_bg::sign_text_b+14
-	.byte	tile_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+0
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+8
+	.byte	chr_bg::sign_text_b+8
+	.byte	chr_bg::sign_text_b+14
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+0
+	.byte	chr_bg::sign_text_b+10
+	.byte	chr_bg::sign_text_b+14
+	.byte	chr_bg::sign_text_b+1
 	.if	.defined(ANN)
 		.byte	SIGN_BLANK
 	.endif
@@ -131,10 +131,10 @@ title_map:
 	.endif
 	.byte	(:++)-(:+)
 	: .if	.defined(VS_SMB)
-		.byte	tile_bg::sign_text_b+11
-		.byte	tile_bg::sign_text_b+11
-		.byte	tile_bg::sign_text_b+2
-		.byte	tile_bg::sign_text_b+3
+		.byte	chr_bg::sign_text_b+11
+		.byte	chr_bg::sign_text_b+11
+		.byte	chr_bg::sign_text_b+2
+		.byte	chr_bg::sign_text_b+3
 		.byte	SIGN_BLANK
 		.byte	SIGN_BLANK
 	.elseif	.defined(ANN)
@@ -150,16 +150,16 @@ title_map:
 		.byte	SIGN_BLANK
 	.endif
 
-	.byte	tile_bg::sign_text_b+2
-	.byte	tile_bg::sign_text_b+3
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+9
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+12
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+15
+	.byte	chr_bg::sign_text_b+2
+	.byte	chr_bg::sign_text_b+3
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+9
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+12
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+15
 
 	.if	.defined(SMB2)
 		.byte	SIGN_BLANK
@@ -187,11 +187,11 @@ title_map:
 	.endif
 	.byte	(:++)-(:+)
 	: .if	.defined(VS_SMB)
-		.byte	tile_bg::sign_text_vs+0
-		.byte	tile_bg::sign_text_vs+1
-		.byte	tile_bg::sign_text_b+4
-		.byte	tile_bg::sign_text_b+5
-		.byte	tile_bg::sign_text_b+23
+		.byte	chr_bg::sign_text_vs+0
+		.byte	chr_bg::sign_text_vs+1
+		.byte	chr_bg::sign_text_b+4
+		.byte	chr_bg::sign_text_b+5
+		.byte	chr_bg::sign_text_b+23
 		.byte	SIGN_BLANK
 	.elseif	.defined(ANN)
 		.byte	SIGN_BLANK
@@ -206,16 +206,16 @@ title_map:
 		.byte	SIGN_BLANK
 	.endif
 
-	.byte	tile_bg::sign_text_b+4
-	.byte	tile_bg::sign_text_b+5
-	.byte	tile_bg::sign_text_b+4
-	.byte	tile_bg::sign_text_b+9
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+18
-	.byte	tile_bg::sign_text_b+4
-	.byte	tile_bg::sign_text_b+10
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+16
+	.byte	chr_bg::sign_text_b+4
+	.byte	chr_bg::sign_text_b+5
+	.byte	chr_bg::sign_text_b+4
+	.byte	chr_bg::sign_text_b+9
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+18
+	.byte	chr_bg::sign_text_b+4
+	.byte	chr_bg::sign_text_b+10
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+16
 
 	.if	.defined(SMB2)
 		.byte	SIGN_BLANK
@@ -253,24 +253,24 @@ title_map:
 	.endif
 	.byte	(:++)-(:+)
 	: .if	.defined(VS_SMB)
-		.byte	tile_bg::sign_text_vs+2
-		.byte	tile_bg::sign_text_vs+3
-		.byte	tile_bg::sign_text_b+6
-		.byte	tile_bg::sign_text_b+7
-		.byte	tile_bg::sign_text_b+17
+		.byte	chr_bg::sign_text_vs+2
+		.byte	chr_bg::sign_text_vs+3
+		.byte	chr_bg::sign_text_b+6
+		.byte	chr_bg::sign_text_b+7
+		.byte	chr_bg::sign_text_b+17
 		.byte	SIGN_BLANK
 	.endif
 
-	.byte	tile_bg::sign_text_b+6
-	.byte	tile_bg::sign_text_b+7
-	.byte	tile_bg::sign_text_b+6
-	.byte	tile_bg::sign_text_b+7
-	.byte	tile_bg::sign_text_b+17
+	.byte	chr_bg::sign_text_b+6
+	.byte	chr_bg::sign_text_b+7
+	.byte	chr_bg::sign_text_b+6
+	.byte	chr_bg::sign_text_b+7
+	.byte	chr_bg::sign_text_b+17
 	.byte	SIGN_BLANK
-	.byte	tile_bg::sign_text_b+6
-	.byte	tile_bg::sign_text_b+13
-	.byte	tile_bg::sign_text_b+17
-	.byte	tile_bg::sign_text_b+17
+	.byte	chr_bg::sign_text_b+6
+	.byte	chr_bg::sign_text_b+13
+	.byte	chr_bg::sign_text_b+17
+	.byte	chr_bg::sign_text_b+17
 	:
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -279,32 +279,32 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_9+PPU_BG_COL_5
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_text_b+0
-	.byte	tile_bg::sign_text_b+24
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+0
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+14
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+8
-	.byte	tile_bg::sign_text_b+0
-	.byte	tile_bg::sign_text_b+1
+	: .byte	chr_bg::sign_text_b+0
+	.byte	chr_bg::sign_text_b+24
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+0
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+14
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+8
+	.byte	chr_bg::sign_text_b+0
+	.byte	chr_bg::sign_text_b+1
 	.byte	SIGN_BLANK
-	.byte	tile_bg::sign_text_b+14
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+14
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+0
-	.byte	tile_bg::sign_text_b+1
-	.byte	tile_bg::sign_text_b+0
-	.byte	tile_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+14
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+14
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+0
+	.byte	chr_bg::sign_text_b+1
+	.byte	chr_bg::sign_text_b+0
+	.byte	chr_bg::sign_text_b+1
 	.byte	SIGN_BLANK
 	.if	.defined(SMB2M)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
-		.byte	tile_bg::sign_text_b+0
-		.byte	tile_bg::sign_text_b+1
+		.byte	chr_bg::sign_text_b+0
+		.byte	chr_bg::sign_text_b+1
 	.endif
 	:
 
@@ -314,60 +314,60 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_10+PPU_BG_COL_5
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_letter_edge+0
-	.byte	tile_bg::sign_letter_edge+0
-	.byte	tile_bg::sign_text_b+11
+	: .byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_letter_edge+0
+	.byte	chr_bg::sign_letter_edge+0
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
 	.byte	SIGN_BLANK
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
 	.byte	SIGN_BLANK
 	.if	.defined(SMB2M)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
-		.byte	tile_bg::sign_text_b+11
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_text_b+11
+		.byte	chr_bg::sign_letter_edge+0
 	.endif
 	:
 
@@ -376,7 +376,7 @@ title_map:
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_5
 	.endif
-	.byte	NMI_REPEAT|6, tile_bg::sign_text_b+11
+	.byte	NMI_REPEAT|6, chr_bg::sign_text_b+11
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_12
@@ -384,30 +384,30 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_11
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_text_b+15
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
+	: .byte	chr_bg::sign_text_b+15
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.byte	SIGN_BLANK
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+15
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+15
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+15
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+15
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_text_b+20
+		.byte	chr_bg::sign_text_b+20
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+2
+		.byte	chr_bg::sign_text_b+2
 	.endif
-	.byte	tile_bg::sign_text_b+21
+	.byte	chr_bg::sign_text_b+21
 	.byte	SIGN_BLANK
 	.if	.defined(SMB2M)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
-		.byte	tile_bg::sign_text_smb2+0
-		.byte	tile_bg::sign_text_smb2+1
+		.byte	chr_bg::sign_text_smb2+0
+		.byte	chr_bg::sign_text_smb2+1
 	.endif
 	:
 
@@ -417,44 +417,44 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_12+PPU_BG_COL_5
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+14
-	.byte	tile_bg::sign_letter_edge+1
-	.byte	tile_bg::sign_text_b+11
+	: .byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+14
+	.byte	chr_bg::sign_letter_edge+1
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_text_b+16
+		.byte	chr_bg::sign_text_b+16
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+11
+		.byte	chr_bg::sign_text_b+11
 	.endif
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.byte	SIGN_BLANK
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+19
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+19
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_text_b+16
+		.byte	chr_bg::sign_text_b+16
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+19
+		.byte	chr_bg::sign_text_b+19
 	.endif
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_text_b+22
+		.byte	chr_bg::sign_text_b+22
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+11
+		.byte	chr_bg::sign_text_b+11
 	.endif
-	.byte	tile_bg::sign_text_b+19
+	.byte	chr_bg::sign_text_b+19
 	.byte	SIGN_BLANK
 	.if	.defined(SMB2M)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
-		.byte	tile_bg::sign_text_smb2+2
-		.byte	tile_bg::sign_text_smb2+3
+		.byte	chr_bg::sign_text_smb2+2
+		.byte	chr_bg::sign_text_smb2+3
 	.endif
 	:
 
@@ -464,40 +464,40 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_13+PPU_BG_COL_5
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
+	: .byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_letter_edge+0
+		.byte	chr_bg::sign_letter_edge+0
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+11
+		.byte	chr_bg::sign_text_b+11
 	.endif
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+4
-	.byte	tile_bg::sign_text_b+9
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+4
+	.byte	chr_bg::sign_text_b+9
 	.byte	SIGN_BLANK
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+9
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+11
-	.byte	tile_bg::sign_text_b+4
-	.byte	tile_bg::sign_text_b+9
-	.byte	tile_bg::sign_text_b+4
-	.byte	tile_bg::sign_text_b+9
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+9
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+11
+	.byte	chr_bg::sign_text_b+4
+	.byte	chr_bg::sign_text_b+9
+	.byte	chr_bg::sign_text_b+4
+	.byte	chr_bg::sign_text_b+9
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		.byte	tile_bg::sign_text_b+23
+		.byte	chr_bg::sign_text_b+23
 	.elseif	.defined(ANN)
-		.byte	tile_bg::sign_text_b+10
+		.byte	chr_bg::sign_text_b+10
 	.endif
 	.if	.defined(SMB2M)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
-		.byte	tile_bg::sign_text_b+14
-		.byte	tile_bg::sign_text_b+10
+		.byte	chr_bg::sign_text_b+14
+		.byte	chr_bg::sign_text_b+10
 	.endif
 	:
 
@@ -507,37 +507,37 @@ title_map:
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_4
 	.endif
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::sign_sw
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+2
-	.byte	tile_bg::sign_text_a+3
-	.byte	tile_bg::sign_s
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+1
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+0
-	.byte	tile_bg::sign_text_a+2
-	.byte	tile_bg::sign_text_a+3
-	.byte	tile_bg::sign_text_a+2
-	.byte	tile_bg::sign_text_a+3
-	.byte	tile_bg::sign_text_a+0
+	: .byte	chr_bg::sign_sw
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+2
+	.byte	chr_bg::sign_text_a+3
+	.byte	chr_bg::sign_s
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+1
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+0
+	.byte	chr_bg::sign_text_a+2
+	.byte	chr_bg::sign_text_a+3
+	.byte	chr_bg::sign_text_a+2
+	.byte	chr_bg::sign_text_a+3
+	.byte	chr_bg::sign_text_a+0
 	.if	.defined(SMB2M)
-		.byte	tile_bg::sign_s
+		.byte	chr_bg::sign_s
 	.endif
 
 	.if	.defined(SMB2)
-		.byte	tile_bg::sign_text_a+0
-		.byte	tile_bg::sign_text_smb2+4
+		.byte	chr_bg::sign_text_a+0
+		.byte	chr_bg::sign_text_smb2+4
 	.endif
 
-	.byte	tile_bg::sign_se
+	.byte	chr_bg::sign_se
 	:
 
 	.if	.defined(SMB)|.defined(VS_SMB)

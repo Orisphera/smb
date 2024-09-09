@@ -30,14 +30,14 @@ vs_player_select_bg:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_10+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_button+0
-	.byte	tile_bg::window_button+2
+	: .byte	chr_bg::window_button+0
+	.byte	chr_bg::window_button+2
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_button+1
-	.byte	tile_bg::window_button+3
+	: .byte	chr_bg::window_button+1
+	.byte	chr_bg::window_button+3
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_11
@@ -47,14 +47,14 @@ vs_player_select_bg:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_button+0
-	.byte	tile_bg::window_button+2
+	: .byte	chr_bg::window_button+0
+	.byte	chr_bg::window_button+2
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_button+1
-	.byte	tile_bg::window_button+3
+	: .byte	chr_bg::window_button+1
+	.byte	chr_bg::window_button+3
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_11
@@ -86,9 +86,9 @@ vs_name_register_bg:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_6
 	.byte	(:++)-(:+)
 	: .byte	"W X Y Z ! - . ' "
-	.byte	tile_bg::window_rub+0, tile_bg::window_rub+1
+	.byte	chr_bg::window_rub+0, chr_bg::window_rub+1
 	.byte	" "
-	.byte	tile_bg::window_end+0, tile_bg::window_end+1
+	.byte	chr_bg::window_end+0, chr_bg::window_end+1
 	:
 
 	.byte	NMI_LIST_END
@@ -99,41 +99,41 @@ vs_name_register_bg:
 vs_stats_bg:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_22+PPU_BG_COL_20
 	.byte	NMI_INC_ROW|((:++)-(:+))
-	: .byte	tile_bg::window_box_nw
-	.byte	tile_bg::window_box_w_e
-	.byte	tile_bg::window_box_sw
+	: .byte	chr_bg::window_box_nw
+	.byte	chr_bg::window_box_w_e
+	.byte	chr_bg::window_box_sw
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_22+PPU_BG_COL_26
 	.byte	NMI_INC_ROW|((:++)-(:+))
-	: .byte	tile_bg::window_box_ne
-	.byte	tile_bg::window_box_w_e
-	.byte	tile_bg::window_box_se
+	: .byte	chr_bg::window_box_ne
+	.byte	chr_bg::window_box_w_e
+	.byte	chr_bg::window_box_se
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_22+PPU_BG_COL_21
-	.byte	NMI_REPEAT|5, tile_bg::window_box_n_s
+	.byte	NMI_REPEAT|5, chr_bg::window_box_n_s
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_4
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_box_nw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_ne
+	: .byte	chr_bg::window_box_nw, chr_bg::window_box_n_s, chr_bg::window_box_n_s, chr_bg::window_box_ne
 	.byte	"NAME"
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_24+PPU_BG_COL_21
-	.byte	NMI_REPEAT|5, tile_bg::window_box_n_s
+	.byte	NMI_REPEAT|5, chr_bg::window_box_n_s
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_12
 	.byte	NMI_REPEAT|8, "."
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_24+PPU_BG_COL_4
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_box_w_e, "20", tile_bg::window_box_w_e
+	: .byte	chr_bg::window_box_w_e, "20", chr_bg::window_box_w_e
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_25+PPU_BG_COL_4
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_box_sw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_se
+	: .byte	chr_bg::window_box_sw, chr_bg::window_box_n_s, chr_bg::window_box_n_s, chr_bg::window_box_se
 	.byte	"SCORE..0W-0."
 	:
 
@@ -141,7 +141,7 @@ vs_stats_bg:
 ; ------------------------------------------------------------
         .res    18, $FF
 ; ------------------------------------------------------------
-VS_BOX_BG_TILE	= tile_bg::brick_b
+VS_BOX_BG_TILE	= chr_bg::brick_b
 
 	.export vs_box_bg
 vs_box_bg:
@@ -247,18 +247,18 @@ vs_insert_coin_bg:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+PPU_BG_COL_16
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_box_nw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_ne
+	: .byte	chr_bg::window_box_nw, chr_bg::window_box_n_s, chr_bg::window_box_n_s, chr_bg::window_box_ne
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_19+PPU_BG_COL_11
 	.byte	(:++)-(:+)
 	: .byte	"TIME "
-	.byte	tile_bg::window_box_w_e, "10", tile_bg::window_box_w_e
+	.byte	chr_bg::window_box_w_e, "10", chr_bg::window_box_w_e
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_20+PPU_BG_COL_16
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_box_sw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_se
+	: .byte	chr_bg::window_box_sw, chr_bg::window_box_n_s, chr_bg::window_box_n_s, chr_bg::window_box_se
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_8
@@ -280,12 +280,12 @@ vs_continue_bg:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_10+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_button+0, tile_bg::window_button+2
+	: .byte	chr_bg::window_button+0, chr_bg::window_button+2
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	tile_bg::window_button+1, tile_bg::window_button+3
+	: .byte	chr_bg::window_button+1, chr_bg::window_button+3
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_10
@@ -333,16 +333,16 @@ vs_super_players_bg:
 	.byte	NMI_INC_ROW|NMI_REPEAT|26, VS_BOX_BG_TILE
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_3
-	.byte	NMI_REPEAT|26, tile_bg::floor_castle+1
+	.byte	NMI_REPEAT|26, chr_bg::floor_castle+1
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_27+PPU_BG_COL_3
-	.byte	NMI_REPEAT|26, tile_bg::floor_castle+1
+	.byte	NMI_REPEAT|26, chr_bg::floor_castle+1
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_3
-	.byte	NMI_INC_ROW|NMI_REPEAT|24, tile_bg::floor_castle+1
+	.byte	NMI_INC_ROW|NMI_REPEAT|24, chr_bg::floor_castle+1
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_28
-	.byte	NMI_INC_ROW|NMI_REPEAT|24, tile_bg::floor_castle+1
+	.byte	NMI_INC_ROW|NMI_REPEAT|24, chr_bg::floor_castle+1
 
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_9
 	.byte	(:++)-(:+)

@@ -62,7 +62,7 @@ do
         then
                 CHR_PATH=$CHR_PATH_SMB2
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_obj_`printf "%.2X" $I`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
@@ -182,7 +182,7 @@ do
         then
                 CHR_PATH=$CHR_PATH_SMB2
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/tile_bg_`printf "%.2X" $J`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
 
@@ -195,7 +195,7 @@ I=0
 J=118
 while [ $J -ne $BG_BANK ] && [ $I -ne $TILES ]
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.smb2/tile_obj_`printf "%.2X" $J`.bin
+        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.smb2/chr_obj_`printf "%.2X" $J`.bin
         I=`expr $I + 1`
 	J=`expr $J + 1`
 done

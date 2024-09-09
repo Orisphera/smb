@@ -8,14 +8,14 @@ FLAG_SCORE_OFFSET_X	= 12
 FLAG_SCORE_OFFSET_SPR	= (OBJ_SIZE*3)
 ; ------------------------------------------------------------
 render_flag_score_tiles:
-	.byte	tile_obj::digits_50, tile_obj::digits_00
-	.byte	tile_obj::digits_20, tile_obj::digits_00
-	.byte	tile_obj::digits_80, tile_obj::digits_0
-	.byte	tile_obj::digits_40, tile_obj::digits_0
-	.byte	tile_obj::digits_10, tile_obj::digits_0
+	.byte	chr_obj::digits_50, chr_obj::digits_00
+	.byte	chr_obj::digits_20, chr_obj::digits_00
+	.byte	chr_obj::digits_80, chr_obj::digits_0
+	.byte	chr_obj::digits_40, chr_obj::digits_0
+	.byte	chr_obj::digits_10, chr_obj::digits_0
 
 	.if	.defined(SMB2M)
-		.byte	tile_obj::oneup_left, tile_obj::oneup_right
+		.byte	chr_obj::oneup_left, chr_obj::oneup_right
 	.endif
 ; -----------------------------
 	.export render_flag_enemy
@@ -42,10 +42,10 @@ render_flag_enemy:
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
-	lda	#tile_obj::flag_enemy+0
+	lda	#chr_obj::flag_enemy+0
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_CHR_NO, y
-	lda	#tile_obj::flag_enemy+1
+	lda	#chr_obj::flag_enemy+1
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 
 	lda	pos_y_player_flag
