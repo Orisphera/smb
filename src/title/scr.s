@@ -1,15 +1,17 @@
 .include	"engine/mem.i"
 
+.include	"macros.i"
+
 .if	.defined(SMB)|.defined(VS_SMB)
 ; -----------------------------------------------------------
 	.if	.defined(CONS)
 		LARGEST_DATA_SIZE	= (title_map_end-title_map+9)
-		TITLE_NMI_BUFFER_END	= ppu_nmi_buffer_title_end
-		TITLE_NMI_ADDR		= ppu_nmi_buffer
+		TITLE_NMI_BUFFER_END	= nmi_list_title_end
+		TITLE_NMI_ADDR		= nmi_list
 	.elseif	.defined(VS)
 		LARGEST_DATA_SIZE	= (title_map_end-title_map+29)
-		TITLE_NMI_BUFFER_END	= vs_ppu_nmi_buffer_end
-		TITLE_NMI_ADDR		= vs_ppu_nmi_buffer
+		TITLE_NMI_BUFFER_END	= vs_nmi_list_end
+		TITLE_NMI_ADDR		= vs_nmi_list
 	.endif
 
 	SCREEN_TITLE_BG_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
@@ -40,14 +42,11 @@
 ; -----------------------------
 		.export screen_title_bg
 	screen_title_bg:
-		lda	eng_game_mode
+		lda	game_mode
 		bne	screen_title_end
 
 		.if	.defined(CONS)
-			lda	#>title_map
-			sta	PPU_VRAM_AR
-			lda	#<title_map
-			sta	PPU_VRAM_AR
+			ppuaddr_m	title_map
 		.elseif	.defined(VS)
 			ldy	#vschar1_bg_data::map_title
 
@@ -91,12 +90,12 @@
 ; ----------------------------
 	.export	screen_title_cursor
 screen_title_cursor:
-	lda	eng_game_mode
+	lda	game_mode
 	bne	screen_title_end
 	ldx	#0
-	: ; for (byte of ppu_nmi_buffer) {
-		sta	ppu_nmi_buffer, x
-		sta	ppu_nmi_buffer_title_end, x
+	: ; for (byte of nmi_list) {
+		sta	nmi_list, x
+		sta	nmi_list_title_end, x
 
 		dex
 		bne	:-
@@ -117,7 +116,7 @@ screen_title_score:
 	.export screen_title_end
 screen_title_end:
 .if	.defined(SMB)|.defined(VS_SMB)
-	inc	eng_gameplay_mode
+	inc	game_state
 	rts
 .elseif	.defined(SMB2M)
 	jmp	screen_title_bg_finish

@@ -21,10 +21,10 @@ misc_hammer_veloc_x:
 ; -----------------------------
 	.export misc_init_hammer
 misc_init_hammer:
-	lda	eng_rand_seed+1
+	lda	lib_rand+1
 	and	#(misc_hammer_actor_id_end-misc_hammer_actor_id)-2
-	bne	:+ ; if (!(eng_rand_seed[1] % misc_hammer_actor_id_count)) {
-		lda	eng_rand_seed+1
+	bne	:+ ; if (!(lib_rand[1] % misc_hammer_actor_id_count)) {
+		lda	lib_rand+1
 		and	#(misc_hammer_actor_id_end-misc_hammer_actor_id)-1
 	: ; }
 	tay

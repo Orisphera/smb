@@ -156,6 +156,12 @@ CHR_I = 1
 		.if	.defined(VS_SMB)
 			sign_text_vs	= <((tile_bg_sign_text_vs-chr_bg)/PPU_TILE_SIZE)
 			window_button	= <((tile_bg_window_button-chr_bg)/PPU_TILE_SIZE)
+			window_box_nw	= <((tile_bg_window_box_nw-chr_bg)/PPU_TILE_SIZE)
+			window_box_sw	= <((tile_bg_window_box_sw-chr_bg)/PPU_TILE_SIZE)
+			window_box_n_s	= <((tile_bg_window_box_n_s-chr_bg)/PPU_TILE_SIZE)
+			window_box_ne	= <((tile_bg_window_box_ne-chr_bg)/PPU_TILE_SIZE)
+			window_box_w_e	= <((tile_bg_window_box_w_e-chr_bg)/PPU_TILE_SIZE)
+			window_box_se	= <((tile_bg_window_box_se-chr_bg)/PPU_TILE_SIZE)
 			window_rub	= <((tile_bg_window_rub-chr_bg)/PPU_TILE_SIZE)
 			window_end	= <((tile_bg_window_end-chr_bg)/PPU_TILE_SIZE)
 		.endif

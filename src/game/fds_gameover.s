@@ -59,17 +59,17 @@ eng_game_over_menu:
 	: ; } else {
 		ldy	#2
 		sty	player_lives
-		sta	eng_goals
+		sta	player_goals
 		sta	course_sub
-		sta	eng_coins
-		ldy	#12-1
-		: ; for (y = 12-1; y >= 0; y--) {
-			sta	eng_stats, y
+		sta	player_coins
+		ldy	#(2*STAT_LEN_MAX)-1
+		: ; for (digit of player.stats) {
+			sta	stats_player, y
 	
 			dey
 			bpl	:-
 		; }
 	
-		inc	eng_hidden_one_up
+		inc	bg_hidden_one_up_req
 		jmp	eng_game_continue
 	; }

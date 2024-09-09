@@ -12,7 +12,7 @@ actor_proc_do:
 		sbc	#(actor::actors_page_b)-1
 	: ; }
 
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	actor_proc_enemy
 
 	.addr	actor_proc_bowser_flame

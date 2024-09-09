@@ -9,7 +9,7 @@
 
 	.export apu_cycle
 apu_cycle:
-	lda	eng_game_mode
+	lda	game_mode
 	bne	:+ ; if (game.mode == title) {
 		sta	DMCSTATUS
 

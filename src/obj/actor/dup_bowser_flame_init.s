@@ -55,7 +55,7 @@ actor_init_bowser_flame:
 		lda	apu_noise_event
 		ora	#sfx_noise::flame
 		sta	apu_noise_event
-		ldy	ppu_nmi_buffer_1_data+$27
+		ldy	nmi_list_1_data+$27
 		lda	actor_id, y
 		cmp	#actor::bowser
 		beq	:++ ; if (parent.id != bowser) {
@@ -69,7 +69,7 @@ actor_init_bowser_flame:
 			: ; }
 			sta	timer_swarm
 		
-			lda	eng_rand_seed, x
+			lda	lib_rand, x
 			and	#MOD_4
 			sta	pos_y_actor, x
 			tay
@@ -98,7 +98,7 @@ actor_init_bowser_flame:
 			adc	#BOWSER_FLAME_SHOOT_OFFSET_Y
 			sta	pos_y_lo_actor, x
 		
-			lda	eng_rand_seed, x
+			lda	lib_rand, x
 			and	#MOD_4
 			sta	pos_y_actor, x
 			tay

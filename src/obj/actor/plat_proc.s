@@ -14,16 +14,21 @@
 ; -----------------------------------------------------------
 PLAT_ROPE_OFFSET_X	= 8
 PLAT_ROPE_OFFSET_X_HARD	= 16
+PLAT_ROPE_WIDTH		= 2
+PLAT_ROPE_ENTRY_SIZE	= (WORD_SIZE+1+PLAT_ROPE_WIDTH)
+PLAT_ROPE_ENTRY_COUNT	= 2
+
+actor_init_plat_rope_addr	= zp_byte_00
 ; -----------------------------------------------------------
 	.export actor_proc_plat_bal
 actor_proc_plat_bal:
 	lda	pos_y_hi_actor, x
 	cmp	#3
-	bne	:+ ; if (actor.pos_y >= 0x300) {
+	bne	:+ ; if (this.pos_y >= 0x300) {
 		jmp	actor_erase
 	: lda	state_actor, x
 	bpl	:++
-	: ; } else if (actor.state & spawned || actor.id != plat_bal) {
+	: ; } else if (this.state & spawned || this.id != plat_bal) {
 		rts
 	: ; }
 	tay
@@ -37,13 +42,13 @@ actor_proc_plat_bal:
 	lda	actor_plat_col_flag, x
 	sta	zp_byte_00
 	lda	motion_dir_actor, x
-	beq	:+ ; if (actor.motion_dir != 0) {
+	beq	:+ ; if (this.motion_dir != none) {
 		jmp	actor_proc_plat_fall_do
 	: lda	#45
 	cmp	pos_y_lo_actor, x
 	bcc	:++
 	cpy	zp_byte_00
-	beq	:+ ; } else if (actor.pos_y >= 45 && actor.state != actor_plat_col_flag) {
+	beq	:+ ; } else if (this.pos_y >= 45 && this.state != actor_plat_col_flag) {
 		clc
 		adc	#2
 		sta	pos_y_lo_actor, x
@@ -80,8 +85,8 @@ actor_proc_plat_bal:
 	: cmp	actor_index
 	beq	:+++
 	: ; if (
-	;	(!(actor.plat_col & 0x80) && (actor.plat_col != actor_index))
-	;	|| ((actor.veloc_y > 0) && ((actor.accel_y_c + 5) >= 11))
+	;	(!(this.plat_col & 0x80) && (this.plat_col != actor_index))
+	;	|| ((this.veloc_y > 0) && ((this.accel_y_c + 5) >= 11))
 	; ) {
 		jsr	motion_platform_up
 
@@ -112,32 +117,32 @@ actor_proc_plat_bal:
 	lda	veloc_y_actor, y
 	ora	accel_y_actor_c, y
 	beq	:+++++
-	ldx	ppu_nmi_buffer_0_offset
+	ldx	nmi_list_0_offset
 	cpx	#32
-	bcs	:+++++ ; if () {
+	bcs	:+++++ ; if (nmi_list_0.offset < 32) {
 		lda	veloc_y_actor, y
 		pha
 		pha
 
 		jsr	actor_init_plat_rope
-		lda	zp_byte_01
-		sta	ppu_nmi_buffer_0_data+0, x
-		lda	zp_byte_00
-		sta	ppu_nmi_buffer_0_data+1, x
-		lda	#2
-		sta	ppu_nmi_buffer_0_data+2, x
+		lda	actor_init_plat_rope_addr+1
+		sta	nmi_list_0_addr_dbyt, x
+		lda	actor_init_plat_rope_addr
+		sta	nmi_list_0_addr_dbyt+1, x
+		lda	#PLAT_ROPE_WIDTH
+		sta	nmi_list_0_count, x
 		lda	veloc_y_actor, y
-		bmi	:+ ; if (actor.veloc_y >= 0) {
+		bmi	:+ ; if (this.veloc_y >= 0) {
 			lda	#tile_bg::pole
-			sta	ppu_nmi_buffer_0_data+3, x
+			sta	nmi_list_0_tile, x
 			lda	#tile_bg::pole+1
-			sta	ppu_nmi_buffer_0_data+4, x
+			sta	nmi_list_0_tile+1, x
 	
 			jmp	:++
 		: ; } else {
 			lda	#' '
-			sta	ppu_nmi_buffer_0_data+3, x
-			sta	ppu_nmi_buffer_0_data+4, x
+			sta	nmi_list_0_tile+0, x
+			sta	nmi_list_0_tile+1, x
 		: ; }
 	
 		lda	state_actor, y
@@ -145,34 +150,35 @@ actor_proc_plat_bal:
 
 		pla
 		eor	#<-1
+
 		jsr	actor_init_plat_rope
-		lda	zp_byte_01
-		sta	ppu_nmi_buffer_0_data+5, x
-		lda	zp_byte_00
-		sta	ppu_nmi_buffer_0_data+6, x
-		lda	#2
-		sta	ppu_nmi_buffer_0_data+7, x
-	
+		lda	actor_init_plat_rope_addr+1
+		sta	nmi_list_0_addr_dbyt+(PLAT_ROPE_ENTRY_SIZE), x
+		lda	actor_init_plat_rope_addr
+		sta	nmi_list_0_addr_dbyt+1+(PLAT_ROPE_ENTRY_SIZE), x
+		lda	#PLAT_ROPE_WIDTH
+		sta	nmi_list_0_count+(PLAT_ROPE_ENTRY_SIZE), x
+
 		pla
-		bpl	:+ ; if () {
+		bpl	:+ ; if (this.veloc_y < 0) {
 			lda	#tile_bg::pole
-			sta	ppu_nmi_buffer_0_data+8, x
+			sta	nmi_list_0_tile+0+(PLAT_ROPE_ENTRY_SIZE), x
 			lda	#tile_bg::pole+1
-			sta	ppu_nmi_buffer_0_data+9, x
+			sta	nmi_list_0_tile+1+(PLAT_ROPE_ENTRY_SIZE), x
 	
 			jmp	:++
 		: ; } else {
 			lda	#' '
-			sta	ppu_nmi_buffer_0_data+8, x
-			sta	ppu_nmi_buffer_0_data+9, x
+			sta	nmi_list_0_tile+0+(PLAT_ROPE_ENTRY_SIZE), x
+			sta	nmi_list_0_tile+1+(PLAT_ROPE_ENTRY_SIZE), x
 		: ; }
 	
-		lda	#NMI_DATA_END
-		sta	ppu_nmi_buffer_0_data+10, x
-		lda	ppu_nmi_buffer_0_offset
+		lda	#NMI_LIST_END
+		sta	nmi_list_0_data+(PLAT_ROPE_ENTRY_COUNT*PLAT_ROPE_ENTRY_SIZE), x
+		lda	nmi_list_0_offset
 		clc
-		adc	#2*(WORD_SIZE+1+2)
-		sta	ppu_nmi_buffer_0_offset
+		adc	#PLAT_ROPE_ENTRY_COUNT*PLAT_ROPE_ENTRY_SIZE
+		sta	nmi_list_0_offset
 	: ; }
 
 	ldx	actor_index
@@ -211,7 +217,7 @@ actor_init_plat_rope:
 		tax
 	: ; }
 	txa
-	ldx	ppu_nmi_buffer_0_offset
+	ldx	nmi_list_0_offset
 	asl	a
 	rol	a
 	pha
@@ -219,25 +225,25 @@ actor_init_plat_rope:
 	rol	a
 	and	#%00000011
 	ora	#%00100000
-	sta	zp_byte_01
+	sta	actor_init_plat_rope_addr+1
 	lda	zp_byte_02
 	and	#%00000001
 	asl	a
 	asl	a
-	ora	zp_byte_01
-	sta	zp_byte_01
+	ora	actor_init_plat_rope_addr+1
+	sta	actor_init_plat_rope_addr+1
 
 	pla
 	and	#%11100000
 	clc
-	adc	zp_byte_00
-	sta	zp_byte_00
+	adc	actor_init_plat_rope_addr
+	sta	actor_init_plat_rope_addr
 	lda	pos_y_lo_actor, y
 	cmp	#232
 	bcc	:+ ; if () {
-		lda	zp_byte_00
+		lda	actor_init_plat_rope_addr
 		and	#<~%01000000
-		sta	zp_byte_00
+		sta	actor_init_plat_rope_addr
 	: ; }
 
 	rts

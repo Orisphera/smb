@@ -8,7 +8,7 @@ actor_init_swarm:
 	sta	actor_swarm_buffer
 	sec
 	sbc	#actor::swarm_start
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	actor_init_lakitu_spiny
 	.addr	actor_init_swarm_null
 	.addr	actor_init_cheep_fly

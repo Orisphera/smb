@@ -6,7 +6,7 @@
 
 sub_98DC:
 	lda	VS_RAM_ARENA0+$17
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	sub_9919
 	.addr	sub_995D
 	.addr	sub_9A20
@@ -18,7 +18,7 @@ sub_98DC:
 
 sub_98F2:
 	lda	VS_RAM_ARENA0+$17
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	sub_9919
 	.addr	sub_9A20
 	.addr	sub_9F3B
@@ -27,12 +27,12 @@ sub_98F2:
 ; ----------------------------
 sub_9902:
 	lda	#0
-	sta	eng_disp_disable
+	sta	nmi_disp_disable
 	lda	timer_screen
 	bne	:+ ; if (!timer_screen) {
 		lda	#music_event::none
 		sta	apu_music_event
-		inc	eng_gameplay_mode
+		inc	game_state
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
 	: ; }
@@ -41,7 +41,7 @@ sub_9902:
 ; ----------------------------
 sub_9919:
 	lda	#1
-	sta	eng_disp_disable
+	sta	nmi_disp_disable
 	inc	VS_RAM_ARENA0+$17
 	rts
 ; ----------------------------
@@ -209,7 +209,7 @@ sub_995D:
 	adc	#1
 	sta	(zp_addr_06), y
 	iny
-	lda	eng_goals
+	lda	player_goals
 	clc
 	adc	#1
 	sta	(zp_addr_06), y
@@ -222,9 +222,9 @@ sub_9A0C:
 	ldx	player_id
 	lda	VS_RAM_ARENA0+$28, x
 	beq	:+ ; if (vs_ram_arena0[0x28]) {
-                inc	eng_gameplay_mode
+                inc	game_state
         : ; }
-        inc	eng_gameplay_mode
+        inc	game_state
 	rts
 ; ----------------------------
 sub_9A20:
@@ -243,17 +243,17 @@ data_9A2F:
 sub_9A32:
         ldy	#0
 	lda	(zp_addr_06), y
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	lda	#$20
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	lda	#$28
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	iny
 	lda	(zp_addr_06), y
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	rts
 ; ----------------------------
@@ -287,7 +287,7 @@ sub_9A4E:
                 ldx	#0
                 : ; for (x = 0; x < 3; x++) {
                         lda	data_9A2F, x
-                        sta	ppu_nmi_buffer_0_data, x
+                        sta	nmi_list_0_data, x
 
                         inx
                         cpx	#3
@@ -302,13 +302,13 @@ sub_9A4E:
                 bne	:+ ; if (!zp_addr_00) {
                         lda	#>PPU_VRAM_BG2
                 : ; }
-                sta	ppu_nmi_buffer_0_data, x
+                sta	nmi_list_0_data, x
 
                 inx
                 iny
                 : ; for (x = 3, y = 1; y < 7; x++, y++) {
                         lda	(zp_addr_00), y
-                        sta	ppu_nmi_buffer_0_data, x
+                        sta	nmi_list_0_data, x
 
                         inx
                         iny
@@ -317,9 +317,9 @@ sub_9A4E:
                 ; }
 
                 lda	#0
-                sta	ppu_nmi_buffer_0_data, x
+                sta	nmi_list_0_data, x
                 sta	VS_RAM_ARENA0+$22
-                sta	eng_disp_disable
+                sta	nmi_disp_disable
                 sta	VS_RAM_ARENA0+$1A
                 sta	VS_RAM_ARENA0+$20
                 sta	VS_RAM_ARENA0+$21
@@ -350,33 +350,33 @@ sub_9AE3:
 	cpy	#$0A
 	bne	:+ ; if () {
                 lda	#1
-                sta	ppu_nmi_buffer_0_data, x
+                sta	nmi_list_0_data, x
                 inx
                 lda	#0
-                sta	ppu_nmi_buffer_0_data, x
+                sta	nmi_list_0_data, x
                 inx
                 jmp	:++
         : ; } else {
                 jsr	sub_9B0C
                 tya
-                sta	ppu_nmi_buffer_0_data, x
+                sta	nmi_list_0_data, x
                 inx
         : ; }
 
 sub_9AFF:
         lda	#$AF
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	rts
 ; ----------------------------
 sub_9B06:
         lda	#$24
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 
 sub_9B0C:
         lda	#$24
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	rts
 ; ----------------------------
@@ -637,26 +637,26 @@ L9CB0:
 	ldx	#(data_9B35_end-data_9B35)-1
         : ; for (x = 3-1; x > 0; x--) {
                 lda	data_9B35, x
-                sta	ppu_nmi_buffer_0_data+0, x
+                sta	nmi_list_0_data+0, x
                 lda	VS_RAM_ARENA0+$1C, x
-                sta	ppu_nmi_buffer_0_data+3, x
+                sta	nmi_list_0_data+3, x
 
                 dex
                 bpl	:-
         ; }
 
 	lda	#>(PPU_VRAM_BG1+$305)
-	sta	ppu_nmi_buffer_0_data+6
+	sta	nmi_list_0_data+6
 	lda	#<(PPU_VRAM_BG1+$305)
-	sta	ppu_nmi_buffer_0_data+7
+	sta	nmi_list_0_data+7
 	lda	#2
-	sta	ppu_nmi_buffer_0_data+8
+	sta	nmi_list_0_data+8
 	lda	VS_RAM_ARENA0+$19
-	sta	ppu_nmi_buffer_0_data+9
+	sta	nmi_list_0_data+9
 	lda	VS_RAM_ARENA0+$1A
-	sta	ppu_nmi_buffer_0_data+10
+	sta	nmi_list_0_data+10
 	lda	#0
-	sta	ppu_nmi_buffer_0_data+11
+	sta	nmi_list_0_data+11
 	rts
 ; ----------------------------
 sub_9D3C:
@@ -783,8 +783,8 @@ sub_9DEA_b:
 ; -------------------------------
 	.export	sub_9DF7
 sub_9DF7:
-	lda	#$00
-	sta	eng_disp_disable
+	lda	#0
+	sta	nmi_disp_disable
 	sta	VS_RAM_ARENA0+$22
 	lda	#$14
 	sta	VS_RAM_ARENA0+$1F
@@ -850,10 +850,10 @@ sub_9E29:
 	sta	VS_RAM_ARENA0+$19
 	ldx	#0
 	lda	data_9E15, y
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	lda	data_9E1F, y
-	sta	ppu_nmi_buffer_0_data, x
+	sta	nmi_list_0_data, x
 	inx
 	lda	VS_RAM_ARENA0+$22
 	and	#$01
@@ -866,7 +866,7 @@ sub_9E29:
 		ldy	#0
 		: ; for (y = 0; y < 3; x++, y++) {
 			lda	data_9E12, y
-			sta	ppu_nmi_buffer_0_data, x
+			sta	nmi_list_0_data, x
 	
 			inx
 			iny
@@ -883,7 +883,7 @@ sub_9E29:
 			rts
 		: ; } else {
 			lda	#$15
-			sta	ppu_nmi_buffer_0_data, x
+			sta	nmi_list_0_data, x
 			inx
 			jsr	sub_9AE3
 			jsr	sub_9B0C
@@ -891,7 +891,7 @@ sub_9E29:
 			ldy	#0
 			: ; for (y = 0; y < 3; x++, y++) {
 				lda	(zp_addr_02), y
-				sta	ppu_nmi_buffer_0_data, x
+				sta	nmi_list_0_data, x
 
 				inx
 				iny
@@ -908,13 +908,13 @@ sub_9E29:
 			bne	:+ ; if () {
 				lda	#$24
 			: ; }
-			sta	ppu_nmi_buffer_0_data, x
+			sta	nmi_list_0_data, x
 
 			inx
 			iny
 			: ; for (y = 1; y < 7; x++, y++) {
 				lda	(zp_addr_00), y
-				sta	ppu_nmi_buffer_0_data, x
+				sta	nmi_list_0_data, x
 
 				inx
 				iny
@@ -923,7 +923,7 @@ sub_9E29:
 			; }
 
 			lda	#0
-			sta	ppu_nmi_buffer_0_data, x
+			sta	nmi_list_0_data, x
 			dec	VS_RAM_ARENA0+$1F
 			rts
 		; }
@@ -985,7 +985,7 @@ sub_9F24:
 	ldx	#9-1
 	: ; for (x = 9-1; x >= 0; x--) {
 		lda	data_9F1B, x
-		sta	ppu_nmi_buffer_0_data, x
+		sta	nmi_list_0_data, x
 
 		dex
 		bpl	:-
@@ -1016,7 +1016,7 @@ sub_9F3B:
 		ldx	#7
 		: ; for (x = 8-1; x >= 0; x--) {
 			lda	data_9F13, x
-			sta	ppu_nmi_buffer_0_data, x
+			sta	nmi_list_0_data, x
 
 			dex
 			bpl	:-
@@ -1090,7 +1090,7 @@ sub_9FC1:
 	lda	VS_RAM_ARENA0+$18
 	bne	:+ ; if () {
 		lda	#1
-		sta	eng_disp_disable
+		sta	nmi_disp_disable
 		inc	VS_RAM_ARENA0+$18
 		rts
 	: ; else if () {
@@ -1148,9 +1148,9 @@ sub_A01B:
 	
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
-		sta	eng_goals
+		sta	player_goals
 		sta	course_sub
-		inc	eng_gameplay_mode
+		inc	game_state
 		jsr	sub_9924
 	
 		ldy	#6-1
@@ -1193,9 +1193,9 @@ sub_A075:
 	bne	:+ ; if () {
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
-		sta	eng_course_sel_on
+		sta	title_course_sel_on
 		sta	ENG_HARDMODE_VAR
-		inc	eng_gameplay_mode
+		inc	game_state
 		rts
 	: lda	VS_RAM_ARENA0+$1B
 	beq	:+ ; } else if () {
@@ -1222,7 +1222,7 @@ sub_A0B2:
 	ldy	#0
 	: ; for (y = 0; y < 3; x++, y++) {
 		lda	data_9F08, y
-		sta	ppu_nmi_buffer_0_data, x
+		sta	nmi_list_0_data, x
 
 		inx
 		iny
@@ -1233,7 +1233,7 @@ sub_A0B2:
 	ldy	#0
 	: ; for (y = 0; y < 2; y++) {
 		lda	VS_RAM_ARENA0+$19, y
-		sta	ppu_nmi_buffer_0_data, x
+		sta	nmi_list_0_data, x
 
 		inx
 		iny
@@ -1242,8 +1242,8 @@ sub_A0B2:
 	; }
 
 	lda	#0
-	sta	ppu_nmi_buffer_0_data, x
-	stx	ppu_nmi_buffer_0_offset
+	sta	nmi_list_0_data, x
+	stx	nmi_list_0_offset
 	rts
 ; ----------------------------------
 sub_A0D7:
@@ -1257,7 +1257,7 @@ sub_A0D7:
 		: ; } else {
 			lda	data_9EFA, y
 		: ; }
-		sta	ppu_nmi_buffer_0_data, x
+		sta	nmi_list_0_data, x
 
 		inx
 		iny
@@ -1278,7 +1278,7 @@ sub_A0D7_b:
 		: ; } else {
 			lda	data_9F0F, y
 		: ; }
-		sta	ppu_nmi_buffer_0_data, x
+		sta	nmi_list_0_data, x
 
 		inx
 		iny

@@ -15,7 +15,7 @@ actor_init_hammer_bro_timer:
 	.export actor_init_hammer_bro
 actor_init_hammer_bro:
 	lda	#0
-	sta	eng_timer_hammer_throw, x
+	sta	timer_hammer_throw, x
 	sta	veloc_x_actor, x
 
 	.if	.defined(SMB2M)

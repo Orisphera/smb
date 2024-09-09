@@ -10,13 +10,13 @@
 
 	.export disk_loader
 disk_loader:
-	lda	eng_gameplay_mode
-	jsr	eng_farjump
+	lda	game_state
+	jsr	tbljmp
 	.addr	disk_loader_main
 	.addr	title_init_0
 	
 	.if	.defined(ANN)
-		.addr	disk_loader_gameplay_next
+		.addr	disk_loader_game_state_inc
 	.endif
 
 	.addr	screen_proc
@@ -26,7 +26,7 @@ disk_loader:
 ; ------------------------------------------------------------
 disk_loader_data4:
 	lda	disk_loader_proc
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	disk_loader_prompt
 	.addr	disk_loader_file_load_data4
 	.addr	disk_loader_wait_eject
@@ -52,18 +52,18 @@ disk_loader_file_load_data4:
 		jsr	sub_C3D6
 	: ; }
 
-	inc	eng_hidden_one_up
+	inc	bg_hidden_one_up_req
 	inc	eng_req_timer
-	inc	eng_game_mode
-	lda	#fds_loader_procs::prompt_00|gameplay_mode::init_0
+	inc	game_mode
+	lda	#fds_loader_procs::prompt_00|game_states::init_0
 	sta	disk_loader_proc
-	sta	eng_gameplay_mode
+	sta	game_state
 	sta	timer_demo
 	rts
 ; ------------------------------------------------------------
 disk_loader_main:
 	lda	disk_loader_proc
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	disk_loader_prompt
 	.addr	disk_loader_file_load_main
 	.addr	disk_loader_wait_eject
@@ -71,14 +71,14 @@ disk_loader_main:
 	.addr	disk_loader_bootstrap
 ; -----------------------------
 disk_loader_file_load_main:
-	lda	eng_continue_course
+	lda	disk_loader_main_req
 	beq	:++++
 	lda	ENG_HARDMODE_VAR
 	bne	:+
 	lda	course_no
 	cmp	#course::no_05
 	bcc	:++++
-	: ; if (eng_continue_course && (ENG_HARDMODE_VAR || course.no >= no_05)) {
+	: ; if (disk_loader_main_req && (ENG_HARDMODE_VAR || course.no >= no_05)) {
 		lda	#fds_file_ids::main
 		sta	disk_loader_file_id
 		jsr	disk_load_files
@@ -97,7 +97,7 @@ disk_loader_file_load_main:
 	: ; }
 
 	lda	#1
-	sta	eng_continue_course
+	sta	disk_loader_main_req
 	lsr	a
 	sta	course_no
 	sta	ENG_HARDMODE_VAR
@@ -106,7 +106,7 @@ disk_loader_file_load_main:
 	.export disk_loader_data2
 disk_loader_data2:
 	lda	disk_loader_proc
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	disk_loader_prompt
 	.addr	disk_loader_file_load_data2
 	.addr	disk_loader_wait_eject
@@ -133,8 +133,8 @@ disk_loader_file_load_data2:
 		lda	#fds_loader_procs::prompt_00
 		sta	disk_loader_proc
 	
-	disk_loader_gameplay_next:
-		inc	eng_gameplay_mode
+	disk_loader_game_state_inc:
+		inc	game_state
 		rts
 	; }
 ; ------------------------------------------------------------
@@ -142,11 +142,11 @@ disk_loader_file_load_data2:
 disk_loader_victory_init:
 	lda	#16
 	sta	timer_victory
-	bne	disk_loader_gameplay_next
+	bne	disk_loader_game_state_inc
 
 disk_loader_victory_check:
 	lda	timer_victory
-	beq	disk_loader_gameplay_next
+	beq	disk_loader_game_state_inc
 	rts
 ; ------------------------------------------------------------
 .if	.defined(SMB2)
@@ -158,7 +158,7 @@ disk_loader_victory_check:
 	.export disk_loader_data3
 disk_loader_data3:
 	lda	disk_loader_proc
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	disk_loader_prompt
 	.addr	disk_loader_file_load_data3
 	.addr	disk_loader_wait_eject
@@ -275,13 +275,13 @@ disk_perror_pal:
 	.dbyt	PPU_VRAM_COLOR
 	.byte	((:++)-(:+))
 	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3, PPU_COLOR_GREY3, PPU_COLOR_PITCH0
-	: .byte	NMI_DATA_END
+	: .byte	NMI_LIST_END
 ; ------------------------------------------------------------
 disk_loader_prompt:
 	lda	#ppu_ctlr1::objblk_on|ppu_ctlr1::bgblk_on|ppu_ctlr1::objlblk_on|ppu_ctlr1::bglblk_on|ppu_ctlr1::color
 	sta	ppu_ctlr1_b
 	sta	PPU_CTLR1
-	inc	eng_disp_disable
+	inc	nmi_disp_disable
 	lda	#nmi_addr::disk_perror_pal
 	sta	nmi_addrs_ctl
 	jmp	:+
@@ -289,7 +289,7 @@ disk_loader_prompt:
 disk_loader_wait_eject:
 	lda	#ppu_ctlr0::bg1
 	sta	ppu_ctlr0_bg
-	sta	eng_disp_disable
+	sta	nmi_disp_disable
 	lda	FDS_DISK_SR
 	lsr	a
 	bcc	:++
@@ -319,19 +319,19 @@ disk_loader_bootstrap:
 
 	.export disk_text_error_buffer
 disk_text_error_buffer:
-	.dbyt	PPU_VRAM_BG1+$1E6
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_6
 	.byte	disk_text_error_buffer_end-disk_text_error_buffer_start
 disk_text_error_buffer_start:
 	.byte	"        "
 disk_text_error_buffer_end:
 
 disk_text_errorbase:
-	.dbyt	PPU_VRAM_BG1+$1F4
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_20
 	.byte	disk_text_errorbase_end-disk_text_errorbase_start
 disk_text_errorbase_start:
 	.byte	"ERR 01"
 disk_text_errorbase_end:
-	.byte	NMI_DATA_END
+	.byte	NMI_LIST_END
 
 disk_text_error_entries:
 	.byte	(disk_text_error_gen_end-disk_text_errors)-1

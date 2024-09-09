@@ -9,8 +9,8 @@
 
 	.export eng_game_over
 eng_game_over:
-	lda	eng_gameplay_mode
-	jsr	eng_farjump
+	lda	game_state
+	jsr	tbljmp
 	.addr	eng_game_over_init
 	.addr	screen_proc
 	.if	.defined(VS_SMB)
@@ -27,7 +27,7 @@ eng_game_over:
 eng_game_over_init:
 	lda	#0
 	sta	eng_screen_proc_id
-	sta	eng_sprite_overlap
+	sta	nmi_sprite_overlap
 
 .if	.defined(SMB2M)
 	sta	eng_game_over_choice
@@ -35,10 +35,10 @@ eng_game_over_init:
 
 	lda	#music_event::game_over
 	sta	apu_music_event
-	inc	eng_disp_disable
+	inc	nmi_disp_disable
 
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-	inc	eng_gameplay_mode
+	inc	game_state
 	rts
 .elseif	.defined(ANN)
 	jmp	screen_title_bg_finish
@@ -53,7 +53,7 @@ eng_game_over_run:
 	.endif
 
 		lda	#0
-		sta	eng_disp_disable
+		sta	nmi_disp_disable
 
 	.if	.defined(SMB)
 		lda	joypad_p1
@@ -103,9 +103,9 @@ eng_game_over_run:
 		asl	a
 	.endif
 
-		sta	eng_gameplay_mode
+		sta	game_state
 		sta	timer_screen
-		sta	eng_game_mode
+		sta	game_mode
 	eng_next_game_rts_a:
 		rts
 	eng_game_continue: ; } else {
@@ -117,9 +117,9 @@ eng_game_over_run:
 		sta	eng_timer_ctl
 		sta	player_status
 		sta	game_proc_id
-		sta	eng_gameplay_mode
-		lda	#game_mode::normal
-		sta	eng_game_mode
+		sta	game_state
+		lda	#game_modes::normal
+		sta	game_mode
 	eng_next_game_rts_b:
 		rts
 	; }

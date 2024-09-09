@@ -108,11 +108,11 @@ render_actor:
 		inc	render_actor_flipped
 	: ; }
 
-	lda	ppu_nmi_buffer_1_data+41
-	beq	:++ ; if (ppu_nmi_buffer_1_data[41] != 0) {
+	lda	nmi_list_1_data+41
+	beq	:++ ; if (nmi_list_1_data[41] != 0) {
 		ldy	#actor::fireworks
 		cmp	#1
-		beq	:+ ; if (ppu_nmi_buffer_1_data[41] == 1) {
+		beq	:+ ; if (nmi_list_1_data[41] == 1) {
 			iny
 		: ; }
 		sty	render_actor_id
@@ -146,12 +146,12 @@ render_actor:
 	lda	render_actor_tile_offsets, y
 	tax
 	ldy	render_actor_state_next
-	lda	ppu_nmi_buffer_1_data+41
-	beq	:++++++ ; if (ppu_nmi_buffer_1_data[41] != 0) {
+	lda	nmi_list_1_data+41
+	beq	:++++++ ; if (nmi_list_1_data[41] != 0) {
 		cmp	#1
-		bne	:++++ ; if (ppu_nmi_buffer_1_data[41] == 1) {
-			lda	ppu_nmi_buffer_1_data+34
-			bpl	:+ ; if ((ppu_nmi_buffer_1_data[34] & 0x80)) {
+		bne	:++++ ; if (nmi_list_1_data[41] == 1) {
+			lda	nmi_list_1_data+34
+			bpl	:+ ; if ((nmi_list_1_data[34] & 0x80)) {
 				ldx	#<(render_actor_tiles_bowser_c-render_actor_tile_data)
 			: ; }
 
@@ -165,10 +165,10 @@ render_actor:
 		: ; }
 		jmp	render_actor_tiles
 
-		: ; if (ppu_nmi_buffer_1_data[41] > 1) {
-			lda	ppu_nmi_buffer_1_data+34
+		: ; if (nmi_list_1_data[41] > 1) {
+			lda	nmi_list_1_data+34
 			and	#%00000001
-			beq	:+ ; if ((ppu_nmi_buffer_1_data[34] & 0x01)) {
+			beq	:+ ; if ((nmi_list_1_data[34] & 0x01)) {
 				ldx	#<(render_actor_tiles_bowser_d-render_actor_tile_data)
 			: ; }
 
@@ -408,7 +408,7 @@ render_actor_clear_b:
 			sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_CHR_NO, y
 		: ; }
 
-		lda	ppu_nmi_buffer_1_data+41
+		lda	nmi_list_1_data+41
 		bne	render_actor_clear_b
 		lda	render_actor_id
 		ldx	render_actor_state_next
@@ -441,8 +441,8 @@ render_actor_clear_b:
 			: ; }
 
 			; if (this.id.in(blooper, piranha_plant, podoboo) || (this.id == spiny && this.state_next >= state_2)) {
-				lda	ppu_nmi_buffer_1_data+41
-				bne	:++ ; if (ppu_nmi_buffer_1_data[41] == 0) {
+				lda	nmi_list_1_data+41
+				bne	:++ ; if (nmi_list_1_data[41] == 0) {
 					lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
 					and	#obj_attr::v_flip|obj_attr::priority_bit|obj_attr::color_bits
 					sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y

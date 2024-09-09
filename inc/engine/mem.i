@@ -3,11 +3,12 @@ MEM_I	= 1
 
 .include	"system/cpu.i"
 .include	"system/vs.i"
+
 .include	"./tunables.i"
 
 zp_byte_00		= $00
 zp_addr_00		= zp_byte_00
-eng_screen_update_addr	= zp_addr_00
+nmi_list_write_addr	= zp_addr_00
 motion_gravity_accel_y_inc = zp_byte_00
 col_player_bullet_diff_pos_x_rel = zp_byte_00
 render_chr_pair_tile_left = zp_byte_00
@@ -184,19 +185,21 @@ score_digit_mod			= (STACK_BASE+$33)
 OAM_DMA_BUFFER		= (STACK_BASE+STACK_SIZE)
 OAM_DMA_BUFFER_END	= (OAM_DMA_BUFFER+(OBJ_MAX*OBJ_SIZE))
 
-ppu_nmi_buffer		= OAM_DMA_BUFFER_END
-ppu_nmi_buffer_0	= ppu_nmi_buffer
-ppu_nmi_buffer_0_offset	= ppu_nmi_buffer_0
-ppu_nmi_buffer_0_data	= ppu_nmi_buffer_0_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
-ppu_nmi_buffer_0_addr_dbyt = ppu_nmi_buffer_0_data
-ppu_nmi_buffer_0_byte	= ppu_nmi_buffer_0_addr_dbyt+WORD_SIZE
-ppu_nmi_buffer_0_end	= ppu_nmi_buffer_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
-ppu_nmi_buffer_1	= ppu_nmi_buffer_0_end
-ppu_nmi_buffer_1_offset	= ppu_nmi_buffer_1
-ppu_nmi_buffer_1_data	= ppu_nmi_buffer_1_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
-ppu_nmi_buffer_1_addr_dbyt = ppu_nmi_buffer_1_data
-ppu_nmi_buffer_1_byte	= ppu_nmi_buffer_1_addr_dbyt+WORD_SIZE
-ppu_nmi_buffer_1_end	= ppu_nmi_buffer_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
+nmi_list		= OAM_DMA_BUFFER_END
+nmi_list_0		= nmi_list
+nmi_list_0_offset	= nmi_list_0
+nmi_list_0_data		= nmi_list_0_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
+nmi_list_0_addr_dbyt	= nmi_list_0_data
+nmi_list_0_count	= nmi_list_0_addr_dbyt+WORD_SIZE
+nmi_list_0_tile		= nmi_list_0_count+1
+nmi_list_0_byte		= nmi_list_0_tile
+nmi_list_0_end		= nmi_list_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
+nmi_list_1		= nmi_list_0_end
+nmi_list_1_offset	= nmi_list_1
+nmi_list_1_data		= nmi_list_1_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
+nmi_list_1_addr_dbyt	= nmi_list_1_data
+nmi_list_1_byte		= nmi_list_1_addr_dbyt+WORD_SIZE
+nmi_list_1_end		= nmi_list_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
 
 veloc_ang_firebar	= $388
 actor_vine_flag		= $398
@@ -205,8 +208,8 @@ actor_vine_offset	= height_vine+1
 pos_y_vine		= $39D
 actor_plat_align	= $3A0
 actor_plat_scroll_x	= actor_plat_align+1
-eng_timer_hammer_throw	= actor_plat_scroll_x+1
-actor_plat_col_flag	= eng_timer_hammer_throw
+timer_hammer_throw	= actor_plat_scroll_x+1
+actor_plat_col_flag	= timer_hammer_throw
 pos_x_rel_player	= $3AD
 pos_x_rel_actor		= pos_x_rel_player+1
 pos_x_rel_proj		= pos_x_rel_actor+1
@@ -239,8 +242,8 @@ block_counter_res	= $3F0
 pos_x_orig_block	= block_counter_res+1
 eng_attr_buffer		= $3F9
 
-ppu_nmi_buffer_title_end = $400
-accel_x_player_b	= ppu_nmi_buffer_title_end
+nmi_list_title_end 	= $400
+accel_x_player_b	= nmi_list_title_end
 accel_x_actor		= accel_x_player_b+1
 accel_y_actor_b		= $416
 pos_y_actor		= $417
@@ -254,8 +257,8 @@ eng_cannon_offset	= $46A
 pos_y_hi_cannon		= $46B
 pos_x_lo_cannon		= $471
 pos_y_lo_cannon		= $477
-eng_whirlpool_flag	= $47D
-eng_timer_cannon	= $47D
+game_whirlpool_flag	= $47D
+timer_cannon		= $47D
 hp_bowser		= $483
 counter_stomps		= $484
 collision_player	= $490
@@ -363,10 +366,10 @@ eng_columnsets		= $71E
 bg_proc_id		= $71F
 eng_bg_addr_hi		= $720
 eng_bg_addr_lo		= $721
-eng_sprite_overlap	= $722
-eng_scroll_lock		= $723
-eng_page_current	= $725
-eng_pos_x		= $726
+nmi_sprite_overlap	= $722
+game_scroll_lock	= $723
+pos_x_hi_game		= $725
+pos_x_lo_game		= $726
 course_fg_mask_id	= $727
 eng_page_cached		= $728
 eng_area_bg_flag	= $729
@@ -382,9 +385,9 @@ actor_offset		= $739
 actor_page_loc		= $73A
 actor_page_on		= $73B
 eng_screen_proc_id	= $73C
-eng_scroll_h		= $73D
-eng_scc_h_b		= $73F
-eng_scc_v_b		= $740
+game_scroll_h		= $73D
+ppu_scc_h_b		= $73F
+ppu_scc_v_b		= $740
 course_fg_id		= $741
 course_bg_id		= $742
 course_type_cloud	= $743
@@ -400,37 +403,40 @@ joypad_mask_p2		= $74B
 course_type		= $74E
 course_page_offset	= $74F
 course_descriptor	= $750
-eng_startpage_init	= $751
-eng_start_alt		= $752
+pos_x_hi_init_game	= $751
+game_start_type		= $752
 player_id		= $753
 player_size		= $754
 player_scroll_x_b	= $755
 player_status		= $756
 eng_req_timer		= $757
-eng_joypad_override	= $758
+game_joypad_override	= $758
 eng_done_timer		= $759
+
 player_lives		= $75A
-eng_startpage_alt	= $75B
-eng_goals		= $75C
-eng_hidden_one_up	= $75D
-eng_coins		= $75E
+pos_x_hi_alt_game	= $75B
+player_goals		= $75C
+bg_hidden_one_up_req	= $75D
+player_coins		= $75E
 course_no		= $75F
 course_sub		= $760
 player_lives_b		= $761
-eng_startpage_alt_b	= $762
-eng_goals_b		= $763
-eng_hidden_one_up_b	= $764
+pos_x_hi_alt_game_b	= $762
+player_goals_b		= $763
+bg_hidden_one_up_req_b	= $764
+player_coins_b		= $765
 course_no_b		= $766
 course_sub_b		= $767
+
 eng_scroll_subpix	= $768
 eng_disable_b		= $769
 game_hard_mode		= $76A
 title_course_sel_no	= $76B
-eng_game_mode		= $770
-eng_gameplay_mode	= $772
+game_mode		= $770
+game_state		= $772
 nmi_addrs_ctl		= $773
-eng_disp_disable	= $774
-eng_scroll_amount	= $775
+nmi_disp_disable	= $774
+game_scroll_amount	= $775
 eng_pause_status	= $776
 eng_pause_ticks		= $777
 ppu_ctlr0_b		= $778
@@ -472,7 +478,8 @@ timer_unk_c		= timer_demo+1
 timer_unk_d		= timer_unk_c+1
 timers_nmi_end		= timer_unk_d
 
-eng_rand_seed		= $7A7
+lib_rand		= $7A7
+
 snd_ram			= $7B0
 snd_noise_offset	= $7B0
 snd_music_event_current = $7B1
@@ -499,32 +506,67 @@ snd_super_star_header_offset = $7C9
 snd_pulse_1_ctl_a	= $7CA
 snd_7CC			= $7CC
 snd_ram_end		= $7D0
-eng_score		= $7D7
-eng_score_end		= $7DD
-eng_stats		= $7DD
-byte_7E7		= $7E7
-byte_7E8		= $7E8
-eng_stats_end_b		= $7E9
-eng_timer_disp_b	= $7EC
-eng_stats_end		= $7F5
-byte_7F6		= $7F6
+
+stats_tbl		= $7D7
+stats_score_top		= stats_tbl
+stats_score_top_end	= (stats_score_top+STAT_LEN_MAX)
+
+stats_player			= stats_score_top_end
+stats_score_player		= stats_player
+stats_score_player_a		= stats_score_player
+stats_score_player_a_end	= (stats_score_player_a+STAT_LEN_MAX)
+.if	.defined(SMB)|.defined(VS_SMB)
+stats_score_player_b		= stats_score_player_a_end
+stats_score_player_b_end	= (stats_score_player_b+STAT_LEN_MAX)
+stats_score_player_end		= stats_score_player_b_end
+.elseif	.defined(SMB2M)
+stats_score_player_end		= stats_score_player_a_end
+.endif
+
+stats_coin_player	= stats_score_player_end
+stats_coin_player_a	= stats_coin_player
+stats_coin_player_a_end	= (stats_coin_player_a+STAT_LEN_MAX)
+.if	.defined(SMB)|.defined(VS_SMB)
+stats_coin_player_b	= stats_coin_player_a_end
+stats_coin_player_b_end	= (stats_coin_player_b+STAT_LEN_MAX)
+stats_coin_player_end	= stats_coin_player_b_end
+.elseif	.defined(SMB2M)
+stats_coin_player_end	= stats_coin_player_a_end
+.endif
+stats_player_end	= stats_coin_player_end
+stats_time		= stats_player_end
+stats_time_end		= (stats_time+STAT_LEN_MAX)
+
+.if	.defined(SMB2M)
+game_level_end_apu_on	= $7F6
 disk_loader_file_id	= $7F7
-eng_timer_disp		= $7F8
 eng_game_over_choice	= $7F8
+.endif
+.if	.defined(SMB2)
 byte_7F9		= $7F9
 game_courses_cleared	= $7FA
+.endif
+
+.if	.defined(SMB2M)
 game_hard_mode_new	= $7FB
-eng_course_sel_on	= $7FC
-disk_loader_proc	= $7FC
+.endif
+
+.if	.defined(SMB)|.defined(VS_SMB)
+title_course_sel_on	= $7FC
 eng_continue_course	= $7FD
-eng_boot_flag		= $7FF
+.elseif	.defined(SMB2M)
+disk_loader_proc	= $7FC
+disk_loader_main_req	= $7FD
+.endif
+
+game_boot_flag		= $7FF
 
 .if	.defined(VS_SMB)
 	nmi_addr_1D	= VS_RAM+$000
 	vs_actor_data	= VS_RAM+$100
 	vs_scenery_data	= VS_RAM+$200
-	vs_ppu_nmi_buffer = VS_RAM+$300
-	vs_ppu_nmi_buffer_end = vs_ppu_nmi_buffer+$100
+	vs_nmi_list	= VS_RAM+$300
+	vs_nmi_list_end	= vs_nmi_list+$100
 	title_tbl_400	= VS_RAM+$400
 
 	VS_RAM_ARENA0           = (VS_RAM+$600)

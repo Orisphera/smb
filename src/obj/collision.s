@@ -611,7 +611,7 @@ col_player_harm_proc_do:
 		ldy	#%11111111
 		sty	eng_timer_ctl
 		iny
-		sty	eng_scroll_amount
+		sty	game_scroll_amount
 	; }
 
 col_player_harm_proc_end:
@@ -1544,10 +1544,10 @@ col_bg_proc_coin_do:
 AXE_PLAYER_VELOC_X	= 24
 
 col_bg_proc_axe_do:
-	lda	#gameplay_mode::init_0
-	sta	eng_gameplay_mode
-	lda	#game_mode::victory
-	sta	eng_game_mode
+	lda	#game_states::init_0
+	sta	game_state
+	lda	#game_modes::victory
+	sta	game_mode
 
 	.if	.defined(SMB2M)
 		jsr	player_phys_load_default
@@ -1579,12 +1579,6 @@ CLIMB_POS_X	= pos_x_lo_actor+(ENG_ACTOR_MAX-1)
 CLIMB_DIR_BOUND	= 10
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
-	ENG_TIMER_DISP	= eng_timer_disp
-.elseif	.defined(SMB2M)
-	ENG_TIMER_DISP	= eng_timer_disp_b
-.endif
-
 col_bg_proc_climb_do:
 	ldy	zp_byte_04
 	cpy	#6
@@ -1599,14 +1593,14 @@ col_bg_proc_climb_do:
 		bne	:++++++
 		: lda	game_proc_id
 		cmp	#game_proc::victory
-		beq	:++++++ ; if (tile.in(flag_ball, pole) && game_proc_id != victory) {
+		beq	:++++++ ; if (tile.in(flag_ball, pole) && game.proc_id != victory) {
 			lda	#DIR_RIGHT
 			sta	disp_dir_player
-			inc	eng_scroll_lock
+			inc	game_scroll_lock
 
 			lda	game_proc_id
 			cmp	#game_proc::pole
-			beq	:++++ ; if (game_proc_id != pole) {
+			beq	:++++ ; if (game.proc_id != pole) {
 				lda	#actor::bullet
 				jsr	bg_actor_kill
 				lda	#music_event::none
@@ -1628,11 +1622,11 @@ col_bg_proc_climb_do:
 			: ; }
 
 			.if	.defined(SMB2M)
-				lda	byte_7E7
-				cmp	byte_7E8
+				lda	stats_coin_player_end-2
+				cmp	stats_coin_player_end-1
 				bne	:+
-				cmp	ENG_TIMER_DISP+2
-				bne	:+ ; if (byte_7E7 == byte_7E8 && ENG_TIMER_DISP[2] == 0) {
+				cmp	stats_time_end-STATS_TIME_LEN+2
+				bne	:+ ; if (player.coin.digit_second == player.coin.digit_last && time.digit_2 == 0) {
 					lda	#FLAG_SCORE_VALUE_ONEUP
 					sta	render_flag_score_val
 				; }
@@ -1813,13 +1807,13 @@ col_bg_proc_pipe_v_do:
 			lda	#music_event::none
 			sta	apu_music_event
 			lda	#0
-			sta	eng_startpage_init
+			sta	pos_x_hi_init_game
 			sta	course_sub
-			sta	eng_goals
-			sta	eng_start_alt
+			sta	player_goals
+			sta	game_start_type
 
 			.if	.defined(SMB)|.defined(SMB2M)
-				inc	eng_hidden_one_up
+				inc	bg_hidden_one_up_req
 			.endif
 
 			inc	eng_req_timer

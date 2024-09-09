@@ -37,11 +37,11 @@ actor_proc_hammer_bro:
 			lda	bits_offscr_actor
 			and	#%00001100
 			bne	actor_proc_hammer_bro_move_h ; if (!(bits_offscr_actor & 0x0C)) {
-				lda	eng_timer_hammer_throw, x
-				bne	:+ ; if (eng_timer_hammer_throw == 0) {
+				lda	timer_hammer_throw, x
+				bne	:+ ; if (timer_hammer_throw == 0) {
 					ldy	game_hard_mode_b
 					lda	actor_hammer_bro_timers, y
-					sta	eng_timer_hammer_throw, x
+					sta	timer_hammer_throw, x
 					jsr	misc_init_hammer
 					bcc	:+ ; if (misc_init_hammer()) {
 						lda	state_actor, x
@@ -51,7 +51,7 @@ actor_proc_hammer_bro:
 					; }
 				: ; }
 			
-				dec	eng_timer_hammer_throw, x
+				dec	timer_hammer_throw, x
 				jmp	actor_proc_hammer_bro_move_h
 			; } else actor_proc_hammer_bro_move_h();
 		; } else actor_proc_hammer_bro_jump();
@@ -77,9 +77,9 @@ actor_proc_hammer_bro_jump:
 		inc	actor_proc_hammer_bro_jump_rand
 		bcc	:+ ; if (actor.pos_y.lo > veloc_cutoff_pos_y) {
 			dec	actor_proc_hammer_bro_jump_rand
-			lda	eng_rand_seed+1, x
+			lda	lib_rand+1, x
 			and	#MOD_2
-			bne	:+ ; if (!(eng_rand_seed[1] % 2)) {
+			bne	:+ ; if (!(lib_rand[1] % 2)) {
 				ldy	#HAMMER_BRO_VELOC_X_A
 			; }
 		: ; }
@@ -93,7 +93,7 @@ actor_proc_hammer_bro_jump:
 		sta	state_actor, x
 	
 		lda	actor_proc_hammer_bro_jump_rand
-		and	eng_rand_seed+2, x
+		and	lib_rand+2, x
 		tay
 		lda	game_hard_mode_b
 		bne	:+ ; if (!game_hard_mode_b) {
@@ -101,7 +101,7 @@ actor_proc_hammer_bro_jump:
 		: ; }
 		lda	hammer_bro_jump_timers, y
 		sta	timer_ani_actor, x
-		lda	eng_rand_seed+1, x
+		lda	lib_rand+1, x
 		ora	#%11000000
 		sta	eng_timer_hammer_bro_jump, x
 	: ; }

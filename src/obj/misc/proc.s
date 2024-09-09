@@ -29,7 +29,7 @@ misc_proc:
 
 				lda	pos_x_lo_misc, x
 				clc
-				adc	eng_scroll_amount
+				adc	game_scroll_amount
 				sta	pos_x_lo_misc, x
 				lda	pos_x_hi_misc, x
 				adc	#0

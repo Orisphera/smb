@@ -176,10 +176,10 @@ actor_area_loop:
 	sec
 	sbc	#ACTOR_LOOP_SCROLL_INC
 	sta	pos_x_hi_player
-	lda	eng_page_current
+	lda	pos_x_hi_game
 	sec
 	sbc	#ACTOR_LOOP_SCROLL_INC
-	sta	eng_page_current
+	sta	pos_x_hi_game
 	lda	pos_x_hi_screen_left
 	sec
 	sbc	#ACTOR_LOOP_SCROLL_INC
@@ -211,8 +211,8 @@ actor_area_loop:
 actor_loop:
 	lda	eng_loop_flag
 	beq	:+++++
-	lda	eng_pos_x
-	bne	:+++++ ; if (eng_loop_flag != 0 && eng_pos_x == 0) {
+	lda	pos_x_lo_game
+	bne	:+++++ ; if (eng_loop_flag != 0 && pos_x_lo_game == 0) {
 		ldy	#LOOP_VAL_COUNT
 		: ; for (loop_descriptor in loop_descriptors) {
 			dey
@@ -221,7 +221,7 @@ actor_loop:
 			lda	course_no
 			cmp	actor_loop_courses, y
 			bne	:-
-			lda	eng_page_current
+			lda	pos_x_hi_game
 			cmp	actor_loop_course_pages, y
 			bne	:-
 		; }
@@ -557,7 +557,7 @@ actor_special_a:
 		iny
 		lda	(course_actor_addr), y
 		and	#COURSE_ACTORS_TYPE_E_STARTPAGE_MASK
-		sta	eng_startpage_init
+		sta	pos_x_hi_init_game
 	: ; }
 
 	jmp	:+
@@ -600,7 +600,7 @@ actor_init_do:
 		tya
 	: ; }
 
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	actor_init_base
 	.addr	actor_init_base
 	.addr	actor_init_base

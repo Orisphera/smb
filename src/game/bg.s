@@ -33,7 +33,7 @@ bg_proc:
 	.export bg_proc_gfx_render_area_c, bg_proc_gfx_render_area_d
 	.export bg_proc_main_a, bg_proc_main_b
 bg_proc_do:
-	jsr	eng_farjump
+	jsr	tbljmp
 bg_proc_tbl:
 bg_proc_inc_col_a:
 	.addr	bg_inc_col
@@ -53,12 +53,12 @@ bg_proc_main_b:
 	.addr	bg_proc_main
 ; ------------------------------------------------------------
 bg_inc_col:
-	inc	eng_pos_x
-	lda	eng_pos_x
+	inc	pos_x_lo_game
+	lda	pos_x_lo_game
 	and	#%00001111
-	bne	:+ ; if (!(eng_pos_x & 0xF)) {
-		sta	eng_pos_x
-		inc	eng_page_current
+	bne	:+ ; if (!(game.pos_x & 0xF)) {
+		sta	pos_x_lo_game
+		inc	pos_x_hi_game
 	: ; }
 
 	inc	disp_buff_col
@@ -376,8 +376,8 @@ bg_proc_main:
 
 	ldy	course_bg_id
 	beq	:++++ ; if (course_bg_id) {
-		lda	eng_page_current
-		: ; while ((eng_page_current -= ENG_TILEOBJ_SIZE) > ENG_TILEOBJ_SIZE) {
+		lda	pos_x_hi_game
+		: ; while ((game.pos_x.hi -= ENG_TILEOBJ_SIZE) > ENG_TILEOBJ_SIZE) {
 			cmp	#ENG_TILEOBJ_SIZE
 			bmi	:+
 			sec
@@ -390,10 +390,10 @@ bg_proc_main:
 		asl	a
 		asl	a
 		adc	bg_scenery_static_tbl-1, y
-		adc	eng_pos_x
+		adc	pos_x_lo_game
 		tax
 		lda	bg_scenery_static, x
-		beq	:++ ; if (bg_scenery_static[(eng_page_current*16)+bg_scenery_static_tbl[course_bg_id-1]+eng_pos_x]) {
+		beq	:++ ; if (bg_scenery_static[(game.pos_x.hi*16)+bg_scenery_static_tbl[course_bg_id-1]+pos_x_lo_game]) {
 			pha
 			and	#%00001111
 			sec
@@ -619,17 +619,17 @@ bg_scenery:
 				lda	eng_page_cached
 				bne	:++
 				: lda	scenery_page_loc
-				cmp	eng_page_current
+				cmp	pos_x_hi_game
 				bcc	:++
 			; }
 			: ; if (
 			;	course_scenery_byte == COURSE_SCENERY_END
 			;	|| !(scenery_length & 0x80)
 			;	|| ((course_scenery_byte & 0xF) == 0xE && eng_page_cached)
-			;	|| scenery_page_loc >= eng_page_current) {
+			;	|| scenery_page_loc >= pos_x_hi_game) {
 				jsr	bg_scenery_decode
 				jmp	:+++
-			: ; } else if (scenery_page_loc < eng_page_current) {
+			: ; } else if (scenery_page_loc < pos_x_hi_game) {
 				inc	eng_area_bg_flag
 			: ; }
 			; if (needs_increment) {
@@ -809,7 +809,7 @@ bg_obj_set_base:
 	lda	scenery_length, x
 	bpl	:++++
 	lda	scenery_page_loc
-	cmp	eng_page_current
+	cmp	pos_x_hi_game
 	beq	:+
 	ldy	scenery_offset
 
@@ -825,7 +825,7 @@ bg_obj_set_base:
 	lda	eng_page_cached
 	bne	:+++
 bg_scenery_decode_rts:
-	; if ((scenery_length & 0x80) && scenery_page_loc != eng_page_current && (((course_scenery_byte_0 & 0xF) != 0xE) || !eng_page_cached)) {
+	; if ((scenery_length & 0x80) && scenery_page_loc != pos_x_hi_game && (((course_scenery_byte_0 & 0xF) != 0xE) || !eng_page_cached)) {
 		rts
 	: lda	eng_page_cached
 	beq	:+ ; } else if (eng_page_cached) {
@@ -847,7 +847,7 @@ bg_scenery_decode_rts:
 		lsr	a
 		lsr	a
 		lsr	a
-		cmp	eng_pos_x
+		cmp	pos_x_lo_game
 		bne	bg_scenery_decode_rts
 	: ; }
 	; if () {
@@ -859,7 +859,7 @@ bg_scenery_decode_rts:
 	lda	BG_OBJ_TBL_BASE
 	clc
 	adc	BG_OBJ_TBL_OFFSET
-	jsr	eng_farjump
+	jsr	tbljmp
 	.export bg_obj_tbl
 
 	.export bg_obj_norm
@@ -1162,7 +1162,7 @@ bg_scenery_lock_warp:
 				lda	course_no
 				bne	:+ ; if (course_no == no_01) {
 					dex
-					ldy	eng_goals
+					ldy	player_goals
 					dey
 					beq	:++
 				; }
@@ -1191,7 +1191,7 @@ bg_scenery_lock_warp:
 		bg_scenery_lock_warp_hard_mode: ; } else if (hard_mode) {
 			lda	#$87
 			clc
-			adc	eng_goals
+			adc	player_goals
 			bne	bg_scenery_lock_warp_do
 		: ; } else {
 			ldx	#$83
@@ -1233,9 +1233,9 @@ bg_scenery_lock_warp:
 	jsr	bg_actor_kill
 
 bg_scenery_lock:
-	lda	eng_scroll_lock
+	lda	game_scroll_lock
 	eor	#1
-	sta	eng_scroll_lock
+	sta	game_scroll_lock
 	rts
 ; -----------------------------
 	.export bg_actor_kill
@@ -1284,7 +1284,7 @@ bg_scenery_swarm:
 	.export bg_scenery_ledge_tbl_cannon
 bg_scenery_ledge:
 	lda	course_ledge_type
-	jsr	eng_farjump
+	jsr	tbljmp
 
 bg_scenery_ledge_tbl:
 bg_scenery_ledge_tbl_tree:
@@ -1304,9 +1304,9 @@ bg_scenery_ledge_tree:
 		; if (scenery_length_bit_7) {
 			tya
 			sta	scenery_length, x
-			lda	eng_page_current
-			ora	eng_pos_x
-			beq	:+ ; if (eng_page_current|eng_pos_x) {
+			lda	pos_x_hi_game
+			ora	pos_x_lo_game
+			beq	:+ ; if (game.pos_x > 0) {
 				lda	#metatile_0::plat_b_a
 				jmp	bg_scenery_ledge_no_base
 			; }
@@ -1485,8 +1485,8 @@ bg_scenery_castle:
 
 	pla
 	tax
-	lda	eng_page_current
-	beq	:+++ ; if (eng_page_current) {
+	lda	pos_x_hi_game
+	beq	:+++ ; if (pos_x_hi_game > 0) {
 		lda	scenery_length, x
 		cmp	#1
 		beq	:++
@@ -1503,7 +1503,7 @@ bg_scenery_castle:
 
 			pla
 			sta	pos_x_lo_actor, x
-			lda	eng_page_current
+			lda	pos_x_hi_game
 			sta	pos_x_hi_actor, x
 			lda	#actor_modes::active
 			sta	pos_y_hi_actor, x
@@ -1632,7 +1632,7 @@ bg_scenery_pipe_vert:
 			clc
 			adc	#8
 			sta	pos_x_lo_actor, x
-			lda	eng_page_current
+			lda	pos_x_hi_game
 			adc	#0
 			sta	pos_x_hi_actor, x
 			lda	#actor_modes::active
@@ -1685,7 +1685,7 @@ bg_scenery_pipe_vert_plant:
 	clc
 	adc	#8
 	sta	pos_x_lo_actor, x
-	lda	eng_page_current
+	lda	pos_x_hi_game
 	adc	#0
 	sta	pos_x_hi_actor, x
 	lda	#actor_modes::active
@@ -1792,7 +1792,7 @@ bg_scenery_pole:
 	sec
 	sbc	#8
 	sta	pos_x_lo_actor+ENG_ACTOR_MAX-1
-	lda	eng_page_current
+	lda	pos_x_hi_game
 	sbc	#0
 	sta	pos_x_hi_actor+ENG_ACTOR_MAX-1
 	lda	#48
@@ -1943,7 +1943,7 @@ bg_scenery_cannon:
 	ldx	eng_cannon_offset
 	jsr	bg_objpos_y_get
 	sta	pos_y_lo_cannon, x
-	lda	eng_page_current
+	lda	pos_x_hi_game
 	sta	pos_y_hi_cannon, x
 	jsr	bg_objpos_x_get
 	sta	pos_x_lo_cannon, x
@@ -1983,7 +1983,7 @@ bg_scenery_spring:
 		.endif
 		jsr	bg_objpos_x_get
 		sta	pos_x_lo_actor, x
-		lda	eng_page_current
+		lda	pos_x_hi_game
 		sta	pos_x_hi_actor, x
 		jsr	bg_objpos_y_get
 		sta	pos_y_lo_actor, x
@@ -2004,10 +2004,10 @@ bg_scenery_spring:
 	rts
 ; -----------------------------
 bg_scenery_hidden_one_up:
-	lda	eng_hidden_one_up
+	lda	bg_hidden_one_up_req
 	beq	bg_scenery_block_rts
 	lda	#0
-	sta	eng_hidden_one_up
+	sta	bg_hidden_one_up_req
 	jmp	bg_scenery_block_item
 
 bg_scenery_block_q:
@@ -2062,7 +2062,7 @@ bg_scenery_pit:
 		sec
 		sbc	#16
 		sta	pos_x_lo_cannon, x
-		lda	eng_page_current
+		lda	pos_x_hi_game
 		sbc	#0
 		sta	pos_y_hi_cannon, x
 		iny
@@ -2149,7 +2149,7 @@ eng_loadobjattr:
 	rts
 ; -----------------------------
 bg_objpos_x_get:
-	lda	eng_pos_x
+	lda	pos_x_lo_game
 	asl	a
 	asl	a
 	asl	a

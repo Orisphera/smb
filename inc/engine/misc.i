@@ -89,7 +89,7 @@ COL_BOX_SIZE	= 4
 		done		= (actor_proc_flag_victory_tbl_done-actor_proc_flag_victory_tbl)/WORD_SIZE
 	.endenum
 
-	.enum	game_mode
+	.enum	game_modes
 		title
 		.if	.defined(VS_SMB)
 			mode_vs_1
@@ -99,7 +99,7 @@ COL_BOX_SIZE	= 4
 		game_over
 	.endenum
 
-	.enum	gameplay_mode
+	.enum	game_states
 		.if	.defined(VS_SMB)
 			vs_init
 		.elseif	.defined(SMB2M)
@@ -257,7 +257,7 @@ COL_BOX_SIZE	= 4
 			vsend_6
 			vsend_7
 			vsend_8
-			vs_ppu_nmi_buffer
+			vs_nmi_list
 			addr_1D_A
 			addr_1D_B
 			addr_1E_A
@@ -459,6 +459,22 @@ COL_BOX_SIZE	= 4
 		insert_coin
 		continue
 		super_players
+	.endenum
+
+	.enum	stats
+		score_player_a
+
+		.if	.defined(SMB)|.defined(VS_SMB)
+		score_player_b
+		.endif
+
+		coin_player_a
+
+		.if	.defined(SMB)|.defined(VS_SMB)
+		coin_player_b
+		.endif
+
+		time
 	.endenum
 
 	.endif	; MISC_I

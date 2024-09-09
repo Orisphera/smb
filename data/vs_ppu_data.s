@@ -9,81 +9,81 @@
 
 	.export vs_player_select_bg
 vs_player_select_bg:
-	.dbyt	PPU_VRAM_COLOR+0
+	.dbyt	PPU_VRAM_COLOR+(PPU_COLOR_PAGE_SIZE*0)
 	.byte	(:++)-(:+)
 	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3,  PPU_COLOR_BLUE1,  PPU_COLOR_CYAN0
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
 	:
 
-	.dbyt	PPU_VRAM_COLOR+$10
+	.dbyt	PPU_VRAM_COLOR+(PPU_COLOR_PAGE_SIZE*1)
 	.byte	(:++)-(:+)
 	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3,  PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
 	:
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$19
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+25
 	.byte	NMI_REPEAT|6, PPU_BG_COLOR_LINE_1_ALL
 
-	.dbyt	PPU_VRAM_BG1+$EA
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_7+PPU_BG_COL_10
 	.byte	(:++)-(:+)
 	: .byte	"PUSH BUTTON"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$148
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_10+PPU_BG_COL_8
 	.byte	(:++)-(:+)
 	: .byte	tile_bg::window_button+0
 	.byte	tile_bg::window_button+2
 	:
 
-	.dbyt	PPU_VRAM_BG1+$168
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_8
 	.byte	(:++)-(:+)
 	: .byte	tile_bg::window_button+1
 	.byte	tile_bg::window_button+3
 	:
 
-	.dbyt	PPU_VRAM_BG1+$16B
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_11
 	.byte	(:++)-(:+)
 	: .byte	"FOR 1-PLAYER"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$1C8
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_8
 	.byte	(:++)-(:+)
 	: .byte	tile_bg::window_button+0
 	.byte	tile_bg::window_button+2
 	:
 
-	.dbyt	PPU_VRAM_BG1+$1E8
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_8
 	.byte	(:++)-(:+)
 	: .byte	tile_bg::window_button+1
 	.byte	tile_bg::window_button+3
 	:
 
-	.dbyt	PPU_VRAM_BG1+$1EB
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_11
 	.byte	(:++)-(:+)
 	: .byte	"FOR 2-PLAYERS"
 	:
 
-	.byte	NMI_DATA_END
-
+	.byte	NMI_LIST_END
+; ------------------------------------------------------------
         .res    8, $FF
 ; ------------------------------------------------------------
 	.export vs_name_register_bg
 vs_name_register_bg:
-	.dbyt	PPU_VRAM_BG1+$A8
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_8
 	.byte	(:++)-(:+)
 	: .byte	"NAME REGISTRATION"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$106
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_8+PPU_BG_COL_6
 	.byte	(:++)-(:+)
 	: .byte	"A B C D E F G H I J K"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$186
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_12+PPU_BG_COL_6
 	.byte	(:++)-(:+)
 	: .byte	"L M N O P Q R S T U V"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$206
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_6
 	.byte	(:++)-(:+)
 	: .byte	"W X Y Z ! - . ' "
 	.byte	tile_bg::window_rub+0, tile_bg::window_rub+1
@@ -91,313 +91,315 @@ vs_name_register_bg:
 	.byte	tile_bg::window_end+0, tile_bg::window_end+1
 	:
 
-	.byte	NMI_DATA_END
-
+	.byte	NMI_LIST_END
+; ------------------------------------------------------------
         .res    3, $FF
 ; ------------------------------------------------------------
 	.export vs_stats_bg
 vs_stats_bg:
-	.dbyt	PPU_VRAM_BG1+$2D4
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_22+PPU_BG_COL_20
 	.byte	NMI_INC_ROW|((:++)-(:+))
-	: .byte	$F4, $F8, $F5
+	: .byte	tile_bg::window_box_nw
+	.byte	tile_bg::window_box_w_e
+	.byte	tile_bg::window_box_sw
 	:
 
-	.dbyt	PPU_VRAM_BG1+$2DA
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_22+PPU_BG_COL_26
 	.byte	NMI_INC_ROW|((:++)-(:+))
-	: .byte	$F7, $F8, $F9
+	: .byte	tile_bg::window_box_ne
+	.byte	tile_bg::window_box_w_e
+	.byte	tile_bg::window_box_se
 	:
 
-	.dbyt	PPU_VRAM_BG1+$2D5
-	.byte	NMI_REPEAT|5, $F6
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_22+PPU_BG_COL_21
+	.byte	NMI_REPEAT|5, tile_bg::window_box_n_s
 
-	.dbyt	PPU_VRAM_BG1+$2E4
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_4
 	.byte	(:++)-(:+)
-	: .byte	$F4, $F6, $F6, $F7
+	: .byte	tile_bg::window_box_nw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_ne
 	.byte	"NAME"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$315
-	.byte	NMI_REPEAT|5, $F6
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_24+PPU_BG_COL_21
+	.byte	NMI_REPEAT|5, tile_bg::window_box_n_s
 
-	.dbyt	PPU_VRAM_BG1+$2EC
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_12
 	.byte	NMI_REPEAT|8, "."
 
-	.dbyt	PPU_VRAM_BG1+$304
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_24+PPU_BG_COL_4
 	.byte	(:++)-(:+)
-	: .byte	$F8
-	.byte	"20"
-	.byte	$F8
+	: .byte	tile_bg::window_box_w_e, "20", tile_bg::window_box_w_e
 	:
 
-	.dbyt	PPU_VRAM_BG1+$324
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_25+PPU_BG_COL_4
 	.byte	(:++)-(:+)
-	: .byte	$F5, $F6, $F6, $F9
+	: .byte	tile_bg::window_box_sw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_se
 	.byte	"SCORE..0W-0."
 	:
 
-	.byte	NMI_DATA_END
-
+	.byte	NMI_LIST_END
+; ------------------------------------------------------------
         .res    18, $FF
 ; ------------------------------------------------------------
+VS_BOX_BG_TILE	= tile_bg::brick_b
+
 	.export vs_box_bg
 vs_box_bg:
-	.dbyt	PPU_VRAM_BG1+$0
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_0+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$20
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_1+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$40
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$60
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$280
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_20+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$2A0
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_21+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$360
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_27+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$380
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_28+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$3A0
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_29+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$80
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_0
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$81
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_1
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$82
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_2
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$83
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_3
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$9C
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_28
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$9D
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_29
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$9E
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_30
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$9F
-	.byte	NMI_INC_ROW|NMI_REPEAT|$17, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_31
+	.byte	NMI_INC_ROW|NMI_REPEAT|23, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$0
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+0
 	.byte	NMI_REPEAT|9, PPU_BG_COLOR_LINE_0_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$9
-	.byte	NMI_REPEAT|6, $0a
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+9
+	.byte	NMI_REPEAT|6, (PPU_BG_COLOR_LINE_0<<6)|(PPU_BG_COLOR_LINE_0<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_2
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$F
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+15
 	.byte	NMI_REPEAT|22, PPU_BG_COLOR_LINE_0_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$25
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+37
 	.byte	(:++)-(:+)
-	: .byte	$04
-	.byte	$05
+	: .byte	(PPU_BG_COLOR_LINE_0<<6)|(PPU_BG_COLOR_LINE_0<<4)|(PPU_BG_COLOR_LINE_1<<2)|PPU_BG_COLOR_LINE_0
+	.byte	(PPU_BG_COLOR_LINE_0<<6)|(PPU_BG_COLOR_LINE_0<<4)|(PPU_BG_COLOR_LINE_1<<2)|PPU_BG_COLOR_LINE_1
 	.byte	PPU_BG_COLOR_LINE_0_ALL
 	.byte	PPU_BG_COLOR_LINE_0_ALL
 	:
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$29
-	.byte	NMI_REPEAT|6, $A0
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+41
+	.byte	NMI_REPEAT|6, (PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_2<<4)|(PPU_BG_COLOR_LINE_0<<2)|PPU_BG_COLOR_LINE_0
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$2F
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+47
 	.byte	(:++)-(:+)
 	: .byte	PPU_BG_COLOR_LINE_0_ALL
 	.byte	PPU_BG_COLOR_LINE_0_ALL
-	.byte	$0A
+	.byte	(PPU_BG_COLOR_LINE_0<<6)|(PPU_BG_COLOR_LINE_0<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_2
 	:
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$32
-	.byte	NMI_REPEAT|5, $05
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+50
+	.byte	NMI_REPEAT|5, (PPU_BG_COLOR_LINE_0<<6)|(PPU_BG_COLOR_LINE_0<<4)|(PPU_BG_COLOR_LINE_1<<2)|PPU_BG_COLOR_LINE_1
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$37
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+55
 	.byte	NMI_REPEAT|9, PPU_BG_COLOR_LINE_0_ALL
 
-	.byte	NMI_DATA_END
-
+	.byte	NMI_LIST_END
+; ------------------------------------------------------------
         .res    6, $FF
 ; ------------------------------------------------------------
 	.export vs_insert_coin_bg
 vs_insert_coin_bg:
-	.dbyt	PPU_VRAM_BG1+$12A
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_9+PPU_BG_COL_10
 	.byte	(:++)-(:+)
 	: .byte	"INSERT COIN"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$16A
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_10
 	.byte	(:++)-(:+)
 	: .byte	"TO CONTINUE"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$250
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+PPU_BG_COL_16
 	.byte	(:++)-(:+)
-	: .byte	$F4, $F6, $F6, $F7
+	: .byte	tile_bg::window_box_nw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_ne
 	:
 
-	.dbyt	PPU_VRAM_BG1+$26B
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_19+PPU_BG_COL_11
 	.byte	(:++)-(:+)
 	: .byte	"TIME "
-	.byte	$F8
-	.byte	"10"
-	.byte	$F8
+	.byte	tile_bg::window_box_w_e, "10", tile_bg::window_box_w_e
 	:
 
-	.dbyt	PPU_VRAM_BG1+$290
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_20+PPU_BG_COL_16
 	.byte	(:++)-(:+)
-	: .byte	$F5, $F6, $F6, $F9
+	: .byte	tile_bg::window_box_sw, tile_bg::window_box_n_s, tile_bg::window_box_n_s, tile_bg::window_box_se
 	:
 
-	.dbyt	PPU_VRAM_BG1+$208
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_8
 	.byte	NMI_REPEAT|16, " "
 
-	.byte	NMI_DATA_END
-
+	.byte	NMI_LIST_END
+; ------------------------------------------------------------
         .res    69, $FF
 ; ------------------------------------------------------------
 	.export vs_continue_bg
 vs_continue_bg:
-	.dbyt	PPU_VRAM_BG1+$12A
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_9+PPU_BG_COL_10
 	.byte	NMI_REPEAT|11, " "
 
-	.dbyt	PPU_VRAM_BG1+$EA
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_7+PPU_BG_COL_10
 	.byte	(:++)-(:+)
 	: .byte	"PUSH BUTTON"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$148
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_10+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	$F0, $F2
+	: .byte	tile_bg::window_button+0, tile_bg::window_button+2
 	:
 
-	.dbyt	PPU_VRAM_BG1+$168
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_8
 	.byte	(:++)-(:+)
-	: .byte	$F1, $F3
+	: .byte	tile_bg::window_button+1, tile_bg::window_button+3
 	:
 
-	.dbyt	PPU_VRAM_BG1+$16A
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_11+PPU_BG_COL_10
 	.byte	(:++)-(:+)
 	: .byte	" TO CONTINUE"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$208
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_8
 	.byte	NMI_REPEAT|16, " "
 
-	.byte	NMI_DATA_END
-
+	.byte	NMI_LIST_END
+; ------------------------------------------------------------
         .res    80, $FF
 ; ------------------------------------------------------------
 	.export vs_super_players_bg
 vs_super_players_bg:
-	.dbyt	PPU_VRAM_BG1+$0
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_0+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$20
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_1+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$380
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_28+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$3A0
-	.byte	NMI_REPEAT|32, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_29+PPU_BG_COL_0
+	.byte	NMI_REPEAT|32, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$40
-	.byte	NMI_INC_ROW|NMI_REPEAT|26, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_0
+	.byte	NMI_INC_ROW|NMI_REPEAT|26, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$41
-	.byte	NMI_INC_ROW|NMI_REPEAT|26, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_1
+	.byte	NMI_INC_ROW|NMI_REPEAT|26, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$42
-	.byte	NMI_INC_ROW|NMI_REPEAT|26, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_2
+	.byte	NMI_INC_ROW|NMI_REPEAT|26, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$5D
-	.byte	NMI_INC_ROW|NMI_REPEAT|26, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_29
+	.byte	NMI_INC_ROW|NMI_REPEAT|26, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$5E
-	.byte	NMI_INC_ROW|NMI_REPEAT|26, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_30
+	.byte	NMI_INC_ROW|NMI_REPEAT|26, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$5F
-	.byte	NMI_INC_ROW|NMI_REPEAT|26, $47
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_31
+	.byte	NMI_INC_ROW|NMI_REPEAT|26, VS_BOX_BG_TILE
 
-	.dbyt	PPU_VRAM_BG1+$43
-	.byte	NMI_REPEAT|26, $5E
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_3
+	.byte	NMI_REPEAT|26, tile_bg::floor_castle+1
 
-	.dbyt	PPU_VRAM_BG1+$363
-	.byte	NMI_REPEAT|26, $5E
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_27+PPU_BG_COL_3
+	.byte	NMI_REPEAT|26, tile_bg::floor_castle+1
 
-	.dbyt	PPU_VRAM_BG1+$63
-	.byte	NMI_INC_ROW|NMI_REPEAT|24, $5E
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_3
+	.byte	NMI_INC_ROW|NMI_REPEAT|24, tile_bg::floor_castle+1
 
-	.dbyt	PPU_VRAM_BG1+$7C
-	.byte	NMI_INC_ROW|NMI_REPEAT|24, $5E
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_28
+	.byte	NMI_INC_ROW|NMI_REPEAT|24, tile_bg::floor_castle+1
 
-	.dbyt	PPU_VRAM_BG1+$89
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_9
 	.byte	(:++)-(:+)
 	: .byte	"SUPER PLAYER'S"
 	:
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$0
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+0
 	.byte	NMI_REPEAT|9, PPU_BG_COLOR_LINE_3_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$9
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+9
 	.byte	(:++)-(:+)
 	: .byte	PPU_BG_COLOR_LINE_0_ALL
-	.byte	$A0
+	.byte	(PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_2<<4)|(PPU_BG_COLOR_LINE_0<<2)|PPU_BG_COLOR_LINE_0
 	:
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$B
-	.byte	NMI_REPEAT|4, $50
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+11
+	.byte	NMI_REPEAT|4, (PPU_BG_COLOR_LINE_1<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_0<<2)|PPU_BG_COLOR_LINE_0
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$F
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+15
 	.byte	NMI_REPEAT|2, PPU_BG_COLOR_LINE_3_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$11
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+17
 	.byte	(:++)-(:+)
 	: .byte	PPU_BG_COLOR_LINE_0_ALL
-	.byte	$AA
+	.byte	PPU_BG_COLOR_LINE_2_ALL
 	:
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$13
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+19
 	.byte	NMI_REPEAT|4, PPU_BG_COLOR_LINE_1_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$17
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+23
 	.byte	NMI_REPEAT|2, PPU_BG_COLOR_LINE_3_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$19
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+25
 	.byte	NMI_REPEAT|6, PPU_BG_COLOR_LINE_0_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$1F
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+31
 	.byte	NMI_REPEAT|2, PPU_BG_COLOR_LINE_3_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$21
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+33
 	.byte	NMI_REPEAT|6, PPU_BG_COLOR_LINE_0_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$27
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+39
 	.byte	NMI_REPEAT|2, PPU_BG_COLOR_LINE_3_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$29
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+41
 	.byte	NMI_REPEAT|6, PPU_BG_COLOR_LINE_0_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$2F
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+47
 	.byte	NMI_REPEAT|2, PPU_BG_COLOR_LINE_3_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$31
-	.byte	NMI_REPEAT|6, $F0
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+49
+	.byte	NMI_REPEAT|6, (PPU_BG_COLOR_LINE_3<<6)|(PPU_BG_COLOR_LINE_3<<4)|(PPU_BG_COLOR_LINE_0<<2)|PPU_BG_COLOR_LINE_0
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$37
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+55
 	.byte	NMI_REPEAT|9, PPU_BG_COLOR_LINE_3_ALL
 
-	.byte	NMI_DATA_END
-
+	.byte	NMI_LIST_END
+; ------------------------------------------------------------
         .res    248, $FF

@@ -12,18 +12,18 @@
 		.if	.defined(VS)
 			lda	VS_RAM_ARENA0+$10
 			beq	:+ ; if (VS_RAM_ARENA0[0x10]) {
-				lda	#0
-				sta	eng_gameplay_mode
-				sta	eng_sprite_overlap
-				inc	eng_game_mode
+				lda	#game_states::init_0
+				sta	game_state
+				sta	nmi_sprite_overlap
+				inc	game_mode
 				lda	#1
-				sta	eng_disp_disable
+				sta	nmi_disp_disable
 				rts
 			: ; } else {
 		.endif
 
-		lda	eng_gameplay_mode
-		jsr	eng_farjump
+		lda	game_state
+		jsr	tbljmp
 		.if	.defined(VS)
 			.addr	sub_82AF
 		.endif
@@ -40,30 +40,28 @@
 	; ----------------------------
 			sub_82AF:
 				lda	#1
-				sta	eng_disp_disable
+				sta	nmi_disp_disable
 				lda	#0
-				sta	eng_sprite_overlap
-				inc	eng_gameplay_mode
+				sta	nmi_sprite_overlap
+				inc	game_state
 				rts
 		.endif
 	; -----------------------------------------------------------
 	title_course_no:
 		.byte	(:+++)-(:+)
-		: .dbyt	PPU_VRAM_BG1+$73
+		: .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
 		.byte	(:++)-(:+)
 		: .byte	"0"
 		:
 
-		.byte	NMI_DATA_END
+		.byte	NMI_LIST_END
 	title_course_no_end:
 .endif
 ; ----------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
 TITLE_PLAYER_ID	= player_count
-TITLE_STATS_END	= eng_stats_end
 .elseif	.defined(SMB2M)
 TITLE_PLAYER_ID = player_id
-TITLE_STATS_END	= eng_stats_end_b
 .endif
 TITLE_PRESSED_B	= 1
 
@@ -128,7 +126,7 @@ title_proc:
 				: ; }
 
 				.if	.defined(SMB)|.defined(VS_SMB)
-					ldx	eng_course_sel_on
+					ldx	title_course_sel_on
 					beq	:++++
 					cmp	#joypad_button::face_b
 					bne	:++++
@@ -171,7 +169,7 @@ title_proc:
 							jsr	title_course_set
 							: ; for (x = title_course_sel_no+1; x < 0x06; x++) {
 								lda	title_course_no, x
-								sta	ppu_nmi_buffer_0_data-1, x
+								sta	nmi_list_0_data-1, x
 
 								inx
 								cpx	#(title_course_no_end-title_course_no)
@@ -180,7 +178,7 @@ title_proc:
 
 							ldy	course_no
 							iny
-							sty	ppu_nmi_buffer_0_data+3
+							sty	nmi_list_0_tile
 						; }
 					.elseif	.defined(SMB2M)
 					:
@@ -211,20 +209,20 @@ title_proc:
 		bne	title_continue ; if (game.proc_id == lifedown) {
 		.if	.defined(VS)
 		title_next:
-			inc	eng_gameplay_mode
+			inc	game_state
 			lda	#0
-			sta	eng_sprite_overlap
-			inc	eng_disp_disable
+			sta	nmi_sprite_overlap
+			inc	nmi_disp_disable
 			rts
 		.endif
 
 			.export title_recycle
 		title_recycle:
 			lda	#0
-			sta	eng_game_mode
-			sta	eng_gameplay_mode
-			sta	eng_sprite_overlap
-			inc	eng_disp_disable
+			sta	game_mode
+			sta	game_state
+			sta	nmi_sprite_overlap
+			inc	nmi_disp_disable
 		; }
 		rts
 		.export title_exit
@@ -239,40 +237,40 @@ title_proc:
 		.endif
 			.if	.defined(SMB)|.defined(VS_SMB)
 				asl	a
-				bcc	:+ ; if (joypad_face_a) {
+				bcc	:+ ; if (joypad.a) {
 					lda	eng_continue_course
 					jsr	title_course_set
 				: ; }
 
 				jsr	course_descriptor_load
-				inc	eng_hidden_one_up
-				inc	eng_hidden_one_up_b
+				inc	bg_hidden_one_up_req
+				inc	bg_hidden_one_up_req_b
 				inc	eng_req_timer
-				inc	eng_game_mode
-				lda	eng_course_sel_on
+				inc	game_mode
+				lda	title_course_sel_on
 				sta	ENG_HARDMODE_VAR
 
-				lda	#gameplay_mode::init_0
-				sta	eng_gameplay_mode
+				lda	#game_states::init_0
+				sta	game_state
 
 				sta	timer_demo
 			.elseif	.defined(SMB2M)
-				inc	eng_gameplay_mode
+				inc	game_state
 
 				jsr	title_patch_player
 
 				lda	#course::no_01
 				sta	course_no
 				lda	#0
-				sta	eng_goals
+				sta	player_goals
 				lda	#0
 				sta	course_sub
 			.endif
 
-			ldx	#(TITLE_STATS_END-eng_stats)-1
+			ldx	#(stats_player_end-stats_player)-1
 			lda	#0
-			: ; for (byte of eng_stats) {
-				sta	eng_stats, x
+			: ; for (byte of player.stats) {
+				sta	stats_player, x
 
 				dex
 				bpl	:-

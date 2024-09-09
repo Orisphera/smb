@@ -9,17 +9,6 @@
 .include	"engine/unk.i"
 
 ; -----------------------------------------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
-	ENG_TIMER_DISP	= eng_timer_disp
-.elseif	.defined(SMB2M)
-	ENG_TIMER_DISP	= eng_timer_disp_b
-.endif
-.if	.defined(SMB)|.defined(VS_SMB)
-ACTOR_PROC_FLAG_VICTORY_TIMER_VAL	= $23
-.elseif	.defined(SMB2M)
-ACTOR_PROC_FLAG_VICTORY_TIMER_VAL	= $17
-.endif
-; -----------------------------------------------------------
 actor_proc_flag_pos_y:
 	.byte	0, 0, 8, 8
 
@@ -47,7 +36,7 @@ actor_proc_flag_victory:
 	lda	actor_proc_flag_victory_id
 	cmp	#<victory_flag_proc::done
 	bcs	actor_proc_flag_victory_fireworks_rts
-	jsr	eng_farjump
+	jsr	tbljmp
 actor_proc_flag_victory_tbl:
 actor_proc_flag_victory_tbl_null:
 	.addr	actor_proc_flag_victory_fireworks_rts
@@ -64,32 +53,32 @@ actor_proc_flag_victory_tbl_done:
 actor_proc_flag_victory_fireworks:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldy	#actor_states::state_5
-		lda	ENG_TIMER_DISP+2
+		lda	stats_time_end-STATS_TIME_LEN+2
 		cmp	#1
-		beq	:+ ; if (eng_timer_disp[2] != 1) {
+		beq	:+ ; if (game.time.digit_last != 1) {
 			ldy	#actor_states::state_3
 	
 			cmp	#3
-			beq	:+ ; if (eng_timer_disp[2] != 3) {
+			beq	:+ ; if (game.time.digit_last != 3) {
 				ldy	#actor_states::init
 	
 				cmp	#6
-				beq	:+ ; if (eng_timer_disp[2] != 6) {
+				beq	:+ ; if (game.time.digit_last != 6) {
 					lda	#<-1
 				; }
 			; }
 		: ; }
 	.elseif	.defined(SMB2M)
-	        lda     ENG_TIMER_DISP+2
-	        cmp     byte_7E8
+	        lda     stats_time_end-STATS_TIME_LEN+2
+	        cmp     stats_coin_player_end-1
 	        bne     :++
 	        and     #MOD_2
-	        beq     :+ ; if ((ENG_TIMER_DISP[2] == byte_7E8) && (ENG_TIMER_DISP[2] % 2)) {
+	        beq     :+ ; if ((game.time.digit_last == player.coin.digit_last) && (game.time.digit_last % 2)) {
 	        	ldy     #actor_states::state_3
 	        	lda     #3
 
 	        	bne     :+++
-		: ; } else if ((ENG_TIMER_DISP[2] == byte_7E8) && !(ENG_TIMER_DISP[2] % 2)) {
+		: ; } else if ((game.time.digit_last == player.coin.digit_last) && !(game.time.digit_last % 2)) {
 	        	ldy     #actor_states::init
 	        	lda     #6
 
@@ -111,9 +100,9 @@ actor_proc_flag_victory_fireworks_rts:
 	.export actor_proc_flag_victory_timer_score_do
 	.export actor_proc_course_end_stats
 actor_proc_flag_victory_timer_score:
-	lda	ENG_TIMER_DISP
-	ora	ENG_TIMER_DISP+1
-	ora	ENG_TIMER_DISP+2
+	lda	stats_time_end-STATS_TIME_LEN
+	ora	stats_time_end-STATS_TIME_LEN+1
+	ora	stats_time_end-STATS_TIME_LEN+2
 	beq	actor_proc_flag_victory_fireworks_step
 
 actor_proc_flag_victory_timer_score_do:
@@ -124,24 +113,24 @@ actor_proc_flag_victory_timer_score_do:
 		sta	apu_pulse2_queue
 	: ; }
 
-	ldy	#ACTOR_PROC_FLAG_VICTORY_TIMER_VAL
+	ldy	#(stats_time_end-stats_tbl)-1
 	lda	#$FF
 	sta	score_digit_mod+6
-	jsr	eng_stats_math
+	jsr	stats_calc
 	lda	#5
 	sta	score_digit_mod+6
 ; ------------------------------
 actor_proc_course_end_stats:
-	ldy	#$0B
+	ldy	#(stats_score_player_a_end-stats_tbl)-1
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lda	player_id
 		beq	:+ ; if (player_id) {
-			ldy	#$11
+			ldy	#(stats_score_player_b_end-stats_tbl)-1
 		: ; }
 	.endif
 
-	jsr	eng_stats_math
+	jsr	stats_calc
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lda	player_id
@@ -211,9 +200,9 @@ actor_proc_flag_victory_delay:
 	jsr	actor_proc_flag_victory_draw
 
 	lda	timer_actor, x
-	bne	:+ ; if (actor.timer == 0) {
-		lda	snd_ram+1
-		beq	actor_proc_flag_victory_next
-	: ; }
-
-	rts
+	bne	:+
+	lda	snd_music_event_current
+	beq	actor_proc_flag_victory_next
+	: ; if (this.timer != 0 || snd.music_event != null) {
+		rts
+	; else actor_proc_flag_victory_next();

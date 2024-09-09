@@ -23,9 +23,9 @@ actor_proc_blooper:
 	and	#actor_states::bit_5
 	bne	:++++++ ; if (!(actor.state & 0x20)) {
 		ldy	game_hard_mode_b
-		lda	eng_rand_seed+1, x
+		lda	lib_rand+1, x
 		and	actor_proc_blooper_flip_chance, y
-		bne	:+++ ; if (!(flip_chance[is_hard] & eng_rand_seed[1])) {
+		bne	:+++ ; if (!(flip_chance[is_hard] & lib_rand[1])) {
 			txa
 			lsr	a
 			bcc	:+ ; if ((actor_index % 2)) {

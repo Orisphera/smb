@@ -7,26 +7,26 @@
 	.export screen_text_header_player_name
 screen_text:
 screen_text_header:
-	.dbyt	PPU_VRAM_BG1+$43
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_3
 	.byte	(:++)-(:+)
 screen_text_header_player_name:
 	: .byte	"MARIO"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$52
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_18
 	.byte	(:++)-(:+)
 	: .byte	"WORLD  TIME"
 	:
 
-	.dbyt	PPU_VRAM_BG1+$68
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_8
 	.byte	(:++)-(:+)
 	: .byte	"0  $x"	; $ explained in charmap.i
 	:
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+0
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+0
 	.byte	NMI_REPEAT|63, PPU_BG_COLOR_LINE_2_ALL
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+2
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+2
 	.byte	(:++)-(:+)
 	: .byte	(PPU_BG_COLOR_LINE_3<<6)|(PPU_BG_COLOR_LINE_2<<4)|(PPU_BG_COLOR_LINE_2<<2)|(PPU_BG_COLOR_LINE_2)
 	:
@@ -34,20 +34,20 @@ screen_text_header_player_name:
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
 screen_text_splash:
-	.dbyt	PPU_VRAM_BG1+$1CD
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 	.byte	(:++)-(:+)
 	: .byte	"  x    "
 	:
 
-	.dbyt	PPU_VRAM_BG1+$14B
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_10+PPU_BG_COL_11
 	.byte	(:++)-(:+)
 	: .byte	"WORLD  - "
 	:
 
-	.dbyt	PPU_VRAM_BG1+$20C
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_12
 	.byte	NMI_REPEAT|7, " "
 
-	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_VIS+$1C
+	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+28
 	.byte	(:++)-(:+)
 	: .byte	(PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_3<<4)|(PPU_BG_COLOR_LINE_2<<2)|(PPU_BG_COLOR_LINE_2)
 	:
@@ -56,13 +56,13 @@ screen_text_splash:
 ; ----------------------------
 screen_text_timeup_screen:
 .if	.defined(SMB)|.defined(VS_SMB)
-		.dbyt	PPU_VRAM_BG1+$1CD
+		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 		.byte	(:++)-(:+)
 		: .byte	"MARIO"
 		:
 .endif
 
-	.dbyt	PPU_VRAM_BG1+$20C
+	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_12
 	.byte	(:++)-(:+)
 	: .byte	"TIME UP"
 	:
@@ -71,31 +71,32 @@ screen_text_timeup_screen:
 ; ----------------------------
 screen_text_gameover_screen:
 .if	.defined(SMB)|.defined(VS_SMB)
-		.dbyt	PPU_VRAM_BG1+$1CD
+		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 		.byte	(:++)-(:+)
 		: .byte	"MARIO"
 		:
 .endif
 
 .if	.defined(SMB)|.defined(VS_SMB)
-		.dbyt	PPU_VRAM_BG1+$20B
+	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_16
 .elseif	.defined(SMB2M)
-		.dbyt	PPU_VRAM_BG1+$16B
+	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_11
 .endif
+	.dbyt	PPU_VRAM_BG1+SCREEN_TEXT_GAME_OVER_ROW+PPU_BG_COL_11
 	.byte	(:++)-(:+)
 	: .byte	"GAME OVER"
 	:
 
 .if	.defined(SMB2M)
-		.dbyt	PPU_VRAM_BG1+$1EB
+		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_11
 		.byte	(:++)-(:+)
 		: .byte	"CONTINUE"
 		:
 
-		.dbyt	PPU_VRAM_BG1+$20C
+		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_12
 		.byte	NMI_REPEAT|7, " "
 
-		.dbyt	PPU_VRAM_BG1+$24B
+		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+PPU_BG_COL_11
 		.byte	(:++)-(:+)
 		: .byte	"RETRY"
 		:
@@ -104,40 +105,40 @@ screen_text_gameover_screen:
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
 screen_text_warp_screen:
-	.dbyt	PPU_VRAM_BG2+$184
+	.dbyt	PPU_VRAM_BG2+PPU_BG_ROW_12+PPU_BG_COL_4
 	.byte	(:++)-(:+)
 	: .byte	"WELCOME TO WARP ZONE!"
 	:
 
 .if	.defined(SMBM)|.defined(VS_SMB)
-		.dbyt	PPU_VRAM_BG2+$225
+		.dbyt	PPU_VRAM_BG2+PPU_BG_ROW_17+PPU_BG_COL_5
 		.byte	(:++)-(:+)
 		: .byte	" "
 		:
 .endif
 
-	.dbyt	PPU_VRAM_BG2+$22D
+	.dbyt	PPU_VRAM_BG2+PPU_BG_ROW_17+PPU_BG_COL_13
 	.byte	(:++)-(:+)
 	: .byte	" "
 	:
 	
 .if	.defined(SMBM)|.defined(VS_SMB)
-		.dbyt	PPU_VRAM_BG2+$235
+		.dbyt	PPU_VRAM_BG2+PPU_BG_ROW_17+PPU_BG_COL_21
 		.byte	(:++)-(:+)
 		: .byte	" "
 		:
 .endif
 
-	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_VIS+$19
+	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_ATTR+25
 	.byte	NMI_REPEAT|6, PPU_BG_COLOR_LINE_2_ALL
 
-	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_VIS+$21
+	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_ATTR+33
 	.byte	NMI_REPEAT|5, PPU_BG_COLOR_LINE_2_ALL
 
 .if	.defined(SMB)|.defined(VS_SMB)
 		.byte	SCREEN_TEXT_END_VAL
 .elseif	.defined(SMB2M)
-		.byte	NMI_DATA_END
+		.byte	NMI_LIST_END
 .endif
 ; ----------------------------
 .if	.defined(SMB)|.defined(VS_SMB)

@@ -6,6 +6,7 @@
 .include	"engine/sound.i"
 .include	"engine/tunables.i"
 .include	"engine/misc.i"
+.include	"engine/math.i"
 
 .include	"engine/unk.i"
 
@@ -81,16 +82,16 @@ eng_init_0_do:
 		sta	frame_count
 		lda	nmi_timer_int_init+1
 		sta	timer_nmi_tick
-		sta	eng_rand_seed
+		sta	lib_rand
 	.endif
 
-	lda	eng_startpage_alt
-	ldy	eng_start_alt
-	beq	:+ ; if (!eng_start_alt) {
-		lda	eng_startpage_init
+	lda	pos_x_hi_alt_game
+	ldy	game_start_type
+	beq	:+ ; if (game.start_type != 0) {
+		lda	pos_x_hi_init_game
 	: ; }
 	sta	pos_x_hi_screen_left
-	sta	eng_page_current
+	sta	pos_x_hi_game
 	sta	eng_page_cached
 
 	jsr	game_proc_disp_pos
@@ -122,15 +123,15 @@ eng_init_0_do:
 	cmp	#ENG_HARDMODE_B_COURSE
 	bcc	:++
 	bne	:+
-	lda	eng_goals
+	lda	player_goals
 	cmp	#ENG_HARDMODE_B_GOAL
 	bcc	:++
 	: ; if (hard_mode || eng_course.eng_goal >= hard_mode_course.hard_mode_goal) {
 		inc	game_hard_mode_b
 	: ; }
 
-	lda	eng_startpage_alt
-	beq	:+ ; if (eng_startpage_alt) {
+	lda	pos_x_hi_alt_game
+	beq	:+ ; if (game.alt_pos_x.hi != 0) {
 		lda	#COURSE_SCENERY_ENTER_POS_B0_A_VAL
 		sta	course_enter_pos
 	: ; }
@@ -138,14 +139,14 @@ eng_init_0_do:
 	lda	#music_area::none
 	sta	apu_music_area
 	lda	#1
-	sta	eng_disp_disable
+	sta	nmi_disp_disable
 
 	.if	.defined(SMB2M)
 		jsr	player_phys_load
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		inc	eng_gameplay_mode
+		inc	game_state
 		rts
 	.elseif	.defined(ANN)
 		jmp	screen_title_bg_finish
@@ -191,19 +192,19 @@ eng_init_0_do:
 	.export eng_init_1_do
 eng_init_1_do:
 	lda	#0
-	sta	eng_disp_disable
+	sta	nmi_disp_disable
 	
 	.if	.defined(SMB2)
 		sta	byte_7F9
 	.endif
 
 	.if	.defined(SMB2M)
-		sta	byte_7F6
+		sta	game_level_end_apu_on
 	.endif
 
 	tay
-	: ; for (byte of ppu_nmi_buffer) {
-		sta	ppu_nmi_buffer, y
+	: ; for (byte of nmi_list) {
+		sta	nmi_list, y
 
 		iny
 		bne	:-
@@ -256,10 +257,10 @@ eng_init_1_do:
 	.endif
 
 	jsr	sub_92AA
-	inc	eng_sprite_overlap
+	inc	nmi_sprite_overlap
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		inc	eng_gameplay_mode
+		inc	game_state
 		rts
 	.elseif	.defined(ANN)
 		jmp	screen_title_bg_finish
@@ -314,9 +315,9 @@ area_music_data_pipe_intro:
 ; ----------------------------
 	.export	sub_load_area_music
 sub_load_area_music:
-	lda	eng_game_mode
-	beq	:+++ ; if (eng_game_mode != title) {
-		lda	eng_start_alt
+	lda	game_mode
+	beq	:+++ ; if (game.mode != title) {
+		lda	game_start_type
 		cmp	#2
 		beq	:+
 		ldy	#area_music_data_pipe_intro-area_music_data
@@ -325,10 +326,10 @@ sub_load_area_music:
 		beq	:++
 		cmp	#COURSE_SCENERY_ENTER_POS_B0_C_VAL
 		beq	:++
-		: ; if (eng_start_alt == 2 || course_enter_pos != 0xB0) {
+		: ; if (game.start_type == 2 || course.enter_pos != 0xB0) {
 			ldy	course_type
 			lda	course_type_cloud
-			beq	:+ ; if (course_type_cloud) {
+			beq	:+ ; if (course.type == cloud) {
 				ldy	#area_music_data_clouds-area_music_data
 			; }
 		: ; }
@@ -401,12 +402,6 @@ eng_timer_vals_a:
 eng_timer_vals_b:
 	.byte	$03, $00, $00, $05
 .endif
-
-.if	.defined(SMB)|.defined(VS_SMB)
-	ENG_TIMER_DISP	= eng_timer_disp
-.elseif	.defined(SMB2M)
-	ENG_TIMER_DISP	= eng_timer_disp_b
-.endif
 ; ----------------------------
 	.export game_proc_start
 game_proc_start:
@@ -422,7 +417,7 @@ game_proc_start:
 	dec	collision_player
 
 	ldy	#0
-	sty	eng_startpage_alt
+	sty	pos_x_hi_alt_game
 	lda	course_type
 	bne	:+ ; if (courese_type == water) {
 		iny
@@ -430,10 +425,10 @@ game_proc_start:
 	sty	player_swimming
 
 	ldx	course_enter_pos
-	ldy	eng_start_alt
+	ldy	game_start_type
 	beq	:+
 	cpy	#1
-	beq	:+ ; if ((y = eng_start_alt) > 1) {
+	beq	:+ ; if ((y = game_start_type) > 1) {
 		ldx	player_alt_y-2, y
 	: ; }
 
@@ -453,24 +448,24 @@ game_proc_start:
 		lda	VS_RAM_ARENA0+$03
 		beq	:+ ; if (vs_ram_arena0[3]) {
 			lda	eng_timer_vals_a, y
-			sta	ENG_TIMER_DISP
+			sta	stats_time_end-STATS_TIME_LEN
 			lda	eng_timer_vals_b, y
-			sta	ENG_TIMER_DISP+1
+			sta	stats_time_end-STATS_TIME_LEN+1
 			jmp	:++
 		; } else {
 	.endif
 			: lda	enter_timer_vals-1, y
-			sta	ENG_TIMER_DISP
+			sta	stats_time_end-STATS_TIME_LEN
 		.if	.defined(VS)
 			lda	enter_timer_vals+2, y
-			sta	ENG_TIMER_DISP+1
+			sta	stats_time_end-STATS_TIME_LEN+1
 		; }
 		.endif
 		: lda	#1
-		sta	ENG_TIMER_DISP+2
+		sta	stats_time_end-STATS_TIME_LEN+2
 		.if	.defined(SMB)|.defined(SMB2M)
 			lsr	a
-			sta	ENG_TIMER_DISP+1
+			sta	stats_time_end-STATS_TIME_LEN+1
 		.elseif	.defined(VS_SMB)
 			lda	#0
 		.endif
@@ -478,8 +473,8 @@ game_proc_start:
 		sta	timer_player_star
 	: ; }
 
-	ldy	eng_joypad_override
-	beq	:+ ; if (eng_joypad_override) {
+	ldy	game_joypad_override
+	beq	:+ ; if (joypad_override) {
 		lda	#player_state::climb
 		sta	state_player
 		ldx	#0
@@ -559,33 +554,33 @@ lifedown_starts:
 ; ----------------------------
 	.export	game_proc_lifedown
 game_proc_lifedown:
-	inc	eng_disp_disable
+	inc	nmi_disp_disable
 	lda	#0
-	sta	eng_sprite_overlap
+	sta	nmi_sprite_overlap
 	lda	#music_event::none
 	sta	apu_music_event
 	dec	player_lives
 	bpl	:+ ; if (--player_lives < 0) {
-		lda	#gameplay_mode::init_0
-		sta	eng_gameplay_mode
-		lda	#game_mode::game_over
-		sta	eng_game_mode
+		lda	#game_states::init_0
+		sta	game_state
+		lda	#game_modes::game_over
+		sta	game_mode
 		rts
 	: ; } else {
 		lda	course_no
 		asl	a
 		tax
-		lda	eng_goals
-		and	#%00000010
-		beq	:+ ; if (eng_goals & 0x02) {
+		lda	player_goals
+		and	#MOD_4_2_UP
+		beq	:+ ; if ((player.goals % 4) >= 2) {
 			inx
 		: ; }
 
 		ldy	lifedown_starts, x
-		lda	eng_goals
+		lda	player_goals
 		lsr	a
 		tya
-		bcs	:+ ; if (eng_goals & 0x01) {
+		bcs	:+ ; if ((player.goals % 2)) {
 			lsr	a
 			lsr	a
 			lsr	a
@@ -597,7 +592,7 @@ game_proc_lifedown:
 		bcc	:+ ; if (lifedown_starts > pos_x_hi_screen_left) {
 			lda	#0
 		: ; }
-		sta	eng_startpage_alt
+		sta	pos_x_hi_alt_game
 
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jsr	player_switch

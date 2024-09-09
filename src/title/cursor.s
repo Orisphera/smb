@@ -6,22 +6,22 @@
 .if	.defined(CONS)
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
-	TITLE_CURSOR_POS	= $249
+	TITLE_CURSOR_COL	= PPU_BG_COL_9
 .elseif	.defined(SMB2M)
-	TITLE_CURSOR_POS	= $24B
+	TITLE_CURSOR_COL	= PPU_BG_COL_11
 .endif
 
 	.export title_cursor_data
 title_cursor_data:
 	.if	.defined(SMB)|.defined(VS_SMB)
-	.byte   (:++++)-(:+)
+	.byte	(:++++)-(:+)
 	.endif
-        : .dbyt   PPU_VRAM_BG1+TITLE_CURSOR_POS
+        : .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+TITLE_CURSOR_COL
 	.byte	NMI_INC_ROW|((:++)-(:+))
 	: .byte	tile_bg::cursor
 	.byte	" "
 	.byte	" "
-	: .byte	NMI_DATA_END
+	: .byte	NMI_LIST_END
 	:
 title_cursor_data_end:
 
@@ -38,7 +38,7 @@ title_cursor_draw:
 	ldy     #(title_cursor_data_end-title_cursor_data)-1
 	: ; for (a in title_cursor_data) {
 		lda     title_cursor_data, y
-		sta     ppu_nmi_buffer_0, y
+		sta     nmi_list_0, y
 
 		dey
 		bpl     :-
@@ -49,9 +49,9 @@ title_cursor_draw_xfer:
         lda     player_count
         beq     :+ ; if (player_count) {
 		lda     #' '
-		sta     ppu_nmi_buffer_0_data+3
+		sta     nmi_list_0_tile+0
 		lda     #tile_bg::cursor
-		sta     ppu_nmi_buffer_0_data+5
+		sta     nmi_list_0_tile+2
 	: ; }
 .elseif	.defined(SMB2M)
 	lda	#nmi_addr::title_cursor_data

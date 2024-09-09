@@ -98,15 +98,15 @@ actor_proc_lakitu_spiny:
 		ldy	#0
 		lda	veloc_x_player
 		beq	:+++
-		lda	eng_scroll_amount
-		beq	:+++ ; if (player.veloc_x != 0 && eng_scroll_amount != 0) {
+		lda	game_scroll_amount
+		beq	:+++ ; if (player.veloc_x != 0 && game.scroll_amount != 0) {
 			iny
 			lda	veloc_x_player
 			cmp	#LAKITU_SPINY_VELOC_X_PLAYER_CUTOFF
 			bcc	:+
-			lda	eng_scroll_amount
+			lda	game_scroll_amount
 			cmp	#2
-			bcc	:+ ; if (player.veloc_x >= 25 && eng_scroll_amount >= 2) {
+			bcc	:+ ; if (player.veloc_x >= 25 && game.scroll_amount >= 2) {
 				iny
 			: ; }
 		

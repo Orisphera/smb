@@ -64,7 +64,7 @@ vs_text_credit_count:
 	: .dbyt	PPU_VRAM_BG1+$394
 	.byte	(:++)-(:+)
 	: .byte	"CREDIT 00"
-	: .byte	NMI_DATA_END
+	: .byte	NMI_LIST_END
 vs_text_credit_count_end:
 
 vs_text_free_play:
@@ -72,7 +72,7 @@ vs_text_free_play:
 	: .dbyt	PPU_VRAM_BG1+$394
 	.byte	(:++)-(:+)
 	: .byte	"FREE PLAY"
-	: .byte	NMI_DATA_END
+	: .byte	NMI_LIST_END
 vs_text_free_play_end:
 ; ----------------------------
 	.export	vs_disp_credit_msg
@@ -85,7 +85,7 @@ vs_disp_credit_msg:
 	bne	:++ ; if (vs_ram_arena0[6] == 7) {
 		: ; for (x = 13; x > 0; x--) {
 			lda	vs_text_free_play, x
-			sta	ppu_nmi_buffer_0, x
+			sta	nmi_list_0, x
 
 			dex
 			bpl	:-
@@ -95,7 +95,7 @@ vs_disp_credit_msg:
 	: ; } else {
 		: ; for (x = 13; x > 0; x--) {
 			lda	vs_text_credit_count, x
-			sta	ppu_nmi_buffer_0, x
+			sta	nmi_list_0, x
 
 			dex
 			bpl	:-
@@ -106,14 +106,14 @@ vs_disp_credit_msg:
 			cmp	#10
 			bmi	:+
 
-			inc	ppu_nmi_buffer_0_data+10
+			inc	nmi_list_0_data+10
 
 			sec
 			sbc	#10
 			jmp	:-
 		: ; }
 
-		sta	ppu_nmi_buffer_0_data+11
+		sta	nmi_list_0_data+11
 		rts
 	; }
 ; -----------------------------------------------------------
@@ -277,8 +277,8 @@ sub_93E7:
 ; -----------------------------------------------------------
 	.export sub_941E
 sub_941E:
-	lda	eng_gameplay_mode
-	jsr	eng_farjump
+	lda	game_state
+	jsr	tbljmp
 	.addr	sub_942C
 	.addr	sub_943E
 	.addr	sub_9454
@@ -288,10 +288,10 @@ sub_941E:
 sub_942C:
 	lda	#0
 	sta	eng_screen_proc_id
-	sta	eng_sprite_overlap
+	sta	nmi_sprite_overlap
 	jsr	oam_init
-	inc	eng_disp_disable
-	inc	eng_gameplay_mode
+	inc	nmi_disp_disable
+	inc	game_state
 	rts
 ; ----------------------------
 sub_943E:
@@ -302,11 +302,11 @@ sub_943E:
 	sta	VS_RAM_ARENA0+$27
 	lda	#1
 	sta	VS_RAM_ARENA0+$26
-	inc	eng_gameplay_mode
+	inc	game_state
 	rts
 ; ----------------------------
 sub_9454:
-	inc	eng_gameplay_mode
+	inc	game_state
 
 sub_9454_do:
 	lda	VS_RAM_ARENA0+$10
@@ -327,20 +327,20 @@ sub_947A_text_push:
 sub_947A_text_push_start:
 	.byte	"PUSH BUTTON"
 sub_947A_text_push_end:
-	.byte	NMI_DATA_END
+	.byte	NMI_LIST_END
 sub_947A_text_push_def_end:
 
 sub_947A_text_empty:
 	.dbyt	PPU_VRAM_BG1+$EA
 	.byte	NMI_REPEAT|(sub_947A_text_push_end-sub_947A_text_push_start), " "
-	.byte	NMI_DATA_END
+	.byte	NMI_LIST_END
 sub_947A_text_empty_def_end:
 ; ----------------------------
 sub_947A:
 	jsr	vs_setbank_low
 
 	lda	#0
-	sta	eng_disp_disable
+	sta	nmi_disp_disable
 
 	lda	joypad_p1
 	and	#joypad_button::select
@@ -378,12 +378,12 @@ sub_947A:
 				sta	VS_RAM_ARENA0+$26
 
 				ldx	#0
-				ldy	ppu_nmi_buffer_0_offset
+				ldy	nmi_list_0_offset
 				lda	VS_RAM_ARENA0+$27
 				bne	:++ ; if () {
 					: ; for (x = 0, y = ppu_nmi_count; x < 16; x++, y++) {
 						lda	sub_947A_text_push, x
-						sta	ppu_nmi_buffer_0_data+0, y
+						sta	nmi_list_0_data+0, y
 
 						iny
 						inx
@@ -394,7 +394,7 @@ sub_947A:
 				; } else {
 					: ; for (x = 0, y = ppu_nmi_count; x < 5; x++, y++) {
 						lda	sub_947A_text_empty, x
-						sta	ppu_nmi_buffer_0_data+0, y
+						sta	nmi_list_0_data+0, y
 
 						iny
 						inx
@@ -424,7 +424,7 @@ sub_9502:
 	sta	nmi_addrs_ctl
 	lda	#0
 	sta	VS_RAM_ARENA0+$22
-	inc	eng_gameplay_mode
+	inc	game_state
 	rts
 ; -----------------------------------------------------------
 sub_953B_oam:
@@ -485,7 +485,7 @@ sub_953B:
 		bne	:+ ; if (vs_ram_arena0[23] == 6) {
 			jmp	sub_9DF7
 		: ; } else {
-			inc	eng_gameplay_mode
+			inc	game_state
 			rts
 		; }
 	; }
@@ -493,7 +493,7 @@ sub_953B:
 	.export sub_9588
 sub_9588:
 	lda	#0
-	sta	eng_disp_disable
+	sta	nmi_disp_disable
 
 	lda	frame_count
 	and	#1

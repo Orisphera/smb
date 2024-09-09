@@ -18,11 +18,11 @@ actor_proc_bowser_flame_timer_data:
 ; ----------------------------
 	.export actor_proc_bowser_flame_timer_init
 actor_proc_bowser_flame_timer_init:
-	ldy	ppu_nmi_buffer_1_data+$26
-	inc	ppu_nmi_buffer_1_data+$26
-	lda	ppu_nmi_buffer_1_data+$26
+	ldy	nmi_list_1_data+$26
+	inc	nmi_list_1_data+$26
+	lda	nmi_list_1_data+$26
 	and	#%00000111
-	sta	ppu_nmi_buffer_1_data+$26
+	sta	nmi_list_1_data+$26
 	lda	actor_proc_bowser_flame_timer_data, y
 	: rts
 ; -----------------------------------------------------------

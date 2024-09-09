@@ -158,7 +158,7 @@ block_item:
 			sbc	#(block_item_mid_b-block_item_start)/2
 			.endif
 		: ; }
-		jsr	eng_farjump
+		jsr	tbljmp
 		block_item_start:
 		.addr	block_mushroom_reg
 
@@ -426,10 +426,10 @@ block_flatten:
 	: ; for (block of blocks) {
 		stx	actor_index
 
-		lda	ppu_nmi_buffer_0_data
+		lda	nmi_list_0_data
 		bne	:+
 		lda	block_rep_flag, x
-		beq	:+ ; if (*ppu_nmi_buffer == NMI_DATA_END && block_rep_flag[actor_index]) {
+		beq	:+ ; if (*nmi_list == NMI_LIST_END && block_rep_flag[actor_index] != 0) {
 			lda	block_buffer_idx, x
 			sta	eng_buffer_ptr
 			lda	#5

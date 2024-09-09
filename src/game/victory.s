@@ -16,19 +16,19 @@
 eng_victory:
 	jsr	victory_enter
 
-	lda	eng_gameplay_mode
+	lda	game_state
 	beq	:++
 	.if	.defined(SMB2M)
 		ldx	course_no
 		cpx	#course::no_08
 		bne	:+
-		cmp	#gameplay_mode::mode_5
+		cmp	#game_states::mode_5
 		beq	eng_victory-1
-		cmp	#gameplay_mode::mode_D
+		cmp	#game_states::mode_D
 		beq	eng_victory-1
 		; NOTE: This assumes this module follows an rts
 	.endif
-	: ; if (eng_gameplay_mode != bridge && (course_no != course_08 || eng_gameplay_mode.not_in(5, $D))) {
+	: ; if (game_state != bridge && (course_no != course_08 || game_state.not_in(5, $D))) {
 		ldx	#0
 		stx	actor_index
 		jsr	actor_proc
@@ -43,8 +43,8 @@ victory_enter:
 		cmp	#course::no_08
 		beq	victory_course_8 ; if (!SMB2M || course_no != course_8) {
 	.endif
-		lda	eng_gameplay_mode
-		jsr	eng_farjump
+		lda	game_state
+		jsr	tbljmp
 		.addr	actor_bowser_ending
 		.addr	victory_init
 		.addr	victory_proc
@@ -62,8 +62,8 @@ victory_enter:
 		.endif
 	.if	.defined(SMB2M)
 	victory_course_8: ; } else {
-		lda	eng_gameplay_mode
-		jsr	eng_farjump
+		lda	game_state
+		jsr	tbljmp
 		.addr	actor_bowser_ending
 		.addr	victory_init
 		.addr	victory_proc
@@ -104,11 +104,11 @@ victory_enter:
 ; ----------------------------
 		.export ann_toad_load
 	ann_toad_load:
-		lda	eng_goals
+		lda	player_goals
 		cmp	#ENG_HARDMODE_B_GOAL
 		bne	:+++
 		ldy	ENG_HARDMODE_VAR
-		bne	:+++ ; if (eng_goals == ENG_HARDMODE_B_GOAL && !ENG_HARDMODE_VAR) {
+		bne	:+++ ; if (player.goals == ENG_HARDMODE_B_GOAL && !ENG_HARDMODE_VAR) {
 			sty	zp_byte_06
 
 			lda	course_no
@@ -247,11 +247,11 @@ victory_init:
 	.if	.defined(SMB2M)
 		.export screen_title_bg, screen_title_bg_finish
 	screen_title_bg_finish:
-		inc	eng_gameplay_mode
+		inc	game_state
 		rts
 
 	screen_title_bg:
-		lda	eng_game_mode
+		lda	game_mode
 		bne	screen_title_bg_finish
 
 		lda	#5
@@ -423,7 +423,7 @@ victory_msg_notick:
 		sta	timer_victory
 
 	victory_next:
-		inc	eng_gameplay_mode
+		inc	game_state
 
 	.if	.defined(VS)
 		lda	#0
@@ -443,12 +443,6 @@ victory_msg_notick:
 		SUB_63AF_TIMER_CUTOFF	= 10
 	.endif
 
-	.if	.defined(SMB2M)
-		ENG_TIMER_DISP	= eng_timer_disp_b
-	.elseif	.defined(VS_SMB)
-		ENG_TIMER_DISP	= eng_timer_disp
-	.endif
-
 	sub_63AF:
 		lda	timer_victory
 		cmp	#SUB_63AF_TIMER_CUTOFF
@@ -457,24 +451,24 @@ victory_msg_notick:
 				jsr	actor_proc_flag_victory_timer_score_do
 			.endif
 
-			lda	ENG_TIMER_DISP
-			ora	ENG_TIMER_DISP+1
-			ora	ENG_TIMER_DISP+2
+			lda	stats_time_end-STATS_TIME_LEN
+			ora	stats_time_end-STATS_TIME_LEN+1
+			ora	stats_time_end-STATS_TIME_LEN+2
 			.if	.defined(SMB2)|.defined(VS_SMB)
-				bne	:++ ; if (!(VAR_0|VAR_1|VAR_2)) {
+				bne	:++ ; if (time == 0) {
 			.elseif	.defined(ANN)
-				beq	:+ ; if (VAR_0|VAR_1|VAR_2) {
+				beq	:+ ; if (time != 0) {
 					jmp	actor_proc_flag_victory_timer_score_do
 				; } else {
 			.endif
-			: ; if (!(VAR_0|VAR_1|VAR_2)) {
+			: ; if (time == 0) {
 				lda	#$30
 				sta	timer_select
 				.if	.defined(SMB2M)
 					lda	#6
 					sta	timer_victory
 				.endif
-				inc	eng_gameplay_mode
+				inc	game_state
 			; }
 		: ; }
 
@@ -502,7 +496,7 @@ ppu_84AA:
 	.byte	NMI_REPEAT|21
 	.byte	" "
 
-	.byte	NMI_DATA_END
+	.byte	NMI_LIST_END
 ppu_84AA_end:
 
 obj_data_offset_actor_84B3:
@@ -525,10 +519,10 @@ sub_84CF:
 	lda	course_no
 	cmp	#course::no_08
 	beq	:+ ; if (course_no != no_08) {
-		lda	eng_gameplay_mode
+		lda	game_state
 		clc
 		adc	#2
-		sta	eng_gameplay_mode
+		sta	game_state
 		rts
 	: ; } else {
 		inc	VS_RAM_ARENA0+$18
@@ -549,7 +543,7 @@ sub_84CF:
 			ldx	#(pal_8492_end-pal_8492)-1
 			: ; for (color of pal_8492) {
 				lda	pal_8492, x
-				sta	ppu_nmi_buffer_0_data+0, x
+				sta	nmi_list_0_data+0, x
 
 				dex
 				bpl	:-
@@ -559,7 +553,7 @@ sub_84CF:
 			ldy	VS_RAM_ARENA0+$22
 			: ; for (x = 12; x > 0; x -= 4) {
 				lda	pal_84A6, y
-				sta	ppu_nmi_buffer_0_data+3, x
+				sta	nmi_list_0_data+3, x
 
 				dex
 				dex
@@ -572,7 +566,7 @@ sub_84CF:
 			lda	VS_RAM_ARENA0+$22
 			cmp	#4
 			bne	:+ ; if (++vs_ram_arena0[0x22] == 4) {
-				inc	eng_gameplay_mode
+				inc	game_state
 			: ; }
 		: ; }
 
@@ -583,12 +577,12 @@ sub_8526:
 	ldx	#(ppu_84AA_end-ppu_84AA)-1
 	: ; for (entry of ppu_84AA) {
 		lda	ppu_84AA, x
-		sta	ppu_nmi_buffer_0_data, x
+		sta	nmi_list_0_data, x
 		dex
 		bpl	:-
 	; }
 
-	inc	eng_gameplay_mode
+	inc	game_state
 	ldx	player_id
 	lda	#1
 	sta	VS_RAM_ARENA0+$28, x
@@ -694,13 +688,13 @@ sub_85E0:
 		; if (!timer_victory) {
 			lda	#0
 			sta	course_sub
-			sta	eng_goals
-			sta	eng_gameplay_mode
+			sta	player_goals
+			sta	game_state
 			inc	course_no
 			jsr	course_descriptor_load
 			inc	eng_req_timer
-			lda	#game_mode::normal
-			sta	eng_game_mode
+			lda	#game_modes::normal
+			sta	game_mode
 		: ; }
 
 		rts
@@ -709,7 +703,7 @@ sub_85E0:
 		sta	eng_timer_ctl
 		lda	#$1C
 		sta	timer_actor+1
-		inc	eng_gameplay_mode
+		inc	game_state
 		rts
 	; }
 	.endif
@@ -727,8 +721,8 @@ victory_end:
 
 		lda	#0
 		sta	course_sub
-		sta	eng_goals
-		sta	eng_gameplay_mode
+		sta	player_goals
+		sta	game_state
 
 		.if	.defined(SMBM)
 			inc	course_no
@@ -745,8 +739,8 @@ victory_end:
 
 		jsr	course_descriptor_load
 		inc	eng_req_timer
-		lda	#game_mode::normal
-		sta	eng_game_mode
+		lda	#game_modes::normal
+		sta	game_mode
 	.elseif	.defined(VS)
 		lda	course_no
 		cmp	#course::no_08
@@ -764,7 +758,7 @@ victory_end:
 			sta	score_digit_mod+2
 			jmp	actor_proc_course_end_stats
 		: ; } else if (course.no != no_08 || player.lives < 0) {
-			inc	eng_gameplay_mode
+			inc	game_state
 		: ; }
 	.endif
 
@@ -778,7 +772,7 @@ victory_end:
 			and	#joypad_button::face_b
 			beq	:+ ; if (joypad_face_b) {
 				lda	#1
-				sta	eng_course_sel_on
+				sta	title_course_sel_on
 				lda	#255
 				sta	player_lives
 				jsr	eng_next_game
@@ -794,7 +788,7 @@ sub_864C:
 
 	lda	timer_actor+1
 	bne	sub_865D_rts ; if (!actor.timer+1) {
-		inc	eng_gameplay_mode
+		inc	game_state
 		lda	#$D8
 		sta	timer_select
 		rts
@@ -805,15 +799,15 @@ sub_865D:
 
 	lda	timer_select
 	bne	:+
-	lda	snd_ram+1
-	bne	:+ ; if (!timer_select && !snd_ram[1]) {
-		sta	eng_course_sel_on
+	lda	snd_music_event_current
+	bne	:+ ; if (!timer_select && !snd.music_event) {
+		sta	title_course_sel_on
 		lda	#255
 		sta	player_lives
-		lda	#game_mode::game_over
-		sta	eng_game_mode
-		lda	#gameplay_mode::vs_init
-		sta	eng_gameplay_mode
+		lda	#game_modes::game_over
+		sta	game_mode
+		lda	#game_states::vs_init
+		sta	game_state
 	: ; }
 
 sub_865D_rts:

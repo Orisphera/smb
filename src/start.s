@@ -1,6 +1,5 @@
 .include	"system/ppu.i"
 .include	"system/apu.i"
-
 .if	.defined(FDS)
 	.include	"system/fds.i"
 .elseif	.defined(VS)
@@ -11,9 +10,10 @@
 .include	"engine/tunables.i"
 .include	"engine/misc.i"
 
-.include	"engine/unk.i"
+.include	"macros.i"
 
 .segment	"VECTORS"
+
 IRQ_NULL	= $FFF0
 
 	.addr	nmi
@@ -70,9 +70,9 @@ start:
 	.endif
 
         ldy     #START_COLDBOOT_VAL
-        ldx     #(eng_score_end-eng_score)-1
-	: ; for (digit of eng_score) {
-		lda     eng_score, x
+        ldx     #STAT_LEN_MAX-1
+	: ; for (digit of score_top) {
+		lda     stats_score_top, x
 		cmp     #10
 		bcs     :+
 
@@ -80,11 +80,11 @@ start:
 		bpl     :-
 	; }
 
-	; if (eng_score == number) {
+	; if (isnum(game.score)) {
 	.if	.defined(CONS)
-		lda     eng_boot_flag
+		lda     game_boot_flag
 		cmp     #START_WARMBOOT_FLAG
-		bne     :+ ; if (eng_boot_flag == START_WARMBOOT_FLAG) {
+		bne     :+ ; if (game.boot_flag == START_WARMBOOT_FLAG) {
 			ldy     #START_WARMBOOT_VAL
 		; }
 	.endif
@@ -92,7 +92,7 @@ start:
 
 	jsr     sub_clearram
         sta     DMCDATA
-        sta     eng_game_mode
+        sta     game_mode
 
 	.if	.defined(SMB2M)
 		sta	disk_loader_proc
@@ -103,9 +103,9 @@ start:
 
         lda     #START_WARMBOOT_FLAG
 	.if	.defined(CONS)
-        	sta     eng_boot_flag
+        	sta     game_boot_flag
 	.endif
-        sta     eng_rand_seed
+        sta     lib_rand
 
         lda     #(dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2|dmcstatus::pulse_1)
 	sta	DMCSTATUS
@@ -113,7 +113,7 @@ start:
         sta     PPU_CTLR1
         jsr     oam_init
         jsr     nt_init
-        inc     eng_disp_disable
+        inc     nmi_disp_disable
 
 	.if	.defined(FDS_SMB)
 		lda	#(fds_ctlr::mask|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
@@ -134,10 +134,7 @@ start:
 
 		lda     #vs_req::chr_high|vs_req::irq_rel
 		sta     VS_REQ
-			lda     #>vs_save_data
-			sta     PPU_VRAM_AR
-			lda     #<vs_save_data
-			sta     PPU_VRAM_AR
+			ppuaddr_m	vs_save_data
 			lda     PPU_VRAM_IO
 			ldy     #(VS_SAVEDAT-VS_RAM_ARENA0)
 			: ; for (y = 0x74; y < 0x100, y++) {
@@ -150,10 +147,10 @@ start:
 		lda     #vs_req::chr_low|vs_req::irq_rel
 		sta     VS_REQ
 
-		ldy     #(eng_score_end-eng_score)-1
-		: ; for (byte of score) {
+		ldy     #STAT_LEN_MAX-1
+		: ; for (digit of score_top) {
 			lda     VS_SAVEDAT_SCORE, y
-			sta     eng_score, y
+			sta     stats_score_top, y
 
 			dey
 			bpl     :-
@@ -168,7 +165,7 @@ start:
 
         lda     ppu_ctlr0_b
         ora     #ppu_ctlr0::int
-        jsr     eng_sta_ppu_ctlr0
+        jsr     nmi_list_write_ctlr0
 
 start_loop:
 	.if	.defined(SMB2M)

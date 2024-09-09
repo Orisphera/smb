@@ -9,7 +9,7 @@ actor_proc_podoboo:
 	lda	timer_actor, x
 	bne	:+ ; if (actor.timer == 0) {
 		jsr	actor_init_podoboo
-		lda	eng_rand_seed+1, x
+		lda	lib_rand+1, x
 		ora	#%10000000
 		sta	accel_y_actor_c, x
 		and	#MOD_16

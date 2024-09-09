@@ -37,7 +37,7 @@ actor_proc_plat_do:
 	lda	actor_id, x
 	sec
 	sbc	#actor::plat_start
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	actor_proc_plat_bal
 	.addr	actor_proc_plat_mov_v
 	.addr	actor_proc_plat_lift

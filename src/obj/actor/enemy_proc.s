@@ -22,7 +22,7 @@ actor_proc_enemy:
 ; -----------------------------------------------------------
 actor_proc_enemy_do:
 	lda	actor_id, x
-	jsr	eng_farjump
+	jsr	tbljmp
 	.addr	actor_proc_base
 	.addr	actor_proc_base
 	.addr	actor_proc_base

@@ -23,7 +23,7 @@ actor_bowser_ending_data:
 ; -----------------------------
 	.export actor_bowser_ending
 actor_bowser_ending:
-	ldx	ppu_nmi_buffer_1_data+$27
+	ldx	nmi_list_1_data+$27
 	lda	actor_id, x
 	cmp	#actor::bowser
 	bne	:+
@@ -38,25 +38,25 @@ actor_bowser_ending:
 	: ; if (actor.id != bowser || (actor.state != state_0 && actor_state & 0x40) || actor.pos_y >= 224) {
 		lda	#music_event::none
 		sta	apu_music_event
-		inc	eng_gameplay_mode
+		inc	game_state
 		jmp	actor_killall
 	: ; } else if () {
 		jsr	motion_fall_slow
 		jmp	actor_proc_bowser_finish
 	: ; } else {
-		dec	ppu_nmi_buffer_1_data+$23
+		dec	nmi_list_1_data+$23
 		bne	:+ ; if () {
 			lda	#$04
-			sta	ppu_nmi_buffer_1_data+$23
-			lda	ppu_nmi_buffer_1_data+$22
+			sta	nmi_list_1_data+$23
+			lda	nmi_list_1_data+$22
 			eor	#1
-			sta	ppu_nmi_buffer_1_data+$22
+			sta	nmi_list_1_data+$22
 			lda	#$22
 			sta	zp_byte_05
-			ldy	ppu_nmi_buffer_1_data+$28
+			ldy	nmi_list_1_data+$28
 			lda	actor_bowser_ending_data, y
 			sta	zp_byte_04
-			ldy	ppu_nmi_buffer_0_offset
+			ldy	nmi_list_0_offset
 			iny
 			ldx	#clear_blocks::blank_a*METATILE_SIZE
 			jsr	gfx_clear_put_do
@@ -66,8 +66,8 @@ actor_bowser_ending:
 			sta	apu_pulse2_queue
 			lda	#sfx_noise::block_break_01
 			sta	apu_noise_event
-			inc	ppu_nmi_buffer_1_data+$28
-			lda	ppu_nmi_buffer_1_data+$28
+			inc	nmi_list_1_data+$28
+			lda	nmi_list_1_data+$28
 			cmp	#$0F
 			bne	:+ ; if () {
 				jsr	actor_init_veloc_y
@@ -110,17 +110,17 @@ actor_proc_bowser:
 	lda	eng_timer_ctl
 	beq	:+
 	jmp	actor_proc_bowser_motion_skip
-	: lda	ppu_nmi_buffer_1_data+$22
+	: lda	nmi_list_1_data+$22
 	bpl	:+
 	jmp	:+++++++
 	: ; if () {
-		dec	ppu_nmi_buffer_1_data+$23
+		dec	nmi_list_1_data+$23
 		bne	:+ ; if () {
 			lda	#$20
-			sta	ppu_nmi_buffer_1_data+$23
-			lda	ppu_nmi_buffer_1_data+$22
+			sta	nmi_list_1_data+$23
+			lda	nmi_list_1_data+$22
 			eor	#1
-			sta	ppu_nmi_buffer_1_data+$22
+			sta	nmi_list_1_data+$22
 		: ; }
 	
 		lda	frame_count
@@ -137,7 +137,7 @@ actor_proc_bowser:
 			lda	#DIR_RIGHT
 			sta	motion_dir_actor, x
 			lda	#$02
-			sta	ppu_nmi_buffer_1_data+$24
+			sta	nmi_list_1_data+$24
 			lda	#32
 			sta	timer_ani_actor, x
 			sta	timer_bowser_flame
@@ -150,9 +150,9 @@ actor_proc_bowser:
 		and	#MOD_4
 		bne	:+++ ; if ((!timer_ani_actor || col_player_bullet_diff() >= 0 || (this.pos_x < 200)) && !(frame_count % 4)) {
 			lda	pos_x_lo_actor, x
-			cmp	ppu_nmi_buffer_1_data+$25
+			cmp	nmi_list_1_data+$25
 			bne	:+ ; if () {
-				lda	eng_rand_seed, x
+				lda	lib_rand, x
 				and	#MOD_4
 				tay
 				lda	actor_proc_bowser_timer_data, y
@@ -161,14 +161,14 @@ actor_proc_bowser:
 		
 			lda	pos_x_lo_actor, x
 			clc
-			adc	ppu_nmi_buffer_1_data+$24
+			adc	nmi_list_1_data+$24
 			sta	pos_x_lo_actor, x
 			ldy	motion_dir_actor, x
 			cpy	#DIR_RIGHT
 			beq	:++ ; if (actor.motion_dir == right) {
 				ldy	#<-1
 				sec
-				sbc	ppu_nmi_buffer_1_data+$25
+				sbc	nmi_list_1_data+$25
 				bpl	:+ ; if () {
 					neg_m
 					ldy	#1
@@ -176,7 +176,7 @@ actor_proc_bowser:
 			
 				cmp	eng_bowser_rand_offset
 				bcc	:+ ; if (actor.pos_x >= eng_bowser_rand_offset) {
-					sty	ppu_nmi_buffer_1_data+$24
+					sty	nmi_list_1_data+$24
 				; }
 			; }
 		; }
@@ -199,7 +199,7 @@ actor_proc_bowser:
 	lda	pos_y_lo_actor, x
 	cmp	#BOWSER_TIMER_START_POS_Y
 	bcc	:++ ; if (actor.pos_y >= timer_start_pos) {
-		lda	eng_rand_seed, x
+		lda	lib_rand, x
 		and	#MOD_4
 		tay
 		lda	actor_proc_bowser_timer_data, y
@@ -226,9 +226,9 @@ actor_proc_bowser_motion_skip:
 		bne	actor_proc_bowser_finish ; if (course_no != no_07 && timer_bowser_flame == 0) {
 			lda	#ACTOR_BOWSER_FLAME_TIMER
 			sta	timer_bowser_flame
-			lda	ppu_nmi_buffer_1_data+$22
+			lda	nmi_list_1_data+$22
 			eor	#%10000000
-			sta	ppu_nmi_buffer_1_data+$22
+			sta	nmi_list_1_data+$22
 			bmi	:--
 		; }
 	; }
@@ -280,11 +280,11 @@ actor_proc_bowser_finish:
 	sta	actor_index
 	tax
 	lda	#0
-	sta	ppu_nmi_buffer_1_data+$29
+	sta	nmi_list_1_data+$29
 	: rts
 ; -----------------------------
 actor_proc_bowser_col:
-	inc	ppu_nmi_buffer_1_data+$29
+	inc	nmi_list_1_data+$29
 	jsr	actor_proc_toad
 	lda	state_actor, x
 	bne	:- ; if (actor.state == init) {

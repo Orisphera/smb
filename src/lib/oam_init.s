@@ -4,23 +4,23 @@
 .include	"engine/mem.i"
 .include	"engine/tunables.i"
 
-SKIP_TO_nmi_init_do	= BIT_ABS_OPCODE
+SKIP_TO_oam_init_do	= BIT_ABS_OPCODE
 
 	.export oam_init, oam_init_nmi
 oam_init:
 	ldy     #0
 	.if	.defined(CONS)
-		.byte	SKIP_TO_nmi_init_do
+		.byte	SKIP_TO_oam_init_do
 	.elseif	.defined(VS)
-		jmp	nmi_init_do
+		jmp	oam_init_do
 	.endif
 
 oam_init_nmi:
 	ldy	#4
 
-nmi_init_do:
+oam_init_do:
         lda     #ENG_OAM_CLEAR_SCANLINE
-	: ; for (y = 0; y < 0x100; y += 4) {
+	: ; for (obj of OAM) {
 		sta     OAM_DMA_BUFFER+OBJ_POS_V, y
 
 		iny

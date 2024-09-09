@@ -99,7 +99,11 @@ LIB_OBJS	=	src/game/victory.o \
 			src/lib/gfx.o \
 			data/metatiles.o \
 			data/nmi_data.o \
-			src/lib/misc.o
+			src/lib/tbljmp.o \
+			src/lib/nt_init.o \
+			src/lib/joypad.o \
+			src/lib/nmi_list_write.o \
+			src/lib/stats.o
 
 LIB_VS_OBJS	=	src/lib/vs.o
 
