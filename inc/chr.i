@@ -93,6 +93,10 @@ CHR_I = 1
 		.if	.defined(SMB)|.defined(VS_SMB)
 			filler	= <((chr_obj_filler-chr_obj)/PPU_CHR_SIZE)
 		.endif
+
+		.if	.defined(SMB2)
+			leaf	= <((chr_obj_leaf-chr_obj)/PPU_CHR_SIZE)
+		.endif
 	.endenum
 
 	.enum	chr_bg

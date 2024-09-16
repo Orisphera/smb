@@ -196,7 +196,7 @@ game_init_1_do:
 	sta	nmi_disp_disable
 	
 	.if	.defined(SMB2)
-		sta	byte_7F9
+		sta	bg_scenery_wind_flag
 	.endif
 
 	.if	.defined(SMB2M)

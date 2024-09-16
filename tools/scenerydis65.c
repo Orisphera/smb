@@ -203,8 +203,8 @@ static const char *obj_d[] = {
 	"SWARM_C",
 	"LOOP",
 #if		defined(SMB2)
-	"C5BE",
-	"C5C2"
+	"WIND_ON",
+	"WIND_OFF"
 #endif
 };
 

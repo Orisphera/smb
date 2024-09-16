@@ -325,8 +325,8 @@ sprite_strobe_offset	= byte_6DF+1
 sprite_strobe_amount	= sprite_strobe_offset+1
 obj_data_offset_player	= sprite_strobe_amount+3
 obj_data_offset_actor	= obj_data_offset_player+ENG_PLAYER_OBJ_MAX
-byte_6EB		= obj_data_offset_actor+ENG_ACTOR_MAX
-obj_data_offset_block	= byte_6EB+1
+obj_data_offset_leaf	= obj_data_offset_actor+ENG_ACTOR_MAX
+obj_data_offset_block	= obj_data_offset_leaf+1
 obj_data_offset_bubble	= obj_data_offset_block+(ENG_BLOCK_MAX-2)
 obj_data_offset_proj	= obj_data_offset_bubble+ENG_BUBBLE_MAX
 obj_data_offset_misc	= obj_data_offset_proj+ENG_PROJ_MAX
@@ -547,7 +547,7 @@ disk_loader_file_id	= $7F7
 game_over_choice	= $7F8
 .endif
 .if	.defined(SMB2)
-byte_7F9		= $7F9
+bg_scenery_wind_flag	= $7F9
 game_courses_cleared	= $7FA
 .endif
 

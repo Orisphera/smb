@@ -35,7 +35,7 @@ render_actor:
 	
 			ldy	ENG_HARDMODE_VAR
 			beq	:+ ; if (game.hard_mode) {
-				jsr	sub_C50C
+				jsr	game_hard_mode_render_spring
 			: ; }
 		.endif
 

@@ -124,7 +124,7 @@ player_proc_main:
 	.if	.defined(SMB2)
 		lda	disk_loader_file_id
 		beq	:+ ; if (disk_loader_file_id != main) {
-			jsr	sub_C550
+			jsr	bg_scenery_wind_proc
 		: ; }
 	.endif
 
@@ -862,7 +862,7 @@ player_proc_player_ground_b:
 	.if	.defined(SMB2)
 		lda	disk_loader_file_id
 		beq	:+ ; if (disk_loader_file_id != main) {
-			jsr	sub_C4FE
+			jsr	bg_scenery_wind_col
 		: ; }
 	.endif
 
@@ -1777,7 +1777,6 @@ player_proc_spring:
 			.endif
 
 			lda	#SPRING_ACCEL_Y
-
 			.if	.defined(SMB2)
 				ldy	course_no
 				cpy	#course::no_02
@@ -1787,15 +1786,14 @@ player_proc_spring:
 				cpy	#course::no_07
 				bne	:++
 				: ; if (SMB2M && course_no.in(2, 3, 7)) {
-					lda	#<-32
+					lda	#SPRING_SPECIAL_ACCEL_Y
 				: ; }
 			.elseif	.defined(ANN)
 				ldy	ENG_HARDMODE_VAR
 				beq	:+ ; if (ANN && hard_mode) {
-					jsr	sub_C4FE_b
+					jsr	game_hard_mode_spring
 				: ; }
 			.endif
-
 			sta	accel_y_spring
 
 			.if	.defined(SMB2M)

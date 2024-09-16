@@ -248,8 +248,12 @@ APU_DATA_OBJS	=	data/apu/notes.o \
 			data/apu/lengths_misc.o \
 			data/apu/envelopes_misc.o
 
-DATA2_OBJS	=	src/game/bg_pipe_flipped.o \
+PIPE_FLIPPED_OBJS =	src/game/bg_pipe_flipped.o \
 			src/obj/actor/piranha_plant_b_proc.o
+
+WIND_OBJS	=	src/game/bg_wind.o
+
+HARD_MODE_SPRING_OBJS =	src/game/hard_mode_spring.o
 
 SECURITY_OBJS	=	data/security.o
 
@@ -367,7 +371,8 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
 			$(APU_DATA_OBJS) \
-			$(DATA2_OBJS) \
+			$(PIPE_FLIPPED_OBJS) \
+			$(WIND_OBJS) \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
 			data/data4.smb2.o \
@@ -414,7 +419,8 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
 			$(APU_DATA_OBJS) \
-			$(DATA2_OBJS) \
+			$(PIPE_FLIPPED_OBJS) \
+			$(HARD_MODE_SPRING_OBJS) \
 			data/data2.ann.o \
 			data/data3.ann.o \
 			data/data4.ann.o \

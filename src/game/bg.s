@@ -937,8 +937,8 @@ bg_scenery_decode_rts:
 	.export	bg_obj_tbl_swarm_c
 	.export	bg_obj_tbl_decode_rts
 	.if	.defined(SMB2)
-		.export	bg_obj_tbl_C5BE
-		.export	bg_obj_tbl_C5C2
+		.export	bg_obj_tbl_wind_on
+		.export	bg_obj_tbl_wind_off
 	.endif
 bg_obj_tbl:
 bg_obj_norm:
@@ -1099,10 +1099,10 @@ bg_obj_tbl_decode_rts:
 	.addr	bg_scenery_decode_rts2
 
 	.if	.defined(SMB2)
-	bg_obj_tbl_C5BE:
-		.addr	bg_scenery_C5BE
-	bg_obj_tbl_C5C2:
-		.addr	bg_scenery_C5C2
+	bg_obj_tbl_wind_on:
+		.addr	bg_scenery_wind_on
+	bg_obj_tbl_wind_off:
+		.addr	bg_scenery_wind_off
 	.endif
 
 bg_obj_tbl_set_attr:

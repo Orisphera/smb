@@ -226,8 +226,8 @@ COURSE_OBJ_D_SWARM_B	= (((bg_obj_tbl_swarm_b-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BI
 COURSE_OBJ_D_SWARM_C	= (((bg_obj_tbl_swarm_c-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
 COURSE_OBJ_D_LOOP	= (((bg_obj_tbl_decode_rts-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
 .if	.defined(SMB2)
-	COURSE_OBJ_D_C5BE	= (((bg_obj_tbl_C5BE-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
-	COURSE_OBJ_D_C5C2	= (((bg_obj_tbl_C5C2-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+	COURSE_OBJ_D_WIND_ON	= (((bg_obj_tbl_wind_on-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
+	COURSE_OBJ_D_WIND_OFF	= (((bg_obj_tbl_wind_off-bg_obj_spec_D)/WORD_SIZE)<<OBJ_D_BIT)
 .endif
 
 COURSE_SCENERY_OBJ_MASK	= $7000
