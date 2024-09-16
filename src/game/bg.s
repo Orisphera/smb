@@ -5,7 +5,7 @@
 .include	"tiles.i"
 
 .include	"unk.i"
- 
+
 BG_PROC_METATILE_ID	= zp_byte_07
 
 	.export bg_proc
@@ -897,8 +897,8 @@ bg_scenery_decode_rts:
 	.export	bg_obj_tbl_pipe_exit
 	.export	bg_obj_tbl_pole_tip
 	.if	.defined(SMB2M)
-		.export	bg_obj_tbl_C470
-		.export	bg_obj_tbl_C475
+		.export	bg_obj_tbl_pipe_v_flip_a
+		.export	bg_obj_tbl_pipe_v_flip_b
 	.endif
 
 	.export	bg_obj_spec_C
@@ -1011,10 +1011,10 @@ bg_obj_tbl_pole_tip:
 	.addr	bg_scenery_pole_tip
 
 	.if	.defined(SMB2M)
-	bg_obj_tbl_C470:
-		.addr	bg_scenery_C470
-	bg_obj_tbl_C475:
-		.addr	bg_scenery_C475
+	bg_obj_tbl_pipe_v_flip_a:
+		.addr	bg_scenery_pipe_v_flip_a
+	bg_obj_tbl_pipe_v_flip_b:
+		.addr	bg_scenery_pipe_v_flip_b
 	.endif
 
 bg_obj_spec_C:
@@ -1362,8 +1362,8 @@ bg_scenery_ledge_mushroom:
 
 			bg_scenery_ledge_base:
 				inx
-				ldy	#$0F
-				jmp	bg_objrenderbase
+				ldy	#15
+				jmp	bg_scenery_render
 			; } else rts;
 		; }
 	; }
@@ -1371,7 +1371,7 @@ bg_scenery_ledge_mushroom:
 bg_scenery_ledge_no_base:
 	ldx	BG_PROC_METATILE_ID
 	ldy	#0
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; -----------------------------
 bg_scenery_pulley_tiles:
 	.byte	metatile_1::pulley_c
@@ -1395,6 +1395,8 @@ bg_scenery_pulley:
 bg_scenery_pulley_rts:
 	rts
 ; -----------------------------
+CASTLE_ROW_SIZE		= 5
+
 bg_scenery_castle_tiles:
 	.byte	metatile_0::blank_a
 	.byte	metatile_1::castle_a
@@ -1461,6 +1463,7 @@ bg_scenery_castle_tiles:
 	.byte	metatile_1::castle_g
 	.byte	metatile_1::castle_c
 	.byte	metatile_1::castle_g
+bg_scenery_castle_tiles_end:
 ; --------------
 bg_scenery_castle:
 	jsr	bg_scenery_attr
@@ -1472,7 +1475,7 @@ bg_scenery_castle:
 
 	ldy	scenery_length, x
 	ldx	zp_byte_07
-	lda	#$0B
+	lda	#((bg_scenery_castle_tiles_end-bg_scenery_castle_tiles)/CASTLE_ROW_SIZE)
 	sta	zp_byte_06
 	: ; for (x = zp_byte_07, i = 0x0B; x < 0x0B; x++, i--, y += 5) {
 		lda	bg_scenery_castle_tiles, y
@@ -1488,7 +1491,7 @@ bg_scenery_castle:
 			iny
 			dec	zp_byte_06
 		: ; }
-		cpx	#$0B
+		cpx	#((bg_scenery_castle_tiles_end-bg_scenery_castle_tiles)/CASTLE_ROW_SIZE)
 		bne	:--
 	; }
 
@@ -1542,10 +1545,12 @@ bg_scenery_pipe_water:
 ; -----------------------------
 BG_SCENERY_PIPE_SIZE	= 7
 
+bg_scenery_pipe_horiz_len	= zp_byte_05
+
 bg_scenery_pipe_intro:
 	ldy	#3
 	jsr	bg_scenery_len_b
-	ldy	#$0A
+	ldy	#10
 	jsr	bg_scenery_pipe_horiz
 	bcs	:++ ; if (!bg_scenery_pipe_horiz()) {
 		ldx	#BG_SCENERY_PIPE_SIZE-1
@@ -1587,17 +1592,17 @@ bg_scenery_pipe_exit:
 bg_scenery_pipe_horiz:
 	dey
 	dey
-	sty	zp_byte_05
+	sty	bg_scenery_pipe_horiz_len
 	ldy	scenery_length, x
 	sty	zp_byte_06
-	ldx	zp_byte_05
+	ldx	bg_scenery_pipe_horiz_len
 	inx
 	lda	bg_scenery_pipe_horiz_m, y
 	cmp	#0
 	beq	:+ ; if (bg_reaobj_pipe_horiz_m[scenery_length]) {
 		ldx	#0
-		ldy	zp_byte_05
-		jsr	bg_objrenderbase
+		ldy	bg_scenery_pipe_horiz_len
+		jsr	bg_scenery_render
 		clc
 	: ; }
 
@@ -1608,6 +1613,7 @@ bg_scenery_pipe_horiz:
 	sta	gfx_metatile+1, x
 	rts
 ; --------------
+	.export	bg_scenery_pipe_v_tiles
 bg_scenery_pipe_v_tiles:
 	.byte	metatile_0::pipe_v_b, metatile_0::pipe_v_a
 	.byte	metatile_0::pipe_v_f, metatile_0::pipe_v_e
@@ -1675,8 +1681,9 @@ bg_scenery_pipe_vert:
 	lda	bg_scenery_pipe_v_tiles+2, y
 	ldy	zp_byte_06
 	dey
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; --------------
+	.export	bg_scenery_pipe_h
 bg_scenery_pipe_h:
 	ldy	#1
 	jsr	bg_scenery_len_b
@@ -1688,6 +1695,7 @@ bg_scenery_pipe_h:
 	rts
 ; -------------
 .if	.defined(SMB2M)
+	.export	bg_scenery_pipe_vert_plant
 bg_scenery_pipe_vert_plant:
 	sta	actor_id, x
 	jsr	bg_objpos_x_get
@@ -1705,6 +1713,7 @@ bg_scenery_pipe_vert_plant:
 	jmp	actor_init_piranha_plant
 .endif
 ; -----------------------------
+	.export	bg_obj_alloc
 bg_obj_alloc:
 	ldx	#0
 	: ; for (x = 0; actor_mode[x] != dead && x < (ENG_ACTOR_MAX-1); x++) {
@@ -1722,10 +1731,10 @@ bg_scenery_waterhole:
 	jsr	bg_scenery_len
 	lda	#metatile_2::water_a
 	sta	gfx_metatile+10
-	ldx	#$0B
+	ldx	#11
 	ldy	#1
 	lda	#metatile_2::water_b
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; -----------------------------
 bg_scenery_block_qhi:
 	lda	#3
@@ -1780,13 +1789,13 @@ bg_scenery_bridge:
 	inx
 	ldy	#0
 	lda	#metatile_1::bridge_base
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; -----------------------------
 bg_scenery_pole_tip:
 	jsr	bg_scenery_attr
 	ldx	#2
 	lda	#metatile_1::flag_ball
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; --------------
 bg_scenery_pole:
 	lda	#metatile_0::flag_ball
@@ -1794,7 +1803,7 @@ bg_scenery_pole:
 	ldx	#1
 	ldy	#8
 	lda	#metatile_0::pole
-	jsr	bg_objrenderbase
+	jsr	bg_scenery_render
 	lda	#metatile_1::stair
 	sta	gfx_metatile+10
 	jsr	bg_objpos_x_get
@@ -1825,7 +1834,7 @@ bg_scenery_rope_plat:
 	ldx	#1
 	ldy	#$0F
 	lda	#metatile_1::pulley_e
-	jsr	bg_objrenderbase
+	jsr	bg_scenery_render
 
 	pla
 	tax
@@ -1834,7 +1843,7 @@ bg_scenery_rope_plat:
 
 bg_scenery_rope_draw:
 	lda	#metatile_1::pulley_a
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; -----------------------------
 bg_scenery_coinrow_tiles:
 	.byte	metatile_3::coin_b
@@ -1876,7 +1885,7 @@ bg_scenery_empty_draw:
 
 bg_scenery_castle_bridge_draw_do:
 	ldy	#0
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; -----------------------------
 bg_scenery_floor_tiles:
 	.byte	metatile_1::floor_underwater
@@ -1911,7 +1920,7 @@ bg_scenery_draw_row:
 	ldy	#0
 
 	pla
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 
 bg_scenery_brickcol:
 	ldy	course_type
@@ -1928,7 +1937,7 @@ bg_scenery_get_col:
 
 	pla
 	ldx	BG_PROC_METATILE_ID
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; -----------------------------
 bg_scenery_cannon:
 	jsr	bg_scenery_attr
@@ -1945,7 +1954,7 @@ bg_scenery_cannon:
 		dey
 		bmi	:+ ; if (--y >= 0) {
 			lda	#metatile_1::cannon_c
-			jsr	bg_objrenderbase
+			jsr	bg_scenery_render
 		; }
 	: ; }
 
@@ -1982,7 +1991,7 @@ bg_scenery_stairs:
 	lda	bg_scenery_stairs_height, y
 	tay
 	lda	#metatile_1::stair
-	jmp	bg_objrenderbase
+	jmp	bg_scenery_render
 ; -----------------------------
 bg_scenery_spring:
 	jsr	bg_scenery_attr
@@ -2095,7 +2104,8 @@ bg_scenery_pit:
 	ldx	#8
 	ldy	#$0F
 ; -----------------------------
-bg_objrenderbase:
+	.export	bg_scenery_render
+bg_scenery_render:
 	: ; for (x = metatile_base_id, y = eng_obj_height; x >= 0xD && y >= 0; x++, y--) {
 		sty	eng_obj_height
 		ldy	gfx_metatile, x

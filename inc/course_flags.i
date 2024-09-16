@@ -240,8 +240,8 @@ COURSE_OBJ_B_STAIRS	= (((bg_obj_tbl_stairs-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_PIPE_EXIT	= (((bg_obj_tbl_pipe_exit-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_POLE_TIP	= (((bg_obj_tbl_pole_tip-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 .if	.defined(SMB2M)
-COURSE_OBJ_B_C470	= (((bg_obj_tbl_C470-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
-COURSE_OBJ_B_C475	= (((bg_obj_tbl_C475-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
+COURSE_OBJ_B_PIPE_V_FLIP_A = (((bg_obj_tbl_pipe_v_flip_a-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
+COURSE_OBJ_B_PIPE_V_FLIP_B = (((bg_obj_tbl_pipe_v_flip_b-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 .endif
 
 OBJ_C_BIT	= 8

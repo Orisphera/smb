@@ -282,8 +282,8 @@ static const char *obj_b[] = {
 	"PIPE_EXIT",
 	"POLE_TIP",
 #if	defined(SMB2)||defined(ANN)
-	"C470",
-	"C475"
+	"PIPE_V_FLIP_A",
+	"PIPE_V_FLIP_B"
 #endif
 };
 

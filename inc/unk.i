@@ -2,10 +2,12 @@
 UNK_I = 1
 
 	.if	.defined(SMB2)
-		apu_cycle		= $D2A0
-		; ---
-		data4_start		= $C2B4
-		sub_C3D6		= $C3D6
+		data2_start		= $C470
+		sub_C4C0		= $C4C0
+		sub_C4FE		= $C4FE
+		sub_C550		= $C550
+		bg_scenery_C5BE		= $C5BE
+		bg_scenery_C5C2		= $C5C2
 
 		course_actor_castle_5_smb2	= $C5D0
 		course_actor_castle_6_smb2	= $C609
@@ -71,18 +73,11 @@ UNK_I = 1
 		course_scenery_water_2_smb2	= $D160
 		course_scenery_water_4_smb2	= $D229
 		course_scenery_water_5_smb2	= $D242
+		data2_end		= $D29F
+
 		course_scenery_water_6_smb2	= $CB50
 		course_scenery_water_7_smb2	= $CB97
 		course_scenery_water_8_smb2	= $CBDA
-
-		data2_start		= $C470
-		bg_scenery_C470		= $C470
-		bg_scenery_C475		= $C475
-		sub_C4C0		= $C4C0
-		sub_C4FE		= $C4FE
-		sub_C550		= $C550
-		bg_scenery_C5BE		= $C5BE
-		bg_scenery_C5C2		= $C5C2
 
 		data3_start		= $C5D0
 		sub_C5D0		= $C5D0
@@ -110,13 +105,19 @@ UNK_I = 1
 		ann_toad_pal_common	= $C97D
 		data_C9C0		= $C9C0
 
+		data4_start		= $C2B4
+		sub_C3D6		= $C3D6
 		data4_end		= $D200
 
-		data2_end		= $D29F
 		data3_end		= $D29F
 	.endif
 
 	.if	.defined(ANN)
+		data2_start		= $C470
+		sub_C4C0		= $C4C0
+		sub_C4FE_b		= $C4FE
+		sub_C50C		= $C50C
+
 		data4_start		= $C296
 		sub_C3D6		= $C3B7
 
@@ -165,13 +166,6 @@ UNK_I = 1
 		ann_toad_5		= $D14F
 		ann_toad_6		= $D1AF
 		ann_toad_7		= $D20F
-
-		data2_start		= $C470
-		bg_scenery_C470		= $C470
-		bg_scenery_C475		= $C475
-		sub_C4C0		= $C4C0
-		sub_C4FE_b		= $C4FE
-		sub_C50C		= $C50C
 
 		data3_start		= $C5D0
 		sub_C5FE		= $C5D0

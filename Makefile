@@ -248,6 +248,8 @@ APU_DATA_OBJS	=	data/apu/notes.o \
 			data/apu/lengths_misc.o \
 			data/apu/envelopes_misc.o
 
+DATA2_OBJS	=	src/game/bg_pipe_flipped.o
+
 SECURITY_OBJS	=	data/security.o
 
 SAVE_VS_OBJS	=	data/save.vs.o
@@ -364,6 +366,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
 			$(APU_DATA_OBJS) \
+			$(DATA2_OBJS) \
 			data/data2.smb2.o \
 			data/data3.smb2.o \
 			data/data4.smb2.o \
@@ -410,6 +413,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
 			$(APU_DATA_OBJS) \
+			$(DATA2_OBJS) \
 			data/data2.ann.o \
 			data/data3.ann.o \
 			data/data4.ann.o \

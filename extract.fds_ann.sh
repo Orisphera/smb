@@ -278,7 +278,7 @@ do
 done
 
 # NSMDATA2
-dd if=$1 bs=1 skip=42463 count=3584 >data/data2.ann.bin
+dd if=$1 bs=1 skip=42543 count=3504 >data/data2.ann.bin
 
 # NSMDATA3
 dd if=$1 bs=1 skip=46064 count=3346 >data/data3.ann.bin
