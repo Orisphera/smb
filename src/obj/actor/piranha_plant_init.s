@@ -2,9 +2,9 @@
 .include	"misc.i"
 
 ; -----------------------------------------------------------
-PIRANHA_PLANT_VELOC_X_1	= 1
-PIRANHA_PLANT_OFFSET_Y	= 24
-PIRANHA_PLANT_COL_BOX	= col_boxes::box_9
+PIRANHA_PLANT_VELOC_Y_1		= 1
+PIRANHA_PLANT_POS_Y_BOTTOM	= 24
+PIRANHA_PLANT_COL_BOX		= col_boxes::box_9
 ; -----------------------------------------------------------
 actor_init_piranha_plant_attr	= zp_byte_00
 
@@ -32,16 +32,16 @@ actor_init_piranha_plant:
 	        sta     actor_proc_piranha_plant_smb2_cmp+1
 	.endif
 
-	lda	#PIRANHA_PLANT_VELOC_X_1
-	sta	veloc_x_actor, x
+	lda	#PIRANHA_PLANT_VELOC_Y_1
+	sta	veloc_y_piranha, x
 	lsr	a
 	sta	state_actor, x
-	sta	veloc_y_actor, x
+	sta	neg_y_piranha, x
 	lda	pos_y_lo_actor, x
-	sta	accel_y_actor_c, x
+	sta	pos_y_top_piranha, x
 	sec
-	sbc	#PIRANHA_PLANT_OFFSET_Y
-	sta	pos_y_actor, x
+	sbc	#PIRANHA_PLANT_POS_Y_BOTTOM
+	sta	pos_y_bottom_piranha, x
 	lda	#PIRANHA_PLANT_COL_BOX
 	jmp	actor_init_col_b
 

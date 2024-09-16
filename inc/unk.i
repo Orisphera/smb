@@ -2,8 +2,6 @@
 UNK_I = 1
 
 	.if	.defined(SMB2)
-		data2_start		= $C470
-		sub_C4C0		= $C4C0
 		sub_C4FE		= $C4FE
 		sub_C550		= $C550
 		bg_scenery_C5BE		= $C5BE
@@ -73,7 +71,6 @@ UNK_I = 1
 		course_scenery_water_2_smb2	= $D160
 		course_scenery_water_4_smb2	= $D229
 		course_scenery_water_5_smb2	= $D242
-		data2_end		= $D29F
 
 		course_scenery_water_6_smb2	= $CB50
 		course_scenery_water_7_smb2	= $CB97
@@ -113,8 +110,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		data2_start		= $C470
-		sub_C4C0		= $C4C0
 		sub_C4FE_b		= $C4FE
 		sub_C50C		= $C50C
 

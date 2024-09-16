@@ -248,7 +248,8 @@ APU_DATA_OBJS	=	data/apu/notes.o \
 			data/apu/lengths_misc.o \
 			data/apu/envelopes_misc.o
 
-DATA2_OBJS	=	src/game/bg_pipe_flipped.o
+DATA2_OBJS	=	src/game/bg_pipe_flipped.o \
+			src/obj/actor/piranha_plant_b_proc.o
 
 SECURITY_OBJS	=	data/security.o
 

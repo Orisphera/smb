@@ -41,11 +41,11 @@ bg_scenery_pipe_v_flip_b:
 			sec
 			sbc	#10
 			sta	pos_y_lo_actor, x
-			sta	accel_y_actor_c, x
+			sta	pos_y_top_piranha, x
 			clc
 			adc	#24
-			sta	pos_y_actor, x
-			inc	veloc_y_actor, x
+			sta	pos_y_bottom_piranha, x
+			inc	neg_y_piranha, x
 		; }
 	: ; }
 

@@ -31,7 +31,7 @@ actor_proc_enemy_do:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.addr	actor_proc_base
 	.elseif	.defined(SMB2M)
-		.addr	sub_C4C0
+		.addr	actor_proc_piranha_plant_b
 	.endif
 
 	.addr	actor_proc_hammer_bro

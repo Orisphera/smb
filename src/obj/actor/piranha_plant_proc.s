@@ -12,6 +12,7 @@ PIRANHA_PLANT_CUTOFF_A	= 19
 PIRANHA_PLANT_TIMER_ANI	= 64
 ; -----------------------------------------------------------
 actor_proc_piranha_plant_pos_x_rel_abs	= zp_byte_00
+actor_proc_piranha_plant_pos_y		= zp_byte_00
 
 	.export actor_proc_piranha_plant
 	.export actor_proc_piranha_plant_smb2_cmp
@@ -19,11 +20,11 @@ actor_proc_piranha_plant:
 	lda	state_actor, x
 	bne	:++++++
 	lda	timer_ani_actor, x
-	bne	:++++++ ; if (actor_state == dead && timer_ani_actor == 0) {
-		lda	veloc_y_actor, x
+	bne	:++++++ ; if (this.state == init && this.timer_ani == 0) {
+		lda	neg_y_piranha, x
 		bne	:+++
-		lda	veloc_x_actor, x
-		bmi	:++ ; if (actor.veloc_y == 0 && actor.veloc_x >= 0) {
+		lda	veloc_y_piranha, x
+		bmi	:++ ; if (!this.negated && this.veloc_y >= 0) {
 			jsr	col_player_bullet_diff
 			bpl	:+ ; if (col_player_bullet_diff() < 0) {
 				lda	col_player_bullet_diff_pos_x_rel
@@ -37,20 +38,20 @@ actor_proc_piranha_plant:
 			bcc	:+++++
 		: ; }
 	
-		; if (actor.veloc_y != 0 || actor.veloc_x < 0 || actor_proc_piranha_plant_pos_x_rel_abs >= cutoff) {
-			; if (actor.veloc_y == 0) {
-				lda	veloc_x_actor, x
+		; if (this.negated || this.veloc_y < 0 || abs(this.pos_x_rel) >= cutoff) {
+			; if (!this.negated) {
+				lda	veloc_y_piranha, x
 				neg_m
-				sta	veloc_x_actor, x
-				inc	veloc_y_actor, x
+				sta	veloc_y_piranha, x
+				inc	neg_y_piranha, x
 			: ; }
 		
-			lda	accel_y_actor_c, x
-			ldy	veloc_x_actor, x
-			bpl	:+ ; if (actor.veloc_y < 0) {
-				lda	pos_y_actor, x
+			lda	pos_y_top_piranha, x
+			ldy	veloc_y_piranha, x
+			bpl	:+ ; if (this.veloc_y < 0) {
+				lda	pos_y_bottom_piranha, x
 			: ; }
-			sta	zp_byte_00
+			sta	actor_proc_piranha_plant_pos_y
 
 			.if	.defined(SMB2)
 				lda	render_actor_attrs_piranha_plant
@@ -65,12 +66,12 @@ actor_proc_piranha_plant:
 			bne	:+ ; if ((((SMB2 && this.color == color2) || ((frame_count % 2))) && eng_timer_ctl == 0) {
 				lda	pos_y_lo_actor, x
 				clc
-				adc	veloc_x_actor, x
+				adc	veloc_y_piranha, x
 				sta	pos_y_lo_actor, x
-				cmp	zp_byte_00
-				bne	:+ ; if (actor.pos_y == zp_byte_00) {
+				cmp	actor_proc_piranha_plant_pos_y
+				bne	:+ ; if (this.pos_y == limit) {
 					lda	#0
-					sta	veloc_y_actor, x
+					sta	neg_y_piranha, x
 					lda	#PIRANHA_PLANT_TIMER_ANI
 					sta	timer_ani_actor, x
 				; }
