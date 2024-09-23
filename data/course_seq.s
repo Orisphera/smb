@@ -18,7 +18,7 @@ course_01_areas:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
 	.elseif	.defined(ANN)
-		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_28_ann
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10_b
 	.endif
 		.byte	COURSE_TYPE_UNDERGROUND_B|(%100)<<5|course_underground::no_01
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07
@@ -41,7 +41,7 @@ course_02_areas:
 
 course_03_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_05
-	.if	.defined(SMB)|.defined(ANN)
+	.if	.defined(SMBM)
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_22
 	.elseif	.defined(VS_SMB)
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_22_vs
@@ -70,14 +70,14 @@ course_05_areas:
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
 		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02
 	.elseif	.defined(ANN)
-		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_23_ann
-		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_08_ann
+		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07_vs
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_02_smb2
 	.endif
 
 course_06_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_15
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_04
-	.if	.defined(SMB)|.defined(ANN)
+	.if	.defined(SMBM)
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_14
 	.elseif	.defined(VS_SMB)
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_07_vs
@@ -87,7 +87,7 @@ course_06_areas:
 	.elseif	.defined(VS_SMB)
 		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_01_vs
 	.elseif	.defined(ANN)
-		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_07_ann
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_04_smb2
 	.endif
 
 course_07_areas:
@@ -96,12 +96,9 @@ course_07_areas:
 	.if	.defined(SMB)
 			.byte	COURSE_TYPE_WATER_B|course_water::no_02
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08
-	.elseif	.defined(VS_SMB)
+	.elseif	.defined(VS_SMB)|.defined(ANN)
 			.byte	COURSE_TYPE_WATER_B|course_water::no_02_vs
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_08_vs
-	.elseif	.defined(ANN)
-			.byte	COURSE_TYPE_WATER_B|course_water::no_04_ann
-		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_24_ann
 	.endif
 	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_05
 
@@ -109,4 +106,8 @@ course_08_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_17
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_19
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_02
-	.byte	COURSE_TYPE_CASTLE_B|course_castle::no_06
+	.if	.defined(SMB)|.defined(VS_SMB)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_06
+	.elseif	.defined(ANN)
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_06_ann
+	.endif

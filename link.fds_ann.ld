@@ -7,7 +7,7 @@ MEMORY {
 	CHR1:	start = $760,  size $18A0,                          file = "nsmchar2.bin";
 	ROM1:	start = $6000, size $7FFA, fill = yes, fillval $FF, file = "nsmmain.bin";
 	ROM2:	start = $DFFA, size $0006,                          file = "nsmmain.bin";
-	DATA2:	start = $C470, size $E72,                           file = "nsmdata2.bin";
+	DATA2:	start = $C470, size $E00, fill = yes, fillval $FF,  file = "nsmdata2.bin";
 	DATA3:	start = $C5D0, size $D12,                           file = "nsmdata3.bin";
 	DATA4:	start = $C296, size $104C,                          file = "nsmdata4.bin";
 	SAVE:	start = $D2E3, size $0001,                          file = "nsmsave.bin";

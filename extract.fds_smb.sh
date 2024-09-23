@@ -39,4 +39,3 @@ do
         dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
-

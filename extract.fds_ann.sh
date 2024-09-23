@@ -277,8 +277,19 @@ do
         I=`expr $I + 1`
 done
 
-# NSMDATA2
-dd if=$1 bs=1 skip=42815 count=3232 >data/data2.ann.bin
+# NSMDATA2.CHR
+BANKBASE=45758
+BANKLEN=288
+TILES=`expr $BANKLEN / $TILE_SIZE`
+
+J=$I    # Continue adding to misc folder
+I=0
+while [ $I -ne $TILES ]
+do
+        dd if=raw/ann.fds bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $J`.bin
+        I=`expr $I + 1`
+        J=`expr $J + 1`
+done
 
 # NSMDATA3
 dd if=$1 bs=1 skip=46064 count=3346 >data/data3.ann.bin

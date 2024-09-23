@@ -34,8 +34,6 @@
  * DAMAGE.
  */
 
-#define	SMB2
-
 #include <stdio.h>
 
 #define	END_CHAR	0xFF
@@ -158,11 +156,7 @@ static char *names[] = {
 	"01",
 	"BUZZY_BEETLE",
 	"KOOPA_RED",
-#if	defined(SMB2)||defined(ANN)
 	"PIRANHA_PLANT_B",
-#else
-	"04",
-#endif
 	"HAMMER_BRO",
 	"GOOMBA",
 	"BLOOPER",

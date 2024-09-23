@@ -105,55 +105,6 @@ UNK_I = 1
 	.endif
 
 	.if	.defined(ANN)
-		data4_start		= $C296
-		sub_C3D6		= $C3B7
-
-		course_actor_castle_7_ann = $C5D0
-		course_actor_castle_8_ann = $C605
-		course_actor_castle_5	= $C62C
-		course_actor_castle_6	= $C641
-		course_actor_overworld_2 = $C681
-		course_actor_overworld_4 = $C69E
-		course_actor_overworld_23_ann = $C6C5
-		course_actor_overworld_24_ann = $C6E8
-		course_actor_overworld_11 = $C705
-		course_actor_overworld_26_ann = $C729
-		course_actor_overworld_14 = $C72F
-		course_actor_overworld_15 = $C752
-		course_actor_overworld_17 = $C75B
-		course_actor_overworld_18 = $C795
-		course_actor_overworld_19 = $C7C0
-		course_actor_overworld_20 = $C7F0
-		course_actor_overworld_27_ann = $C80C
-		course_actor_underground_4_ann = $C812
-		course_actor_water_1 = $C82B
-		course_actor_water_4_ann = $C83C
-		course_actor_water_3 = $C86A
-		course_scenery_castle_7_ann = $C878
-		course_scenery_castle_8_ann = $C8ED
-		course_scenery_castle_5	= $C97A
-		course_scenery_castle_6	= $CA05
-		course_scenery_overworld_2 = $CAD8
-		course_scenery_overworld_4 = $CB45
-		course_scenery_overworld_23_ann = $CBD6
-		course_scenery_overworld_24_ann = $CC1F
-		course_scenery_overworld_11 = $CC8C
-		course_scenery_overworld_26_ann = $CCCD
-		course_scenery_overworld_14 = $CCE2
-		course_scenery_overworld_15 = $CD49
-		course_scenery_overworld_17 = $CDBE
-		course_scenery_overworld_18 = $CE53
-		course_scenery_overworld_19 = $CECA
-		course_scenery_overworld_20 = $CF47
-		course_scenery_overworld_27_ann = $CFA8
-		course_scenery_underground_4_ann = $CFD3
-		course_scenery_water_1 = $D02C
-		course_scenery_water_4_ann = $D06D
-		course_scenery_water_3 = $D136
-		ann_toad_5		= $D14F
-		ann_toad_6		= $D1AF
-		ann_toad_7		= $D20F
-
 		data3_start		= $C5D0
 		sub_C5FE		= $C5D0
 		data_C62B		= $C5E6
@@ -177,6 +128,9 @@ UNK_I = 1
 		data_C943		= $C95A
 		data_C9C0		= $C973
 		data_C95C		= $C983
+
+		data4_start		= $C296
+		sub_C3D6		= $C3B7
 	.endif
 
 .endif	; UNK_I

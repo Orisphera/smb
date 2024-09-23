@@ -138,6 +138,8 @@ COURSE_DATA_OBJS =	data/course_data.o
 
 COURSE_DATA_SMB2_OBJS =	data/course_data.smb2.o
 
+COURSE_DATA_2_ANN_OBJS = data/course_data_2.ann.o
+
 PLAYER_PROC_OBJS =	src/obj/player/proc.o
 
 ENTITY_OBJS	=	src/obj/misc/hammer.o \
@@ -219,6 +221,8 @@ VS_PPU_OBJS	=	data/vs_ppu_data.o
 
 ANN_TOADS_A_OBJS =	data/ann_toads_a.o
 
+ANN_TOADS_B_OBJS =	data/ann_toads_b.o
+
 APU_OBJS	=	src/apu/proc.o \
 			src/apu/store.o \
 			src/apu/sfx_pulse_1.o \
@@ -263,6 +267,8 @@ SAVE_FDS_OBJS	=	data/save.fds.o
 
 SAVE_B_FDS_OBJS	=	data/save_b.fds.o
 
+CHR_BASE_OBJS	=	data/chr.o
+
 HEADER_FC	=	data/header.fc.bin
 HEADER_VS	=	data/header.vs.bin
 HEADER_FDS	=	data/header.fds.bin
@@ -284,7 +290,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
 			$(APU_DATA_OBJS)
 
-CHR_OBJS_FC	=	data/chr.o \
+CHR_OBJS_FC	=	$(CHR_BASE_OBJS) \
 			$(TITLE_MAP_OBJS)
 
 OBJS_FC		=	$(PRG_OBJS_FC) \
@@ -308,7 +314,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(APU_MUSIC_VS_B_OBJS) \
 			$(APU_DATA_OBJS)
 
-CHR_OBJS_VS	=	data/chr.o \
+CHR_OBJS_VS	=	$(CHR_BASE_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSE_DATA_OBJS) \
 			$(VS_PPU_OBJS) \
@@ -335,7 +341,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
 			$(APU_DATA_OBJS)
 
-CHR_OBJS_FDS	=	data/chr.o \
+CHR_OBJS_FDS	=	$(CHR_BASE_OBJS) \
 			$(TITLE_MAP_OBJS)
 
 OBJS_FDS	=	$(PRG_OBJS_FDS) \
@@ -379,7 +385,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)
 
-CHR_OBJS_SMB2	=	data/chr.o \
+CHR_OBJS_SMB2	=	$(CHR_BASE_OBJS) \
 			data/chr2.smb2.o
 
 OBJS_SMB2	=	$(PRG_OBJS_SMB2) \
@@ -421,13 +427,14 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(APU_DATA_OBJS) \
 			$(PIPE_FLIPPED_OBJS) \
 			$(HARD_MODE_SPRING_OBJS) \
-			data/data2.ann.o \
+			$(COURSE_DATA_2_ANN_OBJS) \
+			$(ANN_TOADS_B_OBJS) \
 			data/data3.ann.o \
 			data/data4.ann.o \
 			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)
 
-CHR_OBJS_ANN	=	data/chr.o \
+CHR_OBJS_ANN	=	$(CHR_BASE_OBJS) \
 			data/chr2.ann.o
 
 OBJS_ANN	=	$(PRG_OBJS_ANN) \

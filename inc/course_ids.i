@@ -3,17 +3,21 @@ COURSE_IDS_I = 1
 
 	.enum	course_water
 		no_01
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			no_02
 		.elseif	.defined(VS_SMB)
 			no_02_vs
 		.endif
-		no_03
+		.if	.defined(SMB)|.defined(VS_SMB)
+			no_03
+		.elseif	.defined(ANN)
+			no_03_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			no_02
 		.elseif	.defined(ANN)
-			no_04_ann
+			no_02_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -39,7 +43,7 @@ COURSE_IDS_I = 1
 		no_04
 		no_05
 		no_06
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			no_07
 			no_08
 		.elseif	.defined(VS_SMB)
@@ -69,15 +73,15 @@ COURSE_IDS_I = 1
 			no_07
 			no_08
 		.elseif	.defined(ANN)
-			no_23_ann
-			no_24_ann
+			no_07_vs
+			no_08_vs
 		.endif
 
 		.if	.defined(ANN)
 			no_28_smb2
 			no_26_ann
 			no_27_ann
-			no_28_ann
+			no_10_b
 		.endif
 	.endenum
 
@@ -132,27 +136,31 @@ COURSE_IDS_I = 1
 	.endenum
 
 	.enum	course_castle
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			no_01
 		.elseif	.defined(VS_SMB)
 			no_01_vs
 		.endif
 		no_02
-		.if	.defined(SMB)|.defined(ANN)
+		.if	.defined(SMBM)
 			no_03
 		.elseif	.defined(VS_SMB)
 			no_01
 		.endif
 		no_04
 		no_05
-		no_06
+		.if	.defined(SMB)|.defined(VS_SMB)
+			no_06
+		.elseif	.defined(ANN)
+			no_06_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			no_07_vs
 			no_03
 		.elseif	.defined(ANN)
-			no_07_ann
-			no_08_ann
+			no_04_smb2
+			no_02_smb2
 		.endif
 	.endenum
 

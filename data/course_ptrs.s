@@ -31,12 +31,18 @@ course_actor_pages:
 		.endif
 		.byte	<course_actor_castle_4
 
-		.byte	<course_actor_castle_5, <course_actor_castle_6
+		.byte	<course_actor_castle_5
+
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	<course_actor_castle_6
+		.elseif	.defined(ANN)
+			.byte	<course_actor_castle_6_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	<course_actor_castle_7_vs, <course_actor_castle_3
 		.elseif	.defined(ANN)
-			.byte	<course_actor_castle_7_ann, <course_actor_castle_8_ann
+			.byte	<course_actor_castle_4_smb2, <course_actor_castle_2_smb2
 		.endif
 	
 	course_actor_addr_lo_overworld:
@@ -64,7 +70,7 @@ course_actor_pages:
 		.if	.defined(VS_SMB)
 			.byte	<course_actor_overworld_7, <course_actor_overworld_8
 		.elseif	.defined(ANN)
-			.byte	<course_actor_overworld_23_ann, <course_actor_overworld_24_ann
+			.byte	<course_actor_overworld_7_vs, <course_actor_overworld_8_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -88,12 +94,16 @@ course_actor_pages:
 		.elseif	.defined(VS_SMB)
 			.byte	<course_actor_water_2_vs
 		.endif
-		.byte	<course_actor_water_3
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	<course_actor_water_3
+		.elseif
+			.byte	<course_actor_water_3_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	<course_actor_water_2
 		.elseif	.defined(ANN)
-			.byte	<course_actor_water_4_ann
+			.byte	<course_actor_water_2_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -116,12 +126,18 @@ course_actor_pages:
 		.endif
 		.byte	>course_actor_castle_4
 
-		.byte	>course_actor_castle_5, >course_actor_castle_6
+		.byte	>course_actor_castle_5
+
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	>course_actor_castle_6
+		.elseif	.defined(ANN)
+			.byte	>course_actor_castle_6_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	>course_actor_castle_7_vs, >course_actor_castle_3
 		.elseif	.defined(ANN)
-			.byte	>course_actor_castle_7_ann, >course_actor_castle_8_ann
+			.byte	>course_actor_castle_4_smb2, >course_actor_castle_2_smb2
 		.endif
 	
 	course_actor_addr_hi_overworld:
@@ -149,7 +165,7 @@ course_actor_pages:
 		.if	.defined(VS_SMB)
 			.byte	>course_actor_overworld_7, >course_actor_overworld_8
 		.elseif	.defined(ANN)
-			.byte	>course_actor_overworld_23_ann, >course_actor_overworld_24_ann
+			.byte	>course_actor_overworld_7_vs, >course_actor_overworld_8_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -173,12 +189,16 @@ course_actor_pages:
 		.elseif	.defined(VS_SMB)
 			.byte	>course_actor_water_2_vs
 		.endif
-		.byte	>course_actor_water_3
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	>course_actor_water_3
+		.elseif	.defined(ANN)
+			.byte	>course_actor_water_3_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	>course_actor_water_2
 		.elseif	.defined(ANN)
-			.byte	>course_actor_water_4_ann
+			.byte	>course_actor_water_2_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -201,12 +221,17 @@ course_actor_pages:
 		.endif
 		.addr	course_actor_castle_4
 
-		.addr	course_actor_castle_5, course_actor_castle_6
+		.addr	course_actor_castle_5
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.addr	course_actor_castle_6
+		.elseif	.defined(ANN)
+			.addr	course_actor_castle_6_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.addr	course_actor_castle_7_vs, course_actor_castle_3
 		.elseif	.defined(ANN)
-			.addr	course_actor_castle_7_ann, course_actor_castle_8_ann
+			.addr	course_actor_castle_4_smb2, course_actor_castle_2_smb2
 		.endif
 
 	course_actor_addr_lo_overworld:
@@ -234,7 +259,7 @@ course_actor_pages:
 		.if	.defined(VS_SMB)
 			.addr	course_actor_overworld_7, course_actor_overworld_8
 		.elseif	.defined(ANN)
-			.addr	course_actor_overworld_23_ann, course_actor_overworld_24_ann
+			.addr	course_actor_overworld_7_vs, course_actor_overworld_8_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -260,12 +285,16 @@ course_actor_pages:
 		.elseif	.defined(VS_SMB)
 			.addr	course_actor_water_2_vs
 		.endif
-		.addr	course_actor_water_3
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.addr	course_actor_water_3
+		.elseif	.defined(ANN)
+			.addr	course_actor_water_3_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.addr	course_actor_water_2
 		.elseif	.defined(ANN)
-			.addr	course_actor_water_4_ann
+			.addr	course_actor_water_2_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -290,12 +319,16 @@ course_scenery_pages:
 		.elseif	.defined(VS_SMB)
 			.byte	<course_scenery_water_2_vs
 		.endif
-		.byte	<course_scenery_water_3
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	<course_scenery_water_3
+		.elseif	.defined(ANN)
+			.byte	<course_scenery_water_3_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	<course_scenery_water_2
 		.elseif	.defined(ANN)
-			.byte	<course_scenery_water_4_ann
+			.byte	<course_scenery_water_2_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -327,7 +360,7 @@ course_scenery_pages:
 		.if	.defined(VS_SMB)
 			.byte	<course_scenery_overworld_7, <course_scenery_overworld_8
 		.elseif	.defined(ANN)
-			.byte	<course_scenery_overworld_23_ann, <course_scenery_overworld_24_ann
+			.byte	<course_scenery_overworld_7_vs, <course_scenery_overworld_8_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -360,12 +393,17 @@ course_scenery_pages:
 		.endif
 		.byte	<course_scenery_castle_4
 
-		.byte	<course_scenery_castle_5, <course_scenery_castle_6
+		.byte	<course_scenery_castle_5
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	<course_scenery_castle_6
+		.elseif	.defined(ANN)
+			.byte	<course_scenery_castle_6_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	<course_scenery_castle_7_vs, <course_scenery_castle_3
 		.elseif	.defined(ANN)
-			.byte	<course_scenery_castle_7_ann, <course_scenery_castle_8_ann
+			.byte	<course_scenery_castle_4_smb2, <course_scenery_castle_2_smb2
 		.endif
 	
 		.export course_scenery_addr_hi
@@ -377,12 +415,16 @@ course_scenery_pages:
 		.elseif	.defined(VS_SMB)
 			.byte	>course_scenery_water_2_vs
 		.endif
-		.byte	>course_scenery_water_3
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	>course_scenery_water_3
+		.elseif	.defined(ANN)
+			.byte	>course_scenery_water_3_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	>course_scenery_water_2
 		.elseif	.defined(ANN)
-			.byte	>course_scenery_water_4_ann
+			.byte	>course_scenery_water_2_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -414,7 +456,7 @@ course_scenery_pages:
 		.if	.defined(VS_SMB)
 			.byte	>course_scenery_overworld_7, >course_scenery_overworld_8
 		.elseif	.defined(ANN)
-			.byte	>course_scenery_overworld_23_ann, >course_scenery_overworld_24_ann
+			.byte	>course_scenery_overworld_7_vs, >course_scenery_overworld_8_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -447,12 +489,17 @@ course_scenery_pages:
 		.endif
 		.byte	>course_scenery_castle_4
 
-		.byte	>course_scenery_castle_5, >course_scenery_castle_6
+		.byte	>course_scenery_castle_5
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.byte	>course_scenery_castle_6
+		.elseif	.defined(ANN)
+			.byte	>course_scenery_castle_6_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.byte	>course_scenery_castle_7_vs, >course_scenery_castle_3
 		.elseif	.defined(ANN)
-			.byte	>course_scenery_castle_7_ann, >course_scenery_castle_8_ann
+			.byte	>course_scenery_castle_4_smb2, >course_scenery_castle_2_smb2
 		.endif
 .elseif	.defined(VS_SMB)
 		.export course_scenery_addr_lo
@@ -464,12 +511,16 @@ course_scenery_pages:
 		.elseif	.defined(VS_SMB)
 			.addr	course_scenery_water_2_vs
 		.endif
-		.addr	course_scenery_water_3
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.addr	course_scenery_water_3
+		.elseif	.defined(ANN)
+			.addr	course_scenery_water_3_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.addr	course_scenery_water_2
 		.elseif	.defined(ANN)
-			.addr	course_scenery_water_4_ann
+			.addr	course_scenery_water_2_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -501,7 +552,7 @@ course_scenery_pages:
 		.if	.defined(VS_SMB)
 			.addr	course_scenery_overworld_7, course_scenery_overworld_8
 		.elseif	.defined(ANN)
-			.addr	course_scenery_overworld_23_ann, course_scenery_overworld_24_ann
+			.addr	course_scenery_overworld_7_vs, course_scenery_overworld_8_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -534,12 +585,17 @@ course_scenery_pages:
 		.endif
 		.addr	course_scenery_castle_4
 
-		.addr	course_scenery_castle_5, course_scenery_castle_6
+		.addr	course_scenery_castle_5
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.addr	course_scenery_castle_6
+		.elseif	.defined(ANN)
+			.addr	course_scenery_castle_6_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.addr	course_scenery_castle_7_vs, course_scenery_castle_3
 		.elseif	.defined(ANN)
-			.addr	course_scenery_castle_7_ann, course_scenery_castle_8_ann
+			.addr	course_scenery_castle_4_smb2, course_scenery_castle_2_smb2
 		.endif
 .elseif	.defined(ANN)
 		.export course_scenery_addr_lo
@@ -558,12 +614,17 @@ course_scenery_pages:
 		.endif
 		.addr	course_scenery_castle_4
 
-		.addr	course_scenery_castle_5, course_scenery_castle_6
+		.addr	course_scenery_castle_5
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.addr	course_scenery_castle_6
+		.elseif	.defined(ANN)
+			.addr	course_scenery_castle_6_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.addr	course_scenery_castle_7_vs, course_scenery_castle_3
 		.elseif	.defined(ANN)
-			.addr	course_scenery_castle_7_ann, course_scenery_castle_8_ann
+			.addr	course_scenery_castle_4_smb2, course_scenery_castle_2_smb2
 		.endif
 
 	course_scenery_addr_lo_overworld:
@@ -591,7 +652,7 @@ course_scenery_pages:
 		.if	.defined(VS_SMB)
 			.addr	course_scenery_overworld_7, course_scenery_overworld_8
 		.elseif	.defined(ANN)
-			.addr	course_scenery_overworld_23_ann, course_scenery_overworld_24_ann
+			.addr	course_scenery_overworld_7_vs, course_scenery_overworld_8_vs
 		.endif
 
 		.if	.defined(ANN)
@@ -617,12 +678,16 @@ course_scenery_pages:
 		.elseif	.defined(VS_SMB)
 			.addr	course_scenery_water_2_vs
 		.endif
-		.addr	course_scenery_water_3
+		.if	.defined(SMB)|.defined(VS_SMB)
+			.addr	course_scenery_water_3
+		.elseif	.defined(ANN)
+			.addr	course_scenery_water_3_ann
+		.endif
 
 		.if	.defined(VS_SMB)
 			.addr	course_scenery_water_2
 		.elseif	.defined(ANN)
-			.addr	course_scenery_water_4_ann
+			.addr	course_scenery_water_2_vs
 		.endif
 
 		.if	.defined(ANN)

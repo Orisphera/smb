@@ -36,8 +36,6 @@
 
 #include <stdio.h>
 
-#define	SMB2
-
 #define	END_CHAR	0xFD
 
 static void print_header(void);
@@ -281,10 +279,8 @@ static const char *obj_b[] = {
 	"STAIRS",
 	"PIPE_EXIT",
 	"POLE_TIP",
-#if	defined(SMB2)||defined(ANN)
 	"PIPE_V_FLIP_A",
 	"PIPE_V_FLIP_B"
-#endif
 };
 
 static void print_F(int pos_x)
@@ -331,9 +327,7 @@ static const char *obj_c[] = {
 	"BLOCK_Q_D",
 #endif
 	"HIDDEN_ONE_UP",
-#if	defined(SMB2)||defined(ANN)
 	"BLOCK_Q_E",
-#endif
 #if	defined(SMB2)
 	"BLOCK_Q_F",
 	"BLOCK_ITEM_E",
