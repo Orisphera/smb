@@ -109,5 +109,5 @@ course_08_areas:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_06
 	.elseif	.defined(ANN)
-		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_06_ann
+		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_08_smb2
 	.endif

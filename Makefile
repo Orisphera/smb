@@ -138,6 +138,8 @@ COURSE_DATA_OBJS =	data/course_data.o
 
 COURSE_DATA_SMB2_OBJS =	data/course_data.smb2.o
 
+COURSE_DATA_2_SMB2_OBJS = data/course_data_2.smb2.o
+
 COURSE_DATA_2_ANN_OBJS = data/course_data_2.ann.o
 
 PLAYER_PROC_OBJS =	src/obj/player/proc.o
@@ -379,7 +381,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(APU_DATA_OBJS) \
 			$(PIPE_FLIPPED_OBJS) \
 			$(WIND_OBJS) \
-			data/data2.smb2.o \
+			$(COURSE_DATA_2_SMB2_OBJS) \
 			data/data3.smb2.o \
 			data/data4.smb2.o \
 			$(SECURITY_OBJS) \

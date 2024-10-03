@@ -1,7 +1,7 @@
 .include	"course_flags.i"
 
-	.export course_scenery_water_3_ann
-course_scenery_water_3_ann:
+	.export course_scenery_water_4_smb2
+course_scenery_water_4_smb2:
 	.word	(COURSE_AREA_LEDGE_TREE|COURSE_BG_NONE|COURSE_FG_MASK_15|COURSE_TIMER_SETTING_0|COURSE_SCENERY_ENTER_POS_00_A|COURSE_SCENERY_BG_COL_UNDERGROUND)
 
 	.word	(COURSE_SCENERY_TYPE_E|COURSE_SCENERY_POS_X_0|(COURSE_BG_NONE_VAL<<12)|(COURSE_FG_MASK_2_VAL<<8))

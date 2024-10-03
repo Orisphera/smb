@@ -11,7 +11,7 @@ COURSE_IDS_I = 1
 		.if	.defined(SMB)|.defined(VS_SMB)
 			no_03
 		.elseif	.defined(ANN)
-			no_03_ann
+			no_04_smb2
 		.endif
 
 		.if	.defined(VS_SMB)
@@ -27,7 +27,7 @@ COURSE_IDS_I = 1
 
 	.enum	course_water_smb2
 		no_01
-		no_02
+		no_02_vs
 		no_03
 		no_04
 		no_05
@@ -100,7 +100,7 @@ COURSE_IDS_I = 1
 		no_12
 		no_13
 		no_14
-		no_15
+		no_08_vs
 		no_16
 		no_17
 		no_18
@@ -152,7 +152,7 @@ COURSE_IDS_I = 1
 		.if	.defined(SMB)|.defined(VS_SMB)
 			no_06
 		.elseif	.defined(ANN)
-			no_06_ann
+			no_08_smb2
 		.endif
 
 		.if	.defined(VS_SMB)
@@ -169,7 +169,7 @@ COURSE_IDS_I = 1
 		no_02
 		no_03
 		no_04
-		no_05
+		no_01_vs
 		no_06
 		no_07
 		no_08

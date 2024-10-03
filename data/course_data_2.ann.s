@@ -5,7 +5,7 @@
 	.include	"./courses/smb2/castle_4_actor.s"
 	.include	"./courses/smb2/castle_2_actor.s"
 	.include	"./courses/smb/castle_5_actor.s"
-	.include	"./courses/ann/castle_6_actor.s"
+	.include	"./courses/smb2/castle_8_actor.s"
 ; --------------
 	.include	"./courses/smb/overworld_2_actor.s"
 	.include	"./courses/smb/overworld_4_actor.s"
@@ -25,12 +25,12 @@
 ; --------------
 	.include	"./courses/smb/water_1_actor.s"
 	.include	"./courses/vs/water_2_actor.s"
-	.include	"./courses/ann/water_3_actor.s"
+	.include	"./courses/smb2/water_4_actor.s"
 ; ------------------------------
 	.include	"./courses/smb2/castle_4_scenery.s"
 	.include	"./courses/smb2/castle_2_scenery.s"
 	.include	"./courses/smb/castle_5_scenery.s"
-	.include	"./courses/ann/castle_6_scenery.s"
+	.include	"./courses/smb2/castle_8_scenery.s"
 ; --------------
 	.include	"./courses/smb/overworld_2_scenery.s"
 	.include	"./courses/smb/overworld_4_scenery.s"
@@ -50,4 +50,4 @@
 ; --------------
 	.include	"./courses/smb/water_1_scenery.s"
 	.include	"./courses/vs/water_2_scenery.s"
-	.include	"./courses/ann/water_3_scenery.s"
+	.include	"./courses/smb2/water_4_scenery.s"

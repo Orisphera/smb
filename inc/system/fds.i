@@ -56,7 +56,7 @@ FDS_DISK_SR	= $4032
 FDS_SND_VOL	= $4080
 FDS_SND_VOL_80	= $80
 
-sub_E149	= $E149
+fdsbios_sleep_short	= $E149
 
 fdsbios_filetbl_load	= $E1F8
 FDSBIOS_FILETBL_LOAD_TRY_COUNT	= 2
@@ -67,11 +67,6 @@ FDS_DISKSET_2ADDR	= $FF
 
 fdsbios_diskhead_check	= $E445
 fdsbios_filecount_get	= $E484
-sub_E4A0	= $E4A0
-sub_E4F9	= $E4F9
-sub_E68F	= $E68F
-sub_E778	= $E778
-sub_E97D	= $E97D
 fdsbios_oam_dma	= $E9C8
 
 ; joypad_read	= $EA1F

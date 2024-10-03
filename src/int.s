@@ -464,7 +464,7 @@ nmi:
 		: ; } else {
 			pla
 
-			jsr	sub_E149
+			jsr	fdsbios_sleep_short
 		: ; }
 
 		pla

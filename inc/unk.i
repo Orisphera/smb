@@ -2,75 +2,6 @@
 UNK_I = 1
 
 	.if	.defined(SMB2)
-		course_actor_castle_5_smb2	= $C5D0
-		course_actor_castle_6_smb2	= $C609
-		course_actor_castle_7_smb2	= $C630
-		course_actor_castle_8_smb2	= $C66F
-		course_actor_castle_9_smb2	= $CA80
-		course_actor_castle_10_smb2	= $CA8A
-
-		course_actor_overworld_12_smb2	= $C6AF
-		course_actor_overworld_13_smb2	= $C6E0
-		course_actor_overworld_14_smb2	= $C708
-		course_actor_overworld_15_smb2	= $C72C
-		course_actor_overworld_16_smb2	= $C749
-		course_actor_overworld_17_smb2	= $C77A
-		course_actor_overworld_18_smb2	= $C7A6
-		course_actor_overworld_19_smb2	= $C7BF
-
-		course_actor_overworld_22_smb2	= $C7E7
-		course_actor_overworld_23_smb2	= $C80A
-		course_actor_overworld_24_smb2	= $C831
-		course_actor_overworld_25_smb2	= $CA90
-		course_actor_overworld_26_smb2	= $CA94
-		course_actor_overworld_27_smb2	= $CA94
-		course_actor_overworld_29_smb2	= $C832
-
-		course_actor_underground_4_smb2	= $C83B
-		course_actor_underground_5_smb2	= $C85C
-
-		course_actor_water_2_smb2	= $C876
-		course_actor_water_4_smb2	= $C8A6
-		course_actor_water_5_smb2	= $C8B4
-		course_actor_water_6_smb2	= $CA94
-		course_actor_water_7_smb2	= $CAB5
-		course_actor_water_8_smb2	= $CABA
-
-		course_scenery_castle_5_smb2	= $C8C9
-		course_scenery_castle_6_smb2	= $C996
-		course_scenery_castle_7_smb2	= $CA25
-		course_scenery_castle_8_smb2	= $CAB8
-		course_scenery_castle_9_smb2	= $CACB
-		course_scenery_castle_10_smb2	= $CB2E
-
-		course_scenery_overworld_12_smb2	= $CB8F
-		course_scenery_overworld_13_smb2	= $CC30
-		course_scenery_overworld_14_smb2	= $CC8F
-		course_scenery_overworld_15_smb2	= $CD0E
-		course_scenery_overworld_16_smb2	= $CD7B
-		course_scenery_overworld_17_smb2	= $CDFE
-		course_scenery_overworld_18_smb2	= $CE5B
-		course_scenery_overworld_19_smb2	= $CED6
-
-		course_scenery_overworld_22_smb2	= $CF4B
-		course_scenery_overworld_23_smb2	= $CFB6
-		course_scenery_overworld_24_smb2	= $D01A
-		course_scenery_overworld_25_smb2	= $CB3F
-		course_scenery_overworld_26_smb2	= $CB4E
-		course_scenery_overworld_27_smb2	= $CB4F
-		course_scenery_overworld_29_smb2	= $D01B
-
-		course_scenery_underground_4_smb2	= $D052
-		course_scenery_underground_5_smb2	= $D11F
-
-		course_scenery_water_2_smb2	= $D160
-		course_scenery_water_4_smb2	= $D229
-		course_scenery_water_5_smb2	= $D242
-
-		course_scenery_water_6_smb2	= $CB50
-		course_scenery_water_7_smb2	= $CB97
-		course_scenery_water_8_smb2	= $CBDA
-
 		data3_start		= $C5D0
 		sub_C5D0		= $C5D0
 		sub_C5FE		= $C5FE
@@ -96,12 +27,25 @@ UNK_I = 1
 		data_C95C		= $C95C
 		ann_toad_pal_common	= $C97D
 		data_C9C0		= $C9C0
+		course_actor_castle_9_smb2	= $CA80
+		course_actor_castle_10_smb2	= $CA8A
+		course_actor_overworld_25_smb2	= $CA90
+		course_actor_overworld_26_smb2	= $CA94
+		course_actor_overworld_27_smb2	= $CA94
+		course_actor_water_6_smb2	= $CA94
+		course_actor_water_7_smb2	= $CAB5
+		course_actor_water_8_smb2	= $CABA
+		course_scenery_castle_9_smb2	= $CACB
+		course_scenery_castle_10_smb2	= $CB2E
+		course_scenery_overworld_25_smb2	= $CB3F
+		course_scenery_overworld_26_smb2	= $CB4E
+		course_scenery_overworld_27_smb2	= $CB4F
+		course_scenery_water_6_smb2	= $CB50
+		course_scenery_water_7_smb2	= $CB97
+		course_scenery_water_8_smb2	= $CBDA
 
 		data4_start		= $C2B4
 		sub_C3D6		= $C3D6
-		data4_end		= $D200
-
-		data3_end		= $D29F
 	.endif
 
 	.if	.defined(ANN)

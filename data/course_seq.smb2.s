@@ -46,13 +46,13 @@ course_05_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10_smb
 		.byte	COURSE_TYPE_UNDERGROUND_B|course_underground_smb2::no_04
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_13
-	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_05
+	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_01_vs
 
 course_06_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_14
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_10_smb
-		.byte	COURSE_TYPE_WATER_B|course_water_smb2::no_02
-	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_15
+		.byte	COURSE_TYPE_WATER_B|course_water_smb2::no_02_vs
+	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_08_vs
 	.byte	COURSE_TYPE_CASTLE_B|course_castle_smb2::no_06
 
 course_07_areas:

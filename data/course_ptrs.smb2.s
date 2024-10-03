@@ -18,7 +18,7 @@ course_actor_addr_lo_castle:
 	.addr	course_actor_castle_2_smb2
 	.addr	course_actor_castle_3_smb2
 	.addr	course_actor_castle_4_smb2
-	.addr	course_actor_castle_5_smb2
+	.addr	course_actor_castle_1_vs
 	.addr	course_actor_castle_6_smb2
 	.addr	course_actor_castle_7_smb2
 	.addr	course_actor_castle_8_smb2
@@ -33,7 +33,7 @@ course_actor_addr_lo_overworld:
 	.addr	course_actor_overworld_9_smb2, course_actor_overworld_10
 	.addr	course_actor_overworld_7_vs, course_actor_overworld_12_smb2
 	.addr	course_actor_overworld_13_smb2, course_actor_overworld_14_smb2
-	.addr	course_actor_overworld_15_smb2, course_actor_overworld_16_smb2
+	.addr	course_actor_overworld_8_vs, course_actor_overworld_16_smb2
 	.addr	course_actor_overworld_17_smb2, course_actor_overworld_18_smb2
 	.addr	course_actor_overworld_19_smb2, course_actor_overworld_20_smb2
 	.addr	course_actor_overworld_10, course_actor_overworld_22_smb2
@@ -51,7 +51,7 @@ course_actor_addr_lo_underground:
 
 course_actor_addr_lo_water:
 	.addr	course_actor_water_1_smb2
-	.addr	course_actor_water_2_smb2
+	.addr	course_actor_water_2_vs
 	.addr	course_actor_water_3_smb2
 	.addr	course_actor_water_4_smb2
 	.addr	course_actor_water_5_smb2
@@ -73,7 +73,7 @@ course_scenery_addr_lo_castle:
 	.addr	course_scenery_castle_2_smb2
 	.addr	course_scenery_castle_3_smb2
 	.addr	course_scenery_castle_4_smb2
-	.addr	course_scenery_castle_5_smb2
+	.addr	course_scenery_castle_1_vs
 	.addr	course_scenery_castle_6_smb2
 	.addr	course_scenery_castle_7_smb2
 	.addr	course_scenery_castle_8_smb2
@@ -88,7 +88,7 @@ course_scenery_addr_lo_overworld:
 	.addr	course_scenery_overworld_9_smb2, course_scenery_overworld_10
 	.addr	course_scenery_overworld_7_vs, course_scenery_overworld_12_smb2
 	.addr	course_scenery_overworld_13_smb2, course_scenery_overworld_14_smb2
-	.addr	course_scenery_overworld_15_smb2, course_scenery_overworld_16_smb2
+	.addr	course_scenery_overworld_8_vs, course_scenery_overworld_16_smb2
 	.addr	course_scenery_overworld_17_smb2, course_scenery_overworld_18_smb2
 	.addr	course_scenery_overworld_19_smb2, course_scenery_overworld_20_smb2
 	.addr	course_scenery_overworld_21_smb2, course_scenery_overworld_22_smb2
@@ -106,7 +106,7 @@ course_scenery_addr_lo_underground:
 
 course_scenery_addr_lo_water:
 	.addr	course_scenery_water_1_smb2
-	.addr	course_scenery_water_2_smb2
+	.addr	course_scenery_water_2_vs
 	.addr	course_scenery_water_3_smb2
 	.addr	course_scenery_water_4_smb2
 	.addr	course_scenery_water_5_smb2
