@@ -1,6 +1,7 @@
 .include	"mem.i"
 .include	"sound.i"
 .include	"math.i"
+.include	"modes.i"
 .include	"misc.i"
 
 ; -----------------------------------------------------------
@@ -68,12 +69,13 @@ player_proc_lifedown:
 	sta	nmi_sprite_overlap
 	lda	#music_event::none
 	sta	apu_music_event
+
 	dec	player_lives
-	bpl	:+ ; if (--player_lives < 0) {
-		lda	#game_states::init_0
-		sta	game_state
-		lda	#game_modes::game_over
-		sta	game_mode
+	bpl	:+ ; if (--this.lives < 0) {
+		lda	#game_over_modes::init
+		sta	mode_game
+		lda	#system_modes::game_over
+		sta	mode_system
 		rts
 	: ; } else {
 		lda	course_no

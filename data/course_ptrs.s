@@ -1,7 +1,5 @@
 .include	"system/cpu.i"
 
-.include	"unk.i"
-
 .if	.defined(SMB)
 	COURSE_OFFSET_INC_SIZE	= 1
 .elseif	.defined(VS_SMB)|.defined(ANN)

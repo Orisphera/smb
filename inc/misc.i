@@ -89,40 +89,6 @@ COL_BOX_SIZE	= 4
 		done		= (actor_proc_flag_victory_tbl_done-actor_proc_flag_victory_tbl)/WORD_SIZE
 	.endenum
 
-	.enum	game_modes
-		title
-		.if	.defined(VS_SMB)
-			mode_vs_1
-		.endif
-		normal
-		victory
-		game_over
-	.endenum
-
-	.enum	game_states
-		.if	.defined(VS_SMB)
-			vs_init
-		.elseif	.defined(SMB2M)
-			mode_unk_0
-		.endif
-
-		init_0_do
-
-		.if	.defined(ANN)
-			mode_unk_1
-		.endif
-
-		scr_proc
-		init_1
-		proc
-
-		init_0	= 0
-		.if	.defined(SMB2M)
-			mode_5	= $5
-			mode_D	= $D
-		.endif
-	.endenum
-
 	.enum	powerup_type
 		mushroom_reg
 		firefl
@@ -243,20 +209,27 @@ COL_BOX_SIZE	= 4
 			msg_ty_princess2
 			msg_addr_worldsel_1
 			msg_addr_worldsel_2
-		.elseif	.defined(VS_SMB)
+		.elseif	.defined(VS_SMB)|.defined(SMB2M)
 			addr_0F
 			addr_10
 			msg_ty_mario_2
-			msg_ty_luigi_2
+			.if	.defined(VS_SMB)
+				msg_ty_luigi_2
+			.endif
 			vsend_1
 			vsend_2
 			vsend_3_mario
-			vsend_3_luigi
+			.if	.defined(VS_SMB)
+				vsend_3_luigi
+			.endif
 			vsend_4
 			vsend_5
 			vsend_6
 			vsend_7
 			vsend_8
+		.endif
+
+		.if	.defined(VS_SMB)
 			vs_nmi_list
 			addr_1D_A
 			addr_1D_B
@@ -268,24 +241,21 @@ COL_BOX_SIZE	= 4
 			addr_1E_F
 			addr_1E_G
 			addr_1F
-		.elseif	.defined(SMB2M)
-			addr_C876
-			addr_C87F
-			addr_C893
-			addr_C8AB
-			addr_C8C1
-			addr_C8D7
-			addr_C8EB
-			addr_C8FC
-			addr_C913
-			addr_C92B
-			addr_C943
+		.endif
+
+		.if	.defined(SMB2M)
 			disk_text_error_buffer
 			disk_perror_pal
-			addr_C95C
+			ending_throneroom_map
 			title_cursor_data
+		.endif
+
+		.if	.defined(SMB2)
+			ending_course_plus_txt
+			ending_super_player_txt
+		.elseif	.defined(ANN)
 			ann_toad_pal_common
-			addr_C9C0
+			ending_pal_ext
 		.endif
 	.endenum
 

@@ -1,29 +1,34 @@
 .include	"mem.i"
 .include	"joypad.i"
+.include	"modes.i"
 .include	"misc.i"
 .include	"tunables.i"
 .include	"charmap.i"
 
 .if	.defined(SMB)|.defined(VS_SMB)
-		.export title
-	title:
+		.export sys_title
+	sys_title:
 		.if	.defined(VS)
 			lda	VS_RAM_ARENA0+$10
 			beq	:+ ; if (VS_RAM_ARENA0[0x10]) {
-				lda	#game_states::init_0
-				sta	game_state
+				.if	.defined(SMB)
+				lda	#game_modes::init_0
+				.elseif	.defined(VS_SMB)
+				lda	#game_modes::vs_init
+				.endif
+				sta	mode_game
 				sta	nmi_sprite_overlap
-				inc	game_mode
+				inc	mode_system
 				lda	#1
 				sta	nmi_disp_disable
 				rts
 			: ; } else {
 		.endif
 
-		lda	game_state
+		lda	mode_game
 		jsr	tbljmp
 		.if	.defined(VS)
-			.addr	sub_82AF
+			.addr	vs_title_init
 		.endif
 		.addr	game_init_0
 		.addr	screen_proc
@@ -31,17 +36,17 @@
 		.addr	title_proc
 		.if	.defined(VS)
 			.addr	vs_player_select_init_0
-			.addr	sub_9502
-			.addr	vs_super_players
-			.addr	sub_9588
+			.addr	vs_title_ppu_init
+			.addr	vs_title_super_players
+			.addr	vs_title_tick
 		; }
 	; ----------------------------
-			sub_82AF:
+			vs_title_init:
 				lda	#1
 				sta	nmi_disp_disable
 				lda	#0
 				sta	nmi_sprite_overlap
-				inc	game_state
+				inc	mode_game
 				rts
 		.endif
 	; -----------------------------------------------------------
@@ -201,13 +206,13 @@ title_proc:
 		: ; }
 	.endif
 
-		jsr	player_proc_main
+		jsr	game_proc
 		lda	player_proc_id
 		cmp	#player_procs::lifedown
 		bne	title_continue ; if (player.proc_id == lifedown) {
 		.if	.defined(VS)
 		title_next:
-			inc	game_state
+			inc	mode_game
 			lda	#0
 			sta	nmi_sprite_overlap
 			inc	nmi_disp_disable
@@ -217,8 +222,8 @@ title_proc:
 			.export title_recycle
 		title_recycle:
 			lda	#0
-			sta	game_mode
-			sta	game_state
+			sta	mode_system
+			sta	mode_game
 			sta	nmi_sprite_overlap
 			inc	nmi_disp_disable
 		; }
@@ -244,16 +249,20 @@ title_proc:
 				inc	bg_hidden_one_up_req
 				inc	bg_hidden_one_up_req_b
 				inc	eng_req_timer
-				inc	game_mode
+				inc	mode_system
 				lda	title_course_sel_on
 				sta	ENG_HARDMODE_VAR
 
-				lda	#game_states::init_0
-				sta	game_state
+				.if	.defined(SMB)
+				lda	#game_modes::init_0
+				.elseif	.defined(VS_SMB)
+				lda	#game_modes::vs_init
+				.endif
+				sta	mode_game
 
 				sta	timer_demo
 			.elseif	.defined(SMB2M)
-				inc	game_state
+				inc	mode_game
 
 				jsr	title_patch_player
 

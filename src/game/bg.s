@@ -4,8 +4,6 @@
 .include	"tunables.i"
 .include	"tiles.i"
 
-.include	"unk.i"
-
 BG_PROC_METATILE_ID	= zp_byte_07
 
 	.export bg_proc

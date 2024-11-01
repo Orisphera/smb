@@ -322,6 +322,7 @@ PULSE2_COUNTER	.set	$4007
 ; Triangle Volume Controls [1](11.2.a)(p. 8)
 TRIANGLE_VOL	.set	$4008
 	.enum	triangle_vol
+		full		= 127
 		counter_halt	= 128	
 	.endenum
 

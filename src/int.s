@@ -9,6 +9,7 @@
 
 .include	"mem.i"
 .include	"joypad.i"
+.include	"modes.i"
 .include	"misc.i"
 .include	"tunables.i"
 
@@ -138,23 +139,28 @@ nmi_rand_buffer	= zp_byte_00
 			.addr	(palette_mushroom)
 			.addr	(msg_thankyou_mario)
 			.addr	(msg_thankyou_toad)
-			.addr	(data_C876)
-			.addr	(data_C87F)
-			.addr	(data_C893)
-			.addr	(data_C8AB)
-			.addr	(data_C8C1)
-			.addr	(data_C8D7)
-			.addr	(data_C8EB)
-			.addr	(data_C8FC)
-			.addr	(data_C913)
-			.addr	(data_C92B)
-			.addr	(data_C943)
+			.addr	(nmi_addr_0F)
+			.addr	(nmi_addr_10)
+			.addr	(msg_thankyou_mario_2)
+			.addr	(msg_vsend_1)
+			.addr	(msg_vsend_2)
+			.addr	(msg_vsend_3_mario)
+			.addr	(msg_vsend_4)
+			.addr	(msg_vsend_5)
+			.addr	(msg_vsend_6)
+			.addr	(msg_vsend_7)
+			.addr	(msg_vsend_8)
 			.addr	(disk_text_error_buffer)
 			.addr	(disk_perror_pal)
-			.addr	(data_C95C)
+			.addr	(ending_throneroom_map)
 			.addr	(title_cursor_data)
-			.addr	(ann_toad_pal_common)
-			.addr	(data_C9C0)
+			.if	.defined(SMB2)
+				.addr	(ending_course_plus_txt)
+				.addr	(ending_super_player_txt)
+			.elseif	.defined(ANN)
+				.addr	(ann_toad_pal_common)
+				.addr	(ending_pal_ext)
+			.endif
 	.endif
 
 	.if .defined(VS_SMB)
@@ -266,6 +272,8 @@ nmi:
 		cli
 	.endif
 
+	.export	nmi_apu_call
+nmi_apu_call:
 	jsr	apu_cycle
 
 	.if	.defined(VS)
@@ -400,7 +408,7 @@ nmi:
 			:
 		.endif
 
-		jsr	nmi_game_mode_enter
+		jsr	nmi_system_enter
 	: ; }
 
 	.if	.defined(SMB2M)
@@ -500,15 +508,15 @@ nmi:
 ; -----------------------------------------------------------
 	.if	.defined(CONS)
 	nmi_pause:
-		lda	game_mode
-		cmp	#game_modes::victory
+		lda	mode_system
+		cmp	#system_modes::victory
 		beq	:+
-		cmp	#game_modes::normal
+		cmp	#system_modes::game
 		bne	:+++++
-		lda	game_state
-		cmp	#game_states::proc
+		lda	mode_game
+		cmp	#game_modes::proc
 		bne	:+++++
-		: ; if (game.mode == victory || (game.mode == normal && game.state == proc)) {
+		: ; if (mode_system == victory || (mode_system == game && mode_game == proc)) {
 			lda	eng_pause_ticks
 			beq	:+ ; if (eng_pause_ticks) {
 				dec	eng_pause_ticks
@@ -596,20 +604,20 @@ nmi_oam_shuffle:
 	; }
 
 	rts
-; ----------------------------
-nmi_game_mode_enter:
-	lda	game_mode
+; ------------------------------------------------------------
+nmi_system_enter:
+	lda	mode_system
 	jsr	tbljmp
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.addr	title
+		.addr	sys_title
 	.elseif	.defined(SMB2M)
-		.addr	disk_loader
+		.addr	sys_disk_loader
 	.endif
 
 	.if	.defined(VS_SMB)
-		.addr	vs_player_select
+		.addr	sys_vs_player_select
 	.endif
 
-	.addr	player_proc
-	.addr	victory
-	.addr	game_over
+	.addr	sys_game
+	.addr	sys_victory
+	.addr	sys_game_over

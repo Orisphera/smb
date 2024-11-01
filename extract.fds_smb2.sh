@@ -200,8 +200,5 @@ do
 	J=`expr $J + 1`
 done
 
-# SM2DATA3
-dd if=$1 bs=1 skip=45055 count=3279 >data/data3.smb2.bin
-
 # SM2DATA4
 dd if=$1 bs=1 skip=48351 count=3916 >data/data4.smb2.bin

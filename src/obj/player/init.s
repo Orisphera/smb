@@ -149,12 +149,12 @@ player_proc_init:
 		sta	pos_y_lo_block
 		ldx	#5
 		ldy	#0
-		jsr	player_proc_vine_init
+		jsr	actor_init_vine
 	: ; }
 
 	ldy	course_type
 	bne	:+ ; if (course.type == water) {
-		jsr	player_proc_bubble_init
+		jsr	bubble_init
 	: ; }
 
 	lda	#player_procs::enter

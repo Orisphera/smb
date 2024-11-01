@@ -122,38 +122,11 @@ apu_music_header_find:
 	; }
 ; --------------
 apu_music_header_load:
-	lda	apu_music_offsets-1, y
-	tay
-	lda	apu_music_offsets+0, y
-	sta	apu_note_len_offset
-
-	lda	apu_music_offsets+1, y
-	sta	apu_track_addr+0
-	lda	apu_music_offsets+2, y
-	sta	apu_track_addr+1
-
-	lda	apu_music_offsets+3, y
-	sta	apu_triangle_offset
-	lda	apu_music_offsets+4, y
-	sta	apu_pulse_1_offset
-	lda	apu_music_offsets+5, y
-	sta	snd_noise_offset
-	sta	snd_noise_loop_offset
-
-	lda	#1
-	sta	snd_pulse_2_note_len
-	sta	snd_pulse_1_note_len
-	sta	snd_triangle_note_len
-	sta	snd_noise_note_len
-
-	lda	#0
-	sta	apu_pulse_2_offset
-	sta	snd_pulse_1_ctl_a
-
-	lda	#dmcstatus::noise|dmcstatus::pulse_2|dmcstatus::pulse_1
-	sta	DMCSTATUS
-	lda	#dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2|dmcstatus::pulse_1
-	sta	DMCSTATUS
+	.macro	APU_HEADER_LOAD_BASE
+		1
+	.endmacro
+	.include	"./common/header_load.s"
+	.delmac	APU_HEADER_LOAD_BASE
 ; --------------
 apu_music_pulse_2:
 	dec	snd_pulse_2_note_len
@@ -182,11 +155,15 @@ apu_music_pulse_2:
 		apu_music_silence:
 			lda	#0
 			sta	apu_music_area_current
+
 			sta	snd_music_event_current
+
 			sta	TRIANGLE_VOL
+
 			lda	#channel_vol::duty_500|channel_vol::constant_vol|0
 			sta	PULSE1_VOL
 			sta	PULSE2_VOL
+
 			rts
 		: ; } else if ((track[this.offset] & 0x7F) && !(track[this.offset] & 0x80)) apu_music_pulse_2_note();
 		; else if ((track[this.offset] & 0x80)) apu_music_pulse_2_len();
@@ -273,7 +250,8 @@ apu_music_pulse_1_note:
 			ldy	apu_sfx_pulse_1_current
 			bne	apu_music_triangle
 			txa
-			and	#<~SND_CMP_LEN_MASK
+			and	#SND_CMP_NOTE_MASK
+
 			jsr	apu_write_note_pulse_1
 			beq	:+ ; if (apu_write_note_pulse_1()) {
 				jsr	apu_next_state
@@ -311,60 +289,11 @@ apu_music_pulse_1_misc:
 	: ; }
 ; --------------
 apu_music_triangle:
-	lda	apu_triangle_offset
-	dec	snd_triangle_note_len
-	bne	:++++++ ; if (--this.len == 0) {
-		ldy	apu_triangle_offset
-		inc	apu_triangle_offset
-		lda	(apu_track_addr), y
-		beq	:+++++ ; if (track[this.offset] != 0) {
-			bpl	:+ ; if (track[this.offset] & length_bit) {
-				jsr	apu_note_length_load
-				sta	snd_triangle_note_len_b
-				lda	#31
-				sta	TRIANGLE_VOL
-				ldy	apu_triangle_offset
-				inc	apu_triangle_offset
-
-				lda	(apu_track_addr), y
-				beq	apu_music_triangle_vol_set
-			: ; }
-		
-			; if (track[this.offset] != 0) {
-				jsr	apu_write_note_triangle
-
-				ldx	snd_triangle_note_len_b
-				stx	snd_triangle_note_len
-	
-				lda	snd_music_event_current
-				.if	.defined(CONS)
-					and	#music_event::hurry_up|music_event::level_end|music_event::victory_castle|music_event::victory_normal|music_event::game_over
-				.elseif	.defined(VS)
-					and	#music_event::hurry_up|music_event::level_end|music_event::victory_castle|music_event::victory_normal|music_event::game_over|music_event::game_over_alt
-				.endif
-				bne	:+ ; if (music.event.not_in(hurry_up, level_end, victory, game_over) && (CONS || music.event != game_over_alt)) {
-					lda	apu_music_area_current
-					and	#music_area::castle|music_area::underwater
-					beq	apu_music_noise
-				: ; }
-			
-				txa
-				cmp	#18
-				bcs	:++
-				lda	snd_music_event_current
-				and	#music_event::victory_castle
-				beq	:+
-				lda	#15
-				bne	:+++
-				: lda	#31
-				bne	:++
-				: lda	#triangle_vol::counter_halt|127
-			; }
-		: ; }
-
-	apu_music_triangle_vol_set:
-		sta	TRIANGLE_VOL
-	: ; }
+	.macro	APU_TRIANGLE_BASE
+		1
+	.endmacro
+	.include	"./common/triangle.s"
+	.delmac	APU_TRIANGLE_BASE
 ; --------------
 apu_music_noise:
 	lda	apu_music_area_current
@@ -373,53 +302,12 @@ apu_music_noise:
 	.elseif	.defined(VS)
 		and	#<~(music_area::none|music_area::castle|music_area::underground)
 	.endif
-	beq	:+++++++
-	dec	snd_noise_note_len
-	bne	:+++++++ ; if (music.area.not_in(castle, underground) && --this.len > 0) {
-		: ; for (y = this.offset; track[y] == 0; y++) {
-			ldy	snd_noise_offset
-			inc	snd_noise_offset
-	
-			lda	(apu_track_addr), y
-			bne	:+ ; if (track[this.offset] == 0) {
-				lda	snd_noise_loop_offset
-				sta	snd_noise_offset
-				bne	:-
-			; }
-		: ; }
-	
-		jsr	apu_note_decomp
-		sta	snd_noise_note_len
-		txa
-		and	#<~SND_CMP_LEN_MASK
-		beq	:+++
-		cmp	#SND_NOISE_HI_LONG
-		beq	:++
-		cmp	#SND_NOISE_LO_SHORT
-		beq	:+
-		and	#SND_NOISE_HI_SHORT
-		beq	:+++ ; if (this.note == hi_short) {
-			lda	#channel_vol::constant_vol|SND_NOISE_VOL
-			ldx	#SND_NOISE_HIGH
-			ldy	#SND_NOISE_SHORT_COUNT
-			bne	:++++
-		: ; } else if (this.note == lo_short) {
-			lda	#channel_vol::constant_vol|SND_NOISE_VOL
-			ldx	#SND_NOISE_LOW
-			ldy	#SND_NOISE_SHORT_COUNT
-			bne	:+++
-		: ; } else if (this.note == hi_long) {
-			lda	#channel_vol::constant_vol|SND_NOISE_VOL
-			ldx	#SND_NOISE_HIGH
-			ldy	#SND_NOISE_LONG_COUNT
-			bne	:++
-		: ; } else {
-			lda	#channel_vol::constant_vol|0
-		: ; }
-
-		sta	NOISE_VOL
-		stx	NOISE_PERIOD
-		sty	NOISE_COUNTER
+	beq	:+ ; if (music_area_current.in(castle, underground)) {
+		.macro	APU_NOISE_BASE
+			1
+		.endmacro
+		.include	"./common/noise.s"
+		.delmac	APU_NOISE_BASE
 	: ; }
 
 	rts

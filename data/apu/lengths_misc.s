@@ -96,21 +96,21 @@ apu_note_length_c_eighthdot:
 	.export	apu_note_length_vs_ninth_double_b
 apu_note_lengths_vs:
 apu_note_length_vs_whole:
-	snd_region_len	81, 81
+	snd_region_len	81, 54
 apu_note_length_vs_ninth_double:
-	snd_region_len	18, 18
+	snd_region_len	18, 12
 apu_note_length_vs_ninthdot:
-	snd_region_len	13, 13
+	snd_region_len	13, 8
 apu_note_length_vs_ninth:
-	snd_region_len	9, 9
+	snd_region_len	9, 6 
 apu_note_length_vs_third:
-	snd_region_len	27, 27
+	snd_region_len	27, 18
 apu_note_length_vs_half:
-	snd_region_len	40, 40
+	snd_region_len	40, 26
 apu_note_length_vs_third_double:
-	snd_region_len	54, 54
+	snd_region_len	54, 36
 apu_note_length_vs_ninth_double_b:
-	snd_region_len	18, 18
+	snd_region_len	18, 12
 	.endif
 
 	.export	apu_note_lengths_d

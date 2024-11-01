@@ -9,8 +9,8 @@
 
 	.export apu_cycle
 apu_cycle:
-	lda	game_mode
-	bne	:+ ; if (game.mode == title) {
+	lda	mode_system
+	bne	:+ ; if (mode_system == title) {
 		sta	DMCSTATUS
 
 		.if	.defined(CONS)
@@ -27,6 +27,7 @@ apu_cycle:
 	: ; } else {
 		lda	#$FF
 		sta	DMCFRAMECOUNT
+
 		lda	#dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2|dmcstatus::pulse_1
 		sta	DMCSTATUS
 

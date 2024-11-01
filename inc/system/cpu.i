@@ -2,6 +2,7 @@
 CPU_I = 1
 
 BITS_IN_BYTE	= 8
+OP_SIZE         = 1
 WORD_SIZE	= 2
 STACK_BASE	= $100
 STACK_SIZE	= $100

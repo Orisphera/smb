@@ -97,6 +97,16 @@ CHR_I = 1
 		.if	.defined(SMB2)
 			leaf	= <((chr_obj_leaf-chr_obj)/PPU_CHR_SIZE)
 		.endif
+
+		.if	.defined(ANN)
+			toads_nsm_a	= <((chr_obj_toads_nsm_a-chr_obj)/PPU_CHR_SIZE)
+			toads_nsm_b	= <((chr_obj_toads_nsm_b-chr_obj)/PPU_CHR_SIZE)
+			toads_nsm_c	= <((chr_obj_toads_nsm_c-chr_obj)/PPU_CHR_SIZE)
+			toads_nsm_d	= <((chr_obj_toads_nsm_d-chr_obj)/PPU_CHR_SIZE)
+			toads_nsm_e	= <((chr_obj_toads_nsm_e-chr_obj)/PPU_CHR_SIZE)
+			toads_nsm_f	= <((chr_obj_toads_nsm_f-chr_obj)/PPU_CHR_SIZE)
+			toads_nsm_g	= <((chr_obj_toads_nsm_g-chr_obj)/PPU_CHR_SIZE)
+		.endif
 	.endenum
 
 	.enum	chr_bg

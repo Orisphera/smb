@@ -5,8 +5,6 @@
 .include	"tunables.i"
 .include	"chr.i"
 
-.include	"unk.i"
-
 ; ------------------------------------------------------------
 render_actor_data_offset	= zp_byte_EB
 render_actor_state_next		= zp_byte_EC

@@ -5,6 +5,7 @@ SOUND_I = 1
 
 	SND_TRACK_NOTE_LEN      = %10000000
 	SND_CMP_LEN_MASK	= %11000001
+	SND_CMP_NOTE_MASK	= %00111110
 	SND_NOTE_LEN_MASK	= %00000111
 
 	.macro	snd_cmp_byte	len, note
@@ -26,8 +27,6 @@ SOUND_I = 1
 
 	SND_TRACK_END	= 0
 
-	SND_CMP_NOTE_MASK	= $3E
-
 	SND_NOISE_NONE		= $04
 	SND_NOISE_HI_SHORT	= $10
 	SND_NOISE_LO_SHORT	= $20
@@ -38,6 +37,10 @@ SOUND_I = 1
 	SND_NOISE_LOW		= (noise_period::A9)
 	SND_NOISE_SHORT_COUNT	= 24
 	SND_NOISE_LONG_COUNT	= 88
+
+	SND_FDS_VOL_FULL	= %01000000
+
+	SND_WAVE_SAMPLES_LEN	= 32
 
 	.enum	sound_notes
 		Gx5_b	=	<(apu_note_Gx5_b-apu_notes)
@@ -98,6 +101,11 @@ SOUND_I = 1
 		A3	=	<(apu_note_A3-apu_notes)
 		C6	=	<(apu_note_C6-apu_notes)
 	.endenum
+
+	.if	.defined(SMB2M)
+		.enum	sound_fds_notes
+		.endenum
+	.endif
 
 	.enum	length_a
 		sixteenth	= <(apu_note_length_a_sixteenth-apu_note_lengths_a)
@@ -177,6 +185,30 @@ SOUND_I = 1
 		whole		= <(apu_note_length_f_whole-apu_note_lengths_f)
 		third		= <(apu_note_length_f_third-apu_note_lengths_f)
 	.endenum
+
+	.if	.defined(SMB2M)
+		.enum	length_fds_a
+			thirddot	= <(apu_fds_note_length_a_thirddot-apu_fds_note_lengths_a)
+			ninth_double	= <(apu_fds_note_length_a_ninth_double-apu_fds_note_lengths_a)
+			ninthdot	= <(apu_fds_note_length_a_ninthdot-apu_fds_note_lengths_a)
+			ninth		= <(apu_fds_note_length_a_ninth-apu_fds_note_lengths_a)
+			third		= <(apu_fds_note_length_a_third-apu_fds_note_lengths_a)
+			half		= <(apu_fds_note_length_a_half-apu_fds_note_lengths_a)
+			third_double	= <(apu_fds_note_length_a_third_double-apu_fds_note_lengths_a)
+			ninth_double_b	= <(apu_fds_note_length_a_ninth_double_b-apu_fds_note_lengths_a)
+		.endenum
+
+		.enum	length_fds_b
+			thirddot	= <(apu_fds_note_length_b_thirddot-apu_fds_note_lengths_b)
+			ninth_double	= <(apu_fds_note_length_b_ninth_double-apu_fds_note_lengths_b)
+			ninthdot	= <(apu_fds_note_length_b_ninthdot-apu_fds_note_lengths_b)
+			ninth		= <(apu_fds_note_length_b_ninth-apu_fds_note_lengths_b)
+			third		= <(apu_fds_note_length_b_third-apu_fds_note_lengths_b)
+			half		= <(apu_fds_note_length_b_half-apu_fds_note_lengths_b)
+			third_double	= <(apu_fds_note_length_b_third_double-apu_fds_note_lengths_b)
+			whole_third	= <(apu_fds_note_length_b_whole_third-apu_fds_note_lengths_b)
+		.endenum
+	.endif
 
 	.enum	sfx_noise
 		null		= 0

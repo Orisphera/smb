@@ -41,18 +41,12 @@ actor_proc_do:
 	.addr	actor_proc_plat_small
 	.addr	actor_proc_bowser
 	.addr	actor_proc_powerup
-
-	.addr	player_proc_vine_do
-
+	.addr	actor_proc_vine
 	.addr	actor_proc_null
 	.addr	actor_proc_flag_victory
-
-	.addr	player_proc_spring
-
+	.addr	actor_proc_spring
 	.addr	actor_proc_null
-
-	.addr	player_proc_warp
-
+	.addr	actor_proc_warp
 	.addr	actor_proc_toad
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)

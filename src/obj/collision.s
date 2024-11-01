@@ -2,6 +2,7 @@
 
 .include	"math.i"
 .include	"mem.i"
+.include	"modes.i"
 .include	"misc.i"
 .include	"tunables.i"
 .include	"tiles.i"
@@ -1541,10 +1542,10 @@ col_bg_proc_coin_do:
 AXE_PLAYER_VELOC_X	= 24
 
 col_bg_proc_axe_do:
-	lda	#game_states::init_0
-	sta	game_state
-	lda	#game_modes::victory
-	sta	game_mode
+	lda	#victory_modes::bowser
+	sta	mode_game
+	lda	#system_modes::victory
+	sta	mode_system
 
 	.if	.defined(SMB2M)
 		jsr	player_phys_load_default

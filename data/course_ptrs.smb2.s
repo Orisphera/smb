@@ -1,7 +1,5 @@
 .include	"system/cpu.i"
 
-.include	"unk.i"
-
 COURSE_OFFSET_INC_SIZE	= WORD_SIZE
 
 	.export course_actor_pages

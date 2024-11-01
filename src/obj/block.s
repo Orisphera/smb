@@ -230,7 +230,7 @@ block_powerup:
 block_vine:
 	ldx	#$05
 	ldy	obj_data_offset_ctl
-	jsr	player_proc_vine_init
+	jsr	actor_init_vine
 
 block_item_rts:
 	rts

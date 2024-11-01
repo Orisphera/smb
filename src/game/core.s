@@ -1,0 +1,305 @@
+.include	"system/cpu.i"
+
+.include	"mem.i"
+.include	"course_flags.i"
+.include	"joypad.i"
+.include	"sound.i"
+.include	"tunables.i"
+.include	"modes.i"
+.include	"misc.i"
+.include	"macros.i"
+
+	.export	sys_game
+sys_game:
+	lda	mode_game
+	jsr	tbljmp
+
+	.if	.defined(VS_SMB)
+		.addr	vs_game_init
+	.elseif	.defined(SMB2M)
+		.addr	disk_loader_data2
+	.endif
+
+	.addr	game_init_0_do
+
+	.if	.defined(ANN)
+		.addr	ann_toad_load
+	.endif
+
+	.addr	screen_proc
+	.addr	game_init_1_do
+	.addr	game_proc
+; ------------------------------------------------------------
+.if	.defined(VS_SMB)
+vs_game_init:
+	inc	mode_game
+	lda	#1
+	sta	nmi_disp_disable
+	lda	#0
+	sta	nmi_sprite_overlap
+	rts
+.endif
+; ------------------------------------------------------------
+GAME_SCROLL_END	= $20
+
+	.export	game_proc, game_proc_scroll_save
+game_proc:
+	.if	.defined(VS_SMB)
+		lda	player_count
+		beq	:+ ; if (player_count > 0) {
+	.endif
+
+	.if	.defined(SMB)|.defined(VS_SMB)
+				ldx	player_id
+				lda	joypad_p1, x
+		.if	.defined(VS_SMB)
+				jmp	:++
+			: ; } else {
+				lda	joypad_p1
+				ora	joypad_p2
+			: ; }
+		.endif
+		sta	joypad_p1
+	.endif
+
+	.if	.defined(VS_SMB)
+		and	#joypad_button::right
+		beq	:+ ; if (joypad_button == right) {
+			lda	joypad_p1
+			and	#<~(joypad_button::left)
+			sta	joypad_p1
+		: ; }
+
+		lda	joypad_p1
+		and	#joypad_button::down
+		beq	:+ ; if (joypad_button == down) {
+			lda	joypad_p1
+			and	#<~(joypad_button::up)
+			sta	joypad_p1
+		: ; }
+	.endif
+
+	jsr	player_proc
+
+	lda	mode_game
+	.if	.defined(CONS)
+		cmp	#game_modes::proc
+	.elseif	.defined(VS)
+		cmp	#game_modes::init_1
+	.endif
+	bcs	:+
+	rts
+	: ; if (mode_game >= proc || (VS && mode_game == init_1)) {
+		jsr	proj_proc
+
+		ldx	#0
+		: ; for (actor_index = 0; actor_index < ENG_ACTOR_MAX; actor_index++) {
+			stx	actor_index
+			jsr	actor_proc
+			jsr	screen_score_disp
+	
+			inx
+			cpx	#ENG_ACTOR_MAX
+			bne	:-
+		; }
+	
+		jsr	lib_player_bits_get
+		jsr	lib_calc_player_pos
+		jsr	render_player
+
+		jsr	block_flatten
+		ldx	#ACTIVE_BLOCK_MAX-1
+		stx	actor_index
+		jsr	block_proc
+		dex
+		stx	actor_index
+		jsr	block_proc
+	
+		jsr	misc_proc
+
+		jsr	cannon_proc
+		jsr	whirlpool_proc
+		jsr	pole_proc
+
+		jsr	stats_time_proc
+	
+		jsr	gfx_color_rotate
+	
+		.if	.defined(SMB2)
+			lda	disk_loader_file_id
+			beq	:+ ; if (disk_loader_file_id != main) {
+				jsr	bg_scenery_wind_proc
+			: ; }
+		.endif
+	
+		lda	pos_y_hi_player
+		cmp	#2
+		bpl	:+
+		lda	timer_player_star
+		beq	:+++
+		cmp	#4
+		bne	:+
+		lda	timer_nmi_tick
+		bne	:+ ; if (this.timer_star > 0) {
+			; if (this.pos_y.hi < 2 && this.timer_star == 4 && !timer_nmi_tick) {
+				jsr	game_init_area_music
+			: ; }
+			ldy	timer_player_star
+			lda	frame_count
+			cpy	#8
+			bcs	:+ ; if (this.timer_star < 8) {
+				lsr	a
+				lsr	a
+			: ; }
+			lsr	a
+			jsr	player_proc_firefl_do
+			jmp	:++
+		: ; } else {
+			jsr	player_proc_firefl_do_2
+		: ; }
+	
+		lda	joypad_a_b
+		sta	joypad_a_b_held
+		lda	#joypad_button::none
+		sta	joypad_l_r
+	
+	game_proc_scroll_save:
+		lda	nmi_addrs_ctl
+		cmp	#nmi_addr::buffer_11_A
+		beq	:++
+		lda	bg_proc_id
+		bne	:+
+		lda	game_scroll_h
+		cmp	#GAME_SCROLL_END
+		bmi	:++ ; if (nmi_addrs_ctl != buffer_11_A && (bg_proc_id == main_c || game.scroll_h > GAME_SCROLL_END)) {
+			; if (bg_proc_id == main_c) {
+				lda	game_scroll_h
+				sbc	#GAME_SCROLL_END
+				sta	game_scroll_h
+				lda	#0
+				sta	nmi_list_1_offset
+			: ; }
+			jsr	bg_proc
+		: ; }
+
+		rts
+	; }
+; ------------------------------------------------------------
+	.export	game_scroll, game_scroll_do
+game_scroll:
+	lda	player_scroll_x
+	clc
+	adc	actor_plat_scroll_x
+	sta	player_scroll_x
+	lda	game_scroll_lock
+	bne	:+++
+	lda	player_scroll_x_b
+	cmp	#$50
+	bcc	:+++
+	lda	timer_col_x
+	bne	:+++
+	ldy	player_scroll_x
+	dey
+	bmi	:+++ ; if (!scroll_lock && this.scroll_x_b >= 0x50 && !timer_col_x && --this.scroll_x >= 0) {
+		iny
+		cpy	#2
+		bcc	:+ ; if (++this.scroll_x >= 2) {
+			dey
+		: ; }
+	
+		lda	player_scroll_x_b
+		cmp	#$70
+		bcc	:+ ; if (this.scroll_x_b >= 0x70) {
+			ldy	player_scroll_x
+		: ; }
+	
+	game_scroll_do:
+		.if	.defined(SMB2M)
+			; while (fds_sprite_overlap_hit) {
+				lda	fds_sprite_overlap_hit
+				bne	game_scroll_do
+			; }
+		.endif
+
+		tya
+		sta	game_scroll_amount
+		clc
+		adc	game_scroll_h
+		sta	game_scroll_h
+		tya
+		clc
+		adc	pos_x_lo_screen_left
+		sta	pos_x_lo_screen_left
+		sta	ppu_scc_h_b
+		lda	pos_x_hi_screen_left
+		adc	#0
+		sta	pos_x_hi_screen_left
+		and	#ppu_ctlr0::bg_parity
+		.if	.defined(SMB)|.defined(VS_SMB)
+			sta	zp_byte_00
+	
+			lda	ppu_ctlr0_b
+			and	#<~ppu_ctlr0::bg_parity
+			ora	zp_byte_00
+			sta	ppu_ctlr0_b
+		.elseif	.defined(SMB2M)
+			sta	ppu_ctlr0_bg
+		.endif
+
+		jsr	game_disp_pos
+
+		lda	#8
+		sta	timer_scroll
+		jmp	:++
+	: ; } else {
+		lda	#0
+		sta	game_scroll_amount
+	: ; }
+
+	ldx	#0
+	jsr	lib_bits_get_do_x
+	sta	zp_byte_00
+	ldy	#0
+	asl	a
+	bcs	:+
+	iny
+	lda	zp_byte_00
+	and	#%00100000
+	beq	:++
+	: ; if (zp_byte_00 & 0xC0) {
+		lda	pos_x_lo_screen_left, y
+		sec
+		sbc	game_scroll_off, y
+		sta	pos_x_lo_player
+		lda	pos_x_hi_screen_left, y
+		sbc	#0
+		sta	pos_x_hi_player
+		lda	joypad_l_r
+		cmp	game_scroll_btn_mask, y
+		beq	:+ ; if (joypad_l_r != game_scroll_btn_mask[y]) {
+			lda	#0
+			sta	veloc_x_player
+		: ; }
+	; }
+
+	lda	#0
+	sta	actor_plat_scroll_x
+	rts
+; ----------------------------
+game_scroll_off:
+	.byte	0, 16
+
+game_scroll_btn_mask:
+	.byte	joypad_button::right
+	.byte	joypad_button::left
+; ------------------------------------------------------------
+	.export	game_disp_pos
+game_disp_pos:
+	lda	pos_x_lo_screen_left
+	clc
+	adc	#$FF
+	sta	pos_x_lo_screen_right
+	lda	pos_x_hi_screen_left
+	adc	#0
+	sta	pos_x_hi_screen_right
+	rts

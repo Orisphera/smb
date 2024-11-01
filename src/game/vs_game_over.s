@@ -4,7 +4,7 @@
 .include	"joypad.i"
 .include	"sound.i"
 
-sub_98DC:
+game_over_98DC:
 	lda	VS_RAM_ARENA0+$17
 	jsr	tbljmp
 	.addr	sub_9919
@@ -13,10 +13,10 @@ sub_98DC:
 	.addr	sub_9A4E
 	.addr	sub_9B38
 	.addr	sub_9A20
-	.addr	vs_super_players
+	.addr	vs_title_super_players
 	.addr	sub_9E29
 
-sub_98F2:
+game_over_98F2:
 	lda	VS_RAM_ARENA0+$17
 	jsr	tbljmp
 	.addr	sub_9919
@@ -25,14 +25,14 @@ sub_98F2:
 	.addr	sub_9FC1
 	.addr	sub_A01B
 ; ----------------------------
-sub_9902:
+game_over_9902:
 	lda	#0
 	sta	nmi_disp_disable
 	lda	timer_screen
 	bne	:+ ; if (!timer_screen) {
 		lda	#music_event::none
 		sta	apu_music_event
-		inc	game_state
+		inc	mode_game
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
 	: ; }
@@ -222,9 +222,9 @@ sub_9A0C:
 	ldx	player_id
 	lda	VS_RAM_ARENA0+$28, x
 	beq	:+ ; if (vs_ram_arena0[0x28]) {
-                inc	game_state
+                inc	mode_game
         : ; }
-        inc	game_state
+        inc	mode_game
 	rts
 ; ----------------------------
 sub_9A20:
@@ -1150,7 +1150,7 @@ sub_A01B:
 		sta	VS_RAM_ARENA0+$17
 		sta	player_goals
 		sta	course_sub
-		inc	game_state
+		inc	mode_game
 		jsr	sub_9924
 	
 		ldy	#6-1
@@ -1195,7 +1195,7 @@ sub_A075:
 		sta	VS_RAM_ARENA0+$17
 		sta	title_course_sel_on
 		sta	ENG_HARDMODE_VAR
-		inc	game_state
+		inc	mode_game
 		rts
 	: lda	VS_RAM_ARENA0+$1B
 	beq	:+ ; } else if () {

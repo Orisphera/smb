@@ -3,20 +3,21 @@
 .include	"mem.i"
 .include	"joypad.i"
 .include	"sound.i"
+.include	"modes.i"
 .include	"misc.i"
 
-	.export game_over
-game_over:
-	lda	game_state
+	.export sys_game_over
+sys_game_over:
+	lda	mode_game
 	jsr	tbljmp
 	.addr	game_over_init
 	.addr	screen_proc
 	.if	.defined(VS_SMB)
-		.addr	sub_9902
-		.addr	sub_98DC
-		.addr	sub_98F2
+		.addr	game_over_9902
+		.addr	game_over_98DC
+		.addr	game_over_98F2
 	.endif
-	.addr	game_over_run
+	.addr	game_over_proc
 ; ----------------------------
 .if	.defined(VS_SMB)
 	.include	"vs_game_over.s"
@@ -36,13 +37,13 @@ game_over_init:
 	inc	nmi_disp_disable
 
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-	inc	game_state
+	inc	mode_game
 	rts
 .elseif	.defined(ANN)
 	jmp	screen_title_bg_finish
 .endif
 ; ----------------------------
-game_over_run:
+game_over_proc:
 .if	.defined(SMB)|.defined(SMB2M)
 	.if	.defined(SMB)
 		GAME_OVER_TIMER_RTS = eng_next_game_rts_b
@@ -101,9 +102,9 @@ game_over_run:
 		asl	a
 	.endif
 
-		sta	game_state
+		sta	mode_game
 		sta	timer_screen
-		sta	game_mode
+		sta	mode_system
 	eng_next_game_rts_a:
 		rts
 	eng_game_continue: ; } else {
@@ -115,9 +116,9 @@ game_over_run:
 		sta	eng_timer_ctl
 		sta	player_status
 		sta	player_proc_id
-		sta	game_state
-		lda	#game_modes::normal
-		sta	game_mode
+		sta	mode_game
+		lda	#system_modes::game
+		sta	mode_system
 	eng_next_game_rts_b:
 		rts
 	; }

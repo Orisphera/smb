@@ -3,8 +3,8 @@
 .include	"mem.i"
 .include	"chr.i"
 
-	.export render_bubble
-render_bubble:
+	.export bubble_render
+bubble_render:
 	ldy	pos_y_hi_player
 	dey
 	bne	:+

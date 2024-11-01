@@ -52,6 +52,8 @@ CHARMAP_I = 1
 	.charmap	'c', ENG_FONT_TILE_BASE+$CF
 	.if	.defined(VS_SMB)
 	.charmap	$27, ENG_FONT_TILE_BASE+$FA
+	.elseif	.defined(SMB2)
+	.charmap	$27, ENG_FONT_TILE_BASE+$F2
 	.endif
 
 .endif	; CHARMAP_I

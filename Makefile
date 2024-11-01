@@ -142,9 +142,21 @@ COURSE_DATA_2_SMB2_OBJS = data/course_data_2.smb2.o
 
 COURSE_DATA_2_ANN_OBJS = data/course_data_2.ann.o
 
-PLAYER_PROC_OBJS =	src/obj/player/proc.o
+COURSE_DATA_3_SMB2_OBJS = data/course_data_3.smb2.o
 
-ENTITY_OBJS	=	src/obj/misc/hammer.o \
+GAME_CORE_OBJS	=	src/game/core.o
+
+PLAYER_OBJS	=	src/obj/player/proc.o
+
+ENTITY_OBJS	=	src/obj/proj.o \
+			src/obj/bubble.o \
+			src/game/timer.o \
+			src/obj/whirlpool.o \
+			src/obj/pole.o \
+			src/obj/actor/spring.o \
+			src/obj/actor/vine.o \
+			src/obj/cannon.o \
+			src/obj/misc/hammer.o \
 			src/obj/misc/coin_init.o \
 			src/obj/misc/proc.o \
 			src/obj/misc/coin_proc.o \
@@ -254,12 +266,34 @@ APU_DATA_OBJS	=	data/apu/notes.o \
 			data/apu/lengths_misc.o \
 			data/apu/envelopes_misc.o
 
+APU_FDS_OBJS	=	src/apu/fds_music.o \
+			src/apu/fds_wave.o \
+			src/apu/fds_load.o
+
+APU_FDS_STORE_OBJS =	src/apu/fds_store.o
+
+APU_FDS_OFFSET_OBJS =	data/apu/fds_offsets.o
+
+APU_FDS_MUSIC_OBJS =	data/apu/music/fds_song_a.o \
+			data/apu/music/fds_song_b.o \
+			data/apu/music/fds_song_c.o
+
+APU_FDS_MISC_OBJS =	data/apu/fds_data.o \
+			data/apu/fds_wave_data.o \
+			data/apu/lengths_fds.o
+
+APU_FDS_DATA_OBJS =	$(APU_FDS_OFFSET_OBJS) \
+			$(APU_FDS_MUSIC_OBJS) \
+			$(APU_FDS_MISC_OBJS)
+
 PIPE_FLIPPED_OBJS =	src/game/bg_pipe_flipped.o \
 			src/obj/actor/piranha_plant_b_proc.o
 
 WIND_OBJS	=	src/game/bg_wind.o
 
 HARD_MODE_SPRING_OBJS =	src/game/hard_mode_spring.o
+
+ENDING_OBJS	=	src/game/ending.o
 
 SECURITY_OBJS	=	data/security.o
 
@@ -284,7 +318,8 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
-			$(PLAYER_PROC_OBJS) \
+			$(GAME_CORE_OBJS) \
+			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
@@ -306,7 +341,8 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(COURSES_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
-			$(PLAYER_PROC_OBJS) \
+			$(GAME_CORE_OBJS) \
+			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
@@ -335,7 +371,8 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
-			$(PLAYER_PROC_OBJS) \
+			$(GAME_CORE_OBJS) \
+			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
@@ -362,7 +399,8 @@ FDT_FDS		=	smb.fdt
 PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
-			$(PLAYER_PROC_OBJS) \
+			$(GAME_CORE_OBJS) \
+			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
@@ -382,7 +420,11 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(PIPE_FLIPPED_OBJS) \
 			$(WIND_OBJS) \
 			$(COURSE_DATA_2_SMB2_OBJS) \
-			data/data3.smb2.o \
+			$(ENDING_OBJS) \
+			$(COURSE_DATA_3_SMB2_OBJS) \
+			$(APU_FDS_OBJS) \
+			$(APU_FDS_STORE_OBJS) \
+			$(APU_FDS_DATA_OBJS) \
 			data/data4.smb2.o \
 			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)
@@ -409,7 +451,8 @@ FDT_SMB2	=	smb2.fdt
 PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
-			$(PLAYER_PROC_OBJS) \
+			$(GAME_CORE_OBJS) \
+			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
@@ -431,7 +474,10 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(HARD_MODE_SPRING_OBJS) \
 			$(COURSE_DATA_2_ANN_OBJS) \
 			$(ANN_TOADS_B_OBJS) \
-			data/data3.ann.o \
+			$(ENDING_OBJS) \
+			$(APU_FDS_OBJS) \
+			$(APU_FDS_DATA_OBJS) \
+			$(APU_FDS_STORE_OBJS) \
 			data/data4.ann.o \
 			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)

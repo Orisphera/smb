@@ -276,9 +276,9 @@ sub_93E7:
 	: ; }
 	rts
 ; -----------------------------------------------------------
-	.export vs_player_select
-vs_player_select:
-	lda	game_state
+	.export sys_vs_player_select
+sys_vs_player_select:
+	lda	mode_game
 	jsr	tbljmp
 	.addr	vs_player_select_init_0
 	.addr	vs_player_select_scr
@@ -292,7 +292,7 @@ vs_player_select_init_0:
 	sta	nmi_sprite_overlap
 	jsr	oam_init
 	inc	nmi_disp_disable
-	inc	game_state
+	inc	mode_game
 	rts
 ; ----------------------------
 vs_player_select_scr:
@@ -303,11 +303,11 @@ vs_player_select_scr:
 	sta	VS_RAM_ARENA0+$27
 	lda	#1
 	sta	VS_RAM_ARENA0+$26
-	inc	game_state
+	inc	mode_game
 	rts
 ; ----------------------------
 vs_player_select_init_1:
-	inc	game_state
+	inc	mode_game
 
 vs_player_select_init_1_do:
 	lda	VS_RAM_ARENA0+$10
@@ -415,8 +415,8 @@ vs_player_select_do:
 		; }
 	; }
 ; -----------------------------------------------------------
-	.export sub_9502
-sub_9502:
+	.export vs_title_ppu_init
+vs_title_ppu_init:
 	jsr	oam_init
 	jsr	nt_init
 	lda	#$FF
@@ -425,7 +425,7 @@ sub_9502:
 	sta	nmi_addrs_ctl
 	lda	#0
 	sta	VS_RAM_ARENA0+$22
-	inc	game_state
+	inc	mode_game
 	rts
 ; -----------------------------------------------------------
 vs_super_players_oam:
@@ -440,8 +440,8 @@ vs_super_players_oam:
 	.byte	$28, chr_obj::player_jump_small+1, obj_attr::h_flip|obj_attr::color1, $C8
 vs_super_players_oam_end:
 ; ----------------------------
-	.export vs_super_players
-vs_super_players:
+	.export vs_title_super_players
+vs_title_super_players:
 	lda	VS_RAM_ARENA0+$22
 	bne	:+ ; if (vs_ram_arena0[34].in(0, 1)) {
 		; if (vs_ram_arena0[34] == 0) {
@@ -487,13 +487,13 @@ vs_super_players:
 		bne	:+ ; if (vs_ram_arena0[23] == 6) {
 			jmp	sub_9DF7
 		: ; } else {
-			inc	game_state
+			inc	mode_game
 			rts
 		; }
 	; }
 ; -----------------------------------------------------------
-	.export sub_9588
-sub_9588:
+	.export vs_title_tick
+vs_title_tick:
 	lda	#0
 	sta	nmi_disp_disable
 

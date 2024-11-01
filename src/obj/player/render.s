@@ -101,14 +101,14 @@ render_player_do:
 	lda	#PLAYER_ROW_COUNT
 	jsr	render_player_tiles_init
 	jsr	render_player_tiles_mirror
-	lda	eng_timer_fireball_throw
-	beq	:++ ; if (eng_timer_fireball_throw != 0) {
+	lda	timer_proj_throw
+	beq	:++ ; if (timer_proj_throw != 0) {
 		ldy	#0
-		lda	timer_ani_proj
-		cmp	eng_timer_fireball_throw
-		sty	eng_timer_fireball_throw
-		bcs	:++ ; if (timer_ani_proj < eng_timer_fireball_throw) {
-			sta	eng_timer_fireball_throw
+		lda	timer_proj_ani
+		cmp	timer_proj_throw
+		sty	timer_proj_throw
+		bcs	:++ ; if (timer_proj_ani < timer_proj_throw) {
+			sta	timer_proj_throw
 			ldy	#<(render_player_tile_offset_proj-render_player_tile_offsets)
 			lda	render_player_tile_offsets, y
 			sta	render_player_spr_group
@@ -300,10 +300,10 @@ render_player_animation:
 	jsr	render_player_fall
 	pha
 
-	lda	timer_ani_proj
+	lda	timer_proj_ani
 	bne	:++ ; if (proj.timer_ani == 0) {
 		lda	timer_player_ani
-		sta	timer_ani_proj
+		sta	timer_proj_ani
 		lda	player_ani_frame
 		clc
 		adc	#1

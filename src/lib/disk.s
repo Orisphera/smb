@@ -3,20 +3,21 @@
 .include	"system/fds.i"
 
 .include	"mem.i"
+.include	"modes.i"
 .include	"misc.i"
 .include	"fileids.i"
 
 .include	"unk.i"
 
-	.export disk_loader
-disk_loader:
-	lda	game_state
+	.export sys_disk_loader
+sys_disk_loader:
+	lda	mode_game
 	jsr	tbljmp
 	.addr	disk_loader_main
 	.addr	title_init_0
 	
 	.if	.defined(ANN)
-		.addr	disk_loader_game_state_inc
+		.addr	disk_loader_inc_mode_game
 	.endif
 
 	.addr	screen_proc
@@ -54,10 +55,10 @@ disk_loader_file_load_data4:
 
 	inc	bg_hidden_one_up_req
 	inc	eng_req_timer
-	inc	game_mode
-	lda	#fds_loader_procs::prompt_00|game_states::init_0
+	inc	mode_system
+	lda	#fds_loader_procs::prompt_00|game_modes::init_data2
 	sta	disk_loader_proc
-	sta	game_state
+	sta	mode_game
 	sta	timer_demo
 	rts
 ; ------------------------------------------------------------
@@ -133,8 +134,8 @@ disk_loader_file_load_data2:
 		lda	#fds_loader_procs::prompt_00
 		sta	disk_loader_proc
 	
-	disk_loader_game_state_inc:
-		inc	game_state
+	disk_loader_inc_mode_game:
+		inc	mode_game
 		rts
 	; }
 ; ------------------------------------------------------------
@@ -142,11 +143,11 @@ disk_loader_file_load_data2:
 disk_loader_victory_init:
 	lda	#16
 	sta	timer_victory
-	bne	disk_loader_game_state_inc
+	bne	disk_loader_inc_mode_game
 
 disk_loader_victory_check:
 	lda	timer_victory
-	beq	disk_loader_game_state_inc
+	beq	disk_loader_inc_mode_game
 	rts
 ; ------------------------------------------------------------
 .if	.defined(SMB2)
@@ -192,7 +193,7 @@ disk_loader_file_load_data3:
 
 		jsr	nt_init
 		jsr	disk_loader_next
-		jmp	sub_C858
+		jmp	ending_text_player_set
 	; } else disk_loader_file_load_err();
 ; ------------------------------------------------------------
 disk_loader_file_count_check:
@@ -201,6 +202,7 @@ disk_loader_file_count_check:
 	cmp	filetbl_lens, y
 	rts
 ; -----------------------------
+	.export	disk_header_id
 disk_header_id:
 	.byte	FDS_VENDOR_NINTENDO
 .if	.defined(SMB2)
@@ -277,6 +279,7 @@ disk_perror_pal:
 	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3, PPU_COLOR_GREY3, PPU_COLOR_PITCH0
 	: .byte	NMI_LIST_END
 ; ------------------------------------------------------------
+	.export	disk_loader_prompt
 disk_loader_prompt:
 	lda	#ppu_ctlr1::objblk_on|ppu_ctlr1::bgblk_on|ppu_ctlr1::objlblk_on|ppu_ctlr1::bglblk_on|ppu_ctlr1::color
 	sta	ppu_ctlr1_b
@@ -286,6 +289,7 @@ disk_loader_prompt:
 	sta	nmi_addrs_ctl
 	jmp	:+
 ; -----------------------------
+	.export	disk_loader_wait_eject
 disk_loader_wait_eject:
 	lda	#ppu_ctlr0::bg1
 	sta	ppu_ctlr0_bg
@@ -303,12 +307,14 @@ disk_loader_wait_eject:
 
 	rts
 ; -----------------------------
+	.export	disk_loader_wait_insert
 disk_loader_wait_insert:
 	lda	FDS_DISK_SR
 	lsr	a
 	bcc	:--
 	bcs	:-
 ; ------------------------------------------------------------
+	.export	disk_loader_bootstrap
 disk_loader_bootstrap:
 	lda	#fds_loader_procs::prompt_00
 	sta	disk_loader_proc
@@ -357,6 +363,7 @@ disk_text_error_ab_side:
 	.byte	"A B SIDE"
 disk_text_error_ab_side_end:
 ; -----------------------------
+	.export	disk_perror
 disk_perror:
 	pha
 

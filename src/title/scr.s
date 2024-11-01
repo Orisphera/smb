@@ -41,7 +41,7 @@
 ; -----------------------------
 		.export screen_title_bg
 	screen_title_bg:
-		lda	game_mode
+		lda	mode_system
 		bne	screen_title_end
 
 		.if	.defined(CONS)
@@ -89,7 +89,7 @@
 ; ----------------------------
 	.export	screen_title_cursor
 screen_title_cursor:
-	lda	game_mode
+	lda	mode_system
 	bne	screen_title_end
 	ldx	#0
 	: ; for (byte of nmi_list) {
@@ -115,7 +115,7 @@ screen_title_score:
 	.export screen_title_end
 screen_title_end:
 .if	.defined(SMB)|.defined(VS_SMB)
-	inc	game_state
+	inc	mode_game
 	rts
 .elseif	.defined(SMB2M)
 	jmp	screen_title_bg_finish

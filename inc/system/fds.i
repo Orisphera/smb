@@ -53,14 +53,57 @@ FDS_DISK_SR	= $4032
 		drive_ro	= 4
 	.endenum
 
+FDS_SND_RAM	= $4040
+FDS_SND_RAM_END	= $4080
+
 FDS_SND_VOL	= $4080
-FDS_SND_VOL_80	= $80
+
+	.enum	fds_snd_vol_env
+		inc	= 64
+		dec	= 0
+
+		off	= 128
+		on	= 0
+	.endenum
+
+FDS_SND_FREQ	= $4082
+
+FDS_SND_MOD_ENV	= $4084
+
+	.enum	fds_snd_mod_env
+		inc	= 64
+		dec	= 0
+
+		on	= 128
+		off	= 0
+	.endenum
+
+FDS_SND_MOD_COUNT = $4085
+FDS_SND_MOD_FREQ_LO = $4086
+FDS_SND_MOD_FREQ_HI = $4087
+
+FDS_SND_MOD_ENV_4X	= $80
+
+FDS_SND_MOD_WRITE = $4088
+FDS_SND_WAVE_VOL = $4089
+
+	.enum	fds_snd_wave_vol
+		vol_full	= 0
+		vol_two_thirds	= 1
+		vol_one_half	= 2
+		vol_two_fifths	= 3
+
+		bus_req	= 128
+		bus_rel	= 0
+	.endenum
 
 fdsbios_sleep_short	= $E149
 
 fdsbios_filetbl_load	= $E1F8
 FDSBIOS_FILETBL_LOAD_TRY_COUNT	= 2
 FDS_FILEHEADER_ID	= 3
+
+fdsbios_file_write	= $E239
 
 fdsbios_diskset_check	= $E3E7
 FDS_DISKSET_2ADDR	= $FF

@@ -626,7 +626,6 @@ actor_init_do:
 	.addr	actor_init_swarm
 	.addr	actor_init_null
 	.addr	actor_init_swarm
-
 	.addr	actor_init_swarm
 	.addr	actor_init_swarm
 	.addr	actor_init_swarm
@@ -653,9 +652,7 @@ actor_init_do:
 	.addr	actor_init_plat_s_down
 	.addr	actor_init_bowser
 	.addr	actor_init_powerup
-
-	.addr	player_proc_vine_init
-
+	.addr	actor_init_vine
 	.addr	actor_init_null
 	.addr	actor_init_null
 	.addr	actor_init_null

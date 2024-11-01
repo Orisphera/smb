@@ -1,7 +1,5 @@
 .include	"mem.i"
 
-.include	"unk.i"
-
 	.export actor_proc_enemy
 actor_proc_enemy:
 	lda	#obj_attr::priority_high|obj_attr::color0

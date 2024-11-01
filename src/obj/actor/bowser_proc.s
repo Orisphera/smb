@@ -35,7 +35,7 @@ actor_bowser_ending:
 	: ; if (actor.id != bowser || (actor.state != state_0 && actor_state & 0x40) || actor.pos_y >= 224) {
 		lda	#music_event::none
 		sta	apu_music_event
-		inc	game_state
+		inc	mode_game
 		jmp	actor_killall
 	: ; } else if () {
 		jsr	motion_fall_slow

@@ -95,10 +95,10 @@ game_init_0_do:
 	sta	pos_x_hi_game
 	sta	eng_page_cached
 
-	jsr	player_proc_disp_pos
+	jsr	game_disp_pos
 	ldy	#>PPU_VRAM_BG1
 	and	#1
-	beq	:+ ; if (player_proc_disp_pos() % 1) {
+	beq	:+ ; if (game_disp_pos() % 1) {
 		ldy	#>PPU_VRAM_BG2
 	: ; }
 	sty	eng_bg_addr_hi
@@ -147,7 +147,7 @@ game_init_0_do:
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		inc	game_state
+		inc	mode_game
 		rts
 	.elseif	.defined(ANN)
 		jmp	screen_title_bg_finish
@@ -261,7 +261,7 @@ game_init_1_do:
 	inc	nmi_sprite_overlap
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		inc	game_state
+		inc	mode_game
 		rts
 	.elseif	.defined(ANN)
 		jmp	screen_title_bg_finish
@@ -316,8 +316,8 @@ area_music_data_pipe_intro:
 ; ----------------------------
 	.export	game_init_area_music
 game_init_area_music:
-	lda	game_mode
-	beq	:+++ ; if (game.mode != title) {
+	lda	mode_system
+	beq	:+++ ; if (mode_system != title) {
 		lda	game_start_type
 		cmp	#2
 		beq	:+

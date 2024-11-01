@@ -36,8 +36,6 @@
 
 #include <stdio.h>
 
-#define SMB2
-
 #define	END_CHAR	0xFD
 
 static void print_header(void);

@@ -3,23 +3,11 @@
 .include	"mem.i"
 .include	"sound.i"
 
-	.export	apu_note_decomp, apu_note_length_load
-apu_note_decomp:
-	tax
-	ror	a
-	txa
-	rol	a
-	rol	a
-	rol	a
-; --------------
-apu_note_length_load:
-	and	#SND_NOTE_LEN_MASK
-	clc
-	adc	apu_note_len_offset
-	adc	snd_note_len_offset
-	tay
-	lda	apu_note_lengths, y
-	rts
+.macro	APU_LOAD_BASE
+	1
+.endmacro
+.include	"./common/load.s"
+.delmac	APU_LOAD_BASE
 ; ------------------------------------------------------------
 APU_ENVELOPE_LENGTH_VICTORY_CASTLE	= 4
 APU_ENVELOPE_LENGTH_UNDERWATER		= 40

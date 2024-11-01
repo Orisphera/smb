@@ -6,9 +6,8 @@
 .include	"course_flags.i"
 .include	"tunables.i"
 .include	"charmap.i"
+.include	"modes.i"
 .include	"misc.i"
-
-.include	"unk.i"
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	screen_proc_continue = screen_proc_next
@@ -28,7 +27,7 @@ screen_proc:
 	.addr	screen_timer_clear_check
 	.addr	screen_text_draw_intermission
 	.if	.defined(SMB2)
-		.addr	sub_C5D0
+		.addr	ending_course_plus_msg
 	.elseif	.defined(ANN)
 		.addr	screen_score_disp_end
 	.endif
@@ -44,8 +43,10 @@ screen_proc:
 screen_init:
 	jsr	oam_init
 	jsr	nt_init
-	lda	game_mode
-	beq	screen_proc_next_b ; if (game.mode != title) {
+	lda	mode_system
+	beq	screen_proc_next_b ; if (mode_system != title) {
+		.export	screen_init_title
+	screen_init_title:
 		ldx	#3
 		jmp	screen_proc_next_pal_set
 	; }
@@ -75,6 +76,7 @@ screen_palette_types:
 	.byte	nmi_addr::pal_underground
 	.byte	nmi_addr::pal_castle
 ; ----------------------------
+	.export	screen_color_init_2
 screen_color_init_2:
 	ldy	course_type
 	ldx	screen_palette_types, y
@@ -118,6 +120,7 @@ screen_color_player_power:
 ; --------------------------
 screen_color_pal_entry	= zp_byte_00
 
+	.export	screen_color_init_3
 screen_color_init_3:
 	ldy	course_bg_col
 	beq	:+ ; if (course_bg_col) {
@@ -190,6 +193,7 @@ screen_color_init_4:
 
 	jmp	screen_proc_continue
 ; ------------------------------------------------------------
+	.export screen_text_draw_header
 screen_text_draw_header:
 	lda	#screen_text::header
 	jsr	screen_text_draw
@@ -198,6 +202,7 @@ screen_text_draw_header:
 SCREEN_STAT_BG_1_ADDR	=	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
 SCREEN_STAT_BG_1_LEN	=	3
 
+	.export	screen_text_draw_splash
 screen_text_draw_splash:
 	jsr	misc_proc_coin_update_stats
 	ldx	nmi_list_0_offset
@@ -276,10 +281,10 @@ screen_text_draw_timeup:
 	; }
 ; ------------------------------------------------------------
 screen_text_draw_intermission:
-	lda	game_mode
+	lda	mode_system
 	beq	:+++
-	cmp	#game_modes::game_over
-	beq	:++ ; if (game.mode.not_in(title, game_over)) {
+	cmp	#system_modes::game_over
+	beq	:++ ; if (mode_system.not_in(title, game_over)) {
 		lda	game_start_type
 		bne	:+++
 		ldy	course_type
@@ -456,9 +461,9 @@ screen_text_draw:
 				lda	player_id
 				dex
 				bne	:+
-				ldy	game_mode
-				cpy	#game_modes::game_over
-				beq	:+ ; if (game.mode != game_over && (!VS_SMB || player_lives_b >= 0)) {
+				ldy	mode_system
+				cpy	#system_modes::game_over
+				beq	:+ ; if (mode_system != game_over && (!VS_SMB || player_lives_b >= 0)) {
 				.if	.defined(VS_SMB)
 					ldy	player_lives_b
 					bmi	:+

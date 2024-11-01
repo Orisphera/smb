@@ -1,0 +1,9 @@
+.include	"course_flags.i"
+
+.segment	"DATA3"
+
+	.export	course_actor_overworld_25_smb2
+course_actor_overworld_25_smb2:
+	.word	(COURSE_ACTORS_TYPE_E|COURSE_ACTORS_POS_X_1|COURSE_ACTORS_SUBSPACE_WATER|COURSE_ACTORS_SUBSPACE_WATER_06)
+	.byte	(COURSE_ACTORS_TYPE_E_COURSE_NO_1|COURSE_ACTORS_TYPE_E_STARTPAGE_00)
+	.byte	COURSE_ACTORS_END

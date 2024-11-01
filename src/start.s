@@ -94,7 +94,7 @@ start:
 
 	jsr     game_init_clearram
         sta     DMCDATA
-        sta     game_mode
+        sta     mode_system
 
 	.if	.defined(SMB2M)
 		sta	disk_loader_proc

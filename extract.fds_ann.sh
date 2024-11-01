@@ -291,8 +291,5 @@ do
         J=`expr $J + 1`
 done
 
-# NSMDATA3
-dd if=$1 bs=1 skip=46064 count=3346 >data/data3.ann.bin
-
 # NSMDATA4
 dd if=$1 bs=1 skip=49427 count=3568 >data/data4.ann.bin
