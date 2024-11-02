@@ -19,7 +19,7 @@ LD1AB_pulse_1:
 	snd_cmp_byte	length_fds_b::whole_third, sound_notes::A4
 
 LD1AB_wave:
-	.byte	SND_TRACK_NOTE_LEN|length_fds_b::7
+	.byte	SND_TRACK_NOTE_LEN|length_fds_b::whole_third
 		.byte	$2E
 		.byte	$2A
 

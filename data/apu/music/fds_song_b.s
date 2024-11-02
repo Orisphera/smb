@@ -67,33 +67,33 @@ LD106_pulse_1:
 	snd_cmp_byte	length_fds_b::third, sound_notes::A4
 
 LD0EF_wave:
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::3
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth
 		.byte	$20
 		.byte	$1e
 		.byte	$20
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::6
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third_double
 		.byte	$1a
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::4
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third
 		.byte	$1c
 		.byte	$1e
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::6
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third_double
 		.byte	$20
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::4
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third
 		.byte	$2a
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::1
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth_double
 		.byte	$32
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::3
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth
 		.byte	$32
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_a::4
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third
 		.byte	$2e
 		.byte	$32
 		.byte	$34
 		.byte	$28
 
 LD106_wave:
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_b::6
+	.byte	SND_TRACK_NOTE_LEN|length_fds_b::third_double
 		.byte	$2e
-	.byte	SND_TRACK_NOTE_LEN|lengths_fds_b::4
+	.byte	SND_TRACK_NOTE_LEN|length_fds_b::third
 		.byte	$2a
 
 LD0EF_triangle:
@@ -172,36 +172,36 @@ LD143_pulse_1:
 	snd_cmp_byte	length_fds_a::third, sound_notes::Ax4
 
 LD143_wave:
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::1
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth_double
 		.byte	$1a
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::3
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth
 		.byte	$1a
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::6
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third_double
 		.byte	$1a
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::5
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::half
 		.byte	$10
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::2
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninthdot
 		.byte	$16
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::0
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::thirddot
 		.byte	$16
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::3
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth
 		.byte	$12
 		.byte	$10
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::4
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third
 		.byte	$12
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::1
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth_double
 		.byte	$1c
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::3
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth
 		.byte	$1c
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::6
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third_double
 		.byte	$1c
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::5
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::half
 		.byte	$12
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::2
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninthdot
 		.byte	$16
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::6
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third_double
 		.byte	$1a
-	.byte	SND_TRACK_NOTE_LEN|length_fds_a::4
+	.byte	SND_TRACK_NOTE_LEN|length_fds_a::third
 		.byte	$16
 
 LD143_triangle:	
