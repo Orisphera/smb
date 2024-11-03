@@ -111,8 +111,8 @@ cannon_bullet_proc:
 					sta	state_actor, x
 					lda	#BULLET_ANI_TIMER
 					sta	timer_ani_actor, x
-					lda	#sfx_pulse2::blast
-					sta	apu_pulse2_queue
+					lda	#sfx_pulse_2::blast
+					sta	apu_sfx_pulse_2_req
 				; }
 			; }
 		: ; }

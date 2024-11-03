@@ -31,7 +31,7 @@ game_over_9902:
 	lda	timer_screen
 	bne	:+ ; if (!timer_screen) {
 		lda	#music_event::none
-		sta	apu_music_event
+		sta	apu_music_event_req
 		inc	mode_game
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
@@ -339,8 +339,8 @@ sub_9A4E:
 
                 lda	#$10
                 sta	VS_RAM_ARENA0+$1F
-                lda	#music_area::super_star
-                sta	apu_music_area
+                lda	#music_base::super_star
+                sta	apu_music_base_req
                 sta	VS_RAM_ARENA0+$1B
                 rts
         ; }
@@ -833,8 +833,8 @@ sub_9E29:
 	and	#joypad_button::select
 	beq	:++
 	: ; if (!vs_ram_arena0[0x19] || (!(vs_ram_arena0[0x19] & 0x80) && joypad_p1_select))) {
-		lda	#music_area::none
-		sta	apu_music_area
+		lda	#music_base::none
+		sta	apu_music_base_req
 		jmp	sub_9A0C
 	: ; }
 

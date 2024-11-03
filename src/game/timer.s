@@ -32,7 +32,7 @@ stats_time_proc:
 			ora	stats_time_end-STATS_TIME_LEN+2
 			bne	:+ ; if (--game.time.digit0 == 0) {
 				lda	#music_event::hurry_up
-				sta	apu_music_event
+				sta	apu_music_event_req
 			: ; }
 
 			.if	.defined(CONS)

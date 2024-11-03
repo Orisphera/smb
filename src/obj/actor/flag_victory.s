@@ -107,8 +107,8 @@ actor_proc_flag_victory_timer_score_do:
 	lda	frame_count
 	and	#MOD_8_4_UP
 	beq	:+ ; if ((frame_count % 8) >= 4) {
-		lda	#sfx_pulse2::tick
-		sta	apu_pulse2_queue
+		lda	#sfx_pulse_2::tick
+		sta	apu_sfx_pulse_2_req
 	: ; }
 
 	ldy	#(stats_time_end-stats_tbl)-1
@@ -199,8 +199,8 @@ actor_proc_flag_victory_delay:
 
 	lda	timer_actor, x
 	bne	:+
-	lda	snd_music_event_current
+	lda	apu_music_event_current
 	beq	actor_proc_flag_victory_next
-	: ; if (this.timer != 0 || snd.music_event != null) {
+	: ; if (this.timer != 0 || music.event_current != null) {
 		rts
 	; else actor_proc_flag_victory_next();

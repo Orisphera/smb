@@ -65,8 +65,8 @@ pole_proc:
 		cpy	#FLAG_SCORE_VALUE_ONEUP
 		bne	:+ ; if (SMB2M && render_flag_score_val == oneup) {
 			inc	player_lives
-			lda	#sfx_pulse2::oneup
-			sta	apu_pulse2_queue
+			lda	#sfx_pulse_2::oneup
+			sta	apu_sfx_pulse_2_req
 			jmp	:++
 		.endif
 		: ; } else {

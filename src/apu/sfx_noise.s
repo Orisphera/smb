@@ -21,7 +21,7 @@ APU_NOISE_LEN_WIND		= 192
 ; --------------
 .if	.defined(SMB2M)
 apu_skid:
-	sty	apu_noise_current
+	sty	apu_sfx_noise_current
 	lda	#APU_NOISE_LEN_SKID
 	sta	snd_sfx_noise_len
 
@@ -38,7 +38,7 @@ apu_skid_continued:
 ; --------------
 apu_block_break:
 	.if	.defined(SMB2M)
-		sty	apu_noise_current
+		sty	apu_sfx_noise_current
 	.endif
 
 	lda	#APU_NOISE_LEN_BLOCK_BREAK
@@ -69,7 +69,7 @@ apu_sfx_noise_continued:
 		.endif
 
 		lda	#sfx_noise::null
-		sta	apu_noise_current
+		sta	apu_sfx_noise_current
 	: ; }
 
 apu_sfx_noise_end:
@@ -78,19 +78,19 @@ apu_sfx_noise_end:
 	.export	apu_sfx_noise_play
 apu_sfx_noise_play:
 	.if	.defined(SMB)|.defined(VS_SMB)
-		ldy	apu_noise_event
-		beq	:+ ; if (apu_noise_event != none) {
-			sty	apu_noise_current
-			lsr	apu_noise_event
+		ldy	apu_sfx_noise_req
+		beq	:+ ; if (sfx.noise_req != none) {
+			sty	apu_sfx_noise_current
+			lsr	apu_sfx_noise_req
 			bcs	apu_block_break
-			lsr	apu_noise_event
+			lsr	apu_sfx_noise_req
 			bcs	apu_flame
 		: ; }
 	.endif
 
-	lda	apu_noise_current
+	lda	apu_sfx_noise_current
 	.if	.defined(SMB)|.defined(VS_SMB)
-		beq	:+ ; if (apu_noise_current != none) {
+		beq	:+ ; if (sfx.noise_current != none) {
 			lsr	a
 			bcs	apu_block_break_continued
 			lsr	a
@@ -98,13 +98,13 @@ apu_sfx_noise_play:
 		: ; }
 	.elseif	.defined(SMB2M)
 		bmi	apu_skid_continued
-		ldy	apu_noise_event
+		ldy	apu_sfx_noise_req
 		bmi	apu_skid
-		lsr	apu_noise_event
+		lsr	apu_sfx_noise_req
 		bcs	apu_block_break
 		lsr	a
 		bcs	apu_block_break_continued
-		lsr	apu_noise_event
+		lsr	apu_sfx_noise_req
 		bcs	apu_flame
 		lsr	a
 		bcs	apu_flame_continued
@@ -112,7 +112,7 @@ apu_sfx_noise_play:
 		.if	.defined(SMB2)
 			lsr	a
 			bcs	apu_wind_continued
-			lsr	apu_noise_event
+			lsr	apu_sfx_noise_req
 			bcs	apu_wind
 		.endif
 	.endif
@@ -121,7 +121,7 @@ apu_sfx_noise_play:
 ; ------------------------------------------------------------
 apu_flame:
 	.if	.defined(SMB2M)
-		sty	apu_noise_current
+		sty	apu_sfx_noise_current
 	.endif
 
 	lda	#APU_NOISE_LEN_FLAME
@@ -137,13 +137,13 @@ apu_flame_continued:
 ; ------------------------------------------------------------
 .if	.defined(SMB2)
 apu_wind:
-	sty	apu_noise_current
+	sty	apu_sfx_noise_current
 
 	lda	#APU_NOISE_LEN_WIND
 	sta	snd_sfx_noise_len
 
 apu_wind_continued:
-	lsr	apu_noise_event
+	lsr	apu_sfx_noise_req
 	bcc	apu_sfx_noise_end ; if () {
 		lda	snd_sfx_noise_len
 		lsr	a

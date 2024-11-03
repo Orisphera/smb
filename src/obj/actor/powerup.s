@@ -52,8 +52,8 @@ actor_init_powerup:
 
 	lda	#obj_attr::priority_low|obj_attr::color0
 	sta	attr_actor+POWERUP_ACTOR_IDX
-	lda	#sfx_pulse2::spawn_powerup
-	sta	apu_pulse2_queue
+	lda	#sfx_pulse_2::spawn_powerup
+	sta	apu_sfx_pulse_2_req
 	rts
 ; ------------------------------------------------------------
 	.export actor_proc_powerup

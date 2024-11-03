@@ -75,23 +75,23 @@ apu_sfx_pulse_1_continued_c:
 ; --------------
 	.export	apu_sfx_pulse_1_play
 apu_sfx_pulse_1_play:
-	ldy	apu_pulse1_queue
+	ldy	apu_sfx_pulse_1_req
 	beq	:+
 	sty	apu_sfx_pulse_1_current
 	bmi	apu_jump_small
-	lsr	apu_pulse1_queue
+	lsr	apu_sfx_pulse_1_req
 	bcs	apu_jump_big
-	lsr	apu_pulse1_queue
+	lsr	apu_sfx_pulse_1_req
 	bcs	apu_bump
-	lsr	apu_pulse1_queue
+	lsr	apu_sfx_pulse_1_req
 	bcs	apu_stomp
-	lsr	apu_pulse1_queue
+	lsr	apu_sfx_pulse_1_req
 	bcs	apu_smack
-	lsr	apu_pulse1_queue
+	lsr	apu_sfx_pulse_1_req
 	bcs	apu_pipe_entry
-	lsr	apu_pulse1_queue
+	lsr	apu_sfx_pulse_1_req
 	bcs	apu_proj
-	lsr	apu_pulse1_queue
+	lsr	apu_sfx_pulse_1_req
 	bcs	apu_pole
 	: lda	apu_sfx_pulse_1_current
 	beq	:+
@@ -169,7 +169,7 @@ apu_sfx_pulse_1_continued:
 ; --------------
 	.export	apu_sfx_pulse_1_stop
 apu_sfx_pulse_1_stop:
-	ldx	#sfx_pulse1::none
+	ldx	#sfx_pulse_1::none
 	stx	apu_sfx_pulse_1_current
 	ldx	#dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2
 	stx	DMCSTATUS

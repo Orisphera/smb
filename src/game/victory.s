@@ -243,7 +243,7 @@ victory_init:
 	.endif
 
 	lda	#music_event::victory_castle
-	sta	apu_music_event
+	sta	apu_music_event_req
 
 	.if	.defined(SMB2M)
 		.export screen_title_bg, screen_title_bg_finish
@@ -392,7 +392,7 @@ victory_msg:
 		.endif
 		bne	:+ ; if ((SMB && victory_msg_timer_hi == 3) || (VS_SMB && (victory_msg_timer_hi += 3) == 7)) {
 			lda	#music_event::victory_normal
-			sta	apu_music_event
+			sta	apu_music_event_req
 		: ; }
 	.endif
 
@@ -610,8 +610,8 @@ victory_8552:
 			and	#$1F
 			bne	:++ ; if (!(vs_ram_arena0[0x18] & 0x1F)) {
 				inc	VS_RAM_ARENA0+$22
-				lda	#sfx_pulse2::coin_01
-				sta	apu_pulse2_queue
+				lda	#sfx_pulse_2::coin_01
+				sta	apu_sfx_pulse_2_req
 				jmp	:++
 			; }
 		: ; } else {
@@ -754,8 +754,8 @@ victory_finish:
 		bne	:++ ; if (course.no == no_08 && player.lives >= 0 && !timer_select) {
 			lda	#48
 			sta	timer_select
-			lda	#sfx_pulse2::oneup
-			sta	apu_pulse2_queue
+			lda	#sfx_pulse_2::oneup
+			sta	apu_sfx_pulse_2_req
 			dec	player_lives
 			lda	#1
 			sta	score_digit_mod+2
@@ -802,8 +802,8 @@ victory_865D:
 
 	lda	timer_select
 	bne	:+
-	lda	snd_music_event_current
-	bne	:+ ; if (!timer_select && !snd.music_event) {
+	lda	apu_music_event_current
+	bne	:+ ; if (!timer_select && music.event.current == none) {
 		sta	title_course_sel_on
 		lda	#255
 		sta	player_lives
@@ -913,8 +913,8 @@ screen_score_disp:
 		.endif
 		bne	:+ ; if (stack[0x10] == 1UP) {
 			inc	player_lives
-			lda	#sfx_pulse2::oneup
-			sta	apu_pulse2_queue
+			lda	#sfx_pulse_2::oneup
+			sta	apu_sfx_pulse_2_req
 		: ; }
 
 		lda	screen_score_disp_incs, y

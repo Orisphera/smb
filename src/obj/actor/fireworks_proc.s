@@ -28,8 +28,8 @@ actor_proc_fireworks:
 	: ; } else {
 		lda	#actor_modes::free
 		sta	actor_mode, x
-		lda	#sfx_pulse2::blast
-		sta	apu_pulse2_queue
+		lda	#sfx_pulse_2::blast
+		sta	apu_sfx_pulse_2_req
 		lda	#5
 		sta	score_digit_mod+5
 		jmp	actor_proc_course_end_stats

@@ -32,30 +32,31 @@ apu_fds_cycle:
 		jsr	apu_fds_music_play
 
 		lda	#0
-		sta	apu_music_area
-		sta	apu_pulse2_queue
+		sta	apu_music_base_req
+		sta	apu_sfx_pulse_2_req
 
 		rts
 	; }
 ; ------------------------------------------------------------
 	: jmp	:+++
 ; -----------------------------
+	.export	apu_fds_next
 apu_fds_music_play:
-	lda	apu_music_area
+	lda	apu_music_base_req
 	bne	:+
-	lda	apu_fds_music_area_current
-	bne	:- ; if (apu_music_area == 0 && this.music_area_current == 0) {
+	lda	apu_fds_music_current
+	bne	:- ; if (music.base.req == 0 && music.fds.current == 0) {
 		rts
-	: ; } else if (apu_music_area != 0) {
+	: ; } else if (music.fds.current != 0) {
 		ldy	#0
-		sty	apu_fds_timeout
-		sta	apu_fds_music_area_current
+		sty	apu_fds_step
+		sta	apu_fds_music_current
 	
 	apu_fds_next:
-		inc	apu_fds_timeout
-		ldy	apu_fds_timeout
-		cpy	#12
-		bne	:+ ; if (++this.timeout == 12) {
+		inc	apu_fds_step
+		ldy	apu_fds_step
+		cpy	#<((apu_fds_music_offsets_end-apu_fds_music_offsets)+1)
+		bne	:+ ; if (++this.step == end) {
 			jmp	apu_fds_music_silence
 		: ; } else {
 			.macro	APU_HEADER_LOAD_FDS
@@ -66,116 +67,19 @@ apu_fds_music_play:
 		; }
 	: ; }
 ; -----------------------------
-APU_FDS_ENV_CTL_COUNTER	= 16
-
 apu_fds_music_pulse_2:
-	dec	apu_fds_pulse_2_note_len
-	bne	:+++++++ ; if (--this.note_len == 0) {
-		ldy	apu_fds_pulse_2_offset
-		inc	apu_fds_pulse_2_offset
-		lda	(apu_fds_track_addr), y
-		beq	:+
-		bpl	:++++
-		bne	:+++
-		: ; if (track[this.offset] == 0) {
-			lda	apu_fds_music_area_current
-			bne	:+
-			; if (music_area_current == 0) {
-			apu_fds_music_silence:
-				lda	#0
-				sta	apu_fds_music_area_current
-
-				sta	TRIANGLE_VOL
-
-				sta	apu_fds_track_addr+1
-				sta	apu_fds_track_addr
-				sta	apu_fds_pulse_2_offset
-				sta	apu_fds_pulse_1_offset
-				sta	apu_fds_triangle_offset
-				sta	apu_fds_noise_offset
-
-				lda	#channel_vol::duty_500|channel_vol::constant_vol|0
-				sta	PULSE1_VOL
-				sta	PULSE2_VOL
-
-				lda	#fds_snd_vol_env::off|fds_snd_vol_env::dec|0
-				sta	FDS_SND_VOL
-
-				rts
-			: ; } else {
-				jmp	apu_fds_next
-			; }
-		: ; } else if (([this.offset] & SND_TRACK_NOTE_LEN)) {
-			jsr	apu_fds_note_length_load
-			sta	apu_fds_pulse_2_note_len_b
-			ldy	apu_fds_pulse_2_offset
-			inc	apu_fds_pulse_2_offset
-			lda	(apu_fds_track_addr), y
-		: ; }
-	
-		ldx	apu_sfx_pulse_2_current
-		bne	:++ ; if (apu_sfx_pulse_2_current == 0) {
-			jsr	apu_fds_write_note_pulse_2
-			beq	:+ ; if (this.write_note() != 0) {
-				lda	#APU_FDS_ENV_CTL_COUNTER
-				ldx	#channel_vol::duty_500|channel_vol::envelope|2
-				ldy	#pulse_sweep::period_8hf|pulse_sweep::negate|pulse_sweep::shift_7
-			: ; }
-			sta	apu_fds_pulse_2_env_ctl
-		
-			jsr	apu_fds_write_base_pulse_2
-		: ; }
-	
-		lda	apu_fds_pulse_2_note_len_b
-		sta	apu_fds_pulse_2_note_len
-	: ; }
-
-	lda	apu_sfx_pulse_2_current
-	bne	:++ ; if (apu_sfx_pulse_2_current == 0) {
-		ldy	apu_fds_pulse_2_env_ctl
-		beq	:+ ; if ((y = this.env_ctl) > 0) {
-			dec	apu_fds_pulse_2_env_ctl
-		: ; }
-
-		lda	apu_fds_envelope, y
-		sta	PULSE2_VOL
-	: ; }
+	.macro	APU_PULSE_2_FDS
+		1
+	.endmacro
+	.include	"./common/pulse_2.s"
+	.delmac	APU_PULSE_2_FDS
 ; --------------
 apu_fds_music_pulse_1:
-	ldy	apu_fds_pulse_1_offset
-	beq	:++++ ; if (this.offset != 0) {
-		dec	apu_fds_pulse_1_note_len
-		bne	:++ ; if (this.note_len == 0) {
-			ldy	apu_fds_pulse_1_offset
-			inc	apu_fds_pulse_1_offset
-			lda	(apu_fds_track_addr), y
-			jsr	apu_fds_note_decomp
-			sta	apu_fds_pulse_1_note_len
-			txa
-			and	#SND_CMP_NOTE_MASK
-
-			jsr	apu_fds_write_note_pulse_1
-			beq	:+ ; if (this.write_note() != 0) {
-				lda	#APU_FDS_ENV_CTL_COUNTER
-				ldx	#channel_vol::duty_500|channel_vol::envelope|2
-				ldy	#pulse_sweep::period_8hf|pulse_sweep::negate|pulse_sweep::shift_7
-			: ; }
-			sta	apu_fds_pulse_1_env_ctl
-		
-			jsr	apu_fds_write_base_pulse_1
-		: ; }
-	
-		ldy	apu_fds_pulse_1_env_ctl
-		beq	:+ ; if ((y = this.env_ctl) > 0) {
-			dec	apu_fds_pulse_1_env_ctl
-		: ; }
-
-		lda	apu_fds_envelope, y
-		sta	PULSE1_VOL
-
-		lda	#pulse_sweep::period_8hf|pulse_sweep::negate|pulse_sweep::shift_7
-		sta	PULSE1_SWEEP
-	: ; }
+	.macro	APU_PULSE_1_FDS
+		1
+	.endmacro
+	.include	"./common/pulse_1.s"
+	.delmac	APU_PULSE_1_FDS
 ; --------------
 apu_fds_music_triangle:
 	.macro	APU_TRIANGLE_FDS
@@ -200,13 +104,13 @@ apu_fds_music_wave:
 		bne	:++++ ; } else if (--this.note_len == 0) {
 			ldy	apu_fds_wave_offset
 			inc	apu_fds_wave_offset
-			lda	(apu_fds_track_addr), y
+			lda	(apu_fds_track), y
 			bpl	:+ ; if ((track[this.offset++] & SND_TRACK_NOTE_LEN)) {
 				jsr	apu_fds_note_length_load
 				sta	apu_fds_wave_note_len_b
 				ldy	apu_fds_wave_offset
 				inc	apu_fds_wave_offset
-				lda	(apu_fds_track_addr), y
+				lda	(apu_fds_track), y
 			: ; }
 		
 			jsr	apu_fds_write_note_wave

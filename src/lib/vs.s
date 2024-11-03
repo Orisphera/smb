@@ -240,8 +240,8 @@ sub_9389_do:
 sub_93E0:
 	jsr	vs_setbank_low
 
-	lda	#sfx_pulse2::coin_01
-	sta	apu_pulse2_queue
+	lda	#sfx_pulse_2::coin_01
+	sta	apu_sfx_pulse_2_req
 ; ----------------------------
 sub_93E7:
 	lda	VS_RAM_ARENA0+$06

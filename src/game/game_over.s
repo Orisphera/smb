@@ -33,7 +33,7 @@ game_over_init:
 .endif
 
 	lda	#music_event::game_over
-	sta	apu_music_event
+	sta	apu_music_event_req
 	inc	nmi_disp_disable
 
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
@@ -80,7 +80,7 @@ game_over_proc:
 		.export eng_next_game
 	eng_next_game:
 		lda	#music_event::none
-		sta	apu_music_event
+		sta	apu_music_event_req
 .endif
 ; ----------------------------
 	.export	eng_game_continue

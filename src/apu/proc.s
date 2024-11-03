@@ -18,10 +18,10 @@ apu_cycle:
 		.elseif	.defined(VS)
 			sta	apu_sfx_pulse_1_current
 			sta	apu_sfx_pulse_2_current
-			sta	apu_noise_current
+			sta	apu_sfx_noise_current
 
-			sta	snd_music_event_current
-			sta	apu_music_area_current
+			sta	apu_music_event_current
+			sta	apu_music_base_current
 			beq	apu_clear_music
 		.endif
 	: ; } else {
@@ -49,7 +49,7 @@ apu_cycle:
 	
 					sta	apu_sfx_pulse_1_current
 					sta	apu_sfx_pulse_2_current
-					sta	apu_noise_current
+					sta	apu_sfx_noise_current
 	
 					lda	#dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2|dmcstatus::pulse_1
 					sta	DMCSTATUS
@@ -99,28 +99,28 @@ apu_cycle:
 
 			apu_clear_music:
 				lda	#0
-				sta	apu_music_area
-				sta	apu_music_event
+				sta	apu_music_base_req
+				sta	apu_music_event_req
 			; }
 		: ; }
 	
 		lda	#0
-		sta	apu_pulse1_queue
-		sta	apu_pulse2_queue
-		sta	apu_noise_event
+		sta	apu_sfx_pulse_1_req
+		sta	apu_sfx_pulse_2_req
+		sta	apu_sfx_noise_req
 
 		.if	.defined(CONS)
 		sta	apu_sfx_flag_pause
 		.endif
 	
 		ldy	snd_dac_len
-		lda	apu_music_area_current
-		and	#music_area::underwater|music_area::overworld
+		lda	apu_music_base_current
+		and	#music_base::underwater|music_base::overworld
 		beq	:+
 		inc	snd_dac_len
 		cpy	#48
 		bcc	:++
-		: ; if (music.area.not_in(underwater, overworld) || dac.len++ >= 48) {
+		: ; if (music.base.not_in(underwater, overworld) || dac.len++ >= 48) {
 			tya
 			beq	:+ ; if ((dac.len - 1) != 0) {
 				dec	snd_dac_len

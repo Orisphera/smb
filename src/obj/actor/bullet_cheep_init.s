@@ -99,9 +99,9 @@ actor_init_bullet_cheep:
 		actor_init_bullet_cheep_rts:
 			rts
 		: ; } else {
-			lda	apu_pulse2_queue
-			ora	#sfx_pulse2::blast
-			sta	apu_pulse2_queue
+			lda	apu_sfx_pulse_2_req
+			ora	#sfx_pulse_2::blast
+			sta	apu_sfx_pulse_2_req
 		
 			lda	#actor::bullet_swarm
 			bne	actor_init_bullet_cheep_do ; if (this.is_group) {

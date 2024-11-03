@@ -68,7 +68,7 @@ player_proc_lifedown:
 	lda	#0
 	sta	nmi_sprite_overlap
 	lda	#music_event::none
-	sta	apu_music_event
+	sta	apu_music_event_req
 
 	dec	player_lives
 	bpl	:+ ; if (--this.lives < 0) {

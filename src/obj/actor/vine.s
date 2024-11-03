@@ -23,8 +23,8 @@ actor_init_vine:
 	txa
 	sta	actor_vine_offset, y
 	inc	actor_vine_flag
-	lda	#sfx_pulse2::spawn_vine
-	sta	apu_pulse2_queue
+	lda	#sfx_pulse_2::spawn_vine
+	sta	apu_sfx_pulse_2_req
 	rts
 ; ------------------------------------------------------------
 GAME_PROC_VINE_ACTOR_ID	= (ENG_ACTOR_MAX-1)

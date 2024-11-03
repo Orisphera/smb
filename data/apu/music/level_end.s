@@ -77,7 +77,7 @@ apu_music_unk_pulse_1:
 	snd_cmp_byte	length_e::third,	sound_notes::Ax5
 	snd_cmp_byte	length_e::third,	sound_notes::Ax5
 	snd_cmp_byte	length_e::wholedot,	sound_notes::E5
-	snd_cmp_byte	length_e::wholedot,	sound_notes::Gx5_b
+	.byte	SND_PULSE_1_SWEEP
 
 apu_music_level_end_triangle:
 	.byte	SND_TRACK_NOTE_LEN|length_e::whole

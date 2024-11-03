@@ -226,8 +226,8 @@ col_proj_actor_damage:
 			ora	#actor_states::state_3
 		: ; }
 		sta	state_actor, x
-		lda	#sfx_pulse2::bowser_fall
-		sta	apu_pulse2_queue
+		lda	#sfx_pulse_2::bowser_fall
+		sta	apu_sfx_pulse_2_req
 		ldx	zp_byte_01
 		lda	#SCORE_PROJ_BOWSER
 		bne	:++++++
@@ -283,8 +283,8 @@ col_proj_actor_damage:
 
 	; if (actor.id != bowser && actor.killed) {
 		jsr	col_score_do
-		lda	#sfx_pulse1::smack
-		sta	apu_pulse1_queue
+		lda	#sfx_pulse_1::smack
+		sta	apu_sfx_pulse_1_req
 	: ; }
 
 	rts
@@ -338,9 +338,9 @@ SCORE_POWERUP	= scores::value_1000
 STAR_TIMER	= 35
 
 .if	.defined(SMB)|.defined(SMB2M)
-	STAR_MUSIC	= music_area::super_star
+	STAR_MUSIC	= music_base::super_star
 .elseif	.defined(VS_SMB)
-	STAR_MUSIC	= music_area::clouds
+	STAR_MUSIC	= music_base::clouds
 .endif
 ; ------------------------------------------------------------
 col_player_powerup_proc:
@@ -356,8 +356,8 @@ col_player_powerup_proc:
 
 	lda	#SCORE_POWERUP
 	jsr	col_score_do
-	lda	#sfx_pulse2::powerup
-	sta	apu_pulse2_queue
+	lda	#sfx_pulse_2::powerup
+	sta	apu_sfx_pulse_2_req
 	lda	eng_powerup_type
 	cmp	#powerup_type::star
 	bcc	:+
@@ -366,7 +366,7 @@ col_player_powerup_proc:
 		lda	#STAR_TIMER
 		sta	timer_player_star
 		lda	#STAR_MUSIC
-		sta	apu_music_area
+		sta	apu_music_base_req
 		rts
 	: ; } else if (powerup.type.not_in(star, mushroom_oneup)) {
 		lda	player_status
@@ -508,8 +508,8 @@ col_player_actor_proc_hit_do:
 	;	&& actor.state >= 2
 	;	&& actor.id != goomba
 	; ) {
-		lda	#sfx_pulse1::smack
-		sta	apu_pulse1_queue
+		lda	#sfx_pulse_1::smack
+		sta	apu_sfx_pulse_1_req
 		lda	state_actor, x
 		ora	#actor_states::spawned
 		sta	state_actor, x
@@ -589,14 +589,14 @@ col_player_harm_proc_do:
 	beq	:++ ; if (player.timer_injury == 0) {
 		; if (player.status != 0) {
 			sta	player_status
-			lda	#(sfx_pulse1::pipe_entry_16)>>1
+			lda	#(sfx_pulse_1::pipe_entry_16)>>1
 			sta	timer_player_injury
 			.ifndef	PAL
 				asl	a
 			.else
-				lda	#sfx_pulse1::pipe_entry_16
+				lda	#sfx_pulse_1::pipe_entry_16
 			.endif
-			sta	apu_pulse1_queue
+			sta	apu_sfx_pulse_1_req
 			jsr	screen_color_player
 			lda	#player_procs::hurt
 		: ; }
@@ -619,7 +619,7 @@ col_player_harm_proc_end:
 	: ; if (player.status == 0) {
 		stx	veloc_x_player
 		inx
-		stx	apu_music_event
+		stx	apu_music_event_req
 		lda	#PLAYER_DEATH_VELOC_Y
 		sta	veloc_y_player
 
@@ -637,8 +637,8 @@ col_player_actor_stomp:
 	lda	actor_id, x
 	cmp	#actor::spiny
 	beq	col_player_harm_proc
-	lda	#sfx_pulse1::stomp
-	sta	apu_pulse1_queue
+	lda	#sfx_pulse_1::stomp
+	sta	apu_sfx_pulse_1_req
 	lda	actor_id, x
 	ldy	#0
 	cmp	#actor::cheep_fly
@@ -1329,8 +1329,8 @@ col_bg_proc_do:
 		: cmp	#metatile_0::climb_blank
 		beq	:+ ; } else if ((col_bg_proc_solid_check() != climb_blank) {
 			; if (course_type != water && timer_block_bounce == 0) {
-				lda	#sfx_pulse1::bump
-				sta	apu_pulse1_queue
+				lda	#sfx_pulse_1::bump
+				sta	apu_sfx_pulse_1_req
 			: ; }
 	
 			.ifndef	PAL
@@ -1489,8 +1489,8 @@ col_bg_proc_side_do:
 				: ; } else if (player.state == ground && player.disp_dir == right && tile.in(pipe_h_d, pipe_water_b)) {
 					lda	attr_player
 					bne	:+ ; if (player.priority_high || player.flipped) {
-						ldy	#sfx_pulse1::pipe_entry_16
-						sty	apu_pulse1_queue
+						ldy	#sfx_pulse_1::pipe_entry_16
+						sty	apu_sfx_pulse_1_req
 					: ; }
 					ora	#obj_attr::priority_low
 					sta	attr_player
@@ -1602,7 +1602,7 @@ col_bg_proc_climb_do:
 				lda	#actor::bullet
 				jsr	bg_actor_kill
 				lda	#music_event::none
-				sta	apu_music_event
+				sta	apu_music_event_req
 				lsr	a
 				sta	eng_music_event_flag
 
@@ -1745,8 +1745,8 @@ col_bg_proc_pipe_v_do:
 		sta	eng_timer_scene_trans
 		lda	#player_procs::pipe_v
 		sta	player_proc_id
-		lda	#sfx_pulse1::pipe_entry_16
-		sta	apu_pulse1_queue
+		lda	#sfx_pulse_1::pipe_entry_16
+		sta	apu_sfx_pulse_1_req
 		lda	#obj_attr::priority_low|obj_attr::color0
 		sta	attr_player
 		lda	eng_warp_ctrl
@@ -1803,7 +1803,7 @@ col_bg_proc_pipe_v_do:
 			sta	course_descriptor
 
 			lda	#music_event::none
-			sta	apu_music_event
+			sta	apu_music_event_req
 			lda	#0
 			sta	pos_x_hi_init_game
 			sta	course_sub
@@ -1891,8 +1891,8 @@ col_bg_proc_coin_check:
 		clc
 		rts
 	: ; } else {
-		lda	#sfx_pulse2::coin_01
-		sta	apu_pulse2_queue
+		lda	#sfx_pulse_2::coin_01
+		sta	apu_sfx_pulse_2_req
 		rts
 	; }
 ; ------------------------------------------------------------
@@ -2198,8 +2198,8 @@ col_actor_check_side_bump:
 	lda	state_actor, x
 	asl	a
 	bcc	:+ ; if (actor.idx != last && actor.spawned) {
-		lda	#sfx_pulse1::bump
-		sta	apu_pulse1_queue
+		lda	#sfx_pulse_1::bump
+		sta	apu_sfx_pulse_1_req
 	: ; }
 
 	lda	actor_id, x
@@ -2342,8 +2342,8 @@ col_proj_proc:
 	: ; } else {
 		lda	#proj_states::bit_7
 		sta	state_proj, x
-		lda	#sfx_pulse1::bump
-		sta	apu_pulse1_queue
+		lda	#sfx_pulse_1::bump
+		sta	apu_sfx_pulse_1_req
 		rts
 	; }
 ; ------------------------------------------------------------

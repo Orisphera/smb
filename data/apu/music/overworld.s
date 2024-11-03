@@ -508,7 +508,7 @@ apu_music_overworld_d_c_pulse_2:
 	.byte	SND_TRACK_END
 
 apu_music_death_pulse_1:
-	snd_cmp_byte	length_d::wholedot,	sound_notes::Gx5_b
+	.byte	SND_PULSE_1_SWEEP
 	snd_cmp_byte	length_d::twelfth,	sound_notes::Ax4
 	snd_cmp_byte	length_d::twelfth,	sound_notes::B4
 	snd_cmp_byte	length_d::twelfth,	sound_notes::C5

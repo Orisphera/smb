@@ -70,7 +70,7 @@ bg_scenery_wind_proc:
 	lda	bg_scenery_wind_flag
 	beq	:+++ ; if (bg_scenery_wind_flag != 0) {
 		lda	#sfx_noise::wind
-		sta	apu_noise_event
+		sta	apu_sfx_noise_req
 		jsr	bg_scenery_wind_leaf_proc
 		ldx	#0
 		ldy	obj_data_offset_leaf

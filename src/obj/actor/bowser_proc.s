@@ -34,7 +34,7 @@ actor_bowser_ending:
 	bcc	:++
 	: ; if (actor.id != bowser || (actor.state != state_0 && actor_state & 0x40) || actor.pos_y >= 224) {
 		lda	#music_event::none
-		sta	apu_music_event
+		sta	apu_music_event_req
 		inc	mode_game
 		jmp	actor_killall
 	: ; } else if () {
@@ -59,10 +59,10 @@ actor_bowser_ending:
 			jsr	gfx_clear_put_do
 			ldx	actor_index
 			jsr	gfx_meta_step
-			lda	#sfx_pulse2::blast
-			sta	apu_pulse2_queue
+			lda	#sfx_pulse_2::blast
+			sta	apu_sfx_pulse_2_req
 			lda	#sfx_noise::block_break_01
-			sta	apu_noise_event
+			sta	apu_sfx_noise_req
 			inc	nmi_list_1_data+$28
 			lda	nmi_list_1_data+$28
 			cmp	#$0F
@@ -70,8 +70,8 @@ actor_bowser_ending:
 				jsr	actor_init_veloc_y
 				lda	#actor_states::bit_6
 				sta	state_actor, x
-				lda	#sfx_pulse2::bowser_fall
-				sta	apu_pulse2_queue
+				lda	#sfx_pulse_2::bowser_fall
+				sta	apu_sfx_pulse_2_req
 			; }
 		: ; }
 	

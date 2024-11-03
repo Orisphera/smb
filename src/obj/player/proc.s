@@ -208,7 +208,7 @@ player_proc_ctrl:
 				ldy	eng_music_event_death
 				bne	:+ ; if (!eng_music_event_death) {
 					iny
-					sty	apu_music_event
+					sty	apu_music_event_req
 					sty	eng_music_event_death
 				: ; }
 			
@@ -220,12 +220,12 @@ player_proc_ctrl:
 		cmp	player_proc_ctrl_fall_y_hi_cutoff
 		bmi	player_proc_ctrl_rts ; if (this.pos_y.hi >= fall_y_hi_cutoff) {
 			dex
-			bmi	:++ ; if (x) {
-				ldy	snd_music_event_current
-				bne	:+ ; if (snd.music_event == null) {
-					lda	#player_procs::lifedown
-					sta	player_proc_id
-				: ; }
+			bmi	:++ ; if (--x >= 0 && music.event_current == null) {
+			ldy	apu_music_event_current
+			bne	:+
+				lda	#player_procs::lifedown
+				sta	player_proc_id
+			: ; }
 	
 			player_proc_ctrl_rts:
 				rts
@@ -409,7 +409,7 @@ player_proc_pole:
 	cmp	#actor::flag_enemy
 	bne	:++ ; if (actor.actor_id == flag_enemy) {
 		lda	eng_music_event_flag
-		sta	apu_pulse1_queue
+		sta	apu_sfx_pulse_1_req
 
 		lda	#joypad_button::none
 		sta	eng_music_event_flag
@@ -454,7 +454,7 @@ player_proc_victory:
 		bne	:+ ; if (!game_level_end_apu_on) {
 		.endif
 			lda	#music_event::level_end
-			sta	apu_music_event
+			sta	apu_music_event_req
 			.if	.defined(SMB)|.defined(VS_SMB)
 				lda	#0
 				sta	game_scroll_lock
@@ -518,7 +518,7 @@ player_proc_victory:
 		jsr	player_proc_pipe_h_do_2
 		sta	pos_x_hi_alt_game
 		lda	#music_event::none
-		sta	apu_music_event
+		sta	apu_music_event_req
 	: ; }
 
 	rts
@@ -824,8 +824,8 @@ player_proc_player_physics:
 
 		lda	player_swimming
 		beq	:+ ; if (this.swimming) {
-			lda	#sfx_pulse1::stomp
-			sta	apu_pulse1_queue
+			lda	#sfx_pulse_1::stomp
+			sta	apu_sfx_pulse_1_req
 	
 			lda	pos_y_lo_player
 			cmp	#20
@@ -835,12 +835,12 @@ player_proc_player_physics:
 				jmp	:+++
 			; }
 		: ; } else {
-			lda	#sfx_pulse1::jump_big
+			lda	#sfx_pulse_1::jump_big
 			ldy	player_size
 			beq	:+ ; if (this.size == small) {
-				lda	#sfx_pulse1::jump_small
+				lda	#sfx_pulse_1::jump_small
 			: ; }
-			sta	apu_pulse1_queue
+			sta	apu_sfx_pulse_1_req
 		; }
 	: ; }
 

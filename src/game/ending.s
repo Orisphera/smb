@@ -85,8 +85,8 @@ ending_princess_show:
 	sta	nmi_apu_call+OP_SIZE+1
 	lda	#<apu_fds_cycle
 	sta	nmi_apu_call+OP_SIZE
-	lda	#music_area::overworld
-	sta	apu_music_area
+	lda	#music_fds::ending
+	sta	apu_music_base_req
 
 	lda	#0
 	sta	joypad_l_r
@@ -112,7 +112,7 @@ ending_victory_msg:
 			cpy	#5
 			bne	:+ ; if ((victory_msg_timer_hi + 3) == 5) {
 				lda	#music_event::victory_normal
-				sta	apu_music_event
+				sta	apu_music_event_req
 			: ; }
 		
 			tya
@@ -151,11 +151,11 @@ ending_extra_lives:
 	lda	player_lives
 	bmi	ending_state_next_init
 	lda	timer_select
-	bne	:- ; if (timer_victory == 0 && player_lives >= 0 && timer_select == 0) {
+	bne	:- ; if (timer_victory == 0 && player.lives >= 0 && timer_select == 0) {
 		lda	#48
 		sta	timer_select
-		lda	#sfx_pulse2::oneup
-		sta	apu_pulse2_queue
+		lda	#sfx_pulse_2::oneup
+		sta	apu_sfx_pulse_2_req
 		dec	player_lives
 		lda	#$01
 		sta	STACK_BASE+$35
@@ -163,10 +163,10 @@ ending_extra_lives:
 		jmp	actor_proc_course_end_stats
 	.elseif	.defined(ANN)
 		jsr	actor_proc_course_end_stats
-		lda	apu_fds_music_area_current
-		bne	:+ ; if (apu_fds_music_area_current == 0) {
-			lda	#music_area::overworld
-			sta	apu_music_area
+		lda	apu_fds_music_current
+		bne	:+ ; if (music.fds.current == 0) {
+			lda	#music_fds::ending
+			sta	apu_music_base_req
 		: ; }
 		rts
 	.endif
@@ -272,20 +272,20 @@ ending_lives_draw:
 	.export	ending_toad_proc
 ending_toad_proc:
 	jsr	ending_toad_render
-	lda	apu_fds_music_area_current
+	lda	apu_fds_music_current
 	bne	:++
 
 	.if	.defined(ANN)
 		lda	timer_unk_b
 		beq	:+ ; if (timer_unk_b > 0) {
-			lda	#music_area::overworld
-			sta	apu_music_area
+			lda	#music_fds::ending
+			sta	apu_music_base_req
 			rts
 		; }
 	.endif
 
 	: lda	game_hard_mode_new
-	bne	disk_loader_file_load_save_done ; if (apu_fds_music_area_current == 0 && !game.hard_mode) {
+	bne	disk_loader_file_load_save_done ; if (music.fds.current == 0 && !game.hard_mode) {
 		inc	mode_game
 	: ; }
 
@@ -405,8 +405,8 @@ ending_toad_render:
 		bne	:++ ; if (ending_toad_offset = 7 || (timer_ending % 32) == 0) {
 			; if () {
 				inc	ending_toad_offset
-				lda	#sfx_pulse2::coin_01
-				sta	apu_pulse2_queue
+				lda	#sfx_pulse_2::coin_01
+				sta	apu_sfx_pulse_2_req
 				jmp	:++
 			: ; } else {
 				lda	timer_ending

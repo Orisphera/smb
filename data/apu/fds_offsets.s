@@ -1,6 +1,6 @@
 .segment	"DATA3"
 
-	.export	apu_fds_music_offsets
+	.export	apu_fds_music_offsets, apu_fds_music_offsets_end
 apu_fds_music_offsets:
 	.byte	LD005-apu_fds_music_offsets
 	.byte	LD005-apu_fds_music_offsets
@@ -13,6 +13,7 @@ apu_fds_music_offsets:
 	.byte	LD01D-apu_fds_music_offsets
 	.byte	LD015-apu_fds_music_offsets
 	.byte	LD025-apu_fds_music_offsets
+apu_fds_music_offsets_end:
 ; -----------------------------
 LD005:
 	.byte	<(apu_fds_note_lengths_a-apu_fds_note_lengths)

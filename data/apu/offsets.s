@@ -7,6 +7,7 @@
 
 	.export	apu_music_offsets, apu_music_overworld_offsets
 	.export	apu_music_overworld_loop_offset, apu_music_overworld_loop_end
+	.export	apu_music_offsets_base_start
 apu_music_offsets:
 	.byte	apu_music_death-apu_music_offsets
 	.byte	apu_music_game_over-apu_music_offsets
@@ -25,6 +26,7 @@ apu_music_offsets:
 	.byte	apu_music_hurry_up-apu_music_offsets
 	.byte	apu_music_none-apu_music_offsets
 ; --------------
+apu_music_offsets_base_start:
 	.byte	apu_music_overworld_a-apu_music_offsets
 	.byte	apu_music_underwater-apu_music_offsets
 	.byte	apu_music_underground-apu_music_offsets
@@ -126,13 +128,13 @@ apu_music_super_star_vs_d:
 .endif
 
 apu_music_hurry_up:
-	.byte	<(apu_note_lengths_b-apu_note_lengths)
+	.byte	APU_MUSIC_HURRY_UP_LEN
 	.addr	apu_music_hurry_up_data
 	.byte	<(apu_music_hurry_up_triangle-apu_music_hurry_up_data)
 	.byte	<(apu_music_hurry_up_pulse_1-apu_music_hurry_up_data)
 
 apu_music_super_star:
-	.byte	<(APU_SUPER_STAR_LEN_BASE-apu_note_lengths)
+	.byte	<(apu_note_lengths_e-apu_note_lengths)
 	.addr	apu_music_super_star_data
 	.byte	<(apu_music_super_star_triangle-apu_music_super_star_data)
 	.byte	<(apu_music_super_star_pulse_1-apu_music_super_star_data)

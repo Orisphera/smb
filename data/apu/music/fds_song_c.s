@@ -20,8 +20,8 @@ LD1AB_pulse_1:
 
 LD1AB_wave:
 	.byte	SND_TRACK_NOTE_LEN|length_fds_b::whole_third
-		.byte	$2E
-		.byte	$2A
+		.byte	sound_fds_notes::note_23
+		.byte	sound_fds_notes::note_21
 
 LD1AB_triangle:
 	.byte	SND_TRACK_NOTE_LEN|length_fds_b::ninth

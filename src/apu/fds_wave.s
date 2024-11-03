@@ -62,9 +62,9 @@ apu_fds_wave_get:
 		bne	:-
 	: ; }
 
-	lda	apu_fds_music_area_current
+	lda	apu_fds_music_current
 	and	#SND_FDS_VOL_FULL
-	beq	:+ ; if ((apu_fds_music_area_current & SND_FDS_VOL_FULL)) {
+	beq	:+ ; if ((music.fds.current & SND_FDS_VOL_FULL)) {
 		lda	#fds_snd_wave_vol::bus_rel|fds_snd_wave_vol::vol_full
 		beq	:++
 	: ; } else {

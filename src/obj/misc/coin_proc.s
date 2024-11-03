@@ -69,8 +69,8 @@ misc_proc_coin_add:
 		.endif
 
 		inc	player_lives
-		lda	#sfx_pulse2::oneup
-		sta	apu_pulse2_queue
+		lda	#sfx_pulse_2::oneup
+		sta	apu_sfx_pulse_2_req
 	: ; }
 
 	lda	#2

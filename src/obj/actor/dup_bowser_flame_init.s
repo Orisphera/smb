@@ -52,9 +52,9 @@ actor_init_bowser_flame:
 	lda	timer_swarm
 	bne	actor_init_dup_rts ; if (timer_swarm == 0) {
 		sta	accel_y_actor_c, x
-		lda	apu_noise_event
+		lda	apu_sfx_noise_req
 		ora	#sfx_noise::flame
-		sta	apu_noise_event
+		sta	apu_sfx_noise_req
 		ldy	nmi_list_1_data+$27
 		lda	actor_id, y
 		cmp	#actor::bowser

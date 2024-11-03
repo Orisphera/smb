@@ -68,7 +68,7 @@ apu_sfx_pulse_2_continued:
 	bne	:+
 ; --------------
 apu_sfx_pulse_2_stop:
-	ldx	#sfx_pulse2::none
+	ldx	#sfx_pulse_2::none
 	stx	apu_sfx_pulse_2_current
 ; --------------
 	.export	apu_sfx_pulse_2_mute
@@ -82,25 +82,25 @@ apu_sfx_pulse_2_mute:
 	.export	apu_sfx_pulse_2_play
 apu_sfx_pulse_2_play:
 	lda	apu_sfx_pulse_2_current
-	and	#sfx_pulse2::oneup
+	and	#sfx_pulse_2::oneup
 	bne	apu_oneup_continued
-	ldy	apu_pulse2_queue
+	ldy	apu_sfx_pulse_2_req
 	beq	:+
 	sty	apu_sfx_pulse_2_current
 	bmi	apu_bowser_fall
-	lsr	apu_pulse2_queue
+	lsr	apu_sfx_pulse_2_req
 	bcs	apu_coin
-	lsr	apu_pulse2_queue
+	lsr	apu_sfx_pulse_2_req
 	bcs	apu_spawn_powerup
-	lsr	apu_pulse2_queue
+	lsr	apu_sfx_pulse_2_req
 	bcs	apu_spawn_vine
-	lsr	apu_pulse2_queue
+	lsr	apu_sfx_pulse_2_req
 	bcs	apu_blast
-	lsr	apu_pulse2_queue
+	lsr	apu_sfx_pulse_2_req
 	bcs	apu_tick
-	lsr	apu_pulse2_queue
+	lsr	apu_sfx_pulse_2_req
 	bcs	apu_powerup
-	lsr	apu_pulse2_queue
+	lsr	apu_sfx_pulse_2_req
 	bcs	apu_oneup
 	: lda	apu_sfx_pulse_2_current
 	beq	:+

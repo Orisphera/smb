@@ -34,8 +34,8 @@ proj_proc:
 			;	&& !player.crouch
 			;	&& player.state != climb
 			; ) {
-			lda	#sfx_pulse1::proj
-			sta	apu_pulse1_queue
+			lda	#sfx_pulse_1::proj
+			sta	apu_sfx_pulse_1_req
 			lda	#proj_states::state_2
 			sta	state_proj, x
 			ldy	timer_player_ani

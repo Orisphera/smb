@@ -23,9 +23,10 @@ SOUND_I = 1
 	APU_COUNTER_OFFSET	= 0
 	APU_TIMER_OFFSET	= 1
 
-	APU_SUPER_STAR_LEN_BASE	= apu_note_lengths_e
+	APU_MUSIC_HURRY_UP_LEN	= <(apu_note_lengths_b-apu_note_lengths)
 
-	SND_TRACK_END	= 0
+	SND_TRACK_END		= 0
+	SND_PULSE_1_SWEEP	= 0
 
 	SND_NOISE_NONE		= $04
 	SND_NOISE_HI_SHORT	= $10
@@ -39,6 +40,8 @@ SOUND_I = 1
 	SND_NOISE_LONG_COUNT	= 88
 
 	SND_FDS_VOL_FULL	= %01000000
+
+	SND_FDS_ENV_CTL_COUNTER	= 16
 
 	SND_WAVE_SAMPLES_LEN	= 32
 
@@ -104,6 +107,39 @@ SOUND_I = 1
 
 	.if	.defined(SMB2M)
 		.enum	sound_fds_notes
+			note_00	= <(apu_fds_wave_note_00-apu_fds_wave_notes)
+			note_01	= <(apu_fds_wave_note_01-apu_fds_wave_notes)
+			note_02	= <(apu_fds_wave_note_02-apu_fds_wave_notes)
+			note_03	= <(apu_fds_wave_note_03-apu_fds_wave_notes)
+			note_04	= <(apu_fds_wave_note_04-apu_fds_wave_notes)
+			note_05	= <(apu_fds_wave_note_05-apu_fds_wave_notes)
+			note_06	= <(apu_fds_wave_note_06-apu_fds_wave_notes)
+			note_07	= <(apu_fds_wave_note_07-apu_fds_wave_notes)
+
+			note_08	= <(apu_fds_wave_note_08-apu_fds_wave_notes)
+			note_09	= <(apu_fds_wave_note_09-apu_fds_wave_notes)
+			note_10	= <(apu_fds_wave_note_10-apu_fds_wave_notes)
+			note_11	= <(apu_fds_wave_note_11-apu_fds_wave_notes)
+			note_12	= <(apu_fds_wave_note_12-apu_fds_wave_notes)
+			note_13	= <(apu_fds_wave_note_13-apu_fds_wave_notes)
+			note_14	= <(apu_fds_wave_note_14-apu_fds_wave_notes)
+			note_15	= <(apu_fds_wave_note_15-apu_fds_wave_notes)
+
+			note_16	= <(apu_fds_wave_note_16-apu_fds_wave_notes)
+			note_17	= <(apu_fds_wave_note_17-apu_fds_wave_notes)
+			note_18	= <(apu_fds_wave_note_18-apu_fds_wave_notes)
+			note_19	= <(apu_fds_wave_note_19-apu_fds_wave_notes)
+			note_20	= <(apu_fds_wave_note_20-apu_fds_wave_notes)
+			note_21	= <(apu_fds_wave_note_21-apu_fds_wave_notes)
+			note_22	= <(apu_fds_wave_note_22-apu_fds_wave_notes)
+			note_23	= <(apu_fds_wave_note_23-apu_fds_wave_notes)
+
+			note_24	= <(apu_fds_wave_note_24-apu_fds_wave_notes)
+			note_25	= <(apu_fds_wave_note_25-apu_fds_wave_notes)
+			note_26	= <(apu_fds_wave_note_26-apu_fds_wave_notes)
+			note_27	= <(apu_fds_wave_note_27-apu_fds_wave_notes)
+			note_28	= <(apu_fds_wave_note_28-apu_fds_wave_notes)
+			note_29	= <(apu_fds_wave_note_29-apu_fds_wave_notes)
 		.endenum
 	.endif
 
@@ -224,7 +260,7 @@ SOUND_I = 1
 		.endif
 	.endenum
 
-	.enum	sfx_pulse1
+	.enum	sfx_pulse_1
 		none		= 0
 		jump_big	= 1
 		bump		= 2
@@ -236,7 +272,7 @@ SOUND_I = 1
 		jump_small	= 128
 	.endenum
 
-	.enum	sfx_pulse2
+	.enum	sfx_pulse_2
 		none		= 0
 		coin_01		= 1
 		spawn_powerup	= 2
@@ -260,7 +296,7 @@ SOUND_I = 1
 		none		= 128
 	.endenum
 
-	.enum	music_area
+	.enum	music_base
 		null		= 0
 		overworld	= 1
 		underwater	= 2
@@ -271,5 +307,12 @@ SOUND_I = 1
 		super_star	= 64
 		none		= 128
 	.endenum
+
+	.if	.defined(SMB2M)
+		.enum	music_fds
+			null		= 0
+			ending		= 1
+		.endenum
+	.endif
 
 .endif

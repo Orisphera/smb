@@ -134,8 +134,8 @@ block_initpos:
 block_item:
 	jsr	block_top_check
 
-	lda	#sfx_pulse1::bump
-	sta	apu_pulse1_queue
+	lda	#sfx_pulse_1::bump
+	sta	apu_sfx_pulse_1_req
 
 	lda	#0
 	sta	veloc_x_block, x
@@ -288,7 +288,7 @@ block_break:
 	jsr	block_top_check
 	lda	#sfx_noise::block_break_01
 	sta	block_rep_flag, x
-	sta	apu_noise_event
+	sta	apu_sfx_noise_req
 	jsr	block_bits_init
 	lda	#BLOCK_PLAYER_VELOC_Y
 	sta	veloc_y_player

@@ -40,10 +40,10 @@ misc_init_coin_b:
 misc_init_coin:
 	lda	#MISC_COIN_VELOC_Y
 	sta	veloc_y_misc, y
-	lda	#sfx_pulse2::coin_01|misc_states::coin_01
+	lda	#sfx_pulse_2::coin_01|misc_states::coin_01
 	sta	pos_y_hi_misc, y
 	sta	state_misc, y
-	sta	apu_pulse2_queue
+	sta	apu_sfx_pulse_2_req
 	stx	actor_index
 	jsr	misc_proc_coin_add
 	inc	eng_bonus_oneup_tally

@@ -15,14 +15,14 @@ APU_ENVELOPE_LENGTH_DEFAULT		= 8
 ; ------------------------------------------------------------
 	.export	apu_next_state
 apu_next_state:
-	lda	snd_music_event_current
+	lda	apu_music_event_current
 	and	#music_event::victory_castle
-	beq	:+ ; if (music.event == victory_castle) {
+	beq	:+ ; if (music.event.current == victory_castle) {
 		lda	#APU_ENVELOPE_LENGTH_VICTORY_CASTLE
 		bne	:+++
-	: lda	apu_music_area_current
-	and	#<~(music_area::none|music_area::underwater)
-	beq	:+ ; } else if (music.area.not_in(underwater)) {
+	: lda	apu_music_base_current
+	and	#<~(music_base::none|music_base::underwater)
+	beq	:+ ; } else if (music.base.current != underwater) {
 		lda	#APU_ENVELOPE_LENGTH_DEFAULT
 		bne	:++
 	: ; } else {
@@ -35,14 +35,14 @@ apu_next_state:
 ; ------------------------------------------------------------
 	.export apu_next_volume
 apu_next_volume:
-	lda	snd_music_event_current
+	lda	apu_music_event_current
 	and	#music_event::victory_castle
-	beq	:+ ; if (music.event == castle) {
+	beq	:+ ; if (music.event.current == victory_castle) {
 		lda	apu_victory_castle_envelope, y
 		rts
-	: lda	apu_music_area_current
-	and	#<~(music_area::none|music_area::underwater)
-	beq	:+ ; } else if (music.area.not_in(underwater)) {
+	: lda	apu_music_base_current
+	and	#<~(music_base::none|music_base::underwater)
+	beq	:+ ; } else if (music.base.current != underwater) {
 		lda	apu_area_envelope, y
 		rts
 	: ; } else {

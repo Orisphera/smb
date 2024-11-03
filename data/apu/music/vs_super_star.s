@@ -44,7 +44,7 @@ apu_music_super_star_vs_c_pulse_2:
 	.byte	SND_TRACK_END
 
 apu_music_super_star_vs_b_pulse_1:
-	snd_cmp_byte	length_d::wholedot,	sound_notes::Gx5_b
+	.byte	SND_PULSE_1_SWEEP
 	snd_cmp_byte	length_d::twelfth,	sound_notes::null
 	snd_cmp_byte	length_d::twelfth,	sound_notes::G4
 	snd_cmp_byte	length_d::twelfth,	sound_notes::G4
@@ -80,7 +80,7 @@ apu_music_super_star_vs_d_pulse_1:
 	snd_cmp_byte	length_d::half,		sound_notes::E4
 
 apu_music_super_star_vs_c_pulse_1:
-	snd_cmp_byte	length_d::wholedot,	sound_notes::Gx5_b
+	.byte	SND_PULSE_1_SWEEP
 	snd_cmp_byte	length_d::half,		sound_notes::D7
 	snd_cmp_byte	length_d::half,		sound_notes::D7
 	snd_cmp_byte	length_d::quarter,	sound_notes::Gx5_b

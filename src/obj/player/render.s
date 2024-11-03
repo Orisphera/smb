@@ -242,7 +242,7 @@ render_player_action:
 				cmp	#player_procs::size_chg
 				bcs	:+ ; if (this.proc_id < size_chg) {
 					lda	#sfx_noise::skid
-					sta	apu_noise_event
+					sta	apu_sfx_noise_req
 				: ; }
 			.elseif	.defined(SMB)|.defined(VS_SMB)
 				:

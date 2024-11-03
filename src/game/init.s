@@ -137,8 +137,8 @@ game_init_0_do:
 		sta	course_enter_pos
 	: ; }
 
-	lda	#music_area::none
-	sta	apu_music_area
+	lda	#music_base::none
+	sta	apu_music_base_req
 	lda	#1
 	sta	nmi_disp_disable
 
@@ -305,14 +305,14 @@ game_init_clearram:
 	rts
 ; -----------------------------------------------------------
 area_music_data:
-	.byte	music_area::underwater
-	.byte	music_area::overworld
-	.byte	music_area::underground
-	.byte	music_area::castle
+	.byte	music_base::underwater
+	.byte	music_base::overworld
+	.byte	music_base::underground
+	.byte	music_base::castle
 area_music_data_clouds:
-	.byte	music_area::clouds
+	.byte	music_base::clouds
 area_music_data_pipe_intro:
-	.byte	music_area::pipe_intro
+	.byte	music_base::pipe_intro
 ; ----------------------------
 	.export	game_init_area_music
 game_init_area_music:
@@ -336,7 +336,7 @@ game_init_area_music:
 		: ; }
 
 		lda	area_music_data, y
-		sta	apu_music_area
+		sta	apu_music_base_req
 	: ; }
 
 	rts
