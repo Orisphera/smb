@@ -5,6 +5,7 @@
 .include	"misc.i"
 
 ; -----------------------------------------------------------
+	.export	lifedown_starts
 lifedown_starts:
 .if	.defined(SMBM)|.defined(VS_SMB)
 	.byte	$56, $40

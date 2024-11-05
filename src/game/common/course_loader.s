@@ -4,6 +4,18 @@
 .include	"course_flags.i"
 .include	"misc.i"
 
+.if	.definedmacro(COURSE_LOADER_BASE)
+.define	COURSE_WORLD_OFFSETS		courses_world_offsets
+.define	COURSE_AREA_OFFSETS		courses_area_offsets
+.define	COURSE_ACTOR_PAGES		course_actor_pages
+.define	COURSE_SCENERY_PAGES		course_scenery_pages
+.elseif	.definedmacro(COURSE_LOADER_EXT)
+.define	COURSE_WORLD_OFFSETS		courses_ext_world_offsets
+.define	COURSE_AREA_OFFSETS		courses_ext_area_offsets
+.define	COURSE_ACTOR_PAGES		course_ext_actor_pages
+.define	COURSE_SCENERY_PAGES		course_ext_scenery_pages
+.endif
+
 .if	.defined(SMB)
 .define	COURSE_ACTOR_DATA_ADDR_LO	course_actor_addr_lo,y
 .define COURSE_ACTOR_DATA_ADDR_HI	course_actor_addr_hi,y
@@ -15,24 +27,35 @@
 .define COURSE_SCENERY_DATA_ADDR_LO	#<vs_scenery_data
 .define COURSE_SCENERY_DATA_ADDR_HI	#>vs_scenery_data
 .elseif	.defined(SMB2M)
+.if	.definedmacro(COURSE_LOADER_BASE)
 .define	COURSE_ACTOR_DATA_ADDR_LO	course_actor_addr_lo,y
 .define COURSE_ACTOR_DATA_ADDR_HI	course_actor_addr_lo+1,y
 .define COURSE_SCENERY_DATA_ADDR_LO	course_scenery_addr_lo,y
 .define COURSE_SCENERY_DATA_ADDR_HI	course_scenery_addr_lo+1,y
+.elseif	.definedmacro(COURSE_LOADER_EXT)
+.define	COURSE_ACTOR_DATA_ADDR_LO	course_ext_actor_addr_lo,y
+.define COURSE_ACTOR_DATA_ADDR_HI	course_ext_actor_addr_lo+1,y
+.define COURSE_SCENERY_DATA_ADDR_LO	course_ext_scenery_addr_lo,y
+.define COURSE_SCENERY_DATA_ADDR_HI	course_ext_scenery_addr_lo+1,y
+.endif
 .endif
 
 ; ------------------------------------------------------------
+.if	.definedmacro(COURSE_LOADER_BASE)
 	.export course_descriptor_get
+.endif
 course_descriptor_get:
 	ldy	course_no
-	lda	courses_world_offsets, y
+	lda	COURSE_WORLD_OFFSETS, y
 	clc
 	adc	course_sub
 	tay
-	lda	courses_area_offsets, y
+	lda	COURSE_AREA_OFFSETS, y
 	rts
 ; ------------------------------------------------------------
+.if	.definedmacro(COURSE_LOADER_BASE)
 	.export	course_load
+.endif
 course_load:
 	.if	.defined(VS)
 		jsr	vs_setbank_low
@@ -64,7 +87,7 @@ course_load:
 	and	#(COURSE_AREA_OFFSET_MAX<<COURSE_DESC_PAGE_BIT)
 	sta	course_page_offset
 
-	lda	course_actor_pages, y
+	lda	COURSE_ACTOR_PAGES, y
 	clc
 	adc	course_page_offset
 	.if	.defined(VS_SMB)|.defined(SMB2M)
@@ -104,7 +127,7 @@ course_load:
 	.endif
 
 	ldy	course_type
-	lda	course_scenery_pages, y
+	lda	COURSE_SCENERY_PAGES, y
 	clc
 	adc	course_page_offset
 	.if	.defined(VS_SMB)|.defined(SMB2M)

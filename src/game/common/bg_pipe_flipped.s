@@ -1,13 +1,16 @@
 .include	"mem.i"
 .include	"misc.i"
 
-.segment	"DATA2"
-
 ; ------------------------------------------------------------
+PIRANHA_HEIGHT		= 24
+PIRANHA_PIPE_OFFSET	= 10
+
 bg_scenery_pipe_v_flip_len	= zp_byte_06
 bg_scenery_pipe_v_flip_pos_y	= zp_byte_07
 
+.if	.definedmacro(PIPE_FLIPPED_BASE)
 	.export	bg_scenery_pipe_v_flip_a, bg_scenery_pipe_v_flip_b
+.endif
 bg_scenery_pipe_v_flip_a:
 	lda	#1
 	pha
@@ -26,27 +29,26 @@ bg_scenery_pipe_v_flip_b:
 	pha
 
 	ldy	scenery_length, x
-	beq	:+ ; if (this.length > 0) {
-		jsr	bg_obj_alloc
-		bcs	:+ ; if () {
-			lda	#actor::piranha_plant_b
-			jsr	bg_scenery_pipe_vert_plant
-			lda	bg_scenery_pipe_v_flip_len
-			asl	a
-			asl	a
-			asl	a
-			asl	a
-			clc
-			adc	pos_y_lo_actor, x
-			sec
-			sbc	#10
-			sta	pos_y_lo_actor, x
-			sta	pos_y_top_piranha, x
-			clc
-			adc	#24
-			sta	pos_y_bottom_piranha, x
-			inc	neg_y_piranha, x
-		; }
+	beq	:+
+	jsr	bg_obj_alloc
+	bcs	:+ ; if (this.length != 0 && bg_obj_alloc()) {
+		lda	#actor::piranha_plant_b
+		jsr	bg_scenery_pipe_vert_plant
+		lda	bg_scenery_pipe_v_flip_len
+		asl	a
+		asl	a
+		asl	a
+		asl	a
+		clc
+		adc	pos_y_lo_actor, x
+		sec
+		sbc	#PIRANHA_PIPE_OFFSET
+		sta	pos_y_lo_actor, x
+		sta	pos_y_top_piranha, x
+		clc
+		adc	#PIRANHA_HEIGHT
+		sta	pos_y_bottom_piranha, x
+		inc	neg_y_piranha, x
 	: ; }
 
 	pla

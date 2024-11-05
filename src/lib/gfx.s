@@ -368,7 +368,6 @@ gfx_clear_put_x_b		= zp_byte_00
 gfx_clear_put_nmi_list_offset	= zp_byte_01
 gfx_clear_put_page_offset	= zp_byte_02
 gfx_clear_put_do_addr_hi_base	= zp_byte_03
-gfx_clear_put_do_addr		= zp_addr_04
 
 	.export gfx_clear_put, gfx_clear_put_do
 gfx_clear_put:

@@ -5,7 +5,7 @@ MEMORY {
 	CHR0:	start = $0000, size $2000, fill = yes, fillval $FF, file = "vschar0.vs.bin";
 	CHR1:	start = $0000, size $2000, fill = yes, fillval $FF, file = "vschar1.vs.bin";
 	ROM1:	start = $8000, size $7FFA, fill = yes, fillval $FF, file = "vsmain.vs.bin";
-	ROM2:	start = $FFFA, size $0006, file = "vsmain.vs.bin";
+	ROM2:	start = $FFFA, size $0006, fill = yes, fillval $FF, file = "vsmain.vs.bin";
 }
 
 SEGMENTS {

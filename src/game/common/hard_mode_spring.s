@@ -2,10 +2,10 @@
 .include	"misc.i"
 .include	"tunables.i"
 
-.segment	"DATA2"
-
 ; ------------------------------------------------------------
+.if	.definedmacro(HARDMODE_SPRING_BASE)
 	.export	game_hard_mode_spring, game_hard_mode_render_spring
+.endif
 game_hard_mode_spring:
 	ldy	course_no
 	cpy	#course::no_02

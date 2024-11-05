@@ -463,17 +463,14 @@ actor_loop:
 								.if	.defined(CONS)
 									cmp	#ACTOR_SWAPPABLE_EASY
 									bne	:+
-									.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 									ldy	game_hard_mode
 									beq	:+
-									.elseif	.defined(ANN)
-									ldy	byte_77D
-									beq	:+
+									.if	.defined(ANN)
 									ldy	ENG_HARDMODE_VAR
 									bne	:+
 									.endif ; if (
 									;	actor == ACTOR_SWAPPABLE_EASY
-									;	&& ((!ANN && game.hard_mode) || (ANN && byte_77D && !game.hard_mode))
+									;	&& (game.hard_mode && (!ANN || !game.hard_mode_b))
 									; ) {
 										lda	#ACTOR_SWAPPABLE_HARD
 									: ; }

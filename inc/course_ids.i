@@ -36,6 +36,10 @@ COURSE_IDS_I = 1
 		no_08
 	.endenum
 
+	.enum	course_water_ext
+		no_01
+	.endenum
+
 	.enum	course_overworld
 		no_01
 		no_02
@@ -117,6 +121,32 @@ COURSE_IDS_I = 1
 		no_29
 	.endenum
 
+	.enum	course_overworld_ext
+		no_01
+		no_02
+		.if	.defined(SMB2)
+			no_03
+			no_04
+		.elseif	.defined(ANN)
+			no_12_smb2
+			no_07_smb2
+		.endif
+		no_05
+		no_06
+		no_07
+		.if	.defined(SMB2)
+			no_08
+		.elseif	.defined(ANN)
+			no_19_smb2
+		.endif
+		no_09
+		no_10
+		no_11
+		no_12
+		no_13
+		no_14
+	.endenum
+
 	.enum	course_underground
 		no_01
 		no_02
@@ -133,6 +163,11 @@ COURSE_IDS_I = 1
 		no_03
 		no_04
 		no_05
+	.endenum
+
+	.enum	course_underground_ext
+		no_01
+		no_02
 	.endenum
 
 	.enum	course_castle
@@ -175,6 +210,13 @@ COURSE_IDS_I = 1
 		no_08
 		no_09
 		no_10
+	.endenum
+
+	.enum	course_castle_ext
+		no_01
+		no_02
+		no_03
+		no_04
 	.endenum
 
 .endif	; COURSE_IDS_I

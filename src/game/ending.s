@@ -157,8 +157,8 @@ ending_extra_lives:
 		lda	#sfx_pulse_2::oneup
 		sta	apu_sfx_pulse_2_req
 		dec	player_lives
-		lda	#$01
-		sta	STACK_BASE+$35
+		lda	#1
+		sta	ending_player_live
 	.if	.defined(SMB2)
 		jmp	actor_proc_course_end_stats
 	.elseif	.defined(ANN)

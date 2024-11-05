@@ -44,20 +44,19 @@ GAME_SCROLL_END	= $20
 
 	.export	game_proc, game_proc_scroll_save
 game_proc:
-	.if	.defined(VS_SMB)
-		lda	player_count
-		beq	:+ ; if (player_count > 0) {
-	.endif
-
 	.if	.defined(SMB)|.defined(VS_SMB)
-				ldx	player_id
-				lda	joypad_p1, x
 		.if	.defined(VS_SMB)
-				jmp	:++
-			: ; } else {
-				lda	joypad_p1
-				ora	joypad_p2
-			: ; }
+		lda	player_count
+		beq	:+
+		.endif ; if (!VS_SMB || player_count > 0) {
+			ldx	player_id
+			lda	joypad_p1, x
+		.if	.defined(VS_SMB)
+			jmp	:++
+		: ; } else {
+			lda	joypad_p1
+			ora	joypad_p2
+		: ; }
 		.endif
 		sta	joypad_p1
 	.endif
@@ -89,7 +88,7 @@ game_proc:
 	.endif
 	bcs	:+
 	rts
-	: ; if (mode_game >= proc || (VS && mode_game == init_1)) {
+	: ; if (mode_game == proc) {
 		jsr	proj_proc
 
 		ldx	#0
@@ -183,7 +182,7 @@ game_proc:
 		: ; }
 
 		rts
-	; }
+	; } else rts;
 ; ------------------------------------------------------------
 	.export	game_scroll, game_scroll_do
 game_scroll:

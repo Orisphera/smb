@@ -29,6 +29,7 @@ render_chr_pair_color_mod_2 = zp_byte_03
 zp_byte_04		= $04
 zp_addr_04		= $04
 render_chr_pair_attr	= zp_byte_04
+gfx_clear_put_do_addr	= zp_addr_04
 zp_byte_05		= $05
 render_chr_pair_pos_x	= zp_byte_05
 zp_byte_06		= $06
@@ -188,6 +189,7 @@ screen_score_pos_y		= (STACK_BASE+$1E)
 stomp_counter			= (STACK_BASE+$25)
 timer_score			= (STACK_BASE+$2C)
 score_digit_mod			= (STACK_BASE+$33)
+ending_player_live		= STACK_BASE+$35
 
 OAM_DMA_BUFFER		= (STACK_BASE+STACK_SIZE)
 OAM_DMA_BUFFER_END	= (OAM_DMA_BUFFER+(OBJ_MAX*OBJ_SIZE))
@@ -405,6 +407,7 @@ eng_bg_addr_hi		= $720
 eng_bg_addr_lo		= $721
 nmi_sprite_overlap	= $722
 game_scroll_lock	= $723
+byte_724		= $724
 pos_x_hi_game		= $725
 pos_x_lo_game		= $726
 course_fg_mask_id	= $727
@@ -423,6 +426,7 @@ actor_page_loc		= $73A
 actor_page_on		= $73B
 screen_proc_id		= $73C
 game_scroll_h		= $73D
+byte_73E		= $73E
 ppu_scc_h_b		= $73F
 ppu_scc_v_b		= $740
 course_fg_id		= $741
@@ -477,7 +481,9 @@ ending_toad_delay	= $764
 
 eng_scroll_subpix	= $768
 eng_disable_b		= $769
+.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 game_hard_mode		= $76A
+.endif
 title_course_sel_no	= $76B
 mode_system		= $770
 mode_game		= $772
@@ -491,8 +497,10 @@ ppu_ctlr1_b		= $779
 player_count		= $77A
 ppu_ctlr0_bg		= $77A
 fds_sprite_overlap_hit	= $77B
-byte_77C		= $77C
-byte_77D		= $77D
+render_clear_skip	= $77C
+.if	.defined(ANN)
+game_hard_mode		= $77D
+.endif
 
 timer_nmi_tick		= $77F
 timers_nmi		= $780
@@ -551,7 +559,9 @@ snd_is_paused		= $7C6
 snd_overworld_header_offset = $7C7
 snd_super_star_header_offset = $7C9
 apu_pulse_1_ctl_a	= $7CA
-snd_7CC			= $7CC
+.if	.defined(VS)
+apu_vs_counter		= $7CC
+.endif
 snd_ram_end		= $7D0
 
 stats_tbl		= $7D7

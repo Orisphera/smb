@@ -13,6 +13,7 @@
 ; ------------------------------------------------------------
 col_bg_proc_player_halt_dir	= zp_byte_00
 col_buffer_ptr_idx		= zp_byte_02
+col_box_buffer_tbl_offset	= zp_byte_04
 ; ------------------------------------------------------------
 OOB_PROC_OFFSET_X		= 72
 OOB_PROC_SPEC_ENEMY_LEFT_OFF	= 56
@@ -728,13 +729,7 @@ col_actor_stomp_resurrect_timer:
 		adc	timer_actor_stun
 		jsr	col_score_do
 		inc	timer_actor_stun
-
-		.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-			ldy	game_hard_mode
-		.elseif	.defined(ANN)
-			ldy	byte_77D
-		.endif
-
+		ldy	game_hard_mode
 		lda	col_actor_stomp_resurrect_timer, y
 		sta	timer_actor, x
 	: ; }
@@ -1308,14 +1303,14 @@ col_bg_proc_do:
 	bcs	:++++
 	ldy	veloc_y_player
 	bpl	:+++
-	ldy	zp_byte_04
+	ldy	col_box_buffer_tbl_offset
 	cpy	#4
 	bcc	:+++ ; if (
 	;	player.pos_y >= cutoff[crouch]
 	;	&& col_box_player_jump()
 	;	&& !tile.is_coin
 	;	&& player.veloc_y < 0
-	; 	&& zp_byte_04 >= 4
+	; 	&& col_box_buffer_tbl_offset >= 4
 	; ) {
 		jsr	col_bg_proc_solid_check
 		bcs	:+
@@ -1389,9 +1384,9 @@ col_bg_proc_ground_type:
 		beq	:+++ ; if (tile.is_visible) {
 			ldy	eng_spring_ani
 			bne	:++ ; if (!eng_spring_ani) {
-				ldy	zp_byte_04
+				ldy	col_box_buffer_tbl_offset
 				cpy	#GROUND_PROC_LIMIT
-				bcc	:+ ; if (zp_byte_04 >= 5) {
+				bcc	:+ ; if (col_box_buffer_tbl_offset >= 5) {
 					lda	motion_dir_player
 					sta	col_bg_proc_player_halt_dir
 					jmp	col_bg_proc_player_halt
@@ -1578,13 +1573,13 @@ CLIMB_DIR_BOUND	= 10
 .endif
 
 col_bg_proc_climb_do:
-	ldy	zp_byte_04
+	ldy	col_box_buffer_tbl_offset
 	cpy	#6
 	bcc	:+
 	cpy	#10
 	bcc	:++
 	: rts
-	: ; if (zp_byte_04 >= 6 && zp_byte_04 < 10) {
+	: ; if (col_box_buffer_tbl_offset >= 6 && col_box_buffer_tbl_offset < 10) {
 		cmp	#metatile_0::flag_ball
 		beq	:+
 		cmp	#metatile_0::pole
@@ -1856,7 +1851,7 @@ col_bg_proc_player_halt:
 	: ; }
 
 	txa
-	eor	#%11111111
+	eor	#<-1
 	and	collision_player
 	sta	collision_player
 	rts
@@ -2062,7 +2057,7 @@ col_actor_ground_proc_rts:
 	rts
 ; -----------------------------
 col_actor_land:
-	lda	zp_byte_04
+	lda	col_box_buffer_tbl_offset
 	sec
 	sbc	#8
 	cmp	#5
@@ -2073,7 +2068,7 @@ col_actor_land:
 	lda	state_actor, x
 	asl	a
 	bcc	:++
-	: ; if ((zp_byte_04 - 8) < 5 && !(actor.state & bit_6) && ((actor.state & spawned) || actor.state == init)) {
+	: ; if ((col_box_buffer_tbl_offset - 8) < 5 && !(actor.state & bit_6) && ((actor.state & spawned) || actor.state == init)) {
 		jmp	col_actor_check_side_do
 	: ; }
 	lda	state_actor, x
@@ -2714,7 +2709,6 @@ col_box_player_buffer_do:
 	ldx	#0
 ; -----------------------------
 col_box_buffer_old_tile		= zp_byte_03
-col_box_buffer_tbl_offset	= zp_byte_04
 col_box_buffer_player_offset	= zp_byte_05
 
 	.export col_box_buffer

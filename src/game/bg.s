@@ -1269,10 +1269,10 @@ bg_swarm_ids:
 	.byte	actor::swarm_stop
 
 bg_scenery_swarm:
-	ldx	zp_byte_00
-	lda	bg_swarm_ids-8, x
+	ldx	BG_OBJ_TBL_BASE
+	lda	bg_swarm_ids-((bg_obj_tbl_swarm_a-bg_obj_spec_D)/WORD_SIZE), x
 	ldy	#ENG_ACTOR_MAX-1
-	: ; for (y = 6-1; y > 0; y--) {
+	: ; for (actor of applicable_actors) {
 		dey
 		bmi	:+
 

@@ -48,11 +48,11 @@ actor_bowser_ending:
 			lda	nmi_list_1_data+$22
 			eor	#1
 			sta	nmi_list_1_data+$22
-			lda	#$22
-			sta	zp_byte_05
+			lda	#>(PPU_VRAM_BG1+PPU_BG_ROW_16)
+			sta	gfx_clear_put_do_addr+1
 			ldy	nmi_list_1_data+$28
 			lda	actor_bowser_ending_data, y
-			sta	zp_byte_04
+			sta	gfx_clear_put_do_addr
 			ldy	nmi_list_0_offset
 			iny
 			ldx	#clear_blocks::blank_a*METATILE_SIZE

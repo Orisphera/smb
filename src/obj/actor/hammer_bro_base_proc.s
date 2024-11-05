@@ -189,15 +189,12 @@ actor_proc_base:
 			iny
 			sty	motion_dir_actor, x
 			dey
-			.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 			lda	game_hard_mode
 			beq	:+
-			.elseif	.defined(ANN)
-			lda	byte_77D
-			beq	:+
+			.if	.defined(ANN)
 			lda	ENG_HARDMODE_VAR
 			bne	:+
-			.endif ; if ((!ANN && game.hard_mode) || (ANN && byte_77D && !game.hard_mode)) {
+			.endif ; if (game.hard_mode && (!ANN || !game.hard_mode_b)) {
 				iny
 				iny
 			: ; }

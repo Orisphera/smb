@@ -200,7 +200,7 @@ static const char *obj_d[] = {
 	"SWARM_B",
 	"SWARM_C",
 	"LOOP",
-#if		defined(SMB2)
+#if	defined(SMB2)
 	"WIND_ON",
 	"WIND_OFF"
 #endif
@@ -279,8 +279,10 @@ static const char *obj_b[] = {
 	"STAIRS",
 	"PIPE_EXIT",
 	"POLE_TIP",
+#if	defined(SMB2)|defined(ANN)
 	"PIPE_V_FLIP_A",
 	"PIPE_V_FLIP_B"
+#endif
 };
 
 static void print_F(int pos_x)
@@ -325,13 +327,15 @@ static const char *obj_c[] = {
 	"BLOCK_Q_C",
 #if	defined(SMB2)
 	"BLOCK_Q_D",
-#endif
+#endif	/* SMB2 */
 	"HIDDEN_ONE_UP",
+#if	defined(SMB2)|defined(ANN)
 	"BLOCK_Q_E",
+#endif	/* SMB2|ANN */
 #if	defined(SMB2)
 	"BLOCK_Q_F",
 	"BLOCK_ITEM_E",
-#endif
+#endif	/* SMB2 */
 	"BLOCK_ITEM_A",
 	"BLOCK_ITEM_B",
 	"BLOCK_ITEM_C",

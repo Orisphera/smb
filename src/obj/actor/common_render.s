@@ -27,8 +27,8 @@ render_actor:
 				lsr	a
 			: ; }
 		.elseif	.defined(ANN)
-			lda	#$00
-			sta	byte_77C
+			lda	#0
+			sta	render_clear_skip
 			lda	#$02
 	
 			ldy	ENG_HARDMODE_VAR
@@ -298,7 +298,7 @@ render_actor_ani_check:
 			bcs	render_actor_ani_do
 
 			.if	.defined(ANN)
-				inc	byte_77C
+				inc	render_clear_skip
 			.endif
 
 			ldx	#<(render_actor_tiles_toad-render_actor_tile_data)
@@ -361,11 +361,11 @@ render_actor_clear_b:
 	: jmp	render_actor_clear_offscr ; if (this.id != bullet_swarm) {
 		: ; if (this.id != bullet_swarm) {
 		.if	.defined(ANN)
-			lda	byte_77C
+			lda	render_clear_skip
 			bne	:--
 		.endif
 		lda	render_actor_flipped
-		beq	:++ ; if (this.flipped) {
+		beq	:++ ; if ((!ANN || !render_clear_skip) && this.flipped) {
 			lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
 			ora	#obj_attr::v_flip
 			iny

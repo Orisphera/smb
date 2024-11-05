@@ -13,8 +13,6 @@
 .include	"misc.i"
 .include	"tunables.i"
 
-.include	"unk.i"
-
 SMB2M_NMI_TIMER	= $1658
 
 .if	.defined(SMB2)
@@ -130,7 +128,7 @@ nmi_rand_buffer	= zp_byte_00
 			.addr	(palette_overworld)
 			.addr	(palette_underground)
 			.addr	(palette_castle)
-			.addr	(data_C62B)
+			.addr	(title_map)
 			.addr	(nmi_list_1_data)
 			.addr	(nmi_list_1_data)
 			.addr	(palette_koopa)

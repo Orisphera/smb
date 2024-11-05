@@ -3,12 +3,14 @@
 .include	"math.i"
 .include	"sound.i"
 
-.segment	"DATA2"
-
 ; ------------------------------------------------------------
+WIND_PLAYER_OFFSET	= 1
+
 bg_scenery_wind_col_mod		= zp_byte_00
 
+.if	.definedmacro(WIND_BASE)
 	.export	bg_scenery_wind_col
+.endif
 bg_scenery_wind_col:
 	lda	bg_scenery_wind_flag
 	beq	:++
@@ -18,20 +20,19 @@ bg_scenery_wind_col:
 		ldy	#MOD_2
 		lda	frame_count
 		asl	a
-		bcs	:+ ; if (frame_count < 0x80) {
+		bcs	:+ ; if (!(frame_count & 0x80)) {
 			ldy	#MOD_4
 		: ; }
 		sty	bg_scenery_wind_col_mod
-	
 		lda	frame_count
 		and	bg_scenery_wind_col_mod
-		bne	:+ ; if (!(frame_count % mod_val)) {
+		bne	:+ ; if ((frame_count % mod_val) == 0) {
 			lda	pos_x_lo_player
 			clc
-			adc	#1
+			adc	#<WIND_PLAYER_OFFSET
 			sta	pos_x_lo_player
 			lda	pos_x_hi_player
-			adc	#0
+			adc	#>WIND_PLAYER_OFFSET
 			sta	pos_x_hi_player
 			inc	player_scroll_x
 		; }
@@ -39,7 +40,7 @@ bg_scenery_wind_col:
 
 	rts
 ; -----------------------------
-LEAF_FRAMES	= 12
+LEAF_COUNT	= 12
 
 bg_scenery_wind_leaf_pos_y:
 	.byte	48, 112, 184, 80
@@ -65,7 +66,9 @@ bg_scenery_wind_leaf_chr:
 	.byte	chr_obj::leaf+1
 	.byte	chr_obj::leaf+0
 ; -----------------------------
+.if	.definedmacro(WIND_BASE)
 	.export	bg_scenery_wind_proc
+.endif
 bg_scenery_wind_proc:
 	lda	bg_scenery_wind_flag
 	beq	:+++ ; if (bg_scenery_wind_flag != 0) {
@@ -88,12 +91,12 @@ bg_scenery_wind_proc:
 			iny
 			iny
 			inx
-			cpx	#(LEAF_FRAMES/2)
+			cpx	#(LEAF_COUNT/2)
 			bne	:+ ; if (x == half_way) {
 				ldy	obj_data_offset_leaf+1
 			: ; }
 	
-			cpx	#LEAF_FRAMES
+			cpx	#LEAF_COUNT
 			bne	:--
 		; }
 	: ; }
@@ -109,7 +112,7 @@ bg_scenery_wind_leaf_offset:
 	.byte	89, 90, 89, 90
 ; -----------------------------
 bg_scenery_wind_leaf_proc:
-	ldx	#LEAF_FRAMES-1
+	ldx	#LEAF_COUNT-1
 	: ; for (frame of this.frames) {
 		lda	bg_scenery_wind_leaf_pos_x, x
 		clc
@@ -127,7 +130,9 @@ bg_scenery_wind_leaf_proc:
 
 	rts
 ; -----------------------------
+.if	.definedmacro(WIND_BASE)
 	.export	bg_scenery_wind_on, bg_scenery_wind_off
+.endif
 bg_scenery_wind_on:
 	lda	#1
 	bne	:+

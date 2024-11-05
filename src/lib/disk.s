@@ -7,8 +7,6 @@
 .include	"misc.i"
 .include	"fileids.i"
 
-.include	"unk.i"
-
 	.export sys_disk_loader
 sys_disk_loader:
 	lda	mode_game
@@ -50,7 +48,7 @@ disk_loader_file_load_data4:
 	jsr	course_descriptor_load
 	lda	ENG_HARDMODE_VAR
 	beq	:+ ; if (ENG_HARDMODE_VAR) {
-		jsr	sub_C3D6
+		jsr	lifedown_ext_init
 	: ; }
 
 	inc	bg_hidden_one_up_req
@@ -188,7 +186,7 @@ disk_loader_file_load_data3:
 
 		.if	.defined(ANN)
 			lda	#1
-			sta	byte_77D
+			sta	game_hard_mode
 		.endif
 
 		jsr	nt_init

@@ -3,6 +3,9 @@
 .include	"mem.i"
 .include	"sound.i"
 
+APU_VS_COUNTER_START	= 49
+APU_VS_COUNTER_END	= 55
+
 	: jmp	apu_music_pulse_2
 
 	.export	apu_music_play
@@ -20,8 +23,8 @@ apu_music_play:
 ; --------------
 apu_music_event_load:
 	.if	.defined(VS)
-		ldy	#49
-		sty	snd_7CC
+		ldy	#APU_VS_COUNTER_START
+		sty	apu_vs_counter
 	.endif
 
 	sta	apu_music_event_current
@@ -58,10 +61,10 @@ apu_music_event_load:
 		cmp	#music_event::victory_normal
 		bne	apu_music_header_find ; if (music.event.current == victory_normal) {
 		apu_music_timer_load:
-			inc	snd_7CC
-			ldy	snd_7CC	
-			cpy	#55
-			bne	apu_music_header_load ; if (++snd_7CC == 55) {
+			inc	apu_vs_counter
+			ldy	apu_vs_counter
+			cpy	#APU_VS_COUNTER_END
+			bne	apu_music_header_load ; if (++apu_vs_counter == counter_end) {
 				jmp	apu_music_silence
 			; } else apu_music_header_load();
 		; }

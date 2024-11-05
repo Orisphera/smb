@@ -123,16 +123,23 @@ COURSE_LOOP_OBJS =	data/course_scenery_loop_offsets.o
 
 COURSE_LOOP_SMB2_OBJS =	data/course_scenery_loop_offsets.smb2.o
 
-COURSES_OBJS	=	src/game/course_base.o \
-			src/game/course_loader.o
+COURSE_BASE_OBJS =	src/game/course_base.o
+
+COURSE_LOADER_OBJS =	src/game/course_loader_base.o
+
+COURSE_LOADER_EXT_OBJS = src/game/course_loader_ext.o
 
 COURSE_SEQ_OBJS	=	data/course_seq.o
 
 COURSE_SEQ_SMB2_OBJS =	data/course_seq.smb2.o
 
+COURSE_SEQ_EXT_OBJS =	data/course_seq_ext.o
+
 COURSE_PTR_OBJS	=	data/course_ptrs.o
 
 COURSE_PTR_SMB2_OBJS =	data/course_ptrs.smb2.o
+
+COURSE_PTR_EXT_OBJS = data/course_ptrs_ext.o
 
 COURSE_DATA_OBJS =	data/course_data.o
 
@@ -143,6 +150,8 @@ COURSE_DATA_2_SMB2_OBJS = data/course_data_2.smb2.o
 COURSE_DATA_2_ANN_OBJS = data/course_data_2.ann.o
 
 COURSE_DATA_3_SMB2_OBJS = data/course_data_3.smb2.o
+
+COURSE_DATA_EXT_OBJS = data/course_data_ext.o
 
 GAME_CORE_OBJS	=	src/game/core.o
 
@@ -286,14 +295,23 @@ APU_FDS_DATA_OBJS =	$(APU_FDS_OFFSET_OBJS) \
 			$(APU_FDS_MUSIC_OBJS) \
 			$(APU_FDS_MISC_OBJS)
 
-PIPE_FLIPPED_OBJS =	src/game/bg_pipe_flipped.o \
-			src/obj/actor/piranha_plant_b_proc.o
+PIPE_FLIPPED_BASE_OBJS = src/game/bg_pipe_flipped_base.o \
+			src/obj/actor/piranha_plant_b_proc_base.o
 
-WIND_OBJS	=	src/game/bg_wind.o
+PIPE_FLIPPED_EXT_OBJS =	src/game/bg_pipe_flipped_ext.o \
+			src/obj/actor/piranha_plant_b_proc_ext.o
 
-HARD_MODE_SPRING_OBJS =	src/game/hard_mode_spring.o
+WIND_BASE_OBJS	=	src/game/bg_wind_base.o
+
+WIND_EXT_OBJS	=	src/game/bg_wind_ext.o
+
+HARD_MODE_SPRING_BASE_OBJS = src/game/hard_mode_spring_base.o
+
+HARD_MODE_SPRING_EXT_OBJS = src/game/hard_mode_spring_ext.o
 
 ENDING_OBJS	=	src/game/ending.o
+
+LIFEDOWN_EXT_OBJS =	src/game/lifedown_ext_init.o
 
 SECURITY_OBJS	=	data/security.o
 
@@ -314,7 +332,8 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
-			$(COURSES_OBJS) \
+			$(COURSE_BASE_OBJS) \
+			$(COURSE_LOADER_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
@@ -338,7 +357,8 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(LIB_VS_OBJS) \
 			$(GAME_OBJS) \
-			$(COURSES_OBJS) \
+			$(COURSE_BASE_OBJS) \
+			$(COURSE_LOADER_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(GAME_CORE_OBJS) \
@@ -367,7 +387,8 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
-			$(COURSES_OBJS) \
+			$(COURSE_BASE_OBJS) \
+			$(COURSE_LOADER_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(COURSE_DATA_OBJS) \
@@ -404,7 +425,8 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
-			$(COURSES_OBJS) \
+			$(COURSE_BASE_OBJS) \
+			$(COURSE_LOADER_OBJS) \
 			$(COURSE_SEQ_SMB2_OBJS) \
 			$(COURSE_LOOP_SMB2_OBJS) \
 			$(COURSE_PTR_SMB2_OBJS) \
@@ -417,15 +439,21 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
 			$(APU_DATA_OBJS) \
-			$(PIPE_FLIPPED_OBJS) \
-			$(WIND_OBJS) \
+			$(PIPE_FLIPPED_BASE_OBJS) \
+			$(WIND_BASE_OBJS) \
 			$(COURSE_DATA_2_SMB2_OBJS) \
 			$(ENDING_OBJS) \
 			$(COURSE_DATA_3_SMB2_OBJS) \
 			$(APU_FDS_OBJS) \
 			$(APU_FDS_STORE_OBJS) \
 			$(APU_FDS_DATA_OBJS) \
-			data/data4.smb2.o \
+			$(COURSE_LOADER_EXT_OBJS) \
+			$(COURSE_SEQ_EXT_OBJS) \
+			$(COURSE_PTR_EXT_OBJS) \
+			$(LIFEDOWN_EXT_OBJS) \
+			$(PIPE_FLIPPED_EXT_OBJS) \
+			$(WIND_EXT_OBJS) \
+			$(COURSE_DATA_EXT_OBJS) \
 			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)
 
@@ -456,7 +484,8 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(ENTITY_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
-			$(COURSES_OBJS) \
+			$(COURSE_BASE_OBJS) \
+			$(COURSE_LOADER_OBJS) \
 			$(COURSE_SEQ_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSE_PTR_OBJS) \
@@ -470,15 +499,21 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
 			$(APU_DATA_OBJS) \
-			$(PIPE_FLIPPED_OBJS) \
-			$(HARD_MODE_SPRING_OBJS) \
+			$(PIPE_FLIPPED_BASE_OBJS) \
+			$(HARD_MODE_SPRING_BASE_OBJS) \
 			$(COURSE_DATA_2_ANN_OBJS) \
 			$(ANN_TOADS_B_OBJS) \
 			$(ENDING_OBJS) \
 			$(APU_FDS_OBJS) \
 			$(APU_FDS_DATA_OBJS) \
 			$(APU_FDS_STORE_OBJS) \
-			data/data4.ann.o \
+			$(COURSE_LOADER_EXT_OBJS) \
+			$(COURSE_SEQ_EXT_OBJS) \
+			$(COURSE_PTR_EXT_OBJS) \
+			$(LIFEDOWN_EXT_OBJS) \
+			$(PIPE_FLIPPED_EXT_OBJS) \
+			$(HARD_MODE_SPRING_EXT_OBJS) \
+			$(COURSE_DATA_EXT_OBJS) \
 			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)
 

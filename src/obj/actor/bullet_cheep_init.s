@@ -121,16 +121,12 @@ actor_init_bullet_cheep:
 					pha
 				
 					ldy	#ACTOR_SWAPPABLE_EASY
-
-					.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 					lda	game_hard_mode
 					beq	:+
-					.elseif	.defined(ANN)
-					lda	byte_77D
-					beq	:+
+					.if	.defined(ANN)
 					lda	ENG_HARDMODE_VAR
 					bne	:+
-					.endif ; if ((!ANN && game_hard_mode) || (ANN && byte_77D && !hard_mode)) {
+					.endif ; if (game_hard_mode && (!ANN || !hard_mode_b)) {
 						ldy	#ACTOR_SWAPPABLE_HARD
 					: ; }
 
