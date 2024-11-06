@@ -34,7 +34,7 @@ render_player:
 	lsr	a
 	bcs	render_player_rts
 	: ; if (this.timer_injury == 0 || !(frame_count % 2)) {
-		lda	player_proc_id
+		lda	proc_id_player
 		cmp	#player_procs::death
 		beq	render_player_death
 		lda	player_resizing
@@ -181,7 +181,7 @@ render_player_course_card:
 render_player_tiles_init:
 	sta	render_player_row
 	lda	pos_x_rel_player
-	sta	player_scroll_x_b
+	sta	scroll_x_player_b
 	sta	render_chr_pair_pos_x
 	lda	pos_y_rel_player
 	sta	render_chr_pair_pos_y
@@ -215,13 +215,13 @@ render_player_action:
 	lda	player_swimming
 	bne	:+++++++
 	ldy	#<(render_player_tile_offset_crouch-render_player_tile_offsets)
-	lda	player_crouch
-	bne	:+++ ; if (this.state == jump && !this.crouch) {
+	lda	player_crouching
+	bne	:+++ ; if (this.state == jump && !this.crouching) {
 		ldy	#PLAYER_TILES_OFFSET_JUMP
 		jmp	:+++
 	; }
 	: ldy	#<(render_player_tile_offset_crouch-render_player_tile_offsets)
-	lda	player_crouch
+	lda	player_crouching
 	bne	:++
 	ldy	#PLAYER_TILES_OFFSET_STAND
 	lda	veloc_x_player
@@ -233,12 +233,13 @@ render_player_action:
 	lda	motion_dir_player
 	and	disp_dir_player
 	bne	:++++
-	;	this.state == jump
-	;	|| (this.state == ground && not_running)
+	; if (
+	;	player.veloc_x >= skid_cutoff
+	;	&& this.motion_dir != this.disp_dir
 	; ) {
 		; if (this.state == ground && && skidding) {
 			.if	.defined(SMB2M)
-				lda	player_proc_id
+				lda	proc_id_player
 				cmp	#player_procs::size_chg
 				bcs	:+ ; if (this.proc_id < size_chg) {
 					lda	#sfx_noise::skid
@@ -393,7 +394,7 @@ render_player_resize:
 ; ------------------------------------------------------------
 render_player_tiles_mirror:
 	ldy	obj_data_offset_player
-	lda	player_proc_id
+	lda	proc_id_player
 	cmp	#player_procs::death
 	beq	:+
 	lda	render_player_spr_group

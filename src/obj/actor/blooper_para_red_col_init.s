@@ -42,6 +42,6 @@ actor_init_col:
 actor_init_veloc_y:
 	lda	#0
 	sta	veloc_y_actor, x
-	sta	accel_y_actor_c, x
+	sta	accel_y2_actor, x
 	rts
 

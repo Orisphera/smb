@@ -20,20 +20,20 @@ actor_init_dup:
 	ldy	#<-1
 	: ; for (y = 0; actor[y].mode != free; y++) {
 		iny
-		lda	actor_mode, y
+		lda	proc_id_actor, y
 		bne	:-
 	; }
 	sty	actor_dup_offset
 
 	txa
 	ora	#ACTOR_MODE_CHILD_BIT
-	sta	actor_mode, y
+	sta	proc_id_actor, y
 	lda	pos_x_hi_actor, x
 	sta	pos_x_hi_actor, y
 	lda	pos_x_lo_actor, x
 	sta	pos_x_lo_actor, y
-	lda	#actor_modes::active
-	sta	actor_mode, x
+	lda	#proc_id_actors::active
+	sta	proc_id_actor, x
 	sta	pos_y_hi_actor, y
 	lda	pos_y_lo_actor, x
 	sta	pos_y_lo_actor, y
@@ -51,12 +51,12 @@ bowser_flame_accel_y:
 actor_init_bowser_flame:
 	lda	timer_swarm
 	bne	actor_init_dup_rts ; if (timer_swarm == 0) {
-		sta	accel_y_actor_c, x
+		sta	accel_y2_actor, x
 		lda	apu_sfx_noise_req
 		ora	#sfx_noise::flame
 		sta	apu_sfx_noise_req
 		ldy	nmi_list_1_data+$27
-		lda	actor_id, y
+		lda	obj_id_actor, y
 		cmp	#actor::bowser
 		beq	:++ ; if (parent.id != bowser) {
 			jsr	actor_proc_bowser_flame_timer_init
@@ -71,7 +71,7 @@ actor_init_bowser_flame:
 		
 			lda	srand, x
 			and	#MOD_4
-			sta	pos_y_actor, x
+			sta	accel_y1_actor, x
 			tay
 			lda	actor_bowser_flame_pos_y_offset, y
 		
@@ -100,7 +100,7 @@ actor_init_bowser_flame:
 		
 			lda	srand, x
 			and	#MOD_4
-			sta	pos_y_actor, x
+			sta	accel_y1_actor, x
 			tay
 			lda	actor_bowser_flame_pos_y_offset, y
 			ldy	#0
@@ -109,7 +109,7 @@ actor_init_bowser_flame:
 				iny
 			: ; }
 			lda	bowser_flame_accel_y, y
-			sta	accel_y_actor_c, x
+			sta	accel_y2_actor, x
 		
 			lda	#0
 			sta	actor_swarm_buffer
@@ -117,9 +117,9 @@ actor_init_bowser_flame:
 	
 		lda	#BOWSER_FLAME_COL_BOX
 		sta	col_box_actor, x
-		lda	#actor_modes::active
+		lda	#proc_id_actors::active
 		sta	pos_y_hi_actor, x
-		sta	actor_mode, x
+		sta	proc_id_actor, x
 		lsr	a
 		sta	accel_x_actor, x
 		sta	state_actor, x

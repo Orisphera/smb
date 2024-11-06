@@ -26,10 +26,10 @@ pole_digit_place:
 pole_proc:
 	ldx	#5
 	stx	actor_index
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::flag_enemy
 	bne	pole_proc_rts
-	lda	player_proc_id
+	lda	proc_id_player
 	cmp	#player_procs::pole
 	bne	:+
 	lda	state_player
@@ -42,9 +42,9 @@ pole_proc:
 	cmp	#162
 	bcs	:++ ; if (this.proc_id != pole || this.state != climb || (actor.pos_y.lo < 0xAA && this.pos_y.lo < 0xA2)) {
 		; if (this.proc_id == pole && this.state == climb) {
-			lda	pos_y_actor, x
+			lda	accel_y1_actor, x
 			adc	#<-1
-			sta	pos_y_actor, x
+			sta	accel_y1_actor, x
 			lda	pos_y_lo_actor, x
 			adc	#1
 			sta	pos_y_lo_actor, x
@@ -77,11 +77,11 @@ pole_proc:
 		: ; }
 
 		lda	#player_procs::victory
-		sta	player_proc_id
+		sta	proc_id_player
 	: ; }
 
 	jsr	lib_actor_bits_get
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
 	jsr	render_flag_enemy
 
 pole_proc_rts:

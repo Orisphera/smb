@@ -28,14 +28,14 @@ actor_proc_piranha_plant_b:
 			lda	pos_y_top_piranha, x
 		: ; }
 		sta	actor_proc_piranha_plant_b_pos_y
-		lda	eng_timer_ctl
+		lda	game_timer_stop
 		bne	:+
 		lda	pos_y_lo_actor, x
 		clc
 		adc	veloc_y_piranha, x
 		sta	pos_y_lo_actor, x
 		cmp	actor_proc_piranha_plant_b_pos_y
-		bne	:+ ; if (eng_timer_ctl == 0 && ((this.pos_y += this.veloc_y) == pos_y_limit)) {
+		bne	:+ ; if (!game_timer_stop && ((this.pos_y += this.veloc_y) == pos_y_limit)) {
 			lda	#0
 			sta	neg_y_piranha, x
 			lda	#PIRANHA_PLANT_B_TIMER_ANI

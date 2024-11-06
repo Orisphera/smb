@@ -5,9 +5,9 @@
 actor_proc_do:
 	ldx	actor_index
 	lda	#0
-	ldy	actor_id, x
+	ldy	obj_id_actor, x
 	cpy	#actor::actors_page_b
-	bcc	:+ ; if (actor_id[x] >= page_b) {
+	bcc	:+ ; if (obj_id_actor[x] >= page_b) {
 		tya
 		sbc	#(actor::actors_page_b)-1
 	: ; }

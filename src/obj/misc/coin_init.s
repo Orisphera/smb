@@ -26,7 +26,7 @@ misc_init_coin_b:
 	jsr	misc_init_coin_block_alloc
 	lda	block_page_loc, x
 	sta	pos_x_hi_misc, y
-	lda	eng_buffer_ptr
+	lda	game_buffer
 	asl	a
 	asl	a
 	asl	a
@@ -46,7 +46,7 @@ misc_init_coin:
 	sta	apu_sfx_pulse_2_req
 	stx	actor_index
 	jsr	misc_proc_coin_add
-	inc	eng_bonus_oneup_tally
+	inc	game_bonus_counter
 	rts
 ; -----------------------------
 misc_init_coin_block_alloc:

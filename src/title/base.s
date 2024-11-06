@@ -1,3 +1,4 @@
+.include	"math.i"
 .include	"mem.i"
 .include	"joypad.i"
 .include	"modes.i"
@@ -6,59 +7,76 @@
 .include	"charmap.i"
 
 .if	.defined(SMB)|.defined(VS_SMB)
-		.export sys_title
-	sys_title:
-		.if	.defined(VS)
-			lda	VS_RAM_ARENA0+$10
-			beq	:+ ; if (VS_RAM_ARENA0[0x10]) {
-				.if	.defined(SMB)
-				lda	#game_modes::init_0
-				.elseif	.defined(VS_SMB)
-				lda	#game_modes::vs_init
-				.endif
-				sta	mode_game
-				sta	nmi_sprite_overlap
-				inc	mode_system
-				lda	#1
-				sta	nmi_disp_disable
-				rts
-			: ; } else {
-		.endif
-
-		lda	mode_game
+	.export sys_title
+	.export	title_mode_tbl
+	.export	title_mode_init_0
+	.export	title_mode_scr
+	.export	title_mode_init_1
+	.export	title_mode_proc
+sys_title:
+.if	.defined(VS)
+	lda	VS_RAM_ARENA0+$10
+	beq	:+ ; if (VS && VS_RAM_ARENA0[0x10]) {
+		lda	#game_modes::init
+		sta	proc_id_game
+		sta	nmi_sprite_overlap
+		inc	proc_id_system
+		lda	#1
+		sta	nmi_disp_disable
+		rts
+	: ; } else {
+.endif
+		lda	proc_id_game
 		jsr	tbljmp
+	
+	title_mode_tbl:
 		.if	.defined(VS)
+			.export	title_mode_vs_init
+		title_mode_vs_int:
 			.addr	vs_title_init
 		.endif
+
+	title_mode_init_0:
 		.addr	game_init_0
+	title_mode_scr:
 		.addr	screen_proc
+	title_mode_init_1:
 		.addr	game_init_1
+	title_mode_proc:
 		.addr	title_proc
 		.if	.defined(VS)
+			.export	title_mode_init_player_select
+			.export	title_mode_init_ppu
+			.export	title_mode_super_players
+			.export	title_mode_tick
+		title_mode_init_player_select:
 			.addr	vs_player_select_init_0
+		title_mode_init_ppu:
 			.addr	vs_title_ppu_init
+		title_mode_super_players:
 			.addr	vs_title_super_players
+		title_mode_tick:
 			.addr	vs_title_tick
-		; }
-	; ----------------------------
-			vs_title_init:
-				lda	#1
-				sta	nmi_disp_disable
-				lda	#0
-				sta	nmi_sprite_overlap
-				inc	mode_game
-				rts
 		.endif
-	; -----------------------------------------------------------
-	title_course_no:
-		.byte	(:+++)-(:+)
-		: .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
-		.byte	(:++)-(:+)
-		: .byte	"0"
-		:
-
-		.byte	NMI_LIST_END
-	title_course_no_end:
+	; }
+; ----------------------------
+.if	.defined(VS)
+vs_title_init:
+	lda	#1
+	sta	nmi_disp_disable
+	lda	#0
+	sta	nmi_sprite_overlap
+	inc	proc_id_game
+	rts
+.endif
+; -----------------------------------------------------------
+title_course_no:
+	.byte	(:+++)-(:+)
+	: .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
+	.byte	(:++)-(:+)
+	: .byte	"0"
+	: .byte	NMI_LIST_END
+title_course_no_end:
 .endif
 ; ----------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
@@ -69,6 +87,8 @@ TITLE_PLAYER_ID = player_id
 TITLE_PRESSED_B	= 1
 
 	.export title_proc
+	.export	title_recycle
+	.export	title_exit
 title_proc:
 	.if	.defined(SMB)|.defined(VS_SMB)
 	ldy	#0
@@ -95,7 +115,7 @@ title_proc:
 				sta	game_hard_mode_new
 
 				lda	save
-				cmp	#8
+				cmp	#HARD_MODE_GAME_CLEARS
 				bcc	:+
 				lda	joypad_p1
 				and	#joypad_button::face_a
@@ -110,7 +130,7 @@ title_proc:
 		lda	joypad_p1
 		.endif
 			cmp	#joypad_button::select
-			beq	:++
+			beq	:++ ; if (joypad[0].select == PRESSED) {
 				ldx	timer_demo
 				.if	.defined(SMB)|.defined(VS_SMB)
 				bne	:+
@@ -167,10 +187,10 @@ title_proc:
 							ldx	title_course_sel_no
 							inx
 							txa
-							and	#$07
+							and	#MOD_8
 							sta	title_course_sel_no
 							jsr	title_course_set
-							: ; for (x = title_course_sel_no+1; x < 0x06; x++) {
+							: ; for (x = (title_course_sel_no+1); x < 0x06; x++) {
 								lda	title_course_no, x
 								sta	nmi_list_0_data-1, x
 
@@ -200,36 +220,35 @@ title_proc:
 			bcs	title_next
 			jmp	:++
 		: ; } else {
-			lda	#0
+			lda	#joypad_button::none
 			sta	joypad_p1
 			sta	joypad_p2
 		: ; }
 	.endif
 
 		jsr	game_proc
-		lda	player_proc_id
+		lda	proc_id_player
 		cmp	#player_procs::lifedown
 		bne	title_continue ; if (player.proc_id == lifedown) {
 		.if	.defined(VS)
 		title_next:
-			inc	mode_game
+			inc	proc_id_game
 			lda	#0
 			sta	nmi_sprite_overlap
 			inc	nmi_disp_disable
 			rts
 		.endif
 
-			.export title_recycle
 		title_recycle:
 			lda	#0
-			sta	mode_system
-			sta	mode_game
+			sta	proc_id_system
+			sta	proc_id_game
 			sta	nmi_sprite_overlap
 			inc	nmi_disp_disable
 		; }
 		rts
-		.export title_exit
-	title_exit: ; } else {
+	; } else {
+	title_exit:
 		.if	.defined(CONS)
 		.if	.defined(SMB)|.defined(VS_SMB)
 			ldy	timer_demo
@@ -241,15 +260,15 @@ title_proc:
 			.if	.defined(SMB)|.defined(VS_SMB)
 				asl	a
 				bcc	:+ ; if (joypad.a) {
-					lda	eng_continue_course
+					lda	course_no_continued
 					jsr	title_course_set
 				: ; }
 
 				jsr	course_descriptor_load
 				inc	bg_hidden_one_up_req
 				inc	bg_hidden_one_up_req_b
-				inc	eng_req_timer
-				inc	mode_system
+				inc	player_first_start
+				inc	proc_id_system
 				lda	title_course_sel_on
 				sta	ENG_HARDMODE_VAR
 
@@ -258,11 +277,11 @@ title_proc:
 				.elseif	.defined(VS_SMB)
 				lda	#game_modes::vs_init
 				.endif
-				sta	mode_game
+				sta	proc_id_game
 
 				sta	timer_demo
 			.elseif	.defined(SMB2M)
-				inc	mode_game
+				inc	proc_id_game
 
 				jsr	title_patch_player
 

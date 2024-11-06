@@ -5,60 +5,60 @@
 lib_calc_object_offset	= zp_byte_00
 lib_bits_buffer		= zp_byte_00
 ; --------------------------------------------------------------
-	.export lib_calc_player_pos, lib_calc_bubble_pos
-	.export lib_calc_proj_pos, lib_calc_misc_pos
-lib_calc_player_pos:
+	.export pos_calc_x_rel_player, pos_calc_x_rel_bubble
+	.export pos_calc_x_rel_proj, pos_calc_x_rel_misc
+pos_calc_x_rel_player:
 	ldx	#ENG_PLAYER_OBJ_OFF
 	ldy	#ENG_PLAYER_OBJ_REL_OFF
-	jmp	lib_calc_pos_do
+	jmp	pos_calc_x_rel_a
 ; -----------------------------
-lib_calc_bubble_pos:
+pos_calc_x_rel_bubble:
 	ldy	#lib_calc_offset_bubble-lib_calc_offsets
 	jsr	lib_calc_get_offset
 	ldy	#ENG_BUBBLE_REL_OFF
-	jmp	lib_calc_pos_do
+	jmp	pos_calc_x_rel_a
 ; -----------------------------
-lib_calc_proj_pos:
+pos_calc_x_rel_proj:
 	ldy	#lib_calc_offset_proj-lib_calc_offsets
 	jsr	lib_calc_get_offset
 	ldy	#ENG_PROJ_REL_OFF
 ; -----------------------------
-lib_calc_pos_do:
-	jsr	lib_calc_pos_x_rel
+pos_calc_x_rel_a:
+	jsr	pos_calc_x_rel_do
 	ldx	actor_index
 	rts
 ; -------------------------------
-lib_calc_misc_pos:
+pos_calc_x_rel_misc:
 	ldy	#lib_calc_offset_misc-lib_calc_offsets
 	jsr	lib_calc_get_offset
 	ldy	#ENG_MISC_REL_OFF
-	jmp	lib_calc_pos_do
+	jmp	pos_calc_x_rel_a
 ; --------------------------------------------------------------
-	.export lib_calc_actor_pos, lib_calc_block_pos
-lib_calc_actor_pos:
+	.export pos_calc_x_rel_actor, pos_calc_x_rel_block
+pos_calc_x_rel_actor:
 	lda	#ENG_ACTOR_OFF
 	ldy	#ENG_ACTOR_REL_OFF
-	jmp	lib_calc_pos_do_b
+	jmp	pos_calc_x_rel_b
 ; -------------------------------
-lib_calc_block_pos:
+pos_calc_x_rel_block:
 	lda	#ENG_BLOCK_OFF
 	ldy	#ENG_BLOCK_REL_OFF
-	jsr	lib_calc_pos_do_b
+	jsr	pos_calc_x_rel_b
 	inx
 	inx
 	lda	#ENG_BLOCK_OFF
 	iny
 ; -------------------------------
-lib_calc_pos_do_b:
+pos_calc_x_rel_b:
 	stx	lib_calc_object_offset
 	clc
 	adc	lib_calc_object_offset
 	tax
-	jsr	lib_calc_pos_x_rel
+	jsr	pos_calc_x_rel_do
 	ldx	actor_index
 	rts
 ; --------------------------------------------------------------
-lib_calc_pos_x_rel:
+pos_calc_x_rel_do:
 	lda	pos_y_lo_player, x
 	sta	pos_y_rel_player, y
 	lda	pos_x_lo_player, x

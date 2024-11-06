@@ -11,8 +11,8 @@
 	.export	apu_fds_cycle
 apu_fds_cycle:
 	.if	.defined(SMB2)
-	lda	eng_pause_status
-	beq	:+ ; if (SMB2 && eng_pause_status != 0) {
+	lda	nmi_pause_flag
+	beq	:+ ; if (SMB2 && paused) {
 		lda	#fds_snd_vol_env::off|fds_snd_vol_env::dec|0
 		sta	FDS_SND_VOL
 

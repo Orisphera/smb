@@ -11,8 +11,8 @@ motion_x:
 	rts
 
 motion_x_check_spring:
-	lda	eng_spring_ani
-	bne	:+++ ; if (!eng_spring_ani) {
+	lda	player_on_spring
+	bne	:+++ ; if (!player.on_spring) {
 		tax
 	
 	motion_x_do:
@@ -40,10 +40,10 @@ motion_x_check_spring:
 		: ; }
 		sty	zp_byte_02
 
-		lda	accel_x_player_b, x
+		lda	accel_x_player, x
 		clc
 		adc	zp_byte_01
-		sta	accel_x_player_b, x
+		sta	accel_x_player, x
 
 		lda	#0
 		rol	a
@@ -69,11 +69,11 @@ motion_x_check_spring:
 motion_y_check_spring:
 	ldx	#0
 
-	lda	eng_timer_ctl
+	lda	game_timer_stop
 	bne	:+
-	lda	eng_spring_ani
+	lda	player_on_spring
 	bne	:-
-	: ; if (eng_timer_ctl || !eng_spring_ani) {
+	: ; if (game_timer_stop || !player.on_spring) {
 		lda	accel_y_player
 		sta	motion_gravity_accel_y_inc
 		lda	#MOTION_GRAVITY_VAL
@@ -178,11 +178,11 @@ motion_platform_up:
 motion_platform:
 	pha
 
-	ldy	actor_id, x
+	ldy	obj_id_actor, x
 	inx
 	lda	#5
 	cpy	#actor::plat_drop
-	bne	:+ ; if (this.actor_id == plat_drop) {
+	bne	:+ ; if (this.obj_id_actor == plat_drop) {
 		lda	#9
 	: ; }
 	sta	motion_gravity_accel_y_inc
@@ -203,10 +203,10 @@ motion_bounce_gravity_do:
 motion_gravity:
 	pha
 
-	lda	accel_y_actor_b, x
+	lda	accel_y1_player, x
 	clc
-	adc	accel_y_actor, x
-	sta	accel_y_actor_b, x
+	adc	accel_y2_player, x
+	sta	accel_y1_player, x
 
 	ldy	#0
 	lda	veloc_y_player, x
@@ -220,23 +220,23 @@ motion_gravity:
 	adc	zp_byte_07
 	sta	pos_y_hi_player, x
 
-	lda	accel_y_actor, x
+	lda	accel_y2_player, x
 	clc
 	adc	motion_gravity_accel_y_inc
-	sta	accel_y_actor, x
+	sta	accel_y2_player, x
 
 	lda	veloc_y_player, x
 	adc	#0
 	sta	veloc_y_player, x
 	cmp	motion_gravity_veloc_y_max_abs
 	bmi	:+
-	lda	accel_y_actor, x
+	lda	accel_y2_player, x
 	cmp	#$80
 	bcc	:+ ; if (abs(this.veloc_y) > abs(motion_gravity_veloc_y_max_abs) && this.accel_y < 0) {
 		lda	motion_gravity_veloc_y_max_abs
 		sta	veloc_y_player, x
 		lda	#0
-		sta	accel_y_actor, x
+		sta	accel_y2_player, x
 	: ; }
 
 	pla
@@ -249,23 +249,23 @@ motion_gravity:
 		iny
 		sty	motion_gravity_veloc_y_max_neg
 
-		lda	accel_y_actor, x
+		lda	accel_y2_player, x
 		sec
 		sbc	motion_gravity_accel_y_dec
-		sta	accel_y_actor, x
+		sta	accel_y2_player, x
 
 		lda	veloc_y_player, x
 		sbc	#0
 		sta	veloc_y_player, x
 		cmp	motion_gravity_veloc_y_max_neg
 		bpl	:+
-		lda	accel_y_actor, x
+		lda	accel_y2_player, x
 		cmp	#<-128
 		bcs	:+ ; if (abs(this.veloc_y) > abs(motion_gravity_veloc_y_max_abs) && this.accel_y >= 0) {
 			lda	motion_gravity_veloc_y_max_neg
 			sta	veloc_y_player, x
 			lda	#<-1
-			sta	accel_y_actor, x
+			sta	accel_y2_player, x
 		; }
 	: ; }
 

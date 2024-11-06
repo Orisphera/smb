@@ -223,14 +223,14 @@ static void print_norm(int pos_x, int pos_y)
 	int c;
 	int new_page;
 	int hard_mode;
-	int actor_id;
+	int obj_id_actor;
 	int named_actor = 1;
 	const char *actor_name = NULL;
 
 	c = getchar();
 	new_page = (c & 0x80);
 	hard_mode = (c & 0x40);
-	actor_id = (c & 0x3F);
+	obj_id_actor = (c & 0x3F);
 
 	if (new_page)
 		printf("\n");
@@ -242,5 +242,5 @@ static void print_norm(int pos_x, int pos_y)
 	if (hard_mode)
 		printf("|COURSE_ACTORS_HARD_ONLY");
 
-	printf("|COURSE_ACTORS_ID_%s)\n", names[actor_id]);
+	printf("|COURSE_ACTORS_ID_%s)\n", names[obj_id_actor]);
 }

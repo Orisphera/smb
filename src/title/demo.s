@@ -142,7 +142,9 @@ title_demo:
 		lda     title_demo_timers-1,x
 		sta     title_demo_button_timer
 		beq     :++
-	: ; } if (title_demo_button_timer) {
+	: ; }
+
+	; if (title_demo_button_timer) {
 		lda     title_demo_buttons-1,x
 		sta     joypad_p1
 		dec     title_demo_button_timer
@@ -150,7 +152,7 @@ title_demo:
 	: ; }
 
 	.if	.defined(VS)
-		lda	#0
+		lda	#joypad_button::none
 		sta	joypad_p2
 	.endif
 

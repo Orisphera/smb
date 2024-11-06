@@ -5,9 +5,9 @@
 
 	.export	stats_time_proc
 stats_time_proc:
-	lda	mode_system
+	lda	proc_id_system
 	beq	:++++
-	lda	player_proc_id
+	lda	proc_id_player
 	cmp	#player_procs::ctrl
 	bcc	:++++
 	cmp	#player_procs::death
@@ -20,7 +20,7 @@ stats_time_proc:
 	bpl	:++++
 	.endif
 	lda	timer_game_ctrl
-	bne	:++++ ; if (mode_system != title && this.proc_id >= ctrl && this.proc_id != death && this.pos_y.hi < 2 && !timer_game_ctrl) {
+	bne	:++++ ; if (system.proc_id != title && this.proc_id >= ctrl && this.proc_id != death && this.pos_y.hi < 2 && !timer_game_ctrl) {
 		lda	stats_time_end-STATS_TIME_LEN
 		ora	stats_time_end-STATS_TIME_LEN+1
 		ora	stats_time_end-STATS_TIME_LEN+2
@@ -56,7 +56,7 @@ stats_time_proc:
 		: ; } else {
 			sta	player_status
 			jsr	col_player_harm_proc_do
-			inc	eng_done_timer
+			inc	game_time_up
 		; }
 	: ; }
 
@@ -73,7 +73,7 @@ actor_proc_warp:
 		sta	game_scroll_lock
 
 		.if	.defined(SMB)|.defined(VS_SMB)
-			inc	eng_warp_ctrl
+			inc	game_warp_ctrl
 		.endif
 
 		jmp	actor_erase

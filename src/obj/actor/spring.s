@@ -2,21 +2,23 @@
 .include	"mem.i"
 .include	"tunables.i"
 
+TIMER_SPRING_CONTINUE	= 4
+
 actor_proc_spring_pos_y:
 	.byte	8, 16, 8, 0
 ; -----------------------------
 	.export actor_proc_spring
 actor_proc_spring:
 	jsr	lib_actor_bits_get
-	lda	eng_timer_ctl
+	lda	game_timer_stop
 	bne	actor_proc_spring_ctd
-	lda	eng_spring_ani
-	beq	actor_proc_spring_ctd ; if (!eng_timer_ctl && eng_spring_ani) {
+	lda	player_on_spring
+	beq	actor_proc_spring_ctd ; if (!game_timer_stop && player.on_spring) {
 		tay
 		dey
 		tya
 		and	#%00000010
-		bne	:+ ; if (!((eng_spring_ani - 1) & 0x02)) {
+		bne	:+ ; if (!((player.on_spring - 1) & 0x02)) {
 			inc	pos_y_lo_player
 			inc	pos_y_lo_player
 			jmp	:++
@@ -36,7 +38,7 @@ actor_proc_spring:
 		and	#joypad_button::face_a
 		beq	actor_proc_spring_skip_accel
 		and	joypad_a_b_held
-		bne	actor_proc_spring_skip_accel ; if ((eng_spring_ani - 1) >= 1 && (joypad_a_b & 0x80) && !(joypad_a_b & joypad_a_b_held 0x80)) {
+		bne	actor_proc_spring_skip_accel ; if ((player.on_spring - 1) >= 1 && (joypad_a_b & 0x80) && !(joypad_a_b & joypad_a_b_held 0x80)) {
 			.if	.defined(SMB2M)
 				tya
 				pha
@@ -68,7 +70,7 @@ actor_proc_spring:
 			.endif
 		actor_proc_spring_skip_accel: ; }
 		cpy	#3
-		bne	:+ ; if ((eng_spring_ani - 1) == 3) {
+		bne	:+ ; if ((player.on_spring - 1) == 3) {
 			lda	accel_y_spring
 			sta	veloc_y_player
 
@@ -78,22 +80,22 @@ actor_proc_spring:
 			.endif
 
 			lda	#0
-			sta	eng_spring_ani
+			sta	player_on_spring
 		; }
 	: ; }
 
 actor_proc_spring_ctd:
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
 	jsr	render_actor
 	jsr	col_actor_oob_proc
 
-	lda	eng_spring_ani
+	lda	player_on_spring
 	beq	:+
 	lda	timer_spring
-	bne	:+ ; if (eng_spring_ani && !timer_spring) {
-		lda	#4
+	bne	:+ ; if (player.on_spring && spring.timer == 0) {
+		lda	#TIMER_SPRING_CONTINUE
 		sta	timer_spring
-		inc	eng_spring_ani
+		inc	player_on_spring
 	: ; }
 
 	rts

@@ -41,16 +41,16 @@ render_hammer_attr:
 	.export render_hammer
 render_hammer:
 	ldy	obj_data_offset_misc, x
-	lda	eng_timer_ctl
+	lda	game_timer_stop
 	bne	:+
 	lda	state_misc, x
 	and	#<~misc_states::hammer
 	cmp	#misc_states::init
 	beq	:++
-	: ; if (eng_timer_ctl != 0 || misc.state != init) {
+	: ; if (game_timer_stop || misc.state != init) {
 		ldx	#0
 		beq	:++
-	: ; } else if (eng_timer_ctl == 0 && misc.state == init) {
+	: ; } else if (!game_timer_stop && misc.state == init) {
 		lda	frame_count
 		lsr	a
 		lsr	a

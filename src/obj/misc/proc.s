@@ -64,7 +64,7 @@ misc_proc:
 			; }
 
 			: ; if (this.state < cutoff) {
-				jsr	lib_calc_misc_pos
+				jsr	pos_calc_x_rel_misc
 				jsr	lib_misc_bits_get
 				jsr	col_misc_box
 				jsr	render_coin_score

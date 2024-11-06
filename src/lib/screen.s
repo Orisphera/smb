@@ -43,8 +43,8 @@ screen_proc:
 screen_init:
 	jsr	oam_init
 	jsr	nt_init
-	lda	mode_system
-	beq	screen_proc_next_b ; if (mode_system != title) {
+	lda	proc_id_system
+	beq	screen_proc_next_b ; if (proc_id_system != title) {
 		.export	screen_init_title
 	screen_init_title:
 		ldx	#3
@@ -82,7 +82,7 @@ screen_color_init_2:
 	ldx	screen_palette_types, y
 
 screen_proc_next_pal_set:
-	stx	nmi_addrs_ctl
+	stx	nmi_buffer_ptr
 
 screen_proc_next_b:
 	jmp	screen_proc_continue
@@ -125,7 +125,7 @@ screen_color_init_3:
 	ldy	course_bg_col
 	beq	:+ ; if (course_bg_col) {
 		lda	screen_color_bg_data-PPU_COLOR_ROW_SIZE, y
-		sta	nmi_addrs_ctl
+		sta	nmi_buffer_ptr
 	: ; }
 
 	inc	screen_proc_id
@@ -188,7 +188,7 @@ screen_color_init_4:
 	bne	:+ ; if (ledge_type == MUSHROOM) {
 		lda	#nmi_addr::pal_mushroom
 	screen_color_init_4_end:
-		sta	nmi_addrs_ctl
+		sta	nmi_buffer_ptr
 	: ; }
 
 	jmp	screen_proc_continue
@@ -253,10 +253,10 @@ screen_text_draw_splash:
 	.endif
 ; ------------------------------------------------------------
 screen_text_draw_timeup:
-	lda	eng_done_timer
-	beq	:+ ; if (eng_done_timer) {
+	lda	game_time_up
+	beq	:+ ; if (game_time_up) {
 		lda	#0
-		sta	eng_done_timer
+		sta	game_time_up
 		lda	#screen_text::timeup
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	screen_text_draw_timeup_end
@@ -281,18 +281,18 @@ screen_text_draw_timeup:
 	; }
 ; ------------------------------------------------------------
 screen_text_draw_intermission:
-	lda	mode_system
+	lda	proc_id_system
 	beq	:+++
 	cmp	#system_modes::game_over
-	beq	:++ ; if (mode_system.not_in(title, game_over)) {
+	beq	:++ ; if (proc_id_system.not_in(title, game_over)) {
 		lda	game_start_type
 		bne	:+++
 		ldy	course_type
 		cpy	#course_types::castle
 		beq	:+
-		lda	eng_disable_b
+		lda	screen_msg_disable
 		bne	:+++
-		: ; if (game.start_type != 0 && (course.type == castle || !eng_disable_b)) {
+		: ; if (game.start_type != 0 && (course.type == castle || !screen_msg_disable)) {
 			jsr	render_player_course_card
 			lda	#screen_text::splash
 			.if	.defined(SMB)|.defined(VS_SMB)
@@ -350,13 +350,13 @@ screen_bg:
 		bne	:-
 	; }
 
-	dec	eng_columnsets
-	bpl	:+ ; if (--eng_columnsets >= 0) {
+	dec	screen_bg_counter
+	bpl	:+ ; if (--screen_bg_counter >= 0) {
 		inc	screen_proc_id
 	: ; }
 
 	lda	#nmi_addr::buffer_11_A
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	rts
 ; ------------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
@@ -461,9 +461,9 @@ screen_text_draw:
 				lda	player_id
 				dex
 				bne	:+
-				ldy	mode_system
+				ldy	proc_id_system
 				cpy	#system_modes::game_over
-				beq	:+ ; if (mode_system != game_over && (!VS_SMB || player_lives_b >= 0)) {
+				beq	:+ ; if (proc_id_system != game_over && (!VS_SMB || player_lives_b >= 0)) {
 				.if	.defined(VS_SMB)
 					ldy	player_lives_b
 					bmi	:+

@@ -6,8 +6,8 @@ whirlpool_proc:
 	bne	:+++ ; if (course.type == water) {
 		sta	game_whirlpool_flag
 
-		lda	eng_timer_ctl
-		bne	:+++ ; if (!eng_timer_ctl) {
+		lda	game_timer_stop
+		bne	:+++ ; if (!game_timer_stop) {
 			ldy	#5-1
 			: ; for (y = 5-1; y >= 0; y--) {
 				lda	pos_x_lo_cannon, y

@@ -15,7 +15,7 @@
 sys_victory:
 	jsr	victory_enter
 
-	lda	mode_game
+	lda	proc_id_game
 	beq	:++
 	.if	.defined(SMB2M)
 		ldx	course_no
@@ -27,14 +27,14 @@ sys_victory:
 		beq	sys_victory-1
 		; NOTE: This assumes this module follows an rts
 	.endif
-	; if (!SMB2M || course_no != no_08 || mode_game.not_in(data3, save)) {
-		: ; if (mode_game != actor_bowser_ending && (!SMB2M || course_no == no_08)) {
+	; if (!SMB2M || course_no != no_08 || proc_id_game.not_in(data3, save)) {
+		: ; if (proc_id_game != actor_bowser_ending && (!SMB2M || course_no == no_08)) {
 			ldx	#0
 			stx	actor_index
 			jsr	actor_proc
 		: ; }
 
-		jsr	lib_calc_player_pos
+		jsr	pos_calc_x_rel_player
 		jmp	render_player
 	; } else rts;
 ; -----------------------------------------------------------
@@ -44,7 +44,7 @@ victory_enter:
 		cmp	#course::no_08
 		beq	victory_course_8 ; if (!SMB2M || course_no != course_8) {
 	.endif
-		lda	mode_game
+		lda	proc_id_game
 		jsr	tbljmp
 		.addr	actor_bowser_ending
 		.addr	victory_init
@@ -63,7 +63,7 @@ victory_enter:
 		.endif
 	.if	.defined(SMB2M)
 	victory_course_8: ; } else {
-		lda	mode_game
+		lda	proc_id_game
 		jsr	tbljmp
 		.addr	actor_bowser_ending
 		.addr	victory_init
@@ -216,7 +216,7 @@ victory_init:
 			; }
 
 			lda	#nmi_addr::ann_toad_pal_common
-			sta	nmi_addrs_ctl
+			sta	nmi_buffer_ptr
 		: ; }
 	.endif
 
@@ -248,11 +248,11 @@ victory_init:
 	.if	.defined(SMB2M)
 		.export screen_title_bg, screen_title_bg_finish
 	screen_title_bg_finish:
-		inc	mode_game
+		inc	proc_id_game
 		rts
 
 	screen_title_bg:
-		lda	mode_system
+		lda	proc_id_system
 		bne	screen_title_bg_finish
 
 		lda	#5
@@ -283,10 +283,10 @@ victory_proc:
 	lda	pos_x_hi_screen_left
 	cmp	pos_x_hi_victory_right
 	beq	:+ ; if (screen_left.pos_x.hi != victory_right.pos_x.hi) {
-		lda	eng_scroll_subpix
+		lda	pos_x_victory_scroll
 		clc
 		adc	#VICTORY_SCROLL
-		sta	eng_scroll_subpix
+		sta	pos_x_victory_scroll
 		lda	#1
 		adc	#0
 		tay
@@ -400,7 +400,7 @@ victory_msg_finish:
 	tya
 	clc
 	adc	#nmi_addr::msg_ty_mario
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 
 victory_msg_dotick:
 	lda	victory_msg_timer_lo
@@ -424,7 +424,7 @@ victory_msg_notick:
 		sta	timer_victory
 
 	victory_next:
-		inc	mode_game
+		inc	proc_id_game
 
 	.if	.defined(VS)
 		lda	#0
@@ -469,7 +469,7 @@ victory_msg_notick:
 					lda	#6
 					sta	timer_victory
 				.endif
-				inc	mode_game
+				inc	proc_id_game
 			; }
 		: ; }
 
@@ -520,10 +520,10 @@ victory_84CF:
 	lda	course_no
 	cmp	#course::no_08
 	beq	:+ ; if (course_no != no_08) {
-		lda	mode_game
+		lda	proc_id_game
 		clc
 		adc	#2
-		sta	mode_game
+		sta	proc_id_game
 		rts
 	: ; } else {
 		inc	VS_RAM_ARENA0+$18
@@ -567,7 +567,7 @@ victory_84CF:
 			lda	VS_RAM_ARENA0+$22
 			cmp	#4
 			bne	:+ ; if (++vs_ram_arena0[0x22] == 4) {
-				inc	mode_game
+				inc	proc_id_game
 			: ; }
 		: ; }
 
@@ -583,7 +583,7 @@ victory_8526:
 		bpl	:-
 	; }
 
-	inc	mode_game
+	inc	proc_id_game
 	ldx	player_id
 	lda	#1
 	sta	VS_RAM_ARENA0+$28, x
@@ -647,7 +647,7 @@ victory_8552:
 				ldy	obj_data_offset_actor_84B9, x
 				sty	obj_data_offset_actor
 				lda	#actor::toad
-				sta	actor_id
+				sta	obj_id_actor
 				lda	actor_pos_y_lo_84C0, x
 				sta	pos_y_lo_actor
 				lda	ppu_84C7, x
@@ -690,21 +690,21 @@ victory_85E0:
 			lda	#0
 			sta	course_sub
 			sta	player_goals
-			sta	mode_game
+			sta	proc_id_game
 			inc	course_no
 			jsr	course_descriptor_load
-			inc	eng_req_timer
+			inc	player_first_start
 			lda	#system_modes::game
-			sta	mode_system
+			sta	proc_id_system
 		: ; }
 
 		rts
 	: ; } else {
 		lda	#0
-		sta	eng_timer_ctl
+		sta	game_timer_stop
 		lda	#$1C
 		sta	timer_actor+1
-		inc	mode_game
+		inc	proc_id_game
 		rts
 	; }
 	.endif
@@ -725,7 +725,7 @@ victory_finish:
 		lda	#0
 		sta	course_sub
 		sta	player_goals
-		sta	mode_game
+		sta	proc_id_game
 
 		.if	.defined(SMBM)
 			inc	course_no
@@ -741,9 +741,9 @@ victory_finish:
 		.endif
 
 		jsr	course_descriptor_load
-		inc	eng_req_timer
+		inc	player_first_start
 		lda	#system_modes::game
-		sta	mode_system
+		sta	proc_id_system
 	.elseif	.defined(VS)
 		lda	course_no
 		cmp	#course::no_08
@@ -761,7 +761,7 @@ victory_finish:
 			sta	score_digit_mod+2
 			jmp	actor_proc_course_end_stats
 		: ; } else if (course.no != no_08 || player.lives < 0) {
-			inc	mode_game
+			inc	proc_id_game
 		: ; }
 	.endif
 
@@ -778,7 +778,7 @@ victory_finish:
 				sta	title_course_sel_on
 				lda	#255
 				sta	player_lives
-				jsr	eng_next_game
+				jsr	game_over_next_game
 			: ; }
 
 			rts
@@ -791,7 +791,7 @@ victory_864C:
 
 	lda	timer_actor+1
 	bne	victory_865D_rts ; if (!actor.timer+1) {
-		inc	mode_game
+		inc	proc_id_game
 		lda	#$D8
 		sta	timer_select
 		rts
@@ -808,9 +808,9 @@ victory_865D:
 		lda	#255
 		sta	player_lives
 		lda	#system_modes::game_over
-		sta	mode_system
+		sta	proc_id_system
 		lda	#game_over_modes::init
-		sta	mode_game
+		sta	proc_id_game
 	: ; }
 
 victory_865D_rts:
@@ -930,7 +930,7 @@ screen_score_disp:
 	: ; }
 
 	ldy	obj_data_offset_actor, x
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::spiny
 	beq	:++
 	cmp	#actor::piranha_plant

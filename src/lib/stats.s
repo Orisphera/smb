@@ -139,11 +139,11 @@ stats_print_num_do:
 ; -----------------------------------------------------------
 	.export stats_calc
 stats_calc:
-	lda	mode_system
+	lda	proc_id_system
 	.if	.defined(SMB)|.defined(VS_SMB)
 		cmp	#0
 	.endif
-	beq	:++ ; if (mode_system != title) {
+	beq	:++ ; if (proc_id_system != title) {
 		ldx	#STAT_LEN_MAX-1
 		: ; for (digit of game.stats) {
 			lda	score_digit_mod+1, x

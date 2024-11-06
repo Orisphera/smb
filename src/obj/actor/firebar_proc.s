@@ -77,8 +77,8 @@ actor_proc_firebar_do:
 	lda	bits_offscr_actor
 	and	#%00001000
 	bne	:+++++++ ; if (!(actor.bits_offscr & 0x08)) {
-		lda	eng_timer_ctl
-		bne	:+ ; if (eng_timer_ctl == 0) {
+		lda	game_timer_stop
+		bne	:+ ; if (!game_timer_stop) {
 			lda	veloc_ang_firebar, x
 			jsr	actor_proc_firebar_spin
 			and	#MOD_32
@@ -86,7 +86,7 @@ actor_proc_firebar_do:
 		: ; }
 	
 		lda	veloc_y_actor, x
-		ldy	actor_id, x
+		ldy	obj_id_actor, x
 		cpy	#actor::firebar_end-1
 		bcc	:++
 		cmp	#FIREBAR_VELOC_Y_CUTOFF_A
@@ -100,7 +100,7 @@ actor_proc_firebar_do:
 		: ; }
 		sta	actor_firebar_veloc_y
 	
-		jsr	lib_calc_actor_pos
+		jsr	pos_calc_x_rel_actor
 		jsr	actor_firebar_get_pos
 		ldy	obj_data_offset_actor, x
 		lda	pos_y_rel_actor
@@ -114,7 +114,7 @@ actor_proc_firebar_do:
 		jsr	actor_firebar_col
 
 		ldy	#FIREBAR_SHORT_COUNT-1
-		lda	actor_id, x
+		lda	obj_id_actor, x
 		cmp	#actor::firebar_end-1
 		bcc	:+ ; if (actor.id > firebar_end) {
 			ldy	#FIREBAR_LONG_COUNT-1
@@ -198,8 +198,8 @@ actor_firebar_col:
 	pha
 
 	lda	timer_player_star
-	ora	eng_timer_ctl
-	bne	:+++++++++ ; if (player.timer_star == 0 && eng_timer_ctl == 0) {
+	ora	game_timer_stop
+	bne	:+++++++++ ; if (player.timer_star == 0 && !game_timer_stop) {
 		sta	actor_firebar_col_pos_y_rel_idx
 	
 		ldy	pos_y_hi_player
@@ -208,9 +208,9 @@ actor_firebar_col:
 			ldy	pos_y_lo_player
 			lda	player_size
 			bne	:+
-			lda	player_crouch
+			lda	player_crouching
 			beq	:++
-			: ; if (player_size != large || player_crouch) {
+			: ; if (player.size != large || player.crouching) {
 				.repeat	FIREBAR_POS_Y_CHECK_COUNT-1
 					inc	actor_firebar_col_pos_y_rel_idx
 				.endrepeat

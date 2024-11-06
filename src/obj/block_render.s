@@ -104,7 +104,7 @@ render_block_bits:
 	lda	#obj_attr::priority_high|obj_attr::color2
 	sta	render_block_bits_attr
 	lda	#chr_obj::plat_cloud
-	ldy	player_proc_id
+	ldy	proc_id_player
 	cpy	#player_procs::victory
 	beq	:+ ; if (player.proc_id != victory) {
 		lda	#obj_attr::priority_high|obj_attr::color3

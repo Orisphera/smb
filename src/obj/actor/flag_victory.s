@@ -31,7 +31,7 @@ actor_proc_flag_chr_nos_end:
 actor_proc_flag_victory:
 	lda	#0
 	sta	actor_swarm_buffer
-	lda	actor_proc_flag_victory_id
+	lda	proc_id_victory_flag
 	cmp	#<victory_flag_proc::done
 	bcs	actor_proc_flag_victory_fireworks_rts
 	jsr	tbljmp
@@ -90,7 +90,7 @@ actor_proc_flag_victory_fireworks:
 	sty	state_actor, x
 
 actor_proc_flag_victory_fireworks_step:
-	inc	actor_proc_flag_victory_id
+	inc	proc_id_victory_flag
 
 actor_proc_flag_victory_fireworks_rts:
 	rts
@@ -157,7 +157,7 @@ actor_proc_flag_victory_raise:
 	; } else actor_proc_flag_victory_start_flag();
 ; ------------------------------
 actor_proc_flag_victory_draw:
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
 	ldy	obj_data_offset_actor, x
 	ldx	#(actor_proc_flag_chr_nos_end-actor_proc_flag_chr_nos)-1
 	: ; for () {
@@ -191,7 +191,7 @@ actor_proc_flag_victory_start_flag:
 	sta	timer_actor, x
 
 actor_proc_flag_victory_next:
-	inc	actor_proc_flag_victory_id
+	inc	proc_id_victory_flag
 	rts
 ; -----------------------------------------------------------
 actor_proc_flag_victory_delay:

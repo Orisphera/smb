@@ -9,7 +9,7 @@
 render_actor_data_offset	= zp_byte_EB
 render_actor_state_next		= zp_byte_EC
 render_actor_state_prev		= zp_byte_ED
-render_actor_id			= zp_byte_EF
+render_obj_id_actor			= zp_byte_EF
 ; ------------------------------------------------------------
 	.export render_actor
 render_actor:	
@@ -54,7 +54,7 @@ render_actor:
 	sta	render_chr_pair_color_mod_2
 	lda	attr_actor, x
 	sta	render_chr_pair_attr
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::piranha_plant
 	bne	:+
 	ldy	veloc_x_actor, x
@@ -68,7 +68,7 @@ render_actor:
 	sta	render_actor_state_prev
 	and	#<~(actor_states::spawned|actor_states::bit_6|actor_states::bit_5)
 	tay
-	lda	actor_id, x ; switch (this.id) {
+	lda	obj_id_actor, x ; switch (this.id) {
 	cmp	#actor::toad
 	bne	:+ ; case "toad":
 		ldy	#actor_states::init
@@ -92,10 +92,10 @@ render_actor:
 	: cmp	#actor::spring
 	bne	:+ ; case "spring":
 		ldy	#actor_states::state_3
-		ldx	eng_spring_ani
+		ldx	player_on_spring
 		lda	render_actor_spring_ani_ids, x
 	: ; }
-	sta	render_actor_id
+	sta	render_obj_id_actor
 	sty	render_actor_state_next
 
 	ldx	actor_index
@@ -113,10 +113,10 @@ render_actor:
 		beq	:+ ; if (nmi_list_1_data[41] == 1) {
 			iny
 		: ; }
-		sty	render_actor_id
+		sty	render_obj_id_actor
 	: ; }
 
-	ldy	render_actor_id
+	ldy	render_obj_id_actor
 	cpy	#actor::goomba
 	bne	:++ ; if (this.id == goomba) {
 		lda	state_actor, x
@@ -127,11 +127,11 @@ render_actor:
 		: ; }
 
 		and	#actor_states::bit_5
-		ora	eng_timer_ctl
+		ora	game_timer_stop
 		bne	:+
 		lda	frame_count
 		and	#MOD_16_8_UP
-		bne	:+ ; if ((this.bit_5 || eng_timer_ctl) && (frame_count & 16) >= 8) {
+		bne	:+ ; if ((this.bit_5 || game_timer_stop) && (frame_count & 16) >= 8) {
 			lda	render_chr_pair_color_mod_2
 			eor	#%00000011
 			sta	render_chr_pair_color_mod_2
@@ -210,14 +210,14 @@ render_actor:
 		jmp	render_actor_ani_do
 	: ; }
 
-	lda	render_actor_id
+	lda	render_obj_id_actor
 	cmp	#actor::koopa_cutoff
 	bcs	:+
 	cpy	#actor::buzzy_beetle
 	bcc	:+ ; if (this.id < koopa_cutoff && y >= buzzy_beetle) {
 		ldx	#<(render_actor_tiles_koopa_stun_flip-render_actor_tile_data)
 
-		ldy	render_actor_id
+		ldy	render_obj_id_actor
 		cpy	#actor::buzzy_beetle
 		bne	:+ ; if (this.id == buzzy_beetle) {
 			ldx	#<(render_actor_tiles_buzzy_stun-render_actor_tile_data)
@@ -230,7 +230,7 @@ render_actor:
 	bne	:++ ; if (this.state_next == state_4) {
 		ldx	#<(render_actor_tiles_buzzy_stun_flip-render_actor_tile_data)
 		inc	render_chr_pair_pos_y
-		ldy	render_actor_id
+		ldy	render_obj_id_actor
 		cpy	#actor::buzzy_beetle
 		beq	:+ ; if (this.id != buzzy_beetle) {
 			ldx	#<(render_actor_tiles_koopa_stun-render_actor_tile_data)
@@ -251,7 +251,7 @@ render_actor:
 ; ------------------------------------------------------------
 render_actor_ani_check:
 	ldy	actor_index
-	lda	render_actor_id
+	lda	render_obj_id_actor
 	cmp	#actor::hammer_bro
 	bne	:+
 	lda	render_actor_state_prev
@@ -273,7 +273,7 @@ render_actor_ani_check:
 		inc	render_chr_pair_pos_y
 		inc	render_chr_pair_pos_y
 		jmp	:+++
-	: lda	render_actor_id
+	: lda	render_obj_id_actor
 	cmp	#actor::goomba
 	beq	render_actor_ani_do
 	cmp	#actor::bullet_swarm
@@ -319,8 +319,8 @@ render_actor_ani_check:
 	: ; if () {
 		lda	render_actor_state_prev
 		and	#actor_states::spawned|actor_states::bit_5
-		ora	eng_timer_ctl
-		bne	:+ ; if ((this.spawned | this.bit_5) | eng_timer_ctl) {
+		ora	game_timer_stop
+		bne	:+ ; if ((this.spawned | this.bit_5) | game_timer_stop) {
 			txa
 			clc
 			adc	#ACTOR_SPR_SIZE
@@ -330,14 +330,14 @@ render_actor_ani_check:
 ; ------------------------------
 render_actor_ani_do:
 	.if	.defined(SMB2M)
-		lda	render_actor_id
+		lda	render_obj_id_actor
 		cmp	#actor::piranha_plant_b
 		beq	:+
 	.endif
 	lda	render_actor_state_prev
 	and	#actor_states::bit_5
 	beq	:++
-	lda	render_actor_id
+	lda	render_obj_id_actor
 	cmp	#actor::koopa_cutoff
 	bcc	:++
 	: ; if ((SMB2M && this.id == piranha_plant_b) || ((this.state & bit_5) && this.id >= koopa_cutoff)) {
@@ -354,7 +354,7 @@ render_actor_tiles:
 	jsr	render_actor_chr_pair
 	ldx	actor_index
 	ldy	obj_data_offset_actor, x
-	lda	render_actor_id
+	lda	render_obj_id_actor
 	cmp	#actor::bullet_swarm
 	bne	:++
 render_actor_clear_b:
@@ -375,7 +375,7 @@ render_actor_clear_b:
 			dey
 			tya
 			tax
-			lda	render_actor_id
+			lda	render_obj_id_actor
 			cmp	#actor::hammer_bro
 			beq	:+
 			.if	.defined(SMB2M)
@@ -408,7 +408,7 @@ render_actor_clear_b:
 
 		lda	nmi_list_1_data+41
 		bne	render_actor_clear_b
-		lda	render_actor_id
+		lda	render_obj_id_actor
 		ldx	render_actor_state_next
 		cmp	#actor::hammer_bro
 		bne	:+
@@ -468,7 +468,7 @@ render_actor_clear_b:
 				; }
 			: ; }
 
-			lda	render_actor_id
+			lda	render_obj_id_actor
 			cmp	#actor::lakitu
 			bne	:++ ; if (this.id == lakitu) {
 				lda	render_actor_flipped
@@ -499,7 +499,7 @@ render_actor_clear_b:
 			: ; }
 
 			; if (this.id != lakitu || this.flipped) {
-				lda	render_actor_id
+				lda	render_obj_id_actor
 				cmp	#actor::swarm_stop
 				bcc	:+ ; if (this.id >= swarm_stop) {
 					.if	.defined(SMB)|.defined(VS_SMB)
@@ -566,7 +566,7 @@ render_actor_clear_offscr:
 	bcc	:+ ; if (this.bits_offscr & 0x80) {
 		jsr	render_actor_clear_chr_pair_v
 
-		lda	actor_id, x
+		lda	obj_id_actor, x
 		cmp	#actor::podoboo
 		beq	:+
 		lda	pos_y_hi_actor, x

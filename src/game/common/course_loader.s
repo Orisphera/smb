@@ -185,7 +185,7 @@ course_load:
 	lsr	a
 	lsr	a
 	lsr	a
-	sta	course_enter_pos
+	sta	course_pos_y_start
 
 	pla
 	and	#(COURSE_TIMER_SETTING_MAX<<COURSE_TIMER_SETTING_SHIFT)
@@ -193,14 +193,14 @@ course_load:
 	rol	a
 	rol	a
 	rol	a
-	sta	course_timer_setting
+	sta	course_timer
 
 	iny
 	lda	(course_scenery_addr), y
 	pha
 
-	and	#(COURSE_FG_MASK_MAX<<(COURSE_FG_MASK_SHIFT-8))
-	sta	course_fg_mask_id
+	and	#(COURSE_FLOOR_MASK_MAX<<(COURSE_FLOOR_MASK_SHIFT-8))
+	sta	course_floor_mask_id
 
 	pla
 	pha

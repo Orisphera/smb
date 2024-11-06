@@ -33,7 +33,7 @@ title_cursor_tiles:
 	.byte	chr_bg::cursor
 .endif
 ; ----------------------------
-	.export title_cursor_draw
+	.export title_cursor_draw, title_cursor_draw_xfer
 title_cursor_draw:
 .if	.defined(SMB)|.defined(VS_SMB)
 	ldy     #(title_cursor_data_end-title_cursor_data)-1
@@ -44,9 +44,13 @@ title_cursor_draw:
 		dey
 		bpl     :-
 	; }
+.elseif	.defined(SMB2M)
+	lda	#nmi_addr::title_cursor_data
+	sta	nmi_buffer_ptr
+.endif
 
-	.export title_cursor_draw_xfer
 title_cursor_draw_xfer:
+.if	.defined(SMB)|.defined(VS_SMB)
         lda     player_count
         beq     :+ ; if (player_count) {
 		lda     #' '
@@ -55,11 +59,6 @@ title_cursor_draw_xfer:
 		sta     nmi_list_0_tile+2
 	: ; }
 .elseif	.defined(SMB2M)
-	lda	#nmi_addr::title_cursor_data
-	sta	nmi_addrs_ctl
-
-	.export title_cursor_draw_xfer
-title_cursor_draw_xfer:
 	ldy	player_id
 	lda	title_cursor_tiles, y
 	sta	title_cursor_data_tiles

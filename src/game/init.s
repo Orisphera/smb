@@ -12,6 +12,9 @@
 		.res	2, $FF
 	.endif
 
+RAM_CLEAR_END_GAMEINIT	= <(proc_id_system-1)
+RAM_CLEAR_END_GAMERESET	= <(game_reset_persist-1)
+
 game_init_data_0:
 	.byte	$04, $30, $48, $60
 	.byte	$78, $90, $A8, $C0
@@ -38,7 +41,7 @@ game_init_oam_end:
 	game_init_ram:
 		.endif
 
-		ldy	#$6F
+		ldy	#RAM_CLEAR_END_GAMEINIT
 		jsr	game_init_clearram
 
 		ldy	#(snd_ram_end-snd_ram)-1
@@ -67,7 +70,7 @@ game_init_oam_end:
 
 	.export	game_init_0_do
 game_init_0_do:
-	ldy	#$4B
+	ldy	#RAM_CLEAR_END_GAMERESET
 	jsr	game_init_clearram
 
 	ldx	#(timers_nmi_end-timers_nmi)-3
@@ -93,7 +96,7 @@ game_init_0_do:
 	: ; }
 	sta	pos_x_hi_screen_left
 	sta	pos_x_hi_game
-	sta	eng_page_cached
+	sta	course_page_loaded
 
 	jsr	game_disp_pos
 	ldy	#>PPU_VRAM_BG1
@@ -101,9 +104,9 @@ game_init_0_do:
 	beq	:+ ; if (game_disp_pos() % 1) {
 		ldy	#>PPU_VRAM_BG2
 	: ; }
-	sty	eng_bg_addr_hi
+	sty	bg_addr
 	ldy	#$80
-	sty	eng_bg_addr_lo
+	sty	bg_addr+1
 	asl	a
 	asl	a
 	asl	a
@@ -115,7 +118,7 @@ game_init_0_do:
 	dec	scenery_length+2
 
 	lda	#$0B
-	sta	eng_columnsets
+	sta	screen_bg_counter
 	jsr	course_load
 
 	lda	ENG_HARDMODE_VAR
@@ -134,7 +137,7 @@ game_init_0_do:
 	lda	pos_x_hi_alt_game
 	beq	:+ ; if (game.alt_pos_x.hi != 0) {
 		lda	#COURSE_SCENERY_ENTER_POS_B0_A_VAL
-		sta	course_enter_pos
+		sta	course_pos_y_start
 	: ; }
 
 	lda	#music_base::none
@@ -147,7 +150,7 @@ game_init_0_do:
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		inc	mode_game
+		inc	proc_id_game
 		rts
 	.elseif	.defined(ANN)
 		jmp	screen_title_bg_finish
@@ -165,7 +168,7 @@ game_init_0_do:
 		.endif
 
 		lda	#player_size::small
-		sta	eng_req_timer
+		sta	player_first_start
 		sta	player_size
 
 		.if	.defined(VS_SMB)
@@ -211,9 +214,9 @@ game_init_1_do:
 		bne	:-
 	; }
 
-	sta	eng_done_timer
-	sta	eng_disable_b
-	sta	eng_page_cached
+	sta	game_time_up
+	sta	screen_msg_disable
+	sta	course_page_loaded
 
 	lda	#$FF
 	sta	actor_plat_align
@@ -261,36 +264,30 @@ game_init_1_do:
 	inc	nmi_sprite_overlap
 
 	.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-		inc	mode_game
+		inc	proc_id_game
 		rts
 	.elseif	.defined(ANN)
 		jmp	screen_title_bg_finish
 	.endif
 ; -----------------------------------------------------------
-.if	.defined(FDS_SMB)
-	FDS_CUTOFF	= 4
-.elseif	.defined(SMB2M)
-	FDS_CUTOFF	= 9
-.endif
 	.export game_init_clearram
-
 game_init_clearram:
-	ldx	#7
+	ldx	#>(RAM_END-RAM_BASE)
 	lda	#0
-	sta	zp_addr_06
-	: ; for (x = 7; x >= 0; x--) {
-		stx	zp_addr_06+1
-		: ; for (y; y >= 0; y--) {
-			cpx	#1
+	sta	game_buffer
+	: ; for (page of ram) {
+		stx	game_buffer+1
+		: ; for (byte of page) {
+			cpx	#>STACK_BASE
 			bne	:+
-			cpy	#$60
+			cpy	#STACK_TOP
 			bcs	:++
 			.if	.defined(FDS)
-			cpy	#FDS_CUTOFF
+			cpy	#FDS_STACK_BOTTOM
 			bcc	:++
 			.endif
-			: ; if (x != 1 || (y < 0x60 && (!FDS || y >= FDS_CUTOFF))) {
-				sta	(zp_addr_06), y
+			: ; if (page != stack || (byte < STACK_TOP && (!FDS || byte >= FDS_STACK_BOTTOM))) {
+				sta	(game_buffer), y
 			: ; }
 
 			dey
@@ -316,13 +313,13 @@ area_music_data_pipe_intro:
 ; ----------------------------
 	.export	game_init_area_music
 game_init_area_music:
-	lda	mode_system
-	beq	:+++ ; if (mode_system != title) {
+	lda	proc_id_system
+	beq	:+++ ; if (proc_id_system != title) {
 		lda	game_start_type
 		cmp	#2
 		beq	:+
 		ldy	#area_music_data_pipe_intro-area_music_data
-		lda	course_enter_pos
+		lda	course_pos_y_start
 		cmp	#COURSE_SCENERY_ENTER_POS_B0_B_VAL
 		beq	:++
 		cmp	#COURSE_SCENERY_ENTER_POS_B0_C_VAL

@@ -21,7 +21,7 @@ actor_bowser_ending_data:
 	.export actor_bowser_ending
 actor_bowser_ending:
 	ldx	nmi_list_1_data+$27
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::bowser
 	bne	:+
 	stx	actor_index
@@ -35,7 +35,7 @@ actor_bowser_ending:
 	: ; if (actor.id != bowser || (actor.state != state_0 && actor_state & 0x40) || actor.pos_y >= 224) {
 		lda	#music_event::none
 		sta	apu_music_event_req
-		inc	mode_game
+		inc	proc_id_game
 		jmp	actor_killall
 	: ; } else if () {
 		jsr	motion_fall_slow
@@ -104,15 +104,15 @@ actor_proc_bowser:
 	: ; }
 	lda	#0
 	sta	actor_swarm_buffer
-	lda	eng_timer_ctl
+	lda	game_timer_stop
 	beq	:+
 	jmp	actor_proc_bowser_motion_skip
 	: lda	nmi_list_1_data+$22
 	bpl	:+
 	jmp	:+++++++
-	: ; if () {
+	: ; if (!game_timer_stop && !(nmi_list_1_data[0x22] & 0x80)) {
 		dec	nmi_list_1_data+$23
-		bne	:+ ; if () {
+		bne	:+ ; if (--nmi_list_1_data[0x23] == 0) {
 			lda	#$20
 			sta	nmi_list_1_data+$23
 			lda	nmi_list_1_data+$22
@@ -153,7 +153,7 @@ actor_proc_bowser:
 				and	#MOD_4
 				tay
 				lda	actor_proc_bowser_timer_data, y
-				sta	eng_bowser_rand_offset
+				sta	actor_bowser_rand_offset
 			: ; }
 		
 			lda	pos_x_lo_actor, x
@@ -171,8 +171,8 @@ actor_proc_bowser:
 					ldy	#1
 				: ; }
 			
-				cmp	eng_bowser_rand_offset
-				bcc	:+ ; if (actor.pos_x >= eng_bowser_rand_offset) {
+				cmp	actor_bowser_rand_offset
+				bcc	:+ ; if (actor.pos_x >= actor_bowser_rand_offset) {
 					sty	nmi_list_1_data+$24
 				; }
 			; }
@@ -270,7 +270,7 @@ actor_proc_bowser_finish:
 	ldx	actor_dup_offset
 	stx	actor_index
 	lda	#actor::bowser
-	sta	actor_id, x
+	sta	obj_id_actor, x
 	jsr	actor_proc_bowser_col
 
 	pla

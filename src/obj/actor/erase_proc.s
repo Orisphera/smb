@@ -5,8 +5,8 @@
 	.export actor_erase
 actor_erase:
 	lda	#0
-	sta	actor_mode, x
-	sta	actor_id, x
+	sta	proc_id_actor, x
+	sta	obj_id_actor, x
 	sta	state_actor, x
 	sta	screen_score_ctl, x
 	sta	timer_actor, x

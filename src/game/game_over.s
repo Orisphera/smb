@@ -8,7 +8,7 @@
 
 	.export sys_game_over
 sys_game_over:
-	lda	mode_game
+	lda	proc_id_game
 	jsr	tbljmp
 	.addr	game_over_init
 	.addr	screen_proc
@@ -37,18 +37,20 @@ game_over_init:
 	inc	nmi_disp_disable
 
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-	inc	mode_game
+	inc	proc_id_game
 	rts
 .elseif	.defined(ANN)
 	jmp	screen_title_bg_finish
 .endif
 ; ----------------------------
+	.export game_over_next_game
+	.export	game_over_continue
 game_over_proc:
 .if	.defined(SMB)|.defined(SMB2M)
 	.if	.defined(SMB)
-		GAME_OVER_TIMER_RTS = eng_next_game_rts_b
+		GAME_OVER_TIMER_RTS = game_over_next_game_rts_b
 	.elseif	.defined(SMB2)
-		GAME_OVER_TIMER_RTS = eng_next_game_rts_a
+		GAME_OVER_TIMER_RTS = game_over_next_game_rts_a
 	.endif
 
 		lda	#0
@@ -57,7 +59,7 @@ game_over_proc:
 	.if	.defined(SMB)
 		lda	joypad_p1
 		and	#joypad_button::start
-		bne	eng_next_game
+		bne	game_over_next_game
 	.elseif	.defined(SMB2M)
 		.if	.defined(SMB2)
 			lda     course_no
@@ -77,23 +79,21 @@ game_over_proc:
 		bne	GAME_OVER_TIMER_RTS
 	.endif
 
-		.export eng_next_game
-	eng_next_game:
+	game_over_next_game:
 		lda	#music_event::none
 		sta	apu_music_event_req
 .endif
 ; ----------------------------
-	.export	eng_game_continue
 .if	.defined(SMB)|.defined(VS_SMB)
 
-	jsr	player_switch
-	bcc	eng_game_continue ; if () {
+	jsr	game_over_player_switch
+	bcc	game_over_continue ; if () {
 	.if	.defined(VS_SMB)
 		lda	player_lives
-		bpl	eng_game_continue
+		bpl	game_over_continue
 	.endif
 		lda	course_no
-		sta	eng_continue_course
+		sta	course_no_continued
 .endif
 
 		lda	#0
@@ -102,30 +102,30 @@ game_over_proc:
 		asl	a
 	.endif
 
-		sta	mode_game
+		sta	proc_id_game
 		sta	timer_screen
-		sta	mode_system
-	eng_next_game_rts_a:
+		sta	proc_id_system
+	game_over_next_game_rts_a:
 		rts
-	eng_game_continue: ; } else {
+	game_over_continue: ; } else {
 		jsr	course_descriptor_load
 		lda	#player_size::small
 		sta	player_size
-		inc	eng_req_timer
+		inc	player_first_start
 		lda	#0
-		sta	eng_timer_ctl
+		sta	game_timer_stop
 		sta	player_status
-		sta	player_proc_id
-		sta	mode_game
+		sta	proc_id_player
+		sta	proc_id_game
 		lda	#system_modes::game
-		sta	mode_system
-	eng_next_game_rts_b:
+		sta	proc_id_system
+	game_over_next_game_rts_b:
 		rts
 	; }
 ; -----------------------------------------------------------
 	.if	.defined(SMB)|.defined(VS_SMB)
-	.export	player_switch
-player_switch:
+	.export	game_over_player_switch
+game_over_player_switch:
 	sec
 	lda	player_count
 	beq	:++

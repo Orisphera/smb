@@ -1,188 +1,191 @@
 .include	"system/ppu.i"
 .include	"system/palettes.i"
-
 .if	.defined(FDS)
 	.include	"system/fds.i"
-.elseif	.defined(VS)
+.endif
+.if	.defined(VS)
 	.include	"system/vs.i"
 .endif
 
 .include	"mem.i"
 .include	"joypad.i"
 .include	"modes.i"
-.include	"misc.i"
 .include	"tunables.i"
+.include	"misc.i"
 
-SMB2M_NMI_TIMER	= $1658
+.if	.defined(SMB)|.defined(VS_SMB)
+	nmi_addrs_low:
+		.byte	<(nmi_list_0_data)
+		.byte	<(palette_underwater)
+		.byte	<(palette_overworld)
+		.byte	<(palette_underground)
+		.byte	<(palette_castle)
+		.byte	<(nmi_list_0_offset)
+		.byte	<(nmi_list_1_data)
+		.byte	<(nmi_list_1_data)
+		.byte	<(palette_bowser)
+		.byte	<(palette_snow_day)
+		.byte	<(palette_snow_night)
+		.byte	<(palette_mushroom)
+		.byte	<(msg_thankyou_mario)
+		.byte	<(msg_thankyou_luigi)
+		.byte	<(msg_thankyou_toad)
+	.if	.defined(SMB)
+		.byte	<(msg_thankyou_princess1)
+		.byte	<(msg_thankyou_princess2)
+		.byte	<(msg_worldsel_1)
+		.byte	<(msg_worldsel_2)
+	.elseif	.defined(VS_SMB)
+		.byte	<(nmi_addr_0F)
+		.byte	<(nmi_addr_10)
+		.byte	<(msg_thankyou_mario_2)
+		.byte	<(msg_thankyou_luigi_2)
+		.byte	<(msg_vsend_1)
+		.byte	<(msg_vsend_2)
+		.byte	<(msg_vsend_3_mario)
+		.byte	<(msg_vsend_3_luigi)
+		.byte	<(msg_vsend_4)
+		.byte	<(msg_vsend_5)
+		.byte	<(msg_vsend_6)
+		.byte	<(msg_vsend_7)
+		.byte	<(msg_vsend_8)
+		.byte	<(vs_nmi_list)
+		.byte	<(nmi_addr_1D)
+		.byte	<(nmi_addr_1D)
+		.byte	<(nmi_addr_1E)
+		.byte	<(nmi_addr_1E)
+		.byte	<(nmi_addr_1E)
+		.byte	<(nmi_addr_1E)
+		.byte	<(nmi_addr_1E)
+		.byte	<(nmi_addr_1E)
+		.byte	<(nmi_addr_1E)
+		.byte	<(nmi_addr_1F)
+	.endif
 
-.if	.defined(SMB2)
-	SMB2M_COURSE_NO_CUTOFF = course::no_0A
-.elseif	.defined(ANN)
-	SMB2M_COURSE_NO_CUTOFF = course::no_09
+	nmi_addrs_high:
+		.byte	>(nmi_list_0_data)
+		.byte	>(palette_underwater)
+		.byte	>(palette_overworld)
+		.byte	>(palette_underground)
+		.byte	>(palette_castle)
+		.byte	>(nmi_list_0_offset)
+		.byte	>(nmi_list_1_data)
+		.byte	>(nmi_list_1_data)
+		.byte	>(palette_bowser)
+		.byte	>(palette_snow_day)
+		.byte	>(palette_snow_night)
+		.byte	>(palette_mushroom)
+		.byte	>(msg_thankyou_mario)
+		.byte	>(msg_thankyou_luigi)
+		.byte	>(msg_thankyou_toad)
+	.if	.defined(SMB)
+		.byte	>(msg_thankyou_princess1)
+		.byte	>(msg_thankyou_princess2)
+		.byte	>(msg_worldsel_1)
+		.byte	>(msg_worldsel_2)
+	.elseif	.defined(VS_SMB)
+		.byte	>(nmi_addr_0F)
+		.byte	>(nmi_addr_10)
+		.byte	>(msg_thankyou_mario_2)
+		.byte	>(msg_thankyou_luigi_2)
+		.byte	>(msg_vsend_1)
+		.byte	>(msg_vsend_2)
+		.byte	>(msg_vsend_3_mario)
+		.byte	>(msg_vsend_3_luigi)
+		.byte	>(msg_vsend_4)
+		.byte	>(msg_vsend_5)
+		.byte	>(msg_vsend_6)
+		.byte	>(msg_vsend_7)
+		.byte	>(msg_vsend_8)
+		.byte	>(vs_nmi_list)
+		.byte	>(nmi_addr_1D)
+		.byte	>(nmi_addr_1D)
+		.byte	>(nmi_addr_1E)
+		.byte	>(nmi_addr_1E)
+		.byte	>(nmi_addr_1E)
+		.byte	>(nmi_addr_1E)
+		.byte	>(nmi_addr_1E)
+		.byte	>(nmi_addr_1E)
+		.byte	>(nmi_addr_1E)
+		.byte	>(nmi_addr_1F)
+	.endif
+.elseif	.defined(SMB2M)
+	nmi_addrs:
+		.addr	(nmi_list_0_data)
+		.addr	(palette_underwater)
+		.addr	(palette_overworld)
+		.addr	(palette_underground)
+		.addr	(palette_castle)
+		.addr	(title_map)
+		.addr	(nmi_list_1_data)
+		.addr	(nmi_list_1_data)
+		.addr	(palette_bowser)
+		.addr	(palette_snow_day)
+		.addr	(palette_snow_night)
+		.addr	(palette_mushroom)
+		.addr	(msg_thankyou_mario)
+		.addr	(msg_thankyou_toad)
+		.addr	(nmi_addr_0F)
+		.addr	(nmi_addr_10)
+		.addr	(msg_thankyou_mario_2)
+		.addr	(msg_vsend_1)
+		.addr	(msg_vsend_2)
+		.addr	(msg_vsend_3_mario)
+		.addr	(msg_vsend_4)
+		.addr	(msg_vsend_5)
+		.addr	(msg_vsend_6)
+		.addr	(msg_vsend_7)
+		.addr	(msg_vsend_8)
+		.addr	(disk_text_error_buffer)
+		.addr	(disk_perror_pal)
+		.addr	(ending_throneroom_map)
+		.addr	(title_cursor_data)
+		.if	.defined(SMB2)
+			.addr	(ending_course_plus_txt)
+			.addr	(ending_super_player_txt)
+		.elseif	.defined(ANN)
+			.addr	(ann_toad_pal_common)
+			.addr	(ending_pal_ext)
+		.endif
 .endif
 
-	.export nmi
-; -----------------------------------------------------------
+.if .defined(VS_SMB)
+nmi_addr_1F:
+	.byte	PPU_COLOR_YGREEN0, PPU_COLOR_PITCH1, PPU_COLOR_PITCH1, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_GREY3, PPU_COLOR_YGREEN3, PPU_COLOR_CYAN0, PPU_COLOR_YELLOW1
+
+nmi_addr_1E:
+	.byte	PPU_COLOR_YGREEN0, PPU_COLOR_YELLOW1, PPU_COLOR_MAGENTA0, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_GREY3, PPU_COLOR_GREY1, PPU_COLOR_GREY0, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_AZURE3, PPU_COLOR_BLUE1, PPU_COLOR_AZURE0, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_YGREEN3, PPU_COLOR_BLUE1, PPU_COLOR_YGREEN0, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_RED3, PPU_COLOR_ORANGE1, PPU_COLOR_GREEN0, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_RED1, PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_GREY3, PPU_COLOR_ORANGE2, PPU_COLOR_YGREEN1, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1, PPU_COLOR_PITCH0
+	.byte	PPU_COLOR_RED1,	PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW1
+.endif
+
+nmi_list_offset:
+	.byte	<nmi_list_0
+	.byte	<nmi_list_1
+; ----------------------------
+.if	.defined(SMB2M)
+	SMB2M_NMI_TIMER_MS	= 3.19594
+	SMB2M_NMI_TIMER		= ((SMB2M_NMI_TIMER_MS/1000)*CLOCK_FREQ_HZ)
+
+	.if	.defined(SMB2)
+		SMB2M_COURSE_NO_CUTOFF = course::no_0A
+	.elseif	.defined(ANN)
+		SMB2M_COURSE_NO_CUTOFF = course::no_09
+	.endif
+.endif
+
 nmi_rand_buffer	= zp_byte_00
 
-	.if	.defined(SMB)|.defined(VS_SMB)
-		nmi_addrs_low:
-			.byte	<(nmi_list_0_data)
-			.byte	<(palette_underwater)
-			.byte	<(palette_overworld)
-			.byte	<(palette_underground)
-			.byte	<(palette_castle)
-			.byte	<(nmi_list_0_offset)
-			.byte	<(nmi_list_1_data)
-			.byte	<(nmi_list_1_data)
-			.byte	<(palette_koopa)
-			.byte	<(palette_snow_day)
-			.byte	<(palette_snow_night)
-			.byte	<(palette_mushroom)
-			.byte	<(msg_thankyou_mario)
-			.byte	<(msg_thankyou_luigi)
-			.byte	<(msg_thankyou_toad)
-		.if	.defined(SMB)
-			.byte	<(msg_thankyou_princess1)
-			.byte	<(msg_thankyou_princess2)
-			.byte	<(msg_worldsel_1)
-			.byte	<(msg_worldsel_2)
-		.elseif	.defined(VS_SMB)
-			.byte	<(nmi_addr_0F)
-			.byte	<(nmi_addr_10)
-			.byte	<(msg_thankyou_mario_2)
-			.byte	<(msg_thankyou_luigi_2)
-			.byte	<(msg_vsend_1)
-			.byte	<(msg_vsend_2)
-			.byte	<(msg_vsend_3_mario)
-			.byte	<(msg_vsend_3_luigi)
-			.byte	<(msg_vsend_4)
-			.byte	<(msg_vsend_5)
-			.byte	<(msg_vsend_6)
-			.byte	<(msg_vsend_7)
-			.byte	<(msg_vsend_8)
-			.byte	<(vs_nmi_list)
-			.byte	<(nmi_addr_1D)
-			.byte	<(nmi_addr_1D)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1E)
-			.byte	<(nmi_addr_1F)
-		.endif
-
-		nmi_addrs_high:
-			.byte	>(nmi_list_0_data)
-			.byte	>(palette_underwater)
-			.byte	>(palette_overworld)
-			.byte	>(palette_underground)
-			.byte	>(palette_castle)
-			.byte	>(nmi_list_0_offset)
-			.byte	>(nmi_list_1_data)
-			.byte	>(nmi_list_1_data)
-			.byte	>(palette_koopa)
-			.byte	>(palette_snow_day)
-			.byte	>(palette_snow_night)
-			.byte	>(palette_mushroom)
-			.byte	>(msg_thankyou_mario)
-			.byte	>(msg_thankyou_luigi)
-			.byte	>(msg_thankyou_toad)
-		.if	.defined(SMB)
-			.byte	>(msg_thankyou_princess1)
-			.byte	>(msg_thankyou_princess2)
-			.byte	>(msg_worldsel_1)
-			.byte	>(msg_worldsel_2)
-		.elseif	.defined(VS_SMB)
-			.byte	>(nmi_addr_0F)
-			.byte	>(nmi_addr_10)
-			.byte	>(msg_thankyou_mario_2)
-			.byte	>(msg_thankyou_luigi_2)
-			.byte	>(msg_vsend_1)
-			.byte	>(msg_vsend_2)
-			.byte	>(msg_vsend_3_mario)
-			.byte	>(msg_vsend_3_luigi)
-			.byte	>(msg_vsend_4)
-			.byte	>(msg_vsend_5)
-			.byte	>(msg_vsend_6)
-			.byte	>(msg_vsend_7)
-			.byte	>(msg_vsend_8)
-			.byte	>(vs_nmi_list)
-			.byte	>(nmi_addr_1D)
-			.byte	>(nmi_addr_1D)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1E)
-			.byte	>(nmi_addr_1F)
-		.endif
-	.elseif	.defined(SMB2M)
-		nmi_addrs:
-			.addr	(nmi_list_0_data)
-			.addr	(palette_underwater)
-			.addr	(palette_overworld)
-			.addr	(palette_underground)
-			.addr	(palette_castle)
-			.addr	(title_map)
-			.addr	(nmi_list_1_data)
-			.addr	(nmi_list_1_data)
-			.addr	(palette_koopa)
-			.addr	(palette_snow_day)
-			.addr	(palette_snow_night)
-			.addr	(palette_mushroom)
-			.addr	(msg_thankyou_mario)
-			.addr	(msg_thankyou_toad)
-			.addr	(nmi_addr_0F)
-			.addr	(nmi_addr_10)
-			.addr	(msg_thankyou_mario_2)
-			.addr	(msg_vsend_1)
-			.addr	(msg_vsend_2)
-			.addr	(msg_vsend_3_mario)
-			.addr	(msg_vsend_4)
-			.addr	(msg_vsend_5)
-			.addr	(msg_vsend_6)
-			.addr	(msg_vsend_7)
-			.addr	(msg_vsend_8)
-			.addr	(disk_text_error_buffer)
-			.addr	(disk_perror_pal)
-			.addr	(ending_throneroom_map)
-			.addr	(title_cursor_data)
-			.if	.defined(SMB2)
-				.addr	(ending_course_plus_txt)
-				.addr	(ending_super_player_txt)
-			.elseif	.defined(ANN)
-				.addr	(ann_toad_pal_common)
-				.addr	(ending_pal_ext)
-			.endif
-	.endif
-
-	.if .defined(VS_SMB)
-	nmi_addr_1F:
-		.byte	PPU_COLOR_YGREEN0, PPU_COLOR_PITCH1, PPU_COLOR_PITCH1, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_GREY3, PPU_COLOR_YGREEN3, PPU_COLOR_CYAN0, PPU_COLOR_YELLOW1
-
-	nmi_addr_1E:
-		.byte	PPU_COLOR_YGREEN0, PPU_COLOR_YELLOW1, PPU_COLOR_MAGENTA0, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_GREY3, PPU_COLOR_GREY1, PPU_COLOR_GREY0, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_AZURE3, PPU_COLOR_BLUE1, PPU_COLOR_AZURE0, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_YGREEN3, PPU_COLOR_BLUE1, PPU_COLOR_YGREEN0, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_RED3, PPU_COLOR_ORANGE1, PPU_COLOR_GREEN0, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_RED1, PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_GREY3, PPU_COLOR_ORANGE2, PPU_COLOR_YGREEN1, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1, PPU_COLOR_PITCH0
-		.byte	PPU_COLOR_RED1,	PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW1
-	.endif
-
-	nmi_list_offset:
-		.byte	<nmi_list_0
-		.byte	<nmi_list_1
-; ----------------------------
 	.export nmi
+	.export	nmi_apu_call
+	.export nmi_timer_int_init
 nmi:
 	.if	.defined(FDS_SMB)
 		cli
@@ -234,14 +237,14 @@ nmi:
 	sta	OBJ_DMA
 
 	.if	.defined(SMB)|.defined(VS_SMB)
-		ldx	nmi_addrs_ctl
+		ldx	nmi_buffer_ptr
 		lda	nmi_addrs_low, x
 		sta	nmi_list_write_addr
 		lda	nmi_addrs_high, x
 		sta	nmi_list_write_addr+1
 		jsr	nmi_list_write
 	.elseif	.defined(SMB2M)
-		lda	nmi_addrs_ctl
+		lda	nmi_buffer_ptr
 		asl	a
 		tax
 		lda	nmi_addrs, x
@@ -253,16 +256,16 @@ nmi:
 	.endif
 
 	ldy	#0
-	ldx	nmi_addrs_ctl
+	ldx	nmi_buffer_ptr
 	cpx	#nmi_addr::buffer_11_A
-	bne	:+ ; if (nmi_addrs_ctl == buffer_11_A) {
+	bne	:+ ; if (nmi_buffer_ptr == buffer_11_A) {
 		iny
 	: ; }
 	ldx	nmi_list_offset, y
 	lda	#nmi_addr::buffer_01_A
 	sta	nmi_list, x
 	sta	nmi_list+1, x
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	lda	ppu_ctlr1_b
 	sta	PPU_CTLR1
 
@@ -270,7 +273,6 @@ nmi:
 		cli
 	.endif
 
-	.export	nmi_apu_call
 nmi_apu_call:
 	jsr	apu_cycle
 
@@ -289,27 +291,26 @@ nmi_apu_call:
 	jsr	stats_score_hi_check
 
 	.if	.defined(CONS)
-	lda	eng_pause_status
+	lda	nmi_pause_flag
 	lsr	a
-	bcs	:++++++ ; if (!CONS || !(eng_pause_status & 0x01)) {
+	bcs	:++++++ ; if (!CONS || !paused) {
 	.endif
-		lda	eng_timer_ctl
+		lda	game_timer_stop
 		beq	:+
-		dec	eng_timer_ctl
+		dec	game_timer_stop
 		bne	:+++++
-		: ; if (!(eng_timer_ctl--) || !eng_timer_ctl) {
+		: ; if (game_timer_stop-- <= 0) {
 			ldx	#(timer_scroll-timers_nmi)-1
 
 			dec	timer_nmi_tick
 			bpl	:+ ; if (--timer_nmi_tick < 0) {
-				.export nmi_timer_int_init
 			nmi_timer_int_init:
 				lda	#TIMERS_ALL_FRAME_COUNT
 				sta	timer_nmi_tick
 				ldx	#(timers_nmi_end-timers_nmi)-1
 			: ; }
 
-			: ; for (x; x >= 0; x--) {
+			: ; for (timer of timers) {
 				lda	timers_nmi, x
 				beq	:+ ; if (timers_nmi[x]) {
 					dec	timers_nmi, x
@@ -324,7 +325,7 @@ nmi_apu_call:
 	: ; }
 
 	ldx	#0
-	ldy	#7
+	ldy	#srand_end-srand
 	lda	srand
 	and	#%00000010
 	sta	nmi_rand_buffer
@@ -335,7 +336,7 @@ nmi_apu_call:
 	beq	:+ ; if () {
 		sec
 	: ; }
-	: ; for (y = 7, x = 0; y > 0; y--, x++) {
+	: ; for (byte of srand) {
 		ror	srand, x
 		inx
 
@@ -353,11 +354,11 @@ nmi_apu_call:
 			; }
 
 			.if	.defined(CONS)
-			lda	eng_pause_status
+			lda	nmi_pause_flag
 			lsr	a
-			bcs	:+ ; if (!CONS || !(eng_pause_status & 0x01)) {
+			bcs	:+ ; if (!CONS || !paused) {
 			.endif
-				jsr	oam_init_nmi
+				jsr	oam_init_all
 				jsr	nmi_oam_shuffle
 			: ; }
 
@@ -385,21 +386,21 @@ nmi_apu_call:
 	.endif
 
 	.if	.defined(CONS)
-	lda	eng_pause_status
+	lda	nmi_pause_flag
 	lsr	a
-	bcs	:+++ ; if (!CONS && !(eng_pause_status & 0x01)) {
+	bcs	:+++ ; if (!CONS || !paused) {
 	.endif
 		.if	.defined(SMB2M)
 			lda	nmi_sprite_overlap
 			beq	:+ ; if (sprite_overlap) {
-				jsr	oam_init_nmi
+				jsr	oam_init_all
 				jsr	nmi_oam_shuffle
 			: ; }
 
 			lda	course_no
 			cmp	#SMB2M_COURSE_NO_CUTOFF
 			bcc	:+ ; if (course_no >= cutoff) {
-				jsr	eng_next_game
+				jsr	game_over_next_game
 			: ; }
 		.else
 			:
@@ -410,10 +411,10 @@ nmi_apu_call:
 	: ; }
 
 	.if	.defined(SMB2M)
-		: ; while (fds_sprite_overlap_hit) {
-			lda	fds_sprite_overlap_hit
-			bne	:-
-		; }
+	: ; while (SMB2M && fds_sprite_overlap_hit) {
+		lda	fds_sprite_overlap_hit
+		bne	:-
+	; }
 	.endif
 
 	lda	PPU_SR
@@ -431,122 +432,127 @@ nmi_apu_call:
 
 	rti
 ; -----------------------------------------------------------
-	.if	.defined(SMB2M)
-		.export irq
-	irq:
-		sei
-		php
-		pha
-		txa
-		pha
-		tya
-		pha
+.if	.defined(SMB2M)
+	.export irq
+irq:
+	sei
+	php
+	pha
+	txa
+	pha
+	tya
+	pha
 
-		lda	FDS_MEDIA_SR
-		pha
+	lda	FDS_MEDIA_SR
+	pha
 
-		and	#fds_media_sr::tx_complete
-		bne	:+ ; if (!fds_tx_complete) {
-			pla
-
-			and	#fds_media_sr::timer_irq
-			beq	:++ ; if (fds_timer_irq) {
-				lda	ppu_ctlr0_b
-				and	#<~(ppu_ctlr0::obj_seg1)
-				ora	ppu_ctlr0_bg
-				sta	ppu_ctlr0_b
-				sta	PPU_CTLR0
-				lda	#0
-				sta	FDS_TIMER_CTLR
-				lda	ppu_scc_h_b
-				sta	PPU_SCC_H_V
-				lda	ppu_scc_v_b
-				sta	PPU_SCC_H_V
-				lda	#0
-				sta	fds_sprite_overlap_hit
-
-				jmp	:++
-			; }
-		: ; } else {
-			pla
-
-			jsr	fdsbios_sleep_short
-		: ; }
-
+	and	#fds_media_sr::tx_complete
+	bne	:+ ; if (!fds_tx_complete) {
 		pla
-		tay
-		pla
-		tax
-		pla
-		plp
-		cli
-		rti
-	.elseif	.defined(VS_SMB)
-		.export irq
-	irq:
-		lda	VS_SR
-		bmi	:+ ; if (VS_SR & game_sub) {
-			lda	#vs_req::chr_low|vs_req::irq_rel
-			sta	VS_REQ
-		: ; }
 
+		and	#fds_media_sr::timer_irq
+		beq	:++ ; if (fds_timer_irq) {
+			lda	ppu_ctlr0_b
+			and	#<~(ppu_ctlr0::obj_seg1)
+			ora	ppu_ctlr0_bg
+			sta	ppu_ctlr0_b
+			sta	PPU_CTLR0
+			lda	#0
+			sta	FDS_TIMER_CTLR
+			lda	ppu_scc_h_b
+			sta	PPU_SCC_H_V
+			lda	ppu_scc_v_b
+			sta	PPU_SCC_H_V
+			lda	#0
+			sta	fds_sprite_overlap_hit
+
+			jmp	:++
+		; }
+	: ; } else {
 		pla
-		pla
-		pla
-		rts
-	.endif
-; -----------------------------------------------------------
-.if	.defined(VS)
-		.export vs_setbank_low
-	vs_setbank_low:
+
+		jsr	fdsbios_sleep_short
+	: ; }
+
+	pla
+	tay
+	pla
+	tax
+	pla
+	plp
+	cli
+	rti
+.elseif	.defined(VS_SMB)
+	.export irq
+irq:
+	lda	VS_SR
+	bmi	:+ ; if (VS_SR & game_sub) {
 		lda	#vs_req::chr_low|vs_req::irq_rel
 		sta	VS_REQ
-		rts
+	: ; }
+
+	pla
+	pla
+	pla
+	rts
 .endif
 ; -----------------------------------------------------------
-	.if	.defined(CONS)
-	nmi_pause:
-		lda	mode_system
-		cmp	#system_modes::victory
-		beq	:+
-		cmp	#system_modes::game
-		bne	:+++++
-		lda	mode_game
-		cmp	#game_modes::proc
-		bne	:+++++
-		: ; if (mode_system == victory || (mode_system == game && mode_game == proc)) {
-			lda	eng_pause_ticks
-			beq	:+ ; if (eng_pause_ticks) {
-				dec	eng_pause_ticks
-				rts
-			: ; }
+.if	.defined(VS)
+	.export vs_setbank_low
+vs_setbank_low:
+	lda	#vs_req::chr_low|vs_req::irq_rel
+	sta	VS_REQ
+	rts
+.endif
+; -----------------------------------------------------------
+.if	.defined(CONS)
+NMI_PAUSE_BUTTON_DELAY_FLAG	= %10000000
+NMI_PAUSE_DELAY_VALUE		= 43
 
+nmi_pause:
+	lda	proc_id_system
+	cmp	#system_modes::victory
+	beq	:+
+	cmp	#system_modes::game
+	bne	:+++++
+	lda	proc_id_game
+	cmp	#game_modes::proc
+	bne	:+++++
+	: ; if (proc_id_system == victory || (proc_id_system == game && proc_id_game == proc)) {
+		lda	nmi_pause_counter
+		beq	:+ ; if (nmi_pause_counter > 0) {
+			dec	nmi_pause_counter
+			rts
+		: ; } else {
 			lda	joypad_p1
 			and	#joypad_button::start
 			beq	:+ ; if (joypad1_start) {
-				lda	eng_pause_status
-				and	#%10000000
-				bne	:+++ ; if (!(eng_pause_status & 0x80)) {
-					lda	#$2B
-					sta	eng_pause_ticks
-					lda	eng_pause_status
+				lda	nmi_pause_flag
+				and	#NMI_PAUSE_BUTTON_DELAY_FLAG
+				bne	:+++ ; if (!pause_delayed) {
+					lda	#NMI_PAUSE_DELAY_VALUE
+					sta	nmi_pause_counter
+					lda	nmi_pause_flag
 					tay
 					iny
 					sty	apu_sfx_flag_pause
 					eor	#1
-					ora	#%10000000
+					ora	#NMI_PAUSE_BUTTON_DELAY_FLAG
 					bne	:++
 				; }
 			: ; } else {
-				lda	eng_pause_status
-				and	#<~(%10000000)
+				lda	nmi_pause_flag
+				and	#<~NMI_PAUSE_BUTTON_DELAY_FLAG
 			: ; }
 
-			sta	eng_pause_status
-		: ; }
+			; if (!joypad1_start || !pause_delayed) {
+				sta	nmi_pause_flag
+			; }
+		; }
+	: ; }
 
-		rts
-	.endif
+	rts
+.endif
 ; ----------------------------
 nmi_oam_shuffle_offset	= zp_byte_00
 
@@ -588,10 +594,10 @@ nmi_oam_shuffle:
 		lda	obj_data_offset_actor+4, y
 		sta	obj_data_offset_proj+0, x
 		clc
-		adc	#8
+		adc	#2*4
 		sta	obj_data_offset_proj+1, x
 		clc
-		adc	#8
+		adc	#2*4
 		sta	obj_data_offset_proj+2, x
 
 		dex
@@ -603,19 +609,34 @@ nmi_oam_shuffle:
 
 	rts
 ; ------------------------------------------------------------
+	.export	nmi_system_enter
+	.export	nmi_system_enter_game
+	.export	nmi_system_enter_victory
+	.export	nmi_system_enter_game_over
 nmi_system_enter:
-	lda	mode_system
+	lda	proc_id_system
 	jsr	tbljmp
 	.if	.defined(SMB)|.defined(VS_SMB)
+		.export	nmi_system_enter_title
+	nmi_system_enter_title:
 		.addr	sys_title
 	.elseif	.defined(SMB2M)
+		.export	nmi_system_enter_disk_loader
+	nmi_system_enter_disk_loader:
 		.addr	sys_disk_loader
 	.endif
 
 	.if	.defined(VS_SMB)
+		.export	nmi_system_enter_player_select
+	nmi_system_enter_player_select:
 		.addr	sys_vs_player_select
 	.endif
 
+nmi_system_enter_game:
 	.addr	sys_game
+
+nmi_system_enter_victory:
 	.addr	sys_victory
+
+nmi_system_enter_game_over:
 	.addr	sys_game_over

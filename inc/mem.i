@@ -33,7 +33,7 @@ gfx_clear_put_do_addr	= zp_addr_04
 zp_byte_05		= $05
 render_chr_pair_pos_x	= zp_byte_05
 zp_byte_06		= $06
-eng_buffer_ptr		= $06
+game_buffer		= $06
 zp_addr_06		= $06
 zp_byte_07		= $07
 
@@ -43,13 +43,16 @@ joypad_a_b		= frame_count+1
 joypad_u_d		= joypad_a_b+1
 joypad_l_r		= joypad_u_d+1
 joypad_a_b_held		= joypad_l_r+1
-player_proc_id		= joypad_a_b_held+1
-actor_mode		= player_proc_id+1
-actor_mode_end		= actor_mode+ENG_ACTOR_MAX
-zp_byte_15		= actor_mode_end
-actor_id		= zp_byte_15+1
-actor_id_end		= actor_id+ENG_ACTOR_MAX
-zp_byte_1C		= actor_id_end
+
+proc_id_player		= joypad_a_b_held+1
+proc_id_actor		= proc_id_player+1
+proc_id_actor_end	= proc_id_actor+ENG_ACTOR_MAX
+zp_byte_15		= proc_id_actor_end
+
+obj_id_actor		= zp_byte_15+1
+obj_id_actor_end	= obj_id_actor+ENG_ACTOR_MAX
+zp_byte_1C		= obj_id_actor_end
+
 state_player		= zp_byte_1C+1
 state_player_end	= state_player+ENG_PLAYER_OBJ_MAX
 state_actor		= state_player_end
@@ -60,6 +63,7 @@ state_block		= state_proj_end
 state_block_end		= state_block+ENG_BLOCK_MAX
 state_misc		= state_block_end
 state_misc_end		= state_misc+ENG_MISC_MAX
+
 disp_dir_player		= state_misc_end
 disp_dir_player_end	= disp_dir_player+ENG_PLAYER_OBJ_MAX
 pos_x_hi_victory_right	= disp_dir_player_end
@@ -67,10 +71,10 @@ victory_proc_ctrl	= pos_x_hi_victory_right+1
 zp_byte_36		= victory_proc_ctrl+1
 zp_byte_37		= zp_byte_36+1
 zp_byte_38		= zp_byte_37+1
-eng_powerup_type	= zp_byte_38+1
-proj_bounce_flag	= eng_powerup_type+1
-eng_timer_hammer_bro_jump = proj_bounce_flag+ENG_PROJ_MAX
-zp_byte_42		= eng_timer_hammer_bro_jump+ENG_ACTOR_MAX
+actor_powerup_type	= zp_byte_38+1
+proj_bounce_flag	= actor_powerup_type+1
+timer_hammer_bro_jump	= proj_bounce_flag+ENG_PROJ_MAX
+zp_byte_42		= timer_hammer_bro_jump+ENG_ACTOR_MAX
 zp_byte_43		= zp_byte_42+1
 zp_byte_44		= zp_byte_43+1
 motion_dir_player	= zp_byte_44+1
@@ -81,6 +85,7 @@ motion_dir_proj		= motion_dir_actor_end
 motion_dir_proj_end	= motion_dir_proj+ENG_PROJ_MAX
 motion_dir_misc		= motion_dir_proj_end
 motion_dir_misc_end	= motion_dir_misc+ENG_MISC_MAX
+
 veloc_x_player		= motion_dir_misc_end
 veloc_x_player_end	= veloc_x_player+ENG_PLAYER_OBJ_MAX
 veloc_x_actor		= veloc_x_player_end
@@ -96,6 +101,7 @@ apu_fds_wave_addr	= apu_fds_track+WORD_SIZE
 apu_fds_wave_vol_addr	= apu_fds_wave_addr+WORD_SIZE
 apu_fds_wave_mod_addr	= apu_fds_wave_vol_addr+WORD_SIZE
 veloc_x_misc_end	= veloc_x_misc+ENG_MISC_MAX
+
 pos_x_hi_player		= veloc_x_misc_end
 pos_x_hi_player_end	= pos_x_hi_player+ENG_PLAYER_OBJ_MAX
 pos_x_hi_actor		= pos_x_hi_player_end
@@ -108,6 +114,7 @@ pos_x_hi_misc		= pos_x_hi_block_end
 pos_x_hi_misc_end	= pos_x_hi_misc+ENG_MISC_MAX
 pos_x_hi_bubble		= pos_x_hi_misc_end
 pos_x_hi_bubble_end	= pos_x_hi_bubble+ENG_BUBBLE_MAX
+
 pos_x_lo_player		= pos_x_hi_bubble_end
 pos_x_lo_player_end	= pos_x_lo_player+ENG_PLAYER_OBJ_MAX
 pos_x_lo_actor		= pos_x_lo_player_end
@@ -120,6 +127,7 @@ pos_x_lo_misc		= pos_x_lo_block_end
 pos_x_lo_misc_end	= pos_x_lo_misc+ENG_MISC_MAX
 pos_x_lo_bubble		= pos_x_lo_misc_end
 pos_x_lo_bubble_end	= pos_x_lo_bubble+ENG_BUBBLE_MAX
+
 veloc_y_player		= pos_x_lo_bubble_end
 veloc_y_player_end	= veloc_y_player+ENG_PLAYER_OBJ_MAX
 veloc_y_actor		= veloc_y_player_end
@@ -131,6 +139,7 @@ veloc_y_block		= veloc_y_proj_end
 veloc_y_block_end	= veloc_y_block+ENG_BLOCK_MAX
 veloc_y_misc		= veloc_y_block_end
 veloc_y_misc_end	= veloc_y_misc+ENG_MISC_MAX
+
 pos_y_hi_player		= veloc_y_misc_end
 pos_y_hi_player_end	= pos_y_hi_player+ENG_PLAYER_OBJ_MAX
 pos_y_hi_actor		= pos_y_hi_player_end
@@ -143,6 +152,7 @@ pos_y_hi_misc		= pos_y_hi_block_end
 pos_y_hi_misc_end	= pos_y_hi_misc+ENG_MISC_MAX
 pos_y_hi_bubble		= pos_y_hi_misc_end
 pos_y_hi_bubble_end	= pos_y_hi_bubble+ENG_BUBBLE_MAX
+
 pos_y_lo_player		= pos_y_hi_bubble_end
 pos_y_lo_player_end	= pos_y_lo_player+ENG_PLAYER_OBJ_MAX
 pos_y_lo_actor		= pos_y_lo_player_end
@@ -155,14 +165,17 @@ pos_y_lo_misc		= pos_y_lo_block_end
 pos_y_lo_misc_end	= pos_y_lo_misc+ENG_MISC_MAX
 pos_y_lo_bubble		= pos_y_lo_misc_end
 pos_y_lo_bubble_end	= pos_y_lo_bubble+ENG_BUBBLE_MAX
+
 course_scenery_addr	= pos_y_lo_bubble_end
 course_actor_addr	= course_scenery_addr+WORD_SIZE
+
 zp_addr_EB		= course_actor_addr+WORD_SIZE
 zp_byte_EB		= zp_addr_EB
 zp_byte_EC		= zp_byte_EB+1
 zp_addr_ED		= zp_addr_EB+WORD_SIZE
 zp_byte_ED		= zp_addr_ED
 zp_byte_EF		= zp_addr_ED+WORD_SIZE
+
 apu_note_len_offset	= zp_byte_EF+1
 apu_sfx_pulse_1_current	= apu_note_len_offset+1
 apu_sfx_pulse_2_current	= apu_sfx_pulse_1_current+1
@@ -180,16 +193,18 @@ apu_sfx_pulse_2_req	= apu_sfx_noise_req+1
 apu_sfx_pulse_1_req	= apu_sfx_pulse_2_req+1
 
 render_actor_flipped		= (STACK_BASE+$09)
+
 render_flag_score_pos_y		= (STACK_BASE+$0D)
 render_flag_score_pos_y_b	= (STACK_BASE+$0E)
 render_flag_score_val		= (STACK_BASE+$0F)
+
 screen_score_ctl		= (STACK_BASE+$10)
 screen_score_pos_x		= (STACK_BASE+$17)
 screen_score_pos_y		= (STACK_BASE+$1E)
 stomp_counter			= (STACK_BASE+$25)
 timer_score			= (STACK_BASE+$2C)
 score_digit_mod			= (STACK_BASE+$33)
-ending_player_live		= STACK_BASE+$35
+ending_player_live		= (STACK_BASE+$35)
 
 OAM_DMA_BUFFER		= (STACK_BASE+STACK_SIZE)
 OAM_DMA_BUFFER_END	= (OAM_DMA_BUFFER+(OBJ_MAX*OBJ_SIZE))
@@ -211,29 +226,35 @@ nmi_list_1_byte		= nmi_list_1_addr_dbyt+WORD_SIZE
 nmi_list_1_end		= nmi_list_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
 
 veloc_ang_firebar	= $388
+
 actor_vine_flag		= $398
 height_vine		= actor_vine_flag+1
 actor_vine_offset	= height_vine+1
 pos_y_vine		= $39D
+
 actor_plat_align	= $3A0
 actor_plat_scroll_x	= actor_plat_align+1
 timer_hammer_throw	= actor_plat_scroll_x+1
 actor_plat_col_flag	= timer_hammer_throw
+
 pos_x_rel_player	= $3AD
 pos_x_rel_actor		= pos_x_rel_player+1
 pos_x_rel_proj		= pos_x_rel_actor+1
 pos_x_rel_bubble	= pos_x_rel_proj+1
 pos_x_rel_block		= pos_x_rel_bubble+1
 pos_x_rel_misc		= pos_x_rel_block+2
+
 pos_y_rel_player	= pos_x_rel_misc+5
 pos_y_rel_actor		= pos_y_rel_player+1
 pos_y_rel_proj		= pos_y_rel_actor+1
 pos_y_rel_bubble	= pos_y_rel_proj+1
 pos_y_rel_block		= pos_y_rel_bubble+1
 pos_y_rel_misc		= pos_y_rel_block+2
+
 byte_3C3		= pos_y_rel_misc+5
 attr_player		= byte_3C3+1
 attr_actor		= attr_player+1
+
 bits_offscr_player	= $3D0
 bits_offscr_actor	= bits_offscr_player+1
 bits_offscr_proj	= bits_offscr_actor+1
@@ -241,6 +262,7 @@ bits_offscr_bubble	= bits_offscr_proj+1
 bits_offscr_block	= bits_offscr_bubble+1
 bits_offscr_misc	= $3D6
 actor_bits_mask		= $3D8
+
 pos_y_orig_block	= $3E4
 block_buffer_idx	= $3E6
 block_tile		= $3E8
@@ -252,19 +274,22 @@ pos_x_orig_block	= block_counter_res+1
 eng_attr_buffer		= $3F9
 
 nmi_list_title_end 	= $400
-accel_x_player_b	= nmi_list_title_end
-accel_x_actor		= accel_x_player_b+1
-accel_y_actor_b		= $416
-pos_y_actor		= $417
-pos_y_bottom_piranha	= pos_y_actor
-accel_y_bubble		= $42C
-accel_y_actor		= $433
-accel_y_actor_c		= $434
-pos_y_top_piranha	= accel_y_actor_c
-accel_y_block		= $43C
+accel_x_player		= nmi_list_title_end
+accel_x_actor		= accel_x_player+1
+
+accel_y1_player		= $416
+accel_y1_actor		= $417
+pos_y_bottom_piranha	= accel_y1_actor
+accel_y1_bubble		= $42C
+
+accel_y2_player		= $433
+accel_y2_actor		= $434
+pos_y_top_piranha	= accel_y2_actor
+accel_y2_bubble		= $43C
+
 player_max_veloc_left 	= $450
 player_max_veloc_right 	= $456
-eng_cannon_offset	= $46A
+actor_cannon_offset	= $46A
 pos_y_hi_cannon		= $46B
 pos_x_lo_cannon		= $471
 pos_y_lo_cannon		= $477
@@ -272,6 +297,7 @@ game_whirlpool_flag	= $47D
 timer_cannon		= $47D
 hp_bowser		= $483
 counter_stomps		= $484
+
 collision_player	= $490
 collision_actor		= $491
 col_box_player		= $499
@@ -322,40 +348,43 @@ apu_fds_wave_offset	= bg_buffer_1+$4F
 disp_buff_col		= bg_buffer_1+BG_BUFFER_SIZE
 gfx_metatile		= disp_buff_col+1
 gfx_metatile_end	= gfx_metatile+METATILE_MAX
-misc_actor_id		= gfx_metatile_end
-misc_block_id		= misc_actor_id+ENG_MISC_MAX
+
+misc_obj_id_actor	= gfx_metatile_end
+misc_block_id		= misc_obj_id_actor+ENG_MISC_MAX
 byte_6B8		= misc_block_id+1
 byte_6B9		= byte_6B8+1
 byte_6BA		= byte_6B9+1
 byte_6BB		= byte_6BA+1
 eng_block_time		= byte_6BB+1
 byte_6BD		= eng_block_time+1
+
 misc_col_flag		= byte_6BD+1
+
 byte_6C7		= misc_col_flag+ENG_MISC_MAX
 byte_6C8		= byte_6C7+1
 byte_6C9		= byte_6C8+1
 byte_6CA		= byte_6C9+1
 actor_swarm_buffer	= byte_6CA+1
 game_hard_mode_b	= actor_swarm_buffer+1
-eng_swarm_queue		= game_hard_mode_b+1
-proj_counter		= eng_swarm_queue+1
+actor_swarm_queue	= game_hard_mode_b+1
+proj_counter		= actor_swarm_queue+1
 actor_dup_offset	= proj_counter+1
 byte_6D0		= actor_dup_offset+1
-eng_timer_lakitu_new	= byte_6D0+1
-byte_6D2		= eng_timer_lakitu_new+1
+timer_lakitu_new	= byte_6D0+1
+byte_6D2		= timer_lakitu_new+1
 actor_group_count	= byte_6D2+1
 gfx_color_rotate_off	= actor_group_count+1
 render_player_spr_group	= gfx_color_rotate_off+1
-eng_warp_ctrl		= render_player_spr_group+1
-actor_firework_counter	= eng_warp_ctrl+1
+game_warp_ctrl		= render_player_spr_group+1
+actor_firework_counter	= game_warp_ctrl+1
 byte_6D8		= actor_firework_counter+1
 eng_loop_counter_real	= byte_6D8+1
 eng_loop_counter	= eng_loop_counter_real+1
 accel_y_spring		= eng_loop_counter+1
-eng_bowser_rand_offset	= accel_y_spring+1
-actor_bullet_cheep_mask	= eng_bowser_rand_offset+1
-eng_timer_scene_trans	= actor_bullet_cheep_mask+1
-byte_6DF		= eng_timer_scene_trans+1
+actor_bowser_rand_offset = accel_y_spring+1
+actor_bullet_cheep_mask	= actor_bowser_rand_offset+1
+timer_scene_trans	= actor_bullet_cheep_mask+1
+byte_6DF		= timer_scene_trans+1
 sprite_strobe_offset	= byte_6DF+1
 sprite_strobe_amount	= sprite_strobe_offset+1
 obj_data_offset_player	= sprite_strobe_amount+3
@@ -368,59 +397,57 @@ obj_data_offset_misc	= obj_data_offset_proj+ENG_PROJ_MAX
 joypad_bits		= obj_data_offset_misc+ENG_MISC_MAX
 joypad_p1		= joypad_bits
 joypad_p2		= joypad_p1+1
-byte_6FE		= joypad_p2+1
-player_scroll_x		= byte_6FE+1
 
+byte_6FE		= joypad_p2+1
+scroll_x_player		= byte_6FE+1
 veloc_x_player_abs	= $700
-eng_friction_add_hi	= $701
-eng_friction_add_lo	= $702
-player_veloc_run	= $703
+accel_x_friction	= $701
+veloc_x_player_run	= $703
 player_swimming		= $704
-accel_x_player		= $705
-player_jump_diff	= $706
-player_jump_org_y_hi 	= $707
-player_jump_org_y_lo 	= $708
+veloc_x_player_hi	= $705
+offset_y_player_jump	= $706
+pos_y_player_jump	= $707
 accel_y_player		= $709
-player_gravity		= $70A
+accel_y_gravity		= $70A
 player_resizing		= $70B
 timer_player_ani	= $70C
 player_ani_frame	= $70D
-eng_spring_ani		= $70E
-pos_y_player_flag	= $70F
-course_enter_pos	= $710
+player_on_spring	= $70E
+pos_y_goal		= $70F
+course_pos_y_start	= $710
 timer_proj_throw	= $711
-eng_music_event_death	= $712
-eng_music_event_flag	= $713
-player_crouch		= $714
-course_timer_setting	= $715
-eng_col_off		= $716
+music_event_death_flag	= $712
+music_event_goal_flag	= $713
+player_crouching	= $714
+course_timer		= $715
+col_disable		= $716
 title_demo_button_id	= $717
 title_demo_button_timer	= $718
 victory_msg_timer_hi	= $719
+
 pos_x_hi_screen_left	= $71A
 pos_x_hi_screen_right	= $71B
 pos_x_lo_screen_left	= $71C
 pos_x_lo_screen_right	= $71D
-eng_columnsets		= $71E
+screen_bg_counter	= $71E
 bg_proc_id		= $71F
-eng_bg_addr_hi		= $720
-eng_bg_addr_lo		= $721
+bg_addr			= $720
 nmi_sprite_overlap	= $722
 game_scroll_lock	= $723
 byte_724		= $724
 pos_x_hi_game		= $725
 pos_x_lo_game		= $726
-course_fg_mask_id	= $727
-eng_page_cached		= $728
-eng_area_bg_flag	= $729
+course_floor_mask_id	= $727
+course_page_loaded	= $728
+course_page_calc	= $729
 scenery_page_loc	= $72A
 scenery_page_on		= $72B
 scenery_offset		= $72C
 scenery_length		= $730
 course_ledge_type	= $733
-eng_step_no		= $734
-eng_obj_height		= $735
-eng_ledge_dims		= $736
+scenery_step_no		= $734
+scenery_height		= $735
+scenery_ledge_dims	= $736
 actor_offset		= $739
 actor_page_loc		= $73A
 actor_page_on		= $73B
@@ -433,14 +460,16 @@ course_fg_id		= $741
 course_bg_id		= $742
 course_type_cloud	= $743
 course_bg_col		= $744
-eng_loop_flag		= $745
-actor_proc_flag_victory_id = $746
-eng_timer_ctl		= $747
-eng_bonus_oneup_tally	= $748
+course_loop_flag	= $745
+proc_id_victory_flag 	= $746
+game_timer_stop		= $747
+game_bonus_counter	= $748
 victory_msg_timer_lo	= $749
 joypad_mask		= $74A
 joypad_mask_p1		= $74A
 joypad_mask_p2		= $74B
+
+game_reset_persist	= $74C
 course_type		= $74E
 course_page_offset	= $74F
 course_descriptor	= $750
@@ -448,11 +477,11 @@ pos_x_hi_init_game	= $751
 game_start_type		= $752
 player_id		= $753
 player_size		= $754
-player_scroll_x_b	= $755
+scroll_x_player_b	= $755
 player_status		= $756
-eng_req_timer		= $757
+player_first_start	= $757
 game_joypad_override	= $758
-eng_done_timer		= $759
+game_time_up		= $759
 
 player_lives		= $75A
 pos_x_hi_alt_game	= $75B
@@ -479,19 +508,20 @@ ending_palcycle_delay	= $763
 ending_toad_delay	= $764
 .endif
 
-eng_scroll_subpix	= $768
-eng_disable_b		= $769
+pos_x_victory_scroll	= $768
+screen_msg_disable	= $769
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 game_hard_mode		= $76A
 .endif
 title_course_sel_no	= $76B
-mode_system		= $770
-mode_game		= $772
-nmi_addrs_ctl		= $773
+
+proc_id_system		= $770
+proc_id_game		= $772
+nmi_buffer_ptr		= $773
 nmi_disp_disable	= $774
 game_scroll_amount	= $775
-eng_pause_status	= $776
-eng_pause_ticks		= $777
+nmi_pause_flag		= $776
+nmi_pause_counter	= $777
 ppu_ctlr0_b		= $778
 ppu_ctlr1_b		= $779
 player_count		= $77A
@@ -534,6 +564,7 @@ timer_unk_d		= timer_unk_c+1
 timers_nmi_end		= timer_unk_d
 
 srand		= $7A7
+srand_end	= $7AE
 
 snd_ram			= $7B0
 apu_noise_offset	= $7B0
@@ -611,7 +642,7 @@ game_hard_mode_new	= $7FB
 
 .if	.defined(SMB)|.defined(VS_SMB)
 title_course_sel_on	= $7FC
-eng_continue_course	= $7FD
+course_no_continued	= $7FD
 .elseif	.defined(SMB2M)
 disk_loader_proc	= $7FC
 disk_loader_main_req	= $7FD

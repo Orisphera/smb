@@ -4,7 +4,7 @@
 
 	.export actor_init_swarm
 actor_init_swarm:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	sta	actor_swarm_buffer
 	sec
 	sbc	#actor::swarm_start
@@ -25,7 +25,7 @@ actor_init_swarm_null:
 actor_kill_swarm:
 	ldy	#ENG_ACTOR_MAX-1
 	: ; for (actor of actors) {
-		lda	actor_id, y
+		lda	obj_id_actor, y
 		cmp	#actor::lakitu
 		bne	:+ ; if (actor.id == lakitu) {
 			lda	#actor_states::state_1
@@ -36,9 +36,9 @@ actor_kill_swarm:
 		bpl	:--
 	; }
 
-	lda	#actor_modes::free
+	lda	#proc_id_actors::free
 	sta	actor_swarm_buffer
-	sta	actor_mode, x
+	sta	proc_id_actor, x
 
 .if	.defined(ANN)
 actor_init_swarm_null:

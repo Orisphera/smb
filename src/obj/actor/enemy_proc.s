@@ -5,21 +5,21 @@ actor_proc_enemy:
 	lda	#obj_attr::priority_high|obj_attr::color0
 	sta	attr_actor, x
 	jsr	lib_actor_bits_get
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
 	jsr	render_actor
 	jsr	col_actor_box
 	jsr	col_actor_ground_proc
 	jsr	col_actor_actor_proc
 	jsr	col_player_actor_proc
 
-	ldy	eng_timer_ctl
-	bne	:+ ; if (!eng_timer_ctl) {
+	ldy	game_timer_stop
+	bne	:+ ; if (!game_timer_stop) {
 		jsr	actor_proc_enemy_do
 	: ; }
 	jmp	col_actor_oob_proc
 ; -----------------------------------------------------------
 actor_proc_enemy_do:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	jsr	tbljmp
 	.addr	actor_proc_base
 	.addr	actor_proc_base

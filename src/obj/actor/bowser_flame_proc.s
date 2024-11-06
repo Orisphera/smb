@@ -30,8 +30,8 @@ actor_proc_bowser_flame_obj_attr	= zp_byte_01
 
 	.export actor_proc_bowser_flame_do
 actor_proc_bowser_flame_do:
-	lda	eng_timer_ctl
-	bne	:++ ; if (eng_timer_ctl == 0) {
+	lda	game_timer_stop
+	bne	:++ ; if (!game_timer_stop) {
 		lda	#BOWSER_FLAME_ACCEL_X_OFFSET
 		ldy	game_hard_mode_b
 		beq	:+ ; if (game_hard_mode_b) {
@@ -49,17 +49,17 @@ actor_proc_bowser_flame_do:
 		lda	pos_x_hi_actor, x
 		sbc	#>BOWSER_FLAME_POS_X_OFFSET
 		sta	pos_x_hi_actor, x
-		ldy	pos_y_actor, x
+		ldy	accel_y1_actor, x
 		lda	pos_y_lo_actor, x
 		cmp	actor_bowser_flame_pos_y_offset, y
 		beq	:+ ; if (this.pos_y != actor_bowser_flame_pos_y_offset) {
 			clc
-			adc	accel_y_actor_c, x
+			adc	accel_y2_actor, x
 			sta	pos_y_lo_actor, x
 		; }
 	: ; }
 
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
 	lda	state_actor, x
 	bne	:---
 	lda	#chr_obj::bowser_flame

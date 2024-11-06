@@ -74,7 +74,7 @@ player_proc_init:
 	lda	pos_x_hi_screen_left
 	sta	pos_x_hi_player
 	lda	#PLAYER_GRAVITY_INIT
-	sta	player_gravity
+	sta	accel_y_gravity
 	lda	#DIR_RIGHT
 	sta	disp_dir_player
 	sta	pos_y_hi_player
@@ -90,7 +90,7 @@ player_proc_init:
 	: ; }
 	sty	player_swimming
 
-	ldx	course_enter_pos
+	ldx	course_pos_y_start
 	ldy	game_start_type
 	beq	:+
 	cpy	#1
@@ -106,10 +106,10 @@ player_proc_init:
 	sta	attr_player
 	jsr	screen_color_player
 
-	ldy	course_timer_setting
+	ldy	course_timer
 	beq	:+++
-	lda	eng_req_timer
-	beq	:+++ ; if (course_timer_setting != 0 && eng_req_timer > 0) {
+	lda	player_first_start
+	beq	:+++ ; if (course_timer != 0 && player_first_start) {
 	.if	.defined(VS)
 		lda	VS_RAM_ARENA0+$03
 		beq	:+ ; if (vs_ram_arena0[3]) {
@@ -135,7 +135,7 @@ player_proc_init:
 		.elseif	.defined(VS_SMB)
 			lda	#0
 		.endif
-		sta	eng_req_timer
+		sta	player_first_start
 		sta	timer_player_star
 	: ; }
 
@@ -158,5 +158,5 @@ player_proc_init:
 	: ; }
 
 	lda	#player_procs::enter
-	sta	player_proc_id
+	sta	proc_id_player
 	rts

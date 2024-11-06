@@ -32,7 +32,7 @@ actor_init_lakitu:
 	bne	:+ ; if (!actor_swarm_buffer) {
 	actor_init_lakitu_do:
 		lda	#0
-		sta	eng_timer_lakitu_new
+		sta	timer_lakitu_new
 		jsr	actor_init_veloc_x_none
 		jmp	actor_init_col_large_b
 	: ; } else {
@@ -54,7 +54,7 @@ actor_init_lakitu_spiny:
 		sta	timer_swarm
 		ldy	#ENG_ACTOR_MAX-2
 		: ; for (y = ENG_ACTOR_MAX-2; y >= 0; y--) {
-			lda	actor_id, y
+			lda	obj_id_actor, y
 			cmp	#actor::lakitu
 			beq	actor_proc_spiny
 
@@ -63,13 +63,13 @@ actor_init_lakitu_spiny:
 		; }
 
 		; if (lakitu_not_found) {
-			inc	eng_timer_lakitu_new
-			lda	eng_timer_lakitu_new
+			inc	timer_lakitu_new
+			lda	timer_lakitu_new
 			cmp	#LAKITU_SPAWN_TIME
 			bcc	:++++ ; if (++this.timer_new >= LAKITU_SPAWN_TIME) {
 				ldx	#ENG_ACTOR_MAX-2
 				: ; for (x = ENG_ACTOR_MAX-2; x >= 0; x--) {
-					lda	actor_mode, x
+					lda	proc_id_actor, x
 					beq	:+
 
 					dex
@@ -80,7 +80,7 @@ actor_init_lakitu_spiny:
 					lda	#actor_states::init
 					sta	state_actor, x
 					lda	#actor::lakitu
-					sta	actor_id, x
+					sta	obj_id_actor, x
 					jsr	actor_init_lakitu_do
 					lda	#LAKITU_OFFSET_X
 
@@ -173,8 +173,8 @@ actor_proc_spiny:
 		sty	motion_dir_actor, x
 		lda	#SPINY_VELOC_Y
 		sta	veloc_y_actor, x
-		lda	#actor_modes::active
-		sta	actor_mode, x
+		lda	#proc_id_actors::active
+		sta	proc_id_actor, x
 		lda	#actor_states::state_5
 		sta	state_actor, x
 	; }
@@ -200,7 +200,7 @@ actor_init_firebar_long:
 actor_init_firebar_short:
 	lda	#0
 	sta	veloc_x_actor, x
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	sec
 	sbc	#actor::firebar_start
 	tay
@@ -336,8 +336,8 @@ actor_init_cheep_fly:
 			: ; }
 			sta	pos_x_hi_actor, x
 		
-			lda	#actor_modes::active
-			sta	actor_mode, x
+			lda	#proc_id_actors::active
+			sta	proc_id_actor, x
 			sta	pos_y_hi_actor, x
 			lda	#ENG_OAM_CLEAR_SCANLINE
 			sta	pos_y_lo_actor, x

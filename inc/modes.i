@@ -1,39 +1,43 @@
 .ifndef	MODES_I
 MODES_I = 1
 
+.include	"system/cpu.i"
+
 	.enum	system_modes
 		.if	.defined(SMB)|.defined(VS_SMB)
-			title
+			title		= <((nmi_system_enter_title-nmi_system_enter)/WORD_SIZE)
 		.elseif	.defined(SMB2M)
-			disk_loader
+			disk_loader	= <((nmi_system_enter_disk_loader-nmi_system_enter)/WORD_SIZE)
 		.endif
 
 		.if	.defined(VS_SMB)
-			player_select
+			player_select	= <((nmi_system_enter_player_select-nmi_system_enter)/WORD_SIZE)
 		.endif
 
-		game
-		victory
-		game_over
+		game		= <((nmi_system_enter_game-nmi_system_enter)/WORD_SIZE)
+		victory		= <((nmi_system_enter_victory-nmi_system_enter)/WORD_SIZE)
+		game_over 	= <((nmi_system_enter_game_over-nmi_system_enter)/WORD_SIZE)
 	.endenum
 
-	.enum	title_modes
-		.if	.defined(VS)
-			vs_init
-		.endif
+	.if	.defined(SMB)|.defined(VS_SMB)
+		.enum	title_modes
+			.if	.defined(VS)
+				vs_init		= <((title_mode_vs_init-title_mode_tbl)/WORD_SIZE)
+			.endif
 
-		init_0
-		scr
-		init_1
-		proc
+			init_0	= <((title_mode_init_0-title_mode_tbl)/WORD_SIZE)
+			scr	= <((title_mode_scr-title_mode_tbl)/WORD_SIZE)
+			init_1	= <((title_mode_init_1-title_mode_tbl)/WORD_SIZE)
+			proc	= <((title_mode_proc-title_mode_tbl)/WORD_SIZE)
 
-		.if	.defined(VS)
-			init_player_select
-			init_ppu
-			super_players
-			tick
-		.endif
-	.endenum
+			.if	.defined(VS)
+				init_player_select = <((title_mode_init_player_select-title_mode_tbl)/WORD_SIZE)
+				init_ppu	= <((title_mode_init_ppu-title_mode_tbl)/WORD_SIZE)
+				super_players	= <((title_mode_super_players-title_mode_tbl)/WORD_SIZE)
+				tick		= <((title_mode_tick-title_mode_tbl)/WORD_SIZE)
+			.endif
+		.endenum
+	.endif
 
 	.enum	game_modes
 		.if	.defined(VS_SMB)
@@ -83,22 +87,22 @@ MODES_I = 1
 	.endenum
 
 	.if	.defined(SMB2M)
-	.enum	victory_modes_ending
-		bowser
-		init
-		proc
-		disk_init
-		disk_check
-		disk_data3
-		scr
-		msg
-		time_tally
-		extra_lives
-		palcycle
-		lives_draw
-		toad_proc
-		disk_save
-	.endenum
+		.enum	victory_modes_ending
+			bowser
+			init
+			proc
+			disk_init
+			disk_check
+			disk_data3
+			scr
+			msg
+			time_tally
+			extra_lives
+			palcycle
+			lives_draw
+			toad_proc
+			disk_save
+		.endenum
 	.endif
 
 	.enum	game_over_modes
