@@ -12,7 +12,6 @@
 		.res	2, $FF
 	.endif
 
-RAM_CLEAR_END_GAMEINIT	= <(proc_id_system-1)
 RAM_CLEAR_END_GAMERESET	= <(game_reset_persist-1)
 
 game_init_data_0:
