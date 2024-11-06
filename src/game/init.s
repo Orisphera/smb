@@ -127,7 +127,7 @@ game_init_0_do:
 	lda	player_goals
 	cmp	#ENG_HARDMODE_B_GOAL
 	bcc	:++
-	: ; if (hard_mode || eng_course.eng_goal >= hard_mode_course.hard_mode_goal) {
+	: ; if (hard_mode || course.goal >= hard_mode_course.hard_mode_goal) {
 		inc	game_hard_mode_b
 	: ; }
 

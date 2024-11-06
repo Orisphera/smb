@@ -92,9 +92,10 @@ game_proc:
 		jsr	proj_proc
 
 		ldx	#0
-		: ; for (actor_index = 0; actor_index < ENG_ACTOR_MAX; actor_index++) {
+		: ; for (actor of actors) {
 			stx	actor_index
 			jsr	actor_proc
+
 			jsr	screen_score_disp
 	
 			inx
@@ -102,8 +103,9 @@ game_proc:
 			bne	:-
 		; }
 	
-		jsr	lib_player_bits_get
+		jsr	pos_bits_get_player
 		jsr	pos_calc_x_rel_player
+
 		jsr	render_player
 
 		jsr	block_flatten
@@ -258,7 +260,7 @@ game_scroll:
 	: ; }
 
 	ldx	#0
-	jsr	lib_bits_get_do_x
+	jsr	pos_bits_get_do_x
 	sta	zp_byte_00
 	ldy	#0
 	asl	a

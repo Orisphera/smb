@@ -249,7 +249,9 @@ actor_init_plat_rope:
 actor_init_plat_fall:
 	tya
 	tax
-	jsr	lib_actor_bits_get
+
+	jsr	pos_bits_get_actor
+
 	lda	#scores::value_1000
 	jsr	col_score_do
 	lda	pos_x_rel_player

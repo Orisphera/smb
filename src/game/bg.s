@@ -1133,7 +1133,7 @@ bg_scenery_set_attr:
 		pla
 		and	#%00000111
 		cmp	#4
-		bcc	:+ ; if ((eng_area_data_byte_1 & 0x7) >= 4) {
+		bcc	:+ ; if ((course_scenery_byte_1 & 0x7) >= 4) {
 			sta	course_bg_col
 			lda	#COURSE_SCENERY_FG_NONE_VAL
 		: ; }
@@ -2033,8 +2033,8 @@ bg_scenery_block_q:
 	jmp	bg_scenery_block_draw
 
 bg_scenery_block_coin:
-	lda	#0
-	sta	eng_block_time
+	lda	#BLOCK_INVIS_REQ_VAL
+	sta	block_invis_req
 
 bg_scenery_block_item:
 	jsr	bg_scenery_block_id

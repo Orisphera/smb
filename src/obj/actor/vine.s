@@ -67,7 +67,7 @@ actor_proc_vine:
 		cmp	#8
 		bcc	:++++ ; if (height_vine >= 8) {
 			jsr	pos_calc_x_rel_actor
-			jsr	lib_actor_bits_get
+			jsr	pos_bits_get_actor
 
 			ldy	#0
 			: ; for (y = 0; y < actor_vine_flag; y++) {

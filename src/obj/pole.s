@@ -80,8 +80,9 @@ pole_proc:
 		sta	proc_id_player
 	: ; }
 
-	jsr	lib_actor_bits_get
+	jsr	pos_bits_get_actor
 	jsr	pos_calc_x_rel_actor
+
 	jsr	render_flag_enemy
 
 pole_proc_rts:

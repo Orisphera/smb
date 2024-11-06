@@ -20,13 +20,13 @@ cannon_proc:
 			lda	srand+1, x
 			ldy	game_hard_mode_b
 			and	cannon_proc_masks, y
-			cmp	#6
+			cmp	#ENG_ACTOR_MAX
 			bcs	:++
 			tay
 			lda	pos_y_hi_cannon, y
 			beq	:++ ; if (
 			;	actor.mode == dead
-			;	&& (srand[actor_index+1] & player_proc_cannon_masks[game_hard_mode_b]) < 6
+			;	&& (srand[actor_index+1] & player_proc_cannon_masks[game_hard_mode_b]) < ENG_ACTOR_MAX
 			;	&& (pos_y_hi_cannon[(srand[actor_index+1])])
 			; ) {
 				lda	timer_cannon, y
@@ -69,7 +69,8 @@ cannon_proc:
 			
 					lda	proc_id_actor, x
 					beq	:+ ; if (this.mode != dead) {
-						jsr	lib_actor_bits_get
+						jsr	pos_bits_get_actor
+
 						jsr	cannon_bullet_proc
 					; }
 				; }
@@ -127,10 +128,12 @@ cannon_bullet_proc:
 	: ; }
 
 	; if (game_timer_stop || this.state != 0 || ((bits_offscr_actor & 0x0C) != 0x0C && (zp_byte_00 + 0x28) >= 0x50)) {
-		jsr	lib_actor_bits_get
+		jsr	pos_bits_get_actor
 		jsr	pos_calc_x_rel_actor
+
 		jsr	col_actor_box
 		jsr	col_player_actor_proc
+
 		jmp	render_actor
 	: ; } else {
 		jsr	actor_erase

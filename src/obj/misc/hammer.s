@@ -117,9 +117,11 @@ misc_proc_hammer:
 		; }
 	: ; }
 
-	jsr	lib_misc_bits_get
+	jsr	pos_bits_get_misc
 	jsr	pos_calc_x_rel_misc
+
 	jsr	col_misc_box
+
 	jsr	render_hammer
 
 	rts

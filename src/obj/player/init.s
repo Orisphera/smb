@@ -63,9 +63,9 @@ enter_timer_vals:
 .elseif	.defined(VS)
 	.byte	$04, $03, $03, $00, $00
 
-eng_timer_vals_a:
+course_timer_vals_a:
 	.byte	$05, $04, $03
-eng_timer_vals_b:
+course_timer_vals_b:
 	.byte	$03, $00, $00, $05
 .endif
 ; ----------------------------
@@ -113,9 +113,9 @@ player_proc_init:
 	.if	.defined(VS)
 		lda	VS_RAM_ARENA0+$03
 		beq	:+ ; if (vs_ram_arena0[3]) {
-			lda	eng_timer_vals_a, y
+			lda	course_timer_vals_a, y
 			sta	stats_time_end-STATS_TIME_LEN
-			lda	eng_timer_vals_b, y
+			lda	course_timer_vals_b, y
 			sta	stats_time_end-STATS_TIME_LEN+1
 			jmp	:++
 		; } else {

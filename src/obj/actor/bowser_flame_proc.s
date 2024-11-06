@@ -99,7 +99,8 @@ actor_proc_bowser_flame_do:
 	; }
 
 	ldx	actor_index
-	jsr	lib_actor_bits_get
+
+	jsr	pos_bits_get_actor
 
 	ldy	obj_data_offset_actor, x
 	lda	bits_offscr_actor

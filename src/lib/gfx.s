@@ -92,9 +92,9 @@ gfx_render_area:
 			inc	gfx_render_area_attr_index
 		: ; }
 
-		lda	eng_attr_buffer, y
+		lda	gfx_attr_buffer, y
 		ora	gfx_metatile_id_page
-		sta	eng_attr_buffer, y
+		sta	gfx_attr_buffer, y
 
 		inc	gfx_render_area_offset
 		inc	gfx_render_area_offset
@@ -152,7 +152,7 @@ gfx_render_attr:
 
 	ldx	#0
 	ldy	nmi_list_1_offset
-	: ; for (x = 0, y = nmi_list_b_entry; x < 7; x++, y += 4) {
+	: ; for (attr of attrs) {
 		lda	gfx_render_attr_addr_dbyt
 		sta	nmi_list_1_addr_dbyt, y
 		lda	gfx_render_attr_addr_dbyt+1
@@ -160,19 +160,19 @@ gfx_render_attr:
 		adc	#8
 		sta	nmi_list_1_addr_dbyt+1, y
 		sta	gfx_render_attr_addr_dbyt+1
-		lda	eng_attr_buffer, x
+		lda	gfx_attr_buffer, x
 		sta	nmi_list_1_byte+1, y
 		lda	#1
 		sta	nmi_list_1_byte, y
 		lsr	a
-		sta	eng_attr_buffer, x
+		sta	gfx_attr_buffer, x
 
 		iny
 		iny
 		iny
 		iny
 		inx
-		cpx	#7
+		cpx	#GFX_ATTR_COUNT
 		bcc	:-
 	; }
 

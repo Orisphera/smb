@@ -947,7 +947,7 @@ screen_score_disp:
 	cmp	#actor_states::state_2
 	bcs	:++
 	: ; if (actor.id == hammer_bro || actor.id >= div_height || actor.state < 2) {
-		ldx	obj_data_offset_ctl
+		ldx	block_id
 		ldy	obj_data_offset_block, x
 		ldx	actor_index
 	: ; }

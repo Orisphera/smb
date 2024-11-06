@@ -73,7 +73,8 @@ actor_firebar_veloc_y		= zp_byte_EF
 
 	.export actor_proc_firebar_do
 actor_proc_firebar_do:
-	jsr	lib_actor_bits_get
+	jsr	pos_bits_get_actor
+
 	lda	bits_offscr_actor
 	and	#%00001000
 	bne	:+++++++ ; if (!(actor.bits_offscr & 0x08)) {

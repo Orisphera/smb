@@ -59,7 +59,8 @@ proj_proc:
 			jsr	bubble_proc
 
 			jsr	pos_calc_x_rel_bubble
-			jsr	lib_bubble_bits_get
+			jsr	pos_bits_get_bubble
+
 			jsr	bubble_render
 
 			dex
@@ -115,7 +116,7 @@ proj_proc_do:
 
 		ldx	actor_index
 		jsr	pos_calc_x_rel_proj
-		jsr	lib_proj_bits_get
+		jsr	pos_bits_get_proj
 		jsr	col_proj_box
 		jsr	col_proj_proc
 

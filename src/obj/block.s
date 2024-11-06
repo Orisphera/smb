@@ -28,7 +28,7 @@ block_punch:
 	pha
 
 	lda	#block_states::punch_bump
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		lda	#block_states::punch_break
@@ -37,7 +37,7 @@ block_punch:
 
 	jsr	gfx_meta_destroy
 
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	lda	pos_y_block_proc
 	sta	pos_y_orig_block, x
 	tay
@@ -61,15 +61,15 @@ block_punch:
 		cpy	#metatile_1::brick_l
 		bne	:++++
 		: ; if (this.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
-			lda	eng_block_time
-			bne	:+ ; if (this.block_time == 0) {
+			lda	block_invis_req
+			bne	:+ ; if (this.invis_req == req) {
 				lda	#BLOCK_TIMER_VAL
-				sta	timer_block
-				inc	eng_block_time
+				sta	timer_block_invis
+				inc	block_invis_req
 			: ; }
 		
-			lda	timer_block
-			bne	:+ ; if (this.timer == 0) {
+			lda	timer_block_invis
+			bne	:+ ; if (this.invis_timer == 0) {
 				ldy	#metatile_3::block_invis
 			: ; }
 			tya
@@ -111,9 +111,9 @@ block_punch:
 		jsr	block_item
 	: ; }
 
-	lda	obj_data_offset_ctl
+	lda	block_id
 	eor	#1
-	sta	obj_data_offset_ctl
+	sta	block_id
 	rts
 ; ------------------------------------------------------------
 	.export block_initpos
@@ -229,7 +229,7 @@ block_powerup:
 ; -----------------------------
 block_vine:
 	ldx	#$05
-	ldy	obj_data_offset_ctl
+	ldy	block_id
 	jsr	actor_init_vine
 
 block_item_rts:
@@ -295,13 +295,13 @@ block_break:
 	lda	#5
 	sta	score_digit_mod+6
 	jsr	misc_proc_coin_update_score
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	rts
 ; ------------------------------------------------------------
 BLOCK_TOP_MISC_OFFSET_Y	= 16
 ; ------------------------------------------------------------
 block_top_check:
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	ldy	pos_y_block_proc
 	beq	:+ ; if (pos_y_block_proc) {
 		tya
@@ -316,7 +316,7 @@ block_top_check:
 			sta	(game_buffer), y
 			jsr	gfx_clear_small
 
-			ldx	obj_data_offset_ctl
+			ldx	block_id
 			jsr	misc_init_coin_b
 		; }
 	: ; }
@@ -372,8 +372,10 @@ block_proc:
 			jsr	motion_x_do
 
 			ldx	actor_index
+
 			jsr	pos_calc_x_rel_block
-			jsr	lib_block_bits_get
+			jsr	pos_bits_get_block
+
 			jsr	render_block_bits
 
 			pla
@@ -397,9 +399,12 @@ block_proc:
 		: ; } else {
 			jsr	motion_block_fall_fast
 			ldx	actor_index
+
 			jsr	pos_calc_x_rel_block
-			jsr	lib_block_bits_get
+			jsr	pos_bits_get_block
+
 			jsr	render_block
+
 			lda	pos_y_lo_block, x
 			and	#MOD_16
 			cmp	#5

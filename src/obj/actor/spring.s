@@ -9,7 +9,8 @@ actor_proc_spring_pos_y:
 ; -----------------------------
 	.export actor_proc_spring
 actor_proc_spring:
-	jsr	lib_actor_bits_get
+	jsr	pos_bits_get_actor
+
 	lda	game_timer_stop
 	bne	actor_proc_spring_ctd
 	lda	player_on_spring

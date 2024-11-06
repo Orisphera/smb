@@ -2452,8 +2452,9 @@ col_box_w_bits:
 	.export col_plat_l_box
 col_plat_l_box:
 	inx
-	jsr	lib_bits_get_do_x
+	jsr	pos_bits_get_do_x
 	dex
+
 	cmp	#$FE
 	bcs	col_box_offscr
 

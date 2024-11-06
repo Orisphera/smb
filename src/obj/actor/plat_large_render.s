@@ -40,9 +40,11 @@ render_plat_large:
 	lda	#obj_attr::priority_high|obj_attr::color2
 	iny
 	jsr	render_set_six_sprites
+
 	inx
-	jsr	lib_bits_get_do_x
+	jsr	pos_bits_get_do_x
 	dex
+
 	ldy	obj_data_offset_actor, x
 	asl	a
 	pha

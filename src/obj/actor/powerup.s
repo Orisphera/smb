@@ -112,9 +112,12 @@ actor_proc_powerup:
 
 		; if (this.state > cue_display) {
 			jsr	pos_calc_x_rel_actor
-			jsr	lib_actor_bits_get
+			jsr	pos_bits_get_actor
+
 			jsr	col_actor_box
+
 			jsr	render_powerup
+
 			jsr	col_player_actor_proc
 			jsr	col_actor_oob_proc
 		; }

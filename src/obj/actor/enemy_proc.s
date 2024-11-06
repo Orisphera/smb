@@ -4,9 +4,12 @@
 actor_proc_enemy:
 	lda	#obj_attr::priority_high|obj_attr::color0
 	sta	attr_actor, x
-	jsr	lib_actor_bits_get
+
+	jsr	pos_bits_get_actor
 	jsr	pos_calc_x_rel_actor
+
 	jsr	render_actor
+
 	jsr	col_actor_box
 	jsr	col_actor_ground_proc
 	jsr	col_actor_actor_proc

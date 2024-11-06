@@ -164,9 +164,11 @@ player_proc_ctrl:
 
 	jsr	game_scroll
 
-	jsr	lib_player_bits_get
+	jsr	pos_bits_get_player
 	jsr	pos_calc_x_rel_player
+
 	ldx	#0
+
 	jsr	col_box_proc
 	jsr	col_bg_proc
 
@@ -492,7 +494,7 @@ player_proc_victory:
 		.elseif	.defined(SMB2)
 		cmp	#10
 		.endif
-		bcc	:+ ; if (++this.goals == 3 && (game_bonus_counter >= player_proc_victory_oneup_tallies[eng_course_no] || (SMB2M && game_bonus_counter >= 10)) {
+		bcc	:+ ; if (++this.goals == 3 && (game_bonus_counter >= player_proc_victory_oneup_tallies[course.no] || (SMB2M && game_bonus_counter >= 10)) {
 			inc	bg_hidden_one_up_req
 		: ; }
 
