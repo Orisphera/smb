@@ -2,7 +2,7 @@
 .include	"tunables.i"
 
 ; --------------------------------------------------------------
-lib_calc_object_offset	= zp_byte_00
+pos_calc_object_x_offset	= zp_byte_00
 lib_bits_buffer		= zp_byte_00
 ; --------------------------------------------------------------
 	.export pos_calc_x_rel_player, pos_calc_x_rel_bubble
@@ -13,14 +13,14 @@ pos_calc_x_rel_player:
 	jmp	pos_calc_x_rel_a
 ; -----------------------------
 pos_calc_x_rel_bubble:
-	ldy	#lib_calc_offset_bubble-lib_calc_offsets
-	jsr	lib_calc_get_offset
+	ldy	#pos_calc_x_offset_bubble-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_BUBBLE_REL_OFF
 	jmp	pos_calc_x_rel_a
 ; -----------------------------
 pos_calc_x_rel_proj:
-	ldy	#lib_calc_offset_proj-lib_calc_offsets
-	jsr	lib_calc_get_offset
+	ldy	#pos_calc_x_offset_proj-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_PROJ_REL_OFF
 ; -----------------------------
 pos_calc_x_rel_a:
@@ -29,8 +29,8 @@ pos_calc_x_rel_a:
 	rts
 ; -------------------------------
 pos_calc_x_rel_misc:
-	ldy	#lib_calc_offset_misc-lib_calc_offsets
-	jsr	lib_calc_get_offset
+	ldy	#pos_calc_x_offset_misc-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_MISC_REL_OFF
 	jmp	pos_calc_x_rel_a
 ; --------------------------------------------------------------
@@ -50,9 +50,9 @@ pos_calc_x_rel_block:
 	iny
 ; -------------------------------
 pos_calc_x_rel_b:
-	stx	lib_calc_object_offset
+	stx	pos_calc_object_x_offset
 	clc
-	adc	lib_calc_object_offset
+	adc	pos_calc_object_x_offset
 	tax
 	jsr	pos_calc_x_rel_do
 	ldx	actor_index
@@ -75,35 +75,35 @@ lib_player_bits_get:
 	jmp	lib_bits_get
 ; -------------------------------
 lib_proj_bits_get:
-	ldy	#lib_calc_offset_proj-lib_calc_offsets
-	jsr	lib_calc_get_offset
+	ldy	#pos_calc_x_offset_proj-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_PROJ_REL_OFF
 	jmp	lib_bits_get
 ; -------------------------------
 lib_bubble_bits_get:
-	ldy	#lib_calc_offset_bubble-lib_calc_offsets
-	jsr	lib_calc_get_offset
+	ldy	#pos_calc_x_offset_bubble-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_BUBBLE_REL_OFF
 	jmp	lib_bits_get
 ; -------------------------------
 lib_misc_bits_get:
-	ldy	#lib_calc_offset_misc-lib_calc_offsets
-	jsr	lib_calc_get_offset
+	ldy	#pos_calc_x_offset_misc-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_MISC_REL_OFF
 	jmp	lib_bits_get
 ; --------------------------------------------------------------
-lib_calc_offsets:
-lib_calc_offset_proj:
+pos_calc_x_offsets:
+pos_calc_x_offset_proj:
 	.byte	ENG_PROJ_OFF
-lib_calc_offset_bubble:
+pos_calc_x_offset_bubble:
 	.byte	ENG_BUBBLE_OFF
-lib_calc_offset_misc:
+pos_calc_x_offset_misc:
 	.byte	ENG_MISC_OFF
 ; -------------------------------
-lib_calc_get_offset:
+pos_calc_x_offset_get:
 	txa
 	clc
-	adc	lib_calc_offsets, y
+	adc	pos_calc_x_offsets, y
 	tax
 	rts
 ; --------------------------------------------------------------
@@ -118,9 +118,9 @@ lib_block_bits_get:
 	ldy	#ENG_BLOCK_REL_OFF
 ; -------------------------------
 lib_bits_get_offset:
-	stx	lib_calc_object_offset
+	stx	pos_calc_object_x_offset
 	clc
-	adc	lib_calc_object_offset
+	adc	pos_calc_object_x_offset
 	tax
 ; -------------------------------
 lib_bits_get:
