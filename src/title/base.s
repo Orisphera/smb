@@ -32,7 +32,7 @@ sys_title:
 	title_mode_tbl:
 		.if	.defined(VS)
 			.export	title_mode_vs_init
-		title_mode_vs_int:
+		title_mode_vs_init:
 			.addr	vs_title_init
 		.endif
 

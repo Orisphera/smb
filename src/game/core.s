@@ -218,6 +218,8 @@ game_scroll:
 			lda	fds_sprite_overlap_hit
 			bne	:-
 		; }
+		.else
+		:
 		.endif
 
 		tya

@@ -171,8 +171,7 @@ nmi_list_offset:
 	.byte	<nmi_list_1
 ; ----------------------------
 .if	.defined(SMB2M)
-	SMB2M_NMI_TIMER_MS	= 3.19594
-	SMB2M_NMI_TIMER		= ((SMB2M_NMI_TIMER_MS/1000)*CLOCK_FREQ_HZ)
+	SMB2M_NMI_TIMER_3_19594_MS	= 5720
 
 	.if	.defined(SMB2)
 		SMB2M_COURSE_NO_CUTOFF = course::no_0A
@@ -208,9 +207,9 @@ nmi:
 		sei
 		lda	nmi_sprite_overlap
 		beq	:+ ; if (sprite_overlap) {
-			lda	#<(SMB2M_NMI_TIMER)
+			lda	#<(SMB2M_NMI_TIMER_3_19594_MS)
 			sta	FDS_TIMER_DATA_LO
-			lda	#>(SMB2M_NMI_TIMER)
+			lda	#>(SMB2M_NMI_TIMER_3_19594_MS)
 			sta	FDS_TIMER_DATA_HI
 			lda	#fds_timer_ctlr::irq
 			sta	FDS_TIMER_CTLR
@@ -389,6 +388,7 @@ nmi_apu_call:
 	lda	nmi_pause_flag
 	lsr	a
 	bcs	:+++ ; if (!CONS || !paused) {
+
 	.endif
 		.if	.defined(SMB2M)
 			lda	nmi_sprite_overlap
@@ -609,13 +609,15 @@ nmi_oam_shuffle:
 
 	rts
 ; ------------------------------------------------------------
-	.export	nmi_system_enter
+	.export	nmi_system_enter_tbl
 	.export	nmi_system_enter_game
 	.export	nmi_system_enter_victory
 	.export	nmi_system_enter_game_over
 nmi_system_enter:
 	lda	proc_id_system
 	jsr	tbljmp
+
+nmi_system_enter_tbl:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.export	nmi_system_enter_title
 	nmi_system_enter_title:

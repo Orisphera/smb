@@ -5,18 +5,18 @@ MODES_I = 1
 
 	.enum	system_modes
 		.if	.defined(SMB)|.defined(VS_SMB)
-			title		= <((nmi_system_enter_title-nmi_system_enter)/WORD_SIZE)
+			title		= <((nmi_system_enter_title-nmi_system_enter_tbl)/WORD_SIZE)
 		.elseif	.defined(SMB2M)
-			disk_loader	= <((nmi_system_enter_disk_loader-nmi_system_enter)/WORD_SIZE)
+			disk_loader	= <((nmi_system_enter_disk_loader-nmi_system_enter_tbl)/WORD_SIZE)
 		.endif
 
 		.if	.defined(VS_SMB)
-			player_select	= <((nmi_system_enter_player_select-nmi_system_enter)/WORD_SIZE)
+			player_select	= <((nmi_system_enter_player_select-nmi_system_enter_tbl)/WORD_SIZE)
 		.endif
 
-		game		= <((nmi_system_enter_game-nmi_system_enter)/WORD_SIZE)
-		victory		= <((nmi_system_enter_victory-nmi_system_enter)/WORD_SIZE)
-		game_over 	= <((nmi_system_enter_game_over-nmi_system_enter)/WORD_SIZE)
+		game		= <((nmi_system_enter_game-nmi_system_enter_tbl)/WORD_SIZE)
+		victory		= <((nmi_system_enter_victory-nmi_system_enter_tbl)/WORD_SIZE)
+		game_over 	= <((nmi_system_enter_game_over-nmi_system_enter_tbl)/WORD_SIZE)
 	.endenum
 
 	.if	.defined(SMB)|.defined(VS_SMB)

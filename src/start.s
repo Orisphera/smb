@@ -26,9 +26,6 @@ IRQ_NULL	= $FFF0
 
 .code
 
-RAM_CLEAR_END_WARMBOOT	= <(stats_tbl-1)
-RAM_CLEAR_END_COLDBOOT	= <(game_boot_flag-1)
-
 	.export start
 start:
 	.if	.defined(FC)|.defined(VS)

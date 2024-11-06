@@ -43,49 +43,46 @@ game_over_init:
 	jmp	screen_title_bg_finish
 .endif
 ; ----------------------------
-	.export game_over_next_game
 	.export	game_over_continue
 game_over_proc:
-.if	.defined(SMB)|.defined(SMB2M)
-	.if	.defined(SMB)
-		GAME_OVER_TIMER_RTS = game_over_next_game_rts_b
-	.elseif	.defined(SMB2)
-		GAME_OVER_TIMER_RTS = game_over_next_game_rts_a
+.if	.defined(CONS)
+.if	.defined(SMB)
+	GAME_OVER_TIMER_RTS = game_over_next_game_rts_b
+.elseif	.defined(SMB2)
+	GAME_OVER_TIMER_RTS = game_over_next_game_rts_a
+.endif
+
+	lda	#0
+	sta	nmi_disp_disable
+
+.if	.defined(SMB)
+	lda	joypad_p1
+	and	#joypad_button::start
+	bne	game_over_next_game
+.elseif	.defined(SMB2M)
+	.if	.defined(SMB2)
+	lda     course_no
+	cmp     #course::no_09
+	beq     :+ ; if (!SMB2 && course_no != no_09) {
 	.endif
-
-		lda	#0
-		sta	nmi_disp_disable
-
-	.if	.defined(SMB)
-		lda	joypad_p1
-		and	#joypad_button::start
-		bne	game_over_next_game
-	.elseif	.defined(SMB2M)
-		.if	.defined(SMB2)
-			lda     course_no
-			cmp     #course::no_09
-			beq     :+ ; if (course_no != no_09) {
-		.endif
-
 		jmp     game_over_menu
-
-		.if	.defined(SMB2)
-			: ; }
-		.endif
+	.if	.defined(SMB2)
+	: ; }
 	.endif
+.endif
 
-	.if	.defined(SMB)|.defined(SMB2)
-		lda	timer_screen
-		bne	GAME_OVER_TIMER_RTS
-	.endif
+.if	.defined(SMB)|.defined(SMB2)
+	lda	timer_screen
+	bne	GAME_OVER_TIMER_RTS
+.endif
 
-	game_over_next_game:
-		lda	#music_event::none
-		sta	apu_music_event_req
+	.export	game_over_next_game
+game_over_next_game:
+	lda	#music_event::none
+	sta	apu_music_event_req
 .endif
 ; ----------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
-
 	jsr	game_over_player_switch
 	bcc	game_over_continue ; if () {
 	.if	.defined(VS_SMB)

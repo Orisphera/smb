@@ -12,8 +12,6 @@
 		.res	2, $FF
 	.endif
 
-RAM_CLEAR_END_GAMERESET	= <(game_reset_persist-1)
-
 game_init_data_0:
 	.byte	$04, $30, $48, $60
 	.byte	$78, $90, $A8, $C0
@@ -271,7 +269,7 @@ game_init_1_do:
 ; -----------------------------------------------------------
 	.export game_init_clearram
 game_init_clearram:
-	ldx	#>(RAM_END-RAM_BASE)
+	ldx	#>(RAM_END-RAM_BASE)-1
 	lda	#0
 	sta	game_buffer
 	: ; for (page of ram) {
@@ -279,13 +277,13 @@ game_init_clearram:
 		: ; for (byte of page) {
 			cpx	#>STACK_BASE
 			bne	:+
-			cpy	#STACK_TOP
+			cpy	#<cpu_stack_work_end
 			bcs	:++
 			.if	.defined(FDS)
-			cpy	#FDS_STACK_BOTTOM
+			cpy	#<cpu_stack_work
 			bcc	:++
 			.endif
-			: ; if (page != stack || (byte < STACK_TOP && (!FDS || byte >= FDS_STACK_BOTTOM))) {
+			: ; if (page != stack || (byte < work_mem_end && byte >= work_mem)) {
 				sta	(game_buffer), y
 			: ; }
 

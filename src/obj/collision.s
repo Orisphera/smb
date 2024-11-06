@@ -1603,7 +1603,7 @@ col_bg_proc_climb_do:
 				lsr	a
 				sta	music_event_goal_flag
 
-				ldx	#(col_bg_proc_pole_cutoffs_y_end-col_bg_proc_pole_cutoffs_y)
+				ldx	#(col_bg_proc_pole_cutoffs_y_end-col_bg_proc_pole_cutoffs_y)-1
 				lda	pos_y_lo_player
 				sta	pos_y_goal
 				: ; for (cutoff of cutoffs) {
