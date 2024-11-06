@@ -628,10 +628,10 @@ bg_scenery:
 				bcc	:++
 			; }
 			: ; if (
-			;	course_scenery_byte == COURSE_SCENERY_END
-			;	|| !(scenery_length & 0x80)
-			;	|| ((course_scenery_byte & 0xF) == 0xE && course.page_loaded)
-			;	|| scenery_page_loc >= pos_x_hi_game) {
+			;	this == COURSE_SCENERY_END
+			;	|| this.length >= 0
+			;	|| (this.type == E && course.page_loaded)
+			;	|| this.page_loc >= pos_x_hi_game) {
 				jsr	bg_scenery_decode
 				jmp	:+++
 			: ; } else if (scenery_page_loc < pos_x_hi_game) {
@@ -643,7 +643,7 @@ bg_scenery:
 		
 			ldx	actor_index
 			lda	scenery_length, x
-			bmi	:+ ; if (!(scenery_length & 0x80)) {
+			bmi	:+ ; if (this.length >= 0) {
 				dec	scenery_length, x
 			: ; }
 		
@@ -765,7 +765,7 @@ bg_scenery_decode:
 			sta	BG_OBJ_TBL_OFFSET
 	
 			lda	(course_scenery_addr), y
-			and	#%00001111
+			and	#COURSE_OBJ_C_MASK>>8
 			jmp	bg_obj_set_base
 		: ; } else {
 			sta	BG_OBJ_TBL_BASE
@@ -1115,14 +1115,14 @@ bg_scenery_set_attr:
 	.endif
 	lda	(course_scenery_addr), y
 	pha
-	and	#%01000000
-	bne	:+ ; if ((course_scenery_byte_1 & 0x40)) {
+	and	#>COURSE_OBJ_E_FLOOR_MASK
+	bne	:+ ; if (!(course_scenery_addr[y] & COURSE_OBJ_E_FLOOR_MASK)) {
 		pla
 		pha
-		and	#%00001111
+		and	#COURSE_FLOOR_MASK_MAX
 		sta	course_floor_mask_id
 		pla
-		and	#%00110000
+		and	#COURSE_BG_MAX<<4
 		lsr	a
 		lsr	a
 		lsr	a
@@ -1131,9 +1131,9 @@ bg_scenery_set_attr:
 		rts
 	: ; } else {
 		pla
-		and	#%00000111
-		cmp	#4
-		bcc	:+ ; if ((course_scenery_byte_1 & 0x7) >= 4) {
+		and	#COURSE_SCENERY_BG_FG_MASK
+		cmp	#COURSE_SCENERY_FG_MAX+1
+		bcc	:+ ; if ((course_scenery_byte_1 & bg_fg_mask) >= (fg_max+1)) {
 			sta	course_bg_col
 			lda	#COURSE_SCENERY_FG_NONE_VAL
 		: ; }
