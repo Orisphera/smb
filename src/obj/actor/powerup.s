@@ -20,7 +20,7 @@ POWERUP_CUE_SPAWNED		= (POWERUP_CUE_SPAWNED_FRAMES/POWERUP_CUE_UNITS)
 	.export actor_init_powerup, actor_init_powerup_b
 actor_init_powerup_b:
 	lda	#actor::power_up
-	sta	actor_id+POWERUP_ACTOR_IDX
+	sta	obj_id_actor+POWERUP_ACTOR_IDX
 	lda	pos_x_hi_block, x
 	sta	pos_x_hi_actor+POWERUP_ACTOR_IDX
 	lda	pos_x_lo_block, x
@@ -33,13 +33,13 @@ actor_init_powerup_b:
 	sta	pos_y_lo_actor+POWERUP_ACTOR_IDX
 
 actor_init_powerup:
-	lda	#actor_modes::active
+	lda	#proc_id_actors::active
 	sta	state_actor+POWERUP_ACTOR_IDX
-	sta	actor_mode+POWERUP_ACTOR_IDX
+	sta	proc_id_actor+POWERUP_ACTOR_IDX
 	lda	#POWERUP_COL_BOX
 	sta	col_box_actor+POWERUP_ACTOR_IDX
 
-	lda	eng_powerup_type
+	lda	actor_powerup_type
 	cmp	#powerup_type::star
 	bcs	:++ ; if (this.type < star) {
 		lda	player_status
@@ -47,7 +47,7 @@ actor_init_powerup:
 		bcc	:+ ; if (player.status >= firefl) {
 			lsr	a
 		: ; }
-		sta	eng_powerup_type
+		sta	actor_powerup_type
 	: ; }
 
 	lda	#obj_attr::priority_low|obj_attr::color0
@@ -64,9 +64,9 @@ actor_proc_powerup:
 	beq	:+++++ ; if (this.state != dead) {
 		asl	a
 		bcc	:++
-		lda	eng_timer_ctl
+		lda	game_timer_stop
 		bne	:++++
-		lda	eng_powerup_type
+		lda	actor_powerup_type
 		beq	:+
 		cmp	#powerup_type::mushroom_oneup
 		beq	:+
@@ -77,11 +77,11 @@ actor_proc_powerup:
 			beq	:+
 		.endif
 		cmp	#powerup_type::star
-		bne	:++++ ; if (this.spawned && !eng_timer_ctl && this.type == star) {
+		bne	:++++ ; if (this.spawned && !game_timer_stop && this.type == star) {
 			jsr	actor_proc_bounce
 			jsr	col_actor_bounce_proc
 			jmp	:++++
-		: ; } else if (this.spawned && !eng_timer_ctl && this.type.in(mushroom, type_05)) {
+		: ; } else if (this.spawned && !game_timer_stop && this.type.in(mushroom, type_05)) {
 			jsr	actor_proc_base
 			jsr	col_actor_ground_proc
 			jmp	:+++
@@ -111,10 +111,13 @@ actor_proc_powerup:
 		: ; }
 
 		; if (this.state > cue_display) {
-			jsr	lib_calc_actor_pos
-			jsr	lib_actor_bits_get
+			jsr	pos_calc_x_rel_actor
+			jsr	pos_bits_get_actor
+
 			jsr	col_actor_box
+
 			jsr	render_powerup
+
 			jsr	col_player_actor_proc
 			jsr	col_actor_oob_proc
 		; }

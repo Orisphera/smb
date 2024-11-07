@@ -278,7 +278,7 @@ sub_93E7:
 ; -----------------------------------------------------------
 	.export sys_vs_player_select
 sys_vs_player_select:
-	lda	mode_game
+	lda	proc_id_game
 	jsr	tbljmp
 	.addr	vs_player_select_init_0
 	.addr	vs_player_select_scr
@@ -292,7 +292,7 @@ vs_player_select_init_0:
 	sta	nmi_sprite_overlap
 	jsr	oam_init
 	inc	nmi_disp_disable
-	inc	mode_game
+	inc	proc_id_game
 	rts
 ; ----------------------------
 vs_player_select_scr:
@@ -303,18 +303,18 @@ vs_player_select_scr:
 	sta	VS_RAM_ARENA0+$27
 	lda	#1
 	sta	VS_RAM_ARENA0+$26
-	inc	mode_game
+	inc	proc_id_game
 	rts
 ; ----------------------------
 vs_player_select_init_1:
-	inc	mode_game
+	inc	proc_id_game
 
 vs_player_select_init_1_do:
 	lda	VS_RAM_ARENA0+$10
 	cmp	#1
 	beq	:+ ; if (vs_ram_arena0[16] != 1) {
 		lda	#nmi_addr::addr_1F
-		sta	nmi_addrs_ctl
+		sta	nmi_buffer_ptr
 	: ; }
 
 	rts
@@ -422,10 +422,10 @@ vs_title_ppu_init:
 	lda	#$FF
 	sta	VS_RAM_ARENA0+$16
 	lda	#nmi_addr::pal_overworld
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	lda	#0
 	sta	VS_RAM_ARENA0+$22
-	inc	mode_game
+	inc	proc_id_game
 	rts
 ; -----------------------------------------------------------
 vs_super_players_oam:
@@ -446,7 +446,7 @@ vs_title_super_players:
 	bne	:+ ; if (vs_ram_arena0[34].in(0, 1)) {
 		; if (vs_ram_arena0[34] == 0) {
 			lda	#nmi_addr::addr_1E_F
-			sta	nmi_addrs_ctl
+			sta	nmi_buffer_ptr
 			jmp	:++
 		: cmp	#1
 		bne	:++ ; } else {
@@ -471,7 +471,7 @@ vs_title_super_players:
 		lda	#0
 		sta	VS_RAM, x
 		lda	#nmi_addr::addr_1D_B
-		sta	nmi_addrs_ctl
+		sta	nmi_buffer_ptr
 
 		ldy	#(vs_super_players_oam_end-vs_super_players_oam)-1
 		: ; for (entry of vs_super_players_oam) {
@@ -487,7 +487,7 @@ vs_title_super_players:
 		bne	:+ ; if (vs_ram_arena0[23] == 6) {
 			jmp	sub_9DF7
 		: ; } else {
-			inc	mode_game
+			inc	proc_id_game
 			rts
 		; }
 	; }

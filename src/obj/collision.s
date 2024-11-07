@@ -25,11 +25,11 @@ oob_proc_offset_x_right_lo	= zp_byte_03
 
 	.export col_actor_oob_proc
 col_actor_oob_proc:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::cheep_fly
 	beq	:++++ ; if (actor.id != cheep_fly) {
 		lda	pos_x_lo_screen_left
-		ldy	actor_id, x
+		ldy	obj_id_actor, x
 		cpy	#actor::hammer_bro
 		beq	:+
 		.if	.defined(SMB2M)
@@ -129,9 +129,9 @@ col_proj_actor_proc:
 			lda	state_actor, x
 			and	#actor_states::bit_5
 			bne	:+++
-			lda	actor_mode, x
+			lda	proc_id_actor, x
 			beq	:+++
-			lda	actor_id, x
+			lda	obj_id_actor, x
 			cmp	#actor::plat_start
 			bcc	:+
 			cmp	#actor::plat_s_up
@@ -182,7 +182,7 @@ SCORE_PROJ_ENEMY_OTHER	= scores::value_200
 SCORE_PROJ_HAMMER_BRO	= scores::value_1000
 SCORE_PROJ_BOWSER	= scores::value_5000
 ; ------------------------------------------------------------
-bowser_death_actor_ids:
+bowser_death_obj_id_actors:
 	.byte	actor::goomba
 	.byte	actor::koopa_green
 	.byte	actor::buzzy_beetle
@@ -196,17 +196,17 @@ bowser_death_actor_ids:
 .endif
 ; -----------------------------
 col_proj_actor_damage:
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
 	ldx	zp_byte_01
-	lda	actor_mode, x
+	lda	proc_id_actor, x
 	bpl	:+
 	and	#ACTOR_MODE_PARENT_MASK
 	tax
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::bowser
 	beq	:++
 	ldx	zp_byte_01
-	: lda	actor_id, x
+	: lda	obj_id_actor, x
 	cmp	#actor::buzzy_beetle
 	beq	:+++++++++
 	cmp	#actor::bowser
@@ -219,8 +219,8 @@ col_proj_actor_damage:
 		lda	#<-2
 		sta	veloc_y_actor, x
 		ldy	course_no
-		lda	bowser_death_actor_ids, y
-		sta	actor_id, x
+		lda	bowser_death_obj_id_actors, y
+		sta	obj_id_actor, x
 		lda	#actor_states::bit_5
 		cpy	#course::no_04
 		bcs	:+ ; if (course.no < no_04) {
@@ -239,7 +239,7 @@ col_proj_actor_damage:
 	cmp	#actor::actors_page_b
 	bcs	:++++++ ; } else if (actor.id.not_in(buzzy_beetle, bullet_swarm, podoboo) && actor.id < actors_page_b) {
 	col_actor_kill:
-		lda	actor_id, x
+		lda	obj_id_actor, x
 		.if	.defined(SMB2M)
 			cmp	#actor::piranha_plant_b
 			beq	:+
@@ -272,7 +272,7 @@ col_proj_actor_damage:
 		sta	state_actor, x
 
 		lda	#SCORE_PROJ_ENEMY_OTHER
-		ldy	actor_id, x
+		ldy	obj_id_actor, x
 		cpy	#actor::hammer_bro
 		bne	:+ ; if (actor.id == hammer_bro) {
 			lda	#SCORE_PROJ_HAMMER_BRO
@@ -296,13 +296,13 @@ col_player_hammer_proc:
 	lsr	a
 	bcc	:++
 	.if	.defined(SMB)|.defined(VS_SMB)
-		lda	eng_timer_ctl
+		lda	game_timer_stop
 	.elseif	.defined(SMB2M)
 		lda	bits_offscr_player
-		ora	eng_timer_ctl
+		ora	game_timer_stop
 	.endif
 	ora	bits_offscr_misc
-	bne	:++ ; if ((frame_count % 2) && eng_timer_ctl == 0 && misc.bits_offscr == 0) {
+	bne	:++ ; if ((frame_count % 2) && !game_timer_stop && misc.bits_offscr == 0) {
 		txa
 		asl	a
 		asl	a
@@ -348,7 +348,7 @@ col_player_powerup_proc:
 	jsr	actor_erase
 
 	.if	.defined(SMB2M)
-		lda	eng_powerup_type
+		lda	actor_powerup_type
 		cmp	#powerup_type::mushroom_poison
 		bne	:+ ; if (powerup.type == mushroom_poison) {
 			jmp	col_player_harm_proc
@@ -359,7 +359,7 @@ col_player_powerup_proc:
 	jsr	col_score_do
 	lda	#sfx_pulse_2::powerup
 	sta	apu_sfx_pulse_2_req
-	lda	eng_powerup_type
+	lda	actor_powerup_type
 	cmp	#powerup_type::star
 	bcc	:+
 	cmp	#powerup_type::mushroom_oneup
@@ -419,7 +419,7 @@ col_player_actor_proc:
 		bcs	:+
 		lda	actor_bits_mask, x
 		bne	:+
-		lda	player_proc_id
+		lda	proc_id_player
 		cmp	#player_procs::ctrl
 		bne	:+
 		lda	state_actor, x
@@ -440,7 +440,7 @@ col_player_actor_proc:
 	; }
 ; -----------------------------
 col_player_actor_proc_hit:
-	ldy	actor_id, x
+	ldy	obj_id_actor, x
 	cpy	#actor::power_up
 	bne	:+ ; if (actor.id == power_up) {
 		jmp	col_player_powerup_proc
@@ -497,7 +497,7 @@ col_player_actor_proc_hit_do:
 	and	#actor_states::state_mask
 	cmp	#actor_states::state_2
 	bcc	:+++
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::goomba
 	beq	:++ ; if (
 	;	!(actor.collision & 0x1)
@@ -540,7 +540,7 @@ col_player_actor_proc_hit_do:
 		.endif
 		:
 		.ifndef	PAL
-			lda	actor_id, x
+			lda	obj_id_actor, x
 			cmp	#actor::blooper
 			bcc	:+
 			lda	pos_y_lo_player
@@ -548,7 +548,7 @@ col_player_actor_proc_hit_do:
 			adc	#12
 		.else
 			lda	#20
-			ldy	actor_id, x
+			ldy	obj_id_actor, x
 			cpy	#actor::cheep_fly
 			bne	:+ ; if (actor.id == cheep_fly) {
 				lda	#7
@@ -605,10 +605,10 @@ col_player_harm_proc_do:
 		ldy	#1
 ; -----------------------------
 	col_player_harm_proc_proc_change:
-		sta	player_proc_id
+		sta	proc_id_player
 		sty	state_player
-		ldy	#%11111111
-		sty	eng_timer_ctl
+		ldy	#255
+		sty	game_timer_stop
 		iny
 		sty	game_scroll_amount
 	; }
@@ -635,12 +635,12 @@ col_player_actor_stomp_scores:
 	.byte	scores::value_1000
 ; -----------------------------
 col_player_actor_stomp:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::spiny
 	beq	col_player_harm_proc
 	lda	#sfx_pulse_1::stomp
 	sta	apu_sfx_pulse_1_req
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	ldy	#0
 	cmp	#actor::cheep_fly
 	beq	:+
@@ -690,7 +690,7 @@ col_player_actor_stomp:
 		.endif
 
 		and	#actor::koopa_mask
-		sta	actor_id, x
+		sta	obj_id_actor, x
 
 		.if	.defined(SMB)|.defined(VS_SMB)
 			ldy	#actor_states::init
@@ -739,7 +739,7 @@ col_actor_stomp_resurrect_timer:
 		sta	veloc_y_player
 	.elseif	.defined(SMB2M)
 		ldy	#<-6
-		lda	actor_id, x
+		lda	obj_id_actor, x
 		cmp	#actor::koopa_para_fly_red
 		beq	:+
 		cmp	#actor::koopa_para_fly_green
@@ -812,7 +812,7 @@ col_actor_actor_proc:
 	bcc	:-
 	lda	course_type
 	beq	:- ; if ((frame_count % 2) && course_type != water) {
-		lda	actor_id, x
+		lda	obj_id_actor, x
 		cmp	#actor::actors_page_b
 		bcs	:+++++
 		cmp	#actor::lakitu
@@ -835,9 +835,9 @@ col_actor_actor_proc:
 			tya
 			pha
 
-			lda	actor_mode, x
+			lda	proc_id_actor, x
 			beq	:+++
-			lda	actor_id, x
+			lda	obj_id_actor, x
 			cmp	#actor::actors_page_b
 			bcs	:+++
 			cmp	#actor::lakitu
@@ -901,7 +901,7 @@ col_actor_actor_do:
 	lda	state_actor, x
 	cmp	#actor_states::state_6
 	bcc	:+++
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::hammer_bro
 	beq	:++ ; if (actor_x.state == init && actor_y.state == init && actor_x.state >= state_6 && actor_x.id != hammer_bro) {
 		lda	state_actor, y
@@ -938,7 +938,7 @@ col_actor_actor_do:
 		lda	state_actor, y
 		cmp	#actor_states::state_6
 		bcc	:+
-		lda	actor_id, y
+		lda	obj_id_actor, y
 		cmp	#actor::hammer_bro
 		beq	:-- ; if (actor.state >= 6 && actor.id != hammer_bro) {
 			jsr	col_actor_kill
@@ -965,7 +965,7 @@ col_actor_actor_do:
 	; }
 ; -----------------------------
 col_actor_calc_dir_check:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::piranha_plant
 	beq	:++
 
@@ -1002,13 +1002,13 @@ col_actor_calc_dir_check:
 col_plat_l_proc:
 	lda	#%11111111
 	sta	actor_plat_col_flag, x
-	lda	eng_timer_ctl
+	lda	game_timer_stop
 	bne	:++
 	lda	state_actor, x
 	bmi	:++
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::plat_start
-	bne	:+ ; if (eng_timer_ctl == 0 && !(actor.state & 0x80) && actor.id == plat_start) {
+	bne	:+ ; if (!game_timer_stop && !(actor.state & 0x80) && actor.id == plat_start) {
 		lda	state_actor, x
 		tax
 		jsr	:+
@@ -1037,11 +1037,11 @@ col_plat_s_proc_idx	= zp_byte_00
 
 	.export col_plat_s_proc
 col_plat_s_proc:
-	lda	eng_timer_ctl
+	lda	game_timer_stop
 	bne	:+++
 	sta	actor_plat_col_flag, x
 	jsr	col_check_player_pos_y
-	bcs	:+++ ; if (eng_timer_ctl == 0 && !col_check_player_pos_y()) {
+	bcs	:+++ ; if (!game_timer_stop && !col_check_player_pos_y()) {
 		lda	#2
 		sta	col_plat_s_proc_idx
 		: ; for (i = 2; i > 0; i--) {
@@ -1097,7 +1097,7 @@ col_plat_l_do:
 	lda	veloc_y_player
 	bmi	:+++ ; if ((col_box_se.pos_y - col_box_nw_y.pos_y) < 6 && player.veloc_y >= 0) {
 		lda	zp_byte_00
-		ldy	actor_id, x
+		ldy	obj_id_actor, x
 		cpy	#actor::plat_s_up
 		beq	:+
 		cpy	#actor::plat_s_down
@@ -1174,7 +1174,7 @@ col_plat_player_pos:
 	lda	pos_y_lo_actor, x
 
 col_plat_player_pos_do:
-	ldy	player_proc_id
+	ldy	proc_id_player
 	cpy	#player_procs::death
 	beq	:+
 	ldy	pos_y_hi_actor, x
@@ -1188,7 +1188,7 @@ col_plat_player_pos_do:
 		sta	pos_y_hi_player
 		lda	#0
 		sta	veloc_y_player
-		sta	accel_y_actor
+		sta	accel_y2_player
 	: ; }
 
 	rts
@@ -1236,13 +1236,13 @@ col_bg_proc_player_pos_y_block_cutoff:
 ; -----------------------------
 	.export col_bg_proc
 col_bg_proc:
-	lda	eng_col_off
+	lda	col_disable
 	bne	col_bg_proc_rts
-	lda	player_proc_id
+	lda	proc_id_player
 	cmp	#player_procs::death
 	beq	col_bg_proc_rts
 	cmp	#player_procs::pole
-	bcc	col_bg_proc_rts ; if (!eng_col_off && player_proc_id != death && player_proc_id >= pole) {
+	bcc	col_bg_proc_rts ; if (!col_disable && proc_id_player != death && proc_id_player >= pole) {
 		lda	#player_state::jump_swim
 		ldy	player_swimming
 		bne	:++
@@ -1274,14 +1274,15 @@ col_bg_proc:
 	rts
 ; -----------------------------
 col_bg_proc_do:
-	ldy	#2
-	lda	player_crouch
+	ldy	#(col_bg_buffer_offset_end-col_bg_buffer_offset)-1
+	lda	player_crouching
 	bne	:+
 	lda	player_size
-	bne	:+ ; if (!player_crouch && player_size == large) {
+	bne	:+ ; if (!player.crouching && player.size == large) {
 		dey
+
 		lda	player_swimming
-		bne	:+ ; if (player.state != swim) {
+		bne	:+ ; if (!player.swimming) {
 			dey
 		; }
 	: ; }
@@ -1290,8 +1291,8 @@ col_bg_proc_do:
 	tay
 
 	ldx	player_size
-	lda	player_crouch
-	beq	:+ ; if (player_crouch) {
+	lda	player_crouching
+	beq	:+ ; if (player.crouching) {
 		inx
 	: ; }
 	lda	pos_y_lo_player
@@ -1322,7 +1323,7 @@ col_bg_proc_do:
 	
 			jmp	:+++
 		: cmp	#metatile_0::climb_blank
-		beq	:+ ; } else if ((col_bg_proc_solid_check() != climb_blank) {
+		beq	:+ ; } else if (col_bg_proc_solid_check() != climb_blank) {
 			; if (course_type != water && timer_block_bounce == 0) {
 				lda	#sfx_pulse_1::bump
 				sta	apu_sfx_pulse_1_req
@@ -1382,8 +1383,8 @@ col_bg_proc_ground_type:
 		: ; }
 		jsr	col_bg_proc_vis
 		beq	:+++ ; if (tile.is_visible) {
-			ldy	eng_spring_ani
-			bne	:++ ; if (!eng_spring_ani) {
+			ldy	player_on_spring
+			bne	:++ ; if (!player.on_spring) {
 				ldy	col_box_buffer_tbl_offset
 				cpy	#GROUND_PROC_LIMIT
 				bcc	:+ ; if (col_box_buffer_tbl_offset >= 5) {
@@ -1402,7 +1403,7 @@ col_bg_proc_ground_type:
 
 				lda	#0
 				sta	veloc_y_player
-				sta	accel_y_actor
+				sta	accel_y2_player
 				sta	counter_stomps
 			: ; }
 		
@@ -1468,8 +1469,8 @@ col_bg_proc_side_do:
 			bcs	col_bg_proc_coin_do ; if (!tile.is_coin) {
 				jsr	col_bg_proc_spring_check
 				bcc	:+
-				lda	eng_spring_ani
-				bne	:+++++++ ; if (tile.is_spring && eng_spring_ani == 0) {
+				lda	player_on_spring
+				bne	:+++++++ ; if (tile.is_spring && !player.on_spring) {
 					jmp	:++++++
 				: ldy	state_player
 				cpy	#player_state::ground
@@ -1499,21 +1500,21 @@ col_bg_proc_side_do:
 							iny
 						: ; }
 						lda	col_bg_timer_scene_trans, y
-						sta	eng_timer_scene_trans
+						sta	timer_scene_trans
 					: ; }
 				
-					lda	player_proc_id
+					lda	proc_id_player
 					cmp	#player_procs::enter
 					beq	:++
 					cmp	#player_procs::ctrl
 					bne	:++ ; if (game.proc_id == ctrl) {
 						lda	#player_procs::pipe_h
-						sta	player_proc_id
+						sta	proc_id_player
 						rts
 					; }
 				: ; }
 			
-				; if (!tile.is_spring || eng_spring_ani == 0) {
+				; if (!tile.is_spring || !player.on_spring) {
 					jsr	col_bg_proc_player_halt
 				: ; }
 		
@@ -1531,16 +1532,16 @@ col_bg_timer_scene_trans:
 ; -----------------------------
 col_bg_proc_coin_do:
 	jsr	col_bg_proc_bg_tile_blank
-	inc	eng_bonus_oneup_tally
+	inc	game_bonus_counter
 	jmp	misc_proc_coin_add
 ; -----------------------------
 AXE_PLAYER_VELOC_X	= 24
 
 col_bg_proc_axe_do:
 	lda	#victory_modes::bowser
-	sta	mode_game
+	sta	proc_id_game
 	lda	#system_modes::victory
-	sta	mode_system
+	sta	proc_id_system
 
 	.if	.defined(SMB2M)
 		jsr	player_phys_load_default
@@ -1552,7 +1553,7 @@ col_bg_proc_axe_do:
 col_bg_proc_bg_tile_blank:
 	ldy	col_buffer_ptr_idx
 	lda	#metatile_0::blank_a
-	sta	(eng_buffer_ptr), y
+	sta	(game_buffer), y
 	jmp	gfx_clear_small
 ; -----------------------------
 col_bg_proc_climb_offset_x_lo:
@@ -1563,6 +1564,7 @@ col_bg_proc_climb_offset_x_hi:
 
 col_bg_proc_pole_cutoffs_y:
 	.byte	24, 34, 80, 104, 144
+col_bg_proc_pole_cutoffs_y_end:
 ; -----------------------------
 .if	.defined(SMB)|.defined(SMB2M)
 CLIMB_POS_X	= pos_x_lo_player
@@ -1584,14 +1586,14 @@ col_bg_proc_climb_do:
 		beq	:+
 		cmp	#metatile_0::pole
 		bne	:++++++
-		: lda	player_proc_id
+		: lda	proc_id_player
 		cmp	#player_procs::victory
 		beq	:++++++ ; if (tile.in(flag_ball, pole) && game.proc_id != victory) {
 			lda	#DIR_RIGHT
 			sta	disp_dir_player
 			inc	game_scroll_lock
 
-			lda	player_proc_id
+			lda	proc_id_player
 			cmp	#player_procs::pole
 			beq	:++++ ; if (game.proc_id != pole) {
 				lda	#actor::bullet
@@ -1599,12 +1601,12 @@ col_bg_proc_climb_do:
 				lda	#music_event::none
 				sta	apu_music_event_req
 				lsr	a
-				sta	eng_music_event_flag
+				sta	music_event_goal_flag
 
-				ldx	#4
+				ldx	#(col_bg_proc_pole_cutoffs_y_end-col_bg_proc_pole_cutoffs_y)-1
 				lda	pos_y_lo_player
-				sta	pos_y_player_flag
-				: ; for (x = 4; player.pos_y < col_bg_proc_pole_cutoffs_y[x] && x > 0; x--) {
+				sta	pos_y_goal
+				: ; for (cutoff of cutoffs) {
 					cmp	col_bg_proc_pole_cutoffs_y, x
 					bcs	:+
 			
@@ -1627,7 +1629,7 @@ col_bg_proc_climb_do:
 			:
 		
 			lda	#player_procs::pole
-			sta	player_proc_id
+			sta	proc_id_player
 
 			jmp	:++
 		: cmp	#metatile_0::climb_blank
@@ -1636,14 +1638,14 @@ col_bg_proc_climb_do:
 		cmp	#32
 		bcs	:+ ; } else if (tile == climb_blank && player.pos_y < 32) {
 			lda	#player_procs::vine
-			sta	player_proc_id
+			sta	proc_id_player
 		: ; }
 	
 		lda	#player_state::climb
 		sta	state_player
 		lda	#0
 		sta	veloc_x_player
-		sta	accel_x_player
+		sta	veloc_x_player_hi
 
 		lda	CLIMB_POS_X
 		sec
@@ -1655,7 +1657,7 @@ col_bg_proc_climb_do:
 		: ; }
 	
 		ldy	disp_dir_player
-		lda	eng_buffer_ptr
+		lda	game_buffer
 		asl	a
 		asl	a
 		asl	a
@@ -1664,8 +1666,8 @@ col_bg_proc_climb_do:
 		adc	col_bg_proc_climb_offset_x_lo-1, y
 		sta	pos_x_lo_player
 
-		lda	eng_buffer_ptr
-		bne	:+ ; if (!(eng_buffer_ptr % 256)) {
+		lda	game_buffer
+		bne	:+ ; if (!(game_buffer % 256)) {
 			lda	pos_x_hi_screen_right
 			clc
 			adc	col_bg_proc_climb_offset_x_hi-1, y
@@ -1691,22 +1693,25 @@ col_bg_proc_vis:
 	cmp	#metatile_1::blank_c
 	: rts
 ; ------------------------------------------------------------
+SPRING_ACCEL_Y_INIT	= 112
+SPRING_ACCEL_TIMER	= 3
+
 col_bg_proc_spring:
 	jsr	col_bg_proc_spring_check
 	bcc	:+ ; if (col_bg_proc_spring_check()) {
-		lda	#112
+		lda	#SPRING_ACCEL_Y_INIT
 		sta	accel_y_player
 
 		.if	.defined(SMB2M)
-			sta	player_gravity
+			sta	accel_y_gravity
 		.endif
 
 		lda	#SPRING_ACCEL_Y_COL
 		sta	accel_y_spring
-		lda	#3
+		lda	#SPRING_ACCEL_TIMER
 		sta	timer_spring
 		lsr	a
-		sta	eng_spring_ani
+		sta	player_on_spring
 	: ; }
 
 	rts
@@ -1737,15 +1742,15 @@ col_bg_proc_pipe_v_do:
 	cmp	#metatile_0::pipe_v_a
 	bne	:+++ ; if ((joypad_u_d & down) && zp_byte_00 == pipe_v_b && zp_byte_01 == pipe_v_a) {
 		lda	#PIPE_TRANSITION_TIME
-		sta	eng_timer_scene_trans
+		sta	timer_scene_trans
 		lda	#player_procs::pipe_v
-		sta	player_proc_id
+		sta	proc_id_player
 		lda	#sfx_pulse_1::pipe_entry_16
 		sta	apu_sfx_pulse_1_req
 		lda	#obj_attr::priority_low|obj_attr::color0
 		sta	attr_player
-		lda	eng_warp_ctrl
-		beq	:+++ ; if (eng_warp_ctrl) {
+		lda	game_warp_ctrl
+		beq	:+++ ; if (game_warp_ctrl) {
 			.if	.defined(SMB)|.defined(VS_SMB)
 				PIPE_POS_MASK	= %00000011
 			.elseif	.defined(SMB2)
@@ -1809,7 +1814,7 @@ col_bg_proc_pipe_v_do:
 				inc	bg_hidden_one_up_req
 			.endif
 
-			inc	eng_req_timer
+			inc	player_first_start
 		; }
 	: ; }
 
@@ -1919,7 +1924,7 @@ col_actor_ground_proc:
 	bne	:-
 	jsr	col_actor_pos_y_diff
 	bcc	:-
-	ldy	actor_id, x
+	ldy	obj_id_actor, x
 	cpy	#actor::spiny
 	bne	:+
 	lda	pos_y_lo_actor, x
@@ -1961,10 +1966,10 @@ col_actor_ground_proc:
 			.if	.defined(SMB)|.defined(VS_SMB)
 				ldy	col_buffer_ptr_idx
 				lda	#metatile_0::blank_a
-				sta	(eng_buffer_ptr), y
+				sta	(game_buffer), y
 			.endif
 
-			lda	actor_id, x
+			lda	obj_id_actor, x
 			cmp	#actor::actors_page_b
 			bcs	col_actor_koopa_demote_check ; if (actor.id < actors_page_b) {
 				cmp	#actor::goomba
@@ -1980,7 +1985,7 @@ col_actor_ground_proc:
 ; -----------------------------
 col_actor_koopa_demote_check:
 	.if	.defined(SMB2M)
-		lda	actor_id, x
+		lda	obj_id_actor, x
 	.endif
 
 	cmp	#actor::div_height
@@ -2001,7 +2006,7 @@ col_actor_koopa_demote_check:
 	bcc	:++
 	: ; if ((actor.id >= div_height && actor.id < lakitu) && (actor.id < cheep_grey || actor.id >= piranha_plant)) {
 		and	#actor::koopa_mask
-		sta	actor_id, x
+		sta	obj_id_actor, x
 	: ; }
 ; -----------------------------
 col_player_actor_stomp_do:
@@ -2024,7 +2029,7 @@ col_player_actor_stomp_do:
 	dec	pos_y_lo_actor, x
 	dec	pos_y_lo_actor, x
 
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::blooper
 	beq	:+
 	lda	#<-3
@@ -2040,7 +2045,7 @@ col_player_actor_stomp_do:
 	bpl	:+ ; if (col_player_bullet_diff() < 0) {
 		iny
 	: ; }
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::bullet
 	beq	:+
 	cmp	#actor::bullet_swarm
@@ -2081,7 +2086,7 @@ col_actor_land:
 	cmp	#actor_states::state_2
 	bne	col_actor_land_dir ; } else if (actor.state == state_2) {
 		lda	#16
-		ldy	actor_id, x
+		ldy	obj_id_actor, x
 		cpy	#actor::spiny
 		bne	:+ ; if (actor.id == spiny) {
 			lda	#0
@@ -2096,7 +2101,7 @@ col_actor_land:
 	rts
 ; -----------------------------
 col_actor_land_dir:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::goomba
 	beq	:+++
 	cmp	#actor::spiny
@@ -2110,7 +2115,7 @@ col_actor_land_dir:
 		and	#MOD_8
 		beq	:+++
 	; }
-	: ; if (actor_id == 6 || (actor_id == 0x12 && (frame_count % 8))) {
+	: ; if (obj_id_actor == 6 || (obj_id_actor == 0x12 && (frame_count % 8))) {
 		ldy	#DIR_RIGHT
 		jsr	col_player_bullet_diff
 		bpl	:+ ; if (col_player_bullet_diff() < 0) {
@@ -2139,7 +2144,7 @@ col_actor_land_init:
 	; }
 ; ------------------------------------------------------------
 col_actor_check_side:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::koopa_red
 	bne	:+
 	lda	state_actor, x
@@ -2197,7 +2202,7 @@ col_actor_check_side_bump:
 		sta	apu_sfx_pulse_1_req
 	: ; }
 
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::hammer_bro
 	bne	:+ ; if () {
 		lda	#0
@@ -2447,8 +2452,9 @@ col_box_w_bits:
 	.export col_plat_l_box
 col_plat_l_box:
 	inx
-	jsr	lib_bits_get_do_x
+	jsr	pos_bits_get_do_x
 	dex
+
 	cmp	#$FE
 	bcs	col_box_offscr
 
@@ -2677,19 +2683,33 @@ col_box_buffer_check_do:
 	rts
 ; --------------------------------------------------------------
 col_bg_buffer_offset:
-	.byte	0, 7, 14
+col_bg_buffer_offset_tall:
+	.byte	0
+col_bg_buffer_offset_swimming:
+	.byte	7
+col_bg_buffer_offset_short:
+	.byte	14
+col_bg_buffer_offset_end:
 
 col_bg_buffer_offset_x:
-	.byte	8, 3, 12, 2, 2, 13, 13, 8
-	.byte	3, 12, 2, 2, 13, 13, 8, 3
-	.byte	12, 2, 2, 13, 13, 8, 0, 16
-	.byte	4, 20, 4, 4
+col_bg_buffer_offset_x_tall:
+	.byte	8, 3, 12, 2, 2,  13, 13
+col_bg_buffer_offset_x_swimming:
+	.byte	8, 3, 12, 2, 2,  13, 13
+col_bg_buffer_offset_x_short:
+	.byte	8, 3, 12, 2, 2,  13, 13
+
+	.byte	8, 0, 16, 4, 20, 4,  4
 
 col_bg_buffer_offset_y:
-	.byte	4, 32, 32, 8, 24, 8, 24, 2
-	.byte	32, 32, 8, 24, 8, 24, 18, 32
-	.byte	32, 24, 24, 24, 24, 24, 20, 20
-	.byte	6, 6, 8, 16
+col_bg_buffer_offset_y_tall:
+	.byte	4,  32, 32, 8,  24, 8,  24
+col_bg_buffer_offset_y_swimming:
+	.byte	2,  32, 32, 8,  24, 8,  24
+col_bg_buffer_offset_y_short:
+	.byte	18, 32, 32, 24, 24, 24, 24
+
+	.byte	24, 20, 20, 6,  6,  8,  16
 ; -------------------------------
 col_box_player_step:
 	iny
@@ -2738,7 +2758,7 @@ col_box_buffer:
 	sbc	#32
 	sta	col_buffer_ptr_idx
 	tay
-	lda	(eng_buffer_ptr), y
+	lda	(game_buffer), y
 	sta	col_box_buffer_old_tile
 	ldy	col_box_buffer_tbl_offset
 	pla

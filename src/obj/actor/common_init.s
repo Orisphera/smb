@@ -20,7 +20,7 @@ ACTOR_LOOP_OFFSET_X	= 48
 ; -----------------------------------------------------------
 	.export actor_proc
 actor_proc:
-	lda	actor_mode, x
+	lda	proc_id_actor, x
 	pha
 
 	asl	a
@@ -38,9 +38,9 @@ actor_proc:
 		pla
 		and	#ACTOR_MODE_PARENT_MASK
 		tay
-		lda	actor_mode, y
+		lda	proc_id_actor, y
 		bne	:+ ; if (actor_parent.mode == free) {
-			sta	actor_mode, x
+			sta	proc_id_actor, x
 		; }
 	: ; }
 	
@@ -207,10 +207,10 @@ actor_area_loop:
 	rts
 ; ------------------------------
 actor_loop:
-	lda	eng_loop_flag
+	lda	course_loop_flag
 	beq	:+++++
 	lda	pos_x_lo_game
-	bne	:+++++ ; if (eng_loop_flag != 0 && pos_x_lo_game == 0) {
+	bne	:+++++ ; if (course_loop_flag != 0 && pos_x_lo_game == 0) {
 		ldy	#LOOP_VAL_COUNT
 		: ; for (loop_descriptor in loop_descriptors) {
 			dey
@@ -237,7 +237,7 @@ actor_loop:
 			bne	:++ ; if ((player.pos_y.lo == actor_loop_pos_y_lo[y] && player.state == ground) || course_no == no_07 || SMB2) {
 			.endif
 				; if (course_no == no_07 || SMB2) {
-					inc	eng_loop_counter_real
+					inc	actor_loop_counter_real
 				; }
 
 				actor_course_loop:
@@ -245,15 +245,15 @@ actor_loop:
 				actor_loop_check_not_apply:
 				.endif
 
-				inc	eng_loop_counter
-				lda	eng_loop_counter
+				inc	actor_loop_counter
+				lda	actor_loop_counter
 				.if	.defined(SMB)|.defined(VS_SMB)
 					cmp	#ACTOR_LOOP_COUNT
 				.elseif	.defined(SMB2M)
 					cmp	actor_loop_data_smb2, y
 				.endif
 				bne	:+++
-				lda	eng_loop_counter_real
+				lda	actor_loop_counter_real
 				.if	.defined(SMB)|.defined(VS_SMB)
 					cmp	#ACTOR_LOOP_COUNT
 				.elseif	.defined(SMB2M)
@@ -270,30 +270,30 @@ actor_loop:
 					beq	actor_course_loop
 				.endif
 			; }
-			: ; if ((course_no != no_07 || SMB2) || (++eng_loop_counter == loop_count && eng_loop_counter_real != loop_count)) {
+			: ; if ((course_no != no_07 || SMB2) || (++this.loop_counter == loop_count && this.loop_counter_real != loop_count)) {
 				jsr	actor_area_loop
 				jsr	actor_killall
 			: ; }
 	
-			; if (eng_loop_counter == loop_count || (player.pos_y.lo == actor_loop_pos_y_lo[y] && player.state == ground && (course_no != no_07 || SMB2))) {
+			; if (this.loop_counter == loop_count || (player.pos_y.lo == actor_loop_pos_y_lo[y] && player.state == ground && (course_no != no_07 || SMB2))) {
 				lda	#0
-				sta	eng_loop_counter
-				sta	eng_loop_counter_real
+				sta	actor_loop_counter
+				sta	actor_loop_counter_real
 			: ; }
 
 			lda	#0
-			sta	eng_loop_flag
+			sta	course_loop_flag
 		; }
 	: ; }
 
-	lda	eng_swarm_queue
-	beq	:+ ; if (eng_swarm_queue) {
-		sta	actor_id, x
-		lda	#actor_modes::active
-		sta	actor_mode, x
+	lda	actor_swarm_queue
+	beq	:+ ; if (actor_swarm_queue) {
+		sta	obj_id_actor, x
+		lda	#proc_id_actors::active
+		sta	proc_id_actor, x
 		lda	#actor_states::init
 		sta	state_actor, x
-		sta	eng_swarm_queue
+		sta	actor_swarm_queue
 		jmp	actor_init
 	:
 
@@ -476,12 +476,12 @@ actor_loop:
 									: ; }
 								.endif
 							
-								sta	actor_id, x
-								lda	#actor_modes::active
-								sta	actor_mode, x
+								sta	obj_id_actor, x
+								lda	#proc_id_actors::active
+								sta	proc_id_actor, x
 								jsr	actor_init
-								lda	actor_mode, x
-								bne	actor_special_do ; if (actor_mode == free) {
+								lda	proc_id_actor, x
+								bne	actor_special_do ; if (proc_id_actor == free) {
 									rts
 								; } else actor_special_do();
 							; } else actor_group();
@@ -501,7 +501,7 @@ actor_init_check:
 		; if (!actor_swarm_buffer) {
 			lda	#actor::vine
 		: ; }
-		sta	actor_id, x
+		sta	obj_id_actor, x
 	
 	actor_init:
 		lda	#actor_states::init
@@ -583,7 +583,7 @@ actor_special_do:
 ; -----------------------------------------------------------
 	.export actor_init_do
 actor_init_do:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::actors_page_b
 	bcs	:+ ; if (actor.id < page_b) {
 		tay

@@ -22,7 +22,7 @@ bullet_cheep_pos_x_lo:
 	.byte	32, 96, 160, 112
 
 
-bullet_cheep_actor_ids:
+bullet_cheep_obj_id_actors:
 	.byte	actor::cheep_grey
 	.byte	actor::cheep_red
 ; ------------------------------
@@ -48,10 +48,10 @@ actor_init_bullet_cheep:
 		tya
 		and	#MOD_2
 		tay
-		lda	bullet_cheep_actor_ids, y
+		lda	bullet_cheep_obj_id_actors, y
 	
 	actor_init_bullet_cheep_do:
-		sta	actor_id, x
+		sta	obj_id_actor, x
 
 		lda	actor_bullet_cheep_mask
 		cmp	#%11111111
@@ -78,7 +78,7 @@ actor_init_bullet_cheep:
 
 		lda	bullet_cheep_pos_x_lo, y
 		jsr	actor_init_right_side
-		sta	pos_y_actor, x
+		sta	accel_y1_actor, x
 		lda	#BULLET_CHEEP_TIMER_INIT
 		sta	timer_swarm
 		jmp	actor_init_do
@@ -89,9 +89,9 @@ actor_init_bullet_cheep:
 			cpy	#ENG_ACTOR_MAX-1
 			bcs	:+
 		
-			lda	actor_mode, y
+			lda	proc_id_actor, y
 			beq	:-
-			lda	actor_id, y
+			lda	obj_id_actor, y
 			cmp	#actor::bullet_swarm
 			bne	:-
 		; }
@@ -106,7 +106,7 @@ actor_init_bullet_cheep:
 			lda	#actor::bullet_swarm
 			bne	actor_init_bullet_cheep_do ; if (this.is_group) {
 			actor_group_pos_y_lo	= zp_byte_00
-			actor_group_actor_id	= zp_byte_01
+			actor_group_obj_id_actor	= zp_byte_01
 			actor_group_pos_x_hi	= zp_byte_02
 			actor_group_pos_x_lo	= zp_byte_03
 
@@ -132,7 +132,7 @@ actor_init_bullet_cheep:
 
 					pla
 				: ; }
-				sty	actor_group_actor_id
+				sty	actor_group_obj_id_actor
 
 				ldy	#GROUP_POS_Y_LOW
 				and	#MOD_4_2_UP
@@ -161,13 +161,13 @@ actor_init_bullet_cheep:
 						cpx	#ENG_ACTOR_MAX-1
 						bcs	:+
 				
-						lda	actor_mode, x
+						lda	proc_id_actor, x
 						bne	:-
 					; }
 			
 					; if (x < (ENG_ACTOR_MAX-1) && actor[x].mode == free) {	
-						lda	actor_group_actor_id
-						sta	actor_id, x
+						lda	actor_group_obj_id_actor
+						sta	obj_id_actor, x
 
 						lda	actor_group_pos_x_hi
 						sta	pos_x_hi_actor, x
@@ -182,9 +182,9 @@ actor_init_bullet_cheep:
 
 						lda	actor_group_pos_y_lo
 						sta	pos_y_lo_actor, x
-						lda	#actor_modes::active
+						lda	#proc_id_actors::active
 						sta	pos_y_hi_actor, x
-						sta	actor_mode, x
+						sta	proc_id_actor, x
 						jsr	actor_init_do
 				
 						dec	actor_group_count

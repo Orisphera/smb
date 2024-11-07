@@ -28,7 +28,7 @@ actor_proc_cheep:
 		jmp	motion_fall_slow
 	: ; } else {
 		sta	actor_proc_cheep_veloc_y
-		lda	actor_id, x
+		lda	obj_id_actor, x
 		sec
 		sbc	#actor::cheep
 		tay
@@ -51,10 +51,10 @@ actor_proc_cheep:
 			lda	veloc_x_actor, x
 			cmp	#CHEEP_VELOC_X
 			bcc	:+ ; if (actor.veloc_x >= CHEEP_VELOC_X) {
-				lda	pos_y_actor, x
+				lda	accel_y1_actor, x
 				clc
 				adc	actor_proc_cheep_veloc_y_abs
-				sta	pos_y_actor, x
+				sta	accel_y1_actor, x
 				lda	pos_y_lo_actor, x
 				adc	actor_proc_cheep_veloc_y
 				sta	pos_y_lo_actor, x
@@ -63,10 +63,10 @@ actor_proc_cheep:
 
 				jmp	:++
 			: ; } else {
-				lda	pos_y_actor, x
+				lda	accel_y1_actor, x
 				sec
 				sbc	actor_proc_cheep_veloc_y_abs
-				sta	pos_y_actor, x
+				sta	accel_y1_actor, x
 				lda	pos_y_lo_actor, x
 				sbc	actor_proc_cheep_veloc_y
 				sta	pos_y_lo_actor, x
@@ -78,7 +78,7 @@ actor_proc_cheep:
 			ldy	#0
 			lda	pos_y_lo_actor, x
 			sec
-			sbc	accel_y_actor_c, x
+			sbc	accel_y2_actor, x
 			bpl	:+ ; if (actor.pos_y < actor.accel_y) { 
 				ldy	#CHEEP_VELOC_X
 				neg_m

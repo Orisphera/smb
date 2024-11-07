@@ -232,7 +232,7 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/bubble_render.o \
 			data/sprites_player.o \
 			src/obj/player/render.o \
-			src/obj/lib_bits.o
+			src/obj/pos.o
 
 LIB_FDS_OBJS	=	src/lib/disk.o \
 			src/game/game_over_menu.o \

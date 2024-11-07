@@ -5,7 +5,7 @@ MISC_I = 1
 
 METATILE_SIZE	= 4
 
-	.enum	actor_modes
+	.enum	proc_id_actors
 		free
 		active
 	.endenum

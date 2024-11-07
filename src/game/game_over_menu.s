@@ -55,7 +55,7 @@ game_over_menu:
 			sta	game_courses_cleared
 		.endif
 
-		jmp	eng_next_game
+		jmp	game_over_next_game
 	: ; } else {
 		ldy	#2
 		sty	player_lives
@@ -71,5 +71,5 @@ game_over_menu:
 		; }
 	
 		inc	bg_hidden_one_up_req
-		jmp	eng_game_continue
+		jmp	game_over_continue
 	; }

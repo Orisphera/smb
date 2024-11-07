@@ -24,9 +24,9 @@ gfx_render_area:
 	ldy	nmi_list_1_offset
 	sty	gfx_render_area_offset
 
-	lda	eng_bg_addr_lo
+	lda	bg_addr+1
 	sta	nmi_list_1_addr_dbyt+1, y
-	lda	eng_bg_addr_hi
+	lda	bg_addr
 	sta	nmi_list_1_addr_dbyt, y
 	lda	#$9A
 	sta	nmi_list_1_byte, y
@@ -45,9 +45,9 @@ gfx_render_area:
 		rol	a
 		tay
 		lda	gfx_metatile_lo, y
-		sta	eng_buffer_ptr
+		sta	game_buffer
 		lda	gfx_metatile_hi, y
-		sta	eng_buffer_ptr+1
+		sta	game_buffer+1
 
 		lda	gfx_metatile, x
 		asl	a
@@ -60,10 +60,10 @@ gfx_render_area:
 		adc	gfx_metatile_id_offset
 		tay
 		ldx	gfx_render_area_offset
-		lda	(eng_buffer_ptr), y
+		lda	(game_buffer), y
 		sta	nmi_list_1_addr_dbyt+(1*NMI_BUFFER_ENTRY_SIZE), x
 		iny
-		lda	(eng_buffer_ptr), y
+		lda	(game_buffer), y
 		sta	nmi_list_1_addr_dbyt+1+(1*NMI_BUFFER_ENTRY_SIZE), x
 
 		ldy	gfx_render_area_attr_index
@@ -92,9 +92,9 @@ gfx_render_area:
 			inc	gfx_render_area_attr_index
 		: ; }
 
-		lda	eng_attr_buffer, y
+		lda	gfx_attr_buffer, y
 		ora	gfx_metatile_id_page
-		sta	eng_attr_buffer, y
+		sta	gfx_attr_buffer, y
 
 		inc	gfx_render_area_offset
 		inc	gfx_render_area_offset
@@ -113,15 +113,15 @@ gfx_render_area:
 	sta	nmi_list_1_data, y
 	sty	nmi_list_1_offset
 
-	inc	eng_bg_addr_lo
-	lda	eng_bg_addr_lo
+	inc	bg_addr+1
+	lda	bg_addr+1
 	and	#$1F
-	bne	:+ ; if (!(eng_bg_addr_lo & 0x1F)) {
+	bne	:+ ; if (!(bg_addr & 0x1F)) {
 		lda	#$80
-		sta	eng_bg_addr_lo
-		lda	eng_bg_addr_hi
-		eor	#%00000100
-		sta	eng_bg_addr_hi
+		sta	bg_addr+1
+		lda	bg_addr
+		eor	#>PPU_VRAM_BG_SIZE
+		sta	bg_addr
 	: ; }
 
 	jmp	gfx_render_attr_end
@@ -130,14 +130,14 @@ gfx_render_attr_addr_dbyt	= zp_addr_00
 
 	.export gfx_render_attr
 gfx_render_attr:
-	lda	eng_bg_addr_lo
+	lda	bg_addr+1
 	and	#$1F
 	sec
 	sbc	#4
 	and	#$1F
 	sta	zp_byte_01
-	lda	eng_bg_addr_hi
-	bcs	:+ ; if ((eng_bg_addr_lo & 0x1F) < 4) {
+	lda	bg_addr
+	bcs	:+ ; if ((bg_addr & 0x1F) < 4) {
 		eor	#%00000100
 	: ; }
 
@@ -152,7 +152,7 @@ gfx_render_attr:
 
 	ldx	#0
 	ldy	nmi_list_1_offset
-	: ; for (x = 0, y = nmi_list_b_entry; x < 7; x++, y += 4) {
+	: ; for (attr of attrs) {
 		lda	gfx_render_attr_addr_dbyt
 		sta	nmi_list_1_addr_dbyt, y
 		lda	gfx_render_attr_addr_dbyt+1
@@ -160,19 +160,19 @@ gfx_render_attr:
 		adc	#8
 		sta	nmi_list_1_addr_dbyt+1, y
 		sta	gfx_render_attr_addr_dbyt+1
-		lda	eng_attr_buffer, x
+		lda	gfx_attr_buffer, x
 		sta	nmi_list_1_byte+1, y
 		lda	#1
 		sta	nmi_list_1_byte, y
 		lsr	a
-		sta	eng_attr_buffer, x
+		sta	gfx_attr_buffer, x
 
 		iny
 		iny
 		iny
 		iny
 		inx
-		cpx	#7
+		cpx	#GFX_ATTR_COUNT
 		bcc	:-
 	; }
 
@@ -181,7 +181,7 @@ gfx_render_attr:
 
 gfx_render_attr_end:
 	lda	#nmi_addr::buffer_11_A
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	rts
 ; -----------------------------------------------------------
 pal_rotating:
@@ -316,7 +316,7 @@ gfx_clear_small:
 
 	jsr	gfx_clear_put
 	lda	#nmi_addr::buffer_11_A
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	rts
 ; ----------------------------
 	.export gfx_meta_replace
@@ -380,9 +380,9 @@ gfx_clear_put:
 	tax
 
 	ldy	#>PPU_VRAM_BG1
-	lda	eng_buffer_ptr
+	lda	game_buffer
 	cmp	#$D0
-	bcc	:+ ; if (eng_buffer_ptr >= 0xD0) {
+	bcc	:+ ; if (game_buffer >= 0xD0) {
 		ldy	#>PPU_VRAM_BG2
 	: ; }
 	sty	gfx_clear_put_do_addr_hi_base

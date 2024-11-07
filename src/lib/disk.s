@@ -9,13 +9,13 @@
 
 	.export sys_disk_loader
 sys_disk_loader:
-	lda	mode_game
+	lda	proc_id_game
 	jsr	tbljmp
 	.addr	disk_loader_main
 	.addr	title_init_0
 	
 	.if	.defined(ANN)
-		.addr	disk_loader_inc_mode_game
+		.addr	disk_loader_inc_proc_id_game
 	.endif
 
 	.addr	screen_proc
@@ -52,11 +52,11 @@ disk_loader_file_load_data4:
 	: ; }
 
 	inc	bg_hidden_one_up_req
-	inc	eng_req_timer
-	inc	mode_system
+	inc	player_first_start
+	inc	proc_id_system
 	lda	#fds_loader_procs::prompt_00|game_modes::init_data2
 	sta	disk_loader_proc
-	sta	mode_game
+	sta	proc_id_game
 	sta	timer_demo
 	rts
 ; ------------------------------------------------------------
@@ -132,8 +132,8 @@ disk_loader_file_load_data2:
 		lda	#fds_loader_procs::prompt_00
 		sta	disk_loader_proc
 	
-	disk_loader_inc_mode_game:
-		inc	mode_game
+	disk_loader_inc_proc_id_game:
+		inc	proc_id_game
 		rts
 	; }
 ; ------------------------------------------------------------
@@ -141,11 +141,11 @@ disk_loader_file_load_data2:
 disk_loader_victory_init:
 	lda	#16
 	sta	timer_victory
-	bne	disk_loader_inc_mode_game
+	bne	disk_loader_inc_proc_id_game
 
 disk_loader_victory_check:
 	lda	timer_victory
-	beq	disk_loader_inc_mode_game
+	beq	disk_loader_inc_proc_id_game
 	rts
 ; ------------------------------------------------------------
 .if	.defined(SMB2)
@@ -284,7 +284,7 @@ disk_loader_prompt:
 	sta	PPU_CTLR1
 	inc	nmi_disp_disable
 	lda	#nmi_addr::disk_perror_pal
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	jmp	:+
 ; -----------------------------
 	.export	disk_loader_wait_eject
@@ -405,6 +405,6 @@ disk_perror:
 	; }
 
 	lda	#nmi_addr::disk_text_error_buffer
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	jsr	oam_init
 	jmp	nt_init

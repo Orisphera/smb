@@ -74,9 +74,9 @@ player_proc_lifedown:
 	dec	player_lives
 	bpl	:+ ; if (--this.lives < 0) {
 		lda	#game_over_modes::init
-		sta	mode_game
+		sta	proc_id_game
 		lda	#system_modes::game_over
-		sta	mode_system
+		sta	proc_id_system
 		rts
 	: ; } else {
 		lda	course_no
@@ -107,8 +107,8 @@ player_proc_lifedown:
 		sta	pos_x_hi_alt_game
 
 		.if	.defined(SMB)|.defined(VS_SMB)
-			jsr	player_switch
+			jsr	game_over_player_switch
 		.endif
 
-		jmp	eng_game_continue
+		jmp	game_over_continue
 	; }

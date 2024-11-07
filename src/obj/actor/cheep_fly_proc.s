@@ -49,7 +49,7 @@ actor_proc_cheep_fly:
 		ldy	#CHEEP_FLY_MOTION_Y
 		lda	#CHEEP_FLY_MOTION_X
 		jsr	motion_fall
-		lda	accel_y_actor_c, x
+		lda	accel_y2_actor, x
 		lsr	a
 		lsr	a
 		lsr	a
@@ -64,10 +64,10 @@ actor_proc_cheep_fly:
 	
 		cmp	#CHEEP_FLY_ACCEL_DIST
 		bcs	:+ ; if ((actor.pos_y - actor_cheep_fly_offset_y) < 8) {
-			lda	accel_y_actor_c, x
+			lda	accel_y2_actor, x
 			clc
 			adc	#CHEEP_FLY_ACCEL_OFFSET_Y
-			sta	accel_y_actor_c, x
+			sta	accel_y2_actor, x
 			lsr	a
 			lsr	a
 			lsr	a

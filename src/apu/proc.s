@@ -9,8 +9,8 @@
 
 	.export apu_cycle
 apu_cycle:
-	lda	mode_system
-	bne	:+ ; if (mode_system == title) {
+	lda	proc_id_system
+	bne	:+ ; if (proc_id_system == title) {
 		sta	DMCSTATUS
 
 		.if	.defined(CONS)

@@ -46,7 +46,7 @@ render_powerup:
 	sta	render_chr_pair_pos_y
 	lda	pos_x_rel_actor
 	sta	render_chr_pair_pos_x
-	ldx	eng_powerup_type
+	ldx	actor_powerup_type
 	lda	render_powerup_colors, x
 	ora	attr_actor+POWERUP_ACTOR_IDX
 	sta	render_chr_pair_attr

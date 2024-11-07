@@ -16,13 +16,13 @@
 .if	.defined(SMB2)
 	.export	ending_course_plus_msg
 ending_course_plus_msg:
-	lda	mode_system
+	lda	proc_id_system
 	cmp	#system_modes::game_over
-	beq	:++ ; if (mode_system != game_over) {
+	beq	:++ ; if (proc_id_system != game_over) {
 		lda	course_plus_msg_flg
 		bne	:+ ; if (!course_plus_msg_flg) {
 			lda	#nmi_addr::ending_course_plus_txt
-			sta	nmi_addrs_ctl
+			sta	nmi_buffer_ptr
 
 			lda	#16
 			sta	timer_screen
@@ -39,7 +39,7 @@ ending_course_plus_msg:
 		sta	timer_screen
 
 		lda	#nmi_addr::ending_super_player_txt
-		sta	nmi_addrs_ctl
+		sta	nmi_buffer_ptr
 
 		jmp	ending_state_next
 	; }
@@ -62,7 +62,7 @@ ending_screen_proc:
 ; -----------------------------
 ending_throneroom_show:
 	lda	#nmi_addr::ending_throneroom_map
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 
 	sta	nmi_sprite_overlap
 
@@ -73,7 +73,7 @@ ending_screen_proc_next:
 .if	.defined(ANN)
 ending_pal_load_ext:
 	lda	#nmi_addr::ending_pal_ext
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 	inc	screen_proc_id
 	rts
 .endif
@@ -95,7 +95,7 @@ ending_princess_show:
 	sta	nmi_disp_disable
 
 ending_state_next:
-	inc	mode_game
+	inc	proc_id_game
 	rts
 ; ------------------------------------------------------------
 	.export	ending_victory_msg
@@ -118,7 +118,7 @@ ending_victory_msg:
 			tya
 			clc
 			adc	#nmi_addr::msg_ty_mario
-			sta	nmi_addrs_ctl
+			sta	nmi_buffer_ptr
 		: ; }
 
 		lda	victory_msg_timer_lo
@@ -134,7 +134,7 @@ ending_victory_msg:
 		sta	timer_victory
 
 	ending_state_next_init:
-		inc	mode_game
+		inc	proc_id_game
 
 	ending_vars_init:
 		lda	#0
@@ -238,7 +238,7 @@ ending_palcycle:
 		lda	ending_palcycle_step
 		cmp	#ending_pal_var_end-ending_pal_var
 		bne	:+ ; if (++ending_palcycle_step == ending_pal_var_end) {
-			inc	mode_game
+			inc	proc_id_game
 		; }
 	: ; }
 
@@ -255,7 +255,7 @@ ending_lives_draw:
 		bpl	:-
 	; }
 
-	inc	mode_game
+	inc	proc_id_game
 
 	jsr	ending_vars_init
 
@@ -286,7 +286,7 @@ ending_toad_proc:
 
 	: lda	game_hard_mode_new
 	bne	disk_loader_file_load_save_done ; if (music.fds.current == 0 && !game.hard_mode) {
-		inc	mode_game
+		inc	proc_id_game
 	: ; }
 
 	rts
@@ -325,7 +325,7 @@ disk_loader_file_load_save_done:
 	sta	nmi_apu_call+OP_SIZE
 	lda	#fds_loader_procs::prompt_00
 	sta	disk_loader_proc
-	sta	mode_game
+	sta	proc_id_game
 
 .if	.defined(SMB2)
 	lda	game_hard_mode_new
@@ -341,7 +341,7 @@ disk_loader_file_load_save_done:
 			sta	game_courses_cleared
 		.endif
 
-		sta	mode_system
+		sta	proc_id_system
 		jmp	sys_disk_loader
 	: ; } else {
 .if	.defined(SMB2)
@@ -395,7 +395,7 @@ ending_toad_render:
 		dec	ending_toad_delay
 		rts
 	: ; } else {
-		jsr	oam_init_nmi
+		jsr	oam_init_all
 
 		ldx	ending_toad_offset
 		cpx	#7
@@ -449,7 +449,7 @@ ending_toad_render:
 				.if	.defined(SMB2)
 					sty	obj_data_offset_actor
 					lda	#actor::toad
-					sta	actor_id
+					sta	obj_id_actor
 				.endif
 
 				lda	ending_toad_render_pos_y, x

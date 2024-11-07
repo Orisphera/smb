@@ -81,8 +81,8 @@ palette_mushroom:
 	: .byte	PPU_COLOR_BLUE2, PPU_COLOR_ORANGE2, PPU_COLOR_RED1, PPU_COLOR_PITCH0
 	: .byte	NMI_LIST_END
 
-	.export palette_koopa
-palette_koopa:
+	.export palette_bowser
+palette_bowser:
 	.dbyt	PPU_COLOR_PAGE_OBJ+(PPU_COLOR_LINE_SIZE*1)
 	.byte	(:++)-(:+)
 	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_GREEN1, PPU_COLOR_GREY3, PPU_COLOR_ORANGE2

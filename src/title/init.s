@@ -53,7 +53,7 @@ title_init_0:
 		bne	:---
 	; }
 
-	ldy	#$6F
+	ldy	#RAM_CLEAR_END_GAMEINIT
 	jsr	game_init_clearram
 
 	ldy	#(snd_ram_end-snd_ram)-1
@@ -72,7 +72,7 @@ title_init_0:
 	.export title_init_1
 title_init_1:
 	lda	#1
-	sta	eng_req_timer
+	sta	player_first_start
 	sta	player_size
 	lda	#2
 	sta	player_lives

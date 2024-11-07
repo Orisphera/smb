@@ -45,7 +45,7 @@ actor_proc_blooper:
 
 		lda	pos_y_lo_actor, x
 		sec
-		sbc	accel_y_actor_c, x
+		sbc	accel_y2_actor, x
 		cmp	#BLOOPER_ACCEL_Y_THRESH
 		bcc	:+ ; if ((actor.pos_y.lo - actor.accel_y) >= threshold) {
 			sta	pos_y_lo_actor, x
@@ -91,10 +91,10 @@ actor_proc_swim:
 		bcs	:++ ; if (!(this.veloc_y % 2)) {
 			pla
 			bne	:+ ; if (!(frame_count % 8)) {
-				lda	accel_y_actor_c, x
+				lda	accel_y2_actor, x
 				clc
 				adc	#BLOOPER_ACCEL_OFFSET_Y
-				sta	accel_y_actor_c, x
+				sta	accel_y2_actor, x
 				sta	veloc_x_actor, x
 				cmp	#BLOOPER_VELOC_X_Y_OFFSET
 				bne	:+ ; if (this.veloc_x == veloc_x_y_offset) {
@@ -106,10 +106,10 @@ actor_proc_swim:
 		: ; } else {
 			pla
 			bne	:+ ; if (!(frame_count % 8)) {
-				lda	accel_y_actor_c, x
+				lda	accel_y2_actor, x
 				sec
 				sbc	#BLOOPER_ACCEL_OFFSET_Y
-				sta	accel_y_actor_c, x
+				sta	accel_y2_actor, x
 				sta	veloc_x_actor, x
 				bne	:+ ; if (this.veloc_x == 0) {
 					inc	veloc_y_actor, x

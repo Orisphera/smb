@@ -5,9 +5,9 @@
 	.export actor_init_vine
 actor_init_vine:
 	lda	#actor::vine
-	sta	actor_id, x
-	lda	#actor_modes::active
-	sta	actor_mode, x
+	sta	obj_id_actor, x
+	lda	#proc_id_actors::active
+	sta	proc_id_actor, x
 	lda	pos_x_hi_block, y
 	sta	pos_x_hi_actor, x
 	lda	pos_x_lo_block, y
@@ -66,8 +66,8 @@ actor_proc_vine:
 		lda	height_vine
 		cmp	#8
 		bcc	:++++ ; if (height_vine >= 8) {
-			jsr	lib_calc_actor_pos
-			jsr	lib_actor_bits_get
+			jsr	pos_calc_x_rel_actor
+			jsr	pos_bits_get_actor
 
 			ldy	#0
 			: ; for (y = 0; y < actor_vine_flag; y++) {
@@ -105,10 +105,10 @@ actor_proc_vine:
 				ldy	zp_byte_02
 				cpy	#$D0
 				bcs	:+
-				lda	(eng_buffer_ptr), y
-				bne	:+ ; if (zp_byte_02 < 0xD0 && !eng_buffer_ptr[zp_byte_02]) {
+				lda	(game_buffer), y
+				bne	:+ ; if (zp_byte_02 < 0xD0 && !game_buffer[zp_byte_02]) {
 					lda	#VINE_DO_VAR0
-					sta	(eng_buffer_ptr), y
+					sta	(game_buffer), y
 				; }
 			; }
 		; }
@@ -125,8 +125,8 @@ actor_proc_vine:
 		cpy	#9
 		bcs	:++++
 		: ; if (screen_left.pos_x.hi < 0 || (actor.pos_x.lo - screen_left.pos_x.lo) < 9) {
-			lda	#actor_modes::free
-			sta	actor_mode+GAME_PROC_VINE_ACTOR_ID
+			lda	#proc_id_actors::free
+			sta	proc_id_actor+GAME_PROC_VINE_ACTOR_ID
 			lda	pos_x_hi_actor+GAME_PROC_VINE_ACTOR_ID
 			and	#1
 			.if	.defined(VS_SMB)
@@ -134,9 +134,9 @@ actor_proc_vine:
 			.endif
 			tay
 			lda	bg_buffer_ptr_lo, y
-			sta	eng_buffer_ptr
+			sta	game_buffer
 			lda	bg_buffer_ptr_hi, y
-			sta	eng_buffer_ptr+1
+			sta	game_buffer+1
 
 			lda	pos_x_lo_actor+GAME_PROC_VINE_ACTOR_ID
 			lsr	a
@@ -145,11 +145,11 @@ actor_proc_vine:
 			lsr	a
 			: ; for (a = actor.pos_x.lo / 16; a < 0xD0; a += 0x10) {
 				tay
-				lda	(eng_buffer_ptr), y
+				lda	(game_buffer), y
 				cmp	#VINE_DO_VAR0
-				bne	:+ ; if (eng_buffer_ptr[a] == vine_do_var0) {
+				bne	:+ ; if (game_buffer[a] == vine_do_var0) {
 					lda	#0
-					sta	(eng_buffer_ptr), y
+					sta	(game_buffer), y
 				: ; }
 
 				tya

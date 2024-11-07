@@ -32,7 +32,7 @@ actor_proc_plat_bal:
 	tay
 
 	.if	.defined(SMB2M)
-		lda	actor_id, y
+		lda	obj_id_actor, y
 		cmp	#actor::plat_bal
 		bne	:--
 	.endif
@@ -68,7 +68,7 @@ actor_proc_plat_bal:
 
 	lda	actor_plat_col_flag, x
 	bpl	:+
-	lda	accel_y_actor_c, x
+	lda	accel_y2_actor, x
 	clc
 	adc	#5
 	sta	zp_byte_00
@@ -113,7 +113,7 @@ actor_proc_plat_bal:
 
 	ldy	actor_index
 	lda	veloc_y_actor, y
-	ora	accel_y_actor_c, y
+	ora	accel_y2_actor, y
 	beq	:+++++
 	ldx	nmi_list_0_offset
 	cpx	#32
@@ -249,7 +249,9 @@ actor_init_plat_rope:
 actor_init_plat_fall:
 	tya
 	tax
-	jsr	lib_actor_bits_get
+
+	jsr	pos_bits_get_actor
+
 	lda	#scores::value_1000
 	jsr	col_score_do
 	lda	pos_x_rel_player
@@ -262,7 +264,7 @@ actor_init_plat_fall:
 actor_proc_plat_stop:
 	jsr	actor_init_veloc_y
 	sta	veloc_y_actor, y
-	sta	accel_y_actor_c, y
+	sta	accel_y2_actor, y
 	rts
 ; -----------------------------------------------------------
 actor_proc_plat_fall_do:
@@ -288,9 +290,9 @@ actor_proc_plat_fall_do:
 	.export actor_proc_plat_mov_v
 actor_proc_plat_mov_v:
 	lda	veloc_y_actor, x
-	ora	accel_y_actor_c, x
+	ora	accel_y2_actor, x
 	bne	:++
-	sta	pos_y_actor, x
+	sta	accel_y1_actor, x
 	lda	pos_y_lo_actor, x
 	cmp	accel_x_actor, x
 	bcs	:++ ; if (actor.pos_y < actor.accel_x) {
@@ -383,12 +385,12 @@ actor_proc_plat_small_do:
 	jmp	actor_proc_plat_lift_col
 ; -----------------------------------------------------------
 actor_proc_plat_lift_move:
-	lda	eng_timer_ctl
-	bne	actor_proc_plat_lift_col_rts ; if (!eng_timer_ctl) {
-		lda	pos_y_actor, x
+	lda	game_timer_stop
+	bne	actor_proc_plat_lift_col_rts ; if (!game_timer_stop) {
+		lda	accel_y1_actor, x
 		clc
-		adc	accel_y_actor_c, x
-		sta	pos_y_actor, x
+		adc	accel_y2_actor, x
+		sta	accel_y1_actor, x
 		lda	pos_y_lo_actor, x
 		adc	veloc_y_actor, x
 		sta	pos_y_lo_actor, x

@@ -13,12 +13,12 @@ actor_init_bowser:
 		: ; for (y = ENG_ACTOR_MAX-2; y >= 0; y--) {
 		        cpy     actor_index
 		        beq     :+
-		        lda     actor_id, y
+		        lda     obj_id_actor, y
 		        cmp     #actor::bowser
 		        bne     :+ ; if (actor.idx != 0 && actor.id == bowser) {
 		        	lda     #0
-		        	sta     actor_id, y
-		        	sta     actor_mode, y
+		        	sta     obj_id_actor, y
+		        	sta     proc_id_actor, y
 			: ; }
 
 		        dey

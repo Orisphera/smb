@@ -314,57 +314,57 @@ fg_tiles:
 	.byte	metatile_1::brick_b
 	.byte	metatile_1::floor_castle
 
-	.export	fg_masks
-	.export fg_mask_0, fg_mask_1
-	.export fg_mask_2, fg_mask_3
-	.export fg_mask_4, fg_mask_5
-	.export fg_mask_6, fg_mask_7
-	.export fg_mask_8, fg_mask_9
-	.export fg_mask_10, fg_mask_11
-	.export fg_mask_12, fg_mask_13
-	.export fg_mask_14, fg_mask_15
-fg_masks:
-fg_mask_0:
+	.export	bg_floor_masks
+	.export floor_mask_0, floor_mask_1
+	.export floor_mask_2, floor_mask_3
+	.export floor_mask_4, floor_mask_5
+	.export floor_mask_6, floor_mask_7
+	.export floor_mask_8, floor_mask_9
+	.export floor_mask_10, floor_mask_11
+	.export floor_mask_12, floor_mask_13
+	.export floor_mask_14, floor_mask_15
+bg_floor_masks:
+floor_mask_0:
 	.byte	%00000000, %00000000
-fg_mask_1:
+floor_mask_1:
 	.byte	%00000000, %00011000
-fg_mask_2:
+floor_mask_2:
 	.byte	%00000001, %00011000
-fg_mask_3:
+floor_mask_3:
 	.byte	%00000111, %00011000
-fg_mask_4:
+floor_mask_4:
 	.byte	%00001111, %00011000
-fg_mask_5:
+floor_mask_5:
 	.byte	%11111111, %00011000
-fg_mask_6:
+floor_mask_6:
 	.byte	%00000001, %00011111
-fg_mask_7:
+floor_mask_7:
 	.byte	%00000111, %00011111
-fg_mask_8:
+floor_mask_8:
 	.byte	%00001111, %00011111
-fg_mask_9:
+floor_mask_9:
 	.byte	%10000001, %00011111
-fg_mask_10:
+floor_mask_10:
 	.byte	%00000001, %00000000
-fg_mask_11:
+floor_mask_11:
 	.byte	%10001111, %00011111
-fg_mask_12:
+floor_mask_12:
 	.byte	%11110001, %00011111
-fg_mask_13:
+floor_mask_13:
 	.byte	%11111001, %00011000
-fg_mask_14:
+floor_mask_14:
 	.byte	%11110001, %00011000
-fg_mask_15:
+floor_mask_15:
 	.byte	%11111111, %00011111
 ; ------------------------------------------------------------
 bg_proc_main_tile_idx	= zp_byte_00
-bg_proc_main_fg_mask	= zp_byte_00
+bg_proc_main_floor_mask	= zp_byte_00
 bg_proc_main_fg_next	= zp_byte_01
 bg_proc_main_buffer_ptr_idx = zp_byte_00
 
 bg_proc_main:
-	lda	eng_page_cached
-	beq	:+ ; if (eng_page_cached) {
+	lda	course_page_loaded
+	beq	:+ ; if (course.page_loaded) {
 		jsr	bg_scenery
 	: ; }
 
@@ -467,28 +467,28 @@ bg_proc_main:
 	sta	BG_PROC_METATILE_ID
 
 	ldx	#0
-	lda	course_fg_mask_id
+	lda	course_floor_mask_id
 	asl	a
 	tay
-	: ; for (x = 0, y = 2*course.fg_mask_id; x < 0xD && y < 0x100; x += 8, y++) {
-		lda	fg_masks, y
-		sta	bg_proc_main_fg_mask
+	: ; for (x = 0, y = 2*course.floor_mask_id; x < 0xD && y < 0x100; x += 8, y++) {
+		lda	bg_floor_masks, y
+		sta	bg_proc_main_floor_mask
 		iny
 		sty	bg_proc_main_fg_next
 		lda	course_type_cloud
 		beq	:+	
 		cpx	#0
 		beq	:+ ; if (course.type == cloud && x != 0) {
-			lda	bg_proc_main_fg_mask
+			lda	bg_proc_main_floor_mask
 			and	#%00001000
-			sta	bg_proc_main_fg_mask
+			sta	bg_proc_main_floor_mask
 		: ; }
 	
 		ldy	#0
 		: ; for (y = 0; x < 0xD && y < 8; x++, y++) {
 			lda	actor_init_bullet_cheep_data_a, y
-			bit	bg_proc_main_fg_mask
-			beq	:+ ; if ((actor_init_bullet_cheep_data_a[y] & fg_mask)) {
+			bit	bg_proc_main_floor_mask
+			beq	:+ ; if ((actor_init_bullet_cheep_data_a[y] & floor_mask)) {
 				lda	BG_PROC_METATILE_ID
 				sta	gfx_metatile, x
 			: ; }
@@ -534,7 +534,7 @@ bg_proc_main:
 			lda	#0
 		: ; }
 		ldy	bg_proc_main_buffer_ptr_idx
-		sta	(eng_buffer_ptr), y
+		sta	(game_buffer), y
 		tya
 		clc
 		adc	#16
@@ -560,12 +560,12 @@ bg_scenery:
 		sta	VS_REQ
 	.endif
 
-	bg_scenery_outer_loop: ; while (eng_area_bg_flag || eng_page_cached) {
+	bg_scenery_outer_loop: ; while (course.page_calc || course.page_loaded) {
 		ldx	#3-1
 		bg_scenery_loop: ; for (actor_index = 3-1; actor_index >= 0; x--) {
 			stx	actor_index
 			lda	#0
-			sta	eng_area_bg_flag
+			sta	course_page_calc
 			ldy	scenery_offset
 
 			.if	.defined(VS)
@@ -621,21 +621,21 @@ bg_scenery:
 				: ; }
 				cmp	#<COURSE_SCENERY_TYPE_E
 				bne	:+
-				lda	eng_page_cached
+				lda	course_page_loaded
 				bne	:++
 				: lda	scenery_page_loc
 				cmp	pos_x_hi_game
 				bcc	:++
 			; }
 			: ; if (
-			;	course_scenery_byte == COURSE_SCENERY_END
-			;	|| !(scenery_length & 0x80)
-			;	|| ((course_scenery_byte & 0xF) == 0xE && eng_page_cached)
-			;	|| scenery_page_loc >= pos_x_hi_game) {
+			;	this == COURSE_SCENERY_END
+			;	|| this.length >= 0
+			;	|| (this.type == E && course.page_loaded)
+			;	|| this.page_loc >= pos_x_hi_game) {
 				jsr	bg_scenery_decode
 				jmp	:+++
 			: ; } else if (scenery_page_loc < pos_x_hi_game) {
-				inc	eng_area_bg_flag
+				inc	course_page_calc
 			: ; }
 			; if (needs_increment) {
 				jsr	bg_buffer_inc
@@ -643,7 +643,7 @@ bg_scenery:
 		
 			ldx	actor_index
 			lda	scenery_length, x
-			bmi	:+ ; if (!(scenery_length & 0x80)) {
+			bmi	:+ ; if (this.length >= 0) {
 				dec	scenery_length, x
 			: ; }
 		
@@ -657,7 +657,7 @@ bg_scenery:
 			.endif
 		; }
 
-		lda	eng_area_bg_flag
+		lda	course_page_calc
 		.if	.defined(CONS)
 			bne	bg_scenery_outer_loop
 		.elseif	.defined(VS)
@@ -666,7 +666,7 @@ bg_scenery:
 			:
 		.endif
 
-		lda	eng_page_cached
+		lda	course_page_loaded
 		.if	.defined(CONS)
 			bne	bg_scenery_outer_loop
 		.elseif	.defined(VS)
@@ -744,7 +744,7 @@ bg_scenery_decode:
 			and	#>(COURSE_SCENERY_TYPE_D_OBJ_MASK|COURSE_SCENERY_TYPE_D_MASK)
 			cmp	#>(COURSE_OBJ_D_LOOP|COURSE_SCENERY_TYPE_D_MASK)
 			bne	:+ ; if (scenery.type_D_type == loop) {
-				inc	eng_loop_flag
+				inc	course_loop_flag
 			: ; }
 			and	#>COURSE_SCENERY_TYPE_D_OBJ_MASK
 			jmp	bg_obj_set_base
@@ -765,7 +765,7 @@ bg_scenery_decode:
 			sta	BG_OBJ_TBL_OFFSET
 	
 			lda	(course_scenery_addr), y
-			and	#%00001111
+			and	#COURSE_OBJ_C_MASK>>8
 			jmp	bg_obj_set_base
 		: ; } else {
 			sta	BG_OBJ_TBL_BASE
@@ -827,16 +827,16 @@ bg_obj_set_base:
 	and	#<COURSE_SCENERY_TYPE_MASK
 	cmp	#<COURSE_SCENERY_TYPE_E
 	bne	bg_scenery_decode_rts
-	lda	eng_page_cached
+	lda	course_page_loaded
 	bne	:+++
 bg_scenery_decode_rts:
-	; if ((scenery_length & 0x80) && scenery_page_loc != pos_x_hi_game && (((course_scenery_byte_0 & 0xF) != 0xE) || !eng_page_cached)) {
+	; if ((scenery_length & 0x80) && scenery_page_loc != pos_x_hi_game && (((course_scenery_byte_0 & 0xF) != 0xE) || !course.page_loaded)) {
 		rts
-	: lda	eng_page_cached
-	beq	:+ ; } else if (eng_page_cached) {
+	: lda	course_page_loaded
+	beq	:+ ; } else if (course.page_loaded) {
 		lda	#0
-		sta	eng_page_cached
-		sta	eng_area_bg_flag
+		sta	course_page_loaded
+		sta	course_page_calc
 		sta	actor_index
 	bg_scenery_decode_rts2:
 		rts
@@ -1115,14 +1115,14 @@ bg_scenery_set_attr:
 	.endif
 	lda	(course_scenery_addr), y
 	pha
-	and	#%01000000
-	bne	:+ ; if ((course_scenery_byte_1 & 0x40)) {
+	and	#>COURSE_OBJ_E_FLOOR_MASK
+	bne	:+ ; if (!(course_scenery_addr[y] & COURSE_OBJ_E_FLOOR_MASK)) {
 		pla
 		pha
-		and	#%00001111
-		sta	course_fg_mask_id
+		and	#COURSE_FLOOR_MASK_MAX
+		sta	course_floor_mask_id
 		pla
-		and	#%00110000
+		and	#COURSE_BG_MAX<<4
 		lsr	a
 		lsr	a
 		lsr	a
@@ -1131,9 +1131,9 @@ bg_scenery_set_attr:
 		rts
 	: ; } else {
 		pla
-		and	#%00000111
-		cmp	#4
-		bcc	:+ ; if ((eng_area_data_byte_1 & 0x7) >= 4) {
+		and	#COURSE_SCENERY_BG_FG_MASK
+		cmp	#COURSE_SCENERY_FG_MAX+1
+		bcc	:+ ; if ((course_scenery_byte_1 & bg_fg_mask) >= (fg_max+1)) {
 			sta	course_bg_col
 			lda	#COURSE_SCENERY_FG_NONE_VAL
 		: ; }
@@ -1226,7 +1226,7 @@ bg_scenery_lock_warp:
 			txa
 		bg_scenery_lock_warp_do: ; }
 	.endif
-	sta	eng_warp_ctrl
+	sta	game_warp_ctrl
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		jsr	screen_text_draw
@@ -1248,13 +1248,13 @@ bg_actor_kill_id	= zp_byte_00
 	.export bg_actor_kill
 bg_actor_kill:
 	sta	bg_actor_kill_id
-	lda	#actor_modes::free
+	lda	#proc_id_actors::free
 	ldx	#ENG_ACTOR_MAX-2
-	: ; for (entry of actor_id) {
-		ldy	actor_id, x
+	: ; for (entry of obj_id_actor) {
+		ldy	obj_id_actor, x
 		cpy	bg_actor_kill_id
-		bne	:+ ; if (actor_id == bg_actor_kill_id) {
-			sta	actor_mode, x
+		bne	:+ ; if (obj_id_actor == bg_actor_kill_id) {
+			sta	proc_id_actor, x
 		: ; }
 	
 		dex
@@ -1276,13 +1276,13 @@ bg_scenery_swarm:
 		dey
 		bmi	:+
 
-		cmp	actor_id, y
+		cmp	obj_id_actor, y
 		bne	:-
 	; }
 	; if (actor_found) {
 		lda	#0
 	: ; }
-	sta	eng_swarm_queue
+	sta	actor_swarm_queue
 	rts
 ; -----------------------------
 	.export bg_scenery_ledge_tbl
@@ -1335,14 +1335,14 @@ bg_scenery_ledge_mushroom:
 	bcc	:+ ; if (bg_scenery_len()) {
 		lda	scenery_length, x
 		lsr	a
-		sta	eng_ledge_dims, x
+		sta	scenery_ledge_dims, x
 		lda	#METATILE_PLAT_A_A
 		jmp	bg_scenery_ledge_no_base
 	: ; } else {
 		lda	#METATILE_PLAT_A_C
 		ldy	scenery_length, x
 		beq	bg_scenery_ledge_no_base ; if (scenery_length) {
-			lda	eng_ledge_dims, x
+			lda	scenery_ledge_dims, x
 			sta	zp_byte_06
 			ldx	BG_PROC_METATILE_ID
 			lda	#METATILE_PLAT_A_B
@@ -1515,13 +1515,13 @@ bg_scenery_castle:
 			sta	pos_x_lo_actor, x
 			lda	pos_x_hi_game
 			sta	pos_x_hi_actor, x
-			lda	#actor_modes::active
+			lda	#proc_id_actors::active
 			sta	pos_y_hi_actor, x
-			sta	actor_mode, x
+			sta	proc_id_actor, x
 			lda	#144
 			sta	pos_y_lo_actor, x
 			lda	#actor::flag_victory
-			sta	actor_id, x
+			sta	obj_id_actor, x
 			rts
 		: ; } else if (scenery_length == 1 || (tile_id && scenery_length != 2) || scenery_length == 3) {
 			ldy	#metatile_1::brick_b
@@ -1648,9 +1648,9 @@ bg_scenery_pipe_vert:
 			lda	pos_x_hi_game
 			adc	#0
 			sta	pos_x_hi_actor, x
-			lda	#actor_modes::active
+			lda	#proc_id_actors::active
 			sta	pos_y_hi_actor, x
-			sta	actor_mode, x
+			sta	proc_id_actor, x
 			jsr	bg_objpos_y_get
 			sta	pos_y_lo_actor, x
 		.elseif	.defined(ANN)
@@ -1663,7 +1663,7 @@ bg_scenery_pipe_vert:
 		lda	#actor::piranha_plant
 
 		.if	.defined(SMB)|.defined(VS_SMB)
-			sta	actor_id, x
+			sta	obj_id_actor, x
 			jsr	actor_init_piranha_plant
 		.elseif	.defined(SMB2M)
 			jsr	bg_scenery_pipe_vert_plant
@@ -1695,7 +1695,7 @@ bg_scenery_pipe_h:
 .if	.defined(SMB2M)
 	.export	bg_scenery_pipe_vert_plant
 bg_scenery_pipe_vert_plant:
-	sta	actor_id, x
+	sta	obj_id_actor, x
 	jsr	bg_objpos_x_get
 	clc
 	adc	#8
@@ -1703,9 +1703,9 @@ bg_scenery_pipe_vert_plant:
 	lda	pos_x_hi_game
 	adc	#0
 	sta	pos_x_hi_actor, x
-	lda	#actor_modes::active
+	lda	#proc_id_actors::active
 	sta	pos_y_hi_actor, x
-	sta	actor_mode, x
+	sta	proc_id_actor, x
 	jsr	bg_objpos_y_get
 	sta	pos_y_lo_actor, x
 	jmp	actor_init_piranha_plant
@@ -1714,9 +1714,9 @@ bg_scenery_pipe_vert_plant:
 	.export	bg_obj_alloc
 bg_obj_alloc:
 	ldx	#0
-	: ; for (x = 0; actor_mode[x] != dead && x < (ENG_ACTOR_MAX-1); x++) {
+	: ; for (x = 0; proc_id_actor[x] != dead && x < (ENG_ACTOR_MAX-1); x++) {
 		clc
-		lda	actor_mode, x
+		lda	proc_id_actor, x
 		beq	:+
 		inx
 		cpx	#ENG_ACTOR_MAX-1
@@ -1816,8 +1816,8 @@ bg_scenery_pole:
 	lda	#176
 	sta	render_flag_score_pos_y
 	lda	#actor::flag_enemy
-	sta	actor_id+ENG_ACTOR_MAX-1
-	inc	actor_mode+ENG_ACTOR_MAX-1
+	sta	obj_id_actor+ENG_ACTOR_MAX-1
+	inc	proc_id_actor+ENG_ACTOR_MAX-1
 	rts
 ; -----------------------------
 bg_scenery_rope_norm:
@@ -1868,7 +1868,7 @@ bg_scenery_castle_bridge:
 
 bg_scenery_castle_bridge_axe:
 	lda	#nmi_addr::pal_bowser
-	sta	nmi_addrs_ctl
+	sta	nmi_buffer_ptr
 
 bg_scenery_castle_bridge_draw:
 	ldy	zp_byte_00
@@ -1956,7 +1956,7 @@ bg_scenery_cannon:
 		; }
 	: ; }
 
-	ldx	eng_cannon_offset
+	ldx	actor_cannon_offset
 	jsr	bg_objpos_y_get
 	sta	pos_y_lo_cannon, x
 	lda	pos_x_hi_game
@@ -1968,23 +1968,25 @@ bg_scenery_cannon:
 	bcc	:+ ; if (x >= 6) {
 		ldx	#0
 	: ; }
-	stx	eng_cannon_offset
+	stx	actor_cannon_offset
 	rts
 ; -----------------------------
 bg_scenery_stairs_height:
 	.byte	7, 7, 6, 5, 4, 3, 2, 1, 0
+bg_scenery_stairs_height_end:
 bg_scenery_stairs_row:
 	.byte	3, 3, 4, 5, 6, 7, 8, 9, 10
+bg_scenery_stairs_row_end:
 ; --------------
 bg_scenery_stairs:
 	jsr	bg_scenery_len
 	bcc	:+ ; if (bg_scenery_len()) {
-		lda	#9
-		sta	eng_step_no
+		lda	#(bg_scenery_stairs_height_end-bg_scenery_stairs_height)
+		sta	scenery_step_no
 	: ; }
 
-	dec	eng_step_no
-	ldy	eng_step_no
+	dec	scenery_step_no
+	ldy	scenery_step_no
 	ldx	bg_scenery_stairs_row, y
 	lda	bg_scenery_stairs_height, y
 	tay
@@ -2005,10 +2007,10 @@ bg_scenery_spring:
 		sta	pos_y_lo_actor, x
 		sta	veloc_x_actor, x
 		lda	#actor::spring
-		sta	actor_id, x
+		sta	obj_id_actor, x
 		ldy	#1
 		sty	pos_y_hi_actor, x
-		inc	actor_mode, x
+		inc	proc_id_actor, x
 		ldx	BG_PROC_METATILE_ID
 		lda	#metatile_1::spring_bg_a
 		sta	gfx_metatile, x
@@ -2031,8 +2033,8 @@ bg_scenery_block_q:
 	jmp	bg_scenery_block_draw
 
 bg_scenery_block_coin:
-	lda	#0
-	sta	eng_block_time
+	lda	#BLOCK_INVIS_REQ_VAL
+	sta	block_invis_req
 
 bg_scenery_block_item:
 	jsr	bg_scenery_block_id
@@ -2073,7 +2075,7 @@ bg_scenery_pit:
 	bcc	:++
 	lda	course_type
 	bne	:++ ; if (bg_scenery_len() && course_type == water) {
-		ldx	eng_cannon_offset
+		ldx	actor_cannon_offset
 		jsr	bg_objpos_x_get
 		sec
 		sbc	#16
@@ -2094,7 +2096,7 @@ bg_scenery_pit:
 		bcc	:+ ; if (x >= 5) {
 			ldx	#0
 		: ; }
-		stx	eng_cannon_offset
+		stx	actor_cannon_offset
 	: ; }
 
 	ldx	course_type
@@ -2102,10 +2104,12 @@ bg_scenery_pit:
 	ldx	#8
 	ldy	#$0F
 ; -----------------------------
+SCENERY_HEIGHT_MAX	= $0D
+
 	.export	bg_scenery_render
 bg_scenery_render:
-	: ; for (x = metatile_base_id, y = eng_obj_height; x >= 0xD && y >= 0; x++, y--) {
-		sty	eng_obj_height
+	: ; for (x = metatile_base_id, y = this.height; x >= 0xD && y >= 0; x++, y--) {
+		sty	scenery_height
 		ldy	gfx_metatile, x
 		beq	:+
 		cpy	#metatile_0::plat_b_b
@@ -2127,9 +2131,9 @@ bg_scenery_render:
 		: ; }
 
 		inx
-		cpx	#$0D
+		cpx	#SCENERY_HEIGHT_MAX
 		bcs	:+
-		ldy	eng_obj_height
+		ldy	scenery_height
 		dey
 		bpl	:---
 	: ; }
@@ -2199,12 +2203,12 @@ bg_get_buffer_ptr:
 	lsr	a
 	tay
 	lda	bg_buffer_ptr_hi, y
-	sta	eng_buffer_ptr+1
+	sta	game_buffer+1
 	pla
 	and	#%00001111
 	clc
 	adc	bg_buffer_ptr_lo, y
-	sta	eng_buffer_ptr
+	sta	game_buffer
 	rts
 ; -----------------------------
 .if	.defined(FC_SMB)

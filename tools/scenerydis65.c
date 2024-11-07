@@ -129,7 +129,7 @@ static const char *non_mask_vals[] = {
 static void print_header(void)
 {
 	int c;
-	unsigned int ledge_type, bg_id, fg_mask, timer_setting, enter_pos, fg_bg_col_id;
+	unsigned int ledge_type, bg_id, floor_mask, timer_setting, enter_pos, fg_bg_col_id;
 
 	c = getchar();
 	timer_setting = (c & 0xC0) >> 6;
@@ -139,11 +139,11 @@ static void print_header(void)
 	c = getchar();
 	ledge_type = (c & 0xC0) >> 6;
 	bg_id = (c & 0x30) >> 4;
-	fg_mask = (c & 0xF);
+	floor_mask = (c & 0xF);
 
 	printf("\t.word\t(COURSE_AREA_LEDGE_%s", ledges[ledge_type]);
 	printf("|COURSE_BG_%s", bg[bg_id]);
-	printf("|COURSE_FG_MASK_%d", fg_mask);
+	printf("|COURSE_FLOOR_MASK_%d", floor_mask);
 	printf("|COURSE_TIMER_SETTING_%d", timer_setting);
 	printf("|COURSE_SCENERY_ENTER_POS_%s", enter_pos_vals[enter_pos]);
 	printf("|COURSE_SCENERY_%s", non_mask_vals[fg_bg_col_id]);
@@ -260,13 +260,13 @@ static void print_E(int pos_x)
 	if (new_page)
 		printf("|COURSE_SCENERY_NEW_PAGE");
 	if (non_mask)
-		printf("|COURSE_OBJ_E_FG_MASK");
+		printf("|COURSE_OBJ_E_FLOOR_MASK");
 
 	if (non_mask) {
 		printf("|(COURSE_SCENERY_%s)<<8", non_mask_vals[id]);
 	} else {
 		printf("|(COURSE_BG_%s_VAL<<12)", bg[id]);
-		printf("|(COURSE_FG_MASK_%d_VAL<<8)", mask_id);
+		printf("|(COURSE_FLOOR_MASK_%d_VAL<<8)", mask_id);
 	}
 
 	printf(")\n");

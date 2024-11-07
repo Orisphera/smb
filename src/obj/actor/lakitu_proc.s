@@ -70,7 +70,7 @@ actor_proc_lakitu_spiny:
 	bcc	:++
 	lda	#$3C
 	sta	actor_proc_lakitu_spiny_pos_x_rel_abs
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::lakitu
 	bne	:++
 	tya
@@ -107,7 +107,7 @@ actor_proc_lakitu_spiny:
 				iny
 			: ; }
 		
-			lda	actor_id, x
+			lda	obj_id_actor, x
 			cmp	#actor::spiny
 			bne	:+
 			lda	veloc_x_player

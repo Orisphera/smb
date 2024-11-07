@@ -22,7 +22,7 @@ proj_proc:
 		ldy	pos_y_hi_player
 		dey
 		bne	:+
-		lda	player_crouch
+		lda	player_crouching
 		bne	:+
 		lda	state_player
 		cmp	#player_state::climb
@@ -31,7 +31,7 @@ proj_proc:
 			;	&& !(held_b)
 			;	&& this.state[proj_counter % 1] == inactive
 			;	&& !(--player.pos_y.hi)
-			;	&& !player.crouch
+			;	&& !player.crouching
 			;	&& player.state != climb
 			; ) {
 			lda	#sfx_pulse_1::proj
@@ -58,8 +58,9 @@ proj_proc:
 			stx	actor_index
 			jsr	bubble_proc
 
-			jsr	lib_calc_bubble_pos
-			jsr	lib_bubble_bits_get
+			jsr	pos_calc_x_rel_bubble
+			jsr	pos_bits_get_bubble
+
 			jsr	bubble_render
 
 			dex
@@ -114,8 +115,8 @@ proj_proc_do:
 		jsr	motion_x_do
 
 		ldx	actor_index
-		jsr	lib_calc_proj_pos
-		jsr	lib_proj_bits_get
+		jsr	pos_calc_x_rel_proj
+		jsr	pos_bits_get_proj
 		jsr	col_proj_box
 		jsr	col_proj_proc
 
@@ -131,6 +132,6 @@ proj_proc_do:
 			rts
 		; }
 	: ; } else {
-		jsr	lib_calc_proj_pos
+		jsr	pos_calc_x_rel_proj
 		jmp	render_proj_hit
 	; }

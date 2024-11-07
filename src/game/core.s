@@ -11,7 +11,7 @@
 
 	.export	sys_game
 sys_game:
-	lda	mode_game
+	lda	proc_id_game
 	jsr	tbljmp
 
 	.if	.defined(VS_SMB)
@@ -32,7 +32,7 @@ sys_game:
 ; ------------------------------------------------------------
 .if	.defined(VS_SMB)
 vs_game_init:
-	inc	mode_game
+	inc	proc_id_game
 	lda	#1
 	sta	nmi_disp_disable
 	lda	#0
@@ -80,7 +80,7 @@ game_proc:
 
 	jsr	player_proc
 
-	lda	mode_game
+	lda	proc_id_game
 	.if	.defined(CONS)
 		cmp	#game_modes::proc
 	.elseif	.defined(VS)
@@ -88,13 +88,14 @@ game_proc:
 	.endif
 	bcs	:+
 	rts
-	: ; if (mode_game == proc) {
+	: ; if (game.proc_id == proc) {
 		jsr	proj_proc
 
 		ldx	#0
-		: ; for (actor_index = 0; actor_index < ENG_ACTOR_MAX; actor_index++) {
+		: ; for (actor of actors) {
 			stx	actor_index
 			jsr	actor_proc
+
 			jsr	screen_score_disp
 	
 			inx
@@ -102,8 +103,9 @@ game_proc:
 			bne	:-
 		; }
 	
-		jsr	lib_player_bits_get
-		jsr	lib_calc_player_pos
+		jsr	pos_bits_get_player
+		jsr	pos_calc_x_rel_player
+
 		jsr	render_player
 
 		jsr	block_flatten
@@ -163,14 +165,14 @@ game_proc:
 		sta	joypad_l_r
 	
 	game_proc_scroll_save:
-		lda	nmi_addrs_ctl
+		lda	nmi_buffer_ptr
 		cmp	#nmi_addr::buffer_11_A
 		beq	:++
 		lda	bg_proc_id
 		bne	:+
 		lda	game_scroll_h
 		cmp	#GAME_SCROLL_END
-		bmi	:++ ; if (nmi_addrs_ctl != buffer_11_A && (bg_proc_id == main_c || game.scroll_h > GAME_SCROLL_END)) {
+		bmi	:++ ; if (nmi_buffer_ptr != buffer_11_A && (bg_proc_id == main_c || game.scroll_h > GAME_SCROLL_END)) {
 			; if (bg_proc_id == main_c) {
 				lda	game_scroll_h
 				sbc	#GAME_SCROLL_END
@@ -186,38 +188,40 @@ game_proc:
 ; ------------------------------------------------------------
 	.export	game_scroll, game_scroll_do
 game_scroll:
-	lda	player_scroll_x
+	lda	scroll_x_player
 	clc
 	adc	actor_plat_scroll_x
-	sta	player_scroll_x
+	sta	scroll_x_player
 	lda	game_scroll_lock
-	bne	:+++
-	lda	player_scroll_x_b
+	bne	:++++
+	lda	scroll_x_player_b
 	cmp	#$50
-	bcc	:+++
+	bcc	:++++
 	lda	timer_col_x
-	bne	:+++
-	ldy	player_scroll_x
+	bne	:++++
+	ldy	scroll_x_player
 	dey
-	bmi	:+++ ; if (!scroll_lock && this.scroll_x_b >= 0x50 && !timer_col_x && --this.scroll_x >= 0) {
+	bmi	:++++ ; if (!scroll_lock && this.scroll_x_b >= 0x50 && !timer_col_x && --this.scroll_x >= 0) {
 		iny
 		cpy	#2
 		bcc	:+ ; if (++this.scroll_x >= 2) {
 			dey
 		: ; }
 	
-		lda	player_scroll_x_b
+		lda	scroll_x_player_b
 		cmp	#$70
 		bcc	:+ ; if (this.scroll_x_b >= 0x70) {
-			ldy	player_scroll_x
+			ldy	scroll_x_player
 		: ; }
 	
 	game_scroll_do:
 		.if	.defined(SMB2M)
-			; while (fds_sprite_overlap_hit) {
-				lda	fds_sprite_overlap_hit
-				bne	game_scroll_do
-			; }
+		: ; while (SMB2M && fds_sprite_overlap_hit) {
+			lda	fds_sprite_overlap_hit
+			bne	:-
+		; }
+		.else
+		:
 		.endif
 
 		tya
@@ -256,7 +260,7 @@ game_scroll:
 	: ; }
 
 	ldx	#0
-	jsr	lib_bits_get_do_x
+	jsr	pos_bits_get_do_x
 	sta	zp_byte_00
 	ldy	#0
 	asl	a

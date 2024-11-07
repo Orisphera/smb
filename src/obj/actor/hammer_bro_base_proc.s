@@ -29,9 +29,9 @@ actor_proc_hammer_bro:
 	beq	:+ ; if (actor.state_bit_5) {
 		jmp	actor_proc_base_defeated
 	: ; } else {
-		lda	eng_timer_hammer_bro_jump, x
-		beq	actor_proc_hammer_bro_jump ; if (eng_timer_hammer_bro_jump) {
-			dec	eng_timer_hammer_bro_jump, x
+		lda	timer_hammer_bro_jump, x
+		beq	actor_proc_hammer_bro_jump ; if (timer_hammer_bro_jump) {
+			dec	timer_hammer_bro_jump, x
 			lda	bits_offscr_actor
 			and	#%00001100
 			bne	actor_proc_hammer_bro_move_h ; if (!(bits_offscr_actor & 0x0C)) {
@@ -101,7 +101,7 @@ actor_proc_hammer_bro_jump:
 		sta	timer_ani_actor, x
 		lda	srand+1, x
 		ora	#%11000000
-		sta	eng_timer_hammer_bro_jump, x
+		sta	timer_hammer_bro_jump, x
 	: ; }
 ; ------------------------------
 actor_proc_hammer_bro_move_h:
@@ -153,7 +153,7 @@ actor_proc_base:
 	beq	:+
 	and	#actor_states::bit_6
 	beq	:+++
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	cmp	#actor::power_up
 	beq	:+++
 	bne	:++
@@ -208,9 +208,9 @@ actor_proc_base:
 		: ; } else {
 			cmp	#GOOMBA_ERASE_CUE
 			bne	:+
-			lda	actor_id, x
+			lda	obj_id_actor, x
 			cmp	#actor::goomba
-			bne	:+ ; if (actor.timer == GOOMBA_ERASE_CUE && actor_id == goomba) {
+			bne	:+ ; if (actor.timer == GOOMBA_ERASE_CUE && obj_id_actor == goomba) {
 				jsr	actor_erase
 			: ; }
 		

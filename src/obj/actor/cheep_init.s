@@ -10,6 +10,6 @@ actor_init_cheep:
 	and	#%00010000
 	sta	veloc_x_actor, x
 	lda	pos_y_lo_actor, x
-	sta	accel_y_actor_c, x
+	sta	accel_y2_actor, x
 	rts
 

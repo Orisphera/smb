@@ -15,18 +15,18 @@ cannon_proc:
 		ldx	#2
 		: ; for (actor_index = 2; actor_index >= 0; actor_index--) {
 			stx	actor_index
-			lda	actor_mode, x
+			lda	proc_id_actor, x
 			bne	:++
 			lda	srand+1, x
 			ldy	game_hard_mode_b
 			and	cannon_proc_masks, y
-			cmp	#6
+			cmp	#ENG_ACTOR_MAX
 			bcs	:++
 			tay
 			lda	pos_y_hi_cannon, y
 			beq	:++ ; if (
 			;	actor.mode == dead
-			;	&& (srand[actor_index+1] & player_proc_cannon_masks[game_hard_mode_b]) < 6
+			;	&& (srand[actor_index+1] & player_proc_cannon_masks[game_hard_mode_b]) < ENG_ACTOR_MAX
 			;	&& (pos_y_hi_cannon[(srand[actor_index+1])])
 			; ) {
 				lda	timer_cannon, y
@@ -35,8 +35,8 @@ cannon_proc:
 					sta	timer_cannon, y
 					jmp	:++
 				: ; } else {
-					lda	eng_timer_ctl
-					bne	:+ ; if (eng_timer_ctl == 0) {
+					lda	game_timer_stop
+					bne	:+ ; if (!game_timer_stop) {
 						lda	#14
 						sta	timer_cannon, y
 						lda	pos_y_hi_cannon, y
@@ -47,29 +47,30 @@ cannon_proc:
 						sec
 						sbc	#8
 						sta	pos_y_lo_actor, x
-						lda	#actor_modes::active
+						lda	#proc_id_actors::active
 						sta	pos_y_hi_actor, x
-						sta	actor_mode, x
+						sta	proc_id_actor, x
 						lsr	a
 						sta	state_actor, x
 						lda	#9
 						sta	col_box_actor, x
 						lda	#actor::bullet
-						sta	actor_id, x
+						sta	obj_id_actor, x
 						jmp	:++
 					; }
 				; }
 			: ; }
 
-			; if (this.mode != dead || rand_masked >= 6 || !pos_y_hi_cannon[rand_masked] || timer_cannon[rand_masked] || eng_timer_ctl != 0) {
-				lda	actor_id, x
+			; if (this.mode != dead || rand_masked >= 6 || !pos_y_hi_cannon[rand_masked] || timer_cannon[rand_masked] || game_timer_stop) {
+				lda	obj_id_actor, x
 				cmp	#actor::bullet
-				bne	:+ ; if (this.actor_id == bullet) {
+				bne	:+ ; if (this.obj_id_actor == bullet) {
 					jsr	col_actor_oob_proc
 			
-					lda	actor_mode, x
+					lda	proc_id_actor, x
 					beq	:+ ; if (this.mode != dead) {
-						jsr	lib_actor_bits_get
+						jsr	pos_bits_get_actor
+
 						jsr	cannon_bullet_proc
 					; }
 				; }
@@ -86,8 +87,8 @@ cannon_bullet_veloc_x:
 	.byte	BULLET_VELOC_X_ABS, <-BULLET_VELOC_X_ABS
 ; -----------------------------
 cannon_bullet_proc:
-	lda	eng_timer_ctl
-	bne	:++++ ; if (!eng_timer_ctl) {
+	lda	game_timer_stop
+	bne	:++++ ; if (!game_timer_stop) {
 		lda	state_actor, x
 		bne	:++ ; if (this.state == dead) {
 			lda	bits_offscr_actor
@@ -126,11 +127,13 @@ cannon_bullet_proc:
 		jsr	motion_x
 	: ; }
 
-	; if (eng_timer_ctl || this.state != 0 || ((bits_offscr_actor & 0x0C) != 0x0C && (zp_byte_00 + 0x28) >= 0x50)) {
-		jsr	lib_actor_bits_get
-		jsr	lib_calc_actor_pos
+	; if (game_timer_stop || this.state != 0 || ((bits_offscr_actor & 0x0C) != 0x0C && (zp_byte_00 + 0x28) >= 0x50)) {
+		jsr	pos_bits_get_actor
+		jsr	pos_calc_x_rel_actor
+
 		jsr	col_actor_box
 		jsr	col_player_actor_proc
+
 		jmp	render_actor
 	: ; } else {
 		jsr	actor_erase

@@ -16,7 +16,7 @@ actor_proc_fireworks:
 	cmp	#3
 	bcs	:++
 	: ; if (--actor.veloc_y > 0 || ++actor.veloc_x < 3) {
-		jsr	lib_calc_actor_pos
+		jsr	pos_calc_x_rel_actor
 		lda	pos_y_rel_actor
 		sta	pos_y_rel_proj
 		lda	pos_x_rel_actor
@@ -26,8 +26,8 @@ actor_proc_fireworks:
 		jsr	render_fireworks
 		rts
 	: ; } else {
-		lda	#actor_modes::free
-		sta	actor_mode, x
+		lda	#proc_id_actors::free
+		sta	proc_id_actor, x
 		lda	#sfx_pulse_2::blast
 		sta	apu_sfx_pulse_2_req
 		lda	#5

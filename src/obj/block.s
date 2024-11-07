@@ -28,7 +28,7 @@ block_punch:
 	pha
 
 	lda	#block_states::punch_bump
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	ldy	player_size
 	bne	:+ ; if (player.size == large) {
 		lda	#block_states::punch_break
@@ -37,13 +37,13 @@ block_punch:
 
 	jsr	gfx_meta_destroy
 
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	lda	pos_y_block_proc
 	sta	pos_y_orig_block, x
 	tay
-	lda	eng_buffer_ptr
+	lda	game_buffer
 	sta	block_buffer_idx, x
-	lda	(eng_buffer_ptr), y
+	lda	(game_buffer), y
 	jsr	block_is_tile
 	sta	block_punch_tile_id_b
 	ldy	player_size
@@ -61,15 +61,15 @@ block_punch:
 		cpy	#metatile_1::brick_l
 		bne	:++++
 		: ; if (this.tile.in(metatile_1::brick_g, metatile_1::brick_l)) {
-			lda	eng_block_time
-			bne	:+ ; if (this.block_time == 0) {
+			lda	block_invis_req
+			bne	:+ ; if (this.invis_req == req) {
 				lda	#BLOCK_TIMER_VAL
-				sta	timer_block
-				inc	eng_block_time
+				sta	timer_block_invis
+				inc	block_invis_req
 			: ; }
 		
-			lda	timer_block
-			bne	:+ ; if (this.timer == 0) {
+			lda	timer_block_invis
+			bne	:+ ; if (this.invis_timer == 0) {
 				ldy	#metatile_3::block_invis
 			: ; }
 			tya
@@ -80,7 +80,7 @@ block_punch:
 
 	ldy	pos_y_block_proc
 	lda	#metatile_0::blank_d
-	sta	(eng_buffer_ptr), y
+	sta	(game_buffer), y
 	lda	#BLOCK_TIMER_BOUNCE
 	sta	timer_block_bounce	
 
@@ -88,11 +88,11 @@ block_punch:
 	sta	block_punch_tile_id_a
 
 	ldy	#0
-	lda	player_crouch
+	lda	player_crouching
 	bne	:+
 	lda	player_size
 	beq	:++
-	: ; if (player.crouch || player.size == small) {
+	: ; if (player.crouching || player.size == small) {
 		iny
 	: ; }
 
@@ -111,9 +111,9 @@ block_punch:
 		jsr	block_item
 	: ; }
 
-	lda	obj_data_offset_ctl
+	lda	block_id
 	eor	#1
-	sta	obj_data_offset_ctl
+	sta	block_id
 	rts
 ; ------------------------------------------------------------
 	.export block_initpos
@@ -139,7 +139,7 @@ block_item:
 
 	lda	#0
 	sta	veloc_x_block, x
-	sta	accel_y_block, x
+	sta	accel_y2_bubble, x
 	sta	veloc_y_player
 	lda	#BLOCK_ITEM_VELOC_Y
 	sta	veloc_y_block, x
@@ -224,12 +224,12 @@ block_mushroom_oneup:
 	lda	#powerup_type::mushroom_oneup
 
 block_powerup:
-	sta	eng_powerup_type
+	sta	actor_powerup_type
 	jmp	actor_init_powerup_b
 ; -----------------------------
 block_vine:
 	ldx	#$05
-	ldy	obj_data_offset_ctl
+	ldy	block_id
 	jsr	actor_init_vine
 
 block_item_rts:
@@ -295,13 +295,13 @@ block_break:
 	lda	#5
 	sta	score_digit_mod+6
 	jsr	misc_proc_coin_update_score
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	rts
 ; ------------------------------------------------------------
 BLOCK_TOP_MISC_OFFSET_Y	= 16
 ; ------------------------------------------------------------
 block_top_check:
-	ldx	obj_data_offset_ctl
+	ldx	block_id
 	ldy	pos_y_block_proc
 	beq	:+ ; if (pos_y_block_proc) {
 		tya
@@ -309,14 +309,14 @@ block_top_check:
 		sbc	#BLOCK_TOP_MISC_OFFSET_Y
 		sta	pos_y_block_proc
 		tay
-		lda	(eng_buffer_ptr), y
+		lda	(game_buffer), y
 		cmp	#metatile_3::coin_a
-		bne	:+ ; if (eng_buffer_ptr[block_proc.pos_y-offset.y] == metatile_3::coin_a) {
+		bne	:+ ; if (game_buffer[block_proc.pos_y-offset.y] == metatile_3::coin_a) {
 			lda	#metatile_0::blank_a
-			sta	(eng_buffer_ptr), y
+			sta	(game_buffer), y
 			jsr	gfx_clear_small
 
-			ldx	obj_data_offset_ctl
+			ldx	block_id
 			jsr	misc_init_coin_b
 		; }
 	: ; }
@@ -334,8 +334,8 @@ block_bits_init:
 	lda	#BLOCK_BITS_B_VELOC_Y
 	sta	veloc_y_block+2, x
 	lda	#0
-	sta	accel_y_block, x
-	sta	accel_y_block+2, x
+	sta	accel_y2_bubble, x
+	sta	accel_y2_bubble+2, x
 	lda	pos_x_hi_block, x
 	sta	pos_x_hi_block+2, x
 	lda	pos_x_lo_block, x
@@ -372,8 +372,10 @@ block_proc:
 			jsr	motion_x_do
 
 			ldx	actor_index
-			jsr	lib_calc_block_pos
-			jsr	lib_block_bits_get
+
+			jsr	pos_calc_x_rel_block
+			jsr	pos_bits_get_block
+
 			jsr	render_block_bits
 
 			pla
@@ -397,9 +399,12 @@ block_proc:
 		: ; } else {
 			jsr	motion_block_fall_fast
 			ldx	actor_index
-			jsr	lib_calc_block_pos
-			jsr	lib_block_bits_get
+
+			jsr	pos_calc_x_rel_block
+			jsr	pos_bits_get_block
+
 			jsr	render_block
+
 			lda	pos_y_lo_block, x
 			and	#MOD_16
 			cmp	#5
@@ -429,14 +434,14 @@ block_flatten:
 		lda	block_rep_flag, x
 		beq	:+ ; if (*nmi_list == NMI_LIST_END && block_rep_flag[actor_index] != 0) {
 			lda	block_buffer_idx, x
-			sta	eng_buffer_ptr
+			sta	game_buffer
 			lda	#5
-			sta	eng_buffer_ptr+1
+			sta	game_buffer+1
 			lda	pos_y_orig_block, x
 			sta	pos_y_block_proc
 			tay
 			lda	block_tile, x
-			sta	(eng_buffer_ptr), y
+			sta	(game_buffer), y
 			jsr	gfx_meta_replace
 
 			lda	#0

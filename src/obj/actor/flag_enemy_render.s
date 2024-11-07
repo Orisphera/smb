@@ -48,8 +48,8 @@ render_flag_enemy:
 	lda	#chr_obj::flag_enemy+1
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 
-	lda	pos_y_player_flag
-	beq	:+ ; if (player.pos_y_flag != 0) {
+	lda	pos_y_goal
+	beq	:+ ; if (goal.pos_y > 0) {
 		tya
 		clc
 		adc	#FLAG_SCORE_OFFSET_SPR

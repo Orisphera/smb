@@ -2,63 +2,63 @@
 .include	"tunables.i"
 
 ; --------------------------------------------------------------
-lib_calc_object_offset	= zp_byte_00
-lib_bits_buffer		= zp_byte_00
+pos_calc_object_x_offset	= zp_byte_00
+pos_bits_buffer			= zp_byte_00
 ; --------------------------------------------------------------
-	.export lib_calc_player_pos, lib_calc_bubble_pos
-	.export lib_calc_proj_pos, lib_calc_misc_pos
-lib_calc_player_pos:
+	.export pos_calc_x_rel_player, pos_calc_x_rel_bubble
+	.export pos_calc_x_rel_proj, pos_calc_x_rel_misc
+pos_calc_x_rel_player:
 	ldx	#ENG_PLAYER_OBJ_OFF
 	ldy	#ENG_PLAYER_OBJ_REL_OFF
-	jmp	lib_calc_pos_do
+	jmp	pos_calc_x_rel_a
 ; -----------------------------
-lib_calc_bubble_pos:
-	ldy	#lib_calc_offset_bubble-lib_calc_offsets
-	jsr	lib_calc_get_offset
+pos_calc_x_rel_bubble:
+	ldy	#pos_calc_x_offset_bubble-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_BUBBLE_REL_OFF
-	jmp	lib_calc_pos_do
+	jmp	pos_calc_x_rel_a
 ; -----------------------------
-lib_calc_proj_pos:
-	ldy	#lib_calc_offset_proj-lib_calc_offsets
-	jsr	lib_calc_get_offset
+pos_calc_x_rel_proj:
+	ldy	#pos_calc_x_offset_proj-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_PROJ_REL_OFF
 ; -----------------------------
-lib_calc_pos_do:
-	jsr	lib_calc_pos_x_rel
+pos_calc_x_rel_a:
+	jsr	pos_calc_x_rel_do
 	ldx	actor_index
 	rts
 ; -------------------------------
-lib_calc_misc_pos:
-	ldy	#lib_calc_offset_misc-lib_calc_offsets
-	jsr	lib_calc_get_offset
+pos_calc_x_rel_misc:
+	ldy	#pos_calc_x_offset_misc-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_MISC_REL_OFF
-	jmp	lib_calc_pos_do
+	jmp	pos_calc_x_rel_a
 ; --------------------------------------------------------------
-	.export lib_calc_actor_pos, lib_calc_block_pos
-lib_calc_actor_pos:
+	.export pos_calc_x_rel_actor, pos_calc_x_rel_block
+pos_calc_x_rel_actor:
 	lda	#ENG_ACTOR_OFF
 	ldy	#ENG_ACTOR_REL_OFF
-	jmp	lib_calc_pos_do_b
+	jmp	pos_calc_x_rel_b
 ; -------------------------------
-lib_calc_block_pos:
+pos_calc_x_rel_block:
 	lda	#ENG_BLOCK_OFF
 	ldy	#ENG_BLOCK_REL_OFF
-	jsr	lib_calc_pos_do_b
+	jsr	pos_calc_x_rel_b
 	inx
 	inx
 	lda	#ENG_BLOCK_OFF
 	iny
 ; -------------------------------
-lib_calc_pos_do_b:
-	stx	lib_calc_object_offset
+pos_calc_x_rel_b:
+	stx	pos_calc_object_x_offset
 	clc
-	adc	lib_calc_object_offset
+	adc	pos_calc_object_x_offset
 	tax
-	jsr	lib_calc_pos_x_rel
+	jsr	pos_calc_x_rel_do
 	ldx	actor_index
 	rts
 ; --------------------------------------------------------------
-lib_calc_pos_x_rel:
+pos_calc_x_rel_do:
 	lda	pos_y_lo_player, x
 	sta	pos_y_rel_player, y
 	lda	pos_x_lo_player, x
@@ -67,94 +67,94 @@ lib_calc_pos_x_rel:
 	sta	pos_x_rel_player, y
 	rts
 ; --------------------------------------------------------------
-	.export lib_player_bits_get, lib_proj_bits_get
-	.export lib_bubble_bits_get, lib_misc_bits_get
-lib_player_bits_get:
+	.export pos_bits_get_player, pos_bits_get_proj
+	.export pos_bits_get_bubble, pos_bits_get_misc
+pos_bits_get_player:
 	ldx	#ENG_PLAYER_OBJ_OFF
 	ldy	#ENG_PLAYER_OBJ_REL_OFF
-	jmp	lib_bits_get
+	jmp	pos_bits_get
 ; -------------------------------
-lib_proj_bits_get:
-	ldy	#lib_calc_offset_proj-lib_calc_offsets
-	jsr	lib_calc_get_offset
+pos_bits_get_proj:
+	ldy	#pos_calc_x_offset_proj-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_PROJ_REL_OFF
-	jmp	lib_bits_get
+	jmp	pos_bits_get
 ; -------------------------------
-lib_bubble_bits_get:
-	ldy	#lib_calc_offset_bubble-lib_calc_offsets
-	jsr	lib_calc_get_offset
+pos_bits_get_bubble:
+	ldy	#pos_calc_x_offset_bubble-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_BUBBLE_REL_OFF
-	jmp	lib_bits_get
+	jmp	pos_bits_get
 ; -------------------------------
-lib_misc_bits_get:
-	ldy	#lib_calc_offset_misc-lib_calc_offsets
-	jsr	lib_calc_get_offset
+pos_bits_get_misc:
+	ldy	#pos_calc_x_offset_misc-pos_calc_x_offsets
+	jsr	pos_calc_x_offset_get
 	ldy	#ENG_MISC_REL_OFF
-	jmp	lib_bits_get
+	jmp	pos_bits_get
 ; --------------------------------------------------------------
-lib_calc_offsets:
-lib_calc_offset_proj:
+pos_calc_x_offsets:
+pos_calc_x_offset_proj:
 	.byte	ENG_PROJ_OFF
-lib_calc_offset_bubble:
+pos_calc_x_offset_bubble:
 	.byte	ENG_BUBBLE_OFF
-lib_calc_offset_misc:
+pos_calc_x_offset_misc:
 	.byte	ENG_MISC_OFF
 ; -------------------------------
-lib_calc_get_offset:
+pos_calc_x_offset_get:
 	txa
 	clc
-	adc	lib_calc_offsets, y
+	adc	pos_calc_x_offsets, y
 	tax
 	rts
 ; --------------------------------------------------------------
-	.export lib_actor_bits_get, lib_block_bits_get
-lib_actor_bits_get:
+	.export pos_bits_get_actor, pos_bits_get_block
+pos_bits_get_actor:
 	lda	#ENG_ACTOR_OFF
 	ldy	#ENG_ACTOR_REL_OFF
-	jmp	lib_bits_get_offset
+	jmp	pos_bits_get_offset
 ; -------------------------------
-lib_block_bits_get:
+pos_bits_get_block:
 	lda	#ENG_BLOCK_OFF
 	ldy	#ENG_BLOCK_REL_OFF
 ; -------------------------------
-lib_bits_get_offset:
-	stx	lib_calc_object_offset
+pos_bits_get_offset:
+	stx	pos_calc_object_x_offset
 	clc
-	adc	lib_calc_object_offset
+	adc	pos_calc_object_x_offset
 	tax
 ; -------------------------------
-lib_bits_get:
+pos_bits_get:
 	tya
 	pha
-	jsr	lib_bits_proc
+	jsr	pos_bits_proc
 	asl	a
 	asl	a
 	asl	a
 	asl	a
-	ora	lib_bits_buffer
-	sta	lib_bits_buffer
+	ora	pos_bits_buffer
+	sta	pos_bits_buffer
 	pla
 	tay
-	lda	lib_bits_buffer
+	lda	pos_bits_buffer
 	sta	bits_offscr_player, y
 	ldx	actor_index
 	rts
 ; --------------------------------------------------------------
-lib_bits_proc:
-	jsr	lib_bits_get_do_x
+pos_bits_proc:
+	jsr	pos_bits_get_do_x
 	lsr	a
 	lsr	a
 	lsr	a
 	lsr	a
-	sta	lib_bits_buffer
-	jmp	lib_bits_get_do_y
+	sta	pos_bits_buffer
+	jmp	pos_bits_get_do_y
 ; --------------------------------------------------------------
-lib_bits_get_do_object_idx	= zp_byte_04
-lib_bits_diff_current		= zp_byte_05
-lib_bits_diff_offset		= zp_byte_06
-lib_bits_diff_screen_player_off	= zp_byte_07
+pos_bits_get_do_object_idx	= zp_byte_04
+pos_bits_diff_current		= zp_byte_05
+pos_bits_diff_offset		= zp_byte_06
+pos_bits_diff_screen_player_off	= zp_byte_07
 
-lib_bits_x:
+pos_bits_x:
 	.byte	%01111111
 	.byte	%00111111
 	.byte	%00011111
@@ -173,36 +173,36 @@ lib_bits_x:
 	.byte	%11111110
 	.byte	%11111111
 
-lib_bits_off_x:
+pos_bits_off_x:
 	.byte	7, 15, 7
 ; -------------------------------
-	.export lib_bits_get_do_x
-lib_bits_get_do_x:
-	stx	lib_bits_get_do_object_idx
+	.export pos_bits_get_do_x
+pos_bits_get_do_x:
+	stx	pos_bits_get_do_object_idx
 	ldy	#2-1
 	: ; for (y = 2-1; x == 0 && y >= 0; y--) {
 		lda	pos_x_lo_screen_left, y
 		sec
 		sbc	pos_x_lo_player, x
-		sta	lib_bits_diff_screen_player_off
+		sta	pos_bits_diff_screen_player_off
 		lda	pos_x_hi_screen_left, y
 		sbc	pos_x_hi_player, x
 
-		ldx	lib_bits_off_x, y
+		ldx	pos_bits_off_x, y
 		cmp	#0
 		bmi	:+
-		ldx	lib_bits_off_x+1, y
+		ldx	pos_bits_off_x+1, y
 		cmp	#1
 		bpl	:+ ; if () {
 			lda	#56
-			sta	lib_bits_diff_offset
+			sta	pos_bits_diff_offset
 			lda	#%00001000
-			jsr	lib_bits_diff
+			jsr	pos_bits_diff
 		: ; }
 
-		lda	lib_bits_x, x
+		lda	pos_bits_x, x
 
-		ldx	lib_bits_get_do_object_idx
+		ldx	pos_bits_get_do_object_idx
 		cmp	#0
 		bne	:+
 		dey
@@ -210,7 +210,7 @@ lib_bits_get_do_x:
 	: ; }
 	rts
 ; --------------------------------------------------------------
-lib_bits_y:
+pos_bits_y:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	%00000000
 		.byte	%00001000
@@ -233,41 +233,41 @@ lib_bits_y:
 		.byte	%00000000
 	.endif
 
-lib_bits_off_y:
+pos_bits_off_y:
 	.byte	4, 0, 4
 
-lib_bits_y_hi:
+pos_bits_y_hi:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	<-1, 0
 	.elseif	.defined(SMB2M)
 		.byte	0, <-1
 	.endif
 ; -------------------------------
-lib_bits_get_do_y:
-	stx	lib_bits_get_do_object_idx
+pos_bits_get_do_y:
+	stx	pos_bits_get_do_object_idx
 	ldy	#2-1
 	: ; for (y = 2-1; x == 0 && y >= 0; y--) {
-		lda	lib_bits_y_hi, y
+		lda	pos_bits_y_hi, y
 		sec
 		sbc	pos_y_lo_player, x
-		sta	lib_bits_diff_screen_player_off
+		sta	pos_bits_diff_screen_player_off
 		lda	#1
 		sbc	pos_y_hi_player, x
-		ldx	lib_bits_off_y, y
+		ldx	pos_bits_off_y, y
 		cmp	#0
 		bmi	:+
-		ldx	lib_bits_off_y+1, y
+		ldx	pos_bits_off_y+1, y
 		cmp	#1
 		bpl	:+ ; if () {
 			lda	#32
-			sta	lib_bits_diff_offset
+			sta	pos_bits_diff_offset
 			lda	#%00000100
-			jsr	lib_bits_diff
+			jsr	pos_bits_diff
 		: ; }
 	
-		lda	lib_bits_y, x
+		lda	pos_bits_y, x
 
-		ldx	lib_bits_get_do_object_idx
+		ldx	pos_bits_get_do_object_idx
 		cmp	#0
 		bne	:+
 		dey
@@ -276,18 +276,18 @@ lib_bits_get_do_y:
 
 	rts
 ; --------------------------------------------------------------
-lib_bits_diff:
-	sta	lib_bits_diff_current
-	lda	lib_bits_diff_screen_player_off
-	cmp	lib_bits_diff_offset
-	bcs	:++ ; if (lib_bits_diff_screen_player_off < lib_bits_diff_offset) {
+pos_bits_diff:
+	sta	pos_bits_diff_current
+	lda	pos_bits_diff_screen_player_off
+	cmp	pos_bits_diff_offset
+	bcs	:++ ; if (pos_bits_diff_screen_player_off < pos_bits_diff_offset) {
 		lsr	a
 		lsr	a
 		lsr	a
 		and	#%00000111
 		cpy	#1
 		bcs	:+ ; if () {
-			adc	lib_bits_diff_current
+			adc	pos_bits_diff_current
 		: ; }
 		tax
 	: ; }

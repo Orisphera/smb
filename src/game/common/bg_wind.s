@@ -34,7 +34,7 @@ bg_scenery_wind_col:
 			lda	pos_x_hi_player
 			adc	#>WIND_PLAYER_OFFSET
 			sta	pos_x_hi_player
-			inc	player_scroll_x
+			inc	scroll_x_player
 		; }
 	: ; }
 

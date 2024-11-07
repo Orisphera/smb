@@ -7,9 +7,9 @@ KOOPA_GREEN_FLY_OFFSET_Y_ABS	= 1
 	.export actor_proc_koopa_red_fly
 actor_proc_koopa_red_fly:
 	lda	veloc_y_actor, x
-	ora	accel_y_actor_c, x
+	ora	accel_y2_actor, x
 	bne	:++
-	sta	pos_y_actor, x
+	sta	accel_y1_actor, x
 	lda	pos_y_lo_actor, x
 	cmp	accel_x_actor, x
 	bcs	:++ ; if () {

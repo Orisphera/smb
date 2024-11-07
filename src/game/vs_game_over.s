@@ -32,7 +32,7 @@ game_over_9902:
 	bne	:+ ; if (!timer_screen) {
 		lda	#music_event::none
 		sta	apu_music_event_req
-		inc	mode_game
+		inc	proc_id_game
 		lda	#0
 		sta	VS_RAM_ARENA0+$17
 	: ; }
@@ -222,9 +222,9 @@ sub_9A0C:
 	ldx	player_id
 	lda	VS_RAM_ARENA0+$28, x
 	beq	:+ ; if (vs_ram_arena0[0x28]) {
-                inc	mode_game
+                inc	proc_id_game
         : ; }
-        inc	mode_game
+        inc	proc_id_game
 	rts
 ; ----------------------------
 sub_9A20:
@@ -261,7 +261,7 @@ sub_9A4E:
 	lda	VS_RAM_ARENA0+$22
 	bne	:+ ; if (!vs_ram_arena0[0x22]) {
                 lda	#nmi_addr::addr_1E_F
-                sta	nmi_addrs_ctl
+                sta	nmi_buffer_ptr
                 inc	VS_RAM_ARENA0+$22
                 rts
         : ; } else if (vs_ram_arena0[0x22].in(1, 2, 3)) {
@@ -1008,7 +1008,7 @@ sub_9F3B:
 	lda	VS_RAM_ARENA0+$22 ; switch (vs_ram_arena0[0x22]) {
 	bne	:+ ; case 0:
 		lda	#nmi_addr::addr_1E_F
-		sta	nmi_addrs_ctl
+		sta	nmi_buffer_ptr
 		inc	VS_RAM_ARENA0+$22
 		rts
 	: cmp	#1
@@ -1150,7 +1150,7 @@ sub_A01B:
 		sta	VS_RAM_ARENA0+$17
 		sta	player_goals
 		sta	course_sub
-		inc	mode_game
+		inc	proc_id_game
 		jsr	sub_9924
 	
 		ldy	#6-1
@@ -1195,7 +1195,7 @@ sub_A075:
 		sta	VS_RAM_ARENA0+$17
 		sta	title_course_sel_on
 		sta	ENG_HARDMODE_VAR
-		inc	mode_game
+		inc	proc_id_game
 		rts
 	: lda	VS_RAM_ARENA0+$1B
 	beq	:+ ; } else if () {

@@ -22,7 +22,7 @@ actor_init_fireworks:
 		ldy	#ENG_ACTOR_MAX
 		: ; for (actor of actors) {
 			dey
-			lda	actor_id, y
+			lda	obj_id_actor, y
 			cmp	#actor::flag_victory
 			bne	:-
 		; }
@@ -50,9 +50,9 @@ actor_init_fireworks:
 		sta	pos_x_hi_actor, x
 		lda	fireworks_pos_y, y
 		sta	pos_y_lo_actor, x
-		lda	#actor_modes::active
+		lda	#proc_id_actors::active
 		sta	pos_y_hi_actor, x
-		sta	actor_mode, x
+		sta	proc_id_actor, x
 		lsr	a
 		sta	veloc_x_actor, x
 		lda	#FIREWORKS_VELOC_Y

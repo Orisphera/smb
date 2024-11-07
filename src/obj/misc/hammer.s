@@ -11,9 +11,9 @@ MISC_HAMMER_COL_BOX		= col_boxes::box_7
 MISC_HAMMER_ACTOR_OFFSET_X	= 2
 MISC_HAMMER_ACTOR_OFFSET_Y	= $10A
 ; ------------------------------------------------------------
-misc_hammer_actor_id:
+misc_hammer_obj_id_actor:
 	.byte	4, 4, 4, 5, 5, 5, 6, 6, 6
-misc_hammer_actor_id_end:
+misc_hammer_obj_id_actor_end:
 
 misc_hammer_veloc_x:
 	.byte	MISC_HAMMER_VELOC_X_INIT_ABS, <-MISC_HAMMER_VELOC_X_INIT_ABS
@@ -21,21 +21,21 @@ misc_hammer_veloc_x:
 	.export misc_init_hammer
 misc_init_hammer:
 	lda	srand+1
-	and	#(misc_hammer_actor_id_end-misc_hammer_actor_id)-2
-	bne	:+ ; if (!(srand[1] % misc_hammer_actor_id_count)) {
+	and	#(misc_hammer_obj_id_actor_end-misc_hammer_obj_id_actor)-2
+	bne	:+ ; if (!(srand[1] % misc_hammer_obj_id_actor_count)) {
 		lda	srand+1
-		and	#(misc_hammer_actor_id_end-misc_hammer_actor_id)-1
+		and	#(misc_hammer_obj_id_actor_end-misc_hammer_obj_id_actor)-1
 	: ; }
 	tay
 
 	lda	state_misc, y
 	bne	:+
-	ldx	misc_hammer_actor_id, y
-	lda	actor_mode, x
+	ldx	misc_hammer_obj_id_actor, y
+	lda	proc_id_actor, x
 	bne	:+ ; if (this.state == inactive && this.mode == free) {
 		ldx	actor_index
 		txa
-		sta	misc_actor_id, y
+		sta	misc_obj_id_actor, y
 		lda	#misc_states::hammer|misc_states::bit_4
 		sta	state_misc, y
 		lda	#MISC_HAMMER_COL_BOX
@@ -50,11 +50,11 @@ misc_init_hammer:
 ; -----------------------------
 	.export misc_proc_hammer
 misc_proc_hammer:
-	lda	eng_timer_ctl
-	bne	:++++ ; if (eng_timer_ctl == 0) {
+	lda	game_timer_stop
+	bne	:++++ ; if (!game_timer_stop) {
 		lda	state_misc, x
 		and	#<~misc_states::hammer
-		ldy	misc_actor_id, x
+		ldy	misc_obj_id_actor, x
 		cmp	#misc_states::throw
 		beq	:+
 		bcs	:++ ; if (this.state == init) {
@@ -117,9 +117,11 @@ misc_proc_hammer:
 		; }
 	: ; }
 
-	jsr	lib_misc_bits_get
-	jsr	lib_calc_misc_pos
+	jsr	pos_bits_get_misc
+	jsr	pos_calc_x_rel_misc
+
 	jsr	col_misc_box
+
 	jsr	render_hammer
 
 	rts

@@ -6,10 +6,18 @@ OP_SIZE         = 1
 WORD_SIZE	= 2
 STACK_BASE	= $100
 STACK_SIZE	= $100
+RAM_BASE        = $000
+RAM_END         = $800
 RESET		= $FFFC
 
 ASL_ABS_OPCODE	= $0E
 BIT_ABS_OPCODE  = $2C
 RTS_OPCODE	= $60
+
+.if     .defined(PAL)
+CLOCK_FREQ_HZ   = 1662607
+.else
+CLOCK_FREQ_HZ   = 1789773
+.endif
 
 .endif	; CPU_I

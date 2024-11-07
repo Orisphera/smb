@@ -92,7 +92,7 @@ actor_init_plat_l_down:
 	.export actor_init_plat_s_up, actor_init_plat_s_down
 actor_init_plat_s_up:
 	lda	#PLAT_ACCEL_Y_ABS
-	sta	accel_y_actor_c, x
+	sta	accel_y2_actor, x
 	lda	#<-1
 	sta	veloc_y_actor, x
 
@@ -100,7 +100,7 @@ actor_init_plat_s_up:
 ; ------------------------------
 actor_init_plat_s_down:
 	lda	#<-PLAT_ACCEL_Y_ABS
-	sta	accel_y_actor_c, x
+	sta	accel_y2_actor, x
 	lda	#0
 	sta	veloc_y_actor, x
 ; ------------------------------

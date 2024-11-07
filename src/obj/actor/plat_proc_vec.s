@@ -3,12 +3,14 @@
 
 	.export actor_proc_plat_small
 actor_proc_plat_small:
-	jsr	lib_actor_bits_get
-	jsr	lib_calc_actor_pos
+	jsr	pos_bits_get_actor
+	jsr	pos_calc_x_rel_actor
+
 	jsr	col_plat_s_box
 	jsr	col_plat_s_proc
 
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
+
 	jsr	render_plat_small
 
 	jsr	actor_proc_plat_small_do
@@ -17,23 +19,25 @@ actor_proc_plat_small:
 ; -----------------------------------------------------------
 	.export actor_proc_plat_large
 actor_proc_plat_large:
-	jsr	lib_actor_bits_get
-	jsr	lib_calc_actor_pos
+	jsr	pos_bits_get_actor
+	jsr	pos_calc_x_rel_actor
+
 	jsr	col_plat_l_box
 	jsr	col_plat_l_proc
 
-	lda	eng_timer_ctl
-	bne	:+ ; if (eng_timer_ctl) {
+	lda	game_timer_stop
+	bne	:+ ; if (game_timer_stop) {
 		jsr	actor_proc_plat_do
 	: ; }
 
-	jsr	lib_calc_actor_pos
+	jsr	pos_calc_x_rel_actor
+
 	jsr	render_plat_large
 
 	jmp	col_actor_oob_proc
 ; -----------------------------------------------------------
 actor_proc_plat_do:
-	lda	actor_id, x
+	lda	obj_id_actor, x
 	sec
 	sbc	#actor::plat_start
 	jsr	tbljmp

@@ -2,14 +2,15 @@
 .include	"system/apu.i"
 .if	.defined(FDS)
 	.include	"system/fds.i"
-.elseif	.defined(VS)
+.endif
+.if	.defined(VS)
 	.include	"system/vs.i"
 .endif
 
+.include	"macros.i"
 .include	"mem.i"
 .include	"tunables.i"
 .include	"misc.i"
-.include	"macros.i"
 
 .segment	"VECTORS"
 
@@ -71,7 +72,7 @@ start:
 		sta	FDS_CTLR
 	.endif
 
-        ldy     #START_COLDBOOT_VAL
+        ldy     #RAM_CLEAR_END_COLDBOOT
         ldx     #STAT_LEN_MAX-1
 	: ; for (digit of score_top) {
 		lda     stats_score_top, x
@@ -81,20 +82,19 @@ start:
 		dex
 		bpl     :-
 	; }
-
-	; if (isnum(game.score)) {
+	; if (CONS && isnum(game.score)) {
 	.if	.defined(CONS)
 		lda     game_boot_flag
 		cmp     #START_WARMBOOT_FLAG
 		bne     :+ ; if (game.boot_flag == START_WARMBOOT_FLAG) {
-			ldy     #START_WARMBOOT_VAL
+			ldy     #RAM_CLEAR_END_WARMBOOT
 		; }
 	.endif
 	: ; }
-
 	jsr     game_init_clearram
+
         sta     DMCDATA
-        sta     mode_system
+        sta     proc_id_system
 
 	.if	.defined(SMB2M)
 		sta	disk_loader_proc
@@ -127,7 +127,7 @@ start:
 		jsr     vs_setbank_low
 		lda     #0
 		ldx     #0
-		: ; for (x = 0; x < 0x100, x++) {
+		: ; for (byte of memory_page) {
 			sta     VS_RAM_ARENA1, x
 			sta     VS_RAM_ARENA0, x
 			inx
@@ -139,7 +139,7 @@ start:
 			ppuaddr_m	vs_save_data
 			lda     PPU_VRAM_IO
 			ldy     #(VS_SAVEDAT-VS_RAM_ARENA0)
-			: ; for (y = 0x74; y < 0x100, y++) {
+			: ; for (byte of vs_savedat) {
 				lda     PPU_VRAM_IO
 				sta     VS_RAM_ARENA0, y
 	
@@ -169,8 +169,10 @@ start:
         ora     #ppu_ctlr0::int
         jsr     nmi_list_write_ctlr0
 
-start_loop:
-	.if	.defined(SMB2M)
-		lda	zp_byte_00
-	.endif
-	jmp     start_loop
+	: ; while (1) {
+		.if	.defined(SMB2M)
+			lda	zp_byte_00
+		.endif
+
+		jmp     :-
+	; }

@@ -62,8 +62,8 @@ actor_proc_piranha_plant:
 			lda	frame_count
 			lsr	a
 			bcc	:++
-			: lda	eng_timer_ctl
-			bne	:+ ; if ((((SMB2 && this.color == color2) || ((frame_count % 2))) && eng_timer_ctl == 0) {
+			: lda	game_timer_stop
+			bne	:+ ; if ((((SMB2 && this.color == color2) || ((frame_count % 2))) && !game_timer_stop) {
 				lda	pos_y_lo_actor, x
 				clc
 				adc	veloc_y_piranha, x
