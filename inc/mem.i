@@ -713,13 +713,17 @@ ppu_ctlr0_bg		= ppu_ctlr1_b+1
 .endif
 fds_sprite_overlap_hit	= ppu_ctlr0_bg+1
 render_clear_skip	= fds_sprite_overlap_hit+1
-
-.if	.defined(ANN)
+; -----------------------------
+.if	.defined(SMB2)
+unused_77D		= render_clear_skip+1
+.elseif	.defined(ANN)
 game_hard_mode		= render_clear_skip+1
 .endif
-; -----------------------------
-.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
+; --------------
+.if	.defined(SMB)|.defined(VS_SMB)
 unused_77E		= render_clear_skip+1
+.elseif	.defined(SMB2)
+unused_77E		= unused_77D+1
 .elseif	.defined(ANN)
 unused_77E		= game_hard_mode+1
 .endif
