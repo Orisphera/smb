@@ -561,12 +561,12 @@ bg_scenery:
 	.endif
 
 	bg_scenery_outer_loop: ; while (course.page_calc || course.page_loaded) {
-		ldx	#3-1
-		bg_scenery_loop: ; for (actor_index = 3-1; actor_index >= 0; x--) {
+		ldx	#SCENERY_ACTIVE_MAX-1
+		bg_scenery_loop: ; for (item of scenery) {
 			stx	actor_index
 			lda	#0
 			sta	course_page_calc
-			ldy	scenery_offset
+			ldy	scenery_offset_base
 
 			.if	.defined(VS)
 				lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
@@ -683,8 +683,8 @@ bg_scenery_rts:
 	rts
 ; ------------------------------------------------------------
 bg_buffer_inc:
-	inc	scenery_offset
-	inc	scenery_offset
+	inc	scenery_offset_base
+	inc	scenery_offset_base
 	lda	#0
 	sta	scenery_page_on
 	rts
@@ -695,7 +695,7 @@ BG_OBJ_TBL_OFFSET	= zp_byte_07
 bg_scenery_decode:
 	lda	scenery_length, x
 	bmi	:+ ; if (!(scenery_length & 0x80)) {
-		ldy	scenery_offset+1, x
+		ldy	scenery_offset, x
 	: ; }
 
 	ldx	#(bg_obj_spec_B-bg_obj_tbl)/WORD_SIZE
@@ -816,7 +816,7 @@ bg_obj_set_base:
 	lda	scenery_page_loc
 	cmp	pos_x_hi_game
 	beq	:+
-	ldy	scenery_offset
+	ldy	scenery_offset_base
 
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
@@ -841,7 +841,7 @@ bg_scenery_decode_rts:
 	bg_scenery_decode_rts2:
 		rts
 	: ; } else {
-		ldy	scenery_offset
+		ldy	scenery_offset_base
 		.if	.defined(VS)
 			lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_REQ
@@ -856,8 +856,8 @@ bg_scenery_decode_rts:
 		bne	bg_scenery_decode_rts
 	: ; }
 	; if () {
-		lda	scenery_offset
-		sta	scenery_offset+1, x
+		lda	scenery_offset_base
+		sta	scenery_offset, x
 		jsr	bg_buffer_inc
 	: ; }
 
@@ -1107,7 +1107,7 @@ bg_obj_tbl_set_attr:
 	.addr	bg_scenery_set_attr
 ; ------------------------------------------------------------
 bg_scenery_set_attr:
-	ldy	scenery_offset+1, x
+	ldy	scenery_offset, x
 	iny
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
@@ -2159,7 +2159,7 @@ bg_scenery_attr:
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
 	.endif
-	ldy	scenery_offset+1, x
+	ldy	scenery_offset, x
 	lda	(course_scenery_addr), y
 	and	#%00001111
 	sta	BG_PROC_METATILE_ID

@@ -38,7 +38,7 @@ game_init_oam_end:
 	game_init_ram:
 		.endif
 
-		ldy	#RAM_CLEAR_END_GAMEINIT
+		ldy	#<RAM_CLEAR_END_GAMEINIT
 		jsr	game_init_clearram
 
 		ldy	#(snd_ram_end-snd_ram)-1
@@ -67,7 +67,7 @@ game_init_oam_end:
 
 	.export	game_init_0_do
 game_init_0_do:
-	ldy	#RAM_CLEAR_END_GAMERESET
+	ldy	#<RAM_CLEAR_END_GAMERESET
 	jsr	game_init_clearram
 
 	ldx	#(timers_nmi_end-timers_nmi)-3

@@ -25,7 +25,7 @@ title_init_0:
 	.if	.defined(SMB2)
 		sta	game_courses_cleared
 	.endif
-	sta	game_hard_mode_new
+	sta	ENG_HARDMODE_VAR
 	sta	player_id
 	jsr	title_patch_player
 	jsr	title_cursor_draw_xfer
@@ -53,7 +53,7 @@ title_init_0:
 		bne	:---
 	; }
 
-	ldy	#RAM_CLEAR_END_GAMEINIT
+	ldy	#<RAM_CLEAR_END_GAMEINIT
 	jsr	game_init_clearram
 
 	ldy	#(snd_ram_end-snd_ram)-1

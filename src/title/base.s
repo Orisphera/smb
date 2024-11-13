@@ -112,7 +112,7 @@ title_proc:
 				sta	game_courses_cleared
 				.endif
 				sta	disk_loader_proc
-				sta	game_hard_mode_new
+				sta	ENG_HARDMODE_VAR
 
 				lda	save
 				cmp	#HARD_MODE_GAME_CLEARS
@@ -120,7 +120,7 @@ title_proc:
 				lda	joypad_p1
 				and	#joypad_button::face_a
 				beq	:+ ; if (save >= 8 && joypad[0].a == PRESSED) {
-					inc	game_hard_mode_new
+					inc	ENG_HARDMODE_VAR
 				: ; }
 				jmp	title_exit
 			; }
@@ -190,7 +190,7 @@ title_proc:
 							and	#MOD_8
 							sta	title_course_sel_no
 							jsr	title_course_set
-							: ; for (x = (title_course_sel_no+1); x < 0x06; x++) {
+							: ; for (x = (title_course_sel_no+1); x < sizeof (title_course_no); x++) {
 								lda	title_course_no, x
 								sta	nmi_list_0_data-1, x
 

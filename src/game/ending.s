@@ -284,7 +284,7 @@ ending_toad_proc:
 		; }
 	.endif
 
-	: lda	game_hard_mode_new
+	: lda	ENG_HARDMODE_VAR
 	bne	disk_loader_file_load_save_done ; if (music.fds.current == 0 && !game.hard_mode) {
 		inc	proc_id_game
 	: ; }
@@ -328,7 +328,7 @@ disk_loader_file_load_save_done:
 	sta	proc_id_game
 
 .if	.defined(SMB2)
-	lda	game_hard_mode_new
+	lda	ENG_HARDMODE_VAR
 	bne	:+
 	lda	game_courses_cleared
 	cmp	#$FF

@@ -72,7 +72,7 @@ start:
 		sta	FDS_CTLR
 	.endif
 
-        ldy     #RAM_CLEAR_END_COLDBOOT
+        ldy     #<RAM_CLEAR_END_COLDBOOT
         ldx     #STAT_LEN_MAX-1
 	: ; for (digit of score_top) {
 		lda     stats_score_top, x
@@ -87,7 +87,7 @@ start:
 		lda     game_boot_flag
 		cmp     #START_WARMBOOT_FLAG
 		bne     :+ ; if (game.boot_flag == START_WARMBOOT_FLAG) {
-			ldy     #RAM_CLEAR_END_WARMBOOT
+			ldy     #<RAM_CLEAR_END_WARMBOOT
 		; }
 	.endif
 	: ; }

@@ -202,7 +202,7 @@ actor_area_loop:
 	.endif
 
 	lda	COURSE_SCENERY_LOOP_OFFSETS, y
-	sta	scenery_offset
+	sta	scenery_offset_base
 
 	rts
 ; ------------------------------
