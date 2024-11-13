@@ -23,12 +23,12 @@ game_over_menu_pos_y:
 game_over_menu:
 	lda	joypad_p1
 	and	#joypad_button::start
-	bne	:+++ ; if (!joypad_p1.start) {
+	bne	:+++ ; if (!joypad[0].start) {
 		lda	joypad_p1
 		and	#joypad_button::select
 		beq	:+
 		ldx	timer_select
-		bne	:+ ; if (joypad_p1.select && timer_select == 0) {
+		bne	:+ ; if (joypad[0].select && timer_select == 0) {
 			lsr	a
 			sta	timer_select
 			lda	game_over_choice

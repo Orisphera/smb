@@ -518,7 +518,7 @@ nmi_pause:
 	lda	proc_id_game
 	cmp	#game_modes::proc
 	bne	:+++++
-	: ; if (proc_id_system == victory || (proc_id_system == game && proc_id_game == proc)) {
+	: ; if (system.proc_id == victory || (system.proc_id == game && game.proc_id == proc)) {
 		lda	nmi_pause_counter
 		beq	:+ ; if (nmi_pause_counter > 0) {
 			dec	nmi_pause_counter
@@ -526,7 +526,7 @@ nmi_pause:
 		: ; } else {
 			lda	joypad_p1
 			and	#joypad_button::start
-			beq	:+ ; if (joypad1_start) {
+			beq	:+ ; if (joypad[0].start) {
 				lda	nmi_pause_flag
 				and	#NMI_PAUSE_BUTTON_DELAY_FLAG
 				bne	:+++ ; if (!pause_delayed) {
@@ -545,7 +545,7 @@ nmi_pause:
 				and	#<~NMI_PAUSE_BUTTON_DELAY_FLAG
 			: ; }
 
-			; if (!joypad1_start || !pause_delayed) {
+			; if (!joypad[0].start || !pause_delayed) {
 				sta	nmi_pause_flag
 			; }
 		; }

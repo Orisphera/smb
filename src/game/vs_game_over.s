@@ -433,9 +433,9 @@ sub_9B38:
 			; }
 		: ; }
 
-		jsr	sub_9D4D
-		and	#$0F
-		bne	:+ ; if () {
+		jsr	vs_game_over_joypad_get
+		and	#joypad_button::up|joypad_button::down|joypad_button::left|joypad_button::right
+		bne	:+ ; if (joypad.not_in(up, down, left, right)) {
 			sta	VS_RAM_ARENA0+$25
 			jmp	L9C31
 		: ; } else {
@@ -535,13 +535,14 @@ sub_9B38:
 
 		lda	VS_RAM_ARENA0+$25
 		sta	VS_RAM_ARENA0+$24
-		jsr	sub_9D4D
-		and	#$80
+
+		jsr	vs_game_over_joypad_get
+		and	#joypad_button::face_a
 		bne	:+
 		sta	VS_RAM_ARENA0+$23
 		jmp	:+++++++
 		: cmp	VS_RAM_ARENA0+$23
-		beq	:++++++ ; if () {
+		beq	:++++++ ; if (joypad.face_a && vs_ram_arena0[0x23] != face_a) {
 			sta	VS_RAM_ARENA0+$23
 			lda	VS_RAM_ARENA0+$21
 			cmp	#2
@@ -673,11 +674,11 @@ sub_9D3C:
 
 	rts
 ; ----------------------------
-sub_9D4D:
+vs_game_over_joypad_get:
 	lda	player_count
 	beq	:+ ; if (player_count > 0) {
 		ldx	player_id
-		lda	joypad_p1, x
+		lda	joypad_bits, x
 		jmp	:++
 	: ; } else {
 		lda	joypad_p1
@@ -832,7 +833,7 @@ sub_9E29:
 	lda	joypad_p1
 	and	#joypad_button::select
 	beq	:++
-	: ; if (!vs_ram_arena0[0x19] || (!(vs_ram_arena0[0x19] & 0x80) && joypad_p1_select))) {
+	: ; if (!vs_ram_arena0[0x19] || (!(vs_ram_arena0[0x19] & 0x80) && joypad[0].select))) {
 		lda	#music_base::none
 		sta	apu_music_base_req
 		jmp	sub_9A0C
@@ -1136,7 +1137,7 @@ sub_A006:
 sub_A01B:
 	lda	joypad_p1
 	and	#joypad_button::select
-	beq	:++++ ; if (joypad_p1_select) {
+	beq	:++++ ; if (joypad[0].select) {
 		lda	VS_RAM_ARENA0+$04
 		beq	:+ ; if () {
 			lda	#2

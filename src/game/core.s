@@ -50,7 +50,7 @@ game_proc:
 		beq	:+
 		.endif ; if (!VS_SMB || player_count > 0) {
 			ldx	player_id
-			lda	joypad_p1, x
+			lda	joypad_bits, x
 		.if	.defined(VS_SMB)
 			jmp	:++
 		: ; } else {
@@ -63,7 +63,7 @@ game_proc:
 
 	.if	.defined(VS_SMB)
 		and	#joypad_button::right
-		beq	:+ ; if (joypad_button == right) {
+		beq	:+ ; if (joypad[0].right) {
 			lda	joypad_p1
 			and	#<~(joypad_button::left)
 			sta	joypad_p1
@@ -71,7 +71,7 @@ game_proc:
 
 		lda	joypad_p1
 		and	#joypad_button::down
-		beq	:+ ; if (joypad_button == down) {
+		beq	:+ ; if (joypad[0].down) {
 			lda	joypad_p1
 			and	#<~(joypad_button::up)
 			sta	joypad_p1

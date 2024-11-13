@@ -353,8 +353,8 @@ vs_player_select_do:
 	beq	:++
 	lda	VS_RAM_ARENA0+$10
 	cmp	#1
-	beq	:++ ; if ((joypad_p1_select || joypad_p2_select) && vs_ram_arena0[16] != 1) {
-		; if (!joypad_p1_select) {
+	beq	:++ ; if ((joypad[0].select || joypad[1].select) && vs_ram_arena0[16] != 1) {
+		; if (!joypad[0].select) {
 			dec	VS_RAM_ARENA0+$10
 			lda	#1
 		: ; }

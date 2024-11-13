@@ -773,7 +773,7 @@ victory_finish:
 			lda	joypad_p1
 			ora	joypad_p2
 			and	#joypad_button::face_b
-			beq	:+ ; if (joypad_face_b) {
+			beq	:+ ; if (joypad.face_b) {
 				lda	#1
 				sta	title_course_sel_on
 				lda	#255
