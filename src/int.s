@@ -459,10 +459,12 @@ irq:
 			sta	PPU_CTLR0
 			lda	#0
 			sta	FDS_TIMER_CTLR
+
 			lda	ppu_scc_h_b
 			sta	PPU_SCC_H_V
 			lda	ppu_scc_v_b
 			sta	PPU_SCC_H_V
+
 			lda	#0
 			sta	fds_sprite_overlap_hit
 
@@ -506,8 +508,8 @@ vs_setbank_low:
 .endif
 ; -----------------------------------------------------------
 .if	.defined(CONS)
-NMI_PAUSE_BUTTON_DELAY_FLAG	= %10000000
-NMI_PAUSE_DELAY_VALUE		= 43
+NMI_PAUSE_DEBOUNCE_FLAG	= %10000000
+NMI_PAUSE_DEBOUNCE_VALUE	= 43
 
 nmi_pause:
 	lda	proc_id_system
@@ -519,33 +521,33 @@ nmi_pause:
 	cmp	#game_modes::proc
 	bne	:+++++
 	: ; if (system.proc_id == victory || (system.proc_id == game && game.proc_id == proc)) {
-		lda	nmi_pause_counter
-		beq	:+ ; if (nmi_pause_counter > 0) {
-			dec	nmi_pause_counter
+		lda	nmi_pause_debounce
+		beq	:+ ; if (debounce > 0) {
+			dec	nmi_pause_debounce
 			rts
 		: ; } else {
 			lda	joypad_p1
 			and	#joypad_button::start
 			beq	:+ ; if (joypad[0].start) {
 				lda	nmi_pause_flag
-				and	#NMI_PAUSE_BUTTON_DELAY_FLAG
-				bne	:+++ ; if (!pause_delayed) {
-					lda	#NMI_PAUSE_DELAY_VALUE
-					sta	nmi_pause_counter
+				and	#NMI_PAUSE_DEBOUNCE_FLAG
+				bne	:+++ ; if (!debounced) {
+					lda	#NMI_PAUSE_DEBOUNCE_VALUE
+					sta	nmi_pause_debounce
 					lda	nmi_pause_flag
 					tay
 					iny
 					sty	apu_sfx_flag_pause
 					eor	#1
-					ora	#NMI_PAUSE_BUTTON_DELAY_FLAG
+					ora	#NMI_PAUSE_DEBOUNCE_FLAG
 					bne	:++
 				; }
 			: ; } else {
 				lda	nmi_pause_flag
-				and	#<~NMI_PAUSE_BUTTON_DELAY_FLAG
+				and	#<~NMI_PAUSE_DEBOUNCE_FLAG
 			: ; }
 
-			; if (!joypad[0].start || !pause_delayed) {
+			; if (!joypad[0].start || !debounced) {
 				sta	nmi_pause_flag
 			; }
 		; }

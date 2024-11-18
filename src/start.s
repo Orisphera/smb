@@ -67,7 +67,7 @@ start:
 	.endif
 
 	.if	.defined(ANN)
-		lda	#(fds_ctlr::mask|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
+		lda	#(fds_ctlr::mask|fds_ctlr::mirror_v|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
 		sta	fds_ctlr_b
 		sta	FDS_CTLR
 	.endif
@@ -94,15 +94,14 @@ start:
 	jsr     game_init_clearram
 
         sta     DMCDATA
-        sta     proc_id_system
 
+        sta     proc_id_system
 	.if	.defined(SMB2M)
 		sta	disk_loader_proc
 
 		pla
 		sta	course_no
 	.endif
-
         lda     #START_WARMBOOT_FLAG
 	.if	.defined(CONS)
         	sta     game_boot_flag
@@ -111,14 +110,16 @@ start:
 
         lda     #(dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2|dmcstatus::pulse_1)
 	sta	DMCSTATUS
+
 	lda	#(ppu_ctlr1::objblk_on|ppu_ctlr1::bgblk_on|ppu_ctlr1::objlblk_off|ppu_ctlr1::bglblk_off|ppu_ctlr1::color)
         sta     PPU_CTLR1
         jsr     oam_init
         jsr     nt_init
+
         inc     nmi_disp_disable
 
 	.if	.defined(FDS_SMB)
-		lda	#(fds_ctlr::mask|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
+		lda	#(fds_ctlr::mask|fds_ctlr::mirror_v|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
 		sta	FDS_CTLR
 	.elseif	.defined(SMB2M)
 		lda	#fds_irqmode::game_vec

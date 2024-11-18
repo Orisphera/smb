@@ -698,8 +698,8 @@ nmi_buffer_ptr		= proc_id_game+1
 nmi_disp_disable	= nmi_buffer_ptr+1
 game_scroll_amount	= nmi_disp_disable+1
 nmi_pause_flag		= game_scroll_amount+1
-nmi_pause_counter	= nmi_pause_flag+1
-ppu_ctlr0_b		= nmi_pause_counter+1
+nmi_pause_debounce	= nmi_pause_flag+1
+ppu_ctlr0_b		= nmi_pause_debounce+1
 ppu_ctlr1_b		= ppu_ctlr0_b+1
 
 .if	.defined(SMB)|.defined(VS_SMB)
