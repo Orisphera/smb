@@ -95,37 +95,37 @@ title_proc:
 	.endif
 
 	.if	.defined(CONS)
-		lda	joypad_p1
-		.if	.defined(SMB)|.defined(VS_SMB)
-			ora	joypad_p2
-			cmp	#joypad_button::start
-			beq	:+
-			cmp	#(joypad_button::face_a|joypad_button::start)
-			bne	:++
-			: jmp	title_exit
-			: ; if (!joypads_start && !joypads_a_start) {
-		.elseif	.defined(SMB2M)
-			and	#joypad_button::start
-			beq	:++ ; if (joypad[0].start == PRESSED) {
-				lda	#0
-				.if	.defined(SMB2)
-				sta	game_courses_cleared
-				.endif
-				sta	disk_loader_proc
-				sta	game_hard_mode_new
-
-				lda	save
-				cmp	#HARD_MODE_GAME_CLEARS
-				bcc	:+
-				lda	joypad_p1
-				and	#joypad_button::face_a
-				beq	:+ ; if (save >= 8 && joypad[0].a == PRESSED) {
-					inc	game_hard_mode_new
-				: ; }
-				jmp	title_exit
-			; }
+	lda	joypad_p1
+	.if	.defined(SMB)|.defined(VS_SMB)
+	ora	joypad_p2
+	cmp	#joypad_button::start
+	beq	:+
+	cmp	#(joypad_button::face_a|joypad_button::start)
+	bne	:++
+	: jmp	title_exit
+	.elseif	.defined(SMB2M)
+	and	#joypad_button::start
+	beq	:++ ; if (joypad[0].start == PRESSED) {
+		lda	#0
+		.if	.defined(SMB2)
+		sta	game_courses_cleared
 		.endif
-	: ; } else {
+		sta	disk_loader_proc
+		sta	ENG_HARDMODE_VAR
+
+		lda	save
+		cmp	#HARD_MODE_GAME_CLEARS
+		bcc	:+
+		lda	joypad_p1
+		and	#joypad_button::face_a
+		beq	:+ ; if (save >= 8 && joypad[0].a == PRESSED) {
+			inc	ENG_HARDMODE_VAR
+		: ; }
+		jmp	title_exit
+	; }
+	.endif
+
+	: ; if (CONS && (!joypad[0].start || (!SMB2M && joypad[0].face_a))) {
 		.if	.defined(SMB2M)
 		lda	joypad_p1
 		.endif
@@ -190,7 +190,7 @@ title_proc:
 							and	#MOD_8
 							sta	title_course_sel_no
 							jsr	title_course_set
-							: ; for (x = (title_course_sel_no+1); x < 0x06; x++) {
+							: ; for (x = (title_course_sel_no+1); x < sizeof (title_course_no); x++) {
 								lda	title_course_no, x
 								sta	nmi_list_0_data-1, x
 
@@ -213,9 +213,10 @@ title_proc:
 				sta	joypad_p1
 
 			: ; }
+	; }
 	.elseif	.defined(VS)
 		ldx	timer_demo
-		bne	:+ ; if (!timer_demo) {
+		bne	:+ ; if (timer_demo == 0) {
 			jsr	title_demo
 			bcs	title_next
 			jmp	:++
@@ -226,6 +227,7 @@ title_proc:
 		: ; }
 	.endif
 
+	; if ((VS || (!joypad[0].start || (!SMB2M && joypad[0].face_a))) && timer_demo != 0) {
 		jsr	game_proc
 		lda	proc_id_player
 		cmp	#player_procs::lifedown
@@ -247,7 +249,8 @@ title_proc:
 			inc	nmi_disp_disable
 		; }
 		rts
-	; } else {
+	; }
+
 	title_exit:
 		.if	.defined(CONS)
 		.if	.defined(SMB)|.defined(VS_SMB)

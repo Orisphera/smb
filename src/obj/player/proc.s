@@ -131,7 +131,7 @@ player_proc_ctrl:
 		lda	state_player
 		bne	:+
 		ldy	joypad_l_r
-		beq	:+ ; if ((joypad_u_d & down) && this.state == ground && joypad_l_r) {
+		beq	:+ ; if (joypad[0].down && this.state == ground && (joypad[0].l || joypad[0].r)) {
 			lda	#joypad_button::none
 			sta	joypad_l_r
 			sta	joypad_u_d
@@ -939,22 +939,22 @@ player_proc_player_ani_speed:
 		beq	:+++
 		and	#(joypad_button::left|joypad_button::right)
 		cmp	motion_dir_player
-		bne	:++ ; if (no_motion) {
+		bne	:++ ; if (joypad[0].dir == player.motion_dir) {
 			lda	#0
 		; }
-	: ; } if (run_motion) {
+	: ; }
+
+	; if (abs(this.veloc_x) >= cutoff_a || joypad[0].dir == player.motion_dir) {
 		sta	veloc_x_player_run
 		jmp	:++
-	: ; } else {
-		lda	veloc_x_player_abs
-		cmp	#ANI_VELOC_X_CUTOFF_C
-		bcs	:+ ; if (abs(this.veloc_x) < cutoff_c) {
-			lda	disp_dir_player
-			sta	motion_dir_player
-			lda	#0
-			sta	veloc_x_player
-			sta	veloc_x_player_hi
-		; }
+	: lda	veloc_x_player_abs
+	cmp	#ANI_VELOC_X_CUTOFF_C
+	bcs	:+ ; if (abs(this.veloc_x) < cutoff_a && (joypad[0].dir & ~face_a) && joypad[0].dir != motion_dir && abs(this.veloc_x) < cutoff_c) {
+		lda	disp_dir_player
+		sta	motion_dir_player
+		lda	#0
+		sta	veloc_x_player
+		sta	veloc_x_player_hi
 	: ; }
 
 	lda	player_proc_player_ani_timers, y

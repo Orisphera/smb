@@ -562,141 +562,174 @@ unused_6FE		= joypad_p2+1
 ; --------------
 scroll_x_player		= unused_6FE+1
 veloc_x_player_abs	= scroll_x_player+1
-accel_x_friction	= $701
-veloc_x_player_run	= $703
-player_swimming		= $704
-veloc_x_player_hi	= $705
-offset_y_player_jump	= $706
-pos_y_player_jump	= $707
-accel_y_player		= $709
-accel_y_gravity		= $70A
-player_resizing		= $70B
-timer_player_ani	= $70C
-player_ani_frame	= $70D
-player_on_spring	= $70E
-pos_y_goal		= $70F
-course_pos_y_start	= $710
-timer_proj_throw	= $711
-music_event_death_flag	= $712
-music_event_goal_flag	= $713
-player_crouching	= $714
-course_timer		= $715
-col_disable		= $716
-title_demo_button_id	= $717
-title_demo_button_timer	= $718
-victory_msg_timer_hi	= $719
-
-pos_x_hi_screen_left	= $71A
-pos_x_hi_screen_right	= $71B
-pos_x_lo_screen_left	= $71C
-pos_x_lo_screen_right	= $71D
-screen_bg_counter	= $71E
-bg_proc_id		= $71F
-bg_addr			= $720
-nmi_sprite_overlap	= $722
-game_scroll_lock	= $723
-byte_724		= $724
-pos_x_hi_game		= $725
-pos_x_lo_game		= $726
-course_floor_mask_id	= $727
-course_page_loaded	= $728
-course_page_calc	= $729
-scenery_page_loc	= $72A
-scenery_page_on		= $72B
-scenery_offset		= $72C
-scenery_length		= $730
-course_ledge_type	= $733
-scenery_step_no		= $734
-scenery_height		= $735
-scenery_ledge_dims	= $736
-actor_offset		= $739
-actor_page_loc		= $73A
-actor_page_on		= $73B
-screen_proc_id		= $73C
-game_scroll_h		= $73D
-byte_73E		= $73E
-ppu_scc_h_b		= $73F
-ppu_scc_v_b		= $740
-course_fg_id		= $741
-course_bg_id		= $742
-course_type_cloud	= $743
-course_bg_col		= $744
-course_loop_flag	= $745
-proc_id_victory_flag 	= $746
-game_timer_stop		= $747
-game_bonus_counter	= $748
-victory_msg_timer_lo	= $749
-joypad_mask		= $74A
-joypad_mask_p1		= $74A
-joypad_mask_p2		= $74B
+accel_x_friction	= veloc_x_player_abs+1
+veloc_x_player_run	= accel_x_friction+2
+player_swimming		= veloc_x_player_run+1
+veloc_x_player_hi	= player_swimming+1
+offset_y_player_jump	= veloc_x_player_hi+1
+pos_y_player_jump	= offset_y_player_jump+1
+accel_y_player		= pos_y_player_jump+2
+accel_y_gravity		= accel_y_player+1
+player_resizing		= accel_y_gravity+1
+timer_player_ani	= player_resizing+1
+player_ani_frame	= timer_player_ani+1
+player_on_spring	= player_ani_frame+1
+pos_y_goal		= player_on_spring+1
+course_pos_y_start	= pos_y_goal+1
+timer_proj_throw	= course_pos_y_start+1
+music_event_death_flag	= timer_proj_throw+1
+music_event_goal_flag	= music_event_death_flag+1
+player_crouching	= music_event_goal_flag+1
+course_timer		= player_crouching+1
+col_disable		= course_timer+1
+title_demo_button_id	= col_disable+1
+title_demo_button_timer	= title_demo_button_id+1
+victory_msg_timer_hi	= title_demo_button_timer+1
+; --------------
+pos_x_hi_screen_left	= victory_msg_timer_hi+1
+pos_x_hi_screen_right	= pos_x_hi_screen_left+1
+pos_x_lo_screen_left	= pos_x_hi_screen_right+1
+pos_x_lo_screen_right	= pos_x_lo_screen_left+1
+screen_bg_counter	= pos_x_lo_screen_right+1
+bg_proc_id		= screen_bg_counter+1
+bg_addr			= bg_proc_id+1
+nmi_sprite_overlap	= bg_addr+WORD_SIZE
+game_scroll_lock	= nmi_sprite_overlap+1
+unused_724		= game_scroll_lock+1
+pos_x_hi_game		= unused_724+1
+pos_x_lo_game		= pos_x_hi_game+1
+course_floor_mask_id	= pos_x_lo_game+1
+course_page_loaded	= course_floor_mask_id+1
+course_page_calc	= course_page_loaded+1
+scenery_page_loc	= course_page_calc+1
+scenery_page_on		= scenery_page_loc+1
+scenery_offset_base	= scenery_page_on+1
+scenery_offset		= scenery_offset_base+1
+scenery_length		= scenery_offset+SCENERY_ACTIVE_MAX
+course_ledge_type	= scenery_length+SCENERY_ACTIVE_MAX
+scenery_step_no		= course_ledge_type+1
+scenery_height		= scenery_step_no+1
+scenery_ledge_dims	= scenery_height+1
+actor_offset		= scenery_ledge_dims+SCENERY_ACTIVE_MAX
+actor_page_loc		= actor_offset+1
+actor_page_on		= actor_page_loc+1
+screen_proc_id		= actor_page_on+1
+game_scroll_h		= screen_proc_id+1
+unused_73E		= game_scroll_h+1
+ppu_scc_h_b		= unused_73E+1
+ppu_scc_v_b		= ppu_scc_h_b+1
+course_fg_id		= ppu_scc_v_b+1
+course_bg_id		= course_fg_id+1
+course_type_cloud	= course_bg_id+1
+course_bg_col		= course_type_cloud+1
+course_loop_flag	= course_bg_col+1
+proc_id_victory_flag 	= course_loop_flag+1
+game_timer_stop		= proc_id_victory_flag+1
+game_bonus_counter	= game_timer_stop+1
+victory_msg_timer_lo	= game_bonus_counter+1
+joypad_mask		= victory_msg_timer_lo+1
+joypad_mask_p1		= joypad_mask+0
+joypad_mask_p2		= joypad_mask+1
+RAM_CLEAR_END_GAMERESET	= joypad_mask_p2
 ; -----------------------------
-RAM_CLEAR_END_GAMERESET = <(game_reset_persist-1)
-game_reset_persist	= $74C
-course_type		= $74E
-course_page_offset	= $74F
-course_descriptor	= $750
-pos_x_hi_init_game	= $751
-game_start_type		= $752
-player_id		= $753
-player_size		= $754
-scroll_x_player_b	= $755
-player_status		= $756
-player_first_start	= $757
-game_joypad_override	= $758
-game_time_up		= $759
+unused_74C		= RAM_CLEAR_END_GAMERESET+1
+unused_74D		= unused_74C+1
+; -----------------------------
+course_type		= unused_74D+1
+course_page_offset	= course_type+1
+course_descriptor	= course_page_offset+1
+pos_x_hi_init_game	= course_descriptor+1
+game_start_type		= pos_x_hi_init_game+1
+player_id		= game_start_type+1
+player_size		= player_id+1
+scroll_x_player_b	= player_size+1
+player_status		= scroll_x_player_b+1
+player_first_start	= player_status+1
+game_joypad_override	= player_first_start+1
+game_time_up		= game_joypad_override+1
+; --------------
+player_lives		= game_time_up+1
+pos_x_hi_alt_game	= player_lives+1
+player_goals		= pos_x_hi_alt_game+1
+bg_hidden_one_up_req	= player_goals+1
+player_coins		= bg_hidden_one_up_req+1
+course_no		= player_coins+1
+course_sub		= course_no+1
+; --------------
+player_lives_b		= course_sub+1
+pos_x_hi_alt_game_b	= player_lives_b+1
+player_goals_b		= pos_x_hi_alt_game_b+1
+bg_hidden_one_up_req_b	= player_goals_b+1
+player_coins_b		= bg_hidden_one_up_req_b+1
+course_no_b		= player_coins_b+1
+course_sub_b		= course_no_b+1
+.if	.defined(SMB2M)
+timer_ending		= player_lives_b
+ending_toad_offset	= pos_x_hi_alt_game_b
+ending_palcycle_step	= pos_x_hi_alt_game_b
+ending_toad_cycling	= player_goals_b
+ending_palcycle_delay	= player_goals_b
+ending_toad_delay	= bg_hidden_one_up_req_b
+.endif
+; --------------
+pos_x_victory_scroll	= course_sub_b+1
+screen_msg_disable	= pos_x_victory_scroll+1
 
-player_lives		= $75A
-pos_x_hi_alt_game	= $75B
-player_goals		= $75C
-bg_hidden_one_up_req	= $75D
-player_coins		= $75E
-course_no		= $75F
-course_sub		= $760
+.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
+game_hard_mode		= screen_msg_disable+1
+.endif
+
+.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
+title_course_sel_no	= game_hard_mode+1
+.elseif	.defined(ANN)
+unused_76A		= screen_msg_disable+1
+title_course_sel_no	= unused_76A+1
+.endif
+unused_76C		= title_course_sel_no+1
+unused_76D		= unused_76C+1
+unused_76E		= unused_76D+1
+unused_76F		= unused_76E+1
+RAM_CLEAR_END_GAMEINIT	= unused_76F
+; -----------------------------
+proc_id_system		= RAM_CLEAR_END_GAMEINIT+1
+unused_771		= proc_id_system+1
+proc_id_game		= unused_771+1
+nmi_buffer_ptr		= proc_id_game+1
+nmi_disp_disable	= nmi_buffer_ptr+1
+game_scroll_amount	= nmi_disp_disable+1
+nmi_pause_flag		= game_scroll_amount+1
+nmi_pause_debounce	= nmi_pause_flag+1
+ppu_ctlr0_b		= nmi_pause_debounce+1
+ppu_ctlr1_b		= ppu_ctlr0_b+1
+
+.if	.defined(SMB)|.defined(VS_SMB)
+player_count		= ppu_ctlr1_b+1
+.endif
+
+.if	.defined(SMB)|.defined(VS_SMB)
+ppu_ctlr0_bg		= player_count+1
+.elseif	.defined(SMB2M)
+ppu_ctlr0_bg		= ppu_ctlr1_b+1
+.endif
+fds_sprite_overlap_hit	= ppu_ctlr0_bg+1
+render_clear_skip	= fds_sprite_overlap_hit+1
+; -----------------------------
+.if	.defined(SMB2)
+unused_77D		= render_clear_skip+1
+.elseif	.defined(ANN)
+game_hard_mode		= render_clear_skip+1
+.endif
 ; --------------
 .if	.defined(SMB)|.defined(VS_SMB)
-player_lives_b		= $761
-pos_x_hi_alt_game_b	= $762
-player_goals_b		= $763
-bg_hidden_one_up_req_b	= $764
-player_coins_b		= $765
-course_no_b		= $766
-course_sub_b		= $767
-.elseif	.defined(SMB2M)
-timer_ending		= $761
-ending_toad_offset	= $762
-ending_palcycle_step	= $762
-ending_toad_cycling	= $763
-ending_palcycle_delay	= $763
-ending_toad_delay	= $764
-.endif
-; --------------
-pos_x_victory_scroll	= $768
-screen_msg_disable	= $769
-.if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-game_hard_mode		= $76A
-.endif
-title_course_sel_no	= $76B
-; -----------------------------
-RAM_CLEAR_END_GAMEINIT	= <(proc_id_system-1)
-proc_id_system		= $770
-proc_id_game		= $772
-nmi_buffer_ptr		= $773
-nmi_disp_disable	= $774
-game_scroll_amount	= $775
-nmi_pause_flag		= $776
-nmi_pause_counter	= $777
-ppu_ctlr0_b		= $778
-ppu_ctlr1_b		= $779
-player_count		= $77A
-ppu_ctlr0_bg		= $77A
-fds_sprite_overlap_hit	= $77B
-render_clear_skip	= $77C
-.if	.defined(ANN)
-game_hard_mode		= $77D
+unused_77E		= render_clear_skip+1
+.elseif	.defined(SMB2)
+unused_77E		= unused_77D+1
+.elseif	.defined(ANN)
+unused_77E		= game_hard_mode+1
 .endif
 ; -----------------------------
-timer_nmi_tick		= $77F
-timers_nmi		= $780
+timer_nmi_tick		= unused_77E+1
+timers_nmi		= timer_nmi_tick+1
 timer_select		= timers_nmi
 timer_proj_ani		= timer_select+1
 timer_player_jump_swim	= timer_proj_ani+1
@@ -726,40 +759,60 @@ timer_unk_c		= timer_demo+1
 timer_unk_d		= timer_unk_c+1
 timers_nmi_end		= timer_unk_d
 ; -----------------------------
-srand		= $7A7
-srand_end	= $7AE
+unused_7A4	= timers_nmi_end
+unused_7A5	= unused_7A4+1
+unused_7A6	= unused_7A5+1
 ; -----------------------------
-snd_ram			= $7B0
-apu_noise_offset	= $7B0
-apu_music_event_current = $7B1
-snd_pause_buffer	= $7B2
-apu_pulse_2_note_len_b	= $7B3
-apu_pulse_2_note_len	= $7B4
-apu_pulse_2_env_ctl	= $7B5
-apu_pulse_1_note_len	= $7B6
-apu_pulse_1_env_ctl	= $7B7
-apu_triangle_note_len_b	= $7B8
-apu_triangle_note_len	= $7B9
-apu_noise_note_len	= $7BA
-snd_sfx_pulse_1_len	= $7BB
-snd_sfx_pulse_2_len	= $7BD
-snd_sfx_counter		= $7BE
-snd_sfx_noise_len	= $7BF
-snd_dac_len		= $7C0
-apu_noise_loop_offset	= $7C1
-snd_note_len_offset	= $7C4
-apu_music_base_current_b = $7C5
-snd_is_paused		= $7C6
-snd_overworld_header_offset = $7C7
-snd_super_star_header_offset = $7C9
-apu_pulse_1_ctl_a	= $7CA
-.if	.defined(VS)
-apu_vs_counter		= $7CC
-.endif
-snd_ram_end		= $7D0
+srand		= unused_7A6+1
+srand_end	= srand+SRAND_SIZE
+unused_7AE	= srand_end
+unused_7AF	= unused_7AE+1
 ; -----------------------------
-RAM_CLEAR_END_WARMBOOT	= <(stats_tbl-1)
-stats_tbl		= $7D7
+snd_ram			= unused_7AF+1
+apu_noise_offset	= snd_ram
+apu_music_event_current = apu_noise_offset+1
+snd_pause_buffer	= apu_music_event_current+1
+apu_pulse_2_note_len_b	= snd_pause_buffer+1
+apu_pulse_2_note_len	= apu_pulse_2_note_len_b+1
+apu_pulse_2_env_ctl	= apu_pulse_2_note_len+1
+apu_pulse_1_note_len	= apu_pulse_2_env_ctl+1
+apu_pulse_1_env_ctl	= apu_pulse_1_note_len+1
+apu_triangle_note_len_b	= apu_pulse_1_env_ctl+1
+apu_triangle_note_len	= apu_triangle_note_len_b+1
+apu_noise_note_len	= apu_triangle_note_len+1
+snd_sfx_pulse_1_len	= apu_noise_note_len+1
+unused_7BC		= snd_sfx_pulse_1_len+1
+snd_sfx_pulse_2_len	= unused_7BC+1
+snd_sfx_counter		= snd_sfx_pulse_2_len+1
+snd_sfx_noise_len	= snd_sfx_counter+1
+snd_dac_len		= snd_sfx_noise_len+1
+apu_noise_loop_offset	= snd_dac_len+1
+unused_7C2		= apu_noise_loop_offset+1
+unused_7C3		= unused_7C2+1
+snd_note_len_offset	= unused_7C3+1
+apu_music_base_current_b = snd_note_len_offset+1
+snd_is_paused		= apu_music_base_current_b+1
+snd_overworld_header_offset = snd_is_paused+1
+unused_7C8		= snd_overworld_header_offset+1
+snd_super_star_header_offset = unused_7C8+1
+apu_pulse_1_ctl_a	= snd_super_star_header_offset+1
+unused_7CB		= apu_pulse_1_ctl_a+1
+apu_vs_counter		= unused_7CB+1
+unused_7CD		= apu_vs_counter+1
+unused_7CE		= unused_7CD+1
+unused_7CF		= unused_7CE+1
+snd_ram_end		= unused_7CF+1
+; -----------------------------
+unused_7D0		= snd_ram_end
+unused_7D1		= unused_7D0+1
+unused_7D2		= unused_7D1+1
+unused_7D3		= unused_7D2+1
+unused_7D4		= unused_7D3+1
+unused_7D5		= unused_7D4+1
+unused_7D6		= unused_7D5+1
+RAM_CLEAR_END_WARMBOOT	= unused_7D6
+; -----------------------------
+stats_tbl		= RAM_CLEAR_END_WARMBOOT+1
 stats_score_top		= stats_tbl
 stats_score_top_end	= (stats_score_top+STAT_LEN_MAX)
 ; --------------
@@ -789,32 +842,39 @@ stats_player_end	= stats_coin_player_end
 stats_time		= stats_player_end
 stats_time_end		= (stats_time+STAT_LEN_MAX)
 ; -----------------------------
-.if	.defined(SMB2M)
-course_plus_msg_flg	= $7F5
-game_level_end_apu_on	= $7F6
-disk_loader_file_id	= $7F7
-game_over_choice	= $7F8
-.endif
-
-.if	.defined(SMB2)
-bg_scenery_wind_flag	= $7F9
-game_courses_cleared	= $7FA
-.endif
-
-.if	.defined(SMB2M)
-game_hard_mode_new	= $7FB
+.if    .defined(SMB2M)
+unused_7EF		= stats_time_end
+unused_7F0		= unused_7EF+1
+unused_7F1		= unused_7F0+1
+unused_7F2		= unused_7F1+1
+unused_7F3		= unused_7F2+1
+unused_7F4		= unused_7F3+1
+course_plus_msg_flg	= unused_7F4+1
+game_level_end_apu_on	= course_plus_msg_flg+1
+disk_loader_file_id	= game_level_end_apu_on+1
+game_over_choice	= disk_loader_file_id+1
+bg_scenery_wind_flag	= game_over_choice+1
+game_courses_cleared	= bg_scenery_wind_flag+1
 .endif
 
 .if	.defined(SMB)|.defined(VS_SMB)
-title_course_sel_on	= $7FC
-course_no_continued	= $7FD
+game_hard_mode_new	= stats_time_end
 .elseif	.defined(SMB2M)
-disk_loader_proc	= $7FC
-disk_loader_main_req	= $7FD
+game_hard_mode_new	= game_courses_cleared+1
 .endif
+
+title_course_sel_on	= game_hard_mode_new+1
+course_no_continued	= title_course_sel_on+1
+
+.if	.defined(SMB2M)
+disk_loader_proc	= title_course_sel_on
+disk_loader_main_req	= course_no_continued
+.endif
+
+unused_7FE		= course_no_continued+1
+RAM_CLEAR_END_COLDBOOT	= unused_7FE
 ; -----------------------------
-RAM_CLEAR_END_COLDBOOT	= <(game_boot_flag-1)
-game_boot_flag		= $7FF
+game_boot_flag		= RAM_CLEAR_END_COLDBOOT+1
 ; -----------------------------
 .if	.defined(VS_SMB)
 	nmi_addr_1D	= VS_RAM+$000
