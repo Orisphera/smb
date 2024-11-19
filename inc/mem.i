@@ -248,8 +248,8 @@ veloc_x_bowser		= timer_ani_bowser+1
 pos_x_prev_bowser	= veloc_x_bowser+1
 actor_bowser_flame_timer_idx = pos_x_prev_bowser+1
 actor_index_bowser	= actor_bowser_flame_timer_idx+1
-actor_bowser_ending_data_idx = actor_index_bowser+1
-actor_bowser_ani_frame	= actor_bowser_ending_data_idx+1
+actor_bowser_ending_clear_frame = actor_index_bowser+1
+actor_bowser_ani_frame	= actor_bowser_ending_clear_frame+1
 ; -----------------------------
 unused_380		= nmi_list_1_end
 unused_381		= unused_380+1

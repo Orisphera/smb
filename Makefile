@@ -607,8 +607,6 @@ $(VS): $(HEADER_VS) $(OBJS_VS)
 
 $(FDS): $(HEADER_FDS) $(FDT_FDS)
 	cat $(HEADER_FDS) $(FDT_FDS) > $(FDS)
-	tools/check.sh $(PRG_FDS) $(CKSUM_SMMAIN)
-	tools/check.sh $(CHR_FDS) $(CKSUM_SMCHAR)
 
 $(FDT_FDS): smmain.fds.bin $(FDFS_FDS) 
 	$(FDTC) $(FDFS_FDS) <$(DEF_FDS) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
@@ -621,6 +619,8 @@ smmain2.bin: smmain.fds.bin
 
 smmain.fds.bin: $(OBJS_FDS)
 	$(LD) $(OBJS_FDS) $(LDFLAGS_FDS)
+	tools/check.sh $(PRG_FDS) $(CKSUM_SMMAIN)
+	tools/check.sh $(CHR_FDS) $(CKSUM_SMCHAR)
 
 $(SMB2): $(HEADER_FDS) $(FDT_SMB2)
 	cat $(HEADER_FDS) $(FDT_SMB2) > $(SMB2)

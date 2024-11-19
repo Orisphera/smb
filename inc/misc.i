@@ -58,8 +58,8 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		bit_3	= 8
 		bit_4	= 16
 		bit_5	= 32
-		bit_6	= 64
 
+		falling	= 64
 		spawned	= 128
 	.endenum
 

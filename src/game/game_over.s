@@ -48,6 +48,7 @@ game_over_init:
 
 	lda	#music_event::game_over
 	sta	apu_music_event_req
+
 	inc	nmi_disp_disable
 
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)

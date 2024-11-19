@@ -66,7 +66,7 @@ render_actor:
 
 	lda	state_actor, x
 	sta	render_actor_state_prev
-	and	#<~(actor_states::spawned|actor_states::bit_6|actor_states::bit_5)
+	and	#<~(actor_states::spawned|actor_states::falling|actor_states::bit_5)
 	tay
 	lda	obj_id_actor, x ; switch (this.id) {
 	cmp	#actor::toad

@@ -326,7 +326,7 @@ screen_text_draw_intermission:
 		jsr	screen_text_draw
 
 		.if	.defined(SMB)|.defined(VS_SMB)
-			jmp	screen_title_end
+			jmp	screen_title_proc_id_inc
 		.elseif	.defined(SMB2M)
 			.if	.defined(SMB2)
 				lda	course_no

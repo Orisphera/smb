@@ -12,12 +12,26 @@ BOWSER_VELOC_Y		= 8
 BOWSER_VELOC_Y_NEG	= <-2
 BOWSER_TIMER_START_POS_Y	= 128
 BOWSER_COL_BOX		= col_boxes::box_10
+BOWSER_GFX_CLEAR_BASE	= PPU_VRAM_BG1+PPU_BG_ROW_16
+BOWSER_DEATH_Y_POS	= 224
 ; -----------------------------------------------------------
-actor_bowser_ending_data:
-	.byte	$1A, $58
-	.byte	$98, $96, $94, $92, $90, $8E, $8C
-	.byte	$8A, $88, $86, $84, $82, $80
-actor_bowser_ending_data_end:
+actor_bowser_ending_clear_blocks:
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_0+PPU_BG_COL_26)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_2+PPU_BG_COL_24)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_24)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_22)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_20)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_18)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_16)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_14)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_12)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_10)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_8)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_6)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_4)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_2)
+	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_0)
+actor_bowser_ending_clear_blocks_end:
 ; -----------------------------
 	.export actor_bowser_ending
 actor_bowser_ending:
@@ -28,17 +42,17 @@ actor_bowser_ending:
 	stx	actor_index
 	lda	state_actor, x
 	beq	:+++
-	and	#actor_states::bit_6
+	and	#actor_states::falling
 	beq	:+
 	lda	pos_y_lo_actor, x
-	cmp	#224
+	cmp	#BOWSER_DEATH_Y_POS
 	bcc	:++
-	: ; if (actor.id != bowser || (actor.state != state_0 && actor_state & 0x40) || actor.pos_y >= 224) {
+	: ; if (this.id != bowser || (this.state != init && !this.falling) || this.pos_y >= BOWSER_DEATH_Y_POS) {
 		lda	#music_event::none
 		sta	apu_music_event_req
 		inc	proc_id_game
 		jmp	actor_killall
-	: ; } else if () {
+	: ; } else if (this.state != init && this.falling && this.pos_y < BOWSER_DEATH_Y_POS) {
 		jsr	motion_fall_slow
 		jmp	actor_proc_bowser_finish
 	: ; } else {
@@ -50,10 +64,10 @@ actor_bowser_ending:
 			eor	#actor_bowser_ani::step_bit
 			sta	actor_bowser_ani_flag
 
-			lda	#>(PPU_VRAM_BG1+PPU_BG_ROW_16)
+			lda	#>(BOWSER_GFX_CLEAR_BASE)
 			sta	gfx_clear_put_do_addr+1
-			ldy	actor_bowser_ending_data_idx
-			lda	actor_bowser_ending_data, y
+			ldy	actor_bowser_ending_clear_frame
+			lda	actor_bowser_ending_clear_blocks, y
 			sta	gfx_clear_put_do_addr
 			ldy	nmi_list_0_offset
 			iny
@@ -65,12 +79,12 @@ actor_bowser_ending:
 			sta	apu_sfx_pulse_2_req
 			lda	#sfx_noise::block_break_01
 			sta	apu_sfx_noise_req
-			inc	actor_bowser_ending_data_idx
-			lda	actor_bowser_ending_data_idx
-			cmp	#(actor_bowser_ending_data_end-actor_bowser_ending_data)
-			bne	:+ ; if (actor_bowser_ending_data_idx > sizeof (actor_bowser_ending_data)) {
+			inc	actor_bowser_ending_clear_frame
+			lda	actor_bowser_ending_clear_frame
+			cmp	#(actor_bowser_ending_clear_blocks_end-actor_bowser_ending_clear_blocks)
+			bne	:+ ; if (actor_bowser_ending_clear_frame > sizeof (actor_bowser_ending_clear_blocks)) {
 				jsr	actor_init_veloc_y
-				lda	#actor_states::bit_6
+				lda	#actor_states::falling
 				sta	state_actor, x
 				lda	#sfx_pulse_2::bowser_fall
 				sta	apu_sfx_pulse_2_req
@@ -285,7 +299,7 @@ actor_proc_bowser_col:
 	inc	actor_bowser_ani_frame
 	jsr	actor_proc_toad
 	lda	state_actor, x
-	bne	:- ; if (actor.state == init) {
+	bne	:- ; if (this.state == init) {
 		lda	#BOWSER_COL_BOX
 		sta	col_box_actor, x
 		jsr	col_actor_box

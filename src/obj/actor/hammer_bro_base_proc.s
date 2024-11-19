@@ -129,7 +129,7 @@ actor_proc_hammer_bro_move_h:
 actor_proc_base:
 	ldy	#0
 	lda	state_actor, x
-	and	#actor_states::bit_6
+	and	#actor_states::falling
 	bne	:+
 	lda	state_actor, x
 	asl	a
@@ -144,20 +144,20 @@ actor_proc_base:
 	beq	:+
 	cmp	#actor_states::state_3
 	bcs	:++++++
-	: ; if ((actor.state & 0x40) || (!(actor.state & 0xA0) && actor.state.in(1, 2, 5))) {
+	: ; if (this.falling || (!(actor.state & 0xA0) && actor.state.in(1, 2, 5))) {
 		jsr	motion_y
 	; }
 	ldy	#0
 	lda	state_actor, x
 	cmp	#actor_states::state_2
 	beq	:+
-	and	#actor_states::bit_6
+	and	#actor_states::falling
 	beq	:+++
 	lda	obj_id_actor, x
 	cmp	#actor::power_up
 	beq	:+++
 	bne	:++
-	: ; if (((actor_state & 0x40) || !(actor_state & 0xA0)) && (actor.state == state_2)) {
+	: ; if ((this.falling || !(actor.state & 0xA0)) && (actor.state == state_2)) {
 		jmp	motion_x
 	: ; } else if (actor.state != 2 && ()) {
 		; if (actor_state & 0x40 && actor.id != power_up) {

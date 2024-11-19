@@ -157,6 +157,9 @@ victory_enter_finish:
 	ann_toads_size:
 		.byte	$30, $50, $60
 ; ----------------------------
+	ann_toad_ptr	= zp_addr_00
+	ann_toad_id	= zp_byte_06
+
 		.export ann_toad_load
 	ann_toad_load:
 		lda	player_goals
@@ -164,24 +167,24 @@ victory_enter_finish:
 		bne	:+++
 		ldy	ENG_HARDMODE_VAR
 		bne	:+++ ; if (player.goals == ENG_HARDMODE_B_GOAL && !ENG_HARDMODE_VAR) {
-			sty	zp_byte_06
+			sty	ann_toad_id
 
 			lda	course_no
 			asl	a
 			tax
 			lda	ann_toads, x
-			sta	zp_addr_00
+			sta	ann_toad_ptr
 			inx
 			lda	ann_toads, x
-			sta	zp_addr_00+1
+			sta	ann_toad_ptr+1
 			: ; for (i = 0; i < 3; i++) {
-				ldx	zp_byte_06
+				ldx	ann_toad_id
 				lda	ann_toads_hi, x
 				sta	PPU_VRAM_AR
 				lda	ann_toads_lo, x
 				sta	PPU_VRAM_AR
 				: ; for (j; j != ann_toads_size[j]; j++) {
-					lda	(zp_addr_00), y
+					lda	(ann_toad_ptr), y
 					sta	PPU_VRAM_IO
 
 					iny
@@ -190,8 +193,8 @@ victory_enter_finish:
 					bne	:-
 				; }
 
-				inc	zp_byte_06
-				lda	zp_byte_06
+				inc	ann_toad_id
+				lda	ann_toad_id
 				cmp	#3
 				bne	:--
 			: ; }
@@ -256,13 +259,13 @@ victory_init:
 		beq	:++ ; if (!ENG_HARDMODE_VAR && course_no != course_08) {
 			ldy	ann_toads_pal_offsets, x
 			lda	ann_toads_pal_a, y
-			sta	zp_addr_00
+			sta	ann_toad_ptr
 			iny
 			lda	ann_toads_pal_a, y
-			sta	zp_addr_00+1
+			sta	ann_toad_ptr+1
 			ldy	#0
 			: ; for (byte of ann_toad_pal_buf) {
-				lda	(zp_addr_00), y
+				lda	(ann_toad_ptr), y
 				sta	ann_toad_pal_buf, y
 				iny
 				cpy	#(ann_toad_pal_buf_end-ann_toad_pal_buf)-1
@@ -299,7 +302,9 @@ victory_init:
 	lda	#music_event::victory_castle
 	sta	apu_music_event_req
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMB)|.defined(VS_SMB)
+		jmp	screen_title_proc_id_inc
+	.elseif	.defined(SMB2M)
 		.export screen_title_bg, screen_title_bg_finish
 	screen_title_bg_finish:
 		inc	proc_id_game
@@ -310,11 +315,6 @@ victory_init:
 		bne	screen_title_bg_finish
 
 		lda	#5
-	.endif
-
-	.if	.defined(SMB)|.defined(VS_SMB)
-		jmp	screen_title_end
-	.elseif	.defined(SMB2M)
 		jmp	screen_color_init_4_end
 	.endif
 ; -----------------------------------------------------------
@@ -348,9 +348,11 @@ victory_proc:
 		jsr	game_proc_scroll_save
 		inc	victory_proc_ctrl
 	: ; }
+
 	lda	victory_proc_ctrl
-	beq	victory_next
-	rts
+	beq	victory_next ; if (victory_proc_ctrl != 0) {
+		rts
+	; } else victory_next();
 ; -----------------------------------------------------------
 victory_msg:
 	lda	victory_msg_timer_lo

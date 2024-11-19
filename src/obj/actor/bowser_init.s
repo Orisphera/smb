@@ -30,7 +30,7 @@ actor_init_bowser:
 	stx	actor_index_bowser
 	lda	#0
 	sta	actor_bowser_ani_flag
-	sta	actor_bowser_ending_data_idx
+	sta	actor_bowser_ending_clear_frame
 	lda	pos_x_lo_actor, x
 	sta	pos_x_prev_bowser
 	lda	#BOWSER_FLAME_TIMER_INIT

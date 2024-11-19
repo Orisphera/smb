@@ -267,7 +267,7 @@ col_proj_actor_damage:
 	
 		jsr	col_actor_koopa_demote_check
 		lda	state_actor, x
-		and	#<~(actor_states::spawned|actor_states::bit_6|actor_states::bit_5)
+		and	#<~(actor_states::spawned|actor_states::falling|actor_states::bit_5)
 		ora	#actor_states::bit_5
 		sta	state_actor, x
 
@@ -2068,12 +2068,12 @@ col_actor_land:
 	cmp	#5
 	bcs	col_actor_check_side
 	lda	state_actor, x
-	and	#actor_states::bit_6
+	and	#actor_states::falling
 	bne	col_actor_land_init
 	lda	state_actor, x
 	asl	a
 	bcc	:++
-	: ; if ((col_box_buffer_tbl_offset - 8) < 5 && !(actor.state & bit_6) && ((actor.state & spawned) || actor.state == init)) {
+	: ; if ((col_box_buffer_tbl_offset - 8) < 5 && !this.falling && (this.spawned || this.state == init)) {
 		jmp	col_actor_check_side_do
 	: ; }
 	lda	state_actor, x
@@ -2138,7 +2138,7 @@ col_actor_land_init:
 		rts
 	: ; } else {
 		lda	state_actor, x
-		and	#<~actor_states::bit_6
+		and	#<~actor_states::falling
 		sta	state_actor, x
 		rts
 	; }
@@ -2155,7 +2155,7 @@ col_actor_check_side:
 		asl	a
 		bcc	:+ ; if (actor.spawned) {
 			lda	state_actor, x
-			ora	#actor_states::bit_6
+			ora	#actor_states::falling
 	
 			jmp	:++
 		: ; } else {

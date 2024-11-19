@@ -42,7 +42,7 @@
 		.export screen_title_bg
 	screen_title_bg:
 		lda	proc_id_system
-		bne	screen_title_end
+		bne	screen_title_proc_id_inc
 
 		.if	.defined(CONS)
 			ppuaddr_m	title_map
@@ -90,7 +90,7 @@
 	.export	screen_title_cursor
 screen_title_cursor:
 	lda	proc_id_system
-	bne	screen_title_end
+	bne	screen_title_proc_id_inc
 	ldx	#0
 	: ; for (byte of nmi_list) {
 		sta	nmi_list, x
@@ -112,8 +112,8 @@ screen_title_score:
 	lda	#$FA
 	jsr	misc_proc_coin_add_score
 
-	.export screen_title_end
-screen_title_end:
+	.export screen_title_proc_id_inc
+screen_title_proc_id_inc:
 .if	.defined(SMB)|.defined(VS_SMB)
 	inc	proc_id_game
 	rts
