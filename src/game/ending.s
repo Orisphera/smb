@@ -111,7 +111,7 @@ ending_victory_msg:
 			iny
 			cpy	#5
 			bne	:+ ; if ((victory_msg_timer_hi + 3) == 5) {
-				lda	#music_event::victory_normal
+				lda	#music_event::victory_ending
 				sta	apu_music_event_req
 			: ; }
 		

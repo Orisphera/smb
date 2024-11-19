@@ -59,9 +59,9 @@ apu_triangle_do:
 			.if	.definedmacro(APU_TRIANGLE_BASE)
 			lda	apu_music_event_current
 			.if	.defined(CONS)
-				and	#music_event::hurry_up|music_event::level_end|music_event::victory_castle|music_event::victory_normal|music_event::game_over
+				and	#music_event::hurry_up|music_event::level_end|music_event::victory_castle|music_event::victory_ending|music_event::game_over
 			.elseif	.defined(VS)
-				and	#music_event::hurry_up|music_event::level_end|music_event::victory_castle|music_event::victory_normal|music_event::game_over|music_event::game_over_alt
+				and	#music_event::hurry_up|music_event::level_end|music_event::victory_castle|music_event::victory_ending|music_event::game_over|music_event::game_over_alt
 			.endif
 			bne	apu_triangle_fade_set
 			lda	apu_music_base_current

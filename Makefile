@@ -30,6 +30,25 @@ LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
 
+CKSUM_FC_NTSC	=	1517619510
+CKSUM_FC_PAL	=	63472984
+CKSUM_FC	= 	$(CKSUM_FC_NTSC)
+CKSUM_VS	=	4075261516
+CKSUM_SMMAIN	=	905814991
+CKSUM_SMCHAR	=	1041839036
+CKSUM_SM2MAIN	=	1292353937
+CKSUM_SM2DATA2	=	4174737589
+CKSUM_SM2DATA3	=	3993005026
+CKSUM_SM2DATA4	=	2625833775
+CKSUM_SM2CHAR1	=	2348767384
+CKSUM_SM2CHAR2	=	4142743742
+CKSUM_NSMMAIN	=	3225424774
+CKSUM_NSMDATA2	=	2486615578
+CKSUM_NSMDATA3	=	1988748891
+CKSUM_NSMDATA4	=	813708659
+CKSUM_NSMCHAR1	=	31826565
+CKSUM_NSMCHAR2	=	1691251489
+
 BINTOFDF	=	fdtc/bintofdf
 FDTC		=	fdtc/fdtc
 
@@ -94,7 +113,7 @@ TITLE_SCR_OBJS	=	src/title/scr.o
 
 TITLE_INIT_OBJS	=	src/title/init.o
 
-VICTORY_OBJS	=	src/game/victory.o
+CASTLE_VICTORY_OBJS	=	src/game/castle_victory.o
 
 LIB_OBJS	=	src/lib/screen.o \
 			src/lib/gfx.o \
@@ -268,7 +287,7 @@ APU_MUSIC_OBJS =	data/apu/music/super_star.o \
 			data/apu/music/underwater.o \
 			data/apu/music/victory_castle.o
 
-APU_MUSIC_VICTORY_NORMAL_OBJS = data/apu/music/victory_normal.o
+APU_MUSIC_VICTORY_ENDING_OBJS = data/apu/music/victory_ending.o
 
 APU_MUSIC_VS_B_OBJS =	data/apu/music/vs_game_over.o
 
@@ -330,7 +349,7 @@ HEADER_FDS	=	data/header.fds.bin
 
 PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
-			$(VICTORY_OBJS) \
+			$(CASTLE_VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
@@ -345,7 +364,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
-			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
+			$(APU_MUSIC_VICTORY_ENDING_OBJS) \
 			$(APU_DATA_OBJS)
 
 CHR_OBJS_FC	=	$(CHR_BASE_OBJS) \
@@ -356,7 +375,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 
 PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
-			$(VICTORY_OBJS) \
+			$(CASTLE_VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(LIB_VS_OBJS) \
 			$(GAME_OBJS) \
@@ -371,7 +390,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_VS_A_OBJS) \
 			$(APU_MUSIC_OBJS) \
-			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
+			$(APU_MUSIC_VICTORY_ENDING_OBJS) \
 			$(APU_MUSIC_VS_B_OBJS) \
 			$(APU_DATA_OBJS)
 
@@ -387,7 +406,7 @@ OBJS_VS		=	$(PRG_OBJS_VS) \
 
 PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
-			$(VICTORY_OBJS) \
+			$(CASTLE_VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
@@ -402,7 +421,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
-			$(APU_MUSIC_VICTORY_NORMAL_OBJS) \
+			$(APU_MUSIC_VICTORY_ENDING_OBJS) \
 			$(APU_DATA_OBJS)
 
 CHR_OBJS_FDS	=	$(CHR_BASE_OBJS) \
@@ -422,7 +441,7 @@ DEF_FDS		=	data/fs/superblock_smb.def
 FDT_FDS		=	smb.fdt
 
 PRG_OBJS_SMB2	=	$(BASE_OBJS) \
-			$(VICTORY_OBJS) \
+			$(CASTLE_VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(GAME_CORE_OBJS) \
@@ -482,7 +501,7 @@ DEF_SMB2	=	data/fs/superblock_smb2.def
 FDT_SMB2	=	smb2.fdt
 
 PRG_OBJS_ANN	=	$(BASE_OBJS) \
-			$(VICTORY_OBJS) \
+			$(CASTLE_VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(GAME_CORE_OBJS) \
@@ -579,13 +598,17 @@ FDTS		=	$(FDT_FDS) \
 $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD) $(OBJS_FC) $(LDFLAGS_FC)
 	cat $(HEADER_FC) $(ROMS_FC) > $(FC)
+	tools/check.sh $(FC) $(CKSUM_FC)
 
 $(VS): $(HEADER_VS) $(OBJS_VS)
 	$(LD) $(OBJS_VS) $(LDFLAGS_VS)
 	cat $(HEADER_VS) $(ROMS_VS) > $(VS)
+	tools/check.sh $(VS) $(CKSUM_VS)
 
 $(FDS): $(HEADER_FDS) $(FDT_FDS)
 	cat $(HEADER_FDS) $(FDT_FDS) > $(FDS)
+	tools/check.sh $(PRG_FDS) $(CKSUM_SMMAIN)
+	tools/check.sh $(CHR_FDS) $(CKSUM_SMCHAR)
 
 $(FDT_FDS): smmain.fds.bin $(FDFS_FDS) 
 	$(FDTC) $(FDFS_FDS) <$(DEF_FDS) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
@@ -607,6 +630,12 @@ $(FDT_SMB2): sm2main.bin $(FDFS_SMB2)
 
 sm2main.bin: $(OBJS_SMB2)
 	$(LD) $(OBJS_SMB2) $(LDFLAGS_SMB2)
+	tools/check.sh sm2main.bin $(CKSUM_SM2MAIN)
+	tools/check.sh sm2data2.bin $(CKSUM_SM2DATA2)
+	tools/check.sh sm2data3.bin $(CKSUM_SM2DATA3)
+	tools/check.sh sm2data4.bin $(CKSUM_SM2DATA4)
+	tools/check.sh sm2char1.bin $(CKSUM_SM2CHAR1)
+	tools/check.sh sm2char2.bin $(CKSUM_SM2CHAR2)
 
 $(ANN): $(HEADER_FDS) $(FDT_ANN)
 	cat $(HEADER_FDS) $(FDT_ANN) > $(ANN)
@@ -616,6 +645,12 @@ $(FDT_ANN): nsmmain.bin $(FDFS_ANN)
 
 nsmmain.bin: $(OBJS_ANN)
 	$(LD) $(OBJS_ANN) $(LDFLAGS_ANN)
+	tools/check.sh nsmmain.bin $(CKSUM_NSMMAIN)
+	tools/check.sh nsmdata2.bin $(CKSUM_NSMDATA2)
+	tools/check.sh nsmdata3.bin $(CKSUM_NSMDATA3)
+	tools/check.sh nsmdata4.bin $(CKSUM_NSMDATA4)
+	tools/check.sh nsmchar1.bin $(CKSUM_NSMCHAR1)
+	tools/check.sh nsmchar2.bin $(CKSUM_NSMCHAR2)
 
 .bin.fdf:
 	$(BINTOFDF) $< <data/fs/files/$<.def >$@

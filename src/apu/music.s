@@ -58,8 +58,8 @@ apu_music_event_load:
 	: ; }
 
 	.if	.defined(VS)
-		cmp	#music_event::victory_normal
-		bne	apu_music_header_find ; if (music.event.current == victory_normal) {
+		cmp	#music_event::victory_ending
+		bne	apu_music_header_find ; if (music.event.current == victory_ending) {
 		apu_music_timer_load:
 			inc	apu_vs_counter
 			ldy	apu_vs_counter
@@ -71,8 +71,8 @@ apu_music_event_load:
 	.endif
 ; --------------
 apu_music_base_load:
-	cmp	#music_event::victory_normal
-	bne	:+ ; if (music.event.current == victory_normal) {
+	cmp	#music_event::victory_ending
+	bne	:+ ; if (music.event.current == victory_ending) {
 		jsr	apu_sfx_pulse_1_stop
 	: ; }
 

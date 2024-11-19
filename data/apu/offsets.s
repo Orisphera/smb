@@ -12,7 +12,7 @@ apu_music_offsets:
 	.byte	apu_music_death-apu_music_offsets
 	.byte	apu_music_game_over-apu_music_offsets
 	.if	.defined(SMB)|.defined(VS_SMB)
-		.byte	apu_music_victory_normal-apu_music_offsets
+		.byte	apu_music_victory_ending-apu_music_offsets
 	.elseif	.defined(SMB2M)
 		.byte	apu_music_game_over-apu_music_offsets
 	.endif
@@ -82,11 +82,11 @@ apu_music_overworld_loop_offset:
 apu_music_overworld_loop_end:
 
 	.if	.defined(VS)
-		.byte	apu_music_victory_normal-apu_music_offsets
-		.byte	apu_music_victory_normal-apu_music_offsets
+		.byte	apu_music_victory_ending-apu_music_offsets
+		.byte	apu_music_victory_ending-apu_music_offsets
 		.byte	apu_music_game_over_vs_b-apu_music_offsets
-		.byte	apu_music_victory_normal-apu_music_offsets
-		.byte	apu_music_victory_normal-apu_music_offsets
+		.byte	apu_music_victory_ending-apu_music_offsets
+		.byte	apu_music_victory_ending-apu_music_offsets
 
 		.export apu_music_super_star_vs_loop, apu_music_super_star_vs_loop_end
 	apu_music_super_star_vs_loop:
@@ -170,15 +170,15 @@ apu_music_castle:
 	.byte	<(apu_music_castle_pulse_1-apu_music_castle_data)
 
 .if	.defined(SMB)|.defined(VS_SMB)
-apu_music_victory_normal:
+apu_music_victory_ending:
 	.if	.defined(CONS)
 		.byte	<(apu_note_lengths_c-apu_note_lengths)
 	.elseif	.defined(VS)
 		.byte	<(apu_note_lengths_vs-apu_note_lengths)
 	.endif
-	.addr	apu_music_victory_normal_data
-	.byte	<(apu_music_victory_normal_triangle-apu_music_victory_normal_data)
-	.byte	<(apu_music_victory_normal_pulse_1-apu_music_victory_normal_data)
+	.addr	apu_music_victory_ending_data
+	.byte	<(apu_music_victory_ending_triangle-apu_music_victory_ending_data)
+	.byte	<(apu_music_victory_ending_pulse_1-apu_music_victory_ending_data)
 .endif
 
 .if	.defined(VS)

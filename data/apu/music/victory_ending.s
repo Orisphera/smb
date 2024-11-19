@@ -1,11 +1,11 @@
 .include	"sound.i"
 
-	.export apu_music_victory_normal_data
-	.export	apu_music_victory_normal_pulse_2
-	.export	apu_music_victory_normal_pulse_1
-	.export apu_music_victory_normal_triangle
-apu_music_victory_normal_data:
-apu_music_victory_normal_pulse_2:
+	.export apu_music_victory_ending_data
+	.export	apu_music_victory_ending_pulse_2
+	.export	apu_music_victory_ending_pulse_1
+	.export apu_music_victory_ending_triangle
+apu_music_victory_ending_data:
+apu_music_victory_ending_pulse_2:
 	.if	.defined(CONS)
 		.byte	SND_TRACK_NOTE_LEN|length_c::half
 	.elseif	.defined(VS)
@@ -47,7 +47,7 @@ apu_music_victory_normal_pulse_2:
 		.byte	sound_notes::E4
 	.byte	SND_TRACK_END
 
-apu_music_victory_normal_pulse_1:
+apu_music_victory_ending_pulse_1:
 	.if	.defined(CONS)
 		snd_cmp_byte	length_c::eighthdot,	sound_notes::G4
 		snd_cmp_byte	length_c::eighthdot,	sound_notes::Fx4
@@ -84,7 +84,7 @@ apu_music_victory_normal_pulse_1:
 		snd_cmp_byte	length_vs::third,	sound_notes::C5
 	.endif
 
-apu_music_victory_normal_triangle:
+apu_music_victory_ending_triangle:
 	.if	.defined(CONS)
 		.byte	SND_TRACK_NOTE_LEN|length_c::half
 	.elseif	.defined(VS)

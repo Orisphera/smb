@@ -445,7 +445,7 @@ victory_msg:
 			cpy	#7
 		.endif
 		bne	:+ ; if ((SMB && victory_msg_timer_hi == 3) || (VS_SMB && (victory_msg_timer_hi += 3) == 7)) {
-			lda	#music_event::victory_normal
+			lda	#music_event::victory_ending
 			sta	apu_music_event_req
 		: ; }
 	.endif

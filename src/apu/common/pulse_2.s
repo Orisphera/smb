@@ -49,8 +49,8 @@ APU_PULSE_2_DO_WRITE_BASE = apu_fds_write_base_pulse_2
 			lda	apu_music_base_current_b
 			bne	apu_music_base_load_do_b
 			apu_pulse_2_is_hurry:
-			and	#music_event::victory_normal
-			bne	apu_music_event_load_b ; if ((music.event.current != hurry_up || music.base.current.b == none) && music.event.current != victory_normal) {
+			and	#music_event::victory_ending
+			bne	apu_music_event_load_b ; if ((music.event.current != hurry_up || music.base.current.b == none) && music.event.current != victory_ending) {
 		.endif
 				lda	APU_PULSE_2_DO_MUSIC_CURRENT
 			.if	.definedmacro(APU_PULSE_2_BASE)
