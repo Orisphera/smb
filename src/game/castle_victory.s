@@ -11,8 +11,8 @@
 .include	"modes.i"
 .include	"misc.i"
 
-	.export sys_victory
-sys_victory:
+	.export sys_castle_victory
+sys_castle_victory:
 	jsr	victory_enter
 
 	lda	proc_id_game
@@ -21,10 +21,10 @@ sys_victory:
 		ldx	course_no
 		cpx	#course::no_08
 		bne	:+
-		cmp	#victory_modes_course_08::disk_data3
-		beq	sys_victory-1
-		cmp	#victory_modes_course_08::disk_save
-		beq	sys_victory-1
+		cmp	#castle_victory_modes_course_08::disk_data3
+		beq	sys_castle_victory-1
+		cmp	#castle_victory_modes_course_08::disk_save
+		beq	sys_castle_victory-1
 		; NOTE: This assumes this module follows an rts
 	.endif
 	; if (!SMB2M || course_no != course_08 || this.proc_id.not_in(data3, save)) {

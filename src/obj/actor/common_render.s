@@ -106,11 +106,11 @@ render_actor:
 		inc	render_actor_flipped
 	: ; }
 
-	lda	nmi_list_1_data+41
-	beq	:++ ; if (nmi_list_1_data[41] != 0) {
+	lda	actor_bowser_ani_frame
+	beq	:++ ; if (actor_bowser_ani_frame > 0) {
 		ldy	#actor::fireworks
 		cmp	#1
-		beq	:+ ; if (nmi_list_1_data[41] == 1) {
+		beq	:+ ; if (actor_bowser_ani_frame == 1) {
 			iny
 		: ; }
 		sty	render_obj_id_actor
@@ -144,13 +144,13 @@ render_actor:
 	lda	render_actor_tile_offsets, y
 	tax
 	ldy	render_actor_state_next
-	lda	nmi_list_1_data+41
-	beq	:++++++ ; if (nmi_list_1_data[41] != 0) {
+	lda	actor_bowser_ani_frame
+	beq	:++++++ ; if (actor_bowser_ani_frame > 0) {
 		cmp	#1
-		bne	:++++ ; if (nmi_list_1_data[41] == 1) {
-			lda	nmi_list_1_data+34
-			bpl	:+ ; if ((nmi_list_1_data[34] & 0x80)) {
-				ldx	#<(render_actor_tiles_bowser_c-render_actor_tile_data)
+		bne	:++++ ; if (actor_bowser_ani_frame == 1) {
+			lda	actor_bowser_ani_flag
+			bpl	:+ ; if (actor_bowser_ani.mouth_closed) {
+				ldx	#<(render_actor_tiles_bowser_mouth_closed-render_actor_tile_data)
 			: ; }
 
 			lda	render_actor_state_prev
@@ -163,11 +163,11 @@ render_actor:
 		: ; }
 		jmp	render_actor_tiles
 
-		: ; if (nmi_list_1_data[41] > 1) {
-			lda	nmi_list_1_data+34
-			and	#%00000001
-			beq	:+ ; if ((nmi_list_1_data[34] & 0x01)) {
-				ldx	#<(render_actor_tiles_bowser_d-render_actor_tile_data)
+		: ; if (actor_bowser_ani_frame > 1) {
+			lda	actor_bowser_ani_flag
+			and	#actor_bowser_ani::left_step
+			beq	:+ ; if (actor_bowser_ani.left_step) {
+				ldx	#<(render_actor_tiles_bowser_step_left-render_actor_tile_data)
 			: ; }
 
 			lda	render_actor_state_prev
@@ -406,7 +406,7 @@ render_actor_clear_b:
 			sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_CHR_NO, y
 		: ; }
 
-		lda	nmi_list_1_data+41
+		lda	actor_bowser_ani_frame
 		bne	render_actor_clear_b
 		lda	render_obj_id_actor
 		ldx	render_actor_state_next
@@ -439,8 +439,8 @@ render_actor_clear_b:
 			: ; }
 
 			; if (this.id.in(blooper, piranha_plant, podoboo) || (this.id == spiny && this.state_next >= state_2)) {
-				lda	nmi_list_1_data+41
-				bne	:++ ; if (nmi_list_1_data[41] == 0) {
+				lda	actor_bowser_ani_frame
+				bne	:++ ; if (actor_bowser_ani_frame == 0) {
 					lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
 					and	#obj_attr::v_flip|obj_attr::priority_bit|obj_attr::color_bits
 					sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y

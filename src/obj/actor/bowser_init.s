@@ -27,21 +27,21 @@ actor_init_bowser:
 	.endif
 
 	jsr	actor_init_dup
-	stx	nmi_list_1_data+$27
+	stx	actor_index_bowser
 	lda	#0
-	sta	nmi_list_1_data+$22
-	sta	nmi_list_1_data+$28
+	sta	actor_bowser_ani_flag
+	sta	actor_bowser_ending_data_idx
 	lda	pos_x_lo_actor, x
-	sta	nmi_list_1_data+$25
+	sta	pos_x_prev_bowser
 	lda	#BOWSER_FLAME_TIMER_INIT
 	sta	timer_bowser_flame
 	sta	motion_dir_actor, x
-	lda	#$20
-	sta	nmi_list_1_data+$23
+	lda	#ACTOR_BOWSER_TIMER_INIT
+	sta	timer_ani_bowser
 	sta	timer_ani_actor, x
 	lda	#BOWSER_HP
 	sta	hp_bowser
 	lsr	a
-	sta	nmi_list_1_data+$24
+	sta	veloc_x_bowser
 	rts
 

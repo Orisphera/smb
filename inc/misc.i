@@ -351,6 +351,16 @@ COL_BOX_SIZE	= 4
 		group_end	= $3F
 	.endenum
 
+	.enum	actor_bowser_ani
+		right_step	= 0
+		left_step	= 1
+		step_bit	= 1
+
+		mouth_open	= 0
+		mouth_closed	= 128
+		mouth_bit	= 128
+	.endenum
+
 	.enum	course
 		no_01
 		no_02

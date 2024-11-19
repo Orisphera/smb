@@ -55,7 +55,7 @@ actor_init_bowser_flame:
 		lda	apu_sfx_noise_req
 		ora	#sfx_noise::flame
 		sta	apu_sfx_noise_req
-		ldy	nmi_list_1_data+$27
+		ldy	actor_index_bowser
 		lda	obj_id_actor, y
 		cmp	#actor::bowser
 		beq	:++ ; if (parent.id != bowser) {

@@ -206,24 +206,24 @@ render_actor_tiles_podoboo:
 	.byte	chr_obj::podoboo_a+0, chr_obj::podoboo_a+0
 	.byte	chr_obj::podoboo_b+0, chr_obj::podoboo_b+0
 ; -----------------------------
-render_actor_tiles_bowser_a:
+render_actor_tiles_bowser_mouth_opened:
 	.byte	chr_obj::bowser+1, chr_obj::bowser+0
 	.byte	chr_obj::bowser+3, chr_obj::bowser+2
 	.byte	chr_obj::bowser+4, chr_obj::empty
 ; --------------
-render_actor_tiles_bowser_b:
+render_actor_tiles_bowser_step_right:
 	.byte	chr_obj::bowser+6, chr_obj::bowser+5
 	.byte	chr_obj::bowser+8, chr_obj::bowser+7
 	.byte	chr_obj::bowser+10, chr_obj::bowser+9
 ; --------------
-	.export render_actor_tiles_bowser_c
-render_actor_tiles_bowser_c:
+	.export render_actor_tiles_bowser_mouth_closed
+render_actor_tiles_bowser_mouth_closed:
 	.byte	chr_obj::bowser+1, chr_obj::bowser+0
 	.byte	chr_obj::bowser+12, chr_obj::bowser+11
 	.byte	chr_obj::bowser+4, chr_obj::empty
 ; --------------
-	.export render_actor_tiles_bowser_d
-render_actor_tiles_bowser_d:
+	.export render_actor_tiles_bowser_step_left
+render_actor_tiles_bowser_step_left:
 	.byte	chr_obj::bowser+6, chr_obj::bowser+5
 	.byte	chr_obj::bowser+8, chr_obj::bowser+7
 	.byte	chr_obj::bowser+14, chr_obj::bowser+13
@@ -279,8 +279,8 @@ render_actor_tile_offsets:
 	.byte	render_actor_tiles_cheep-render_actor_tile_data
 
 	.byte	render_actor_tiles_princess-render_actor_tile_data
-	.byte	render_actor_tiles_bowser_a-render_actor_tile_data
-	.byte	render_actor_tiles_bowser_b-render_actor_tile_data
+	.byte	render_actor_tiles_bowser_mouth_opened-render_actor_tile_data
+	.byte	render_actor_tiles_bowser_step_right-render_actor_tile_data
 	.byte	render_actor_tiles_spring_a-render_actor_tile_data
 	.byte	render_actor_tiles_spring_b-render_actor_tile_data
 	.byte	render_actor_tiles_spring_c-render_actor_tile_data

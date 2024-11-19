@@ -241,6 +241,15 @@ nmi_list_1_data		= nmi_list_1_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
 nmi_list_1_addr_dbyt	= nmi_list_1_data
 nmi_list_1_byte		= nmi_list_1_addr_dbyt+WORD_SIZE
 nmi_list_1_end		= nmi_list_1_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
+; --------------
+actor_bowser_ani_flag	= nmi_list_1_data+$22
+timer_ani_bowser	= actor_bowser_ani_flag+1
+veloc_x_bowser		= timer_ani_bowser+1
+pos_x_prev_bowser	= veloc_x_bowser+1
+actor_bowser_flame_timer_idx = pos_x_prev_bowser+1
+actor_index_bowser	= actor_bowser_flame_timer_idx+1
+actor_bowser_ending_data_idx = actor_index_bowser+1
+actor_bowser_ani_frame	= actor_bowser_ending_data_idx+1
 ; -----------------------------
 unused_380		= nmi_list_1_end
 unused_381		= unused_380+1

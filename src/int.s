@@ -513,14 +513,14 @@ NMI_PAUSE_DEBOUNCE_VALUE	= 43
 
 nmi_pause:
 	lda	proc_id_system
-	cmp	#system_modes::victory
+	cmp	#system_modes::castle_victory
 	beq	:+
 	cmp	#system_modes::game
 	bne	:+++++
 	lda	proc_id_game
 	cmp	#game_modes::proc
 	bne	:+++++
-	: ; if (system.proc_id == victory || (system.proc_id == game && game.proc_id == proc)) {
+	: ; if (system.proc_id == castle_victory || (system.proc_id == game && game.proc_id == proc)) {
 		lda	nmi_pause_debounce
 		beq	:+ ; if (debounce > 0) {
 			dec	nmi_pause_debounce
@@ -613,7 +613,7 @@ nmi_oam_shuffle:
 ; ------------------------------------------------------------
 	.export	nmi_system_enter_tbl
 	.export	nmi_system_enter_game
-	.export	nmi_system_enter_victory
+	.export	nmi_system_enter_castle_victory
 	.export	nmi_system_enter_game_over
 nmi_system_enter:
 	lda	proc_id_system
@@ -639,8 +639,8 @@ nmi_system_enter_tbl:
 nmi_system_enter_game:
 	.addr	sys_game
 
-nmi_system_enter_victory:
-	.addr	sys_victory
+nmi_system_enter_castle_victory:
+	.addr	sys_castle_victory
 
 nmi_system_enter_game_over:
 	.addr	sys_game_over

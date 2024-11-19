@@ -17,10 +17,11 @@ actor_bowser_ending_data:
 	.byte	$1A, $58
 	.byte	$98, $96, $94, $92, $90, $8E, $8C
 	.byte	$8A, $88, $86, $84, $82, $80
+actor_bowser_ending_data_end:
 ; -----------------------------
 	.export actor_bowser_ending
 actor_bowser_ending:
-	ldx	nmi_list_1_data+$27
+	ldx	actor_index_bowser
 	lda	obj_id_actor, x
 	cmp	#actor::bowser
 	bne	:+
@@ -41,16 +42,17 @@ actor_bowser_ending:
 		jsr	motion_fall_slow
 		jmp	actor_proc_bowser_finish
 	: ; } else {
-		dec	nmi_list_1_data+$23
-		bne	:+ ; if () {
-			lda	#$04
-			sta	nmi_list_1_data+$23
-			lda	nmi_list_1_data+$22
-			eor	#1
-			sta	nmi_list_1_data+$22
+		dec	timer_ani_bowser
+		bne	:+ ; if (--this.timer_ani == 0) {
+			lda	#4
+			sta	timer_ani_bowser
+			lda	actor_bowser_ani_flag
+			eor	#actor_bowser_ani::step_bit
+			sta	actor_bowser_ani_flag
+
 			lda	#>(PPU_VRAM_BG1+PPU_BG_ROW_16)
 			sta	gfx_clear_put_do_addr+1
-			ldy	nmi_list_1_data+$28
+			ldy	actor_bowser_ending_data_idx
 			lda	actor_bowser_ending_data, y
 			sta	gfx_clear_put_do_addr
 			ldy	nmi_list_0_offset
@@ -63,10 +65,10 @@ actor_bowser_ending:
 			sta	apu_sfx_pulse_2_req
 			lda	#sfx_noise::block_break_01
 			sta	apu_sfx_noise_req
-			inc	nmi_list_1_data+$28
-			lda	nmi_list_1_data+$28
-			cmp	#$0F
-			bne	:+ ; if () {
+			inc	actor_bowser_ending_data_idx
+			lda	actor_bowser_ending_data_idx
+			cmp	#(actor_bowser_ending_data_end-actor_bowser_ending_data)
+			bne	:+ ; if (actor_bowser_ending_data_idx > sizeof (actor_bowser_ending_data)) {
 				jsr	actor_init_veloc_y
 				lda	#actor_states::bit_6
 				sta	state_actor, x
@@ -107,17 +109,17 @@ actor_proc_bowser:
 	lda	game_timer_stop
 	beq	:+
 	jmp	actor_proc_bowser_motion_skip
-	: lda	nmi_list_1_data+$22
+	: lda	actor_bowser_ani_flag
 	bpl	:+
 	jmp	:+++++++
-	: ; if (!game_timer_stop && !(nmi_list_1_data[0x22] & 0x80)) {
-		dec	nmi_list_1_data+$23
-		bne	:+ ; if (--nmi_list_1_data[0x23] == 0) {
-			lda	#$20
-			sta	nmi_list_1_data+$23
-			lda	nmi_list_1_data+$22
-			eor	#1
-			sta	nmi_list_1_data+$22
+	: ; if (!game_timer_stop && actor_bowser_ani.mouth_open) {
+		dec	timer_ani_bowser
+		bne	:+ ; if (--this.timer_ani == 0) {
+			lda	#ACTOR_BOWSER_TIMER_INIT
+			sta	timer_ani_bowser
+			lda	actor_bowser_ani_flag
+			eor	#actor_bowser_ani::step_bit
+			sta	actor_bowser_ani_flag
 		: ; }
 	
 		lda	frame_count
@@ -133,9 +135,9 @@ actor_proc_bowser:
 		bpl	:+ ; if (timer_ani_actor && col_player_bullet_dif() < 0) {
 			lda	#DIR_RIGHT
 			sta	motion_dir_actor, x
-			lda	#$02
-			sta	nmi_list_1_data+$24
-			lda	#32
+			lda	#2
+			sta	veloc_x_bowser
+			lda	#ACTOR_BOWSER_TIMER_INIT
 			sta	timer_ani_actor, x
 			sta	timer_bowser_flame
 			lda	pos_x_lo_actor, x
@@ -147,8 +149,8 @@ actor_proc_bowser:
 		and	#MOD_4
 		bne	:+++ ; if ((!timer_ani_actor || col_player_bullet_diff() >= 0 || (this.pos_x < 200)) && !(frame_count % 4)) {
 			lda	pos_x_lo_actor, x
-			cmp	nmi_list_1_data+$25
-			bne	:+ ; if () {
+			cmp	pos_x_prev_bowser
+			bne	:+ ; if (this.pos_x == this.pos_x_prev) {
 				lda	srand, x
 				and	#MOD_4
 				tay
@@ -158,22 +160,22 @@ actor_proc_bowser:
 		
 			lda	pos_x_lo_actor, x
 			clc
-			adc	nmi_list_1_data+$24
+			adc	veloc_x_bowser
 			sta	pos_x_lo_actor, x
 			ldy	motion_dir_actor, x
 			cpy	#DIR_RIGHT
 			beq	:++ ; if (actor.motion_dir == right) {
 				ldy	#<-1
 				sec
-				sbc	nmi_list_1_data+$25
-				bpl	:+ ; if () {
+				sbc	pos_x_prev_bowser
+				bpl	:+ ; if (this.pos_x < this.pos_x_prev) {
 					neg_m
 					ldy	#1
 				: ; }
 			
 				cmp	actor_bowser_rand_offset
 				bcc	:+ ; if (actor.pos_x >= actor_bowser_rand_offset) {
-					sty	nmi_list_1_data+$24
+					sty	veloc_x_bowser
 				; }
 			; }
 		; }
@@ -213,35 +215,34 @@ actor_proc_bowser_motion_skip:
 		sta	veloc_y_actor, x
 	; }
 	
-	: ; for () {
+	: ; while (actor_bowser_ani.mouth_closed) {
 		lda	course_no
 		cmp	#course::no_08
 		beq	:+
 		cmp	#course::no_06
-		bcs	actor_proc_bowser_finish
+		bcs	:+++
 		: lda	timer_bowser_flame
-		bne	actor_proc_bowser_finish ; if (course_no != no_07 && timer_bowser_flame == 0) {
+		bne	:++ ; if (course_no.not_in(6, 7) && timer_bowser_flame == 0) {
 			lda	#ACTOR_BOWSER_FLAME_TIMER
 			sta	timer_bowser_flame
-			lda	nmi_list_1_data+$22
-			eor	#%10000000
-			sta	nmi_list_1_data+$22
-			bmi	:--
-		; }
-	; }
 
-	; if () {
-		jsr	actor_proc_bowser_flame_timer_init
-		ldy	game_hard_mode_b
-		beq	:+ ; if (game_hard_mode_b) {
-			sec
-			sbc	#ACTOR_BOWSER_FLAME_TIMER_HARD_OFFSET
-		: ; }
-		sta	timer_bowser_flame
-	
-		lda	#actor::bowser_flame
-		sta	actor_swarm_buffer
-	; }
+			lda	actor_bowser_ani_flag
+			eor	#actor_bowser_ani::mouth_bit
+			sta	actor_bowser_ani_flag
+			bmi	:-- ; if (actor_bowser_ani.mouth_open) {
+				jsr	actor_proc_bowser_flame_timer_init
+				ldy	game_hard_mode_b
+				beq	:+ ; if (game_hard_mode_b) {
+					sec
+					sbc	#ACTOR_BOWSER_FLAME_TIMER_HARD_OFFSET
+				: ; }
+				sta	timer_bowser_flame
+			
+				lda	#actor::bowser_flame
+				sta	actor_swarm_buffer
+			; }
+		; } else break;
+	: ; }
 
 actor_proc_bowser_finish:
 	jsr	actor_proc_bowser_col
@@ -277,11 +278,11 @@ actor_proc_bowser_finish:
 	sta	actor_index
 	tax
 	lda	#0
-	sta	nmi_list_1_data+$29
+	sta	actor_bowser_ani_frame
 	: rts
 ; -----------------------------
 actor_proc_bowser_col:
-	inc	nmi_list_1_data+$29
+	inc	actor_bowser_ani_frame
 	jsr	actor_proc_toad
 	lda	state_actor, x
 	bne	:- ; if (actor.state == init) {

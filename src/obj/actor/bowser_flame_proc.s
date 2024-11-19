@@ -6,6 +6,7 @@
 
 ; -----------------------------------------------------------
 BOWSER_FLAME_POS_X_OFFSET		= 1
+BOWSER_FLAME_TIMER_IDX_MASK		= %00000111
 ; -----------------------------------------------------------
 actor_proc_bowser_flame_timer_data:
 	.ifndef	PAL
@@ -16,11 +17,11 @@ actor_proc_bowser_flame_timer_data:
 ; ----------------------------
 	.export actor_proc_bowser_flame_timer_init
 actor_proc_bowser_flame_timer_init:
-	ldy	nmi_list_1_data+$26
-	inc	nmi_list_1_data+$26
-	lda	nmi_list_1_data+$26
-	and	#%00000111
-	sta	nmi_list_1_data+$26
+	ldy	actor_bowser_flame_timer_idx
+	inc	actor_bowser_flame_timer_idx
+	lda	actor_bowser_flame_timer_idx
+	and	#BOWSER_FLAME_TIMER_IDX_MASK
+	sta	actor_bowser_flame_timer_idx
 	lda	actor_proc_bowser_flame_timer_data, y
 	: rts
 ; -----------------------------------------------------------

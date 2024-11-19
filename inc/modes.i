@@ -15,7 +15,7 @@ MODES_I = 1
 		.endif
 
 		game		= <((nmi_system_enter_game-nmi_system_enter_tbl)/WORD_SIZE)
-		victory		= <((nmi_system_enter_victory-nmi_system_enter_tbl)/WORD_SIZE)
+		castle_victory	= <((nmi_system_enter_castle_victory-nmi_system_enter_tbl)/WORD_SIZE)
 		game_over 	= <((nmi_system_enter_game_over-nmi_system_enter_tbl)/WORD_SIZE)
 	.endenum
 
@@ -65,7 +65,7 @@ MODES_I = 1
 		.endif
 	.endenum
 
-	.enum	victory_modes
+	.enum	castle_victory_modes
 		bowser		= <((victory_enter_bowser-victory_enter_tbl)/WORD_SIZE)
 		init		= <((victory_enter_init-victory_enter_tbl)/WORD_SIZE)
 		proc		= <((victory_enter_proc-victory_enter_tbl)/WORD_SIZE)
@@ -87,7 +87,7 @@ MODES_I = 1
 	.endenum
 
 	.if	.defined(SMB2M)
-		.enum	victory_modes_course_08
+		.enum	castle_victory_modes_course_08
 			bowser		= <((victory_course_08_bowser-victory_course_08_tbl)/WORD_SIZE)
 			init		= <((victory_course_08_init-victory_course_08_tbl)/WORD_SIZE)
 			proc		= <((victory_course_08_proc-victory_course_08_tbl)/WORD_SIZE)

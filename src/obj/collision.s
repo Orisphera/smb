@@ -1538,9 +1538,9 @@ col_bg_proc_coin_do:
 AXE_PLAYER_VELOC_X	= 24
 
 col_bg_proc_axe_do:
-	lda	#victory_modes::bowser
+	lda	#castle_victory_modes::bowser
 	sta	proc_id_game
-	lda	#system_modes::victory
+	lda	#system_modes::castle_victory
 	sta	proc_id_system
 
 	.if	.defined(SMB2M)
