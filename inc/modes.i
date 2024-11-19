@@ -41,20 +41,20 @@ MODES_I = 1
 
 	.enum	game_modes
 		.if	.defined(VS_SMB)
-			vs_init
+			vs_init	= <((game_mode_vs_init-game_mode_tbl)/WORD_SIZE)
 		.elseif	.defined(SMB2M)
-			init_data2
+			init_data2	= <((game_mode_init_data2-game_mode_tbl)/WORD_SIZE)
 		.endif
 
-		init_0
+		init_0	= <((game_mode_init_0-game_mode_tbl)/WORD_SIZE)
 
 		.if	.defined(ANN)
-			mode_unk_1
+			toad_load	= <((game_mode_toad_load-game_mode_tbl)/WORD_SIZE)
 		.endif
 
-		scr
-		init_1
-		proc
+		scr	= <((game_mode_scr-game_mode_tbl)/WORD_SIZE)
+		init_1	= <((game_mode_init_1-game_mode_tbl)/WORD_SIZE)
+		proc	= <((game_mode_proc-game_mode_tbl)/WORD_SIZE)
 
 		.if	.defined(SMB)
 		init	= init_0
@@ -66,56 +66,56 @@ MODES_I = 1
 	.endenum
 
 	.enum	victory_modes
-		bowser
-		init
-		proc
-		msg
+		bowser		= <((victory_enter_bowser-victory_enter_tbl)/WORD_SIZE)
+		init		= <((victory_enter_init-victory_enter_tbl)/WORD_SIZE)
+		proc		= <((victory_enter_proc-victory_enter_tbl)/WORD_SIZE)
+		msg		= <((victory_enter_msg-victory_enter_tbl)/WORD_SIZE)
 
 		.if	.defined(SMB2M)|.defined(VS_SMB)
-			time_tally
+			time_tally		= <((victory_enter_time_tally-victory_enter_tbl)/WORD_SIZE)
 		.endif
 
-		finish
+		finish		= <((victory_enter_finish-victory_enter_tbl)/WORD_SIZE)
 
 		.if	.defined(VS_SMB)
-			vs_84CF
-			vs_8526
-			vs_85E0
-			vs_864C
-			vs_865D
+			vs_84CF	= <((victory_enter_84CF-victory_enter_tbl)/WORD_SIZE)
+			vs_8526 = <((victory_enter_8526-victory_enter_tbl)/WORD_SIZE)
+			vs_85E0 = <((victory_enter_85E0-victory_enter_tbl)/WORD_SIZE)
+			vs_864C = <((victory_enter_864C-victory_enter_tbl)/WORD_SIZE)
+			vs_865D = <((victory_enter_865D-victory_enter_tbl)/WORD_SIZE)
 		.endif
 	.endenum
 
 	.if	.defined(SMB2M)
-		.enum	victory_modes_ending
-			bowser
-			init
-			proc
-			disk_init
-			disk_check
-			disk_data3
-			scr
-			msg
-			time_tally
-			extra_lives
-			palcycle
-			lives_draw
-			toad_proc
-			disk_save
+		.enum	victory_modes_course_08
+			bowser		= <((victory_course_08_bowser-victory_course_08_tbl)/WORD_SIZE)
+			init		= <((victory_course_08_init-victory_course_08_tbl)/WORD_SIZE)
+			proc		= <((victory_course_08_proc-victory_course_08_tbl)/WORD_SIZE)
+			disk_init	= <((victory_course_08_disk_init-victory_course_08_tbl)/WORD_SIZE)
+			disk_check	= <((victory_course_08_disk_check-victory_course_08_tbl)/WORD_SIZE)
+			disk_data3	= <((victory_course_08_disk_data3-victory_course_08_tbl)/WORD_SIZE)
+			scr		= <((victory_course_08_scr-victory_course_08_tbl)/WORD_SIZE)
+			msg		= <((victory_course_08_msg-victory_course_08_tbl)/WORD_SIZE)
+			time_tally	= <((victory_course_08_time_tally-victory_course_08_tbl)/WORD_SIZE)
+			extra_lives	= <((victory_course_08_extra_lives-victory_course_08_tbl)/WORD_SIZE)
+			palcycle	= <((victory_course_08_palcycle-victory_course_08_tbl)/WORD_SIZE)
+			lives_draw	= <((victory_course_08_lives_draw-victory_course_08_tbl)/WORD_SIZE)
+			toad_proc	= <((victory_course_08_toad_proc-victory_course_08_tbl)/WORD_SIZE)
+			disk_save	= <((victory_course_08_disk_save-victory_course_08_tbl)/WORD_SIZE)
 		.endenum
 	.endif
 
 	.enum	game_over_modes
-		init
-		scr
+		init	= <((game_over_mode_init-game_over_mode_tbl)/WORD_SIZE)
+		scr	= <((game_over_mode_scr-game_over_mode_tbl)/WORD_SIZE)
 
 		.if	.defined(VS_SMB)
-			vs_9902
-			vs_98DC
-			vs_98F2
+			vs_9902		= <((game_over_mode_9902-game_over_mode_tbl)/WORD_SIZE)
+			vs_98DC		= <((game_over_mode_98DC-game_over_mode_tbl)/WORD_SIZE)
+			vs_98F2		= <((game_over_mode_98F2-game_over_mode_tbl)/WORD_SIZE)
 		.endif
 
-		proc
+		proc	= <((game_over_mode_proc-game_over_mode_tbl)/WORD_SIZE)
 	.endenum
 
 .endif	; MODES_I

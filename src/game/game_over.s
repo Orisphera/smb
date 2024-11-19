@@ -7,16 +7,30 @@
 .include	"misc.i"
 
 	.export sys_game_over
+	.export	game_over_mode_tbl
+	.export	game_over_mode_init
+	.export	game_over_mode_scr
+	.export	game_over_mode_proc
 sys_game_over:
 	lda	proc_id_game
 	jsr	tbljmp
+game_over_mode_tbl:
+game_over_mode_init:
 	.addr	game_over_init
+game_over_mode_scr:
 	.addr	screen_proc
 	.if	.defined(VS_SMB)
+		.export	game_over_mode_9902
+		.export	game_over_mode_98DC
+		.export	game_over_mode_98F2
+	game_over_mode_9902:
 		.addr	game_over_9902
+	game_over_mode_98DC:
 		.addr	game_over_98DC
+	game_over_mode_98F2:
 		.addr	game_over_98F2
 	.endif
+game_over_mode_proc:
 	.addr	game_over_proc
 ; ----------------------------
 .if	.defined(VS_SMB)

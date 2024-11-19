@@ -21,14 +21,14 @@ sys_victory:
 		ldx	course_no
 		cpx	#course::no_08
 		bne	:+
-		cmp	#victory_modes_ending::disk_data3
+		cmp	#victory_modes_course_08::disk_data3
 		beq	sys_victory-1
-		cmp	#victory_modes_ending::disk_save
+		cmp	#victory_modes_course_08::disk_save
 		beq	sys_victory-1
 		; NOTE: This assumes this module follows an rts
 	.endif
-	; if (!SMB2M || course_no != no_08 || proc_id_game.not_in(data3, save)) {
-		: ; if (proc_id_game != actor_bowser_ending && (!SMB2M || course_no == no_08)) {
+	; if (!SMB2M || course_no != course_08 || this.proc_id.not_in(data3, save)) {
+		: ; if (this.proc_id != bowser) {
 			ldx	#0
 			stx	actor_index
 			jsr	actor_proc
@@ -38,46 +38,100 @@ sys_victory:
 		jmp	render_player
 	; } else rts;
 ; -----------------------------------------------------------
+	.export	victory_enter_tbl
+	.export	victory_enter_bowser
+	.export	victory_enter_init
+	.export	victory_enter_proc
+	.export	victory_enter_msg
+	.export	victory_enter_finish
 victory_enter:
 	.if	.defined(SMB2M)
 		lda	course_no
 		cmp	#course::no_08
-		beq	victory_course_8 ; if (!SMB2M || course_no != course_8) {
+		beq	victory_course_08 ; if (!SMB2M || course_no != course_08) {
 	.endif
 		lda	proc_id_game
 		jsr	tbljmp
+victory_enter_tbl:
+victory_enter_bowser:
 		.addr	actor_bowser_ending
+victory_enter_init:
 		.addr	victory_init
+victory_enter_proc:
 		.addr	victory_proc
+victory_enter_msg:
 		.addr	victory_msg
 		.if	.defined(SMB2M)|.defined(VS_SMB)
+			.export victory_enter_time_tally
+		victory_enter_time_tally:
 			.addr	victory_time_tally
 		.endif
+victory_enter_finish:
 		.addr	victory_finish
 		.if	.defined(VS_SMB)
+			.export	victory_enter_84CF
+			.export	victory_enter_8526
+			.export	victory_enter_85E0
+			.export	victory_enter_864C
+			.export	victory_enter_865D
+		victory_enter_84CF:
 			.addr	victory_84CF
+		victory_enter_8526:
 			.addr	victory_8526
+		victory_enter_85E0:
 			.addr	victory_85E0
+		victory_enter_864C:
 			.addr	victory_864C
+		victory_enter_865D:
 			.addr	victory_865D
 		.endif
 	.if	.defined(SMB2M)
-	victory_course_8: ; } else {
+	victory_course_08: ; } else {
+		.export victory_course_08_tbl
+		.export victory_course_08_bowser
+		.export victory_course_08_init
+		.export victory_course_08_proc
+		.export victory_course_08_disk_init
+		.export victory_course_08_disk_check
+		.export victory_course_08_disk_data3
+		.export victory_course_08_scr
+		.export victory_course_08_msg
+		.export victory_course_08_time_tally
+		.export victory_course_08_extra_lives
+		.export victory_course_08_palcycle
+		.export victory_course_08_lives_draw
+		.export victory_course_08_toad_proc
+		.export victory_course_08_disk_save
 		lda	proc_id_game
 		jsr	tbljmp
+	victory_course_08_tbl:
+	victory_course_08_bowser:
 		.addr	actor_bowser_ending
+	victory_course_08_init:
 		.addr	victory_init
+	victory_course_08_proc:
 		.addr	victory_proc
+	victory_course_08_disk_init:
 		.addr	disk_loader_victory_init
+	victory_course_08_disk_check:
 		.addr	disk_loader_victory_check
+	victory_course_08_disk_data3:
 		.addr	disk_loader_data3
+	victory_course_08_scr:
 		.addr	ending_screen_proc
+	victory_course_08_msg:
 		.addr	ending_victory_msg
+	victory_course_08_time_tally:
 		.addr	victory_time_tally
+	victory_course_08_extra_lives:
 		.addr	ending_extra_lives
+	victory_course_08_palcycle:
 		.addr	ending_palcycle
+	victory_course_08_lives_draw:
 		.addr	ending_lives_draw
+	victory_course_08_toad_proc:
 		.addr	ending_toad_proc
+	victory_course_08_disk_save:
 		.addr	disk_loader_save
 	; }
 	.endif

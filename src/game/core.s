@@ -10,24 +10,40 @@
 .include	"macros.i"
 
 	.export	sys_game
+	.export	game_mode_tbl
+	.export	game_mode_init_0
+	.export	game_mode_scr
+	.export	game_mode_init_1
+	.export	game_mode_proc
 sys_game:
 	lda	proc_id_game
 	jsr	tbljmp
 
+game_mode_tbl:
 	.if	.defined(VS_SMB)
+		.export	game_mode_vs_init
+	game_mode_vs_init:
 		.addr	vs_game_init
 	.elseif	.defined(SMB2M)
+		.export	game_mode_init_data2
+	game_mode_init_data2:
 		.addr	disk_loader_data2
 	.endif
 
+game_mode_init_0:
 	.addr	game_init_0_do
 
 	.if	.defined(ANN)
+		.export	game_mode_toad_load
+	game_mode_toad_load:
 		.addr	ann_toad_load
 	.endif
 
+game_mode_scr:
 	.addr	screen_proc
+game_mode_init_1:
 	.addr	game_init_1_do
+game_mode_proc:
 	.addr	game_proc
 ; ------------------------------------------------------------
 .if	.defined(VS_SMB)

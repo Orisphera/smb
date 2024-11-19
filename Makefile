@@ -94,8 +94,9 @@ TITLE_SCR_OBJS	=	src/title/scr.o
 
 TITLE_INIT_OBJS	=	src/title/init.o
 
-LIB_OBJS	=	src/game/victory.o \
-			src/lib/screen.o \
+VICTORY_OBJS	=	src/game/victory.o
+
+LIB_OBJS	=	src/lib/screen.o \
 			src/lib/gfx.o \
 			data/metatiles.o \
 			data/nmi_data.o \
@@ -329,6 +330,7 @@ HEADER_FDS	=	data/header.fds.bin
 
 PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
+			$(VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
@@ -354,6 +356,7 @@ OBJS_FC		=	$(PRG_OBJS_FC) \
 
 PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
+			$(VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(LIB_VS_OBJS) \
 			$(GAME_OBJS) \
@@ -384,6 +387,7 @@ OBJS_VS		=	$(PRG_OBJS_VS) \
 
 PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(TITLE_OBJS) \
+			$(VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(COURSE_LOOP_OBJS) \
@@ -418,6 +422,7 @@ DEF_FDS		=	data/fs/superblock_smb.def
 FDT_FDS		=	smb.fdt
 
 PRG_OBJS_SMB2	=	$(BASE_OBJS) \
+			$(VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(GAME_CORE_OBJS) \
@@ -477,6 +482,7 @@ DEF_SMB2	=	data/fs/superblock_smb2.def
 FDT_SMB2	=	smb2.fdt
 
 PRG_OBJS_ANN	=	$(BASE_OBJS) \
+			$(VICTORY_OBJS) \
 			$(LIB_OBJS) \
 			$(GAME_OBJS) \
 			$(GAME_CORE_OBJS) \
