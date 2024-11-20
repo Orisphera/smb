@@ -210,8 +210,8 @@ COL_BOX_SIZE	= 4
 			msg_addr_worldsel_1
 			msg_addr_worldsel_2
 		.elseif	.defined(VS_SMB)|.defined(SMB2M)
-			addr_0F
-			addr_10
+			ending_attr
+			ending_pal
 			msg_ty_mario_2
 			.if	.defined(VS_SMB)
 				msg_ty_luigi_2
@@ -257,6 +257,8 @@ COL_BOX_SIZE	= 4
 			ann_toad_pal_common
 			ending_pal_ext
 		.endif
+
+		msg_base	= msg_ty_mario
 	.endenum
 
 	.enum	actor

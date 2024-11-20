@@ -36,8 +36,8 @@
 		.byte	<(msg_worldsel_1)
 		.byte	<(msg_worldsel_2)
 	.elseif	.defined(VS_SMB)
-		.byte	<(nmi_addr_0F)
-		.byte	<(nmi_addr_10)
+		.byte	<(nmi_ending_attr)
+		.byte	<(nmi_ending_pal)
 		.byte	<(msg_thankyou_mario_2)
 		.byte	<(msg_thankyou_luigi_2)
 		.byte	<(msg_vsend_1)
@@ -84,8 +84,8 @@
 		.byte	>(msg_worldsel_1)
 		.byte	>(msg_worldsel_2)
 	.elseif	.defined(VS_SMB)
-		.byte	>(nmi_addr_0F)
-		.byte	>(nmi_addr_10)
+		.byte	>(nmi_ending_attr)
+		.byte	>(nmi_ending_pal)
 		.byte	>(msg_thankyou_mario_2)
 		.byte	>(msg_thankyou_luigi_2)
 		.byte	>(msg_vsend_1)
@@ -125,8 +125,8 @@
 		.addr	(palette_mushroom)
 		.addr	(msg_thankyou_mario)
 		.addr	(msg_thankyou_toad)
-		.addr	(nmi_addr_0F)
-		.addr	(nmi_addr_10)
+		.addr	(nmi_ending_attr)
+		.addr	(nmi_ending_pal)
 		.addr	(msg_thankyou_mario_2)
 		.addr	(msg_vsend_1)
 		.addr	(msg_vsend_2)
@@ -520,7 +520,7 @@ nmi_pause:
 	lda	proc_id_game
 	cmp	#game_modes::proc
 	bne	:+++++
-	: ; if (system.proc_id == castle_victory || (system.proc_id == game && game.proc_id == proc)) {
+	: ; if (this.proc_id == castle_victory || (this.proc_id == game && game.proc_id == proc)) {
 		lda	nmi_pause_debounce
 		beq	:+ ; if (debounce > 0) {
 			dec	nmi_pause_debounce

@@ -100,34 +100,34 @@ ending_state_next:
 ; ------------------------------------------------------------
 	.export	ending_victory_msg
 ending_victory_msg:
-	lda	victory_msg_timer_lo
+	lda	timer_victory_msg
 	bne	:++
-	ldy	victory_msg_timer_hi
-	cpy	#$0A
-	bcs	:+++ ; if (victory_msg_timer < 0xA00) {
-		; if (!(victory_msg_timer % 256)) {
+	ldy	victory_msg_id
+	cpy	#10
+	bcs	:+++ ; if (this.timer != 0 || this.msg_id < 10) {
+		; if (this.timer == 0) {
 			iny
 			iny
 			iny
 			cpy	#5
-			bne	:+ ; if ((victory_msg_timer_hi + 3) == 5) {
+			bne	:+ ; if ((victory_msg_id + 3) == 5) {
 				lda	#music_event::victory_ending
 				sta	apu_music_event_req
 			: ; }
 		
 			tya
 			clc
-			adc	#nmi_addr::msg_ty_mario
+			adc	#nmi_addr::msg_base
 			sta	nmi_buffer_ptr
 		: ; }
 
-		lda	victory_msg_timer_lo
+		lda	timer_victory_msg
 		clc
-		adc	#4
-		sta	victory_msg_timer_lo
-		lda	victory_msg_timer_hi
+		adc	#VICTORY_TICK
+		sta	timer_victory_msg
+		lda	victory_msg_id
 		adc	#0
-		sta	victory_msg_timer_hi
+		sta	victory_msg_id
 		rts
 	: ; } else {
 		lda	#12

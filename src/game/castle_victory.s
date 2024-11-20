@@ -309,7 +309,9 @@ victory_init:
 	screen_title_bg_finish:
 		inc	proc_id_game
 		rts
-
+	.endif
+; -----------------------------
+	.if	.defined(SMB2M)
 	screen_title_bg:
 		lda	proc_id_system
 		bne	screen_title_bg_finish
@@ -327,7 +329,7 @@ victory_proc:
 	lda	pos_x_lo_player
 	cmp	#VICTORY_X_POS
 	bcs	:++
-	: ; if ((player.pos_x < victory.pos_x) {
+	: ; if (player.pos_x < victory.pos_x) {
 		inc	victory_proc_ctrl
 		iny
 	: ; }
@@ -355,142 +357,158 @@ victory_proc:
 	; } else victory_next();
 ; -----------------------------------------------------------
 victory_msg:
-	lda	victory_msg_timer_lo
-	bne	victory_msg_dotick
-
-	.if	.defined(CONS)
-		lda	victory_msg_timer_hi
-		beq	victory_msg_do
-		cmp	#VICTORY_MSG_TIMER_UPPER
-		bcs	victory_msg_dotick
-
-		.if	.defined(SMB)
+	lda	timer_victory_msg
+	bne	victory_msg_continue ; if (this.timer == 0) {
+		.if	.defined(CONS)
+			lda	victory_msg_id
+			beq	:++
+			cmp	#VICTORY_MSG_BOUND_HI
+			bcs	victory_msg_continue
+			.if	.defined(SMB)
 			ldy	course_no
 			cpy	#course::no_08
-			bne	:+ ; if (course_no == course_8) {
-				cmp	#3
-				bcc	victory_msg_dotick
+			bne	:+
+			cmp	#VICTORY_MSG_ENDING
+			bcc	victory_msg_continue ; if (this.msg_id >= VICTORY_MSG_ENDING) {
 				sbc	#1
-				jmp	victory_msg_do
-			: ; }
-		.endif
+				jmp	:++
+			; }
+			.endif
+	
+			: cmp	#VICTORY_MSG_TOAD
+			bcc	victory_msg_continue
+			: ; if (
+			;	this.msg_id < VICTORY_MSG_BOUND_HI
+			;	&& (
+			;		this.msg_id == 0
+			;		|| (SMB && course_no != no_08 && this.msg_id >= VICTORY_MSG_TOAD)
+			;		|| (SMB && course_no == no_08 && this.msg_id < VICTORY_MSG_ENDING)
+			;		|| (this.msg_id >= VICTORY_MSG_TOAD)
+			;	)
+			; ) {
+				tay
+				.if	.defined(SMB)
+					bne	:+ ; if (this.msg_id == ty_mario) {
+						lda	player_id
+						beq	victory_msg_sound_check ; if (player_id > 0) {
+							iny
 
-		cmp	#VICTORY_MSG_TIMER_LOWER
-		bcc	victory_msg_dotick
+							bne	victory_msg_sound_check
+						; }
+					: ; } else {
+						iny
 
-	victory_msg_do:
-		tay
-		.if	.defined(SMB)
-			bne	:+ ; if () {
-				lda	player_id
-				beq	victory_msg_sound_check
-				iny
-				bne	victory_msg_sound_check
-			: ; }
-
-			iny
+						lda	course_no
+						cmp	#course::no_08
+						beq	victory_msg_sound_check ; if (course_no != no_08) {
+							dey
+						; }
+					; }
+				.elseif	.defined(SMB2M)
+					beq	victory_msg_set
+				.endif
+		
+				cpy	#VICTORY_NOTICK_END
+				bcs	victory_bcs_rts
+				cpy	#VICTORY_MSG_ENDING
+				bcs	victory_msg_continue
+			; }
+		.elseif	.defined(VS)
+			ldy	victory_msg_id
 			lda	course_no
 			cmp	#course::no_08
-			beq	victory_msg_sound_check
-			dey
-		.elseif	.defined(SMB2M)
-			beq	victory_msg_finish
+			beq	:++ ; if (course_no != no_08) {
+				cpy	#0
+				bne	:+ ; if (this.msg_id == ty_mario) {
+					inc	victory_msg_id
+					lda	player_id
+					beq	:+ ; if (player.id > 0) {
+						iny
+					; }
+				: ; }
+	
+				cpy	#VICTORY_NOTICK_END
+				bcc	victory_msg_set
+				bcs	victory_msg_finish
+			: ; } else {
+				cpy	#VICTORY_MSG_TOAD
+				beq	:+
+				cpy	#VICTORY_MSG_TIMER_LOWER_B
+				bne	:++
+				: ; if (this.msg_id.in(toad, 6)) {
+					inc	victory_msg_id
+					lda	player_id
+					beq	:+ ; if (player.id > 0) {
+						iny
+					; }
+				: ; }
+	
+				cpy	#VICTORY_MSG_BOUND_HI
+				bcs	victory_msg_finish
+			; }
 		.endif
-
-		cpy	#VICTORY_NOTICK_END
-		bcs	victory_msg_notick
-		cpy	#VICTORY_DOTICK_END
-		bcs	victory_msg_dotick
-	.elseif	.defined(VS)
-		ldy	victory_msg_timer_hi
-		lda	course_no
-		cmp	#course::no_08
-		beq	:++ ; if (!victory_msg_timer_lo && course_no != no_08) {
-			cpy	#0
-			bne	:+ ; if (victory_msg_timer_hi == 0) {
-				inc	victory_msg_timer_hi
-				lda	player_id
-				beq	:+ ; if (player_id != 0) {
-					iny
-				; }
+	
+		.if	.defined(SMB)|.defined(VS_SMB)
+		victory_msg_sound_check:
+			.if	.defined(SMB)
+				cpy	#VICTORY_MSG_ENDING
+			.elseif	.defined(VS_SMB)
+				iny
+				iny
+				iny
+				cpy	#VICTORY_MSG_ENDING
+			.endif
+			bne	:+ ; if (this.msg_id == VICTORY_MSG_ENDING) {
+				lda	#music_event::victory_ending
+				sta	apu_music_event_req
 			: ; }
-
-			cpy	#VICTORY_NOTICK_END
-			bcc	victory_msg_finish
-			bcs	victory_msg_notick
-		: ; } else if (!victory_msg_timer_lo) {
-			cpy	#VICTORY_MSG_TIMER_LOWER
-			beq	:+
-			cpy	#VICTORY_MSG_TIMER_LOWER_B
-			bne	:++
-			: ; if (victory_msg_timer_hi.in(2, 6)) {
-				inc	victory_msg_timer_hi
-				lda	player_id
-				beq	:+ ; if (player.id != 0) {
-					iny
-				; }
-			: ; }
-
-			cpy	#VICTORY_MSG_TIMER_UPPER
-			bcs	victory_msg_notick
-		; }
-	.endif
-
-	.if	.defined(SMB)|.defined(VS_SMB)
-	victory_msg_sound_check:
-		.if	.defined(SMB)
-			cpy	#3
-		.elseif	.defined(VS_SMB)
-			iny
-			iny
-			iny
-			cpy	#7
 		.endif
-		bne	:+ ; if ((SMB && victory_msg_timer_hi == 3) || (VS_SMB && (victory_msg_timer_hi += 3) == 7)) {
-			lda	#music_event::victory_ending
-			sta	apu_music_event_req
+	
+	victory_msg_set:
+		tya
+		clc
+		adc	#nmi_addr::msg_base
+		sta	nmi_buffer_ptr
+	; }
+
+	; if (this.timer > 0 || (CONS && (this.msg_id < VICTORY_NOTICK_END)) || (VS && )) {
+	victory_msg_continue:
+		lda	timer_victory_msg
+		clc
+		adc	#VICTORY_TICK
+		sta	timer_victory_msg
+		lda	victory_msg_id
+		adc	#0
+		sta	victory_msg_id
+		.if	.defined(CONS)
+			cmp	#VICTORY_MSG_LAST+1
+		.elseif	.defined(VS)
+			rts
+		.endif
+	; }
+
+	; if () {
+	victory_msg_finish:
+	victory_bcs_rts:
+		.if	.defined(CONS)
+			bcc	:+ ; if (this.msg_id > VICTORY_MSG_LAST) {
+		.endif
+			lda	#VICTORY_TIMER_SET
+			sta	timer_victory
+	
+		victory_next:
+			inc	proc_id_game
+	
+		.if	.defined(VS)
+			lda	#0
+			sta	VS_RAM_ARENA0+$18
+			sta	VS_RAM_ARENA0+$22
+			sta	VS_RAM_ARENA0+$1F
+		.endif
 		: ; }
-	.endif
-
-victory_msg_finish:
-	tya
-	clc
-	adc	#nmi_addr::msg_ty_mario
-	sta	nmi_buffer_ptr
-
-victory_msg_dotick:
-	lda	victory_msg_timer_lo
-	clc
-	adc	#VICTORY_TICK
-	sta	victory_msg_timer_lo
-	lda	victory_msg_timer_hi
-	adc	#0
-	sta	victory_msg_timer_hi
-	.if	.defined(CONS)
-		cmp	#VICTORY_MSG_TIMER_END
-	.elseif	.defined(VS)
+	
 		rts
-	.endif
-
-victory_msg_notick:
-	.if	.defined(CONS)
-		bcc	:+ ; if (victory_msg_timer_hi >= end) {
-	.endif
-		lda	#VICTORY_TIMER_SET
-		sta	timer_victory
-
-	victory_next:
-		inc	proc_id_game
-
-	.if	.defined(VS)
-		lda	#0
-		sta	VS_RAM_ARENA0+$18
-		sta	VS_RAM_ARENA0+$22
-		sta	VS_RAM_ARENA0+$1F
-	.endif
-	: ; }
-
-	rts
+	; }
 ; -----------------------------------------------------------
 	.if	.defined(SMB2M)|.defined(VS_SMB)
 

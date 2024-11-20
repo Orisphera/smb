@@ -15,8 +15,8 @@ MSG_BG	= PPU_VRAM_BG2
 MSG_BG	= PPU_VRAM_BG1
 .endif
 
-	.export nmi_addr_0F
-nmi_addr_0F:
+	.export nmi_ending_attr
+nmi_ending_attr:
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR
 	.byte	NMI_REPEAT|8, PPU_BG_COLOR_LINE_1_ALL
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+2
@@ -24,8 +24,8 @@ nmi_addr_0F:
 	: .byte	(PPU_BG_COLOR_LINE_3<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_1<<2)|PPU_BG_COLOR_LINE_1
 	: .byte	NMI_LIST_END
 
-	.export	nmi_addr_10
-nmi_addr_10:
+	.export	nmi_ending_pal
+nmi_ending_pal:
 	.dbyt	PPU_COLOR_PAGE_BG
 	.byte	(:++)-(:+)
 	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_PITCH0,  PPU_COLOR_PITCH0,  PPU_COLOR_PITCH0
