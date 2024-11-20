@@ -190,8 +190,12 @@ firebar_veloc_ang:
 	.byte	FIREBAR_ANG_VELOC_FAST
 	.byte	FIREBAR_ANG_VELOC_SLOW
 
-actor_firebar_victory_right_x_hi:
-	.byte	0, 0, 16, 16, 0
+firebar_rot_dir:
+	.byte	firebar_rot_dir::cw
+	.byte	firebar_rot_dir::cw
+	.byte	firebar_rot_dir::ccw
+	.byte	firebar_rot_dir::ccw
+	.byte	firebar_rot_dir::cw
 ; ------------------------------
 	.export actor_init_firebar_long, actor_init_firebar_short
 actor_init_firebar_long:
@@ -205,9 +209,9 @@ actor_init_firebar_short:
 	sbc	#actor::firebar_start
 	tay
 	lda	firebar_veloc_ang, y
-	sta	veloc_ang_firebar, x
-	lda	actor_firebar_victory_right_x_hi, y
-	sta	pos_x_hi_victory_right, x
+	sta	veloc_ang_actor, x
+	lda	firebar_rot_dir, y
+	sta	rot_dir_actor, x
 	lda	pos_y_lo_actor, x
 	clc
 	adc	#FIREBAR_OFFSET_Y

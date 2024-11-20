@@ -361,6 +361,11 @@ COL_BOX_SIZE	= 4
 		mouth_bit	= 128
 	.endenum
 
+	.enum	firebar_rot_dir
+		cw = 0
+		ccw = 16
+	.endenum
+
 	.enum	course
 		no_01
 		no_02

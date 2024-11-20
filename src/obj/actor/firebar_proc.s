@@ -80,7 +80,7 @@ actor_proc_firebar_do:
 	bne	:+++++++ ; if (!(actor.bits_offscr & 0x08)) {
 		lda	game_timer_stop
 		bne	:+ ; if (!game_timer_stop) {
-			lda	veloc_ang_firebar, x
+			lda	veloc_ang_actor, x
 			jsr	actor_proc_firebar_spin
 			and	#MOD_32
 			sta	veloc_y_actor, x

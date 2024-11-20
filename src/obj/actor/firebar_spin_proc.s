@@ -6,8 +6,8 @@ actor_proc_firebar_spin_accel_x	= zp_byte_07
 	.export actor_proc_firebar_spin
 actor_proc_firebar_spin:
 	sta	actor_proc_firebar_spin_accel_x
-	lda	pos_x_hi_victory_right, x
-	bne	:+ ; if (victory_right.pos_x_hi == 0) {
+	lda	rot_dir_actor, x
+	bne	:+ ; if (this.rot_dir == 0) {
 		ldy	#24
 		lda	veloc_x_actor, x
 		clc

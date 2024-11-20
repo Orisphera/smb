@@ -65,14 +65,11 @@ state_misc_end		= state_misc+ENG_MISC_MAX
 ; --------------
 disp_dir_player		= state_misc_end
 disp_dir_player_end	= disp_dir_player+ENG_PLAYER_OBJ_MAX
-pos_x_hi_victory_right	= disp_dir_player_end
+rot_dir_actor		= disp_dir_player_end
+pos_x_hi_victory_right	= rot_dir_actor
 victory_proc_ctrl	= pos_x_hi_victory_right+1
-; --------------
-unused_36		= victory_proc_ctrl+1
-unused_37		= unused_36+1
-unused_38		= unused_37+1
-; --------------
-actor_powerup_type	= unused_38+1
+rot_dir_actor_end	= rot_dir_actor+ENG_ACTOR_MAX
+actor_powerup_type	= rot_dir_actor_end-1
 proj_bounce_flag	= actor_powerup_type+1
 timer_hammer_bro_jump	= proj_bounce_flag+ENG_PROJ_MAX
 timer_hammer_bro_jump_end = timer_hammer_bro_jump+ENG_ACTOR_MAX
@@ -260,10 +257,10 @@ unused_385		= unused_384+1
 unused_386		= unused_385+1
 unused_387		= unused_386+1
 ; --------------
-veloc_ang_firebar	= unused_387+1
-veloc_ang_firebar_end	= veloc_ang_firebar+ENG_ACTOR_MAX
+veloc_ang_actor		= unused_387+1
+veloc_ang_actor_end	= veloc_ang_actor+ENG_ACTOR_MAX
 ; --------------
-unused_38E		= veloc_ang_firebar_end
+unused_38E		= veloc_ang_actor_end
 unused_38F		= unused_38E+1
 unused_390		= unused_38F+1
 unused_391		= unused_390+1
