@@ -471,18 +471,18 @@ player_proc_victory:
 	lda	collision_player
 	lsr	a
 	bcs	:++ ; if (!(this.collision & right)) {
-		lda	proc_id_victory_flag
-		bne	:+ ; if (victory_flag.proc_id == null) {
-			inc	proc_id_victory_flag
+		lda	proc_id_flag_victory
+		bne	:+ ; if (flag_victory.proc_id == null) {
+			inc	proc_id_flag_victory
 		: ; }
 
 		lda	#obj_attr::priority_low|obj_attr::color0
 		sta	attr_player
 	: ; }
 
-	lda	proc_id_victory_flag
-	cmp	#<victory_flag_proc::done
-	bne	:+++ ; if (victory_flag.proc_id == done) {
+	lda	proc_id_flag_victory
+	cmp	#<flag_victory_proc::done
+	bne	:+++ ; if (flag_victory.proc_id == done) {
 		inc	player_goals
 		lda	player_goals
 		cmp	#3

@@ -80,7 +80,7 @@ COL_BOX_SIZE	= 4
 		box_11		= <((col_box_11-col_box_tbl)/COL_BOX_SIZE)
 	.endenum
 
-	.enum	victory_flag_proc
+	.enum	flag_victory_proc
 		null		= (actor_proc_flag_victory_tbl_null-actor_proc_flag_victory_tbl)/WORD_SIZE
 		fireworks	= (actor_proc_flag_victory_tbl_fireworks-actor_proc_flag_victory_tbl)/WORD_SIZE
 		score		= (actor_proc_flag_victory_tbl_timer_score-actor_proc_flag_victory_tbl)/WORD_SIZE

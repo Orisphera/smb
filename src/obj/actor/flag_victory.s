@@ -31,8 +31,8 @@ actor_proc_flag_chr_nos_end:
 actor_proc_flag_victory:
 	lda	#0
 	sta	actor_swarm_buffer
-	lda	proc_id_victory_flag
-	cmp	#<victory_flag_proc::done
+	lda	proc_id_flag_victory
+	cmp	#<flag_victory_proc::done
 	bcs	actor_proc_flag_victory_fireworks_rts
 	jsr	tbljmp
 actor_proc_flag_victory_tbl:
@@ -90,7 +90,7 @@ actor_proc_flag_victory_fireworks:
 	sty	state_actor, x
 
 actor_proc_flag_victory_fireworks_step:
-	inc	proc_id_victory_flag
+	inc	proc_id_flag_victory
 
 actor_proc_flag_victory_fireworks_rts:
 	rts
@@ -191,7 +191,7 @@ actor_proc_flag_victory_start_flag:
 	sta	timer_actor, x
 
 actor_proc_flag_victory_next:
-	inc	proc_id_victory_flag
+	inc	proc_id_flag_victory
 	rts
 ; -----------------------------------------------------------
 actor_proc_flag_victory_delay:
