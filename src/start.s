@@ -1,3 +1,4 @@
+.include	"system/cpu.i"
 .include	"system/ppu.i"
 .include	"system/apu.i"
 .if	.defined(FDS)
@@ -38,7 +39,7 @@ start:
 		lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)
 		sta     PPU_CTLR0
 
-		ldx     #$FF
+		ldx     #<(STACK_SIZE-1)
 		txs
 
 		: ; while (!vblank) {

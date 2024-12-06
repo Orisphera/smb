@@ -22,13 +22,24 @@ ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
 ASFLAGS_PAL	=	-DPAL
-ASFLAGS		=	-U -I ./inc $(ASFLAGS_ANN)
+ASFLAGS		=	-U -I ./inc $(ASFLAGS_FC)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
+CHECK		=	tools/check.sh
+BINTOFDF	=	fdtc/bintofdf
+FDTC		=	fdtc/fdtc
+
+FC		= 	smb.nes
+VS		=	smb.vs
+FDS		=	smb.fds
+SMB2		=	smb2.fds
+ANN		=	ann.fds
+
+TGT		=	$(FC)
 
 CKSUM_FC_NTSC	=	1517619510
 CKSUM_FC_PAL	=	63472984
@@ -48,15 +59,6 @@ CKSUM_NSMDATA3	=	1988748891
 CKSUM_NSMDATA4	=	813708659
 CKSUM_NSMCHAR1	=	31826565
 CKSUM_NSMCHAR2	=	1691251489
-
-BINTOFDF	=	fdtc/bintofdf
-FDTC		=	fdtc/fdtc
-
-FC		= 	smb.nes
-VS		=	smb.vs
-FDS		=	smb.fds
-SMB2		=	smb2.fds
-ANN		=	ann.fds
 
 PRG_FC		=	smmain.fc.bin
 CHR_FC		=	smchar.fc.bin
@@ -595,18 +597,20 @@ FDTS		=	$(FDT_FDS) \
 
 .SUFFIXES : .bin .fdf .fdt .fds .sh
 
+all: $(TGT)
+
 $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD) $(OBJS_FC) $(LDFLAGS_FC)
-	cat $(HEADER_FC) $(ROMS_FC) > $(FC)
-	tools/check.sh $(FC) $(CKSUM_FC)
+	cat $(HEADER_FC) $(ROMS_FC) > $@
+	$(CHECK) $@ $(CKSUM_FC)
 
 $(VS): $(HEADER_VS) $(OBJS_VS)
 	$(LD) $(OBJS_VS) $(LDFLAGS_VS)
-	cat $(HEADER_VS) $(ROMS_VS) > $(VS)
-	tools/check.sh $(VS) $(CKSUM_VS)
+	cat $(HEADER_VS) $(ROMS_VS) > $@
+	$(CHECK) $@ $(CKSUM_VS)
 
 $(FDS): $(HEADER_FDS) $(FDT_FDS)
-	cat $(HEADER_FDS) $(FDT_FDS) > $(FDS)
+	cat $(HEADER_FDS) $(FDT_FDS) > $@
 
 $(FDT_FDS): smmain.fds.bin $(FDFS_FDS) 
 	$(FDTC) $(FDFS_FDS) <$(DEF_FDS) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
@@ -618,39 +622,39 @@ smmain2.bin: smmain.fds.bin
 	dd if=$< bs=1 count=16384 skip=16384 >$@
 
 smmain.fds.bin: $(OBJS_FDS)
-	$(LD) $(OBJS_FDS) $(LDFLAGS_FDS)
-	tools/check.sh $(PRG_FDS) $(CKSUM_SMMAIN)
-	tools/check.sh $(CHR_FDS) $(CKSUM_SMCHAR)
+	$(LD) $^ $(LDFLAGS_FDS)
+	$(CHECK) $(PRG_FDS) $(CKSUM_SMMAIN)
+	$(CHECK) $(CHR_FDS) $(CKSUM_SMCHAR)
 
 $(SMB2): $(HEADER_FDS) $(FDT_SMB2)
-	cat $(HEADER_FDS) $(FDT_SMB2) > $(SMB2)
+	cat $(HEADER_FDS) $(FDT_SMB2) > $@
 
 $(FDT_SMB2): sm2main.bin $(FDFS_SMB2) 
 	$(FDTC) $(FDFS_SMB2) <$(DEF_SMB2) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
 sm2main.bin: $(OBJS_SMB2)
 	$(LD) $(OBJS_SMB2) $(LDFLAGS_SMB2)
-	tools/check.sh sm2main.bin $(CKSUM_SM2MAIN)
-	tools/check.sh sm2data2.bin $(CKSUM_SM2DATA2)
-	tools/check.sh sm2data3.bin $(CKSUM_SM2DATA3)
-	tools/check.sh sm2data4.bin $(CKSUM_SM2DATA4)
-	tools/check.sh sm2char1.bin $(CKSUM_SM2CHAR1)
-	tools/check.sh sm2char2.bin $(CKSUM_SM2CHAR2)
+	$(CHECK) sm2main.bin $(CKSUM_SM2MAIN)
+	$(CHECK) sm2data2.bin $(CKSUM_SM2DATA2)
+	$(CHECK) sm2data3.bin $(CKSUM_SM2DATA3)
+	$(CHECK) sm2data4.bin $(CKSUM_SM2DATA4)
+	$(CHECK) sm2char1.bin $(CKSUM_SM2CHAR1)
+	$(CHECK) sm2char2.bin $(CKSUM_SM2CHAR2)
 
 $(ANN): $(HEADER_FDS) $(FDT_ANN)
-	cat $(HEADER_FDS) $(FDT_ANN) > $(ANN)
+	cat $(HEADER_FDS) $(FDT_ANN) > $@
 
 $(FDT_ANN): nsmmain.bin $(FDFS_ANN) 
 	$(FDTC) $(FDFS_ANN) <$(DEF_ANN) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
 nsmmain.bin: $(OBJS_ANN)
-	$(LD) $(OBJS_ANN) $(LDFLAGS_ANN)
-	tools/check.sh nsmmain.bin $(CKSUM_NSMMAIN)
-	tools/check.sh nsmdata2.bin $(CKSUM_NSMDATA2)
-	tools/check.sh nsmdata3.bin $(CKSUM_NSMDATA3)
-	tools/check.sh nsmdata4.bin $(CKSUM_NSMDATA4)
-	tools/check.sh nsmchar1.bin $(CKSUM_NSMCHAR1)
-	tools/check.sh nsmchar2.bin $(CKSUM_NSMCHAR2)
+	$(LD) $^ $(LDFLAGS_ANN)
+	$(CHECK) nsmmain.bin $(CKSUM_NSMMAIN)
+	$(CHECK) nsmdata2.bin $(CKSUM_NSMDATA2)
+	$(CHECK) nsmdata3.bin $(CKSUM_NSMDATA3)
+	$(CHECK) nsmdata4.bin $(CKSUM_NSMDATA4)
+	$(CHECK) nsmchar1.bin $(CKSUM_NSMCHAR1)
+	$(CHECK) nsmchar2.bin $(CKSUM_NSMCHAR2)
 
 .bin.fdf:
 	$(BINTOFDF) $< <data/fs/files/$<.def >$@
