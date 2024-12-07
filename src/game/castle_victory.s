@@ -1,6 +1,6 @@
 .include	"system/cpu.i"
 .include	"system/ppu.i"
-.include	"system/palettes.i"
+.include	"system/palette.i"
 
 .include	"mem.i"
 .include	"chr.i"

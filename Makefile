@@ -4,6 +4,7 @@
 # Preprocessor Definitions:
 #   FC      - Famicom-specific
 #   VS      - Vs. System-specific
+#   VS_2C04_0004 - Vs. System 2C04-0004 PPU-specific
 #   FDS     - Famicom Disk System-specific
 #   CONS    - Home Console-specific
 #   SMB     - Super Mario Bros.
@@ -17,7 +18,7 @@
 #   PAL     - PAL-specific
 AS		=	ca65
 ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM
-ASFLAGS_VS	=	-DVS -DVS_SMB
+ASFLAGS_VS	=	-DVS -DVS_2C04_0004 -DVS_SMB
 ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM

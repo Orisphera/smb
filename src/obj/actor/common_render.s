@@ -592,7 +592,7 @@ render_actor_clear_chr_pair_v:
 	clc
 	adc	obj_data_offset_actor, x
 	tay
-	lda	#ENG_OAM_CLEAR_SCANLINE
+	lda	#OAM_INIT_SCANLINE
 	jmp	render_set_two_sprites_v
 ; ------------------------------------------------------------
 render_actor_clear_chr_pair_h:

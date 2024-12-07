@@ -1,5 +1,5 @@
 .include	"system/ppu.i"
-.include	"system/palettes.i"
+.include	"system/palette.i"
 
 .include	"charmap.i"
 .include	"tunables.i"

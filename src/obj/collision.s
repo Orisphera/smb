@@ -1165,7 +1165,7 @@ col_plat_s_player_pos:
 	clc
 	adc	col_plat_s_pos_offsets-1, y
 .if	.defined(SMB)|.defined(SMB2M)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS_SMB)
 	jmp	col_plat_player_pos_do
 .endif
@@ -2717,7 +2717,7 @@ col_box_player_step:
 col_box_player_jump:
 	lda	#0
 .if	.defined(SMB)|.defined(SMB2M)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS_SMB)
 	jmp	col_box_player_buffer_do
 .endif

@@ -20,64 +20,77 @@ PPU_I = 1
 		color3		= 3
 		color_bits	= 3
 
-		priority_high	= $00
-		priority_low	= $20
-		priority_bit	= $20
-		h_flip		= $40
-		v_flip		= $80
-		no_flip		= $00
+		priority_bit	= %00100000
+		priority_low	= priority_bit
+		priority_high	= 0
+
+		h_flip		= %01000000
+		v_flip		= %10000000
+		flip_bits	= (h_flip|v_flip)
+		no_flip		= 0
 	.endenum
 
 ; Control Register 0 [1](11.2.2)(p. 6)
 PPU_CTLR0	= $2000
 	.enum   ppu_ctlr0
-		bg_parity = 1
-		bg_even	= 0
-		bg_odd	= 1
-		bg1	= 0
-		bg2	= 1
-		bg3	= 2
-		bg4	= 3
-		bg_bits	= 3
-		inc_1	= 0
-		inc_32	= 4
-		inc_bit	= 4
+		bg_bits		= %00000011
+		bg1		= 0
+		bg2		= 1
+		bg3		= 2
+		bg4		= 3
+		bg_parity	= %00000001
+		bg_odd		= bg_parity
+		bg_even		= 0
 
+		inc_bit		= %00000100
+		inc_32		= inc_bit
+		inc_1		= 0
+
+		obj_seg_bit	= %00001000
+		obj_seg1	= obj_seg_bit
 		obj_seg0	= 0
-		obj_seg1	= 8
+		bg_seg_bit	= %00010000
+		bg_seg1		= bg_seg_bit
 		bg_seg0		= 0
-		bg_seg1		= 16
 
+		sprite_16_bit	= %00100000
+		sprite_16	= sprite_16_bit
 		sprite_8	= 0
-		sprite_16	= 32
 
-		int		= 128
+		int		= %10000000
 	.endenum
 PPU_CTLR0_INC_PAGESIZE	= 32
 
 ; Control Register 1 [1](11.2.3)(p. 6)
 PPU_CTLR1	= $2001
 	.enum   ppu_ctlr1
+		monotone_bit	= %00000001
+		monotone	= monotone_bit
 		color		= 0
-		monotone	= 1
+
+		bglblk_bit	= %00000010
+		bglblk_off	= bglblk_bit
 		bglblk_on	= 0
-		bglblk_off	= 2
+		objlblk_bit	= %00000100
+		objlblk_off	= objlblk_bit
 		objlblk_on	= 0
-		objlblk_off	= 4
+		bgblk_bit	= %00001000
+		bgblk_off	= bgblk_bit
 		bgblk_on	= 0
-		bgblk_off	= 8
+		objblk_bit	= %00010000
+		objblk_off	= objblk_bit
 		objblk_on	= 0
-		objblk_off	= 16
-		red		= 32
-		green		= 64
-		blue		= 128
+
+		red		= %00100000
+		green		= %01000000
+		blue		= %10000000
 	.endenum
 
 ; Status Register [1](11.2.4)(p. 6)
 PPU_SR		= $2002
 	.enum	ppu_sr
-		strike		= 64
-		int		= 128
+		strike		= %01000000
+		int		= %10000000
 	.endenum
 
 ; OAM Address Register [1](11.2.5)(p. 7)
@@ -88,7 +101,6 @@ PPU_OAM_WRITE	= $2004
 
 ; Scroll Register H,V [1](11.2.7)(p. 7)
 PPU_SCC_H_V	= $2005
-PPU_SCANLINE_240	= $F0
 
 ; VRAM Address Register H,L [1](11.2.8)(p. 7)
 PPU_VRAM_AR	= $2006
@@ -109,15 +121,17 @@ PPU_VRAM_COLOR		= $3F00
 PPU_ADDR_SIZE		= 2
 
 ; Character Format [1](11.2.9.1)(p. 7)
-PPU_CHR_SIZE		= $10
+PPU_CHR_SIZE		= 16
 PPU_CHR_HEIGHT_PX	= 8
 PPU_CHR_WIDTH_PX	= 8
 PPU_COLOR_ROW_SIZE	= 4
-PPU_COLOR_INDEX_MASK	= 3
+PPU_COLOR_INDEX_MASK	= %00000011
 
 ; Background Format [1](11.2.9.2)(p. 8)
-PPU_VRAM_ATTR_SIZE	= $40
+PPU_VRAM_ATTR_SIZE	= 256/4
 PPU_VRAM_BG_ATTR	= (PPU_VRAM_BG_SIZE-PPU_VRAM_ATTR_SIZE)
+PPU_VRAM_COLUMN_COUNT	= 32
+PPU_VRAM_ROW_COUNT	= 30
 PPU_BG_COLOR_LINE_0	= 0
 PPU_BG_COLOR_LINE_1	= 1
 PPU_BG_COLOR_LINE_2	= 2
@@ -128,40 +142,39 @@ PPU_BG_COLOR_LINE_1_ALL	= ((PPU_BG_COLOR_LINE_1<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PP
 PPU_BG_COLOR_LINE_2_ALL	= ((PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_2<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_2)
 PPU_BG_COLOR_LINE_3_ALL	= ((PPU_BG_COLOR_LINE_3<<6)|(PPU_BG_COLOR_LINE_3<<4)|(PPU_BG_COLOR_LINE_3<<2)|PPU_BG_COLOR_LINE_3)
 
-PPU_CHR_PER_LINE	= $20
-PPU_BG_ROW_0		= (PPU_CHR_PER_LINE*0)
-PPU_BG_ROW_1		= (PPU_CHR_PER_LINE*1)
-PPU_BG_ROW_2		= (PPU_CHR_PER_LINE*2)
-PPU_BG_ROW_3		= (PPU_CHR_PER_LINE*3)
-PPU_BG_ROW_4		= (PPU_CHR_PER_LINE*4)
-PPU_BG_ROW_5		= (PPU_CHR_PER_LINE*5)
-PPU_BG_ROW_6		= (PPU_CHR_PER_LINE*6)
-PPU_BG_ROW_7		= (PPU_CHR_PER_LINE*7)
+PPU_BG_ROW_0		= (PPU_VRAM_COLUMN_COUNT*0)
+PPU_BG_ROW_1		= (PPU_VRAM_COLUMN_COUNT*1)
+PPU_BG_ROW_2		= (PPU_VRAM_COLUMN_COUNT*2)
+PPU_BG_ROW_3		= (PPU_VRAM_COLUMN_COUNT*3)
+PPU_BG_ROW_4		= (PPU_VRAM_COLUMN_COUNT*4)
+PPU_BG_ROW_5		= (PPU_VRAM_COLUMN_COUNT*5)
+PPU_BG_ROW_6		= (PPU_VRAM_COLUMN_COUNT*6)
+PPU_BG_ROW_7		= (PPU_VRAM_COLUMN_COUNT*7)
 
-PPU_BG_ROW_8		= (PPU_CHR_PER_LINE*8)
-PPU_BG_ROW_9		= (PPU_CHR_PER_LINE*9)
-PPU_BG_ROW_10		= (PPU_CHR_PER_LINE*10)
-PPU_BG_ROW_11		= (PPU_CHR_PER_LINE*11)
-PPU_BG_ROW_12		= (PPU_CHR_PER_LINE*12)
-PPU_BG_ROW_13		= (PPU_CHR_PER_LINE*13)
-PPU_BG_ROW_14		= (PPU_CHR_PER_LINE*14)
-PPU_BG_ROW_15		= (PPU_CHR_PER_LINE*15)
+PPU_BG_ROW_8		= (PPU_VRAM_COLUMN_COUNT*8)
+PPU_BG_ROW_9		= (PPU_VRAM_COLUMN_COUNT*9)
+PPU_BG_ROW_10		= (PPU_VRAM_COLUMN_COUNT*10)
+PPU_BG_ROW_11		= (PPU_VRAM_COLUMN_COUNT*11)
+PPU_BG_ROW_12		= (PPU_VRAM_COLUMN_COUNT*12)
+PPU_BG_ROW_13		= (PPU_VRAM_COLUMN_COUNT*13)
+PPU_BG_ROW_14		= (PPU_VRAM_COLUMN_COUNT*14)
+PPU_BG_ROW_15		= (PPU_VRAM_COLUMN_COUNT*15)
 
-PPU_BG_ROW_16		= (PPU_CHR_PER_LINE*16)
-PPU_BG_ROW_17		= (PPU_CHR_PER_LINE*17)
-PPU_BG_ROW_18		= (PPU_CHR_PER_LINE*18)
-PPU_BG_ROW_19		= (PPU_CHR_PER_LINE*19)
-PPU_BG_ROW_20		= (PPU_CHR_PER_LINE*20)
-PPU_BG_ROW_21		= (PPU_CHR_PER_LINE*21)
-PPU_BG_ROW_22		= (PPU_CHR_PER_LINE*22)
-PPU_BG_ROW_23		= (PPU_CHR_PER_LINE*23)
+PPU_BG_ROW_16		= (PPU_VRAM_COLUMN_COUNT*16)
+PPU_BG_ROW_17		= (PPU_VRAM_COLUMN_COUNT*17)
+PPU_BG_ROW_18		= (PPU_VRAM_COLUMN_COUNT*18)
+PPU_BG_ROW_19		= (PPU_VRAM_COLUMN_COUNT*19)
+PPU_BG_ROW_20		= (PPU_VRAM_COLUMN_COUNT*20)
+PPU_BG_ROW_21		= (PPU_VRAM_COLUMN_COUNT*21)
+PPU_BG_ROW_22		= (PPU_VRAM_COLUMN_COUNT*22)
+PPU_BG_ROW_23		= (PPU_VRAM_COLUMN_COUNT*23)
 
-PPU_BG_ROW_24		= (PPU_CHR_PER_LINE*24)
-PPU_BG_ROW_25		= (PPU_CHR_PER_LINE*25)
-PPU_BG_ROW_26		= (PPU_CHR_PER_LINE*26)
-PPU_BG_ROW_27		= (PPU_CHR_PER_LINE*27)
-PPU_BG_ROW_28		= (PPU_CHR_PER_LINE*28)
-PPU_BG_ROW_29		= (PPU_CHR_PER_LINE*29)
+PPU_BG_ROW_24		= (PPU_VRAM_COLUMN_COUNT*24)
+PPU_BG_ROW_25		= (PPU_VRAM_COLUMN_COUNT*25)
+PPU_BG_ROW_26		= (PPU_VRAM_COLUMN_COUNT*26)
+PPU_BG_ROW_27		= (PPU_VRAM_COLUMN_COUNT*27)
+PPU_BG_ROW_28		= (PPU_VRAM_COLUMN_COUNT*28)
+PPU_BG_ROW_29		= (PPU_VRAM_COLUMN_COUNT*29)
 
 PPU_BG_COL_0		= 0
 PPU_BG_COL_1		= 1
@@ -202,26 +215,26 @@ PPU_COLOR_PAGE_SIZE	= (4*PPU_COLOR_LINE_SIZE)
 PPU_COLOR_PAGE_BG	= PPU_VRAM_COLOR
 PPU_COLOR_PAGE_OBJ	= (PPU_VRAM_COLOR+PPU_COLOR_PAGE_SIZE)
 PPU_COLOR_TOTAL_SIZE	= (2*PPU_COLOR_PAGE_SIZE)
-PPU_COLOR_GREY		= $00
-PPU_COLOR_AZURE		= $01
-PPU_COLOR_BLUE		= $02
-PPU_COLOR_VIOLET	= $03
-PPU_COLOR_MAGENTA	= $04
-PPU_COLOR_ROSE		= $05
-PPU_COLOR_RED		= $06
-PPU_COLOR_ORANGE	= $07
-PPU_COLOR_YELLOW	= $08
-PPU_COLOR_YGREEN	= $09
-PPU_COLOR_GREEN		= $0A
-PPU_COLOR_SPRING	= $0B
-PPU_COLOR_CYAN		= $0C
-PPU_COLOR_VSBLACK	= $0D
-PPU_COLOR_BLACK		= $0E
-PPU_COLOR_PITCH		= $0F
-PPU_COLOR_LEV0		= $00
-PPU_COLOR_LEV1		= $10
-PPU_COLOR_LEV2		= $20
-PPU_COLOR_LEV3		= $30
+PPU_COLOR_GREY		= 0
+PPU_COLOR_AZURE		= 1
+PPU_COLOR_BLUE		= 2
+PPU_COLOR_VIOLET	= 3
+PPU_COLOR_MAGENTA	= 4
+PPU_COLOR_ROSE		= 5
+PPU_COLOR_RED		= 6
+PPU_COLOR_ORANGE	= 7
+PPU_COLOR_YELLOW	= 8
+PPU_COLOR_YGREEN	= 9
+PPU_COLOR_GREEN		= 10
+PPU_COLOR_SPRING	= 11
+PPU_COLOR_CYAN		= 12
+PPU_COLOR_VSBLACK	= 13
+PPU_COLOR_BLACK		= 14
+PPU_COLOR_PITCH		= 15
+PPU_COLOR_LEV0		= (0<<4)
+PPU_COLOR_LEV1		= (1<<4)
+PPU_COLOR_LEV2		= (2<<4)
+PPU_COLOR_LEV3		= (3<<4)
 
 ; Object DMA [2](11.5)(p. 9)
 OBJ_DMA		= $4014

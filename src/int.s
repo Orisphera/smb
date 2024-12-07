@@ -1,5 +1,5 @@
 .include	"system/ppu.i"
-.include	"system/palettes.i"
+.include	"system/palette.i"
 .if	.defined(FDS)
 	.include	"system/fds.i"
 .endif

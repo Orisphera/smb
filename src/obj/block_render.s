@@ -80,7 +80,7 @@ render_block:
 
 	and	#%00000100
 	beq	:+ ; if (this.bits_offscr & 0x04) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
 	: ; }
@@ -92,7 +92,7 @@ render_offscr_check_top:
 	and	#%00001000
 	beq	:+ ; if (this.bits_offscr & 0x08) {
 	render_offscr_top_clear:
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
 	: ; }
@@ -155,7 +155,7 @@ render_block_bits:
 	lda	bits_offscr_block
 	asl	a
 	bcc	:+ ; if (this.bits_offscr & 0x80) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		jsr	render_set_two_sprites_v
 	: ; }
 
@@ -164,7 +164,7 @@ render_block_bits:
 	lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
 	cmp	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
 	bcc	:+ ; if (this.pos_x_orig_rel >= 0x80 && this.obj[0].pos_x >= this.obj[1].pos_x) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
 	: ; }

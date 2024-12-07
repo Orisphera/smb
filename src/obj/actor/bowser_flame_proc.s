@@ -109,7 +109,7 @@ actor_proc_bowser_flame_do:
 	pha
 
 	bcc	:+ ; if (bits_offscr_actor & 0x01) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*3), y
 	: ; }
 
@@ -118,7 +118,7 @@ actor_proc_bowser_flame_do:
 	pha
 
 	bcc	:+ ; if (bits_offscr_actor & 0x02) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*2), y
 	: ; }
 
@@ -127,14 +127,14 @@ actor_proc_bowser_flame_do:
 	pha
 
 	bcc	:+ ; if (bits_offscr_actor & 0x04) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*1), y
 	: ; }
 
 	pla
 	lsr	a
 	bcc	:+ ; if (bits_offscr_actor & 0x08) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*0), y
 	: ; }
 

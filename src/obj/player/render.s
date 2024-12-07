@@ -136,7 +136,7 @@ render_player_do:
 	adc	#(OBJ_SIZE*(((PLAYER_ROW_COUNT-1)*PLAYER_ROW_SIZE)))
 	tay
 	: ; for (row of this.sprite) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		lsr	render_player_do_bits
 		bcc	:+ ; if (this.bits_offscr & row_bit) {
 			jsr	render_set_two_sprites_v

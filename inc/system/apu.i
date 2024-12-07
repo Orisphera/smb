@@ -14,19 +14,24 @@ CHANNEL_SIZE	.set	4
 ; Volume Controls [1](11.1.a,11.1.b)(p. 5)
 CHANNEL_VOL	.set	$4000
 	.enum	channel_vol
-		envelope	= 0
-		constant_vol	= 16
-		counter_halt	= 32
-		duty_125	= $00
-		duty_250	= $40
-		duty_500	= $80
-		duty_750	= $C0
+		envelope	= %00000000
+
+		constant_vol	= %00010000
+		counter_halt	= %00100000
+
+
+		duty_bits	= %11000000
+		duty_125	= (0<<6)
+		duty_250	= (1<<6)
+		duty_500	= (2<<6)
+		duty_750	= (3<<6)
 	.endenum
 PULSE1_VOL	.set	$4000
 
 ; Sweep Clock Generator [1](11.1.c)(p. 5-6)
 PULSE_SWEEP	.set	$4001
 	.enum   pulse_sweep
+		shift_mask	= %00000111
 		shift_0		= 0
 		shift_1		= 1
 		shift_2		= 2
@@ -35,8 +40,10 @@ PULSE_SWEEP	.set	$4001
 		shift_5		= 5
 		shift_6		= 6
 		shift_7		= 7
-		shift_mask	= 7
-		negate		= 8
+
+		negate		= %00001000
+
+		period_mask	= %01110000
 		period_1hf	= (0<<4)
 		period_2hf	= (1<<4)
 		period_3hf	= (2<<4)
@@ -45,7 +52,8 @@ PULSE_SWEEP	.set	$4001
 		period_6hf	= (5<<4)
 		period_7hf	= (6<<4)
 		period_8hf	= (7<<4)
-		enable		= 128
+
+		enable		= %10000000
 	.endenum
 PULSE1_SWEEP	.set	$4001
 
@@ -205,15 +213,15 @@ PULSE2_COUNTER	.set	$4007
 		.endenum
 	.else
 		; NOTE: The PAL timer values are derived from
-		; comparison between the PAL and NTSC title
-		; As such, only notes used in the title
+		; comparison between PAL and NTSC titles
+		; As such, only notes discovered in those titles
 		; are defined. All others are commented out
 		; for now.
 		;
 		; Note values were adjusted for the same
-		; offsets as the NTSC release, therefore
+		; offsets as the NTSC region, therefore
 		; fractional changes in tone may be observed
-		; when using these values for other work
+		; when using these values for PAL systems
 		.enum	apu_chromatic_scale
 			; A1	= $7F2
 			; Ax1	= $780
@@ -322,8 +330,10 @@ PULSE2_COUNTER	.set	$4007
 ; Triangle Volume Controls [1](11.2.a)(p. 8)
 TRIANGLE_VOL	.set	$4008
 	.enum	triangle_vol
-		full		= 127
-		counter_halt	= 128	
+		volume_bits	= %01111111
+		full		= volume_bits
+
+		counter_halt	= %10000000
 	.endenum
 
 ; Triangle Frequency Generator [1](11.2.b)(p. 8)
@@ -336,6 +346,7 @@ TRIANGLE_COUNTER .set	$400B
 NOISE_PERIOD	.set	$400E
 NOISE_PERIOD_MASK	.set	%00001111
 	.enum	noise_period
+		mask	= %00001111
 		C8	= 0
 		D8	= 1
 		E8	= 2
@@ -352,7 +363,8 @@ NOISE_PERIOD_MASK	.set	%00001111
 		B9	= 13
 		C10	= 14
 		D10	= 15
-		loop	= 16
+
+		loop	= %00010000
 	.endenum
 
 ; Noise Volume Controls [1](11.3.b)(p. 8)
@@ -369,14 +381,15 @@ DMCFLAG		.set	$4010
 DMCDATA		.set	$4011
 DMCSTATUS	.set	$4015
 	.enum	dmcstatus
+		pulse_1		= %00000001
+		pulse_2		= %00000010
+		tri		= %00000100
+		noise		= %00001000
+		dmc		= %00010000
 		none		= 0
-		pulse_1		= 1
-		pulse_2		= 2
-		tri		= 4
-		noise		= 8
-		dmc		= 16
-		frame_interrupt	= 64
-		dmc_interrupt	= 128
+
+		frame_interrupt	= %01000000
+		dmc_interrupt	= %10000000
 	.endenum
 DMCFRAMECOUNT	.set	$4017
 

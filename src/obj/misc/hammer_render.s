@@ -87,7 +87,7 @@ render_hammer:
 		lda	#misc_states::inactive
 		sta	state_misc, x
 
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		jsr	render_set_two_sprites_v
 	: ; }
 

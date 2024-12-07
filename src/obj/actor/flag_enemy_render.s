@@ -73,7 +73,7 @@ render_flag_enemy:
 		.export	render_set_four_sprites_v, render_set_three_sprites_v
 		.export render_set_two_sprites_v
 	render_clear_six_sprites:
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 
 	render_set_six_sprites:
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_V, y

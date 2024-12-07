@@ -343,7 +343,7 @@ actor_init_cheep_fly:
 			lda	#proc_id_actors::active
 			sta	proc_id_actor, x
 			sta	pos_y_hi_actor, x
-			lda	#ENG_OAM_CLEAR_SCANLINE
+			lda	#OAM_INIT_SCANLINE
 			sta	pos_y_lo_actor, x
 			rts
 		; } else rts;

@@ -21,7 +21,7 @@ game_init_data_0_end:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 game_init_oam:
-	.byte	(PPU_BG_ROW_3/PPU_CHR_PER_LINE)*PPU_CHR_HEIGHT_PX
+	.byte	(PPU_BG_ROW_3/PPU_VRAM_COLUMN_COUNT)*PPU_CHR_HEIGHT_PX
 	.byte	chr_obj::filler
 	.byte	obj_attr::priority_low|obj_attr::color3
 	.byte	PPU_BG_COL_11*PPU_CHR_WIDTH_PX

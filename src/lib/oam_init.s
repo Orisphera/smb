@@ -4,7 +4,7 @@
 .include	"mem.i"
 .include	"tunables.i"
 
-SKIP_TO_oam_init_do	= BIT_ABS_OPCODE
+SKIP_TO_oam_init_do	= CPU_OPCODE_BIT_ABS
 
 	.export oam_init, oam_init_all
 oam_init:
@@ -19,7 +19,7 @@ oam_init_all:
 	ldy	#(OBJ_SIZE*1)
 ; --------------
 oam_init_do:
-        lda     #ENG_OAM_CLEAR_SCANLINE
+        lda     #OAM_INIT_SCANLINE
 	: ; for (obj of OAM) {
 		sta     OAM_DMA_BUFFER+OBJ_POS_V, y
 

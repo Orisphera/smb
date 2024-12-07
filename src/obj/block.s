@@ -195,7 +195,7 @@ block_mushroom_reg:
 	lda	#powerup_type::mushroom_reg
 
 .if	.defined(CONS)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS)
 	jmp	block_powerup
 .endif
@@ -204,7 +204,7 @@ block_star:
 	lda	#powerup_type::star
 
 .if	.defined(CONS)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS)
 	jmp	block_powerup
 .endif
@@ -214,7 +214,7 @@ block_mushroom_poison:
 	lda	#powerup_type::mushroom_poison
 
 	.if	.defined(CONS)
-		.byte	BIT_ABS_OPCODE
+		.byte	CPU_OPCODE_BIT_ABS
 	.elseif	.defined(VS)
 		jmp	block_powerup
 	.endif

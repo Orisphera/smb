@@ -53,7 +53,7 @@ start:
 	.endif
 
 	.if	.defined(SMB2)
-		lda	fds_ctlr_b
+		lda	FDS_CTLR_B
 		and	#<~(fds_ctlr::mirror_h)
 		sta	FDS_CTLR
 	.elseif	.defined(ANN)
@@ -69,7 +69,7 @@ start:
 
 	.if	.defined(ANN)
 		lda	#(fds_ctlr::mask|fds_ctlr::mirror_v|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
-		sta	fds_ctlr_b
+		sta	FDS_CTLR_B
 		sta	FDS_CTLR
 	.endif
 

@@ -14,7 +14,7 @@ bubble_proc:
 	and	#MOD_2
 	sta	bubble_idx
 	lda	pos_y_lo_bubble, x
-	cmp	#ENG_OAM_CLEAR_SCANLINE
+	cmp	#OAM_INIT_SCANLINE
 	bne	:++
 	lda	timer_bubble
 	bne	:++++ ; if () {
@@ -53,7 +53,7 @@ bubble_proc:
 		sbc	#0
 		cmp	#BUBBLE_POS_Y_MIN
 		bcs	:+ ; if (this.pos_y < MIN) {
-			lda	#ENG_OAM_CLEAR_SCANLINE
+			lda	#OAM_INIT_SCANLINE
 		: ; }
 		sta	pos_y_lo_bubble, x
 	: ; }

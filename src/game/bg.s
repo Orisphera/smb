@@ -1737,7 +1737,7 @@ bg_scenery_waterhole:
 bg_scenery_block_qhi:
 	lda	#3
 .if	.defined(CONS)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS)
 	jmp	bg_scenery_block_q_row
 .endif
@@ -1759,7 +1759,7 @@ bg_scenery_block_q_row:
 bg_scenery_bridge_hi:
 	lda	#6
 .if	.defined(CONS)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS)
 	jmp	bg_scenery_bridge
 .endif
@@ -1767,7 +1767,7 @@ bg_scenery_bridge_hi:
 bg_scenery_bridge_mid:
 	lda	#7
 .if	.defined(CONS)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS)
 	jmp	bg_scenery_bridge
 .endif

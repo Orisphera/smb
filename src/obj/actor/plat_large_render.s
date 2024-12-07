@@ -22,7 +22,7 @@ render_plat_large:
 	ldy	game_hard_mode_b
 	beq	:++
 	: ; if (course.type == castle || game_hard_mode_b) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 	: ; }
 	ldy	obj_data_offset_actor, x
 	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
@@ -50,7 +50,7 @@ render_plat_large:
 	pha
 
 	bcc	:+ ; if (player.bits_h & 0x80) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
 	: ; }
 
@@ -59,7 +59,7 @@ render_plat_large:
 	pha
 
 	bcc	:+ ; if (player.bits_h & 0x40) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
 	: ; }
 
@@ -68,7 +68,7 @@ render_plat_large:
 	pha
 
 	bcc	:+ ; if (player.bits_h & 0x20) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
 	: ; }
 
@@ -77,7 +77,7 @@ render_plat_large:
 	pha
 
 	bcc	:+ ; if (player.bits_h & 0x10) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
 	: ; }
 
@@ -86,14 +86,14 @@ render_plat_large:
 	pha
 
 	bcc	:+ ; if (player.bits_h & 0x08) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
 	: ; }
 
 	pla
 	asl	a
 	bcc	:+ ; if (player.bits_h & 0x04) {
-		lda	#ENG_OAM_CLEAR_SCANLINE
+		lda	#OAM_INIT_SCANLINE
 		sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_V, y
 	: ; }
 

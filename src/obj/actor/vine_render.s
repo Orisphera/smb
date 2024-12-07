@@ -71,7 +71,7 @@ render_vine:
 		sbc	OAM_DMA_BUFFER+OBJ_POS_V, y
 		cmp	#VINE_HEIGHT_CUTOFF
 		bcc	:+ ; if ((vine.pos_y - sprite.pos_y) >= VINE_HEIGHT_CUTOFF) {
-			lda	#ENG_OAM_CLEAR_SCANLINE
+			lda	#OAM_INIT_SCANLINE
 			sta	OAM_DMA_BUFFER+OBJ_POS_V, y
 		: ; }
 

@@ -2,14 +2,14 @@
 JOYPAD_I = 1
 
 	.enum	joypad_button
-		right	= 1
-		left	= 2
-		down	= 4
-		up	= 8
-		start	= 16
-		select	= 32
-		face_b	= 64
-		face_a	= 128
+		right	= %00000001
+		left	= %00000010
+		down	= %00000100
+		up	= %00001000
+		start	= %00010000
+		select	= %00100000
+		face_b	= %01000000
+		face_a	= %10000000
 		none	= 0
 	.endenum
 

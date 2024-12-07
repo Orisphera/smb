@@ -144,7 +144,7 @@ motion_block_fall_slow:
 	ldy	#0
 
 .if	.defined(CONS)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS)
 	jmp	motion_block_fall
 .endif
@@ -167,7 +167,7 @@ motion_platform_down:
 	lda	#0
 
 .if	.defined(CONS)
-	.byte	BIT_ABS_OPCODE
+	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS)
 	jmp	motion_platform
 .endif

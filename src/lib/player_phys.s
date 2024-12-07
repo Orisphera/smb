@@ -15,12 +15,12 @@ player_phys_data_b_end:
 ; -----------------------------
 	.export player_phys_load, player_phys_load_default
 player_phys_load:
-	ldx	#RTS_OPCODE
+	ldx	#CPU_OPCODE_RTS
 	ldy	#(player_phys_data_b_end-player_phys_data)-1
 	lda	player_id
 	bne	:+ ; if (player_id == 0) {
 	player_phys_load_default:
-		ldx	#ASL_ABS_OPCODE
+		ldx	#CPU_OPCODE_ASL_ABS
 		ldy	#(player_phys_data_a_end-player_phys_data)-1
 	: ; }
 	stx	player_proc_player_physics_friction_shift
