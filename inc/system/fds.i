@@ -222,13 +222,13 @@ FDS_DISKSET_2ADDR	= $FF
 	fdsbios_blocktype_check	= $E68F
 	fdsbios_load_done	= $E778
 
-; fdsbios_ppu_il_load -
+; fdsbios_ppu_displist_write -
 ; input:
 ;	(following jsr)
 ;	.addr	
 ; output:
 ; clobbers:
-fdsbios_ppu_il_load	= $E7BB
+fdsbios_ppu_displist_write	= $E7BB
 
 fdsbios_ppu_inc_load	= $E86A
 
