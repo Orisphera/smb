@@ -48,11 +48,22 @@ FDS_CTLR		= $4025
 	.endenum
 
 FDS_DISK_ACK		= $4026
+FDS_DISK_ACK_BATTERY	= %10000000
 
 FDS_MEDIA_SR		= $4030
 	.enum	fds_media_sr
 		timer_irq	= %00000001
+
 		tx_complete	= %00000010
+
+		crc_bit		= %00010000
+		crc_error	= crc_bit
+		crc_ok		= 0
+
+		end_media	= %01000000
+
+		rw_enable	= %10000000
+		rw_disable	= 0
 	.endenum
 
 FDS_DATA_READ		= $4031
@@ -122,39 +133,149 @@ FDS_SND_WAVE_VOL	= $4089
 
 FDS_SND_ENV_SPD		= $408A
 
+; fdsbios_sleep_short - wait 137 cycles
 fdsbios_sleep_short	= $E149
 
-fdsbios_filetbl_load	= $E1F8
-FDSBIOS_FILETBL_LOAD_TRY_COUNT = 2
+; fdsbios_sleep_ms - wait around 1787*y cycles or 1ms
+; input:
+;	y - milliseconds
+; clobbers:
+;	x - zero
+;	y - zero
+fdsbios_sleep_ms	= $E150
 
-FDS_DISKHEADER_ID	= 1
+; fdsbios_ppuctlr1_blk - set PPU blanking
+; clobbers:
+;	a
+fdsbios_ppuctlr1_blk_on		= $E161
+fdsbios_ppuctlr1_blk_off	= $E16B
+fdsbios_ppuctlr1_objblk_on	= $E171
+fdsbios_ppuctlr1_objblk_off	= $E178
+fdsbios_ppuctlr1_bgblk_on	= $E17E
+fdsbios_ppuctlr1_bgblk_off	= $E185
+
+; fdsbios_nmi_wait - sync with nmi
+fdsbios_nmi_wait	= $E1B2
+
+; fdsbios_filetbl_load - load a series of FDS files
+; input:
+;	(following jsr)
+;	.addr - pointer to FDS disk header reference
+;	.addr - pointer to disk table
+; output:
+;	y - file load count
+;	x - error code
+;	a - x
+fdsbios_filetbl_load	= $E1F8
+FDSBIOS_FILETBL_LOAD_TRY_COUNT	= 2
+FDSBIOS_FILETBL_ENTRY_MAX	= $14
+FDSBIOS_FILETBL_END		= $FF
+
+FDS_DISKHEADER_ID		= 1
+FDS_DISKHEADER_STR_IDX		= 2
+FDS_DISKHEADER_STR_LAST		= 14
+FDS_DISKHEADER_VENDOR_IDX	= 15
+FDS_DISKHEADER_STR_END_IDX	= FDS_DISKHEADER_STR_LAST+1
+FDS_DISKHEADER_NAME_IDX		= 16
+FDS_DISKHEADER_TYPE_IDX		= 19
+FDS_DISKHEADER_DISK_ID_IDX	= 20
+FDS_DISKHEADER_VER_IDX		= 20
+FDS_DISKHEADER_SIDE_IDX		= 21
+FDS_DISKHEADER_NUM_IDX		= 22
+FDS_DISKHEADER_DISK_TYPE_IDX	= 23
+FDS_DISKHEADER_UNK_IDX		= 24
+FDS_DISKHEADER_CHECK_END	= 24
+FDS_DISKHEADER_FILE_MAX		= 25
+FDS_DISKHEADER_DATA_END		= FDS_DISKHEADER_FILE_MAX
+FDS_DISKHEADER_SIZE		= 55
+
 FDS_FILECOUNT_ID	= 2
 FDS_FILEHEADER_ID	= 3
+FDS_FILEHEADER_FILENO_IDX = 1
+FDS_FILEHEADER_FILEID_IDX = 2
+FDS_FILEHEADER_NAME_IDX	= 3
+FDS_FILEHEADER_ADDR_IDX	= 11
+FDS_FILEHEADER_NAME_SIZE = (FDS_FILEHEADER_ADDR_IDX-FDS_FILEHEADER_NAME_IDX)
 FDS_FILEBLOB_ID		= 4
 
 FDS_VENDOR_NINTENDO	= 1
 
+; fdsbios_file_write - write a file to disk
+; input:
+;	a - file number
+;	(following jsr)
+;	.addr - pointer to FDS disk header reference
+;	.addr - pointer to FDS file header reference
+; output:
+;	x - error code
+;	a - x
+; clobbers:
+;	y
 fdsbios_file_write	= $E239
-FDS_FILE_WRITE_DO_LAST	= $FF
-
-fdsbios_diskset_check	= $E3E7
+FDS_DISKSET_1ADDR	= 0
 FDS_DISKSET_2ADDR	= $FF
+	fdsbios_disk_ptr_nocheck = $E3E7
+	fdsbios_diskhead_check	= $E445
+	fdsbios_filecount_get	= $E484
+	fdsbios_file_match	= $E4A0
+	fdsbios_data_load	= $E4F9
+	fdsbios_blocktype_check	= $E68F
+	fdsbios_load_done	= $E778
 
-fdsbios_diskhead_check	= $E445
-fdsbios_filecount_get	= $E484
+; fdsbios_ppu_il_load -
+; input:
+;	(following jsr)
+;	.addr	
+; output:
+; clobbers:
+fdsbios_ppu_il_load	= $E7BB
 
-fdsbios_E4A0		= $E4A0
-fdsbios_E4F9		= $E4F9
-fdsbios_E68F		= $E68F
-fdsbios_E778		= $E778
-fdsbios_E7BB		= $E7BB
-fdsbios_E818		= $E818
-fdsbios_E97D		= $E97D
-fdsbios_E9B1		= $E9B1
+fdsbios_ppu_inc_load	= $E86A
 
+fdsbios_ppu_buffer_load	= $E8D2
+fdsbios_ppu_buffer_tbl_load = $E8E1
+
+; fdsbios_ppu_px_to_nt - convert pixel coordinates to nt address
+; input:
+;	byte (RAM_BASE+2) - y coordinate
+;	byte (RAM_BASE+3) - x coordinate
+; output:
+;	word (RAM_BASE+0) - nametable 1 address
+; clobbers:
+;	a
+fdsbios_ppu_px_to_nt	= $E97D
+
+; fdsbios_ppu_nt_to_px - convert nt address to pixels
+; input:
+;	word (RAM_BASE+0) - nametable 1 address
+; output:
+;	byte (RAM_BASE+2) - y coordinate
+;	byte (RAM_BASE+3) - x coordinate
+; clobbers:
+;	a
+fdsbios_ppu_nt_to_px	= $E997
+fdsbios_ppu_ntaddr	= RAM_BASE+0       
+fdsbios_ppu_y_px	= RAM_BASE+2       
+fdsbios_ppu_x_px	= RAM_BASE+3 
+
+; fdsbios_rand - entropy
+; input:
+;	x - shift register base
+;	y - shift register width
+; output:
+;	entropy in shift register
+fdsbios_rand		= $E9B1
+
+; fdsbios_set_obj_dma - trigger OBJ DMA on buffer $200
+; input:
+;	none
+; output:
+;	none
+; clobbers:
+;	a
 fdsbios_set_obj_dma	= $E9C8
 
-fdsbios_E9D3		= $E9D3
+fdsbios_work_tbl_80_dec	= $E9D3
 
 fdsbios_joypad_read	= $EA1F
 	.enum	fds_joypad_button
@@ -168,10 +289,9 @@ fdsbios_joypad_read	= $EA1F
  		face_a	= %10000000
  	.endenum
 
-fdsbios_EA29		= $EA29
-fdsbios_EA84		= $EA84
-fdsbios_EAEA		= $EAEA
-fdsbios_EF29		= $EF29
+fdsbios_ppu_fill	= $EA84
+fdsbios_ppu_restore	= $EAEA
+fdsbios_tbljmp		= $EAFD
 
 FDS_PPU_CTLR0_B		= $FF
 FDS_PPU_CTLR1_B		= FDS_PPU_CTLR0_B-1
@@ -214,8 +334,30 @@ FDS_RESET_FIRSTBOOT	= $AC
 	.enum	fds_errnos
 		disk_set	= $01
 		battery		= $02
-		ab_side		= $07
+		read_only	= $03
+		headererrs	= $04
+		vendor		= headererrs+0
+		name		= headererrs+1
+		disk_id		= headererrs+2
+		ver		= disk_id+0
+		ab_side		= disk_id+1
+		disk_no		= disk_id+2
+		disk_color	= disk_id+3
+		errno_10	= $10
+		blockerrs	= $21
+		blockerr_header	= blockerrs+0
+		blockerr_count	= blockerrs+1
+		blockerr_fileh	= blockerrs+2
+		blockerr_filed	= blockerrs+3
+		savefail	= $26
+		crcfail		= $27
+		crcoverflow	= $28
+		txoverflow	= $29
+		txwait		= $30
+		update_count_fail = $31
 		errno_40	= $40
 	.endenum
+
+FDS_STACK_WORKING	= FDS_STACK_RESET_T+1
 
 .endif	; FDS_I
