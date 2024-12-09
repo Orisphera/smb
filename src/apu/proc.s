@@ -3,9 +3,19 @@
 .include	"mem.i"
 .include	"sound.i"
 
-	.if	.defined(ANN)
+.if	.defined(OG_PAD)
+	.if	.defined(FC_SMB)
+		.ifndef	PAL
+			.res	6, $FF
+		.endif
+	.elseif	.defined(FDS_SMB)
+		.res	2, $FF
+	.elseif	.defined(VS_SMB)
+		.res	7, $FF
+	.elseif	.defined(ANN)
 		.res	1, $FF
 	.endif
+.endif
 
 	.export apu_cycle
 apu_cycle:

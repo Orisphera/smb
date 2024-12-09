@@ -7,6 +7,12 @@
 .include	"misc.i"
 .include	"fileids.i"
 
+.if	.defined(OG_PAD)
+	.if	.defined(SMB2)
+		.res	1, $FF
+	.endif
+.endif
+
 	.export sys_disk_loader
 sys_disk_loader:
 	lda	proc_id_game
@@ -204,17 +210,19 @@ disk_loader_file_count_check:
 disk_header_id:
 	.byte	FDS_VENDOR_NINTENDO
 .if	.defined(SMB2)
-	.byte	"SMB "
+	.byte	"SMB"
 .elseif	.defined(ANN)
-	.byte	"NSM "
+	.byte	"NSM"
 .endif
-
+	.byte	" "
 	.byte	0
 
 disk_sideb_current:	.byte	0
 
-	.byte	0, 0, 0
-
+	.byte	0
+	.byte	0
+	.byte	0
+; -----------------------------
 filelist_files_lo:
 	.byte	<filetbl_main
 	.byte	<filetbl_data2

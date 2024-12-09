@@ -3,6 +3,17 @@
 .include	"mem.i"
 .include	"chr.i"
 
+.if	.defined(OG_PAD)
+.if     .defined(FC_SMB)
+        .ifndef PAL     
+        .res    1, $FF  
+        .endif  
+.elseif .defined(VS_SMB)
+        .res    6, $FF  
+.elseif .defined(SMB2)  
+        .res    7, $FF
+.endif
+.endif
 ; ------------------------------------------------------------
 VINE_PART_COUNT		= 6
 VINE_COLUMN_B_OFFSET	= 6

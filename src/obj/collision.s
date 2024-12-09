@@ -93,6 +93,7 @@ col_actor_oob_proc:
 
 	rts
 ; ------------------------------------------------------------
+.if	.defined(OG_PAD)
 .if	.defined(FC_SMB)
 	.if	.defined(PAL)
 		.res	56, $FF
@@ -102,6 +103,7 @@ col_actor_oob_proc:
 	.res	23, $FF
 .elseif	.defined(SMB2)
 	.res	1, $FF
+.endif
 .endif
 ; ------------------------------------------------------------
 col_proj_actor_proc_index	= zp_byte_01
@@ -2773,13 +2775,3 @@ col_box_buffer:
 	sta	col_box_buffer_tbl_offset
 	lda	col_box_buffer_old_tile
 	rts
-
-.if	.defined(FC_SMB)
-	.ifndef	PAL
-	.res	1, $FF
-	.endif
-.elseif	.defined(VS_SMB)
-	.res	6, $FF
-.elseif	.defined(SMB2)
-	.res	7, $FF
-.endif

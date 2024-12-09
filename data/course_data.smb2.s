@@ -1,5 +1,9 @@
 .include	"course_flags.i"
 
+.if	.defined(OG_PAD)
+	.res	2, $FF
+.endif
+
 ; ------------------------------
 	.include	"./courses/vs/castle_7_actor.s"
 	.include	"./courses/smb2/castle_2_actor.s"
@@ -48,5 +52,3 @@
 ; --------------
 	.include	"./courses/smb2/water_1_scenery.s"
 	.include	"./courses/smb2/water_3_scenery.s"
-; ------------------------------
-	.res	83, $FF

@@ -9,6 +9,14 @@
 .include	"misc.i"
 .include	"macros.i"
 
+.if	.defined(OG_PAD)
+.if	.defined(SMB)
+	.res	1, $FF
+.elseif	.defined(VS_SMB)
+	.res	9, $FF
+.endif
+.endif
+
 	.export	sys_game
 	.export	game_mode_tbl
 	.export	game_mode_init_0

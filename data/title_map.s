@@ -10,6 +10,12 @@
 .segment	"CHR1DATA"
 .endif
 
+.if	.defined(OG_PAD)
+.if	.defined(VS)
+	.res	20, $FF
+.endif
+.endif
+
 SIGN_BLANK	= chr_bg::blanks+2
 
 	.export title_map, title_map_end
@@ -688,8 +694,3 @@ title_map:
 
 	.byte	NMI_LIST_END
 title_map_end:
-
-.if	.defined(SMB2)
-	.res	2, $FF
-.endif
-

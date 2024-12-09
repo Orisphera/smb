@@ -6,6 +6,12 @@
 .include	"tunables.i"
 .include	"charmap.i"
 
+.if	.defined(OG_PAD)
+.if	.defined(SMB2)
+	.res	2, $FF
+.endif
+.endif
+
 .if	.defined(SMB)|.defined(VS_SMB)
 	.export sys_title
 	.export	title_mode_tbl

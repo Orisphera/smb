@@ -692,7 +692,3 @@ course_scenery_pages:
 			.addr	course_scenery_overworld_28_smb2_end
 		.endif
 .endif
-
-.if	.defined(VS_SMB)
-	.res	9, $FF
-.endif

@@ -1,13 +1,17 @@
 .include	"system/apu.i"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(OG_PAD)
+	.if	.defined(SMB)
 		.ifndef	PAL
 			.res	3, $FF
 		.else
 			.res	2, $FF
 		.endif
+	.elseif	.defined(VS_SMB)
+		.res	5, $FF
 	.elseif	.defined(SMB2)
 		.res	1, $FF
+	.endif
 	.endif
 
 	.export	apu_notes

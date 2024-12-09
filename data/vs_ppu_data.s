@@ -7,6 +7,10 @@
 
 .segment        "CHR1DATA"
 
+.if	.defined(OG_PAD)
+	.res	836, $FF
+.endif
+
 	.export vs_player_select_bg
 vs_player_select_bg:
 	.dbyt	PPU_VRAM_COLOR+(PPU_COLOR_PAGE_SIZE*0)
@@ -401,5 +405,3 @@ vs_super_players_bg:
 	.byte	NMI_REPEAT|9, PPU_BG_COLOR_LINE_3_ALL
 
 	.byte	NMI_LIST_END
-; ------------------------------------------------------------
-        .res    248, $FF

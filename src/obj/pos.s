@@ -336,16 +336,3 @@ render_chr_pair_do:
 	inx
 	inx
 	rts
-; --------------------------------------------------------------
-	.if	.defined(FC_SMB)
-		.ifndef	PAL
-			.res	6, $FF
-		.endif
-	.elseif	.defined(FDS_SMB)
-		.res	2, $FF
-	.elseif	.defined(VS_SMB)
-		.res	7, $FF
-	.elseif	.defined(SMB2)
-		.res	1, $FF
-	.endif
-

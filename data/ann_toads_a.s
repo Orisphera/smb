@@ -33,5 +33,3 @@ ann_toad_4:
     .incbin "./chr_misc.ann/chr_obj_15.bin"
     .incbin "./chr_misc.ann/chr_obj_16.bin"
     .incbin "./chr_misc.ann/chr_obj_17.bin"
-; ------------------------------------------------------------
-    .res    37, $FF

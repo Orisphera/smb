@@ -2,6 +2,14 @@
 
 .segment	"DATA4"
 
+.if	.defined(OG_PAD)
+.if	.defined(SMB2)
+	.res	8, $FF
+.elseif	.defined(ANN)
+	.res	183, $FF
+.endif
+.endif
+
 .include	"./courses/ext/castle_1_actor.s"
 .include	"./courses/ext/castle_2_actor.s"
 .include	"./courses/ext/castle_3_actor.s"

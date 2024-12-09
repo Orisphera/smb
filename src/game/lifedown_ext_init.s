@@ -1,5 +1,6 @@
 .segment	"DATA4"
 
+; ------------------------------------------------------------
 lifedown_ext_starts:
 	.byte	$76, $50
 .if	.defined(SMB2)
@@ -23,9 +24,3 @@ lifedown_ext_init:
         ; }
 
         rts
-; ------------------------------------------------------------
-.if	.defined(SMB2)
-        .res    142, $FF
-.elseif	.defined(ANN)
-	.res	173, $FF
-.endif

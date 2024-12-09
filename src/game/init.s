@@ -8,9 +8,13 @@
 .include	"misc.i"
 .include	"math.i"
 
-	.if	.defined(SMB2)
+.if	.defined(OG_PAD)
+	.if	.defined(VS)
+		.res	148, $FF
+	.elseif	.defined(SMB2)
 		.res	2, $FF
 	.endif
+.endif
 
 game_init_data_0:
 	.byte	$04, $30, $48, $60

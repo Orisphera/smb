@@ -16,6 +16,7 @@
 #   SMBM    - Super Mario Bros. "Meta" (SMB and ANN-commonalities)
 #   SMB2M   - Super Mario Bros. 2 "Meta" (SMB2 and ANN-commonalities)
 #   PAL     - PAL-specific
+#   OG_PAD  - Padding in the original is retained
 AS		=	ca65
 ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM
 ASFLAGS_VS	=	-DVS -DVS_2C04_0004 -DVS_SMB
@@ -23,7 +24,7 @@ ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
 ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
 ASFLAGS_PAL	=	-DPAL
-ASFLAGS		=	-U -I ./inc $(ASFLAGS_FC)
+ASFLAGS		=	-U -I ./inc -DOG_PAD $(ASFLAGS_FC)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld

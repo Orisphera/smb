@@ -2,6 +2,14 @@
 .include	"misc.i"
 .include	"course_flags.i"
 
+.if	.defined(OG_PAD)
+.if	.defined(VS)
+	.res	55, $FF
+.elseif	.defined(SMB2)
+	.res	2, $FF
+.endif
+.endif
+
 .if	.defined(SMB2M)
 	.include	"../../data/courses/smb/overworld_10_actor.s"
 

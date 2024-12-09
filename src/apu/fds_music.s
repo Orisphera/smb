@@ -6,7 +6,13 @@
 
 .segment	"DATA3"
 
+.if	.defined(OG_PAD)
+.if	.defined(SMB2)
 	.res	52, $FF
+.elseif	.defined(ANN)
+	.res	781, $FF
+.endif
+.endif
 ; ------------------------------------------------------------
 	.export	apu_fds_cycle
 apu_fds_cycle:

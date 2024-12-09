@@ -111,5 +111,3 @@ course_scenery_addr_lo_water:
 	.addr	course_scenery_water_6_smb2
 	.addr	course_scenery_water_7_smb2
 	.addr	course_scenery_water_8_smb2
-
-	.res	2, $FF

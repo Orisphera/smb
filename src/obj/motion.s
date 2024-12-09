@@ -270,11 +270,3 @@ motion_gravity:
 	: ; }
 
 	rts
-
-.if	.defined(PAL)
-	.res	1, $FF
-.elseif	.defined(VS_SMB)
-	.res	6, $FF
-.elseif	.defined(SMB2)
-	.res	11, $FF
-.endif

@@ -6,6 +6,15 @@
 .include	"misc.i"
 .include	"course_flags.i"
 
+.if	.defined(OG_PAD)
+.if     .defined(PAL)
+        .res    1, $FF  
+.elseif .defined(VS_SMB)
+        .res    6, $FF  
+.elseif .defined(SMB2)  
+        .res    11, $FF 
+.endif
+.endif
 ; -----------------------------------------------------------
 ACTOR_PAGE_A_OFFSET_Y	= 8
 ACTOR_INIT_BITS_MASK	= %00000001

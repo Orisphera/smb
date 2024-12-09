@@ -2210,11 +2210,3 @@ bg_get_buffer_ptr:
 	adc	bg_buffer_ptr_lo, y
 	sta	game_buffer
 	rts
-; -----------------------------
-.if	.defined(FC_SMB)
-	.ifndef	PAL
-		.res	2, $FF
-	.endif
-.elseif	.defined(VS_SMB)
-	.res	55, $FF
-.endif

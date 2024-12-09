@@ -2,6 +2,10 @@
 
 .segment	"DATA2"
 
+.if	.defined(OG_PAD)
+	.res	183, $FF
+.endif
+
 	.include	"./courses/smb2/castle_4_actor.s"
 	.include	"./courses/smb2/castle_2_actor.s"
 	.include	"./courses/smb/castle_5_actor.s"

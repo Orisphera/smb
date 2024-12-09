@@ -167,8 +167,10 @@
 
 	.include	"./courses/smb/overworld_16_scenery.s"
 
+.if	.defined(OG_PAD)
 .if	.defined(VS_SMB)
 	.res	4, $EA
+.endif
 .endif
 
 .if	.defined(SMB)|.defined(VS_SMB)
@@ -218,10 +220,4 @@
 
 .if	.defined(VS_SMB)
 	.include	"./courses/smb/water_2_scenery.s"
-.endif
-; ------------------------------
-.if	.defined(SMB)
-	.res	1, $FF
-.elseif	.defined(VS_SMB)
-	.res	836, $FF
 .endif

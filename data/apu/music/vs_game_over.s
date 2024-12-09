@@ -79,5 +79,3 @@ apu_music_game_over_vs_triangle:
 		.byte	sound_notes::G4
 		.byte	sound_notes::G3
 		.byte	sound_notes::F4
-; ------------------------------------------------------------
-	.res	2,	$FF
