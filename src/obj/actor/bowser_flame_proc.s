@@ -78,14 +78,14 @@ actor_proc_bowser_flame_do:
 	ldx	#0
 	: ; for (tile of bowser_flame) {
 		lda	pos_y_rel_actor
-		sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+		sta	oam_buffer+OBJ_POS_V, y
 		lda	actor_proc_bowser_flame_obj_tile
-		sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+		sta	oam_buffer+OBJ_CHR_NO, y
 		inc	actor_proc_bowser_flame_obj_tile
 		lda	actor_proc_bowser_flame_obj_attr
-		sta	OAM_DMA_BUFFER+OBJ_ATTR, y
+		sta	oam_buffer+OBJ_ATTR, y
 		lda	pos_x_rel_actor
-		sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+		sta	oam_buffer+OBJ_POS_H, y
 		clc
 		adc	#PPU_CHR_WIDTH_PX
 		sta	pos_x_rel_actor
@@ -110,7 +110,7 @@ actor_proc_bowser_flame_do:
 
 	bcc	:+ ; if (bits_offscr_actor & 0x01) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*3), y
+		sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*3), y
 	: ; }
 
 	pla
@@ -119,7 +119,7 @@ actor_proc_bowser_flame_do:
 
 	bcc	:+ ; if (bits_offscr_actor & 0x02) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*2), y
+		sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*2), y
 	: ; }
 
 	pla
@@ -128,14 +128,14 @@ actor_proc_bowser_flame_do:
 
 	bcc	:+ ; if (bits_offscr_actor & 0x04) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*1), y
+		sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*1), y
 	: ; }
 
 	pla
 	lsr	a
 	bcc	:+ ; if (bits_offscr_actor & 0x08) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*0), y
+		sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*0), y
 	: ; }
 
 	rts

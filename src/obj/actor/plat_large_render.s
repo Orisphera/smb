@@ -25,8 +25,8 @@ render_plat_large:
 		lda	#OAM_INIT_SCANLINE
 	: ; }
 	ldy	obj_data_offset_actor, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*4)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*5)+OBJ_POS_V, y
 
 	lda	#chr_obj::plat_norm
 	ldx	course_type_cloud
@@ -51,7 +51,7 @@ render_plat_large:
 
 	bcc	:+ ; if (player.bits_h & 0x80) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_V, y
 	: ; }
 
 	pla
@@ -60,7 +60,7 @@ render_plat_large:
 
 	bcc	:+ ; if (player.bits_h & 0x40) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
 	: ; }
 
 	pla
@@ -69,7 +69,7 @@ render_plat_large:
 
 	bcc	:+ ; if (player.bits_h & 0x20) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_V, y
 	: ; }
 
 	pla
@@ -78,7 +78,7 @@ render_plat_large:
 
 	bcc	:+ ; if (player.bits_h & 0x10) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_V, y
 	: ; }
 
 	pla
@@ -87,14 +87,14 @@ render_plat_large:
 
 	bcc	:+ ; if (player.bits_h & 0x08) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*4)+OBJ_POS_V, y
 	: ; }
 
 	pla
 	asl	a
 	bcc	:+ ; if (player.bits_h & 0x04) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*5)+OBJ_POS_V, y
 	: ; }
 
 	lda	bits_offscr_actor

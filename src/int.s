@@ -15,14 +15,14 @@
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	nmi_addrs_low:
-		.byte	<(nmi_list_0_data)
+		.byte	<(ppu_displist_0_data)
 		.byte	<(palette_underwater)
 		.byte	<(palette_overworld)
 		.byte	<(palette_underground)
 		.byte	<(palette_castle)
-		.byte	<(nmi_list_0_offset)
-		.byte	<(nmi_list_1_data)
-		.byte	<(nmi_list_1_data)
+		.byte	<(ppu_displist_0_offset)
+		.byte	<(ppu_displist_1_data)
+		.byte	<(ppu_displist_1_data)
 		.byte	<(palette_bowser)
 		.byte	<(palette_snow_day)
 		.byte	<(palette_snow_night)
@@ -49,7 +49,7 @@
 		.byte	<(msg_vsend_6)
 		.byte	<(msg_vsend_7)
 		.byte	<(msg_vsend_8)
-		.byte	<(vs_nmi_list)
+		.byte	<(vs_ppu_displist)
 		.byte	<(nmi_addr_1D)
 		.byte	<(nmi_addr_1D)
 		.byte	<(nmi_addr_1E)
@@ -63,14 +63,14 @@
 	.endif
 
 	nmi_addrs_high:
-		.byte	>(nmi_list_0_data)
+		.byte	>(ppu_displist_0_data)
 		.byte	>(palette_underwater)
 		.byte	>(palette_overworld)
 		.byte	>(palette_underground)
 		.byte	>(palette_castle)
-		.byte	>(nmi_list_0_offset)
-		.byte	>(nmi_list_1_data)
-		.byte	>(nmi_list_1_data)
+		.byte	>(ppu_displist_0_offset)
+		.byte	>(ppu_displist_1_data)
+		.byte	>(ppu_displist_1_data)
 		.byte	>(palette_bowser)
 		.byte	>(palette_snow_day)
 		.byte	>(palette_snow_night)
@@ -97,7 +97,7 @@
 		.byte	>(msg_vsend_6)
 		.byte	>(msg_vsend_7)
 		.byte	>(msg_vsend_8)
-		.byte	>(vs_nmi_list)
+		.byte	>(vs_ppu_displist)
 		.byte	>(nmi_addr_1D)
 		.byte	>(nmi_addr_1D)
 		.byte	>(nmi_addr_1E)
@@ -111,14 +111,14 @@
 	.endif
 .elseif	.defined(SMB2M)
 	nmi_addrs:
-		.addr	(nmi_list_0_data)
+		.addr	(ppu_displist_0_data)
 		.addr	(palette_underwater)
 		.addr	(palette_overworld)
 		.addr	(palette_underground)
 		.addr	(palette_castle)
 		.addr	(title_map)
-		.addr	(nmi_list_1_data)
-		.addr	(nmi_list_1_data)
+		.addr	(ppu_displist_1_data)
+		.addr	(ppu_displist_1_data)
 		.addr	(palette_bowser)
 		.addr	(palette_snow_day)
 		.addr	(palette_snow_night)
@@ -166,9 +166,9 @@ nmi_addr_1E:
 	.byte	PPU_COLOR_RED1,	PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW1
 .endif
 
-nmi_list_offset:
-	.byte	<nmi_list_0
-	.byte	<nmi_list_1
+ppu_displist_offset:
+	.byte	<ppu_displist_0
+	.byte	<ppu_displist_1
 ; ----------------------------
 .if	.defined(SMB2M)
 	SMB2M_NMI_TIMER_3_19594_MS	= 5720
@@ -230,28 +230,28 @@ nmi:
 
 	ldx	PPU_SR
 	lda	#0
-	jsr	nmi_list_write_scc_h_v
+	jsr	ppu_displist_write_scc_h_v
 	sta	PPU_OAM_AR
-	lda	#>(OAM_DMA_BUFFER)
+	lda	#>(oam_buffer)
 	sta	OBJ_DMA
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldx	nmi_buffer_ptr
 		lda	nmi_addrs_low, x
-		sta	nmi_list_write_addr
+		sta	ppu_displist_write_addr
 		lda	nmi_addrs_high, x
-		sta	nmi_list_write_addr+1
-		jsr	nmi_list_write
+		sta	ppu_displist_write_addr+1
+		jsr	ppu_displist_write
 	.elseif	.defined(SMB2M)
 		lda	nmi_buffer_ptr
 		asl	a
 		tax
 		lda	nmi_addrs, x
-		sta	nmi_list_write_addr
+		sta	ppu_displist_write_addr
 		inx
 		lda	nmi_addrs, x
-		sta	nmi_list_write_addr+1
-		jsr	nmi_list_write
+		sta	ppu_displist_write_addr+1
+		jsr	ppu_displist_write
 	.endif
 
 	ldy	#0
@@ -260,10 +260,10 @@ nmi:
 	bne	:+ ; if (nmi_buffer_ptr == buffer_11_A) {
 		iny
 	: ; }
-	ldx	nmi_list_offset, y
+	ldx	ppu_displist_offset, y
 	lda	#nmi_addr::buffer_01_A
-	sta	nmi_list, x
-	sta	nmi_list+1, x
+	sta	ppu_displist, x
+	sta	ppu_displist+1, x
 	sta	nmi_buffer_ptr
 	lda	ppu_ctlr1_b
 	sta	PPU_CTLR1

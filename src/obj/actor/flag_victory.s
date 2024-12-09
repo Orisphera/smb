@@ -164,15 +164,15 @@ actor_proc_flag_victory_draw:
 		lda	pos_y_rel_actor
 		clc
 		adc	actor_proc_flag_pos_y, x
-		sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+		sta	oam_buffer+OBJ_POS_V, y
 		lda	actor_proc_flag_chr_nos, x
-		sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+		sta	oam_buffer+OBJ_CHR_NO, y
 		lda	#obj_attr::priority_low|obj_attr::color2
-		sta	OAM_DMA_BUFFER+OBJ_ATTR, y
+		sta	oam_buffer+OBJ_ATTR, y
 		lda	pos_x_rel_actor
 		clc
 		adc	actor_proc_flag_pos_x, x
-		sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+		sta	oam_buffer+OBJ_POS_H, y
 
 		iny
 		iny

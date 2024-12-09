@@ -21,7 +21,7 @@ oam_init_all:
 oam_init_do:
         lda     #OAM_INIT_SCANLINE
 	: ; for (obj of OAM) {
-		sta     OAM_DMA_BUFFER+OBJ_POS_V, y
+		sta     oam_buffer+OBJ_POS_V, y
 
 		iny
 		iny

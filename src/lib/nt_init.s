@@ -9,7 +9,7 @@ nt_init:
 	lda	ppu_ctlr0_b
 	ora	#ppu_ctlr0::bg_seg1
 	and	#<~(ppu_ctlr0::obj_seg1|ppu_ctlr0::inc_bit|ppu_ctlr0::bg_bits)
-	jsr	nmi_list_write_ctlr0
+	jsr	ppu_displist_write_ctlr0
 ; --------------
 	lda	#>PPU_VRAM_BG2
 	jsr	nt_init_do
@@ -35,8 +35,8 @@ nt_init_do:
 
 	ldy	#PPU_VRAM_ATTR_SIZE
 	txa
-	sta	nmi_list_0_offset
-	sta	nmi_list_0_data+0
+	sta	ppu_displist_0_offset
+	sta	ppu_displist_0_data+0
 	: ; for (byte of attributes) {
 		sta	PPU_VRAM_IO
 
@@ -46,4 +46,4 @@ nt_init_do:
 
 	sta	ppu_scc_h_b
 	sta	ppu_scc_v_b
-	jmp	nmi_list_write_scc_h_v
+	jmp	ppu_displist_write_scc_h_v

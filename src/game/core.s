@@ -202,7 +202,7 @@ game_proc:
 				sbc	#GAME_SCROLL_END
 				sta	game_scroll_h
 				lda	#0
-				sta	nmi_list_1_offset
+				sta	ppu_displist_1_offset
 			: ; }
 			jsr	bg_proc
 		: ; }

@@ -230,7 +230,7 @@ COL_BOX_SIZE	= 4
 		.endif
 
 		.if	.defined(VS_SMB)
-			vs_nmi_list
+			vs_ppu_displist
 			addr_1D_A
 			addr_1D_B
 			addr_1E_A

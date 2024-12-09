@@ -46,8 +46,8 @@ render_block:
 	cmp	#course_types::overworld
 	beq	:+ ; if (course.type != overworld) {
 		lda	#chr_obj::brick+1
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 	: ; }
 
 	lda	block_tile, x
@@ -66,13 +66,13 @@ render_block:
 			lsr	a
 		: ; }
 		ldx	actor_index
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
 		ora	#obj_attr::h_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 		ora	#obj_attr::v_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
 		and	#obj_attr::v_flip|obj_attr::color3
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
 	: ; }
 
 	lda	bits_offscr_block
@@ -81,8 +81,8 @@ render_block:
 	and	#%00000100
 	beq	:+ ; if (this.bits_offscr & 0x04) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_V, y
 	: ; }
 
 	pla
@@ -93,8 +93,8 @@ render_offscr_check_top:
 	beq	:+ ; if (this.bits_offscr & 0x08) {
 	render_offscr_top_clear:
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_V, y
 	: ; }
 
 	rts
@@ -129,7 +129,7 @@ render_block_bits:
 	lda	pos_y_rel_block
 	jsr	render_set_two_sprites_v
 	lda	pos_x_rel_block
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
 	lda	pos_x_orig_block, x
 	sec
 	sbc	pos_x_lo_screen_left
@@ -138,18 +138,18 @@ render_block_bits:
 	sbc	pos_x_rel_block
 	adc	render_block_bits_pos_x_orig_rel
 	adc	#BLOCK_BITS_OFFSET
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
 	lda	pos_y_rel_block+1
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_V, y
 	lda	pos_x_rel_block+1
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_H, y
 	lda	render_block_bits_pos_x_orig_rel
 	sec
 	sbc	pos_x_rel_block+1
 	adc	render_block_bits_pos_x_orig_rel
 	adc	#BLOCK_BITS_OFFSET
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_H, y
 	lda	bits_offscr_block
 	jsr	render_offscr_check_top
 	lda	bits_offscr_block
@@ -161,12 +161,12 @@ render_block_bits:
 
 	lda	render_block_bits_pos_x_orig_rel
 	bpl	:+
-	lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
-	cmp	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
+	lda	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
+	cmp	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
 	bcc	:+ ; if (this.pos_x_orig_rel >= 0x80 && this.obj[0].pos_x >= this.obj[1].pos_x) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_V, y
 	: ; }
 
 	rts

@@ -366,7 +366,7 @@ render_actor_clear_b:
 		.endif
 		lda	render_actor_flipped
 		beq	:++ ; if ((!ANN || !render_clear_skip) && this.flipped) {
-			lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
+			lda	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
 			ora	#obj_attr::v_flip
 			iny
 			iny
@@ -392,18 +392,18 @@ render_actor_clear_b:
 				tax
 			: ; }
 
-			lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, x
+			lda	oam_buffer+(OBJ_SIZE*0)+OBJ_CHR_NO, x
 			pha
-			lda	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, x
+			lda	oam_buffer+(OBJ_SIZE*1)+OBJ_CHR_NO, x
 			pha
-			lda	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_CHR_NO, y
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, x
-			lda	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_CHR_NO, y
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, x
+			lda	oam_buffer+(OBJ_SIZE*4)+OBJ_CHR_NO, y
+			sta	oam_buffer+(OBJ_SIZE*0)+OBJ_CHR_NO, x
+			lda	oam_buffer+(OBJ_SIZE*5)+OBJ_CHR_NO, y
+			sta	oam_buffer+(OBJ_SIZE*1)+OBJ_CHR_NO, x
 			pla
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_CHR_NO, y
+			sta	oam_buffer+(OBJ_SIZE*5)+OBJ_CHR_NO, y
 			pla
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_CHR_NO, y
+			sta	oam_buffer+(OBJ_SIZE*4)+OBJ_CHR_NO, y
 		: ; }
 
 		lda	actor_bowser_ani_frame
@@ -431,7 +431,7 @@ render_actor_clear_b:
 				cmp	#actor::bowser_flame
 				bne	:+ ; if (this.id == bowser_flame) {
 					lda	#obj_attr::h_flip|obj_attr::priority_high|obj_attr::color2
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 				: ; }
 
 				cpx	#actor_states::state_2
@@ -441,29 +441,29 @@ render_actor_clear_b:
 			; if (this.id.in(blooper, piranha_plant, podoboo) || (this.id == spiny && this.state_next >= state_2)) {
 				lda	actor_bowser_ani_frame
 				bne	:++ ; if (actor_bowser_ani_frame == 0) {
-					lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
+					lda	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
 					and	#obj_attr::v_flip|obj_attr::priority_bit|obj_attr::color_bits
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 					ora	#obj_attr::h_flip
 					cpx	#actor_states::state_5
 					bne	:+ ; if (this.state_next == 5) {
 						ora	#obj_attr::v_flip
 					: ; }
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 
 					cpx	#actor_states::state_4
 					bne	:+ ; if (this.state_next == 4) {
-						lda	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
+						lda	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
 						ora	#obj_attr::v_flip
-						sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
-						sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
+						sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
+						sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 						ora	#obj_attr::h_flip
-						sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
-						sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+						sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
+						sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 					; }
 				; }
 			: ; }
@@ -473,28 +473,28 @@ render_actor_clear_b:
 			bne	:++ ; if (this.id == lakitu) {
 				lda	render_actor_flipped
 				bne	:+ ; if (!this.flipped) {
-					lda	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
+					lda	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 					and	#obj_attr::v_flip|obj_attr::color1
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
-					lda	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
+					lda	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 					ora	#obj_attr::h_flip|obj_attr::color1
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 
 					ldx	timer_swarm
 					cpx	#16
 					bcs	:+++ ; if (timer_swarm < 16) {
-						sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
+						sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
 						and	#obj_attr::v_flip|obj_attr::color1
-						sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
+						sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
 						bcc	:+++
 					; }
 				: ; } else {
-					lda	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
+					lda	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
 					and	#obj_attr::v_flip|obj_attr::color1
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
-					lda	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
+					lda	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 					ora	#obj_attr::h_flip|obj_attr::color1
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 				; }
 			: ; }
 
@@ -509,11 +509,11 @@ render_actor_clear_b:
 						ora	render_actor_attrs_spring
 					.endif
 
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 					ora	#obj_attr::h_flip|obj_attr::color0
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
+					sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 				; }
 			; }
 		; }
@@ -600,5 +600,5 @@ render_actor_clear_chr_pair_h:
 	adc	obj_data_offset_actor, x
 	tay
 	jsr	render_offscr_top_clear
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*4)+OBJ_POS_V, y
 	rts

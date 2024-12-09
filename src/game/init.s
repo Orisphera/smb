@@ -208,8 +208,8 @@ game_init_1_do:
 	.endif
 
 	tay
-	: ; for (byte of nmi_list) {
-		sta	nmi_list, y
+	: ; for (byte of ppu_displist) {
+		sta	ppu_displist, y
 
 		iny
 		bne	:-
@@ -253,7 +253,7 @@ game_init_1_do:
 		ldy	#(game_init_oam_end-game_init_oam)-1
 		: ; for (byte of game_init_oam) {
 			lda	game_init_oam, y
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*0), y
+			sta	oam_buffer+(OBJ_SIZE*0), y
 			dey
 			bpl	:-
 		; }

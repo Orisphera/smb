@@ -132,7 +132,7 @@ screen_color_init_3:
 
 	.export screen_color_player
 screen_color_player:
-	ldx	nmi_list_0_offset
+	ldx	ppu_displist_0_offset
 	ldy	#(screen_color_player_1-screen_color_player_data)
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lda	player_id
@@ -147,9 +147,9 @@ screen_color_player:
 	: ; }
 	lda	#PPU_COLOR_LINE_SIZE-1
 	sta	screen_color_pal_entry
-	: ; for (x = nmi_list_0_offset, y = entry_base, i = 3; i >= 0; x++, y++, i--) {
+	: ; for (x = ppu_displist_0_offset, y = entry_base, i = 3; i >= 0; x++, y++, i--) {
 		lda	screen_color_player_data, y
-		sta	nmi_list_0_byte, x
+		sta	ppu_displist_0_byte, x
 
 		iny
 		inx
@@ -157,28 +157,28 @@ screen_color_player:
 		bpl	:-
 	; }
 
-	ldx	nmi_list_0_offset
+	ldx	ppu_displist_0_offset
 	ldy	course_bg_col
 	bne	:+ ; if (!course_bg_col) {
 		ldy	course_type
 	: ; }
 	lda	screen_color_bg_data+PPU_COLOR_ROW_SIZE, y
-	sta	nmi_list_0_byte, x
+	sta	ppu_displist_0_byte, x
 	lda	#>(PPU_COLOR_PAGE_OBJ)
-	sta	nmi_list_0_addr_dbyt, x
+	sta	ppu_displist_0_addr_dbyt, x
 	lda	#<(PPU_COLOR_PAGE_OBJ)
-	sta	nmi_list_0_addr_dbyt+1, x
+	sta	ppu_displist_0_addr_dbyt+1, x
 	lda	#PPU_COLOR_LINE_SIZE
-	sta	nmi_list_0_count, x
+	sta	ppu_displist_0_count, x
 	lda	#NMI_LIST_END
-	sta	nmi_list_0_data+(WORD_SIZE+1+PPU_COLOR_ROW_SIZE), x
+	sta	ppu_displist_0_data+(WORD_SIZE+1+PPU_COLOR_ROW_SIZE), x
 	txa
 	clc
 	adc	#(WORD_SIZE+1+PPU_COLOR_ROW_SIZE)
 
 	.export screen_color_player_end
 screen_color_player_end:
-	sta	nmi_list_0_offset
+	sta	ppu_displist_0_offset
 	rts
 ; ------------------------------------------------------------
 	.export screen_color_init_4_end
@@ -205,13 +205,13 @@ SCREEN_STAT_BG_1_LEN	=	3
 	.export	screen_text_draw_splash
 screen_text_draw_splash:
 	jsr	misc_proc_coin_update_stats
-	ldx	nmi_list_0_offset
+	ldx	ppu_displist_0_offset
 	lda	#>(SCREEN_STAT_BG_1_ADDR)
-	sta	nmi_list_0_addr_dbyt, x
+	sta	ppu_displist_0_addr_dbyt, x
 	lda	#<(SCREEN_STAT_BG_1_ADDR)
-	sta	nmi_list_0_addr_dbyt+1, x
+	sta	ppu_displist_0_addr_dbyt+1, x
 	lda	#SCREEN_STAT_BG_1_LEN
-	sta	nmi_list_0_count, x
+	sta	ppu_displist_0_count, x
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldy	course_no
 		iny
@@ -219,21 +219,21 @@ screen_text_draw_splash:
 	.elseif	.defined(SMB2M)
 		jsr	screen_calc_course_no
 	.endif
-	sta	nmi_list_0_tile+0, x
+	sta	ppu_displist_0_tile+0, x
 	lda	#'-'
-	sta	nmi_list_0_tile+1, x
+	sta	ppu_displist_0_tile+1, x
 	ldy	player_goals
 	iny
 	tya
-	sta	nmi_list_0_tile+2, x
+	sta	ppu_displist_0_tile+2, x
 
 	lda	#NMI_LIST_END
-	sta	nmi_list_0_tile+SCREEN_STAT_BG_1_LEN, x
+	sta	ppu_displist_0_tile+SCREEN_STAT_BG_1_LEN, x
 
 	txa
 	clc
 	adc	#SCREEN_STAT_BG_1_LEN+WORD_SIZE+1
-	sta	nmi_list_0_offset
+	sta	ppu_displist_0_offset
 	jmp	screen_proc_continue
 ; ----------------------------
 	.if	.defined(SMB2M)
@@ -400,7 +400,7 @@ screen_text_draw:
 		lda	screen_text, x
 		cmp	#SCREEN_TEXT_END_VAL
 		beq	:+
-		sta	nmi_list_0_data, y
+		sta	ppu_displist_0_data, y
 
 		inx
 		iny
@@ -408,7 +408,7 @@ screen_text_draw:
 	: ; }
 
 	lda	#NMI_LIST_END
-	sta	nmi_list_0_data, y
+	sta	ppu_displist_0_data, y
 	pla
 
 	.if	.defined(SMB2M)
@@ -431,22 +431,22 @@ screen_text_draw:
 		bcc	:+ ; if (++player_lives >= 10) {
 			sbc	#10
 			ldy	#$9F
-			sty	nmi_list_0_data+7
+			sty	ppu_displist_0_data+7
 		: ; }
-		sta	nmi_list_0_data+8
+		sta	ppu_displist_0_data+8
 	
 		.if	.defined(SMB)|.defined(VS_SMB)
 			ldy	course_no
 			iny
-			sty	nmi_list_0_data+19
+			sty	ppu_displist_0_data+19
 		.elseif	.defined(SMB2M)
 			jsr	screen_calc_course_no
-			sta	nmi_list_0_data+19
+			sta	ppu_displist_0_data+19
 		.endif
 
 		ldy	player_goals
 		iny
-		sty	nmi_list_0_data+21
+		sty	ppu_displist_0_data+21
 
 	.if	.defined(SMB2M)
 		: ; }
@@ -476,7 +476,7 @@ screen_text_draw:
 					ldy	#(screen_text_player_2_end-screen_text_player_2)-1
 					: ; for (byte of screen_text_player_2) {
 						lda	screen_text_player_2, y
-						sta	nmi_list_0_tile, y
+						sta	ppu_displist_0_tile, y
 
 						dey
 						bpl	:-
@@ -496,7 +496,7 @@ screen_text_draw:
 			: ; for (byte of screen_text_warp_screen) {
 				iny
 				lda	screen_text_warp_screen, y
-				sta	nmi_list_0_data, y
+				sta	ppu_displist_0_data, y
 
 				bne	:-
 			; }
@@ -507,7 +507,7 @@ screen_text_draw:
 		.if	.defined(SMB2)
 				tax
 				lda	screen_text_warps, x
-				sta	nmi_list_0_data+27
+				sta	ppu_displist_0_data+27
 		.endif
 	.elseif	.defined(SMB)|.defined(VS_SMB)
 		screen_text_draw_over: ; } else {
@@ -521,7 +521,7 @@ screen_text_draw:
 		ldy	#0
 		: ; for (y = 0; y < 12; y += 4) {
 			lda	screen_text_warps, x
-			sta	nmi_list_0_data+27, y
+			sta	ppu_displist_0_data+27, y
 
 			inx
 			iny

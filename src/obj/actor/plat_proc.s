@@ -115,32 +115,32 @@ actor_proc_plat_bal:
 	lda	veloc_y_actor, y
 	ora	accel_y2_actor, y
 	beq	:+++++
-	ldx	nmi_list_0_offset
+	ldx	ppu_displist_0_offset
 	cpx	#32
-	bcs	:+++++ ; if (nmi_list_0.offset < 32) {
+	bcs	:+++++ ; if (ppu_displist_0.offset < 32) {
 		lda	veloc_y_actor, y
 		pha
 		pha
 
 		jsr	actor_init_plat_rope
 		lda	actor_init_plat_rope_addr+1
-		sta	nmi_list_0_addr_dbyt, x
+		sta	ppu_displist_0_addr_dbyt, x
 		lda	actor_init_plat_rope_addr
-		sta	nmi_list_0_addr_dbyt+1, x
+		sta	ppu_displist_0_addr_dbyt+1, x
 		lda	#PLAT_ROPE_WIDTH
-		sta	nmi_list_0_count, x
+		sta	ppu_displist_0_count, x
 		lda	veloc_y_actor, y
 		bmi	:+ ; if (this.veloc_y >= 0) {
 			lda	#chr_bg::pole
-			sta	nmi_list_0_tile, x
+			sta	ppu_displist_0_tile, x
 			lda	#chr_bg::pole+1
-			sta	nmi_list_0_tile+1, x
+			sta	ppu_displist_0_tile+1, x
 	
 			jmp	:++
 		: ; } else {
 			lda	#' '
-			sta	nmi_list_0_tile+0, x
-			sta	nmi_list_0_tile+1, x
+			sta	ppu_displist_0_tile+0, x
+			sta	ppu_displist_0_tile+1, x
 		: ; }
 	
 		lda	state_actor, y
@@ -151,32 +151,32 @@ actor_proc_plat_bal:
 
 		jsr	actor_init_plat_rope
 		lda	actor_init_plat_rope_addr+1
-		sta	nmi_list_0_addr_dbyt+(PLAT_ROPE_ENTRY_SIZE), x
+		sta	ppu_displist_0_addr_dbyt+(PLAT_ROPE_ENTRY_SIZE), x
 		lda	actor_init_plat_rope_addr
-		sta	nmi_list_0_addr_dbyt+1+(PLAT_ROPE_ENTRY_SIZE), x
+		sta	ppu_displist_0_addr_dbyt+1+(PLAT_ROPE_ENTRY_SIZE), x
 		lda	#PLAT_ROPE_WIDTH
-		sta	nmi_list_0_count+(PLAT_ROPE_ENTRY_SIZE), x
+		sta	ppu_displist_0_count+(PLAT_ROPE_ENTRY_SIZE), x
 
 		pla
 		bpl	:+ ; if (this.veloc_y < 0) {
 			lda	#chr_bg::pole
-			sta	nmi_list_0_tile+0+(PLAT_ROPE_ENTRY_SIZE), x
+			sta	ppu_displist_0_tile+0+(PLAT_ROPE_ENTRY_SIZE), x
 			lda	#chr_bg::pole+1
-			sta	nmi_list_0_tile+1+(PLAT_ROPE_ENTRY_SIZE), x
+			sta	ppu_displist_0_tile+1+(PLAT_ROPE_ENTRY_SIZE), x
 	
 			jmp	:++
 		: ; } else {
 			lda	#' '
-			sta	nmi_list_0_tile+0+(PLAT_ROPE_ENTRY_SIZE), x
-			sta	nmi_list_0_tile+1+(PLAT_ROPE_ENTRY_SIZE), x
+			sta	ppu_displist_0_tile+0+(PLAT_ROPE_ENTRY_SIZE), x
+			sta	ppu_displist_0_tile+1+(PLAT_ROPE_ENTRY_SIZE), x
 		: ; }
 	
 		lda	#NMI_LIST_END
-		sta	nmi_list_0_data+(PLAT_ROPE_ENTRY_COUNT*PLAT_ROPE_ENTRY_SIZE), x
-		lda	nmi_list_0_offset
+		sta	ppu_displist_0_data+(PLAT_ROPE_ENTRY_COUNT*PLAT_ROPE_ENTRY_SIZE), x
+		lda	ppu_displist_0_offset
 		clc
 		adc	#PLAT_ROPE_ENTRY_COUNT*PLAT_ROPE_ENTRY_SIZE
-		sta	nmi_list_0_offset
+		sta	ppu_displist_0_offset
 	: ; }
 
 	ldx	actor_index
@@ -215,7 +215,7 @@ actor_init_plat_rope:
 		tax
 	: ; }
 	txa
-	ldx	nmi_list_0_offset
+	ldx	ppu_displist_0_offset
 	asl	a
 	rol	a
 	pha

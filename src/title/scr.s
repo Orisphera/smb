@@ -5,12 +5,12 @@
 ; -----------------------------------------------------------
 	.if	.defined(CONS)
 		LARGEST_DATA_SIZE	= (title_map_end-title_map+9)
-		TITLE_NMI_BUFFER_END	= nmi_list_title_end
-		TITLE_NMI_ADDR		= nmi_list
+		TITLE_NMI_BUFFER_END	= ppu_displist_title_end
+		TITLE_NMI_ADDR		= ppu_displist
 	.elseif	.defined(VS)
 		LARGEST_DATA_SIZE	= (title_map_end-title_map+29)
-		TITLE_NMI_BUFFER_END	= vs_nmi_list_end
-		TITLE_NMI_ADDR		= vs_nmi_list
+		TITLE_NMI_BUFFER_END	= vs_ppu_displist_end
+		TITLE_NMI_ADDR		= vs_ppu_displist
 	.endif
 
 	SCREEN_TITLE_BG_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
@@ -92,9 +92,9 @@ screen_title_cursor:
 	lda	proc_id_system
 	bne	screen_title_proc_id_inc
 	ldx	#0
-	: ; for (byte of nmi_list) {
-		sta	nmi_list, x
-		sta	nmi_list_title_end, x
+	: ; for (byte of ppu_displist) {
+		sta	ppu_displist, x
+		sta	ppu_displist_title_end, x
 
 		dex
 		bne	:-

@@ -215,7 +215,7 @@ ending_palcycle:
 		ldx	#(ending_pal_end-ending_pal)-1
 		: ; for (byte of ending_pal) {
 			lda	ending_pal, x
-			sta	nmi_list_0_data, x
+			sta	ppu_displist_0_data, x
 
 			dex
 			bpl	:-
@@ -225,7 +225,7 @@ ending_palcycle:
 		ldy	ending_palcycle_step
 		: ; for (entry_0 of palette_line) {
 			lda	ending_pal_var, y
-			sta	nmi_list_0_data+3, x
+			sta	ppu_displist_0_data+3, x
 	
 			dex
 			dex
@@ -249,7 +249,7 @@ ending_lives_draw:
 	ldx	#(ending_lives_disp_end-ending_lives_disp)-1
 	: ; for (byte of ending_lives_disp) {
 		lda	ending_lives_disp, x
-		sta	nmi_list_0_data, x
+		sta	ppu_displist_0_data, x
 
 		dex
 		bpl	:-
@@ -463,25 +463,25 @@ ending_toad_render:
 					jsr	render_actor
 					:
 				.elseif	.defined(ANN)
-					sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*0), y
-					sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*3), y
+					sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*0), y
+					sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*3), y
 					clc
 					adc	#PPU_CHR_HEIGHT_PX
-					sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*1), y
-					sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*4), y
+					sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*1), y
+					sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*4), y
 					clc
 					adc	#PPU_CHR_HEIGHT_PX
-					sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*2), y
-					sta	OAM_DMA_BUFFER+OBJ_POS_V+(OBJ_SIZE*5), y
+					sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*2), y
+					sta	oam_buffer+OBJ_POS_V+(OBJ_SIZE*5), y
 					lda	ending_toad_render_pos_x, x
-					sta	OAM_DMA_BUFFER+OBJ_POS_H+(OBJ_SIZE*0), y
-					sta	OAM_DMA_BUFFER+OBJ_POS_H+(OBJ_SIZE*1), y
-					sta	OAM_DMA_BUFFER+OBJ_POS_H+(OBJ_SIZE*2), y
+					sta	oam_buffer+OBJ_POS_H+(OBJ_SIZE*0), y
+					sta	oam_buffer+OBJ_POS_H+(OBJ_SIZE*1), y
+					sta	oam_buffer+OBJ_POS_H+(OBJ_SIZE*2), y
 					clc
 					adc	#PPU_CHR_WIDTH_PX
-					sta	OAM_DMA_BUFFER+OBJ_POS_H+(OBJ_SIZE*3), y
-					sta	OAM_DMA_BUFFER+OBJ_POS_H+(OBJ_SIZE*4), y
-					sta	OAM_DMA_BUFFER+OBJ_POS_H+(OBJ_SIZE*5), y
+					sta	oam_buffer+OBJ_POS_H+(OBJ_SIZE*3), y
+					sta	oam_buffer+OBJ_POS_H+(OBJ_SIZE*4), y
+					sta	oam_buffer+OBJ_POS_H+(OBJ_SIZE*5), y
 					lda	ending_toad_render_chr_base-1, x
 					sta	ending_toad_render_CHR_NO
 					lda	ending_toad_render_attrs-1, x
@@ -489,9 +489,9 @@ ending_toad_render:
 					ldx	#0
 					: ; for () {
 						lda	ending_toad_render_CHR_NO
-						sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+						sta	oam_buffer+OBJ_CHR_NO, y
 						lda	ending_toad_render_ATTR
-						sta	OAM_DMA_BUFFER+OBJ_ATTR, y
+						sta	oam_buffer+OBJ_ATTR, y
 
 						iny
 						iny

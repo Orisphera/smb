@@ -86,7 +86,7 @@ vs_disp_credit_msg:
 	bne	:++ ; if (vs_ram_arena0[6] == 7) {
 		: ; for (x = 13; x > 0; x--) {
 			lda	vs_text_free_play, x
-			sta	nmi_list_0, x
+			sta	ppu_displist_0, x
 
 			dex
 			bpl	:-
@@ -96,7 +96,7 @@ vs_disp_credit_msg:
 	: ; } else {
 		: ; for (x = 13; x > 0; x--) {
 			lda	vs_text_credit_count, x
-			sta	nmi_list_0, x
+			sta	ppu_displist_0, x
 
 			dex
 			bpl	:-
@@ -107,14 +107,14 @@ vs_disp_credit_msg:
 			cmp	#10
 			bmi	:+
 
-			inc	nmi_list_0_data+10
+			inc	ppu_displist_0_data+10
 
 			sec
 			sbc	#10
 			jmp	:-
 		: ; }
 
-		sta	nmi_list_0_data+11
+		sta	ppu_displist_0_data+11
 		rts
 	; }
 ; -----------------------------------------------------------
@@ -379,12 +379,12 @@ vs_player_select_do:
 				sta	VS_RAM_ARENA0+$26
 
 				ldx	#0
-				ldy	nmi_list_0_offset
+				ldy	ppu_displist_0_offset
 				lda	VS_RAM_ARENA0+$27
 				bne	:++ ; if () {
 					: ; for (x = 0, y = ppu_nmi_count; x < 16; x++, y++) {
 						lda	vs_player_select_do_text_push, x
-						sta	nmi_list_0_data+0, y
+						sta	ppu_displist_0_data+0, y
 
 						iny
 						inx
@@ -395,7 +395,7 @@ vs_player_select_do:
 				; } else {
 					: ; for (x = 0, y = ppu_nmi_count; x < 5; x++, y++) {
 						lda	vs_player_select_do_text_empty, x
-						sta	nmi_list_0_data+0, y
+						sta	ppu_displist_0_data+0, y
 
 						iny
 						inx
@@ -476,7 +476,7 @@ vs_title_super_players:
 		ldy	#(vs_super_players_oam_end-vs_super_players_oam)-1
 		: ; for (entry of vs_super_players_oam) {
 			lda	vs_super_players_oam, y
-			sta	OAM_DMA_BUFFER, y
+			sta	oam_buffer, y
 
 			dey
 			bpl	:-

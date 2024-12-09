@@ -39,14 +39,14 @@ game_over_menu:
 		ldy	#(game_over_menu_attrs_end-game_over_menu_attrs)-1
 		: ; for (entry of attrs) {
 			lda	game_over_menu_attrs, y
-			sta	OAM_DMA_BUFFER+(0*OBJ_SIZE)+OBJ_CHR_NO, y
+			sta	oam_buffer+(0*OBJ_SIZE)+OBJ_CHR_NO, y
 			dey
 			bpl	:-
 		; }
 	
 		ldy	game_over_choice
 		lda	game_over_menu_pos_y, y
-		sta	OAM_DMA_BUFFER+(0*OBJ_SIZE)+OBJ_POS_V
+		sta	oam_buffer+(0*OBJ_SIZE)+OBJ_POS_V
 		rts
 	: lda	game_over_choice
 	beq	:+ ; } else if (game_over_choice != 0) {

@@ -12,9 +12,9 @@ EXPLOSION_TILE_OFFSET	= 4
 render_proj:
 	ldy	obj_data_offset_proj, x
 	lda	pos_y_rel_proj
-	sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+	sta	oam_buffer+OBJ_POS_V, y
 	lda	pos_x_rel_proj
-	sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+	sta	oam_buffer+OBJ_POS_H, y
 
 render_firebar:
 	lda	frame_count
@@ -23,7 +23,7 @@ render_firebar:
 	pha
 	and	#MOD_8_4_UP>>2
 	eor	#chr_obj::fire_ball
-	sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+	sta	oam_buffer+OBJ_CHR_NO, y
 	pla
 	lsr	a
 	lsr	a
@@ -32,7 +32,7 @@ render_firebar:
 		ora	#obj_attr::v_flip|obj_attr::h_flip
 	: ; }
 
-	sta	OAM_DMA_BUFFER+OBJ_ATTR, y
+	sta	oam_buffer+OBJ_ATTR, y
 	rts
 ; ------------------------------------------------------------
 render_proj_hit_tiles:
@@ -59,29 +59,29 @@ render_proj_hit:
 		lda	pos_y_rel_proj
 		sec
 		sbc	#1*EXPLOSION_TILE_OFFSET
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_V, y
 		clc
 		adc	#2*EXPLOSION_TILE_OFFSET
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_V, y
 		lda	pos_x_rel_proj
 		sec
 		sbc	#1*EXPLOSION_TILE_OFFSET
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
 		clc
 		adc	#2*EXPLOSION_TILE_OFFSET
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_H, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_H, y
 		lda	#EXPLOSION_BASE_ATTR
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
 		lda	#EXPLOSION_BASE_ATTR|obj_attr::v_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 		lda	#EXPLOSION_BASE_ATTR|obj_attr::h_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
 		lda	#EXPLOSION_BASE_ATTR|obj_attr::v_flip|obj_attr::h_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
 		rts
 	: ; } else {
 		lda	#proj_states::inactive

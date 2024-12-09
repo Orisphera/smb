@@ -37,28 +37,28 @@ render_vine:
 	jsr	render_vine_column
 
 	lda	pos_x_rel_actor
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_H, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*4)+OBJ_POS_H, y
 	clc
 	adc	#VINE_COLUMN_B_OFFSET
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_H, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*5)+OBJ_POS_H, y
 
 	lda	#obj_attr::priority_low|obj_attr::color1
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 	ora	#obj_attr::h_flip
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 
 	ldx	#VINE_PART_COUNT-1
 	: ; for (tile of vine) {
 		lda	#chr_obj::vine+1
-		sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+		sta	oam_buffer+OBJ_CHR_NO, y
 
 		.repeat	OBJ_SIZE
 		iny
@@ -72,18 +72,18 @@ render_vine:
 	lda	render_vine_part_idx
 	bne	:+ ; if (render_vine_part_idx == 0) {
 		lda	#chr_obj::vine+0
-		sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+		sta	oam_buffer+OBJ_CHR_NO, y
 	: ; }
 
 	ldx	#0
 	: ; for (tile of vine) {
 		lda	pos_y_vine
 		sec
-		sbc	OAM_DMA_BUFFER+OBJ_POS_V, y
+		sbc	oam_buffer+OBJ_POS_V, y
 		cmp	#VINE_HEIGHT_CUTOFF
 		bcc	:+ ; if ((vine.pos_y - sprite.pos_y) >= VINE_HEIGHT_CUTOFF) {
 			lda	#OAM_INIT_SCANLINE
-			sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+			sta	oam_buffer+OBJ_POS_V, y
 		: ; }
 
 		.repeat	OBJ_SIZE
@@ -102,7 +102,7 @@ render_vine:
 render_vine_column:
 	ldx	#VINE_PART_COUNT
 	: ; for (tile of vine) {
-		sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+		sta	oam_buffer+OBJ_POS_V, y
 
 		clc
 		adc	#PPU_CHR_HEIGHT_PX

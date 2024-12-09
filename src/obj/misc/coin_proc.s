@@ -96,11 +96,11 @@ misc_proc_coin_update_stats:
 misc_proc_coin_add_score:
 	jsr	stats_print_num
 
-	ldy	nmi_list_0_offset
-	lda	OAM_DMA_BUFFER+$FB, y
-	bne	:+ ; if (!OAM_DMA_BUFFER[0xFB]) {
+	ldy	ppu_displist_0_offset
+	lda	oam_buffer+$FB, y
+	bne	:+ ; if (!oam_buffer[0xFB]) {
 		lda	#$24
-		sta	OAM_DMA_BUFFER+$FB, y
+		sta	oam_buffer+$FB, y
 	: ; }
 
 	ldx	actor_index

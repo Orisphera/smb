@@ -88,22 +88,22 @@ render_powerup:
 		lsr	a
 		and	#obj_attr::color_bits
 		ora	attr_actor+POWERUP_ACTOR_IDX
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 
 		ldx	render_powerup_type
 		dex
 		beq	:+ ; if (this.type == firefl) {
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_ATTR, y
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
+			sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
+			sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
 		: ; }
 
-		lda	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+		lda	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 		ora	#obj_attr::h_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
-		lda	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
+		lda	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
 		ora	#obj_attr::h_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
 	: ; }
 
 	jmp	render_actor_clear_offscr

@@ -8,7 +8,7 @@ MEM_I	= 1
 
 zp_byte_00		= $00
 zp_addr_00		= zp_byte_00
-nmi_list_write_addr	= zp_addr_00
+ppu_displist_write_addr	= zp_addr_00
 motion_gravity_accel_y_inc = zp_byte_00
 col_player_bullet_diff_pos_x_rel = zp_byte_00
 render_chr_pair_tile_left = zp_byte_00
@@ -220,26 +220,26 @@ ending_player_live		= (STACK_BASE+$35)
 
 cpu_stack_work_end		= (STACK_BASE+$60)
 ; -----------------------------
-OAM_DMA_BUFFER		= (STACK_BASE+STACK_SIZE)
-OAM_DMA_BUFFER_END	= (OAM_DMA_BUFFER+(OBJ_MAX*OBJ_SIZE))
+oam_buffer		= (STACK_BASE+STACK_SIZE)
+oam_buffer_END	= (oam_buffer+(OBJ_MAX*OBJ_SIZE))
 ; -----------------------------
-nmi_list		= OAM_DMA_BUFFER_END
-nmi_list_0		= nmi_list
-nmi_list_0_offset	= nmi_list_0
-nmi_list_0_data		= nmi_list_0_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
-nmi_list_0_addr_dbyt	= nmi_list_0_data
-nmi_list_0_count	= nmi_list_0_addr_dbyt+WORD_SIZE
-nmi_list_0_tile		= nmi_list_0_count+1
-nmi_list_0_byte		= nmi_list_0_tile
-nmi_list_0_end		= nmi_list_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
-nmi_list_1		= nmi_list_0_end
-nmi_list_1_offset	= nmi_list_1
-nmi_list_1_data		= nmi_list_1_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
-nmi_list_1_addr_dbyt	= nmi_list_1_data
-nmi_list_1_byte		= nmi_list_1_addr_dbyt+WORD_SIZE
-nmi_list_1_end		= nmi_list_1_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
+ppu_displist		= oam_buffer_END
+ppu_displist_0		= ppu_displist
+ppu_displist_0_offset	= ppu_displist_0
+ppu_displist_0_data		= ppu_displist_0_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
+ppu_displist_0_addr_dbyt	= ppu_displist_0_data
+ppu_displist_0_count	= ppu_displist_0_addr_dbyt+WORD_SIZE
+ppu_displist_0_tile		= ppu_displist_0_count+1
+ppu_displist_0_byte		= ppu_displist_0_tile
+ppu_displist_0_end		= ppu_displist_0_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
+ppu_displist_1		= ppu_displist_0_end
+ppu_displist_1_offset	= ppu_displist_1
+ppu_displist_1_data		= ppu_displist_1_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
+ppu_displist_1_addr_dbyt	= ppu_displist_1_data
+ppu_displist_1_byte		= ppu_displist_1_addr_dbyt+WORD_SIZE
+ppu_displist_1_end		= ppu_displist_1_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
 ; --------------
-actor_bowser_ani_flag	= nmi_list_1_data+$22
+actor_bowser_ani_flag	= ppu_displist_1_data+$22
 timer_ani_bowser	= actor_bowser_ani_flag+1
 veloc_x_bowser		= timer_ani_bowser+1
 pos_x_prev_bowser	= veloc_x_bowser+1
@@ -248,7 +248,7 @@ actor_index_bowser	= actor_bowser_flame_timer_idx+1
 actor_bowser_ending_clear_frame = actor_index_bowser+1
 actor_bowser_ani_frame	= actor_bowser_ending_clear_frame+1
 ; -----------------------------
-unused_380		= nmi_list_1_end
+unused_380		= ppu_displist_1_end
 unused_381		= unused_380+1
 unused_382		= unused_381+1
 unused_383		= unused_382+1
@@ -357,7 +357,7 @@ unused_3F8		= unused_3F7+1
 gfx_attr_buffer		= unused_3F8+1
 ; -----------------------------
 accel_x_player		= gfx_attr_buffer+GFX_ATTR_COUNT
-nmi_list_title_end	= accel_x_player
+ppu_displist_title_end	= accel_x_player
 accel_x_actor		= accel_x_player+ENG_PLAYER_OBJ_MAX
 accel_x_proj		= accel_x_actor+ENG_ACTOR_MAX
 accel_x_block		= accel_x_proj+ENG_PROJ_MAX
@@ -886,8 +886,8 @@ game_boot_flag		= RAM_CLEAR_END_COLDBOOT+1
 	nmi_addr_1D	= VS_RAM+$000
 	vs_actor_data	= VS_RAM+$100
 	vs_scenery_data	= VS_RAM+$200
-	vs_nmi_list	= VS_RAM+$300
-	vs_nmi_list_end	= vs_nmi_list+$100
+	vs_ppu_displist	= VS_RAM+$300
+	vs_ppu_displist_end	= vs_ppu_displist+$100
 	title_tbl_400	= VS_RAM+$400
 
 	VS_RAM_ARENA0           = (VS_RAM+$600)

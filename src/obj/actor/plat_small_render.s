@@ -15,16 +15,16 @@ render_plat_small:
 	dey
 	dey
 	lda	pos_x_rel_actor
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_H, y
 	clc
 	adc	#PPU_CHR_WIDTH_PX
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*4)+OBJ_POS_H, y
 	clc
 	adc	#PPU_CHR_HEIGHT_PX
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_H, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*5)+OBJ_POS_H, y
 	lda	pos_y_lo_actor, x
 	tax
 	pha
@@ -44,17 +44,17 @@ render_plat_small:
 		lda	#OAM_INIT_SCANLINE
 	: ; }
 
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*4)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*5)+OBJ_POS_V, y
 	lda	bits_offscr_actor
 	pha
 
 	and	#%00001000
 	beq	:+ ; if (this.bits_offscr & 0x08) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*3)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*3)+OBJ_POS_V, y
 	: ; }
 
 	pla
@@ -63,16 +63,16 @@ render_plat_small:
 	and	#%00000100
 	beq	:+ ; if (this.bits_offscr & 0x04) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*4)+OBJ_POS_V, y
 	: ; }
 
 	pla
 	and	#%00000010
 	beq	:+ ; if (this.bits_offscr & 0x02) {
 		lda	#OAM_INIT_SCANLINE
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*2)+OBJ_POS_V, y
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*2)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*5)+OBJ_POS_V, y
 	: ; }
 
 	ldx	actor_index

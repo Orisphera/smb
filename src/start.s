@@ -169,7 +169,7 @@ start:
 
         lda     ppu_ctlr0_b
         ora     #ppu_ctlr0::int
-        jsr     nmi_list_write_ctlr0
+        jsr     ppu_displist_write_ctlr0
 
 	: ; while (1) {
 		.if	.defined(SMB2M)

@@ -126,7 +126,7 @@ LIB_OBJS	=	src/lib/screen.o \
 			src/lib/tbljmp.o \
 			src/lib/nt_init.o \
 			src/lib/joypad.o \
-			src/lib/nmi_list_write.o \
+			src/lib/ppu_displist_write.o \
 			src/lib/stats.o
 
 LIB_VS_OBJS	=	src/lib/vs.o

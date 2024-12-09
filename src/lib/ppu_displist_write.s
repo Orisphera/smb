@@ -3,14 +3,14 @@
 .include	"mem.i"
 .include	"macros.i"
 
-nmi_list_write_do:
+ppu_displist_write_do:
 	sta	PPU_VRAM_AR
 	iny
-	lda	(nmi_list_write_addr), y
+	lda	(ppu_displist_write_addr), y
 	sta	PPU_VRAM_AR
 
 	iny
-	lda	(nmi_list_write_addr), y
+	lda	(ppu_displist_write_addr), y
 	asl	a
 	pha
 
@@ -19,7 +19,7 @@ nmi_list_write_do:
 	bcs	:+ ; if (!(this.length & NMI_INC_ROW)) {
 		and	#<~ppu_ctlr0::inc_32
 	: ; }
-	jsr	nmi_list_write_ctlr0
+	jsr	ppu_displist_write_ctlr0
 
 	pla
 	asl	a
@@ -36,7 +36,7 @@ nmi_list_write_do:
 			iny
 		: ; }
 
-		lda	(nmi_list_write_addr), y
+		lda	(ppu_displist_write_addr), y
 		sta	PPU_VRAM_IO
 
 		dex
@@ -45,31 +45,31 @@ nmi_list_write_do:
 
 	sec
 	tya
-	adc	nmi_list_write_addr
-	sta	nmi_list_write_addr
+	adc	ppu_displist_write_addr
+	sta	ppu_displist_write_addr
 	lda	#0
-	adc	nmi_list_write_addr+1
-	sta	nmi_list_write_addr+1
+	adc	ppu_displist_write_addr+1
+	sta	ppu_displist_write_addr+1
 
 	ppuaddr_m	PPU_VRAM_COLOR
 	sta	PPU_VRAM_AR
 	sta	PPU_VRAM_AR
 ; ----------------------------
-	.export nmi_list_write, nmi_list_write_scc_h_v
-nmi_list_write:
+	.export ppu_displist_write, ppu_displist_write_scc_h_v
+ppu_displist_write:
 	ldx	PPU_SR
 	ldy	#0
-	lda	(nmi_list_write_addr), y
-	bne	nmi_list_write_do ; if (nmi_list_write_addr[y] == 0) {
-		.export nmi_list_write_scc_h_v
-	nmi_list_write_scc_h_v:
+	lda	(ppu_displist_write_addr), y
+	bne	ppu_displist_write_do ; if (ppu_displist_write_addr[y] == 0) {
+		.export ppu_displist_write_scc_h_v
+	ppu_displist_write_scc_h_v:
 		sta	PPU_SCC_H_V
 		sta	PPU_SCC_H_V
 		rts
-	; } else nmi_list_write_do();
+	; } else ppu_displist_write_do();
 ; -----------------------------------------------------------
-	.export nmi_list_write_ctlr0
-nmi_list_write_ctlr0:
+	.export ppu_displist_write_ctlr0
+ppu_displist_write_ctlr0:
 	sta	PPU_CTLR0
 	sta	ppu_ctlr0_b
 	rts

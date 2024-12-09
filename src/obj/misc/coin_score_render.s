@@ -17,22 +17,22 @@
 		jsr	render_set_two_sprites_v
 
 		lda	pos_x_rel_misc
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
 
 		clc
 		adc	#PPU_CHR_WIDTH_PX
 
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
 
 		lda	#obj_attr::priority_high|obj_attr::color2
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
 
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 
 		lda	#chr_obj::digits_20
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_CHR_NO, y
 		lda	#chr_obj::digits_0
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 
 		jmp	:+
 	; }
@@ -51,15 +51,15 @@ render_coin_score:
 	bcs	:-- ; if (misc.state == coin_01) {
 		lda	pos_y_lo_misc, x
 
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_V, y
 		clc
 		adc	#PPU_CHR_HEIGHT_PX
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
 
 		lda	pos_x_rel_misc
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
 
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
 
 		lda	frame_count
 		lsr	a
@@ -71,9 +71,9 @@ render_coin_score:
 		dey
 
 		lda	#obj_attr::priority_high|obj_attr::color2
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
 		lda	#obj_attr::priority_high|obj_attr::color2|obj_attr::v_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 
 		ldx	actor_index
 	: ; } else --();

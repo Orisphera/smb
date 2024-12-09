@@ -21,15 +21,15 @@ gfx_render_area:
 	and	#1
 	sta	gfx_render_area_pos_x_parity
 
-	ldy	nmi_list_1_offset
+	ldy	ppu_displist_1_offset
 	sty	gfx_render_area_offset
 
 	lda	bg_addr+1
-	sta	nmi_list_1_addr_dbyt+1, y
+	sta	ppu_displist_1_addr_dbyt+1, y
 	lda	bg_addr
-	sta	nmi_list_1_addr_dbyt, y
+	sta	ppu_displist_1_addr_dbyt, y
 	lda	#$9A
-	sta	nmi_list_1_byte, y
+	sta	ppu_displist_1_byte, y
 
 	lda	#0
 	sta	gfx_render_area_attr_index
@@ -61,10 +61,10 @@ gfx_render_area:
 		tay
 		ldx	gfx_render_area_offset
 		lda	(game_buffer), y
-		sta	nmi_list_1_addr_dbyt+(1*NMI_BUFFER_ENTRY_SIZE), x
+		sta	ppu_displist_1_addr_dbyt+(1*NMI_BUFFER_ENTRY_SIZE), x
 		iny
 		lda	(game_buffer), y
-		sta	nmi_list_1_addr_dbyt+1+(1*NMI_BUFFER_ENTRY_SIZE), x
+		sta	ppu_displist_1_addr_dbyt+1+(1*NMI_BUFFER_ENTRY_SIZE), x
 
 		ldy	gfx_render_area_attr_index
 		lda	gfx_render_area_pos_x_parity
@@ -110,8 +110,8 @@ gfx_render_area:
 	iny
 	iny
 	lda	#0
-	sta	nmi_list_1_data, y
-	sty	nmi_list_1_offset
+	sta	ppu_displist_1_data, y
+	sty	ppu_displist_1_offset
 
 	inc	bg_addr+1
 	lda	bg_addr+1
@@ -151,19 +151,19 @@ gfx_render_attr:
 	sta	gfx_render_attr_addr_dbyt+1
 
 	ldx	#0
-	ldy	nmi_list_1_offset
+	ldy	ppu_displist_1_offset
 	: ; for (attr of attrs) {
 		lda	gfx_render_attr_addr_dbyt
-		sta	nmi_list_1_addr_dbyt, y
+		sta	ppu_displist_1_addr_dbyt, y
 		lda	gfx_render_attr_addr_dbyt+1
 		clc
 		adc	#8
-		sta	nmi_list_1_addr_dbyt+1, y
+		sta	ppu_displist_1_addr_dbyt+1, y
 		sta	gfx_render_attr_addr_dbyt+1
 		lda	gfx_attr_buffer, x
-		sta	nmi_list_1_byte+1, y
+		sta	ppu_displist_1_byte+1, y
 		lda	#1
-		sta	nmi_list_1_byte, y
+		sta	ppu_displist_1_byte, y
 		lsr	a
 		sta	gfx_attr_buffer, x
 
@@ -176,8 +176,8 @@ gfx_render_attr:
 		bcc	:-
 	; }
 
-	sta	nmi_list_1_data, y
-	sty	nmi_list_1_offset
+	sta	ppu_displist_1_data, y
+	sty	ppu_displist_1_offset
 
 gfx_render_attr_end:
 	lda	#nmi_addr::buffer_11_A
@@ -219,13 +219,13 @@ gfx_color_rotate:
 	lda	frame_count
 	and	#MOD_8
 	bne	:+++
-	ldx	nmi_list_0_offset
+	ldx	ppu_displist_0_offset
 	cpx	#GFX_COLOR_ROT_THRESH
-	bcs	:+++ ; if ((frame_count % 8) || nmi_list_0_offset < GFX_COLOR_ROT_THRESH) {
+	bcs	:+++ ; if ((frame_count % 8) || ppu_displist_0_offset < GFX_COLOR_ROT_THRESH) {
 		tay
-		: ; for (x = nmi_list_entry, y = (frame_count % 8); y < 8; x++, y++) {
+		: ; for (x = ppu_displist_entry, y = (frame_count % 8); y < 8; x++, y++) {
 			lda	pal_null, y
-			sta	nmi_list_0_data, x
+			sta	ppu_displist_0_data, x
 
 			inx
 			iny
@@ -233,16 +233,16 @@ gfx_color_rotate:
 			bcc	:-
 		; }
 
-		ldx	nmi_list_0_offset
+		ldx	ppu_displist_0_offset
 		lda	#PPU_COLOR_ROW_SIZE-1
 		sta	gfx_color_rotate_pal_entry
 		lda	course_type
 		asl	a
 		asl	a
 		tay
-		: ; for (i = 3, x = nmi_list_entry, y = (course_type * 4); i >= 0; i--, x++, y++) {
+		: ; for (i = 3, x = ppu_displist_entry, y = (course_type * 4); i >= 0; i--, x++, y++) {
 			lda	pal_page_3, y
-			sta	nmi_list_0_data+(PPU_COLOR_ROW_SIZE-1), x
+			sta	ppu_displist_0_data+(PPU_COLOR_ROW_SIZE-1), x
 
 			iny
 			inx
@@ -250,14 +250,14 @@ gfx_color_rotate:
 			bpl	:-
 		; }
 
-		ldx	nmi_list_0_offset
+		ldx	ppu_displist_0_offset
 		ldy	gfx_color_rotate_off
 		lda	pal_rotating, y
-		sta	nmi_list+(NMI_BUFFER_ENTRY_OFFSET_SIZE+(1*PPU_COLOR_ROW_SIZE)), x
-		lda	nmi_list_0_offset
+		sta	ppu_displist+(NMI_BUFFER_ENTRY_OFFSET_SIZE+(1*PPU_COLOR_ROW_SIZE)), x
+		lda	ppu_displist_0_offset
 		clc
 		adc	#7
-		sta	nmi_list_0_offset
+		sta	ppu_displist_0_offset
 
 		inc	gfx_color_rotate_off
 		lda	gfx_color_rotate_off
@@ -307,7 +307,7 @@ gfx_clear_blocks_blank_b:
 ; ----------------------------
 	.export gfx_clear_small
 gfx_clear_small:
-	ldy	#nmi_list_1_data-nmi_list
+	ldy	#ppu_displist_1_data-ppu_displist
 	lda	#clear_blocks::blank_a
 	ldx	course_type
 	bne	:+ ; if (course_type == water) {
@@ -350,7 +350,7 @@ gfx_meta_write:
 	; }
 	tya
 
-	ldy	nmi_list_0_offset
+	ldy	ppu_displist_0_offset
 	iny
 	jsr	gfx_clear_put
 
@@ -365,7 +365,7 @@ GFX_CLEAR_PUT_WIDTH		= 2
 GFX_CLEAR_PUT_ENTRY_SIZE	= (WORD_SIZE+1+GFX_CLEAR_PUT_WIDTH)
 
 gfx_clear_put_x_b		= zp_byte_00
-gfx_clear_put_nmi_list_offset	= zp_byte_01
+gfx_clear_put_ppu_displist_offset	= zp_byte_01
 gfx_clear_put_page_offset	= zp_byte_02
 gfx_clear_put_do_addr_hi_base	= zp_byte_03
 
@@ -373,7 +373,7 @@ gfx_clear_put_do_addr_hi_base	= zp_byte_03
 gfx_clear_put:
 	stx	gfx_clear_put_x_b
 
-	sty	gfx_clear_put_nmi_list_offset
+	sty	gfx_clear_put_ppu_displist_offset
 
 	asl	a
 	asl	a
@@ -407,33 +407,33 @@ gfx_clear_put:
 	adc	gfx_clear_put_do_addr_hi_base
 	sta	gfx_clear_put_do_addr+1
 
-	ldy	gfx_clear_put_nmi_list_offset
+	ldy	gfx_clear_put_ppu_displist_offset
 
 gfx_clear_put_do:
 	lda	gfx_clear_blocks, x
-	sta	nmi_list_0_tile-1, y
+	sta	ppu_displist_0_tile-1, y
 	lda	gfx_clear_blocks+1, x
-	sta	nmi_list_0_tile+1-1, y
+	sta	ppu_displist_0_tile+1-1, y
 	lda	gfx_clear_blocks+2, x
-	sta	nmi_list_0_tile+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_0_tile+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
 	lda	gfx_clear_blocks+3, x
-	sta	nmi_list_0_tile+(GFX_CLEAR_PUT_ENTRY_SIZE)+1-1, y
+	sta	ppu_displist_0_tile+(GFX_CLEAR_PUT_ENTRY_SIZE)+1-1, y
 
 	lda	gfx_clear_put_do_addr
-	sta	nmi_list_0_addr_dbyt+1-1, y
+	sta	ppu_displist_0_addr_dbyt+1-1, y
 	clc
 	adc	#>PPU_VRAM_BG1
-	sta	nmi_list_0_addr_dbyt+(GFX_CLEAR_PUT_ENTRY_SIZE)+1-1, y
+	sta	ppu_displist_0_addr_dbyt+(GFX_CLEAR_PUT_ENTRY_SIZE)+1-1, y
 	lda	gfx_clear_put_do_addr+1
-	sta	nmi_list_0_addr_dbyt-1, y
-	sta	nmi_list_0_addr_dbyt+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_0_addr_dbyt-1, y
+	sta	ppu_displist_0_addr_dbyt+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
 
 	lda	#GFX_CLEAR_PUT_WIDTH
-	sta	nmi_list_0_count-1, y
-	sta	nmi_list_0_count+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_0_count-1, y
+	sta	ppu_displist_0_count+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
 
 	lda	#NMI_LIST_END
-	sta	nmi_list_0_data+(2*GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_0_data+(2*GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
 
 	ldx	gfx_clear_put_x_b
 	rts

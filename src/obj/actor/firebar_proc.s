@@ -105,10 +105,10 @@ actor_proc_firebar_do:
 		jsr	actor_firebar_get_pos
 		ldy	obj_data_offset_actor, x
 		lda	pos_y_rel_actor
-		sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+		sta	oam_buffer+OBJ_POS_V, y
 		sta	actor_firebar_pos_y_rel
 		lda	pos_x_rel_actor
-		sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+		sta	oam_buffer+OBJ_POS_H, y
 		sta	actor_firebar_pos_x_rel
 		lda	#1
 		sta	actor_firebar_loop_idx
@@ -158,7 +158,7 @@ actor_firebar_col_draw:
 	: ; }
 	clc
 	adc	pos_x_rel_actor
-	sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+	sta	oam_buffer+OBJ_POS_H, y
 	sta	actor_firebar_pos_x_rel
 	cmp	pos_x_rel_actor
 	bcs	:+ ; if (actor_firebar_pos_x_rel < pos_x_rel_actor) {
@@ -187,7 +187,7 @@ actor_firebar_col_draw:
 		clc
 		adc	pos_y_rel_actor
 	: ; }
-	sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+	sta	oam_buffer+OBJ_POS_V, y
 	sta	actor_firebar_pos_y_rel
 ; -----------------------------
 actor_firebar_col_player_pos_x	= zp_byte_04
@@ -235,7 +235,7 @@ actor_firebar_col:
 				lda	actor_firebar_pos_x_rel
 				cmp	#FIREBAR_POS_X_CHECK_OFFSET
 				bcs	:++ ; if ((player.pos_y - this.pos_y) < check_offset.y && (player.pos_x - this.pos_x) < check_offset.x) {
-					lda	OAM_DMA_BUFFER+OBJ_POS_H+(OBJ_SIZE*1)
+					lda	oam_buffer+OBJ_POS_H+(OBJ_SIZE*1)
 					clc
 					adc	#FIREBAR_SPRITE_OFFSET
 					sta	actor_firebar_col_player_pos_x

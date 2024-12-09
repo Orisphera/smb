@@ -61,24 +61,24 @@ render_hammer:
 	lda	pos_y_rel_misc
 	clc
 	adc	render_hammer_pos_y_a, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_V, y
 	clc
 	adc	render_hammer_pos_y_b, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
 	lda	pos_x_rel_misc
 	clc
 	adc	render_hammer_pos_x_a, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
 	clc
 	adc	render_hammer_pos_x_b, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
 	lda	render_hammer_chr_no_a, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_CHR_NO, y
 	lda	render_hammer_chr_no_b, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 	lda	render_hammer_attr, x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 	ldx	actor_index
 
 	lda	bits_offscr_misc

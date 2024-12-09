@@ -67,7 +67,7 @@ render_player:
 
 				lda	player_size
 				beq	:+
-				lda	OAM_DMA_BUFFER+(OBJ_SIZE*PLAYER_SPR_OFFSET_FOOT_LEFT)+OBJ_CHR_NO, y
+				lda	oam_buffer+(OBJ_SIZE*PLAYER_SPR_OFFSET_FOOT_LEFT)+OBJ_CHR_NO, y
 				cmp	render_player_tile_swim_small+(PLAYER_SPR_SIZE*PLAYER_SPR_SWIM_FOOT_ALTER_FRAME)+PLAYER_SPR_OFFSET_FOOT_LEFT
 				beq	:++ ; if (this.size == large || obj[foot_l_offset].chr_no != foot_left_swim_small_2) {
 					; if (this.size == small && obj[foot_l_offset].chr_no != foot_left_swim_small_2) {
@@ -75,7 +75,7 @@ render_player:
 					: ; }
 
 					lda	render_player_swim_foot_left, x
-					sta	OAM_DMA_BUFFER+(OBJ_SIZE*PLAYER_SPR_OFFSET_FOOT_LEFT)+OBJ_CHR_NO, y
+					sta	oam_buffer+(OBJ_SIZE*PLAYER_SPR_OFFSET_FOOT_LEFT)+OBJ_CHR_NO, y
 				: ; }
 			; }
 		; }
@@ -173,9 +173,9 @@ render_player_course_card:
 	ldx	#<(render_player_tile_stand_small-render_player_tile_data)
 	ldy	#PLAYER_ROW_COUNT
 	jsr	render_player_tiles
-	lda	OAM_DMA_BUFFER+(OBJ_SIZE*9)+OBJ_ATTR
+	lda	oam_buffer+(OBJ_SIZE*9)+OBJ_ATTR
 	ora	#obj_attr::h_flip
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*8)+OBJ_ATTR
+	sta	oam_buffer+(OBJ_SIZE*8)+OBJ_ATTR
 	rts
 ; ------------------------------------------------------------
 render_player_tiles_init:
@@ -407,22 +407,22 @@ render_player_tiles_mirror:
 	cmp	#<(render_player_tile_stand_large-render_player_tile_data)
 	bne	:+++ ; if ((this.proc_id == death) || (render_player_spr_group.in(crouch, stand))) {
 		: ; if (this.proc_id == death) {
-			lda	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
+			lda	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 			and	#<~(obj_attr::v_flip|obj_attr::h_flip)
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*4)+OBJ_ATTR, y
-			lda	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+			sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
+			lda	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 			and	#<~(obj_attr::v_flip|obj_attr::h_flip)
 			ora	#obj_attr::h_flip
-			sta	OAM_DMA_BUFFER+(OBJ_SIZE*5)+OBJ_ATTR, y
+			sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 		: ; }
 
-		lda	OAM_DMA_BUFFER+(OBJ_SIZE*6)+OBJ_ATTR, y
+		lda	oam_buffer+(OBJ_SIZE*6)+OBJ_ATTR, y
 		and	#<~(obj_attr::v_flip|obj_attr::h_flip)
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*6)+OBJ_ATTR, y
-		lda	OAM_DMA_BUFFER+(OBJ_SIZE*7)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*6)+OBJ_ATTR, y
+		lda	oam_buffer+(OBJ_SIZE*7)+OBJ_ATTR, y
 		and	#<~(obj_attr::v_flip|obj_attr::h_flip)
 		ora	#obj_attr::h_flip
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*7)+OBJ_ATTR, y
+		sta	oam_buffer+(OBJ_SIZE*7)+OBJ_ATTR, y
 	: ; }
 
 	rts

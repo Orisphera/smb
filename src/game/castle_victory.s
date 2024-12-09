@@ -618,7 +618,7 @@ victory_84CF:
 			ldx	#(pal_8492_end-pal_8492)-1
 			: ; for (color of pal_8492) {
 				lda	pal_8492, x
-				sta	nmi_list_0_data+0, x
+				sta	ppu_displist_0_data+0, x
 
 				dex
 				bpl	:-
@@ -628,7 +628,7 @@ victory_84CF:
 			ldy	VS_RAM_ARENA0+$22
 			: ; for (x = 12; x > 0; x -= 4) {
 				lda	pal_84A6, y
-				sta	nmi_list_0_data+3, x
+				sta	ppu_displist_0_data+3, x
 
 				dex
 				dex
@@ -652,7 +652,7 @@ victory_8526:
 	ldx	#(ppu_84AA_end-ppu_84AA)-1
 	: ; for (entry of ppu_84AA) {
 		lda	ppu_84AA, x
-		sta	nmi_list_0_data, x
+		sta	ppu_displist_0_data, x
 		dex
 		bpl	:-
 	; }
@@ -1037,20 +1037,20 @@ screen_score_disp:
 	sbc	#PPU_CHR_HEIGHT_PX
 	jsr	render_set_two_sprites_v
 	lda	screen_score_pos_x, x
-	sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+	sta	oam_buffer+OBJ_POS_H, y
 	clc
 	adc	#PPU_CHR_HEIGHT_PX
-	sta	OAM_DMA_BUFFER+OBJ_POS_H+OBJ_SIZE, y
+	sta	oam_buffer+OBJ_POS_H+OBJ_SIZE, y
 	lda	#(obj_attr::priority_high|obj_attr::color2)
-	sta	OAM_DMA_BUFFER+OBJ_ATTR, y
-	sta	OAM_DMA_BUFFER+OBJ_ATTR+OBJ_SIZE, y
+	sta	oam_buffer+OBJ_ATTR, y
+	sta	oam_buffer+OBJ_ATTR+OBJ_SIZE, y
 	lda	screen_score_ctl, x
 	asl	a
 	tax
 	lda	screen_score_disp_tiles, x
-	sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+	sta	oam_buffer+OBJ_CHR_NO, y
 	lda	screen_score_disp_tiles+1, x
-	sta	OAM_DMA_BUFFER+OBJ_CHR_NO+OBJ_SIZE, y
+	sta	oam_buffer+OBJ_CHR_NO+OBJ_SIZE, y
 	ldx	actor_index
 
 screen_score_disp_end:

@@ -301,30 +301,30 @@ render_chr_pair_do:
 	lsr	a
 	lda	render_chr_pair_tile_left
 	bcc	:+ ; if (render_chr_pair_color_mod_2) {
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 		lda	render_chr_pair_tile_right
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_CHR_NO, y
 		lda	#obj_attr::h_flip
 
 		bne	:++
 	: ; } else {
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*0)+OBJ_CHR_NO, y
 		lda	render_chr_pair_tile_right
-		sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_CHR_NO, y
+		sta	oam_buffer+(OBJ_SIZE*1)+OBJ_CHR_NO, y
 		lda	#obj_attr::no_flip
 	: ; }
 
 	ora	render_chr_pair_attr
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_ATTR, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_ATTR, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_ATTR, y
 	lda	render_chr_pair_pos_y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_V, y
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_V, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_V, y
 	lda	render_chr_pair_pos_x
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*0)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*0)+OBJ_POS_H, y
 	clc
 	adc	#PPU_CHR_WIDTH_PX
-	sta	OAM_DMA_BUFFER+(OBJ_SIZE*1)+OBJ_POS_H, y
+	sta	oam_buffer+(OBJ_SIZE*1)+OBJ_POS_H, y
 	lda	render_chr_pair_pos_y
 	clc
 	adc	#PPU_CHR_HEIGHT_PX

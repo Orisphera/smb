@@ -79,13 +79,13 @@ bg_scenery_wind_proc:
 		ldy	obj_data_offset_leaf
 		: ; for (frame of this.frames) {
 			lda	bg_scenery_wind_leaf_pos_y, x
-			sta	OAM_DMA_BUFFER+OBJ_POS_V, y
+			sta	oam_buffer+OBJ_POS_V, y
 			lda	bg_scenery_wind_leaf_chr, x
-			sta	OAM_DMA_BUFFER+OBJ_CHR_NO, y
+			sta	oam_buffer+OBJ_CHR_NO, y
 			lda	#obj_attr::h_flip|obj_attr::color1
-			sta	OAM_DMA_BUFFER+OBJ_ATTR, y
+			sta	oam_buffer+OBJ_ATTR, y
 			lda	bg_scenery_wind_leaf_pos_x, x
-			sta	OAM_DMA_BUFFER+OBJ_POS_H, y
+			sta	oam_buffer+OBJ_POS_H, y
 			iny
 			iny
 			iny
