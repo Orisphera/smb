@@ -22,9 +22,6 @@ CHR_PATH_NSM="chr.ann"
 
 mkdir -p data/chr2.ann data/${CHR_PATH_BASE} data/${CHR_PATH_VS} data/${CHR_PATH_SMB2} data/${CHR_PATH_NSM}
 
-# KYODAKU-
-dd if=$1 bs=1 skip=91 count=224 >data/security.bin
-
 # CHR Common
 TILE_SIZE=16
 BG_BANK=256

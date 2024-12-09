@@ -21,9 +21,6 @@ CHR_PATH_SMB2="chr.smb2"
 
 mkdir -p data/chr2.smb2 data/${CHR_PATH_BASE} data/${CHR_PATH_SMB2} data/${CHR_PATH_VS} 
 
-# KYODAKU-
-dd if=$1 bs=1 skip=91 count=224 >data/security.bin
-
 # CHR Common
 TILE_SIZE=16
 BG_BANK=256
