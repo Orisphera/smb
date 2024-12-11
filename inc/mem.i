@@ -32,10 +32,10 @@ render_chr_pair_attr	= zp_byte_04
 gfx_clear_put_do_addr	= zp_addr_04
 zp_byte_05		= $05
 render_chr_pair_pos_x	= zp_byte_05
-zp_byte_06		= $06
 game_buffer		= $06
-zp_addr_06		= $06
+zp_byte_06		= $06
 zp_byte_07		= $07
+bg_proc_metatile_id	= zp_byte_07
 ; --------------
 actor_index		= zp_byte_07+1
 frame_count		= actor_index+1

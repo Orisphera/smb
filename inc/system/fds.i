@@ -275,7 +275,7 @@ fdsbios_rand		= $E9B1
 ;	a
 fdsbios_set_obj_dma	= $E9C8
 
-fdsbios_work_tbl_80_dec	= $E9D3
+fdsbios_timers_tick	= $E9D3
 
 fdsbios_joypad_read	= $EA1F
 	.enum	fds_joypad_button

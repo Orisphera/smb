@@ -137,12 +137,23 @@ GAME_INIT_OBJS	=	src/game/init.o
 PLAYER_LO_OBJS	=	src/obj/player/init.o \
 			src/obj/player/lifedown.o
 
-GAME_PROC_OBJS	=	src/game/game_over.o \
-			src/game/bg.o
+GAME_PROC_OBJS	=	src/game/game_over.o
+
+BG_OBJS		= 	src/obj/bg/bg.o \
+			src/obj/bg/coinrow.o \
+			src/obj/bg/castle_bridge.o \
+			src/obj/bg/brick.o \
+			src/obj/bg/cannon.o \
+			src/obj/bg/stairs.o \
+			src/obj/bg/spring.o \
+			src/obj/bg/block.o \
+			src/obj/bg/pit.o \
+			src/obj/bg/render.o
 
 GAME_OBJS	=	$(GAME_INIT_OBJS) \
 			$(PLAYER_LO_OBJS) \
-			$(GAME_PROC_OBJS)
+			$(GAME_PROC_OBJS) \
+			$(BG_OBJS)
 
 COURSE_LOOP_OBJS =	data/course_scenery_loop_offsets.o
 

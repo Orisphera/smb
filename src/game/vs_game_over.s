@@ -83,14 +83,14 @@ sub_9945:
 	lda	data_9931, y
 	sta	zp_addr_00
 	lda	data_993B, y
-	sta	zp_addr_06
+	sta	game_buffer
 	clc
 	adc	#<(VS_RAM_ARENA0+$1D)
 	sta	zp_byte_02
 	lda	#>(VS_RAM_ARENA0)
 	sta	zp_addr_00+1
 	sta	zp_addr_02+1
-	sta	zp_addr_06+1
+	sta	game_buffer+1
 	rts
 ; ----------------------------
 sub_995D:
@@ -169,7 +169,7 @@ sub_995D:
                 ldy	#2-1
                 : ; for (y = 2-1; y >= 0; y--) {
                         lda	(zp_addr_ED), y
-                        sta	(zp_addr_06), y
+                        sta	(game_buffer), y
 
                         dey
                         bpl	:-
@@ -207,12 +207,12 @@ sub_995D:
 	lda	course_no
 	clc
 	adc	#1
-	sta	(zp_addr_06), y
+	sta	(game_buffer), y
 	iny
 	lda	player_goals
 	clc
 	adc	#1
-	sta	(zp_addr_06), y
+	sta	(game_buffer), y
 	jsr	sub_9919
 	rts
 ; ----------------------------
@@ -242,7 +242,7 @@ data_9A2F:
 ; ----------------------------
 sub_9A32:
         ldy	#0
-	lda	(zp_addr_06), y
+	lda	(game_buffer), y
 	sta	ppu_displist_0_data, x
 	inx
 	lda	#$20
@@ -252,7 +252,7 @@ sub_9A32:
 	sta	ppu_displist_0_data, x
 	inx
 	iny
-	lda	(zp_addr_06), y
+	lda	(game_buffer), y
 	sta	ppu_displist_0_data, x
 	inx
 	rts
@@ -689,7 +689,7 @@ vs_game_over_joypad_get:
 ; ----------------------------
 	.export	sub_9D62
 sub_9D62:
-	ldy	zp_addr_04
+	ldy	zp_byte_04
 	jsr	sub_9945
 	lda	data_9E15, y
 	sta	nmi_addr_1D, x
@@ -703,7 +703,7 @@ sub_9D62:
 	iny
 	tya
 	cmp	#$0A
-	bne	:+ ; if (++zp_addr_04 == 0x0A) {
+	bne	:+ ; if (++zp_byte_04 == 0x0A) {
 		lda	#1
 		sta	nmi_addr_1D, x
 		inx
@@ -735,7 +735,7 @@ sub_9D62:
 
 	jsr	sub_9DEA
 	ldy	#0
-	lda	(zp_addr_06), y
+	lda	(game_buffer), y
 	sta	nmi_addr_1D, x
 	inx
 	lda	#$20
@@ -745,7 +745,7 @@ sub_9D62:
 	sta	nmi_addr_1D, x
 	inx
 	iny
-	lda	(zp_addr_06), y
+	lda	(game_buffer), y
 	sta	nmi_addr_1D, x
 	inx
 	jsr	sub_9DEA_b
@@ -769,7 +769,7 @@ sub_9D62:
 		bne	:-
 	; }
 
-	inc	zp_addr_04
+	inc	zp_byte_04
 	rts
 ; --------------------------------
 sub_9DEA:

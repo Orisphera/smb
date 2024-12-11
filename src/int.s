@@ -288,7 +288,7 @@ nmi_apu_call:
 	.endif
 
 	jsr	stats_score_hi_check
-
+; -----------------------------
 	.if	.defined(CONS)
 	lda	nmi_pause_flag
 	lsr	a
@@ -299,6 +299,7 @@ nmi_apu_call:
 		dec	game_timer_stop
 		bne	:+++++
 		: ; if (game_timer_stop-- <= 0) {
+		nmi_timers_tick:
 			ldx	#(timer_scroll-timers_nmi)-1
 
 			dec	timer_nmi_tick
@@ -322,9 +323,11 @@ nmi_apu_call:
 
 		inc	frame_count
 	: ; }
-
+; -----------------------------
+nmi_rand:
 	ldx	#0
 	ldy	#srand_end-srand
+
 	lda	srand
 	and	#%00000010
 	sta	nmi_rand_buffer
@@ -337,12 +340,12 @@ nmi_apu_call:
 	: ; }
 	: ; for (byte of srand) {
 		ror	srand, x
-		inx
 
+		inx
 		dey
 		bne	:-
 	; }
-
+; -----------------------------
 	.if	.defined(SMBV1)
 		lda	nmi_sprite_overlap
 		beq	:+++++ ; if (sprite_overlap) {
@@ -484,7 +487,7 @@ irq:
 	plp
 	cli
 	rti
-.elseif	.defined(VS_SMB)
+.elseif	.defined(VS)
 	.export irq
 irq:
 	lda	VS_SR

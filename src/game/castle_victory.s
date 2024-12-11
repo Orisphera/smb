@@ -53,19 +53,16 @@ victory_enter:
 		lda	proc_id_game
 		jsr	tbljmp
 victory_enter_tbl:
-victory_enter_bowser:
-		.addr	actor_bowser_ending
-victory_enter_init:
-		.addr	victory_init
-victory_enter_proc:
-		.addr	victory_proc
-victory_enter_msg:
-		.addr	victory_msg
-		.if	.defined(SMBV2)|.defined(VS_SMB)
-			.export victory_enter_time_tally
-		victory_enter_time_tally:
-			.addr	victory_time_tally
-		.endif
+victory_enter_bowser:		.addr	actor_bowser_ending
+victory_enter_init:		.addr	victory_init
+victory_enter_proc:		.addr	victory_proc
+victory_enter_msg:		.addr	victory_msg
+
+.if	.defined(SMBV2)|.defined(VS_SMB)
+	.export victory_enter_time_tally
+victory_enter_time_tally:	.addr	victory_time_tally
+.endif
+
 victory_enter_finish:
 		.addr	victory_finish
 		.if	.defined(VS_SMB)
@@ -74,16 +71,11 @@ victory_enter_finish:
 			.export	victory_enter_85E0
 			.export	victory_enter_864C
 			.export	victory_enter_865D
-		victory_enter_84CF:
-			.addr	victory_84CF
-		victory_enter_8526:
-			.addr	victory_8526
-		victory_enter_85E0:
-			.addr	victory_85E0
-		victory_enter_864C:
-			.addr	victory_864C
-		victory_enter_865D:
-			.addr	victory_865D
+		victory_enter_84CF:	.addr	victory_84CF
+		victory_enter_8526:	.addr	victory_8526
+		victory_enter_85E0:	.addr	victory_85E0
+		victory_enter_864C:	.addr	victory_864C
+		victory_enter_865D:	.addr	victory_865D
 		.endif
 	.if	.defined(SMBV2)
 	victory_course_08: ; } else {
@@ -105,34 +97,20 @@ victory_enter_finish:
 		lda	proc_id_game
 		jsr	tbljmp
 	victory_course_08_tbl:
-	victory_course_08_bowser:
-		.addr	actor_bowser_ending
-	victory_course_08_init:
-		.addr	victory_init
-	victory_course_08_proc:
-		.addr	victory_proc
-	victory_course_08_disk_init:
-		.addr	disk_loader_victory_init
-	victory_course_08_disk_check:
-		.addr	disk_loader_victory_check
-	victory_course_08_disk_data3:
-		.addr	disk_loader_data3
-	victory_course_08_scr:
-		.addr	ending_screen_proc
-	victory_course_08_msg:
-		.addr	ending_victory_msg
-	victory_course_08_time_tally:
-		.addr	victory_time_tally
-	victory_course_08_extra_lives:
-		.addr	ending_extra_lives
-	victory_course_08_palcycle:
-		.addr	ending_palcycle
-	victory_course_08_lives_draw:
-		.addr	ending_lives_draw
-	victory_course_08_toad_proc:
-		.addr	ending_toad_proc
-	victory_course_08_disk_save:
-		.addr	disk_loader_save
+	victory_course_08_bowser:	.addr	actor_bowser_ending
+	victory_course_08_init:		.addr	victory_init
+	victory_course_08_proc:		.addr	victory_proc
+	victory_course_08_disk_init:	.addr	disk_loader_victory_init
+	victory_course_08_disk_check:	.addr	disk_loader_victory_check
+	victory_course_08_disk_data3:	.addr	disk_loader_data3
+	victory_course_08_scr:		.addr	ending_screen_proc
+	victory_course_08_msg:		.addr	ending_victory_msg
+	victory_course_08_time_tally:	.addr	victory_time_tally
+	victory_course_08_extra_lives:	.addr	ending_extra_lives
+	victory_course_08_palcycle:	.addr	ending_palcycle
+	victory_course_08_lives_draw:	.addr	ending_lives_draw
+	victory_course_08_toad_proc:	.addr	ending_toad_proc
+	victory_course_08_disk_save:	.addr	disk_loader_save
 	; }
 	.endif
 ; -----------------------------------------------------------
@@ -928,32 +906,22 @@ screen_score_disp_incs:
 SCORE_DIGIT_PLACE_100	= (((SCORE_DIGITS_MAX-1)-2)<<4)
 SCORE_DIGIT_PLACE_1000	= (((SCORE_DIGITS_MAX-1)-3)<<4)
 
-screen_score_value_100:
-	.byte	1|SCORE_DIGIT_PLACE_100
-screen_score_value_200:
-	.byte	2|SCORE_DIGIT_PLACE_100
-screen_score_value_400:
-	.byte	4|SCORE_DIGIT_PLACE_100
-screen_score_value_500:
-	.byte	5|SCORE_DIGIT_PLACE_100
-screen_score_value_800:
-	.byte	8|SCORE_DIGIT_PLACE_100
-screen_score_value_1000:
-	.byte	1|SCORE_DIGIT_PLACE_1000
-screen_score_value_2000:
-	.byte	2|SCORE_DIGIT_PLACE_1000
-screen_score_value_4000:
-	.byte	4|SCORE_DIGIT_PLACE_1000
-screen_score_value_5000:
-	.byte	5|SCORE_DIGIT_PLACE_1000
-screen_score_value_8000:
-	.byte	8|SCORE_DIGIT_PLACE_1000
-screen_score_value_oneup:
-	.byte	0
+screen_score_value_100:		.byte	1|SCORE_DIGIT_PLACE_100
+screen_score_value_200:		.byte	2|SCORE_DIGIT_PLACE_100
+screen_score_value_400:		.byte	4|SCORE_DIGIT_PLACE_100
+screen_score_value_500:		.byte	5|SCORE_DIGIT_PLACE_100
+screen_score_value_800:		.byte	8|SCORE_DIGIT_PLACE_100
+screen_score_value_1000:	.byte	1|SCORE_DIGIT_PLACE_1000
+screen_score_value_2000:	.byte	2|SCORE_DIGIT_PLACE_1000
+screen_score_value_4000:	.byte	4|SCORE_DIGIT_PLACE_1000
+screen_score_value_5000:	.byte	5|SCORE_DIGIT_PLACE_1000
+screen_score_value_8000:	.byte	8|SCORE_DIGIT_PLACE_1000
+screen_score_value_oneup:	.byte	0
 
-	.if	.defined(VS_SMB)
-		.byte	8|SCORE_DIGIT_PLACE_1000
-	.endif
+.if	.defined(VS_SMB)
+				.byte	8|SCORE_DIGIT_PLACE_1000
+.endif
+
 screen_score_disp_incs_end:
 ; ----------------------------
 	.export screen_score_disp, screen_score_disp_end

@@ -19,32 +19,15 @@ player_alt_y:
 	.export player_start_y_B0_A, player_start_y_B0_B, player_start_y_B0_C
 	.export player_start_y_F0
 player_start_y:
-player_start_y_00_A:
-	.byte	$00
-
-player_start_y_20:
-	.byte	$20
-
-player_start_y_B0_A:
-	.byte	$B0
-
-player_start_y_50:
-	.byte	$50
-
-player_start_y_00_B:
-	.byte	$00
-
-player_start_y_00_C:
-	.byte	$00
-
-player_start_y_B0_B:
-	.byte	$B0
-
-player_start_y_B0_C:
-	.byte	$B0
-
-player_start_y_F0:
-	.byte	$F0
+player_start_y_00_A:	.byte	$00
+player_start_y_20:	.byte	$20
+player_start_y_B0_A:	.byte	$B0
+player_start_y_50:	.byte	$50
+player_start_y_00_B:	.byte	$00
+player_start_y_00_C:	.byte	$00
+player_start_y_B0_B:	.byte	$B0
+player_start_y_B0_C:	.byte	$B0
+player_start_y_F0:	.byte	$F0
 
 player_bg_priority:
 	.byte	obj_attr::priority_high|obj_attr::color0

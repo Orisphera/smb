@@ -3,6 +3,10 @@
 .include	"mem.i"
 .include	"misc.i"
 
+veloc_x_lo_motion	= zp_byte_00
+veloc_x_16x		= zp_byte_01
+veloc_x_hi_motion	= zp_byte_02
+
 	.export motion_x, motion_x_check_spring, motion_x_do
 motion_x:
 	inx
@@ -21,7 +25,7 @@ motion_x_check_spring:
 		asl	a
 		asl	a
 		asl	a
-		sta	zp_byte_01
+		sta	veloc_x_16x
 		lda	veloc_x_player, x
 		lsr	a
 		lsr	a
@@ -31,18 +35,18 @@ motion_x_check_spring:
 		bcc	:+ ; if (this.veloc_x.hi >= 8) {
 			ora	#$F0
 		: ; }
-		sta	zp_byte_00
+		sta	veloc_x_lo_motion
 	
 		ldy	#0
 		cmp	#0
-		bpl	:+ ; if (zp_byte_00 > 0) {
+		bpl	:+ ; if (veloc_x_lo_motion > 0) {
 			dey
 		: ; }
-		sty	zp_byte_02
+		sty	veloc_x_hi_motion
 
 		lda	accel_x_player, x
 		clc
-		adc	zp_byte_01
+		adc	veloc_x_16x
 		sta	accel_x_player, x
 
 		lda	#0
@@ -51,15 +55,15 @@ motion_x_check_spring:
 	
 		ror	a
 		lda	pos_x_lo_player, x
-		adc	zp_byte_00
+		adc	veloc_x_lo_motion
 		sta	pos_x_lo_player, x
 		lda	pos_x_hi_player, x
-		adc	zp_byte_02
+		adc	veloc_x_hi_motion
 		sta	pos_x_hi_player, x
 
 		pla
 		clc
-		adc	zp_byte_00
+		adc	veloc_x_lo_motion
 	: ; }
 
 	rts
@@ -199,6 +203,8 @@ motion_bounce_gravity_do:
 	ldx	actor_index
 	rts
 ; ------------------------------------------------------------
+veloc_grav_hi_player	= zp_byte_07
+
 	.export motion_gravity
 motion_gravity:
 	pha
@@ -213,11 +219,11 @@ motion_gravity:
 	bpl	:+ ; if (this.veloc_y < 0) {
 		dey
 	: ; }
-	sty	zp_byte_07
+	sty	veloc_grav_hi_player
 	adc	pos_y_lo_player, x
 	sta	pos_y_lo_player, x
 	lda	pos_y_hi_player, x
-	adc	zp_byte_07
+	adc	veloc_grav_hi_player
 	sta	pos_y_hi_player, x
 
 	lda	accel_y2_player, x

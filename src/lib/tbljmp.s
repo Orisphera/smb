@@ -1,7 +1,7 @@
 .include	"mem.i"
 
-tbljmp_tbl_ptr		= zp_addr_04
-tbljmp_target_ptr	= zp_addr_06
+tbljmp_tbl_ptr		= zp_byte_04
+tbljmp_target_ptr	= zp_byte_06
 
 	.export tbljmp
 tbljmp:
