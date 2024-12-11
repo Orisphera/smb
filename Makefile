@@ -331,15 +331,15 @@ APU_FDS_DATA_OBJS =	$(APU_FDS_OFFSET_OBJS) \
 			$(APU_FDS_MUSIC_OBJS) \
 			$(APU_FDS_MISC_OBJS)
 
-PIPE_FLIPPED_BASE_OBJS = src/game/bg_pipe_flipped_base.o \
+PIPE_FLIPPED_BASE_OBJS = src/obj/bg/bg_pipe_flipped_base.o \
 			src/obj/actor/piranha_plant_b_proc_base.o
 
-PIPE_FLIPPED_EXT_OBJS =	src/game/bg_pipe_flipped_ext.o \
+PIPE_FLIPPED_EXT_OBJS =	src/obj/bg/bg_pipe_flipped_ext.o \
 			src/obj/actor/piranha_plant_b_proc_ext.o
 
-WIND_BASE_OBJS	=	src/game/bg_wind_base.o
+WIND_BASE_OBJS	=	src/obj/bg/bg_wind_base.o
 
-WIND_EXT_OBJS	=	src/game/bg_wind_ext.o
+WIND_EXT_OBJS	=	src/obj/bg/bg_wind_ext.o
 
 HARD_MODE_SPRING_BASE_OBJS = src/game/hard_mode_spring_base.o
 
