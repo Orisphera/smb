@@ -128,7 +128,7 @@ LIB_OBJS	=	src/lib/screen.o \
 			src/lib/nt_init.o \
 			src/lib/joypad.o \
 			src/lib/ppu_displist_write.o \
-			src/lib/stats.o
+			src/game/stats.o
 
 LIB_VS_OBJS	=	src/lib/vs.o
 
@@ -272,7 +272,7 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 
 LIB_FDS_OBJS	=	src/lib/disk.o \
 			src/game/game_over_menu.o \
-			src/lib/player_phys.o
+			src/game/player_phys.o
 
 TITLE_MAP_OBJS	=	data/title_map.o
 
