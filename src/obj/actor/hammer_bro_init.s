@@ -13,16 +13,18 @@ actor_init_hammer_bro_timer:
 .endif
 ; ------------------------------
 	.export actor_init_hammer_bro
+	.export	actor_A_05_init
 actor_init_hammer_bro:
+actor_A_05_init:
 	lda	#0
 	sta	timer_hammer_throw, x
 	sta	veloc_x_actor, x
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	course_no
 		cmp	#course::no_07
 		bcs	:+
-	.endif ; if (!SMB2M || course_no < no_07) {
+	.endif ; if (!SMBV2 || course_no < no_07) {
 		.if	.defined(CONS)
 			ldy	game_hard_mode_b
 			lda	actor_init_hammer_bro_timer, y

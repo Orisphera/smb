@@ -109,7 +109,7 @@
 		.byte	>(nmi_addr_1E)
 		.byte	>(nmi_addr_1F)
 	.endif
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	nmi_addrs:
 		.addr	(ppu_displist_0_data)
 		.addr	(palette_underwater)
@@ -170,13 +170,13 @@ ppu_displist_offset:
 	.byte	<ppu_displist_0
 	.byte	<ppu_displist_1
 ; ----------------------------
-.if	.defined(SMB2M)
-	SMB2M_NMI_TIMER_3_19594_MS	= 5720
+.if	.defined(SMBV2)
+	SMBV2_NMI_TIMER_3_19594_MS	= 5720
 
 	.if	.defined(SMB2)
-		SMB2M_COURSE_NO_CUTOFF = course::no_0A
+		SMBV2_COURSE_NO_CUTOFF = course::no_0A
 	.elseif	.defined(ANN)
-		SMB2M_COURSE_NO_CUTOFF = course::no_09
+		SMBV2_COURSE_NO_CUTOFF = course::no_09
 	.endif
 .endif
 
@@ -196,20 +196,20 @@ nmi:
 		sta	ppu_ctlr0_b
 		and	#<~(ppu_ctlr0::int|ppu_ctlr0::bg_odd)
 		sta	PPU_CTLR0
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		lda	ppu_ctlr0_b
 		and	#<~(ppu_ctlr0::int|ppu_ctlr0::bg_odd)
 		sta	ppu_ctlr0_b
 		sta	PPU_CTLR0
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		sei
 		lda	nmi_sprite_overlap
 		beq	:+ ; if (sprite_overlap) {
-			lda	#<(SMB2M_NMI_TIMER_3_19594_MS)
+			lda	#<(SMBV2_NMI_TIMER_3_19594_MS)
 			sta	FDS_TIMER_DATA_LO
-			lda	#>(SMB2M_NMI_TIMER_3_19594_MS)
+			lda	#>(SMBV2_NMI_TIMER_3_19594_MS)
 			sta	FDS_TIMER_DATA_HI
 			lda	#fds_timer_ctlr::irq
 			sta	FDS_TIMER_CTLR
@@ -242,7 +242,7 @@ nmi:
 		lda	nmi_addrs_high, x
 		sta	ppu_displist_write_addr+1
 		jsr	ppu_displist_write
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		lda	nmi_buffer_ptr
 		asl	a
 		tax
@@ -268,7 +268,7 @@ nmi:
 	lda	ppu_ctlr1_b
 	sta	PPU_CTLR1
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cli
 	.endif
 
@@ -390,7 +390,7 @@ nmi_apu_call:
 	bcs	:+++ ; if (!CONS || !paused) {
 
 	.endif
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			lda	nmi_sprite_overlap
 			beq	:+ ; if (sprite_overlap) {
 				jsr	oam_init_all
@@ -398,7 +398,7 @@ nmi_apu_call:
 			: ; }
 
 			lda	course_no
-			cmp	#SMB2M_COURSE_NO_CUTOFF
+			cmp	#SMBV2_COURSE_NO_CUTOFF
 			bcc	:+ ; if (course_no >= cutoff) {
 				jsr	game_over_next_game
 			: ; }
@@ -410,8 +410,8 @@ nmi_apu_call:
 		jsr	nmi_system_enter
 	: ; }
 
-	.if	.defined(SMB2M)
-	: ; while (SMB2M && fds_sprite_overlap_hit) {
+	.if	.defined(SMBV2)
+	: ; while (SMBV2 && fds_sprite_overlap_hit) {
 		lda	fds_sprite_overlap_hit
 		bne	:-
 	; }
@@ -421,18 +421,18 @@ nmi_apu_call:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		pla
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		lda	ppu_ctlr0_b
 	.endif
 	ora	#ppu_ctlr0::int
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		sta	ppu_ctlr0_b
 	.endif
 	sta	PPU_CTLR0
 
 	rti
 ; -----------------------------------------------------------
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 	.export irq
 irq:
 	sei
@@ -624,7 +624,7 @@ nmi_system_enter_tbl:
 		.export	nmi_system_enter_title
 	nmi_system_enter_title:
 		.addr	sys_title
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.export	nmi_system_enter_disk_loader
 	nmi_system_enter_disk_loader:
 		.addr	sys_disk_loader

@@ -11,7 +11,9 @@ actor_proc_lakitu_data:
 	.byte	$15, $30, $40
 ; -----------------------------
 	.export actor_proc_lakitu, actor_proc_lakitu_spiny
+	.export	actor_A_11_proc
 actor_proc_lakitu:
+actor_A_11_proc:
 	lda	state_actor, x
 	and	#actor_states::bit_5
 	beq	:+ ; if (actor.state & 0x20) {

@@ -15,11 +15,11 @@ APU_NOISE_LEN_WIND		= 192
 
 	.include	"../data/apu/periods_block_break.s"
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 	.include	"../data/apu/notes_skid.s"
 	.endif
 ; --------------
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 apu_skid:
 	sty	apu_sfx_noise_current
 	lda	#APU_NOISE_LEN_SKID
@@ -37,7 +37,7 @@ apu_skid_continued:
 .endif
 ; --------------
 apu_block_break:
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		sty	apu_sfx_noise_current
 	.endif
 
@@ -63,7 +63,7 @@ apu_sfx_noise_continued:
 		lda	#NOISE_VOL_HI_BITS|channel_vol::counter_halt|channel_vol::constant_vol|0
 		sta	NOISE_VOL
 
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			lda	#0
 			sta	TRIANGLE_VOL
 		.endif
@@ -96,7 +96,7 @@ apu_sfx_noise_play:
 			lsr	a
 			bcs	apu_flame_continued
 		: ; }
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		bmi	apu_skid_continued
 		ldy	apu_sfx_noise_req
 		bmi	apu_skid
@@ -120,7 +120,7 @@ apu_sfx_noise_play:
 	rts
 ; ------------------------------------------------------------
 apu_flame:
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		sty	apu_sfx_noise_current
 	.endif
 

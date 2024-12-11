@@ -5,7 +5,9 @@
 KOOPA_GREEN_FLY_OFFSET_Y_ABS	= 1
 ; -----------------------------------------------------------
 	.export actor_proc_koopa_red_fly
+	.export	actor_A_0F_proc
 actor_proc_koopa_red_fly:
+actor_A_0F_proc:
 	lda	veloc_y_actor, x
 	ora	accel_y2_actor, x
 	bne	:++
@@ -33,7 +35,9 @@ actor_proc_koopa_red_fly:
 actor_proc_koopa_green_fly_y_offset	= zp_byte_00
 
 	.export actor_proc_koopa_green_fly
+	.export	actor_A_10_proc
 actor_proc_koopa_green_fly:
+actor_A_10_proc:
 	jsr	actor_floater_koopa
 	jsr	actor_floater_move
 

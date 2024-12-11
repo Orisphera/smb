@@ -8,7 +8,9 @@ actor_proc_spring_pos_y:
 	.byte	8, 16, 8, 0
 ; -----------------------------
 	.export actor_proc_spring
+	.export	actor_B_1D_proc
 actor_proc_spring:
+actor_B_1D_proc:
 	jsr	pos_bits_get_actor
 
 	lda	game_timer_stop
@@ -40,7 +42,7 @@ actor_proc_spring:
 		beq	actor_proc_spring_skip_accel
 		and	joypad_a_b_held
 		bne	actor_proc_spring_skip_accel ; if ((player.on_spring - 1) >= 1 && (joypad_a_b & 0x80) && !(joypad_a_b & joypad_a_b_held 0x80)) {
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				tya
 				pha
 			.endif
@@ -54,7 +56,7 @@ actor_proc_spring:
 				beq	:+
 				cpy	#course::no_07
 				bne	:++
-				: ; if (SMB2M && course_no.in(2, 3, 7)) {
+				: ; if (SMBV2 && course_no.in(2, 3, 7)) {
 					lda	#SPRING_SPECIAL_ACCEL_Y
 				: ; }
 			.elseif	.defined(ANN)
@@ -65,7 +67,7 @@ actor_proc_spring:
 			.endif
 			sta	accel_y_spring
 
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				pla
 				tay
 			.endif

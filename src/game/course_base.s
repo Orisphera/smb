@@ -10,7 +10,7 @@
 .endif
 .endif
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 	.include	"../../data/courses/smb/overworld_10_actor.s"
 
 .if	.defined(SMB2)

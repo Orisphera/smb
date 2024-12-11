@@ -9,7 +9,15 @@ PIRANHA_PLANT_COL_BOX		= col_boxes::box_9
 actor_init_piranha_plant_attr	= zp_byte_00
 
 	.export actor_init_piranha_plant
+	.export	actor_A_0D_init
 actor_init_piranha_plant:
+actor_A_0D_init:
+
+.if	.defined(SMBV2)
+	.export	actor_A_04_init
+actor_A_04_init:
+.endif
+
 	.if	.defined(SMB2)
 	        lda     #obj_attr::priority_low|obj_attr::color2
 	        sta     actor_init_piranha_plant_attr

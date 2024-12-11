@@ -129,7 +129,7 @@ player_proc_init:
 		.endif
 		: lda	#1
 		sta	stats_time_end-STATS_TIME_LEN+2
-		.if	.defined(SMB)|.defined(SMB2M)
+		.if	.defined(SMB)|.defined(SMBV2)
 			lsr	a
 			sta	stats_time_end-STATS_TIME_LEN+1
 		.elseif	.defined(VS_SMB)

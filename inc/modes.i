@@ -6,7 +6,7 @@ MODES_I = 1
 	.enum	system_modes
 		.if	.defined(SMB)|.defined(VS_SMB)
 			title		= <((nmi_system_enter_title-nmi_system_enter_tbl)/WORD_SIZE)
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			disk_loader	= <((nmi_system_enter_disk_loader-nmi_system_enter_tbl)/WORD_SIZE)
 		.endif
 
@@ -42,7 +42,7 @@ MODES_I = 1
 	.enum	game_modes
 		.if	.defined(VS_SMB)
 			vs_init	= <((game_mode_vs_init-game_mode_tbl)/WORD_SIZE)
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			init_data2	= <((game_mode_init_data2-game_mode_tbl)/WORD_SIZE)
 		.endif
 
@@ -60,7 +60,7 @@ MODES_I = 1
 		init	= init_0
 		.elseif	.defined(VS_SMB)
 		init	= vs_init
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 		init	= init_data2
 		.endif
 	.endenum
@@ -71,7 +71,7 @@ MODES_I = 1
 		proc		= <((victory_enter_proc-victory_enter_tbl)/WORD_SIZE)
 		msg		= <((victory_enter_msg-victory_enter_tbl)/WORD_SIZE)
 
-		.if	.defined(SMB2M)|.defined(VS_SMB)
+		.if	.defined(SMBV2)|.defined(VS_SMB)
 			time_tally		= <((victory_enter_time_tally-victory_enter_tbl)/WORD_SIZE)
 		.endif
 
@@ -86,7 +86,7 @@ MODES_I = 1
 		.endif
 	.endenum
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.enum	castle_victory_modes_course_08
 			bowser		= <((victory_course_08_bowser-victory_course_08_tbl)/WORD_SIZE)
 			init		= <((victory_course_08_init-victory_course_08_tbl)/WORD_SIZE)

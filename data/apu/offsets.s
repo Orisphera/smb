@@ -13,7 +13,7 @@ apu_music_offsets:
 	.byte	apu_music_game_over-apu_music_offsets
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	apu_music_victory_ending-apu_music_offsets
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	apu_music_game_over-apu_music_offsets
 	.endif
 	.byte	apu_music_victory_castle-apu_music_offsets

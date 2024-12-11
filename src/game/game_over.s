@@ -42,7 +42,7 @@ game_over_init:
 	sta	screen_proc_id
 	sta	nmi_sprite_overlap
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 	sta	game_over_choice
 .endif
 
@@ -74,7 +74,7 @@ game_over_proc:
 	lda	joypad_p1
 	and	#joypad_button::start
 	bne	game_over_next_game
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	.if	.defined(SMB2)
 	lda     course_no
 	cmp     #course::no_09

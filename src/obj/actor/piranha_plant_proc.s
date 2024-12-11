@@ -16,7 +16,9 @@ actor_proc_piranha_plant_pos_y		= zp_byte_00
 
 	.export actor_proc_piranha_plant
 	.export actor_proc_piranha_plant_smb2_cmp
+	.export	actor_A_0D_proc
 actor_proc_piranha_plant:
+actor_A_0D_proc:
 	lda	state_actor, x
 	bne	:++++++
 	lda	timer_ani_actor, x

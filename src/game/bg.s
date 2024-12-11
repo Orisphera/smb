@@ -894,7 +894,7 @@ bg_scenery_decode_rts:
 	.export	bg_obj_tbl_stairs
 	.export	bg_obj_tbl_pipe_exit
 	.export	bg_obj_tbl_pole_tip
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.export	bg_obj_tbl_pipe_v_flip_a
 		.export	bg_obj_tbl_pipe_v_flip_b
 	.endif
@@ -908,7 +908,7 @@ bg_scenery_decode_rts:
 		.export bg_obj_tbl_block_q_f
 		.export bg_obj_tbl_block_item_e
 	.endif
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.export bg_obj_tbl_block_q_e
 	.endif
 	.export	bg_obj_tbl_hidden_one_up
@@ -1008,7 +1008,7 @@ bg_obj_tbl_pipe_exit:
 bg_obj_tbl_pole_tip:
 	.addr	bg_scenery_pole_tip
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 	bg_obj_tbl_pipe_v_flip_a:
 		.addr	bg_scenery_pipe_v_flip_a
 	bg_obj_tbl_pipe_v_flip_b:
@@ -1033,7 +1033,7 @@ bg_obj_tbl_block_q_c:
 bg_obj_tbl_hidden_one_up:
 	.addr	bg_scenery_hidden_one_up
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 	bg_obj_tbl_block_q_e:
 		.addr	bg_scenery_block_q
 	.endif
@@ -1144,7 +1144,7 @@ bg_scenery_set_attr:
 bg_scenery_lock_warp:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldx	#4
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		ldx	#$80
 		lda	ENG_HARDMODE_VAR
 		bne	bg_scenery_lock_warp_hard_mode
@@ -1230,7 +1230,7 @@ bg_scenery_lock_warp:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		jsr	screen_text_draw
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		jsr	screen_text_draw_over
 	.endif
 
@@ -1665,7 +1665,7 @@ bg_scenery_pipe_vert:
 		.if	.defined(SMB)|.defined(VS_SMB)
 			sta	obj_id_actor, x
 			jsr	actor_init_piranha_plant
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			jsr	bg_scenery_pipe_vert_plant
 		.endif
 	: ; }
@@ -1692,7 +1692,7 @@ bg_scenery_pipe_h:
 	ldy	scenery_length, x
 	rts
 ; -------------
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 	.export	bg_scenery_pipe_vert_plant
 bg_scenery_pipe_vert_plant:
 	sta	obj_id_actor, x
@@ -1996,7 +1996,7 @@ bg_scenery_stairs:
 bg_scenery_spring:
 	jsr	bg_scenery_attr
 	jsr	bg_obj_alloc
-		.if	.defined(VS_SMB)|.defined(SMB2M)|.defined(PAL)
+		.if	.defined(VS_SMB)|.defined(SMBV2)|.defined(PAL)
 		bcs	:+ ; if () {
 		.endif
 		jsr	bg_objpos_x_get
@@ -2016,7 +2016,7 @@ bg_scenery_spring:
 		sta	gfx_metatile, x
 		lda	#metatile_1::spring_bg_b
 		sta	gfx_metatile+1, x
-		.if	.defined(VS_SMB)|.defined(SMB2M)|.defined(PAL)
+		.if	.defined(VS_SMB)|.defined(SMBV2)|.defined(PAL)
 		: ; }
 		.endif
 	rts

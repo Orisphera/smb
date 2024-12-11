@@ -16,7 +16,7 @@ stats_time_proc:
 	cmp	#2
 	.if	.defined(SMB)|.defined(VS_SMB)
 	bcs	:++++
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 	bpl	:++++
 	.endif
 	lda	timer_game_ctrl
@@ -64,7 +64,9 @@ stats_time_proc_rts:
 	rts
 ; ------------------------------------------------------------
 	.export actor_proc_warp
+	.export	actor_B_1F_proc
 actor_proc_warp:
+actor_B_1F_proc:
 	lda	game_scroll_lock
 	beq	stats_time_proc_rts
 	lda	pos_y_lo_player
@@ -72,7 +74,7 @@ actor_proc_warp:
 	bne	stats_time_proc_rts ; if (scroll_lock && this.pos_y == 0) {
 		sta	game_scroll_lock
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			inc	game_warp_ctrl
 		.endif
 

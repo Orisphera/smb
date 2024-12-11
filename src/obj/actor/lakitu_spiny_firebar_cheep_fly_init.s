@@ -16,7 +16,7 @@ SPINY_VELOC_Y			= <-3
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	LAKITU_SPAWN_TIME		= 7
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	LAKITU_SPAWN_TIME		= 3
 .endif
 
@@ -27,7 +27,9 @@ FIREBAR_OFFSET_Y	= FIREBAR_OFFSET
 CHEEP_FLY_COUNT_BASE	= 3
 ; -----------------------------------------------------------
 	.export actor_init_lakitu
+	.export	actor_A_11_init
 actor_init_lakitu:
+actor_A_11_init:
 	lda	actor_swarm_buffer
 	bne	:+ ; if (!actor_swarm_buffer) {
 	actor_init_lakitu_do:
@@ -84,7 +86,7 @@ actor_init_lakitu_spiny:
 					jsr	actor_init_lakitu_do
 					lda	#LAKITU_OFFSET_X
 
-					.if	.defined(SMB2M)
+					.if	.defined(SMBV2)
 						ldy	ENG_HARDMODE_VAR
 
 						.if	.defined(SMB2)
@@ -198,10 +200,18 @@ firebar_rot_dir:
 	.byte	firebar_rot_dir::cw
 ; ------------------------------
 	.export actor_init_firebar_long, actor_init_firebar_short
+	.export	actor_B_06_init, actor_B_07_init
+	.export	actor_B_08_init, actor_B_09_init
+	.export	actor_B_0A_init
 actor_init_firebar_long:
+actor_B_0A_init:
 	jsr	actor_init_dup
 ; ------------------------------
 actor_init_firebar_short:
+actor_B_06_init:
+actor_B_07_init:
+actor_B_08_init:
+actor_B_09_init:
 	lda	#0
 	sta	veloc_x_actor, x
 	lda	obj_id_actor, x

@@ -36,7 +36,7 @@ misc_proc_coin_add:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldx	player_id
 		ldy	misc_coin_coin_players, x
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		ldy	#(stats_coin_player_end-stats_tbl)-1
 	.endif
 	jsr	stats_calc
@@ -80,7 +80,7 @@ misc_proc_coin_update_score:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldx	player_id
 		ldy	misc_coin_score_players, x
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		ldy	#(stats_score_player_end-stats_tbl)-1
 	.endif
 	jsr	stats_calc
@@ -89,7 +89,7 @@ misc_proc_coin_update_stats:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ldy	player_id
 		lda	misc_coin_stats_players, y
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		lda	#(stats::score_player_a)|(stats::coin_player_a)
 	.endif
 

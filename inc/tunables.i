@@ -185,7 +185,7 @@ VICTORY_TICK		= 4
 	VICTORY_MSG_BOUND_HI	= 9
 
 	VICTORY_TIMER_SET	= 6
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	VICTORY_MSG_TOAD	= 1
 	VICTORY_MSG_ENDING	= 2
 	VICTORY_NOTICK_END	= 3
@@ -210,7 +210,7 @@ VICTORY_TICK		= 4
 .elseif	.defined(VS_SMB)
 	ENG_HARDMODE_B_COURSE	= course::no_04
 	ENG_HARDMODE_B_GOAL	= 1
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	ENG_HARDMODE_B_COURSE	= course::no_04
 	ENG_HARDMODE_B_GOAL	= 3
 .endif
@@ -320,5 +320,8 @@ BLOCK_INVIS_COUNTING_VAL        = 1
 SCENERY_ACTIVE_MAX	= 3
 
 SRAND_SIZE	= 7
+
+ACTOR_A_COUNT	= 21
+ACTOR_B_COUNT	= 33
 
 .endif	; TUNABLES_I

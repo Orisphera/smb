@@ -94,7 +94,7 @@ COL_BOX_SIZE	= 4
 		firefl
 		star
 		mushroom_oneup
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			mushroom_poison
 			type_05
 		.endif
@@ -209,7 +209,7 @@ COL_BOX_SIZE	= 4
 			msg_ty_princess2
 			msg_addr_worldsel_1
 			msg_addr_worldsel_2
-		.elseif	.defined(VS_SMB)|.defined(SMB2M)
+		.elseif	.defined(VS_SMB)|.defined(SMBV2)
 			ending_attr
 			ending_pal
 			msg_ty_mario_2
@@ -243,7 +243,7 @@ COL_BOX_SIZE	= 4
 			addr_1F
 		.endif
 
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			disk_text_error_buffer
 			disk_perror_pal
 			ending_throneroom_map
@@ -262,95 +262,94 @@ COL_BOX_SIZE	= 4
 	.endenum
 
 	.enum	actor
-		koopa_green	= $00
+		koopa_green	= <((actor_init_A_tbl_00-actor_init_tbl)/WORD_SIZE)
 
-		koopa_mask	= $01
+		koopa_mask	= <((actor_init_A_tbl_01-actor_init_tbl)/WORD_SIZE)
 
-		buzzy_beetle	= $02
-		koopa_red	= $03
+		buzzy_beetle	= <((actor_init_A_tbl_02-actor_init_tbl)/WORD_SIZE)
+		koopa_red	= <((actor_init_A_tbl_03-actor_init_tbl)/WORD_SIZE)
 
-		koopa_cutoff	= $04
+		koopa_cutoff	= <((actor_init_A_tbl_04-actor_init_tbl)/WORD_SIZE)
 
-		.if		.defined(SMB)|.defined(VS_SMB)
-		actor_04	= $04
-		.elseif	.defined(SMB2M)
-		piranha_plant_b	= $04
+		.if	.defined(SMBV2)
+			piranha_plant_b	= koopa_cutoff
 		.endif
 
-		hammer_bro	= $05
-		goomba		= $06
+		hammer_bro	= <((actor_init_A_tbl_05-actor_init_tbl)/WORD_SIZE)
+		goomba		= <((actor_init_A_tbl_06-actor_init_tbl)/WORD_SIZE)
 
-		blooper		= $07
-		bullet_swarm	= $08
+		blooper		= <((actor_init_A_tbl_07-actor_init_tbl)/WORD_SIZE)
+		bullet_swarm	= <((actor_init_A_tbl_08-actor_init_tbl)/WORD_SIZE)
 
-		div_height	= $09
+		div_height	= <((actor_init_A_tbl_09-actor_init_tbl)/WORD_SIZE)
 
-		cheep		= $0A
-		cheep_grey	= $0A
-		cheep_red	= $0B
+		cheep_grey	= <((actor_init_A_tbl_0A-actor_init_tbl)/WORD_SIZE)
+		cheep_red	= <((actor_init_A_tbl_0B-actor_init_tbl)/WORD_SIZE)
+		cheep		= cheep_grey
 
-		podoboo		= $0C
-		piranha_plant	= $0D
-		koopa_para_jump_green = $0E
-		koopa_para_fly_red = $0F
-		koopa_para_fly_green = $10
-		lakitu		= $11
+		podoboo		= <((actor_init_A_tbl_0C-actor_init_tbl)/WORD_SIZE)
+		piranha_plant	= <((actor_init_A_tbl_0D-actor_init_tbl)/WORD_SIZE)
+		koopa_para_jump_green = <((actor_init_A_tbl_0E-actor_init_tbl)/WORD_SIZE)
+		koopa_para_fly_red = <((actor_init_A_tbl_0F-actor_init_tbl)/WORD_SIZE)
+		koopa_para_fly_green = <((actor_init_A_tbl_10-actor_init_tbl)/WORD_SIZE)
+		lakitu		= <((actor_init_A_tbl_11-actor_init_tbl)/WORD_SIZE)
 
-		swarm_start	= $12
-		spiny		= $12
+		spiny		= <((actor_init_A_tbl_12-actor_init_tbl)/WORD_SIZE)
 
-		cheep_fly	= $14
+		cheep_fly	= <((actor_init_A_tbl_14-actor_init_tbl)/WORD_SIZE)
+		swarm_start	= spiny
 
-		actors_page_b	= $15
-		bowser_flame	= $15
-		fireworks	= $16
-		bullet_cheep_swarm = $17
-		swarm_stop	= $18
+		bowser_flame	= <((actor_init_B_tbl_00-actor_init_tbl)/WORD_SIZE)
+		actors_page_b	= bowser_flame
+		fireworks	= <((actor_init_B_tbl_01-actor_init_tbl)/WORD_SIZE)
+		bullet_cheep_swarm = <((actor_init_B_tbl_02-actor_init_tbl)/WORD_SIZE)
 
-		spring_ani_a	= $18
-		spring_ani_b	= $19
-		spring_ani_c	= $1A
+		spring_ani_a	= <((actor_init_B_tbl_03-actor_init_tbl)/WORD_SIZE)
+		swarm_stop	= spring_ani_a
+		spring_ani_b	= <((actor_init_B_tbl_04-actor_init_tbl)/WORD_SIZE)
+		spring_ani_c	= <((actor_init_B_tbl_05-actor_init_tbl)/WORD_SIZE)
 
-		firebar_start	= $1B
-		firebar_clock_slow = $1B
-		firebar_clock_fast = $1C
-		firebar_counter_slow = $1D
-		firebar_counter_fast = $1E
-		firebar_long	= $1F
-		firebar_end	= $20
+		firebar_clock_slow = <((actor_init_B_tbl_06-actor_init_tbl)/WORD_SIZE)
+		firebar_start	= firebar_clock_slow
+		firebar_clock_fast = <((actor_init_B_tbl_07-actor_init_tbl)/WORD_SIZE)
+		firebar_counter_slow = <((actor_init_B_tbl_08-actor_init_tbl)/WORD_SIZE)
+		firebar_counter_fast = <((actor_init_B_tbl_09-actor_init_tbl)/WORD_SIZE)
+		firebar_long	= <((actor_init_B_tbl_0A-actor_init_tbl)/WORD_SIZE)
+		firebar_end	= firebar_long+1
 
-		plat_start	= $24
-		plat_bal	= $24
-		plat_std_v	= $25
-		plat_l_up	= $26
-		plat_l_down	= $27
-		plat_std_h	= $28
-		plat_drop	= $29
-		plat_std_h_b	= $2A
+		plat_bal	= <((actor_init_B_tbl_0F-actor_init_tbl)/WORD_SIZE)
+		plat_start	= plat_bal
+		plat_std_v	= <((actor_init_B_tbl_10-actor_init_tbl)/WORD_SIZE)
+		plat_l_up	= <((actor_init_B_tbl_11-actor_init_tbl)/WORD_SIZE)
+		plat_l_down	= <((actor_init_B_tbl_12-actor_init_tbl)/WORD_SIZE)
+		plat_std_h	= <((actor_init_B_tbl_13-actor_init_tbl)/WORD_SIZE)
+		plat_drop	= <((actor_init_B_tbl_14-actor_init_tbl)/WORD_SIZE)
+		plat_std_h_b	= <((actor_init_B_tbl_15-actor_init_tbl)/WORD_SIZE)
+	
+		plat_s_up	= <((actor_init_B_tbl_16-actor_init_tbl)/WORD_SIZE)
+		plat_s_down	= <((actor_init_B_tbl_17-actor_init_tbl)/WORD_SIZE)
 
-		plat_s_up	= $2B
-		plat_s_down	= $2C
+		bowser		= <((actor_init_B_tbl_18-actor_init_tbl)/WORD_SIZE)
+		power_up	= <((actor_init_B_tbl_19-actor_init_tbl)/WORD_SIZE)
+		vine		= <((actor_init_B_tbl_1A-actor_init_tbl)/WORD_SIZE)
+		flag_enemy	= <((actor_init_B_tbl_1B-actor_init_tbl)/WORD_SIZE)
+		flag_victory	= <((actor_init_B_tbl_1C-actor_init_tbl)/WORD_SIZE)
+		spring		= <((actor_init_B_tbl_1D-actor_init_tbl)/WORD_SIZE)
+		bullet		= <((actor_init_B_tbl_1E-actor_init_tbl)/WORD_SIZE)
+		warp		= <((actor_init_B_tbl_1F-actor_init_tbl)/WORD_SIZE)
+		toad		= <((actor_init_B_tbl_20-actor_init_tbl)/WORD_SIZE)
 
-		bowser		= $2D
-		power_up	= $2E
-		vine		= $2F
-		flag_enemy	= $30
-		flag_victory	= $31
-		spring	= $32
-		bullet		= $33
-		warp		= $34
-		toad		= $35
-
-		group_start	= $37
-		goomba_trio_lo	= $37
-		goomba_duo_lo	= $38
-		goomba_trio_hi	= $39
-		goomba_duo_hi	= $3A
-		koopa_trio_lo	= $3B
-		koopa_duo_lo	= $3C
-		koopa_trio_hi	= $3D
-		koopa_duo_hi	= $3E
-		group_end	= $3F
+		group_start	= toad+2
+		goomba_trio_lo	= group_start+0
+		goomba_duo_lo	= goomba_trio_lo+1
+		goomba_trio_hi	= goomba_duo_lo+1
+		goomba_duo_hi	= goomba_trio_hi+1
+		koopa_trio_lo	= goomba_duo_hi+1
+		koopa_duo_lo	= koopa_trio_lo+1
+		koopa_trio_hi	= koopa_duo_lo+1
+		koopa_duo_hi	= koopa_trio_hi+1
+		group_end	= koopa_duo_hi+1
+		actor_end	= group_end
 	.endenum
 
 	.enum	actor_bowser_ani

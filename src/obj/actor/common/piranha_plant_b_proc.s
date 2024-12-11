@@ -8,8 +8,10 @@ actor_proc_piranha_plant_b_pos_y	= zp_byte_00
 
 .if	.definedmacro(PLANT_B_PROC_BASE)
 	.export	actor_proc_piranha_plant_b
+	.export	actor_A_04_proc
 .endif
 actor_proc_piranha_plant_b:
+actor_A_04_proc:
 	lda	state_actor, x
 	bne	:+++
 	lda	timer_ani_actor, x

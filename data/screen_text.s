@@ -79,7 +79,7 @@ screen_text_gameover_screen:
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_16
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_11
 .endif
 	.dbyt	PPU_VRAM_BG1+SCREEN_TEXT_GAME_OVER_ROW+PPU_BG_COL_11
@@ -87,7 +87,7 @@ screen_text_gameover_screen:
 	: .byte	"GAME OVER"
 	:
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_11
 		.byte	(:++)-(:+)
 		: .byte	"CONTINUE"
@@ -137,7 +137,7 @@ screen_text_warp_screen:
 
 .if	.defined(SMB)|.defined(VS_SMB)
 		.byte	SCREEN_TEXT_END_VAL
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 		.byte	NMI_LIST_END
 .endif
 ; ----------------------------
@@ -195,7 +195,7 @@ screen_text_idx_tbl:
 		.byte	screen_text_idx_splash, screen_text_idx_splash
 		.byte	screen_text_idx_timeup, screen_text_idx_timeup+screen_text_idx_off
 		.byte	screen_text_idx_gameover, screen_text_idx_gameover+screen_text_idx_off
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	screen_text_idx_header
 		.byte	screen_text_idx_splash
 		.byte	screen_text_idx_timeup

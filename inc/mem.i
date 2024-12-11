@@ -202,7 +202,7 @@ render_actor_flipped		= (STACK_BASE+$09)
 cpu_stack_work			= stack_00
 .elseif	.defined(FDS_SMB)
 cpu_stack_work			= stack_04
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 cpu_stack_work			= render_actor_flipped
 .endif
 
@@ -669,7 +669,7 @@ bg_hidden_one_up_req_b	= player_goals_b+1
 player_coins_b		= bg_hidden_one_up_req_b+1
 course_no_b		= player_coins_b+1
 course_sub_b		= course_no_b+1
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 timer_ending		= player_lives_b
 ending_toad_offset	= pos_x_hi_alt_game_b
 ending_palcycle_step	= pos_x_hi_alt_game_b
@@ -714,7 +714,7 @@ player_count		= ppu_ctlr1_b+1
 
 .if	.defined(SMB)|.defined(VS_SMB)
 ppu_ctlr0_bg		= player_count+1
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 ppu_ctlr0_bg		= ppu_ctlr1_b+1
 .endif
 fds_sprite_overlap_hit	= ppu_ctlr0_bg+1
@@ -830,7 +830,7 @@ stats_score_player_a_end	= (stats_score_player_a+STAT_LEN_MAX)
 stats_score_player_b		= stats_score_player_a_end
 stats_score_player_b_end	= (stats_score_player_b+STAT_LEN_MAX)
 stats_score_player_end		= stats_score_player_b_end
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 stats_score_player_end		= stats_score_player_a_end
 .endif
 ; --------------
@@ -841,14 +841,14 @@ stats_coin_player_a_end	= (stats_coin_player_a+STAT_LEN_MAX)
 stats_coin_player_b	= stats_coin_player_a_end
 stats_coin_player_b_end	= (stats_coin_player_b+STAT_LEN_MAX)
 stats_coin_player_end	= stats_coin_player_b_end
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 stats_coin_player_end	= stats_coin_player_a_end
 .endif
 stats_player_end	= stats_coin_player_end
 stats_time		= stats_player_end
 stats_time_end		= (stats_time+STAT_LEN_MAX)
 ; -----------------------------
-.if    .defined(SMB2M)
+.if    .defined(SMBV2)
 unused_7EF		= stats_time_end
 unused_7F0		= unused_7EF+1
 unused_7F1		= unused_7F0+1
@@ -865,14 +865,14 @@ game_courses_cleared	= bg_scenery_wind_flag+1
 
 .if	.defined(SMB)|.defined(VS_SMB)
 game_hard_mode_new	= stats_time_end
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 game_hard_mode_new	= game_courses_cleared+1
 .endif
 
 title_course_sel_on	= game_hard_mode_new+1
 course_no_continued	= title_course_sel_on+1
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 disk_loader_proc	= title_course_sel_on
 disk_loader_main_req	= course_no_continued
 .endif
@@ -900,7 +900,7 @@ game_boot_flag		= RAM_CLEAR_END_COLDBOOT+1
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	ENG_HARDMODE_VAR	= game_hard_mode
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	ENG_HARDMODE_VAR	= game_hard_mode_new
 .endif
 

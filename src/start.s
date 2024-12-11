@@ -21,7 +21,7 @@ IRQ_NULL	= $FFF0
 	.addr	start
 .if	.defined(SMB)
 	.addr	IRQ_NULL
-.elseif	.defined(VS_SMB)|.defined(SMB2M)
+.elseif	.defined(VS_SMB)|.defined(SMBV2)
 	.addr	irq
 .endif
 
@@ -62,7 +62,7 @@ start:
 		nop
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	course_no
 		pha
 	.endif
@@ -97,7 +97,7 @@ start:
         sta     DMCDATA
 
         sta     proc_id_system
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		sta	disk_loader_proc
 
 		pla
@@ -122,7 +122,7 @@ start:
 	.if	.defined(FDS_SMB)
 		lda	#(fds_ctlr::mask|fds_ctlr::mirror_v|fds_ctlr::io_mode_r|fds_ctlr::transfer_reset|fds_ctlr::motor_on)
 		sta	FDS_CTLR
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		lda	#fds_irqmode::game_vec
 		sta	FDS_STACK_IRQMODE
 	.elseif	.defined(VS_SMB)
@@ -172,7 +172,7 @@ start:
         jsr     ppu_displist_write_ctlr0
 
 	: ; while (1) {
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			lda	zp_byte_00
 		.endif
 

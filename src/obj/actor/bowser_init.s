@@ -7,8 +7,10 @@ BOWSER_FLAME_TIMER_INIT	= 223
 BOWSER_HP	= 5
 ; -----------------------------------------------------------
 	.export actor_init_bowser
+	.export	actor_B_18_init
 actor_init_bowser:
-	.if	.defined(SMB2M)
+actor_B_18_init:
+	.if	.defined(SMBV2)
 	        ldy     #ENG_ACTOR_MAX-2
 		: ; for (y = ENG_ACTOR_MAX-2; y >= 0; y--) {
 		        cpy     actor_index

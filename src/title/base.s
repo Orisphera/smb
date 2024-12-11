@@ -87,7 +87,7 @@ title_course_no_end:
 ; ----------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
 TITLE_PLAYER_ID	= player_count
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 TITLE_PLAYER_ID = player_id
 .endif
 TITLE_PRESSED_B	= 1
@@ -109,7 +109,7 @@ title_proc:
 	cmp	#(joypad_button::face_a|joypad_button::start)
 	bne	:++
 	: jmp	title_exit
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 	and	#joypad_button::start
 	beq	:++ ; if (joypad[0].start == PRESSED) {
 		lda	#0
@@ -131,8 +131,8 @@ title_proc:
 	; }
 	.endif
 
-	: ; if (CONS && (!joypad[0].start || (!SMB2M && joypad[0].face_a))) {
-		.if	.defined(SMB2M)
+	: ; if (CONS && (!joypad[0].start || (!SMBV2 && joypad[0].face_a))) {
+		.if	.defined(SMBV2)
 		lda	joypad_p1
 		.endif
 			cmp	#joypad_button::select
@@ -140,7 +140,7 @@ title_proc:
 				ldx	timer_demo
 				.if	.defined(SMB)|.defined(VS_SMB)
 				bne	:+
-				.elseif	.defined(SMB2M)
+				.elseif	.defined(SMBV2)
 				bne	:+++++ ; if (!timer_demo) {
 				.endif
 					sta	timer_select
@@ -149,7 +149,7 @@ title_proc:
 					bcs	title_recycle
 					.if	.defined(SMB)|.defined(VS_SMB)
 					jmp	:++++++
-					.elseif	.defined(SMB2M)
+					.elseif	.defined(SMBV2)
 					bcc	:++++++
 					.endif
 				: ; }
@@ -168,7 +168,7 @@ title_proc:
 				lda	#TITLE_DEMO_TIMER
 				sta	timer_demo
 
-				.if	.defined(SMB2M)
+				.if	.defined(SMBV2)
 					lda	frame_count
 					and	#<~1
 					sta	frame_count
@@ -209,7 +209,7 @@ title_proc:
 							iny
 							sty	ppu_displist_0_tile
 						; }
-					.elseif	.defined(SMB2M)
+					.elseif	.defined(SMBV2)
 					:
 					:
 					.endif
@@ -233,7 +233,7 @@ title_proc:
 		: ; }
 	.endif
 
-	; if ((VS || (!joypad[0].start || (!SMB2M && joypad[0].face_a))) && timer_demo != 0) {
+	; if ((VS || (!joypad[0].start || (!SMBV2 && joypad[0].face_a))) && timer_demo != 0) {
 		jsr	game_proc
 		lda	proc_id_player
 		cmp	#player_procs::lifedown
@@ -261,7 +261,7 @@ title_proc:
 		.if	.defined(CONS)
 		.if	.defined(SMB)|.defined(VS_SMB)
 			ldy	timer_demo
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			lda	timer_demo
 		.endif
 		beq	title_recycle ; if (timer_demo) {
@@ -289,7 +289,7 @@ title_proc:
 				sta	proc_id_game
 
 				sta	timer_demo
-			.elseif	.defined(SMB2M)
+			.elseif	.defined(SMBV2)
 				inc	proc_id_game
 
 				jsr	title_patch_player

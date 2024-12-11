@@ -16,7 +16,7 @@ chr_obj:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/plat_a.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/obj/plat_c.s"
 	.endif
 
@@ -37,7 +37,7 @@ chr_obj:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/mushroom.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/obj/door.s"
 	.endif
 
@@ -93,7 +93,7 @@ chr_obj:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/princess_b.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/obj/mushroom_new_a.s"
 	.endif
 
@@ -101,7 +101,7 @@ chr_obj:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/princess_c.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/obj/mushroom_new_b.s"
 	.endif
 
@@ -136,20 +136,20 @@ chr_obj:
 		.include	"chr/obj/oneup.s"
 	.elseif	.defined(VS_SMB)
 		.include	"chr/obj/oneup_new_a.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/obj/oneup_new_b.s"
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/obj/filler.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/obj/mushroom_new_c.s"
 	.endif
 
 chr_bg:
 	.if	.defined(SMB)
 		.include	"chr/bg/font_a.s"
-	.elseif	.defined(VS_SMB)|.defined(SMB2M)
+	.elseif	.defined(VS_SMB)|.defined(SMBV2)
 		.include	"chr/bg/font_a.vs.s"
 	.endif
 
@@ -157,13 +157,13 @@ chr_bg:
 		.include	"chr/bg/font_b.s"
 	.elseif	.defined(VS_SMB)
 		.include	"chr/bg/font_b.vs.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/font_b.smb2.s"
 	.endif
 
 	.if	.defined(SMB)
 		.include	"chr/bg/font_c.s"
-	.elseif	.defined(VS_SMB)|.defined(SMB2M)
+	.elseif	.defined(VS_SMB)|.defined(SMBV2)
 		.include	"chr/bg/font_c.vs.s"
 	.endif
 
@@ -171,13 +171,13 @@ chr_bg:
 		.include	"chr/bg/font_d.s"
 	.elseif	.defined(VS_SMB)
 		.include	"chr/bg/font_d.vs.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/font_d.smb2.s"
 	.endif
 
 	.if	.defined(SMB)
 		.include	"chr/bg/font_e.s"
-	.elseif	.defined(VS_SMB)|.defined(SMB2M)
+	.elseif	.defined(VS_SMB)|.defined(SMBV2)
 		.include	"chr/bg/font_e.vs.s"
 	.endif
 
@@ -185,7 +185,7 @@ chr_bg:
 
 	.if	.defined(SMB)
 		.include	"chr/bg/font_f.s"
-	.elseif	.defined(VS_SMB)|.defined(SMB2M)
+	.elseif	.defined(VS_SMB)|.defined(SMBV2)
 		.include	"chr/bg/font_f.vs.s"
 	.endif
 
@@ -193,7 +193,7 @@ chr_bg:
 
 	.if	.defined(SMB)
 		.include	"chr/bg/font_g.s"
-	.elseif	.defined(VS_SMB)|.defined(SMB2M)
+	.elseif	.defined(VS_SMB)|.defined(SMBV2)
 		.include	"chr/bg/font_g.vs.s"
 	.endif
 
@@ -214,13 +214,13 @@ chr_bg:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/hill_b.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/hill_b_new.s"
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/cloud.s"
-	.elseif	.defined(SMB2M)	
+	.elseif	.defined(SMBV2)	
 		.include	"chr/bg/cloud_new.s"
 	.endif
 
@@ -248,7 +248,7 @@ chr_bg:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/plat_b.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/plat_b_new.s"
 	.endif
 
@@ -257,7 +257,7 @@ chr_bg:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/floor_castle.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/floor_castle_new.s"
 	.endif
 
@@ -334,7 +334,7 @@ chr_bg:
 
 	.if	.defined(SMB)
 		.include	"chr/bg/font_h.s"
-	.elseif	.defined(VS_SMB)|.defined(SMB2M)
+	.elseif	.defined(VS_SMB)|.defined(SMBV2)
 		.include	"chr/bg/font_h.vs.s"
 	.endif
 
@@ -343,7 +343,7 @@ chr_bg:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/floor_normal.s"
 		.include	"chr/bg/tree.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/floor_normal_new.s"
 		.include	"chr/bg/tree_new.s"
 	.endif
@@ -352,7 +352,7 @@ chr_bg:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/bridge_parts.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/bridge_parts_new.s"
 	.endif
 
@@ -367,7 +367,7 @@ chr_bg:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.include	"chr/bg/copyright.s"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.include	"chr/bg/copyright.smb2.s"
 	.endif
 
@@ -393,6 +393,6 @@ chr_bg:
 		.include	"chr/bg/sign_text_f.s"
 	.endif
 
-	.if	.defined(VS_SMB)|.defined(SMB2M)
+	.if	.defined(VS_SMB)|.defined(SMBV2)
 		.byte	0
 	.endif

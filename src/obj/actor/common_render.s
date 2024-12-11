@@ -13,7 +13,7 @@ render_obj_id_actor			= zp_byte_EF
 ; ------------------------------------------------------------
 	.export render_actor
 render_actor:	
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.if	.defined(SMB2)
 			lda	#obj_attr::priority_high|obj_attr::color2
 			ldy	course_no
@@ -288,7 +288,7 @@ render_actor_ani_check:
 		; if () {
 			iny
 
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				lda	#actor_states::state_3
 				sta	render_actor_state_next
 			.endif
@@ -329,7 +329,7 @@ render_actor_ani_check:
 	: ; }
 ; ------------------------------
 render_actor_ani_do:
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	render_obj_id_actor
 		cmp	#actor::piranha_plant_b
 		beq	:+
@@ -340,7 +340,7 @@ render_actor_ani_do:
 	lda	render_obj_id_actor
 	cmp	#actor::koopa_cutoff
 	bcc	:++
-	: ; if ((SMB2M && this.id == piranha_plant_b) || ((this.state & bit_5) && this.id >= koopa_cutoff)) {
+	: ; if ((SMBV2 && this.id == piranha_plant_b) || ((this.state & bit_5) && this.id >= koopa_cutoff)) {
 		ldy	#1
 		sty	render_actor_flipped
 		dey
@@ -378,7 +378,7 @@ render_actor_clear_b:
 			lda	render_obj_id_actor
 			cmp	#actor::hammer_bro
 			beq	:+
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				cmp	#actor::piranha_plant_b
 				beq	:+
 			.endif
@@ -417,7 +417,7 @@ render_actor_clear_b:
 			beq	:+++
 			cmp	#actor::piranha_plant
 			beq	:+++
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				cmp	#actor::piranha_plant_b
 				beq	:+++
 			.endif
@@ -427,7 +427,7 @@ render_actor_clear_b:
 			bne	:+
 			cpx	#actor_states::state_5
 			bne	:+++++
-			: ; if (this.id.not_in(blooper, piranha_plant, podoboo) && (!SMB2M || this.id != piranha_plant_b) && (this.id != spiny || this.state_next == state_5)) {
+			: ; if (this.id.not_in(blooper, piranha_plant, podoboo) && (!SMBV2 || this.id != piranha_plant_b) && (this.id != spiny || this.state_next == state_5)) {
 				cmp	#actor::bowser_flame
 				bne	:+ ; if (this.id == bowser_flame) {
 					lda	#obj_attr::h_flip|obj_attr::priority_high|obj_attr::color2
@@ -504,7 +504,7 @@ render_actor_clear_b:
 				bcc	:+ ; if (this.id >= swarm_stop) {
 					.if	.defined(SMB)|.defined(VS_SMB)
 						lda	#obj_attr::v_flip|obj_attr::color2
-					.elseif	.defined(SMB2M)
+					.elseif	.defined(SMBV2)
 						lda	#obj_attr::v_flip
 						ora	render_actor_attrs_spring
 					.endif

@@ -109,7 +109,7 @@ TILE_ENTRY_BITS	= %00111111
 		pipe_water_a	= <((gfx_meta_block_1_pipe_water_a-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		pipe_water_b	= <((gfx_meta_block_1_pipe_water_b-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		flag_ball	= <((gfx_meta_block_1_flag_ball-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			blank_d		= <((gfx_meta_block_1_blank_d-gfx_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		.endif
 		.if	.defined(SMB2)

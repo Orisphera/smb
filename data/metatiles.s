@@ -523,7 +523,7 @@ gfx_meta_block_1_brick_m:
 		.byte	chr_bg::blanks
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.export gfx_meta_block_1_blank_d
 	gfx_meta_block_1_blank_d:
 		.byte	chr_bg::blanks
@@ -607,7 +607,7 @@ gfx_meta_block_1_floor_underwater:
 	.byte	chr_bg::floor_underwater+2
 	.byte	chr_bg::floor_underwater+3
 ; ---
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.export gfx_meta_block_1_floor_normal
 	gfx_meta_block_1_floor_normal:
 		.byte	chr_bg::floor_normal

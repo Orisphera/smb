@@ -5,13 +5,13 @@
 .include	"charmap.i"
 .include	"tunables.i"
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 .segment	"DATA3"
 .endif
 
 .if	.defined(VS_SMB)
 MSG_BG	= PPU_VRAM_BG2
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 MSG_BG	= PPU_VRAM_BG1
 .endif
 
@@ -139,7 +139,7 @@ ending_pal_ext:
 	: .byte	NMI_LIST_END
 .endif
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 	.export	ending_throneroom_map
 ending_throneroom_map:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_0

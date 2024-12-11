@@ -7,7 +7,7 @@
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
 	TITLE_CURSOR_COL	= PPU_BG_COL_9
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	TITLE_CURSOR_COL	= PPU_BG_COL_11
 .endif
 
@@ -26,7 +26,7 @@ title_cursor_data_tiles:
 	:
 title_cursor_data_end:
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 title_cursor_tiles:
 	.byte	chr_bg::cursor
 	.byte	" "
@@ -44,7 +44,7 @@ title_cursor_draw:
 		dey
 		bpl     :-
 	; }
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	lda	#nmi_addr::title_cursor_data
 	sta	nmi_buffer_ptr
 .endif
@@ -58,7 +58,7 @@ title_cursor_draw_xfer:
 		lda     #chr_bg::cursor
 		sta     ppu_displist_0_tile+2
 	: ; }
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	ldy	player_id
 	lda	title_cursor_tiles, y
 	sta	title_cursor_data_tiles

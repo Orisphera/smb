@@ -15,41 +15,18 @@ actor_proc_do:
 	jsr	tbljmp
 	.addr	actor_proc_enemy
 
-	.addr	actor_proc_bowser_flame
-	.addr	actor_proc_fireworks
-	.addr	actor_proc_null
-	.addr	actor_proc_null
-	.addr	actor_proc_null
-	.addr	actor_proc_null
-	.addr	actor_proc_firebar
-	.addr	actor_proc_firebar
-	.addr	actor_proc_firebar
-	.addr	actor_proc_firebar
-	.addr	actor_proc_firebar
-	.addr	actor_proc_firebar
-	.addr	actor_proc_firebar
-	.addr	actor_proc_firebar
-	.addr	actor_proc_null
-	.addr	actor_proc_plat_large
-	.addr	actor_proc_plat_large
-	.addr	actor_proc_plat_large
-	.addr	actor_proc_plat_large
-	.addr	actor_proc_plat_large
-	.addr	actor_proc_plat_large
-	.addr	actor_proc_plat_large
-	.addr	actor_proc_plat_small
-	.addr	actor_proc_plat_small
-	.addr	actor_proc_bowser
-	.addr	actor_proc_powerup
-	.addr	actor_proc_vine
-	.addr	actor_proc_null
-	.addr	actor_proc_flag_victory
-	.addr	actor_proc_spring
-	.addr	actor_proc_null
-	.addr	actor_proc_warp
-	.addr	actor_proc_toad
+	.repeat ACTOR_B_COUNT, I
+		.addr	.ident(.sprintf("actor_B_%02X_proc", I))
+	.endrep
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
+actor_B_02_proc:
+actor_B_03_proc:
+actor_B_04_proc:
+actor_B_05_proc:
+actor_B_0E_proc:
+actor_B_1B_proc:
+actor_B_1E_proc:
 actor_proc_null:
 	rts
 .endif

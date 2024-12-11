@@ -14,7 +14,7 @@ render_flag_score_tiles:
 	.byte	chr_obj::digits_40, chr_obj::digits_0
 	.byte	chr_obj::digits_10, chr_obj::digits_0
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	chr_obj::oneup_left, chr_obj::oneup_right
 	.endif
 ; -----------------------------

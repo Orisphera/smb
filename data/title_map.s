@@ -45,7 +45,7 @@ title_map:
 
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_6
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_5
 	.endif
 	.if	.defined(SMB)|.defined(VS_SMB)
@@ -305,7 +305,7 @@ title_map:
 	.byte	chr_bg::sign_text_b+0
 	.byte	chr_bg::sign_text_b+1
 	.byte	SIGN_BLANK
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
@@ -368,7 +368,7 @@ title_map:
 		.byte	chr_bg::sign_text_b+19
 	.endif
 	.byte	SIGN_BLANK
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
@@ -408,7 +408,7 @@ title_map:
 	.endif
 	.byte	chr_bg::sign_text_b+21
 	.byte	SIGN_BLANK
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
@@ -455,7 +455,7 @@ title_map:
 	.endif
 	.byte	chr_bg::sign_text_b+19
 	.byte	SIGN_BLANK
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
@@ -498,7 +498,7 @@ title_map:
 	.elseif	.defined(ANN)
 		.byte	chr_bg::sign_text_b+10
 	.endif
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	SIGN_BLANK
 	.endif
 	.if	.defined(SMB2)
@@ -534,7 +534,7 @@ title_map:
 	.byte	chr_bg::sign_text_a+2
 	.byte	chr_bg::sign_text_a+3
 	.byte	chr_bg::sign_text_a+0
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	chr_bg::sign_s
 	.endif
 
@@ -557,7 +557,7 @@ title_map:
 	: .byte	"c"
 	.if	.defined(SMB)
 		.byte	"1985"
-	.elseif	.defined(VS_SMB)|.defined(SMB2M)
+	.elseif	.defined(VS_SMB)|.defined(SMBV2)
 		.byte	"1986"
 	.endif
 	.byte	" NINTENDO"
@@ -566,26 +566,26 @@ title_map:
 .if	.defined(CONS)
 	.if	.defined(SMB)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+PPU_BG_COL_11
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+PPU_BG_COL_13
 	.endif
 	.byte	(:++)-(:+)
 	: .if	.defined(SMB)
 		.byte	"1 PLAYER GAME"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	"MARIO GAME"
 	.endif
 	:
 
 	.if	.defined(SMB)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_20+PPU_BG_COL_11
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_20+PPU_BG_COL_13
 	.endif
 	.byte	(:++)-(:+)
 	: .if	.defined(SMB)
 		.byte	"2 PLAYER GAME"
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	"LUIGI GAME"
 	.endif
 	:
@@ -631,7 +631,7 @@ title_map:
 		.byte	NMI_REPEAT|6, ((PPU_BG_COLOR_LINE_3<<6)|(PPU_BG_COLOR_LINE_3<<4)|(PPU_BG_COLOR_LINE_1<<2)|PPU_BG_COLOR_LINE_1)
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+17
 		.byte	NMI_REPEAT|7, PPU_BG_COLOR_LINE_1_ALL
 
@@ -657,13 +657,13 @@ title_map:
 		:
 	.endif
 
-.if	.defined(SMB)|.defined(SMB2M)
+.if	.defined(SMB)|.defined(SMBV2)
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+34
 	.byte	(:++)-(:+)
 	:
 	.if	.defined(SMB)|.defined(VS_SMB) 
 		.byte	((PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_1)
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	PPU_BG_COLOR_LINE_1_ALL
 	.endif
 	.byte	PPU_BG_COLOR_LINE_2_ALL
@@ -679,7 +679,7 @@ title_map:
 	.byte	(:++)-(:+)
 	: .if	.defined(SMB)|.defined(VS_SMB)
 		.byte	((PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_1)
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	((PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_1<<2)|PPU_BG_COLOR_LINE_1)
 	.endif
 	.byte	PPU_BG_COLOR_LINE_2_ALL
@@ -687,7 +687,7 @@ title_map:
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.byte	PPU_BG_COLOR_LINE_2_ALL
 	.endif
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	((PPU_BG_COLOR_LINE_0<<6)|(PPU_BG_COLOR_LINE_2<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_2)
 	.endif
 	:

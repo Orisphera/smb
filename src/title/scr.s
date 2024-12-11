@@ -117,6 +117,6 @@ screen_title_proc_id_inc:
 .if	.defined(SMB)|.defined(VS_SMB)
 	inc	proc_id_game
 	rts
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	jmp	screen_title_bg_finish
 .endif

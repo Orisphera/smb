@@ -14,15 +14,16 @@
 #   SMB2    - Super Mario Bros. 2
 #   ANN     - All Night Nippon Super Mario Bros.
 #   SMBM    - Super Mario Bros. "Meta" (SMB and ANN-commonalities)
-#   SMB2M   - Super Mario Bros. 2 "Meta" (SMB2 and ANN-commonalities)
+#   SMBV1   - The "V1" Engine (SMB and Vs.)
+#   SMBV2   - The "V2" Engine (ANN and SMB2)
 #   PAL     - PAL-specific
 #   OG_PAD  - Padding in the original is retained
 AS		=	ca65
-ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM
-ASFLAGS_VS	=	-DVS -DVS_2C04_0004 -DVS_SMB
-ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM
-ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2M -DSMB2
-ASFLAGS_ANN	=	-DFDS -DCONS -DSMB2M -DANN -DSMBM
+ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1
+ASFLAGS_VS	=	-DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1
+ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1
+ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2 -DSMBV2
+ASFLAGS_ANN	=	-DFDS -DCONS -DANN -DSMBM -DSMBV2
 ASFLAGS_PAL	=	-DPAL
 ASFLAGS		=	-U -I ./inc -DOG_PAD $(ASFLAGS_FC)
 LD		=	ld65

@@ -32,7 +32,7 @@ col_actor_oob_proc:
 		ldy	obj_id_actor, x
 		cpy	#actor::hammer_bro
 		beq	:+
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			cpy	#actor::piranha_plant_b
 			beq	:+
 		.endif
@@ -69,7 +69,7 @@ col_actor_oob_proc:
 		beq	:++
 		cpy	#actor::piranha_plant
 		beq	:++
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			cpy	#actor::piranha_plant_b
 			beq	:++
 		.endif
@@ -85,7 +85,7 @@ col_actor_oob_proc:
 		;		actor.pos_x >= screen.pos_x_right
 		;		&& actor.state &= state_5
 		;		&& actor.id.not_in(piranha_plant, flag_enemy, flag_victory, spring)
-		;		&& (!SMB2M || actor.id != piranha_plant_b)
+		;		&& (!SMBV2 || actor.id != piranha_plant_b)
 		;	) {
 			jsr	actor_erase
 		: ; }
@@ -193,7 +193,7 @@ bowser_death_obj_id_actors:
 	.byte	actor::blooper
 	.byte	actor::hammer_bro
 	.byte	actor::bowser
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 	.byte	actor::bowser
 .endif
 ; -----------------------------
@@ -242,21 +242,21 @@ col_proj_actor_damage:
 	bcs	:++++++ ; } else if (actor.id.not_in(buzzy_beetle, bullet_swarm, podoboo) && actor.id < actors_page_b) {
 	col_actor_kill:
 		lda	obj_id_actor, x
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			cmp	#actor::piranha_plant_b
 			beq	:+
 		.endif
 		cmp	#actor::piranha_plant
 		bne	:+++
 		: ; if (actor.id == piranha_plant) {
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				tay
 			.endif
 
 			lda	pos_y_lo_actor, x
 			adc	#24
 
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				cpy	#actor::piranha_plant_b
 				bne	:+ ; if () {
 					sbc	#49
@@ -299,7 +299,7 @@ col_player_hammer_proc:
 	bcc	:++
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lda	game_timer_stop
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		lda	bits_offscr_player
 		ora	game_timer_stop
 	.endif
@@ -340,7 +340,7 @@ col_player_hammer_proc:
 SCORE_POWERUP	= scores::value_1000
 STAR_TIMER	= 35
 
-.if	.defined(SMB)|.defined(SMB2M)
+.if	.defined(SMB)|.defined(SMBV2)
 	STAR_MUSIC	= music_base::super_star
 .elseif	.defined(VS_SMB)
 	STAR_MUSIC	= music_base::clouds
@@ -349,7 +349,7 @@ STAR_TIMER	= 35
 col_player_powerup_proc:
 	jsr	actor_erase
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	actor_powerup_type
 		cmp	#powerup_type::mushroom_poison
 		bne	:+ ; if (powerup.type == mushroom_poison) {
@@ -467,7 +467,7 @@ col_player_actor_proc_hit_do:
 	cpy	#actor::spiny
 	beq	:+++
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cpy	#actor::bullet
 		beq	:+++
 	.endif
@@ -475,7 +475,7 @@ col_player_actor_proc_hit_do:
 	cpy	#actor::piranha_plant
 	beq	col_player_harm_proc
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cpy	#actor::piranha_plant_b
 		beq	col_player_harm_proc
 	.endif	
@@ -535,7 +535,7 @@ col_player_actor_proc_hit_do:
 			lda	veloc_y_player
 			bmi	:+
 				bne	col_player_actor_stomp
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			ldy	veloc_y_player
 			dey
 			bpl	col_player_actor_stomp
@@ -582,7 +582,7 @@ PLAYER_DEATH_VELOC_Y	= <-4
 	.export col_player_harm_proc, col_player_harm_proc_do
 col_player_harm_proc:
 	lda	timer_player_injury
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		ora	timer_player_star
 	.endif
 	bne	col_player_harm_proc_end
@@ -682,12 +682,12 @@ col_player_actor_stomp:
 			lda	#<-3
 			sta	veloc_y_player
 			rts
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			jmp	:+++
 		.endif
 	: cmp	#actor::div_height
 	bcc	:+ ; } else if (actor.id >= div_height) {
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			jsr	:++
 		.endif
 
@@ -697,7 +697,7 @@ col_player_actor_stomp:
 		.if	.defined(SMB)|.defined(VS_SMB)
 			ldy	#actor_states::init
 			sty	state_actor, x
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			lda	#actor_states::init
 			sta	state_actor, x
 		.endif
@@ -711,7 +711,7 @@ col_player_actor_stomp:
 
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	:++
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			rts
 		.endif
 ; -----------------------------
@@ -739,7 +739,7 @@ col_actor_stomp_resurrect_timer:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		lda	#<-4
 		sta	veloc_y_player
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		ldy	#<-6
 		lda	obj_id_actor, x
 		cmp	#actor::koopa_para_fly_red
@@ -822,7 +822,7 @@ col_actor_actor_proc:
 		cmp	#actor::piranha_plant
 		beq	:+++++
 
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			cmp	#actor::piranha_plant_b
 			beq	:+++++
 		.endif
@@ -847,7 +847,7 @@ col_actor_actor_proc:
 			cmp	#actor::piranha_plant
 			beq	:+++
 
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				cmp	#actor::piranha_plant_b
 				beq	:+++
 			.endif
@@ -971,7 +971,7 @@ col_actor_calc_dir_check:
 	cmp	#actor::piranha_plant
 	beq	:++
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cmp	#actor::piranha_plant_b
 		beq	:++
 	.endif
@@ -986,7 +986,7 @@ col_actor_calc_dir_check:
 	beq	:+
 	cmp	#actor::blooper
 	bcs	:++
-	: ; if (actor.id.in(piranha_plant, lakitu, hammer_bro, spiny, koopa_para_jump_green) || actor.id < blooper && (!SMB2M || actor.id != piranha_plant_b)) {
+	: ; if (actor.id.in(piranha_plant, lakitu, hammer_bro, spiny, koopa_para_jump_green) || actor.id < blooper && (!SMBV2 || actor.id != piranha_plant_b)) {
 	col_actor_reverse:
 		lda	veloc_x_actor, x
 		eor	#<-1
@@ -1166,7 +1166,7 @@ col_plat_s_player_pos:
 	lda	pos_y_lo_actor, x
 	clc
 	adc	col_plat_s_pos_offsets-1, y
-.if	.defined(SMB)|.defined(SMB2M)
+.if	.defined(SMB)|.defined(SMBV2)
 	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS_SMB)
 	jmp	col_plat_player_pos_do
@@ -1209,7 +1209,7 @@ col_check_player_pos_y:
 		lda	pos_y_lo_player
 		cmp	#COL_CHECK_PLAYER_POS_Y_CUTOFF
 		:
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		and	#%11110000
 		clc
 		beq	:+ ; if ((player.bits_offscr & 0xF0)) {
@@ -1545,7 +1545,7 @@ col_bg_proc_axe_do:
 	lda	#system_modes::castle_victory
 	sta	proc_id_system
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		jsr	player_phys_load_default
 	.endif
 
@@ -1568,7 +1568,7 @@ col_bg_proc_pole_cutoffs_y:
 	.byte	24, 34, 80, 104, 144
 col_bg_proc_pole_cutoffs_y_end:
 ; -----------------------------
-.if	.defined(SMB)|.defined(SMB2M)
+.if	.defined(SMB)|.defined(SMBV2)
 CLIMB_POS_X	= pos_x_lo_player
 CLIMB_DIR_BOUND	= 16
 .elseif	.defined(VS_SMB)
@@ -1618,7 +1618,7 @@ col_bg_proc_climb_do:
 				stx	render_flag_score_val
 			: ; }
 
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				lda	stats_coin_player_end-2
 				cmp	stats_coin_player_end-1
 				bne	:+
@@ -1685,7 +1685,7 @@ col_bg_proc_vis:
 		beq	:+
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cmp	#metatile_1::blank_d
 		beq	:+
 	.endif
@@ -1704,7 +1704,7 @@ col_bg_proc_spring:
 		lda	#SPRING_ACCEL_Y_INIT
 		sta	accel_y_player
 
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			sta	accel_y_gravity
 		.endif
 
@@ -1786,7 +1786,7 @@ col_bg_proc_pipe_v_do:
 
 			.if	.defined(SMB)|.defined(VS_SMB)
 				: ldy	screen_text_warps, x
-			.elseif	.defined(SMB2M)
+			.elseif	.defined(SMBV2)
 				lda	screen_text_warps, x
 
 				ldy	ENG_HARDMODE_VAR
@@ -1812,7 +1812,7 @@ col_bg_proc_pipe_v_do:
 			sta	player_goals
 			sta	game_start_type
 
-			.if	.defined(SMB)|.defined(SMB2M)
+			.if	.defined(SMB)|.defined(SMBV2)
 				inc	bg_hidden_one_up_req
 			.endif
 
@@ -1939,7 +1939,7 @@ col_actor_ground_proc:
 		: cpy	#actor::hammer_bro
 		bne	:+ ; } else if (actor.id == hammer_bro) {
 			jmp	col_hammer_bro_block_check
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 			col_actor_ground_proc_rts:
 				rts
 			.endif
@@ -1948,7 +1948,7 @@ col_actor_ground_proc:
 		cpy	#actor::power_up
 		beq	:+
 	
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			cpy	#actor::piranha_plant_b
 			beq	col_actor_ground_proc_rts
 		.endif
@@ -1986,7 +1986,7 @@ col_actor_ground_proc:
 	; } else rts;
 ; -----------------------------
 col_actor_koopa_demote_check:
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	obj_id_actor, x
 	.endif
 
@@ -1995,7 +1995,7 @@ col_actor_koopa_demote_check:
 	cmp	#actor::lakitu
 	bcs	:++
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cmp	#actor::piranha_plant
 		beq	:++
 		cmp	#actor::piranha_plant_b
@@ -2017,7 +2017,7 @@ col_player_actor_stomp_do:
 		and	#<~(actor_states::bit_3|actor_states::state_mask)
 		ora	#actor_states::state_2
 		sta	state_actor, x
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		cmp	#actor::power_up
 		beq	:+
 		cmp	#actor::goomba
@@ -2306,7 +2306,7 @@ col_bg_proc_check_non_solid:
 		beq	:+
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cmp	#metatile_1::blank_d
 		beq	:+
 	.endif
@@ -2388,7 +2388,7 @@ col_box_9:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	20
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	22
 	.endif
 col_box_10:
@@ -2718,7 +2718,7 @@ col_box_player_step:
 ; -----------------------------
 col_box_player_jump:
 	lda	#0
-.if	.defined(SMB)|.defined(SMB2M)
+.if	.defined(SMB)|.defined(SMBV2)
 	.byte	CPU_OPCODE_BIT_ABS
 .elseif	.defined(VS_SMB)
 	jmp	col_box_player_buffer_do

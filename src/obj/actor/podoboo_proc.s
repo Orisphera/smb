@@ -5,7 +5,9 @@
 PODOBOO_VELOC_Y	= <-7
 ; -----------------------------------------------------------
 	.export actor_proc_podoboo
+	.export	actor_A_0C_proc
 actor_proc_podoboo:
+actor_A_0C_proc:
 	lda	timer_actor, x
 	bne	:+ ; if (actor.timer == 0) {
 		jsr	actor_init_podoboo

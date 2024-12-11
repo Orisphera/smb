@@ -22,8 +22,8 @@ actor_proc_veloc_x:
 	.byte	ACTOR_HAMMER_BRO_VELOC_X, <-ACTOR_HAMMER_BRO_VELOC_X
 	.byte	ACTOR_HAMMER_BRO_VELOC_X_HARD, <-ACTOR_HAMMER_BRO_VELOC_X_HARD
 ; ------------------------------
-	.export actor_proc_hammer_bro
-actor_proc_hammer_bro:
+	.export actor_A_05_proc
+actor_A_05_proc:
 	lda	state_actor, x
 	and	#actor_states::bit_5
 	beq	:+ ; if (actor.state_bit_5) {
@@ -126,7 +126,25 @@ actor_proc_hammer_bro_move_h:
 	sty	motion_dir_actor, x
 ; -----------------------------------------------------------
 	.export actor_proc_base
+	.export	actor_A_00_proc
+	.export	actor_A_01_proc
+	.export	actor_A_02_proc
+	.export	actor_A_03_proc
+	.export	actor_A_06_proc
+	.export	actor_A_12_proc
 actor_proc_base:
+actor_A_00_proc:
+actor_A_01_proc:
+actor_A_02_proc:
+actor_A_03_proc:
+actor_A_06_proc:
+actor_A_12_proc:
+
+.if	.defined(SMBV1)
+	.export	actor_A_04_proc
+actor_A_04_proc:
+.endif
+
 	ldy	#0
 	lda	state_actor, x
 	and	#actor_states::falling
@@ -219,7 +237,9 @@ actor_proc_base:
 	; }
 ; -----------------------------------------------------------
 	.export actor_proc_bounce
+	.export	actor_A_0E_proc
 actor_proc_bounce:
+actor_A_0E_proc:
 	jsr	motion_fall_mid
 	jmp	motion_x
 

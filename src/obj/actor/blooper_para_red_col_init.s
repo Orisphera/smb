@@ -12,7 +12,10 @@ KOOPA_RED_ACCEL_X_LEFT	= <-32
 	.export actor_init_koopa_red_fly
 	.export actor_init_col_small, actor_init_col_large, actor_init_col
 	.export actor_init_veloc_y
+	.export	actor_A_07_init
+	.export	actor_A_0F_init
 actor_init_blooper:
+actor_A_07_init:
 	lda	#BLOOPER_VELOC_X
 	sta	veloc_x_actor, x
 ; ------------------------------
@@ -21,6 +24,7 @@ actor_init_col_small:
 	bne	actor_init_col
 ; ------------------------------
 actor_init_koopa_red_fly:
+actor_A_0F_init:
 	ldy	#KOOPA_RED_ACCEL_X_RIGHT
 	lda	pos_y_lo_actor, x
 	sta	accel_x_actor, x

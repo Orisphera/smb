@@ -36,7 +36,9 @@ actor_cheep_fly_attr:
 .endif
 ; -----------------------------
 	.export actor_proc_cheep_fly
+	.export	actor_A_14_proc
 actor_proc_cheep_fly:
+actor_A_14_proc:
 .ifndef	PAL
 	lda	state_actor, x
 	and	#actor_states::bit_5

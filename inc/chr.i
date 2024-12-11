@@ -140,7 +140,7 @@ CHR_I = 1
 		.if	.defined(SMBM)|.defined(VS_SMB)
 			edge_b		= <((chr_bg_edge_b-chr_bg)/PPU_CHR_SIZE)
 		.endif
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			quotes	= <((chr_bg_quotes-chr_bg)/PPU_CHR_SIZE)
 		.endif
 		bridge_a	= <((chr_bg_bridge_a-chr_bg)/PPU_CHR_SIZE)
@@ -188,7 +188,7 @@ CHR_I = 1
 		.elseif	.defined(ANN)
 		sign_text_ann_a	= <((chr_bg_sign_text_ann_a-chr_bg)/PPU_CHR_SIZE)
 		.endif
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 		star_title		= <((chr_bg_star_title-chr_bg)/PPU_CHR_SIZE)
 		.endif
 		.if	.defined(ANN)

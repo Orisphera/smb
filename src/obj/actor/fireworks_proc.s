@@ -6,7 +6,9 @@
 
 ; -----------------------------------------------------------
 	.export actor_proc_fireworks
+	.export	actor_B_01_proc
 actor_proc_fireworks:
+actor_B_01_proc:
 	dec	veloc_y_actor, x
 	bne	:+
 	lda	#8

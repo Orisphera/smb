@@ -5,7 +5,9 @@
 BULLET_VELOC_X	= <-24
 ; --------------------------------------------------------------
 	.export actor_proc_bullet
+	.export	actor_A_08_proc
 actor_proc_bullet:
+actor_A_08_proc:
 	lda	state_actor, x
 	and	#actor_states::bit_5
 	beq	:+ ; if (actor_state & 0x20) {

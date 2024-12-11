@@ -221,7 +221,7 @@ pos_bits_y:
 		.byte	%00000011
 		.byte	%00000001
 		.byte	%00000000
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	%00001111
 		.byte	%00000111
 		.byte	%00000011
@@ -239,7 +239,7 @@ pos_bits_off_y:
 pos_bits_y_hi:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	<-1, 0
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	0, <-1
 	.endif
 ; -------------------------------

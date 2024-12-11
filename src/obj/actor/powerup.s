@@ -18,6 +18,7 @@ POWERUP_CUE_DISPLAY		= (POWERUP_CUE_DISPLAY_FRAMES/POWERUP_CUE_UNITS)
 POWERUP_CUE_SPAWNED		= (POWERUP_CUE_SPAWNED_FRAMES/POWERUP_CUE_UNITS)
 ; -----------------------------------------------------------
 	.export actor_init_powerup, actor_init_powerup_b
+	.export	actor_B_19_init
 actor_init_powerup_b:
 	lda	#actor::power_up
 	sta	obj_id_actor+POWERUP_ACTOR_IDX
@@ -33,6 +34,7 @@ actor_init_powerup_b:
 	sta	pos_y_lo_actor+POWERUP_ACTOR_IDX
 
 actor_init_powerup:
+actor_B_19_init:
 	lda	#proc_id_actors::active
 	sta	state_actor+POWERUP_ACTOR_IDX
 	sta	proc_id_actor+POWERUP_ACTOR_IDX
@@ -57,7 +59,9 @@ actor_init_powerup:
 	rts
 ; ------------------------------------------------------------
 	.export actor_proc_powerup
+	.export	actor_B_19_proc
 actor_proc_powerup:
+actor_B_19_proc:
 	ldx	#POWERUP_ACTOR_IDX
 	stx	actor_index
 	lda	state_actor+POWERUP_ACTOR_IDX
@@ -70,7 +74,7 @@ actor_proc_powerup:
 		beq	:+
 		cmp	#powerup_type::mushroom_oneup
 		beq	:+
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			cmp	#powerup_type::mushroom_poison
 			beq	:+
 			cmp	#powerup_type::type_05

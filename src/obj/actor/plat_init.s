@@ -11,7 +11,9 @@ PLAT_COL_FLAG		= %11111111
 PLAT_COL_BOX		= col_boxes::box_4
 ; -----------------------------------------------------------
 	.export actor_init_plat_bal
+	.export	actor_B_0F_init
 actor_init_plat_bal:
+actor_B_0F_init:
 	dec	pos_y_lo_actor, x
 	dec	pos_y_lo_actor, x
 
@@ -36,19 +38,27 @@ actor_init_plat_bal:
 	jsr	actor_plat_pos
 ; ------------------------------
 	.export actor_init_plat_drop
+	.export	actor_B_14_init
 actor_init_plat_drop:
+actor_B_14_init:
 	lda	#PLAT_COL_FLAG
 	sta	actor_plat_col_flag, x
 	jmp	actor_init_plat_std_do
 ; ------------------------------
 	.export actor_init_plat_std_h
+	.export	actor_B_13_init
+	.export	actor_B_15_init
 actor_init_plat_std_h:
+actor_B_13_init:
+actor_B_15_init:
 	lda	#0
 	sta	veloc_x_actor, x
 	jmp	actor_init_plat_std_do
 ; ------------------------------
 	.export actor_init_plat_std_v
+	.export	actor_B_10_init
 actor_init_plat_std_v:
+actor_B_10_init:
 	ldy	#PLAT_V_INC
 	lda	pos_y_lo_actor, x
 	bpl	:+ ; if (actor[x].pos_y < 0) {
@@ -79,18 +89,23 @@ actor_init_plat_do:
 	rts
 ; -----------------------------------------------------------
 	.export actor_init_plat_l_up, actor_init_plat_l_down
+	.export	actor_B_11_init, actor_B_12_init
 actor_init_plat_l_up:
+actor_B_11_init:
 	jsr	actor_init_plat_s_up
 	jmp	:+
 ; ------------------------------
 actor_init_plat_l_down:
+actor_B_12_init:
 	jsr	actor_init_plat_s_down
 ; ------------------------------
 :
 	jmp	actor_init_plat_do
 ; -----------------------------------------------------------
 	.export actor_init_plat_s_up, actor_init_plat_s_down
+	.export	actor_B_16_init, actor_B_17_init
 actor_init_plat_s_up:
+actor_B_16_init:
 	lda	#PLAT_ACCEL_Y_ABS
 	sta	accel_y2_actor, x
 	lda	#<-1
@@ -99,6 +114,7 @@ actor_init_plat_s_up:
 	jmp	:+
 ; ------------------------------
 actor_init_plat_s_down:
+actor_B_17_init:
 	lda	#<-PLAT_ACCEL_Y_ABS
 	sta	accel_y2_actor, x
 	lda	#0
@@ -118,6 +134,7 @@ actor_plat_pos_data_b:
 	.byte	0, 0, <-1
 ; ------------------------------
 	.export actor_plat_pos_rts
+	.export	actor_B_36_init
 actor_plat_pos:
 	lda	pos_x_lo_actor, x
 	clc
@@ -132,10 +149,25 @@ actor_plat_pos:
 
 .if	.defined(ANN)
 	.export actor_proc_null, actor_proc_null_b
+	.export	actor_A_09_proc, actor_A_13_proc
+	.export	actor_B_02_proc, actor_B_03_proc
+	.export	actor_B_04_proc, actor_B_05_proc
+	.export	actor_B_0E_proc
+	.export	actor_B_1B_proc, actor_B_1E_proc
 actor_proc_null:
 actor_proc_null_b:
+actor_A_09_proc:
+actor_A_13_proc:
+actor_B_02_proc:
+actor_B_03_proc:
+actor_B_04_proc:
+actor_B_05_proc:
+actor_B_0E_proc:
+actor_B_1B_proc:
+actor_B_1E_proc:
 .endif
 
 actor_plat_pos_rts:
+actor_B_36_init:
 	rts
 

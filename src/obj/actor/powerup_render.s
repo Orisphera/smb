@@ -22,7 +22,7 @@ render_powerup_tiles:
 	.byte	chr_obj::mushroom_nw, chr_obj::mushroom_ne
 	.byte	chr_obj::mushroom_sw, chr_obj::mushroom_se
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	chr_obj::mushroom_nw, chr_obj::mushroom_ne
 		.byte	chr_obj::mushroom_sw, chr_obj::mushroom_se
 	.endif
@@ -33,7 +33,7 @@ render_powerup_colors:
 	.byte	obj_attr::color2
 	.byte	obj_attr::color1
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	obj_attr::color3
 	.endif
 ; -----------------------------
@@ -76,7 +76,7 @@ render_powerup:
 	cmp	#powerup_type::mushroom_oneup
 	beq	:++
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		cmp	#powerup_type::mushroom_poison
 		beq	:++
 	.endif

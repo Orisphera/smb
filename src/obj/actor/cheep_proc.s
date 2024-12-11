@@ -6,7 +6,7 @@
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)
 	CHEEP_VELOC_Y	= 32
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	CHEEP_VELOC_Y	= 64
 .endif
 CHEEP_VELOC_X			= 16
@@ -21,7 +21,11 @@ actor_proc_cheep_accel_x:
 	.byte	64, <-128, 4, 4
 ; -----------------------------
 	.export actor_proc_cheep
+	.export	actor_A_0A_proc
+	.export	actor_A_0B_proc
 actor_proc_cheep:
+actor_A_0A_proc:
+actor_A_0B_proc:
 	lda	state_actor, x
 	and	#actor_states::bit_5
 	beq	:+ ; if (actor.state & 0x20) {

@@ -31,7 +31,7 @@ actor_proc_plat_bal:
 	: ; }
 	tay
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	obj_id_actor, y
 		cmp	#actor::plat_bal
 		bne	:--

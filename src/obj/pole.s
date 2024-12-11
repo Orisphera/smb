@@ -61,9 +61,9 @@ pole_proc:
 	: ; } else {
 		ldy	render_flag_score_val
 	
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 		cpy	#FLAG_SCORE_VALUE_ONEUP
-		bne	:+ ; if (SMB2M && render_flag_score_val == oneup) {
+		bne	:+ ; if (SMBV2 && render_flag_score_val == oneup) {
 			inc	player_lives
 			lda	#sfx_pulse_2::oneup
 			sta	apu_sfx_pulse_2_req

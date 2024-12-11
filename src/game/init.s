@@ -65,7 +65,7 @@ game_init_oam_end:
 		lda	#TITLE_DEMO_TIMER
 		sta	timer_demo
 		jsr	course_descriptor_load
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 	game_init_0:
 	.endif
 
@@ -146,7 +146,7 @@ game_init_0_do:
 	lda	#1
 	sta	nmi_disp_disable
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		jsr	player_phys_load
 	.endif
 
@@ -190,7 +190,7 @@ game_init_0_do:
 	game_init_1:
 		jsr	game_init_setup
 		.endif
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 	game_init_1:
 	.endif
 
@@ -203,7 +203,7 @@ game_init_1_do:
 		sta	bg_scenery_wind_flag
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		sta	game_level_end_apu_on
 	.endif
 
@@ -229,7 +229,7 @@ game_init_1_do:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		ror	a
 		rol	ppu_ctlr0_b
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		sta	ppu_ctlr0_bg
 	.endif
 

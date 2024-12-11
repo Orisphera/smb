@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"tunables.i"
 
 	.export actor_proc_enemy
 actor_proc_enemy:
@@ -24,36 +25,17 @@ actor_proc_enemy:
 actor_proc_enemy_do:
 	lda	obj_id_actor, x
 	jsr	tbljmp
-	.addr	actor_proc_base
-	.addr	actor_proc_base
-	.addr	actor_proc_base
-	.addr	actor_proc_base
 
-	.if	.defined(SMB)|.defined(VS_SMB)
-		.addr	actor_proc_base
-	.elseif	.defined(SMB2M)
-		.addr	actor_proc_piranha_plant_b
-	.endif
-
-	.addr	actor_proc_hammer_bro
-	.addr	actor_proc_base
-	.addr	actor_proc_blooper
-	.addr	actor_proc_bullet
-	.addr	actor_proc_null_b
-	.addr	actor_proc_cheep
-	.addr	actor_proc_cheep
-	.addr	actor_proc_podoboo
-	.addr	actor_proc_piranha_plant
-	.addr	actor_proc_bounce
-	.addr	actor_proc_koopa_red_fly
-	.addr	actor_proc_koopa_green_fly
-	.addr	actor_proc_lakitu
-	.addr	actor_proc_base
-	.addr	actor_proc_null_b
-	.addr	actor_proc_cheep_fly
+	.repeat ACTOR_A_COUNT, I
+		.export	.ident(.sprintf("actor_proc_A_tbl_%02X", I))
+	.ident(.sprintf("actor_proc_A_tbl_%02X", I)):
+		.addr	.ident(.sprintf("actor_A_%02X_proc", I))
+	.endrep
 ; -----------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 actor_proc_null_b:
+actor_A_09_proc:
+actor_A_13_proc:
 	rts
 .endif
 

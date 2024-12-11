@@ -32,7 +32,7 @@ game_mode_tbl:
 		.export	game_mode_vs_init
 	game_mode_vs_init:
 		.addr	vs_game_init
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.export	game_mode_init_data2
 	game_mode_init_data2:
 		.addr	disk_loader_data2
@@ -239,8 +239,8 @@ game_scroll:
 		: ; }
 	
 	game_scroll_do:
-		.if	.defined(SMB2M)
-		: ; while (SMB2M && fds_sprite_overlap_hit) {
+		.if	.defined(SMBV2)
+		: ; while (SMBV2 && fds_sprite_overlap_hit) {
 			lda	fds_sprite_overlap_hit
 			bne	:-
 		; }
@@ -269,7 +269,7 @@ game_scroll:
 			and	#<~ppu_ctlr0::bg_parity
 			ora	zp_byte_00
 			sta	ppu_ctlr0_b
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			sta	ppu_ctlr0_bg
 		.endif
 

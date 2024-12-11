@@ -98,7 +98,9 @@ actor_proc_bowser_timer_data:
 	.byte	33, 65, 17, 49
 ; ----------------------------
 	.export actor_proc_bowser, actor_killall
+	.export	actor_B_18_proc
 actor_proc_bowser:
+actor_B_18_proc:
 	lda	state_actor, x
 	and	#actor_states::bit_5
 	beq	:++

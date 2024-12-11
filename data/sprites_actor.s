@@ -143,13 +143,13 @@ render_actor_tiles_princess:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte				chr_obj::princess_a+1
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte				chr_obj::princess_c+0
 	.endif
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	chr_obj::princess_c+0, chr_obj::princess_c+1
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	chr_obj::princess_a+1, chr_obj::princess_a+1
 	.endif
 
@@ -257,7 +257,7 @@ render_actor_tile_offsets:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	render_actor_tiles_koopa-render_actor_tile_data
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	render_actor_tiles_piranha-render_actor_tile_data
 	.endif
 
@@ -294,7 +294,7 @@ render_actor_attrs:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		.byte	obj_attr::priority_high|obj_attr::color1
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.byte	obj_attr::priority_low|obj_attr::color2
 	.endif
 

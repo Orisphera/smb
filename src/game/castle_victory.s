@@ -17,7 +17,7 @@ sys_castle_victory:
 
 	lda	proc_id_game
 	beq	:++
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		ldx	course_no
 		cpx	#course::no_08
 		bne	:+
@@ -27,7 +27,7 @@ sys_castle_victory:
 		beq	sys_castle_victory-1
 		; NOTE: This assumes this module follows an rts
 	.endif
-	; if (!SMB2M || course_no != course_08 || this.proc_id.not_in(data3, save)) {
+	; if (!SMBV2 || course_no != course_08 || this.proc_id.not_in(data3, save)) {
 		: ; if (this.proc_id != bowser) {
 			ldx	#0
 			stx	actor_index
@@ -45,10 +45,10 @@ sys_castle_victory:
 	.export	victory_enter_msg
 	.export	victory_enter_finish
 victory_enter:
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	course_no
 		cmp	#course::no_08
-		beq	victory_course_08 ; if (!SMB2M || course_no != course_08) {
+		beq	victory_course_08 ; if (!SMBV2 || course_no != course_08) {
 	.endif
 		lda	proc_id_game
 		jsr	tbljmp
@@ -61,7 +61,7 @@ victory_enter_proc:
 		.addr	victory_proc
 victory_enter_msg:
 		.addr	victory_msg
-		.if	.defined(SMB2M)|.defined(VS_SMB)
+		.if	.defined(SMBV2)|.defined(VS_SMB)
 			.export victory_enter_time_tally
 		victory_enter_time_tally:
 			.addr	victory_time_tally
@@ -85,7 +85,7 @@ victory_enter_finish:
 		victory_enter_865D:
 			.addr	victory_865D
 		.endif
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 	victory_course_08: ; } else {
 		.export victory_course_08_tbl
 		.export victory_course_08_bowser
@@ -288,7 +288,7 @@ victory_init:
 		sta	game_courses_cleared
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		lda	ENG_HARDMODE_VAR
 		beq	:+
 		lda	course_no
@@ -304,14 +304,14 @@ victory_init:
 
 	.if	.defined(SMB)|.defined(VS_SMB)
 		jmp	screen_title_proc_id_inc
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		.export screen_title_bg, screen_title_bg_finish
 	screen_title_bg_finish:
 		inc	proc_id_game
 		rts
 	.endif
 ; -----------------------------
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 	screen_title_bg:
 		lda	proc_id_system
 		bne	screen_title_bg_finish
@@ -404,7 +404,7 @@ victory_msg:
 							dey
 						; }
 					; }
-				.elseif	.defined(SMB2M)
+				.elseif	.defined(SMBV2)
 					beq	victory_msg_set
 				.endif
 		
@@ -510,9 +510,9 @@ victory_msg:
 		rts
 	; }
 ; -----------------------------------------------------------
-	.if	.defined(SMB2M)|.defined(VS_SMB)
+	.if	.defined(SMBV2)|.defined(VS_SMB)
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		TALLY_TIMER_CUTOFF	= 6
 	.elseif	.defined(VS_SMB)
 		TALLY_TIMER_CUTOFF	= 10
@@ -539,7 +539,7 @@ victory_msg:
 			: ; if (time == 0) {
 				lda	#$30
 				sta	timer_select
-				.if	.defined(SMB2M)
+				.if	.defined(SMBV2)
 					lda	#6
 					sta	timer_victory
 				.endif

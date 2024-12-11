@@ -3,7 +3,17 @@
 .include	"misc.i"
 
 	.export actor_init_swarm
+	.export	actor_A_12_init
+	.export	actor_A_14_init
+	.export	actor_B_00_init
+	.export	actor_B_01_init
+	.export	actor_B_02_init
 actor_init_swarm:
+actor_A_12_init:
+actor_A_14_init:
+actor_B_00_init:
+actor_B_01_init:
+actor_B_02_init:
 	lda	obj_id_actor, x
 	sta	actor_swarm_buffer
 	sec
@@ -22,7 +32,9 @@ actor_init_swarm_null:
 .endif
 ; -----------------------------------------------------------
 	.export actor_kill_swarm
+	.export	actor_B_03_init
 actor_kill_swarm:
+actor_B_03_init:
 	ldy	#ENG_ACTOR_MAX-1
 	: ; for (actor of actors) {
 		lda	obj_id_actor, y

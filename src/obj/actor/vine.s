@@ -3,7 +3,9 @@
 .include	"sound.i"
 
 	.export actor_init_vine
+	.export	actor_B_1A_init
 actor_init_vine:
+actor_B_1A_init:
 	lda	#actor::vine
 	sta	obj_id_actor, x
 	lda	#proc_id_actors::active
@@ -39,11 +41,13 @@ VINE_DO_VAR0	= $23
 .endif
 
 	.export actor_proc_vine
+	.export	actor_B_1A_proc
 actor_proc_vine:
+actor_B_1A_proc:
 	cpx	#5
 .if	.defined(SMB)
 	bne	:+++++ ; if (x == 5) {
-.elseif	.defined(VS_SMB)|.defined(SMB2M)
+.elseif	.defined(VS_SMB)|.defined(SMBV2)
 	beq	:+ ; if (x != 5) {
 		rts
 	: ; }
@@ -114,7 +118,7 @@ actor_proc_vine:
 		; }
 	: ; }
 
-	.if	.defined(VS_SMB)|.defined(SMB2M)
+	.if	.defined(VS_SMB)|.defined(SMBV2)
 		lda	pos_x_lo_actor+GAME_PROC_VINE_ACTOR_ID
 		sec
 		sbc	pos_x_lo_screen_left

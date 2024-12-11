@@ -2,7 +2,11 @@
 .include	"misc.i"
 
 	.export actor_proc_plat_small
+	.export	actor_B_16_proc
+	.export	actor_B_17_proc
 actor_proc_plat_small:
+actor_B_16_proc:
+actor_B_17_proc:
 	jsr	pos_bits_get_actor
 	jsr	pos_calc_x_rel_actor
 
@@ -18,7 +22,21 @@ actor_proc_plat_small:
 	jmp	col_actor_oob_proc
 ; -----------------------------------------------------------
 	.export actor_proc_plat_large
+	.export	actor_B_0F_proc
+	.export	actor_B_10_proc
+	.export	actor_B_11_proc
+	.export	actor_B_12_proc
+	.export	actor_B_13_proc
+	.export	actor_B_14_proc
+	.export	actor_B_15_proc
 actor_proc_plat_large:
+actor_B_0F_proc:
+actor_B_10_proc:
+actor_B_11_proc:
+actor_B_12_proc:
+actor_B_13_proc:
+actor_B_14_proc:
+actor_B_15_proc:
 	jsr	pos_bits_get_actor
 	jsr	pos_calc_x_rel_actor
 

@@ -176,7 +176,7 @@ block_item:
 		.addr	block_mushroom_reg
 
 		block_item_mid:
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			.addr	block_mushroom_reg
 		.endif
 
@@ -247,7 +247,7 @@ block_tiles:
 		.byte	metatile_3::block_q_c, metatile_1::blank_e
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.byte	metatile_1::blank_d
 	.endif
 

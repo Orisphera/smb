@@ -250,7 +250,7 @@ actor_loop:
 				; }
 
 				actor_course_loop:
-				.if	.defined(SMB2M)
+				.if	.defined(SMBV2)
 				actor_loop_check_not_apply:
 				.endif
 
@@ -258,14 +258,14 @@ actor_loop:
 				lda	actor_loop_counter
 				.if	.defined(SMB)|.defined(VS_SMB)
 					cmp	#ACTOR_LOOP_COUNT
-				.elseif	.defined(SMB2M)
+				.elseif	.defined(SMBV2)
 					cmp	actor_loop_data_smb2, y
 				.endif
 				bne	:+++
 				lda	actor_loop_counter_real
 				.if	.defined(SMB)|.defined(VS_SMB)
 					cmp	#ACTOR_LOOP_COUNT
-				.elseif	.defined(SMB2M)
+				.elseif	.defined(SMBV2)
 					cmp	actor_loop_data_smb2, y
 				.endif
 				beq	:++
@@ -591,6 +591,7 @@ actor_special_do:
 	rts
 ; -----------------------------------------------------------
 	.export actor_init_do
+	.export	actor_init_tbl
 actor_init_do:
 	lda	obj_id_actor, x
 	cmp	#actor::actors_page_b
@@ -605,67 +606,42 @@ actor_init_do:
 	: ; }
 
 	jsr	tbljmp
-	.addr	actor_init_base
-	.addr	actor_init_base
-	.addr	actor_init_base
-	.addr	actor_init_koopa_red
 
-	.if	.defined(SMB)|.defined(VS_SMB)
-		.addr	actor_init_null
-	.elseif	.defined(SMB2M)
-		.addr	actor_init_piranha_plant
-	.endif
+actor_init_tbl:
+	.repeat	ACTOR_A_COUNT, I
+		.export	.ident(.sprintf("actor_init_A_tbl_%02X", I))
+	.ident(.sprintf("actor_init_A_tbl_%02X", I)):
+		.addr	.ident(.sprintf("actor_A_%02X_init", I))
+	.endrep
 
-	.addr	actor_init_hammer_bro
-	.addr	actor_init_goomba
-	.addr	actor_init_blooper
-	.addr	actor_init_bullet
-	.addr	actor_init_null
-	.addr	actor_init_cheep
-	.addr	actor_init_cheep
-	.addr	actor_init_podoboo
-	.addr	actor_init_piranha_plant
-	.addr	actor_init_koopa_green_bounce
-	.addr	actor_init_koopa_red_fly
-	.addr	actor_init_veloc_x_none
-	.addr	actor_init_lakitu
-	.addr	actor_init_swarm
-	.addr	actor_init_null
-	.addr	actor_init_swarm
-	.addr	actor_init_swarm
-	.addr	actor_init_swarm
-	.addr	actor_init_swarm
-	.addr	actor_kill_swarm
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_firebar_short
-	.addr	actor_init_firebar_short
-	.addr	actor_init_firebar_short
-	.addr	actor_init_firebar_short
-	.addr	actor_init_firebar_long
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_plat_bal
-	.addr	actor_init_plat_std_v
-	.addr	actor_init_plat_l_up
-	.addr	actor_init_plat_l_down
-	.addr	actor_init_plat_std_h
-	.addr	actor_init_plat_drop
-	.addr	actor_init_plat_std_h
-	.addr	actor_init_plat_s_up
-	.addr	actor_init_plat_s_down
-	.addr	actor_init_bowser
-	.addr	actor_init_powerup
-	.addr	actor_init_vine
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_null
-	.addr	actor_init_toad
-	.addr	actor_plat_pos_rts
+	.repeat	ACTOR_B_COUNT, I
+		.export	.ident(.sprintf("actor_init_B_tbl_%02X", I))
+	.ident(.sprintf("actor_init_B_tbl_%02X", I)):
+		.addr	.ident(.sprintf("actor_B_%02X_init", I))
+	.endrep
+
+	.export	actor_init_B_tbl_36
+actor_init_B_tbl_36:
+	.addr	actor_B_36_init
 ; -----------------------------------------------------------
 actor_init_null:
+actor_A_09_init:
+actor_A_13_init:
+actor_B_04_init:
+actor_B_05_init:
+actor_B_0B_init:
+actor_B_0C_init:
+actor_B_0D_init:
+actor_B_0E_init:
+actor_B_1B_init:
+actor_B_1C_init:
+actor_B_1D_init:
+actor_B_1E_init:
+actor_B_1F_init:
+
+.if	.defined(SMBV1)
+	.export	actor_A_04_init
+actor_A_04_init:
+.endif
+
 	rts

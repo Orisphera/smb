@@ -11,7 +11,7 @@
 
 .if	.defined(SMB)|.defined(VS_SMB)
 	screen_proc_continue = screen_proc_next
-.elseif	.defined(SMB2M)
+.elseif	.defined(SMBV2)
 	screen_proc_continue = screen_text_draw_timeup_continue
 .endif
 
@@ -216,7 +216,7 @@ screen_text_draw_splash:
 		ldy	course_no
 		iny
 		tya
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		jsr	screen_calc_course_no
 	.endif
 	sta	ppu_displist_0_tile+0, x
@@ -236,7 +236,7 @@ screen_text_draw_splash:
 	sta	ppu_displist_0_offset
 	jmp	screen_proc_continue
 ; ----------------------------
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 	screen_calc_course_no:
 		ldy	course_no
 		lda	ENG_HARDMODE_VAR
@@ -260,7 +260,7 @@ screen_text_draw_timeup:
 		lda	#screen_text::timeup
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	screen_text_draw_timeup_end
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 		screen_text_draw_timeup_end:
 			jsr	screen_text_draw
 			jsr	screen_timer_reset
@@ -273,7 +273,7 @@ screen_text_draw_timeup:
 
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	screen_proc_continue
-		.elseif	.defined(SMB2M)	
+		.elseif	.defined(SMBV2)	
 		screen_text_draw_timeup_continue:
 			inc	screen_proc_id
 			rts
@@ -302,7 +302,7 @@ screen_text_draw_intermission:
 				lda	#0
 				sta	nmi_disp_disable
 				rts
-			.elseif	.defined(SMB2M)
+			.elseif	.defined(SMBV2)
 				jsr	screen_text_draw_timeup_end
 				.if	.defined(SMB2)
 					lda	course_no
@@ -327,7 +327,7 @@ screen_text_draw_intermission:
 
 		.if	.defined(SMB)|.defined(VS_SMB)
 			jmp	screen_title_proc_id_inc
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			.if	.defined(SMB2)
 				lda	course_no
 				cmp	#course::no_09
@@ -390,7 +390,7 @@ screen_text_draw:
 				iny
 			: ; }
 		; }
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		tay
 	.endif
 
@@ -411,7 +411,7 @@ screen_text_draw:
 	sta	ppu_displist_0_data, y
 	pla
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		beq	screen_text_draw_end
 	.endif
 
@@ -439,7 +439,7 @@ screen_text_draw:
 			ldy	course_no
 			iny
 			sty	ppu_displist_0_data+19
-		.elseif	.defined(SMB2M)
+		.elseif	.defined(SMBV2)
 			jsr	screen_calc_course_no
 			sta	ppu_displist_0_data+19
 		.endif
@@ -448,7 +448,7 @@ screen_text_draw:
 		iny
 		sty	ppu_displist_0_data+21
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		: ; }
 
 	screen_text_draw_end:
@@ -487,7 +487,7 @@ screen_text_draw:
 			rts
 	.endif
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 			.export screen_text_draw_over
 		screen_text_draw_over:
 			pha

@@ -105,7 +105,7 @@ SOUND_I = 1
 		C6	=	<(apu_note_C6-apu_notes)
 	.endenum
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.enum	sound_fds_notes
 			note_00	= <(apu_fds_wave_note_00-apu_fds_wave_notes)
 			note_01	= <(apu_fds_wave_note_01-apu_fds_wave_notes)
@@ -222,7 +222,7 @@ SOUND_I = 1
 		third		= <(apu_note_length_f_third-apu_note_lengths_f)
 	.endenum
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.enum	length_fds_a
 			thirddot	= <(apu_fds_note_length_a_thirddot-apu_fds_note_lengths_a)
 			ninth_double	= <(apu_fds_note_length_a_ninth_double-apu_fds_note_lengths_a)
@@ -255,7 +255,7 @@ SOUND_I = 1
 		wind		= 4
 		.endif
 
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 		skid		= 128
 		.endif
 	.endenum
@@ -308,7 +308,7 @@ SOUND_I = 1
 		none		= 128
 	.endenum
 
-	.if	.defined(SMB2M)
+	.if	.defined(SMBV2)
 		.enum	music_fds
 			null		= 0
 			ending		= 1

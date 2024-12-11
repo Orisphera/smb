@@ -16,7 +16,9 @@ actor_proc_blooper_flip_chance:
 	.endif
 ; ----------------------------
 	.export actor_proc_blooper
+	.export	actor_A_07_proc
 actor_proc_blooper:
+actor_A_07_proc:
 	lda	state_actor, x
 	and	#actor_states::bit_5
 	bne	:++++++ ; if (!(actor.state & 0x20)) {

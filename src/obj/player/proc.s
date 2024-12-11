@@ -361,7 +361,7 @@ player_proc_death:
 	cmp	#$F0
 	.if	.defined(SMB)|.defined(VS_SMB)
 		bcs	player_proc_player_rts
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		bcs	player_proc_firefl_rts
 	.endif
 	jmp	player_proc_ctrl
@@ -446,12 +446,12 @@ player_proc_victory:
 	lda	game_scroll_lock
 	beq	:+ ; if (this.pos_y >= 0xAE && scroll_lock || !(SMB|VS_SMB)) {
 	.endif
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			lda	#0
 			sta	game_scroll_lock
 		.endif
 
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 		lda	game_level_end_apu_on
 		bne	:+ ; if (!game_level_end_apu_on) {
 		.endif
@@ -462,7 +462,7 @@ player_proc_victory:
 				sta	game_scroll_lock
 			.endif
 
-		.if	.defined(SMB2M)
+		.if	.defined(SMBV2)
 			inc	game_level_end_apu_on
 		; }
 		.endif
@@ -494,7 +494,7 @@ player_proc_victory:
 		.elseif	.defined(SMB2)
 		cmp	#10
 		.endif
-		bcc	:+ ; if (++this.goals == 3 && (game_bonus_counter >= player_proc_victory_oneup_tallies[course.no] || (SMB2M && game_bonus_counter >= 10)) {
+		bcc	:+ ; if (++this.goals == 3 && (game_bonus_counter >= player_proc_victory_oneup_tallies[course.no] || (SMBV2 && game_bonus_counter >= 10)) {
 			inc	bg_hidden_one_up_req
 		: ; }
 
@@ -634,7 +634,7 @@ player_proc_player_jump_swim_do:
 	.if	.defined(SMB)|.defined(VS_SMB)
 		jsr	motion_x_check_spring
 		sta	scroll_x_player
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		jsr	player_proc_player_ground_b
 	.endif
 
@@ -717,7 +717,7 @@ STATS_BASE_INCLUDE	= 1
 player_proc_player_stats:
 	.include	"../../../data/player_a_accel.s"
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 	.include	"../../../data/player_a_friction.s"
 .endif
 

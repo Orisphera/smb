@@ -28,7 +28,9 @@ actor_proc_flag_chr_nos_end:
 	.export actor_proc_flag_victory_tbl_raise
 	.export actor_proc_flag_victory_tbl_delay
 	.export actor_proc_flag_victory_tbl_done
+	.export	actor_B_1C_proc
 actor_proc_flag_victory:
+actor_B_1C_proc:
 	lda	#0
 	sta	actor_swarm_buffer
 	lda	proc_id_flag_victory
@@ -66,7 +68,7 @@ actor_proc_flag_victory_fireworks:
 				; }
 			; }
 		: ; }
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 	        lda     stats_time_end-STATS_TIME_LEN+2
 	        cmp     stats_coin_player_end-1
 	        bne     :++
@@ -137,7 +139,7 @@ actor_proc_course_end_stats:
 		asl	a
 		asl	a
 		ora	#%00000100
-	.elseif	.defined(SMB2M)
+	.elseif	.defined(SMBV2)
 		lda	#2
 	.endif
 	jmp	misc_proc_coin_add_score

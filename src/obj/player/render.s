@@ -238,7 +238,7 @@ render_player_action:
 	;	&& this.motion_dir != this.disp_dir
 	; ) {
 		; if (this.state == ground && && skidding) {
-			.if	.defined(SMB2M)
+			.if	.defined(SMBV2)
 				lda	proc_id_player
 				cmp	#player_procs::size_chg
 				bcs	:+ ; if (this.proc_id < size_chg) {

@@ -248,7 +248,7 @@ COURSE_OBJ_B_CASTLE	= (((bg_obj_tbl_castle-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_STAIRS	= (((bg_obj_tbl_stairs-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_PIPE_EXIT	= (((bg_obj_tbl_pipe_exit-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_POLE_TIP	= (((bg_obj_tbl_pole_tip-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 COURSE_OBJ_B_PIPE_V_FLIP_A = (((bg_obj_tbl_pipe_v_flip_a-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 COURSE_OBJ_B_PIPE_V_FLIP_B = (((bg_obj_tbl_pipe_v_flip_b-bg_obj_spec_B)/WORD_SIZE)<<OBJ_B_BIT)
 .endif
@@ -261,7 +261,7 @@ COURSE_OBJ_C_BLOCK_Q_C		= (((bg_obj_tbl_block_q_c-bg_obj_spec_C)/WORD_SIZE)<<OBJ
 	COURSE_OBJ_C_BLOCK_Q_D		= (((bg_obj_tbl_block_q_d-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
 .endif
 COURSE_OBJ_C_HIDDEN_ONE_UP	= (((bg_obj_tbl_hidden_one_up-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
-.if .defined(SMB2M)
+.if .defined(SMBV2)
 	COURSE_OBJ_C_BLOCK_Q_E		= (((bg_obj_tbl_block_q_e-bg_obj_spec_C)/WORD_SIZE)<<OBJ_C_BIT)
 .endif
 .if	.defined(SMB2)
@@ -353,7 +353,7 @@ COURSE_ACTORS_ID_BIT		= 8
 COURSE_ACTORS_ID_KOOPA_GREEN	= (actor::koopa_green<<COURSE_ACTORS_ID_BIT)
 COURSE_ACTORS_ID_BUZZY_BEETLE	= (actor::buzzy_beetle<<COURSE_ACTORS_ID_BIT)
 COURSE_ACTORS_ID_KOOPA_RED	= (actor::koopa_red<<COURSE_ACTORS_ID_BIT)
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 COURSE_ACTORS_ID_PIRANHA_PLANT_B	= (actor::piranha_plant_b<<COURSE_ACTORS_ID_BIT)
 .endif
 COURSE_ACTORS_ID_HAMMER_BRO	= (actor::hammer_bro<<COURSE_ACTORS_ID_BIT)
@@ -480,7 +480,7 @@ COURSE_ACTORS_SUBSPACE_CASTLE_09	= (course_castle_smb2::no_09<<COURSE_ACTORS_SUB
 COURSE_ACTORS_SUBSPACE_CASTLE_10	= (course_castle_smb2::no_10<<COURSE_ACTORS_SUBSPACE_ENTRY_BIT)
 .endif
 
-.if	.defined(SMB2M)
+.if	.defined(SMBV2)
 COURSE_EXT_ACTORS_SUBSPACE_CASTLE_02	= (course_castle_ext::no_02<<COURSE_ACTORS_SUBSPACE_ENTRY_BIT)
 COURSE_EXT_ACTORS_SUBSPACE_CASTLE_04	= (course_castle_ext::no_04<<COURSE_ACTORS_SUBSPACE_ENTRY_BIT)
 COURSE_EXT_ACTORS_SUBSPACE_OVERWORLD_01	= (course_overworld_ext::no_01<<COURSE_ACTORS_SUBSPACE_ENTRY_BIT)
