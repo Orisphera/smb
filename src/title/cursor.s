@@ -5,7 +5,7 @@
 
 .if	.defined(CONS)
 ; -----------------------------------------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	TITLE_CURSOR_COL	= PPU_BG_COL_9
 .elseif	.defined(SMBV2)
 	TITLE_CURSOR_COL	= PPU_BG_COL_11
@@ -13,7 +13,7 @@
 
 	.export title_cursor_data
 title_cursor_data:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 	.byte	(:++++)-(:+)
 	.endif
         : .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_18+TITLE_CURSOR_COL
@@ -35,7 +35,7 @@ title_cursor_tiles:
 ; ----------------------------
 	.export title_cursor_draw, title_cursor_draw_xfer
 title_cursor_draw:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	ldy     #(title_cursor_data_end-title_cursor_data)-1
 	: ; for (a in title_cursor_data) {
 		lda     title_cursor_data, y
@@ -50,7 +50,7 @@ title_cursor_draw:
 .endif
 
 title_cursor_draw_xfer:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
         lda     player_count
         beq     :+ ; if (player_count) {
 		lda     #' '

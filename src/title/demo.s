@@ -3,7 +3,7 @@
 
 ; -----------------------------------------------------------
 title_demo_buttons:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.byte	joypad_button::right
 	.byte	joypad_button::face_a
 	.byte	joypad_button::left
@@ -66,7 +66,7 @@ title_demo_buttons:
 .endif
 
 title_demo_timers:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.byte	$9B
 	.byte	$10
 	.byte	$18

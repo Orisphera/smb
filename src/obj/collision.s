@@ -297,7 +297,7 @@ col_player_hammer_proc:
 	lda	frame_count
 	lsr	a
 	bcc	:++
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	game_timer_stop
 	.elseif	.defined(SMBV2)
 		lda	bits_offscr_player
@@ -483,7 +483,7 @@ col_player_actor_proc_hit_do:
 	cpy	#actor::podoboo
 	beq	col_player_harm_proc
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		cpy	#actor::bullet
 		beq	:+++
 	.endif
@@ -531,7 +531,7 @@ col_player_actor_proc_hit_do:
 	: ; } else if ((actor.collision & 0x01) || actor.id == goomba) {
 		rts
 	: ; } else {
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			lda	veloc_y_player
 			bmi	:+
 				bne	col_player_actor_stomp
@@ -678,7 +678,7 @@ col_player_actor_stomp:
 		jsr	actor_init_veloc_y
 		sta	veloc_x_actor, x
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			lda	#<-3
 			sta	veloc_y_player
 			rts
@@ -694,7 +694,7 @@ col_player_actor_stomp:
 		and	#actor::koopa_mask
 		sta	obj_id_actor, x
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			ldy	#actor_states::init
 			sty	state_actor, x
 		.elseif	.defined(SMBV2)
@@ -709,7 +709,7 @@ col_player_actor_stomp:
 		lda	col_player_stomp_veloc_x, y
 		sta	veloc_x_actor, x
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			jmp	:++
 		.elseif	.defined(SMBV2)
 			rts
@@ -736,7 +736,7 @@ col_actor_stomp_resurrect_timer:
 		sta	timer_actor, x
 	: ; }
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	#<-4
 		sta	veloc_y_player
 	.elseif	.defined(SMBV2)
@@ -1200,7 +1200,7 @@ COL_CHECK_PLAYER_POS_Y_CUTOFF	= 208
 col_check_player_pos_y:
 	lda	bits_offscr_player
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		cmp	#%11110000
 		bcs	:+
 		ldy	pos_y_hi_player
@@ -1753,7 +1753,7 @@ col_bg_proc_pipe_v_do:
 		sta	attr_player
 		lda	game_warp_ctrl
 		beq	:+++ ; if (game_warp_ctrl) {
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 				PIPE_POS_MASK	= %00000011
 			.elseif	.defined(SMB2)
 				PIPE_POS_MASK	= %00001111
@@ -1784,7 +1784,7 @@ col_bg_proc_pipe_v_do:
 			.endif
 			:
 
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 				: ldy	screen_text_warps, x
 			.elseif	.defined(SMBV2)
 				lda	screen_text_warps, x
@@ -1965,7 +1965,7 @@ col_actor_ground_proc:
 		beq	:--
 		cmp	#metatile_0::blank_d
 		bne	col_actor_land ; } else if (tile == blank_d) {
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 				ldy	col_buffer_ptr_idx
 				lda	#metatile_0::blank_a
 				sta	(game_buffer), y
@@ -2012,7 +2012,7 @@ col_actor_koopa_demote_check:
 	: ; }
 ; -----------------------------
 col_player_actor_stomp_do:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	state_actor, x
 		and	#<~(actor_states::bit_3|actor_states::state_mask)
 		ora	#actor_states::state_2
@@ -2058,7 +2058,7 @@ col_player_actor_stomp_do:
 	lda	col_actor_stomp_veloc_x, y
 	sta	veloc_x_actor, x
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 col_actor_ground_proc_rts:
 .endif
 	rts
@@ -2386,7 +2386,7 @@ col_box_9:
 
 	.byte	13
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	20
 	.elseif	.defined(SMBV2)
 		.byte	22

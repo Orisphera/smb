@@ -141,13 +141,13 @@ render_actor_tiles_lakitu_duck:
 render_actor_tiles_princess:
 	.byte	chr_obj::princess_a+0
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte				chr_obj::princess_a+1
 	.elseif	.defined(SMBV2)
 		.byte				chr_obj::princess_c+0
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	chr_obj::princess_c+0, chr_obj::princess_c+1
 	.elseif	.defined(SMBV2)
 		.byte	chr_obj::princess_a+1, chr_obj::princess_a+1
@@ -255,7 +255,7 @@ render_actor_tile_offsets:
 	.byte	render_actor_tiles_buzzy-render_actor_tile_data
 	.byte	render_actor_tiles_koopa-render_actor_tile_data
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	render_actor_tiles_koopa-render_actor_tile_data
 	.elseif	.defined(SMBV2)
 		.byte	render_actor_tiles_piranha-render_actor_tile_data
@@ -292,7 +292,7 @@ render_actor_attrs:
 	.byte	obj_attr::priority_high|obj_attr::color3
 	.byte	obj_attr::priority_high|obj_attr::color2
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	obj_attr::priority_high|obj_attr::color1
 	.elseif	.defined(SMBV2)
 		.byte	obj_attr::priority_low|obj_attr::color2

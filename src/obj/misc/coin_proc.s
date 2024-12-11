@@ -4,7 +4,7 @@
 .include	"misc.i"
 
 ; ------------------------------------------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	misc_coin_coin_players:
 		.byte	stats_coin_player_a_end-stats_tbl-1
 		.byte	stats_coin_player_b_end-stats_tbl-1
@@ -33,7 +33,7 @@
 misc_proc_coin_add:
 	lda	#1
 	sta	score_digit_mod+6
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldx	player_id
 		ldy	misc_coin_coin_players, x
 	.elseif	.defined(SMBV2)
@@ -77,7 +77,7 @@ misc_proc_coin_add:
 	sta	score_digit_mod+5
 
 misc_proc_coin_update_score:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldx	player_id
 		ldy	misc_coin_score_players, x
 	.elseif	.defined(SMBV2)
@@ -86,7 +86,7 @@ misc_proc_coin_update_score:
 	jsr	stats_calc
 
 misc_proc_coin_update_stats:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldy	player_id
 		lda	misc_coin_stats_players, y
 	.elseif	.defined(SMBV2)

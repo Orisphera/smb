@@ -37,7 +37,7 @@ course_scenery_overworld_5:
 		.word	(COURSE_SCENERY_TYPE_C|COURSE_SCENERY_POS_X_A|COURSE_OBJ_A_PIT|COURSE_OBJ_DIM_1)
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.word	(COURSE_SCENERY_TYPE_C|COURSE_SCENERY_POS_X_D|COURSE_OBJ_A_PIT|COURSE_OBJ_DIM_3)
 	.endif
 
@@ -54,7 +54,7 @@ course_scenery_overworld_5:
 		.word	(COURSE_SCENERY_POS_Y_6|COURSE_SCENERY_POS_X_9|COURSE_OBJ_PIPE_VERT_B|COURSE_OBJ_DIM_5)
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.word	(COURSE_SCENERY_POS_Y_7|COURSE_SCENERY_POS_X_D|COURSE_OBJ_BRICKROW|COURSE_OBJ_DIM_1)
 	.endif
 
@@ -162,7 +162,7 @@ course_scenery_overworld_5:
 			.word	(COURSE_SCENERY_POS_Y_3|COURSE_SCENERY_POS_X_B|COURSE_OBJ_BRICKROW|COURSE_OBJ_DIM_3)
 		.endif
 		.word	(COURSE_SCENERY_POS_Y_7|COURSE_SCENERY_POS_X_B|COURSE_OBJ_BRICKROW|COURSE_OBJ_DIM_1)
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			.word	(COURSE_SCENERY_POS_Y_3|COURSE_SCENERY_POS_X_C|COURSE_OBJ_C_BLOCK_Q_B)
 			.word	(COURSE_SCENERY_POS_Y_7|COURSE_SCENERY_POS_X_C|COURSE_OBJ_C_BLOCK_Q_A)
 		.elseif	.defined(ANN)

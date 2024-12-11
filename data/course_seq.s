@@ -16,7 +16,7 @@ courses_world_offsets:
 courses_area_offsets:
 course_01_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_06
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10
 	.elseif	.defined(ANN)
 		.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_10_b
@@ -107,7 +107,7 @@ course_08_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_17
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_19
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld::no_02
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_06
 	.elseif	.defined(ANN)
 		.byte	COURSE_TYPE_CASTLE_B|course_castle::no_08_smb2

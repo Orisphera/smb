@@ -90,7 +90,7 @@ CHR_I = 1
 		oneup_left	= <((chr_obj_oneup_left-chr_obj)/PPU_CHR_SIZE)
 		oneup_right	= <((chr_obj_oneup_right-chr_obj)/PPU_CHR_SIZE)
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			filler	= <((chr_obj_filler-chr_obj)/PPU_CHR_SIZE)
 		.endif
 

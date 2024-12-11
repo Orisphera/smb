@@ -12,7 +12,7 @@
 STATS_UPPER_ROW	= PPU_BG_ROW_3
 STATS_LOWER_ROW	= PPU_BG_ROW_7
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 STATS_STAT0_COL	= PPU_BG_COL_16
 .elseif	.defined(SMB2)
 STATS_STAT0_COL	= PPU_BG_COL_15
@@ -47,13 +47,13 @@ stats_data:
 	.byte	STATS_LOWER_ROW|STATS_STAT0_COL, STATS_STAT0_LEN
 	.byte	STATS_UPPER_ROW|STATS_SCORE_COL, STATS_SCORE_A_LEN
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	STATS_UPPER_ROW|STATS_SCORE_COL, STATS_SCORE_B_LEN
 	.endif
 
 	.byte	STATS_UPPER_ROW|STATS_COIN_COL, STATS_COIN_A_LEN
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	STATS_UPPER_ROW|STATS_COIN_COL, STATS_COIN_B_LEN
 	.endif
 
@@ -63,13 +63,13 @@ stats_offsets:
 	.byte	stats_score_top_end-stats_tbl
 	.byte	stats_score_player_a_end-stats_tbl
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	stats_score_player_b_end-stats_tbl
 	.endif
 
 	.byte	stats_coin_player_a_end-stats_tbl
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	stats_coin_player_b_end-stats_tbl
 	.endif
 
@@ -140,7 +140,7 @@ stats_print_num_do:
 	.export stats_calc
 stats_calc:
 	lda	proc_id_system
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		cmp	#0
 	.endif
 	beq	:++ ; if (proc_id_system != title) {
@@ -187,7 +187,7 @@ stats_calc_inc:
 	.export stats_score_hi_check
 stats_score_hi_check:
 	ldx	#(STAT_LEN_MAX)-1
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		jsr	stats_score_hi_check_do
 		ldx	#(2*STAT_LEN_MAX)-1
 	.endif

@@ -4,7 +4,7 @@
 .include	"macros.i"
 
 ; -----------------------------------------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	CHEEP_VELOC_Y	= 32
 .elseif	.defined(SMBV2)
 	CHEEP_VELOC_Y	= 64

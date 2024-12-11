@@ -1142,7 +1142,7 @@ bg_scenery_set_attr:
 	; }
 ; -----------------------------
 bg_scenery_lock_warp:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldx	#4
 	.elseif	.defined(SMBV2)
 		ldx	#$80
@@ -1228,7 +1228,7 @@ bg_scenery_lock_warp:
 	.endif
 	sta	game_warp_ctrl
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		jsr	screen_text_draw
 	.elseif	.defined(SMBV2)
 		jsr	screen_text_draw_over
@@ -1630,7 +1630,7 @@ bg_scenery_pipe_vert:
 	tya
 	pha
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	course_sub
 		ora	course_no
 		beq	:+
@@ -1640,7 +1640,7 @@ bg_scenery_pipe_vert:
 	beq	:+
 	jsr	bg_obj_alloc
 	bcs	:+ ; if ((course_sub|course_no) && scenery_length && !bg_obj_alloc()) {
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			jsr	bg_objpos_x_get
 			clc
 			adc	#8
@@ -1662,7 +1662,7 @@ bg_scenery_pipe_vert:
 
 		lda	#actor::piranha_plant
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			sta	obj_id_actor, x
 			jsr	actor_init_piranha_plant
 		.elseif	.defined(SMBV2)

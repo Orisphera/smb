@@ -14,7 +14,7 @@ SPINY_PLAYER_Y_CUTOFF		= 44
 SPINY_LAKITU_OFFSET_Y		= 8
 SPINY_VELOC_Y			= <-3
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	LAKITU_SPAWN_TIME		= 7
 .elseif	.defined(SMBV2)
 	LAKITU_SPAWN_TIME		= 3

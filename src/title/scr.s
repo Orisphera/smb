@@ -1,7 +1,7 @@
 .include	"mem.i"
 .include	"macros.i"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 ; -----------------------------------------------------------
 	.if	.defined(CONS)
 		LARGEST_DATA_SIZE	= (title_map_end-title_map+9)
@@ -114,7 +114,7 @@ screen_title_score:
 
 	.export screen_title_proc_id_inc
 screen_title_proc_id_inc:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	inc	proc_id_game
 	rts
 .elseif	.defined(SMBV2)

@@ -422,7 +422,7 @@ gfx_meta_block_1_brick_b:
 	.byte	chr_bg::brick_a
 	.byte	chr_bg::brick_b
 ; ---
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.export gfx_meta_block_1_floor_normal
 	gfx_meta_block_1_floor_normal:
 		.byte	chr_bg::floor_normal

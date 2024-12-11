@@ -51,7 +51,7 @@ actor_proc_flag_victory_tbl_delay:
 actor_proc_flag_victory_tbl_done:
 ; -----------------------------------------------------------
 actor_proc_flag_victory_fireworks:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldy	#actor_states::state_5
 		lda	stats_time_end-STATS_TIME_LEN+2
 		cmp	#1
@@ -123,7 +123,7 @@ actor_proc_flag_victory_timer_score_do:
 actor_proc_course_end_stats:
 	ldy	#(stats_score_player_a_end-stats_tbl)-1
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	player_id
 		beq	:+ ; if (player_id) {
 			ldy	#(stats_score_player_b_end-stats_tbl)-1
@@ -132,7 +132,7 @@ actor_proc_course_end_stats:
 
 	jsr	stats_calc
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	player_id
 		asl	a
 		asl	a

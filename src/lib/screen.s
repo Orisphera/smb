@@ -9,7 +9,7 @@
 .include	"modes.i"
 .include	"misc.i"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	screen_proc_continue = screen_proc_next
 .elseif	.defined(SMBV2)
 	screen_proc_continue = screen_text_draw_timeup_continue
@@ -110,7 +110,7 @@ screen_color_player_data:
 screen_color_player_1:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_RED1, PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 screen_color_player_2:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_GREY3, PPU_COLOR_ORANGE2, PPU_COLOR_YGREEN1
 .endif
@@ -134,7 +134,7 @@ screen_color_init_3:
 screen_color_player:
 	ldx	ppu_displist_0_offset
 	ldy	#(screen_color_player_1-screen_color_player_data)
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	player_id
 		beq	:+ ; if (player_id != 0) {
 			ldy	#(screen_color_player_2-screen_color_player_data)
@@ -212,7 +212,7 @@ screen_text_draw_splash:
 	sta	ppu_displist_0_addr_dbyt+1, x
 	lda	#SCREEN_STAT_BG_1_LEN
 	sta	ppu_displist_0_count, x
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldy	course_no
 		iny
 		tya
@@ -258,7 +258,7 @@ screen_text_draw_timeup:
 		lda	#0
 		sta	game_time_up
 		lda	#screen_text::timeup
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			jmp	screen_text_draw_timeup_end
 		.elseif	.defined(SMBV2)
 		screen_text_draw_timeup_end:
@@ -271,7 +271,7 @@ screen_text_draw_timeup:
 	: ; } else {
 		inc	screen_proc_id
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			jmp	screen_proc_continue
 		.elseif	.defined(SMBV2)	
 		screen_text_draw_timeup_continue:
@@ -295,7 +295,7 @@ screen_text_draw_intermission:
 		: ; if (game.start_type != 0 && (course.type == castle || !screen_msg_disable)) {
 			jsr	render_player_course_card
 			lda	#screen_text::splash
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 			screen_text_draw_timeup_end:
 				jsr	screen_text_draw
 				jsr	screen_timer_reset
@@ -317,7 +317,7 @@ screen_text_draw_intermission:
 			.endif
 		; }
 	: ; } else if (game.mode == game_over) {
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			lda	#$12
 			sta	timer_screen
 		.endif
@@ -325,7 +325,7 @@ screen_text_draw_intermission:
 		lda	#screen_text::gameover
 		jsr	screen_text_draw
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			jmp	screen_title_proc_id_inc
 		.elseif	.defined(SMBV2)
 			.if	.defined(SMB2)
@@ -359,7 +359,7 @@ screen_bg:
 	sta	nmi_buffer_ptr
 	rts
 ; ------------------------------------------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"../title/scr.s"
 .endif
 ; ------------------------------------------------------------
@@ -375,7 +375,7 @@ screen_bg:
 screen_text_draw:
 	pha
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		asl	a
 		tay
 		cpy	#4
@@ -417,7 +417,7 @@ screen_text_draw:
 
 	tax
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		cmp	#4
 		bcs	screen_text_draw_over
 	.endif
@@ -435,7 +435,7 @@ screen_text_draw:
 		: ; }
 		sta	ppu_displist_0_data+8
 	
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			ldy	course_no
 			iny
 			sty	ppu_displist_0_data+19
@@ -453,7 +453,7 @@ screen_text_draw:
 
 	screen_text_draw_end:
 		rts
-	.elseif	.defined(SMB)|.defined(VS_SMB)
+	.elseif	.defined(SMBV1)
 		rts
 		: ; } else if (a <= 1) {
 			lda	player_count
@@ -509,7 +509,7 @@ screen_text_draw:
 				lda	screen_text_warps, x
 				sta	ppu_displist_0_data+27
 		.endif
-	.elseif	.defined(SMB)|.defined(VS_SMB)
+	.elseif	.defined(SMBV1)
 		screen_text_draw_over: ; } else {
 			sbc	#4
 	.endif

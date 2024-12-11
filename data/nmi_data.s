@@ -99,7 +99,7 @@ msg_thankyou_player_name:
 	.byte	"!"
 	: .byte	NMI_LIST_END
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.export msg_thankyou_luigi
 	msg_thankyou_luigi:
 		.dbyt	PPU_VRAM_BG2++PPU_BG_ROW_10+PPU_BG_COL_8

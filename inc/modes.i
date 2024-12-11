@@ -4,7 +4,7 @@ MODES_I = 1
 .include	"system/cpu.i"
 
 	.enum	system_modes
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			title		= <((nmi_system_enter_title-nmi_system_enter_tbl)/WORD_SIZE)
 		.elseif	.defined(SMBV2)
 			disk_loader	= <((nmi_system_enter_disk_loader-nmi_system_enter_tbl)/WORD_SIZE)
@@ -19,7 +19,7 @@ MODES_I = 1
 		game_over 	= <((nmi_system_enter_game_over-nmi_system_enter_tbl)/WORD_SIZE)
 	.endenum
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.enum	title_modes
 			.if	.defined(VS)
 				vs_init		= <((title_mode_vs_init-title_mode_tbl)/WORD_SIZE)

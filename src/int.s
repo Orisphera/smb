@@ -13,7 +13,7 @@
 .include	"tunables.i"
 .include	"misc.i"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	nmi_addrs_low:
 		.byte	<(ppu_displist_0_data)
 		.byte	<(palette_underwater)
@@ -190,7 +190,7 @@ nmi:
 		cli
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	ppu_ctlr0_b
 		and	#<~(ppu_ctlr0::int)
 		sta	ppu_ctlr0_b
@@ -235,7 +235,7 @@ nmi:
 	lda	#>(oam_buffer)
 	sta	OBJ_DMA
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldx	nmi_buffer_ptr
 		lda	nmi_addrs_low, x
 		sta	ppu_displist_write_addr
@@ -343,7 +343,7 @@ nmi_apu_call:
 		bne	:-
 	; }
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	nmi_sprite_overlap
 		beq	:+++++ ; if (sprite_overlap) {
 			: ; while (PPU_SR & strike) {
@@ -419,7 +419,7 @@ nmi_apu_call:
 
 	lda	PPU_SR
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		pla
 	.elseif	.defined(SMBV2)
 		lda	ppu_ctlr0_b
@@ -620,7 +620,7 @@ nmi_system_enter:
 	jsr	tbljmp
 
 nmi_system_enter_tbl:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.export	nmi_system_enter_title
 	nmi_system_enter_title:
 		.addr	sys_title

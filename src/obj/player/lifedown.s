@@ -106,7 +106,7 @@ player_proc_lifedown:
 		: ; }
 		sta	pos_x_hi_alt_game
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			jsr	game_over_player_switch
 		.endif
 

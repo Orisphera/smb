@@ -97,7 +97,7 @@ game_over_next_game:
 	sta	apu_music_event_req
 .endif
 ; ----------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	jsr	game_over_player_switch
 	bcc	game_over_continue ; if () {
 	.if	.defined(VS_SMB)
@@ -110,7 +110,7 @@ game_over_next_game:
 
 		lda	#0
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		asl	a
 	.endif
 
@@ -135,7 +135,7 @@ game_over_next_game:
 		rts
 	; }
 ; -----------------------------------------------------------
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 	.export	game_over_player_switch
 game_over_player_switch:
 	sec

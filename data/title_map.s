@@ -20,7 +20,7 @@ SIGN_BLANK	= chr_bg::blanks+2
 
 	.export title_map, title_map_end
 title_map:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_6
 		.byte	NMI_REPEAT|20, SIGN_BLANK
 
@@ -48,7 +48,7 @@ title_map:
 	.elseif	.defined(SMBV2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_5
 	.endif
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	NMI_REPEAT|20
 	.elseif	.defined(SMB2)
 		.byte	NMI_REPEAT|23
@@ -57,7 +57,7 @@ title_map:
 	.endif
 	.byte	chr_bg::sign_n
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_26
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_4+PPU_BG_COL_28
@@ -80,7 +80,7 @@ title_map:
 		.byte	NMI_REPEAT|23, SIGN_BLANK
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_26
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_5+PPU_BG_COL_28
@@ -250,7 +250,7 @@ title_map:
 		.byte	NMI_REPEAT|21, SIGN_BLANK
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_8+PPU_BG_COL_6
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_8+PPU_BG_COL_5
@@ -546,7 +546,7 @@ title_map:
 	.byte	chr_bg::sign_se
 	:
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_13
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_15+PPU_BG_COL_15
@@ -596,7 +596,7 @@ title_map:
 	:
 .endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_12
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_11
@@ -607,7 +607,7 @@ title_map:
 	: .byte	"TOP-"
 	:
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_22
 	.elseif	.defined(SMB2)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_23+PPU_BG_COL_21
@@ -619,7 +619,7 @@ title_map:
 	:
 
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+9
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	NMI_REPEAT|22, PPU_BG_COLOR_LINE_1_ALL
 	.elseif	.defined(SMB2)
 		.byte	NMI_REPEAT|7, PPU_BG_COLOR_LINE_1_ALL
@@ -661,7 +661,7 @@ title_map:
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+34
 	.byte	(:++)-(:+)
 	:
-	.if	.defined(SMB)|.defined(VS_SMB) 
+	.if	.defined(SMBV1) 
 		.byte	((PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_1)
 	.elseif	.defined(SMBV2)
 		.byte	PPU_BG_COLOR_LINE_1_ALL
@@ -677,7 +677,7 @@ title_map:
 
 	.dbyt	PPU_VRAM_BG1+PPU_VRAM_BG_ATTR+42
 	.byte	(:++)-(:+)
-	: .if	.defined(SMB)|.defined(VS_SMB)
+	: .if	.defined(SMBV1)
 		.byte	((PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_2<<2)|PPU_BG_COLOR_LINE_1)
 	.elseif	.defined(SMBV2)
 		.byte	((PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_1<<4)|(PPU_BG_COLOR_LINE_1<<2)|PPU_BG_COLOR_LINE_1)

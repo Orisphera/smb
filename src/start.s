@@ -33,7 +33,7 @@ start:
 		sei
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		cld
 
 		lda     #(ppu_ctlr0::sprite_8|ppu_ctlr0::bg_seg1|ppu_ctlr0::obj_seg0|ppu_ctlr0::inc_1|ppu_ctlr0::bg1)

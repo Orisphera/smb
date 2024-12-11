@@ -12,7 +12,7 @@
 .endif
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.export sys_title
 	.export	title_mode_tbl
 	.export	title_mode_init_0
@@ -85,7 +85,7 @@ title_course_no:
 title_course_no_end:
 .endif
 ; ----------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 TITLE_PLAYER_ID	= player_count
 .elseif	.defined(SMBV2)
 TITLE_PLAYER_ID = player_id
@@ -96,13 +96,13 @@ TITLE_PRESSED_B	= 1
 	.export	title_recycle
 	.export	title_exit
 title_proc:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 	ldy	#0
 	.endif
 
 	.if	.defined(CONS)
 	lda	joypad_p1
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 	ora	joypad_p2
 	cmp	#joypad_button::start
 	beq	:+
@@ -138,7 +138,7 @@ title_proc:
 			cmp	#joypad_button::select
 			beq	:++ ; if (joypad[0].select == PRESSED) {
 				ldx	timer_demo
-				.if	.defined(SMB)|.defined(VS_SMB)
+				.if	.defined(SMBV1)
 				bne	:+
 				.elseif	.defined(SMBV2)
 				bne	:+++++ ; if (!timer_demo) {
@@ -147,14 +147,14 @@ title_proc:
 					jsr	title_demo
 
 					bcs	title_recycle
-					.if	.defined(SMB)|.defined(VS_SMB)
+					.if	.defined(SMBV1)
 					jmp	:++++++
 					.elseif	.defined(SMBV2)
 					bcc	:++++++
 					.endif
 				: ; }
 
-				.if	.defined(SMB)|.defined(VS_SMB)
+				.if	.defined(SMBV1)
 					ldx	title_course_sel_on
 					beq	:++++
 					cmp	#joypad_button::face_b
@@ -179,7 +179,7 @@ title_proc:
 					lda	#TITLE_SELECT_TIMER
 					sta	timer_select
 
-					.if	.defined(SMB)|.defined(VS_SMB)
+					.if	.defined(SMBV1)
 						cpy	#TITLE_PRESSED_B
 						beq	:+ ; if (joypad[0].b != PRESSED) {
 					.endif
@@ -187,7 +187,7 @@ title_proc:
 						eor	#1
 						sta	TITLE_PLAYER_ID
 						jsr	title_cursor_draw
-					.if	.defined(SMB)|.defined(VS_SMB)
+					.if	.defined(SMBV1)
 							jmp	:+++
 						: ; } else {
 							ldx	title_course_sel_no
@@ -259,14 +259,14 @@ title_proc:
 
 	title_exit:
 		.if	.defined(CONS)
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			ldy	timer_demo
 		.elseif	.defined(SMBV2)
 			lda	timer_demo
 		.endif
 		beq	title_recycle ; if (timer_demo) {
 		.endif
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 				asl	a
 				bcc	:+ ; if (joypad.a) {
 					lda	course_no_continued
@@ -319,7 +319,7 @@ title_proc:
 		.endif
 	; }
 ; ----------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 title_course_set:
 	sta	course_no
 	sta	course_no_b

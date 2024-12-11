@@ -359,7 +359,7 @@ player_proc_hurt:
 player_proc_death:
 	lda	game_timer_stop
 	cmp	#$F0
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		bcs	player_proc_player_rts
 	.elseif	.defined(SMBV2)
 		bcs	player_proc_firefl_rts
@@ -401,7 +401,7 @@ player_proc_firefl:
 		rts
 	; }
 ; -----------------------------------------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 player_proc_player_rts:
 	rts
 .endif
@@ -427,7 +427,7 @@ player_proc_pole:
 	; }
 ; -----------------------------------------------------------
 player_proc_victory_oneup_tallies:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.byte	$15, $23, $16, $1B
 	.byte	$17, $18, $23, $63
 .elseif	.defined(ANN)
@@ -442,7 +442,7 @@ player_proc_victory:
 	lda	pos_y_lo_player
 	cmp	#$AE
 	bcc	:+
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 	lda	game_scroll_lock
 	beq	:+ ; if (this.pos_y >= 0xAE && scroll_lock || !(SMB|VS_SMB)) {
 	.endif
@@ -457,7 +457,7 @@ player_proc_victory:
 		.endif
 			lda	#music_event::level_end
 			sta	apu_music_event_req
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 				lda	#0
 				sta	game_scroll_lock
 			.endif
@@ -631,7 +631,7 @@ player_proc_player_jump_swim_do:
 		jsr	player_proc_player_friction
 	: ; }
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		jsr	motion_x_check_spring
 		sta	scroll_x_player
 	.elseif	.defined(SMBV2)
@@ -723,7 +723,7 @@ player_proc_player_stats:
 
 	.include	"../../../data/player_phys.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"../../../data/player_a_friction.s"
 .endif
 

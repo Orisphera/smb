@@ -302,7 +302,7 @@ victory_init:
 	lda	#music_event::victory_castle
 	sta	apu_music_event_req
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		jmp	screen_title_proc_id_inc
 	.elseif	.defined(SMBV2)
 		.export screen_title_bg, screen_title_bg_finish
@@ -448,7 +448,7 @@ victory_msg:
 			; }
 		.endif
 	
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 		victory_msg_sound_check:
 			.if	.defined(SMB)
 				cpy	#VICTORY_MSG_ENDING

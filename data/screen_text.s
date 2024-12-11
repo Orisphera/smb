@@ -55,7 +55,7 @@ screen_text_splash:
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
 screen_text_timeup_screen:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 		.byte	(:++)-(:+)
 		: .byte	"MARIO"
@@ -70,14 +70,14 @@ screen_text_timeup_screen:
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
 screen_text_gameover_screen:
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 		.byte	(:++)-(:+)
 		: .byte	"MARIO"
 		:
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_16
 .elseif	.defined(SMBV2)
 	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_11
@@ -135,13 +135,13 @@ screen_text_warp_screen:
 	.dbyt	PPU_VRAM_BG2+PPU_VRAM_BG_ATTR+33
 	.byte	NMI_REPEAT|5, PPU_BG_COLOR_LINE_2_ALL
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 		.byte	SCREEN_TEXT_END_VAL
 .elseif	.defined(SMBV2)
 		.byte	NMI_LIST_END
 .endif
 ; ----------------------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 		.export screen_text_player_2
 	screen_text_player_2:
 		.byte	"LUIGI"
@@ -184,13 +184,13 @@ screen_text_idx_splash		= screen_text_splash-screen_text
 screen_text_idx_timeup		= screen_text_timeup_screen-screen_text
 screen_text_idx_gameover	= screen_text_gameover_screen-screen_text
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	screen_text_idx_warp		= screen_text_warp_screen-screen_text
 .endif
 
 	.export screen_text_idx_tbl
 screen_text_idx_tbl:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	screen_text_idx_header, screen_text_idx_header
 		.byte	screen_text_idx_splash, screen_text_idx_splash
 		.byte	screen_text_idx_timeup, screen_text_idx_timeup+screen_text_idx_off
@@ -202,6 +202,6 @@ screen_text_idx_tbl:
 		.byte	screen_text_idx_gameover
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	screen_text_idx_warp, screen_text_idx_warp
 	.endif

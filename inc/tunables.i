@@ -260,7 +260,7 @@ NMI_INC_COL	= %00000000
 NMI_REPEAT	= %01000000
 NMI_LIST_END	= 0
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	LOOP_VAL_COUNT	= 11
 .elseif	.defined(SMB2)
 	LOOP_VAL_COUNT	= 12

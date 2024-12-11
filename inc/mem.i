@@ -708,11 +708,11 @@ nmi_pause_debounce	= nmi_pause_flag+1
 ppu_ctlr0_b		= nmi_pause_debounce+1
 ppu_ctlr1_b		= ppu_ctlr0_b+1
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 player_count		= ppu_ctlr1_b+1
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 ppu_ctlr0_bg		= player_count+1
 .elseif	.defined(SMBV2)
 ppu_ctlr0_bg		= ppu_ctlr1_b+1
@@ -726,7 +726,7 @@ unused_77D		= render_clear_skip+1
 game_hard_mode		= render_clear_skip+1
 .endif
 ; --------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 unused_77E		= render_clear_skip+1
 .elseif	.defined(SMB2)
 unused_77E		= unused_77D+1
@@ -826,7 +826,7 @@ stats_player			= stats_score_top_end
 stats_score_player		= stats_player
 stats_score_player_a		= stats_score_player
 stats_score_player_a_end	= (stats_score_player_a+STAT_LEN_MAX)
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 stats_score_player_b		= stats_score_player_a_end
 stats_score_player_b_end	= (stats_score_player_b+STAT_LEN_MAX)
 stats_score_player_end		= stats_score_player_b_end
@@ -837,7 +837,7 @@ stats_score_player_end		= stats_score_player_a_end
 stats_coin_player	= stats_score_player_end
 stats_coin_player_a	= stats_coin_player
 stats_coin_player_a_end	= (stats_coin_player_a+STAT_LEN_MAX)
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 stats_coin_player_b	= stats_coin_player_a_end
 stats_coin_player_b_end	= (stats_coin_player_b+STAT_LEN_MAX)
 stats_coin_player_end	= stats_coin_player_b_end
@@ -863,7 +863,7 @@ bg_scenery_wind_flag	= game_over_choice+1
 game_courses_cleared	= bg_scenery_wind_flag+1
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 game_hard_mode_new	= stats_time_end
 .elseif	.defined(SMBV2)
 game_hard_mode_new	= game_courses_cleared+1
@@ -898,7 +898,7 @@ game_boot_flag		= RAM_CLEAR_END_COLDBOOT+1
 	VS_RAM_ARENA1           = (VS_RAM+$700)
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	ENG_HARDMODE_VAR	= game_hard_mode
 .elseif	.defined(SMBV2)
 	ENG_HARDMODE_VAR	= game_hard_mode_new

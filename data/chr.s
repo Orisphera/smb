@@ -14,7 +14,7 @@ chr_obj:
 
 	.include	"chr/obj/player_crouch.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/obj/plat_a.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/obj/plat_c.s"
@@ -35,13 +35,13 @@ chr_obj:
 	.include	"chr/obj/bubble.s"
 	.include	"chr/obj/plat_b.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/obj/mushroom.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/obj/door.s"
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/obj/princess_a.s"
 	.elseif	.defined(SMB2)
 		.include	"chr/obj/leaf.s"
@@ -91,7 +91,7 @@ chr_obj:
 	.include	"chr/obj/firefl_top.s"
 	.include	"chr/obj/podoboo_b.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/obj/princess_b.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/obj/mushroom_new_a.s"
@@ -99,7 +99,7 @@ chr_obj:
 
 	.include	"chr/obj/firefl_stem.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/obj/princess_c.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/obj/mushroom_new_b.s"
@@ -140,7 +140,7 @@ chr_obj:
 		.include	"chr/obj/oneup_new_b.s"
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/obj/filler.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/obj/mushroom_new_c.s"
@@ -212,13 +212,13 @@ chr_bg:
 		.include	"chr/bg/hill_a_new.s"
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/hill_b.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/bg/hill_b_new.s"
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/cloud.s"
 	.elseif	.defined(SMBV2)	
 		.include	"chr/bg/cloud_new.s"
@@ -246,7 +246,7 @@ chr_bg:
 
 	.include	"chr/bg/sign_n_ne_e.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/plat_b.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/bg/plat_b_new.s"
@@ -255,7 +255,7 @@ chr_bg:
 	.include	"chr/bg/block.s"
 	.include	"chr/bg/pulley_b.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/floor_castle.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/bg/floor_castle_new.s"
@@ -270,7 +270,7 @@ chr_bg:
 		.include	"chr/bg/plat_a_new.s"
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/edge_b.s"
 	.elseif	.defined(SMB2)
 		.include	"chr/bg/quotes.s"
@@ -291,7 +291,7 @@ chr_bg:
 
 	.include	"chr/bg/chain.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/post_a.s"
 	.elseif	.defined(SMB2)
 		.include	"chr/bg/post_a_new.s"
@@ -312,7 +312,7 @@ chr_bg:
 
 	.include	"chr/bg/crown.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/post_b.s"
 	.elseif	.defined(SMB2)
 		.include	"chr/bg/post_b_new.s"
@@ -340,7 +340,7 @@ chr_bg:
 
 	.include	"chr/bg/cloud_small.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/floor_normal.s"
 		.include	"chr/bg/tree.s"
 	.elseif	.defined(SMBV2)
@@ -350,7 +350,7 @@ chr_bg:
 
 	.include	"chr/bg/tree_trunk.s"
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/bridge_parts.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/bg/bridge_parts_new.s"
@@ -365,7 +365,7 @@ chr_bg:
 		.include	"chr/bg/cursor_vs.s"
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.include	"chr/bg/copyright.s"
 	.elseif	.defined(SMBV2)
 		.include	"chr/bg/copyright.smb2.s"

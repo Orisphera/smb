@@ -68,7 +68,7 @@ GAME_SCROLL_END	= $20
 
 	.export	game_proc, game_proc_scroll_save
 game_proc:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.if	.defined(VS_SMB)
 		lda	player_count
 		beq	:+
@@ -262,7 +262,7 @@ game_scroll:
 		adc	#0
 		sta	pos_x_hi_screen_left
 		and	#ppu_ctlr0::bg_parity
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			sta	zp_byte_00
 	
 			lda	ppu_ctlr0_b

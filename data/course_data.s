@@ -17,7 +17,7 @@
 .endif
 	.include	"./courses/smb/castle_4_actor.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/castle_5_actor.s"
 	.include	"./courses/smb/castle_6_actor.s"
 .endif
@@ -29,13 +29,13 @@
 ; --------------
 	.include	"./courses/smb/overworld_1_actor.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_2_actor.s"
 .endif
 
 	.include	"./courses/smb/overworld_3_actor.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_4_actor.s"
 .endif
 
@@ -50,7 +50,7 @@
 .endif
 	.include	"./courses/smb/overworld_9_actor.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_10_actor.s"
 	.include	"./courses/smb/overworld_11_actor.s"
 .endif
@@ -58,7 +58,7 @@
 	.include	"./courses/smb/overworld_12_actor.s"
 	.include	"./courses/smb/overworld_13_actor.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_14_actor.s"
 	.include	"./courses/smb/overworld_15_actor.s"
 	.include	"./courses/smb/overworld_16_actor.s"
@@ -84,7 +84,7 @@
 	.include	"./courses/smb/underground_2_actor.s"
 	.include	"./courses/smb/underground_3_actor.s"
 ; --------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/water_1_actor.s"
 .endif
 
@@ -94,7 +94,7 @@
 	.include	"./courses/vs/water_2_actor.s"
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/water_3_actor.s"
 .endif
 
@@ -115,7 +115,7 @@
 .endif
 	.include	"./courses/smb/castle_4_scenery.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/castle_5_scenery.s"
 	.include	"./courses/smb/castle_6_scenery.s"
 .endif
@@ -127,13 +127,13 @@
 ; --------------
 	.include	"./courses/smb/overworld_1_scenery.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_2_scenery.s"
 .endif
 
 	.include	"./courses/smb/overworld_3_scenery.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_4_scenery.s"
 .endif
 
@@ -148,7 +148,7 @@
 .endif
 	.include	"./courses/smb/overworld_9_scenery.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.macro	OVERWORLD_10_SCENERY_A
 		1
 	.endmacro
@@ -160,7 +160,7 @@
 	.include	"./courses/smb/overworld_12_scenery.s"
 	.include	"./courses/smb/overworld_13_scenery.s"
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_14_scenery.s"
 	.include	"./courses/smb/overworld_15_scenery.s"
 .endif
@@ -173,7 +173,7 @@
 .endif
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/overworld_17_scenery.s"
 	.include	"./courses/smb/overworld_18_scenery.s"
 	.include	"./courses/smb/overworld_19_scenery.s"
@@ -204,7 +204,7 @@
 	.include	"./courses/smb/underground_2_scenery.s"
 	.include	"./courses/smb/underground_3_scenery.s"
 ; --------------
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/water_1_scenery.s"
 .endif
 
@@ -214,7 +214,7 @@
 	.include	"./courses/vs/water_2_scenery.s"
 .endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 	.include	"./courses/smb/water_3_scenery.s"
 .endif
 

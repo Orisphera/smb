@@ -23,7 +23,7 @@ game_init_data_0:
 	.byte	$FC, $28, $2C
 game_init_data_0_end:
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 game_init_oam:
 	.byte	(PPU_BG_ROW_3/PPU_VRAM_COLUMN_COUNT)*PPU_CHR_HEIGHT_PX
 	.byte	chr_obj::filler
@@ -34,7 +34,7 @@ game_init_oam_end:
 ; -----------------------------------------------------------
 	.export game_init_0
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.if	.defined(SMB)
 	game_init_0:
 		.elseif	.defined(VS_SMB)
@@ -159,7 +159,7 @@ game_init_0_do:
 ; -----------------------------------------------------------
 	.export	game_init_1
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.if	.defined(SMB)
 	game_init_1:
 		.elseif	.defined(VS_SMB)
@@ -222,11 +222,11 @@ game_init_1_do:
 	lda	#$FF
 	sta	actor_plat_align
 	lda	pos_x_hi_screen_left
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lsr	ppu_ctlr0_b
 	.endif
 	and	#ppu_ctlr0::bg_parity
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ror	a
 		rol	ppu_ctlr0_b
 	.elseif	.defined(SMBV2)
@@ -249,7 +249,7 @@ game_init_1_do:
 		bpl	:-
 	; }
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldy	#(game_init_oam_end-game_init_oam)-1
 		: ; for (byte of game_init_oam) {
 			lda	game_init_oam, y

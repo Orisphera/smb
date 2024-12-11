@@ -211,7 +211,7 @@ pos_bits_get_do_x:
 	rts
 ; --------------------------------------------------------------
 pos_bits_y:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	%00000000
 		.byte	%00001000
 		.byte	%00001100
@@ -237,7 +237,7 @@ pos_bits_off_y:
 	.byte	4, 0, 4
 
 pos_bits_y_hi:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	<-1, 0
 	.elseif	.defined(SMBV2)
 		.byte	0, <-1

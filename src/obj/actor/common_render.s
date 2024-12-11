@@ -303,7 +303,7 @@ render_actor_ani_check:
 
 			ldx	#<(render_actor_tiles_toad-render_actor_tile_data)
 
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 				lda	#actor_states::state_3
 				sta	render_actor_state_next
 			.endif
@@ -502,7 +502,7 @@ render_actor_clear_b:
 				lda	render_obj_id_actor
 				cmp	#actor::swarm_stop
 				bcc	:+ ; if (this.id >= swarm_stop) {
-					.if	.defined(SMB)|.defined(VS_SMB)
+					.if	.defined(SMBV1)
 						lda	#obj_attr::v_flip|obj_attr::color2
 					.elseif	.defined(SMBV2)
 						lda	#obj_attr::v_flip

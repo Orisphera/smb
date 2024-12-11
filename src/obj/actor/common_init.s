@@ -74,7 +74,7 @@ actor_loop_courses:
 		.byte	course::no_08
 		.byte	course::no_08
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			.byte	course::no_08
 		.endif
 	.elseif	.defined(SMB2)
@@ -96,7 +96,7 @@ actor_loop_course_pages:
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.byte	5, 9, 4, 5
 		.byte	6, 8, 9, 10
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	6
 	.elseif	.defined(ANN)
 		.byte	5
@@ -104,7 +104,7 @@ actor_loop_course_pages:
 
 	.byte	11
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	16
 	.endif
 	.elseif	.defined(SMB2)
@@ -114,7 +114,7 @@ actor_loop_course_pages:
 	.endif
 
 actor_loop_pos_y_lo:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	64, 176, 176
 	
 		.if	.defined(SMB)
@@ -164,7 +164,7 @@ actor_loop_pos_y_lo:
 		.byte	176
 	.endif
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 ACTOR_LOOP_COUNT	= 3
 .elseif	.defined(SMB2)
 actor_loop_data_smb2:
@@ -240,7 +240,7 @@ actor_loop:
 			lda	state_player
 			cmp	#player_state::ground
 			bne	actor_loop_check_not_apply
-			.if	.defined(SMB)|.defined(VS_SMB)
+			.if	.defined(SMBV1)
 			lda	course_no
 			cmp	#course::no_07
 			bne	:++ ; if ((player.pos_y.lo == actor_loop_pos_y_lo[y] && player.state == ground) || course_no == no_07 || SMB2) {
@@ -256,21 +256,21 @@ actor_loop:
 
 				inc	actor_loop_counter
 				lda	actor_loop_counter
-				.if	.defined(SMB)|.defined(VS_SMB)
+				.if	.defined(SMBV1)
 					cmp	#ACTOR_LOOP_COUNT
 				.elseif	.defined(SMBV2)
 					cmp	actor_loop_data_smb2, y
 				.endif
 				bne	:+++
 				lda	actor_loop_counter_real
-				.if	.defined(SMB)|.defined(VS_SMB)
+				.if	.defined(SMBV1)
 					cmp	#ACTOR_LOOP_COUNT
 				.elseif	.defined(SMBV2)
 					cmp	actor_loop_data_smb2, y
 				.endif
 				beq	:++
 
-				.if	.defined(SMB)|.defined(VS_SMB)
+				.if	.defined(SMBV1)
 					bne	:+
 	
 				actor_loop_check_not_apply:

@@ -245,7 +245,7 @@ render_player_action:
 					lda	#sfx_noise::skid
 					sta	apu_sfx_noise_req
 				: ; }
-			.elseif	.defined(SMB)|.defined(VS_SMB)
+			.elseif	.defined(SMBV1)
 				:
 			.endif
 

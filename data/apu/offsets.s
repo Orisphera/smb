@@ -11,16 +11,16 @@
 apu_music_offsets:
 	.byte	apu_music_death-apu_music_offsets
 	.byte	apu_music_game_over-apu_music_offsets
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		.byte	apu_music_victory_ending-apu_music_offsets
-	.elseif	.defined(SMBV2)
+	.else
 		.byte	apu_music_game_over-apu_music_offsets
 	.endif
 	.byte	apu_music_victory_castle-apu_music_offsets
-	.if	.defined(CONS)
-		.byte	apu_music_game_over-apu_music_offsets
-	.elseif	.defined(VS)
+	.if	.defined(VS)
 		.byte	apu_music_game_over_vs_b-apu_music_offsets
+	.else
+		.byte	apu_music_game_over-apu_music_offsets
 	.endif
 	.byte	apu_music_level_end-apu_music_offsets
 	.byte	apu_music_hurry_up-apu_music_offsets
@@ -169,12 +169,12 @@ apu_music_castle:
 	.byte	<(apu_music_castle_triangle-apu_music_castle_data)
 	.byte	<(apu_music_castle_pulse_1-apu_music_castle_data)
 
-.if	.defined(SMB)|.defined(VS_SMB)
+.if	.defined(SMBV1)
 apu_music_victory_ending:
-	.if	.defined(CONS)
-		.byte	<(apu_note_lengths_c-apu_note_lengths)
-	.elseif	.defined(VS)
+	.if	.defined(VS)
 		.byte	<(apu_note_lengths_vs-apu_note_lengths)
+	.else
+		.byte	<(apu_note_lengths_c-apu_note_lengths)
 	.endif
 	.addr	apu_music_victory_ending_data
 	.byte	<(apu_music_victory_ending_triangle-apu_music_victory_ending_data)

@@ -14,7 +14,7 @@ stats_time_proc:
 	beq	:++++
 	lda	pos_y_hi_player
 	cmp	#2
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 	bcs	:++++
 	.elseif	.defined(SMBV2)
 	bpl	:++++

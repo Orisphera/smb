@@ -114,7 +114,7 @@ course_load:
 		; }
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	COURSE_ACTOR_DATA_ADDR_LO
 		sta	course_actor_addr
 		lda	COURSE_ACTOR_DATA_ADDR_HI
@@ -154,7 +154,7 @@ course_load:
 		; }
 	.endif
 
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		lda	COURSE_SCENERY_DATA_ADDR_LO
 		sta	course_scenery_addr
 		lda	COURSE_SCENERY_DATA_ADDR_HI

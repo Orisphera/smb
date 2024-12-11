@@ -200,7 +200,7 @@ COL_BOX_SIZE	= 4
 		pal_night_snow
 		pal_mushroom
 		msg_ty_mario
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			msg_ty_luigi
 		.endif
 		msg_ty_toad
@@ -450,13 +450,13 @@ COL_BOX_SIZE	= 4
 	.enum	stats
 		score_player_a
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 		score_player_b
 		.endif
 
 		coin_player_a
 
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 		coin_player_b
 		.endif
 

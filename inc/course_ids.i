@@ -8,7 +8,7 @@ COURSE_IDS_I = 1
 		.elseif	.defined(VS_SMB)
 			no_02_vs
 		.endif
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			no_03
 		.elseif	.defined(ANN)
 			no_04_smb2
@@ -184,7 +184,7 @@ COURSE_IDS_I = 1
 		.endif
 		no_04
 		no_05
-		.if	.defined(SMB)|.defined(VS_SMB)
+		.if	.defined(SMBV1)
 			no_06
 		.elseif	.defined(ANN)
 			no_08_smb2

@@ -77,7 +77,7 @@ apu_sfx_noise_end:
 ; ------------------------------------------------------------
 	.export	apu_sfx_noise_play
 apu_sfx_noise_play:
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		ldy	apu_sfx_noise_req
 		beq	:+ ; if (sfx.noise_req != none) {
 			sty	apu_sfx_noise_current
@@ -89,7 +89,7 @@ apu_sfx_noise_play:
 	.endif
 
 	lda	apu_sfx_noise_current
-	.if	.defined(SMB)|.defined(VS_SMB)
+	.if	.defined(SMBV1)
 		beq	:+ ; if (sfx.noise_current != none) {
 			lsr	a
 			bcs	apu_block_break_continued
