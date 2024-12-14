@@ -139,16 +139,26 @@ PLAYER_LO_OBJS	=	src/obj/player/init.o \
 
 GAME_PROC_OBJS	=	src/game/game_over.o
 
-BG_OBJS		= 	src/obj/bg/bg.o \
+BG_OBJS		= 	src/obj/bg/base.o \
+			src/obj/bg/swarm.o \
+			src/obj/bg/ledge_pulley.o \
+			src/obj/bg/castle.o \
+			src/obj/bg/pipe.o \
+			src/obj/bg/alloc.o \
+			src/obj/bg/waterhole.o \
+			src/obj/block/bg_q.o \
+			src/obj/bg/bridge.o \
+			src/obj/bg/pole_render.o \
+			src/obj/bg/rope.o \
 			src/obj/bg/coinrow.o \
 			src/obj/bg/castle_bridge.o \
 			src/obj/bg/brick.o \
 			src/obj/bg/cannon.o \
 			src/obj/bg/stairs.o \
 			src/obj/bg/spring.o \
-			src/obj/bg/block.o \
+			src/obj/block/bg.o \
 			src/obj/bg/pit.o \
-			src/obj/bg/render.o
+			src/obj/bg/render_base.o
 
 GAME_OBJS	=	$(GAME_INIT_OBJS) \
 			$(PLAYER_LO_OBJS) \
@@ -197,7 +207,7 @@ ENTITY_OBJS	=	src/obj/proj.o \
 			src/obj/bubble.o \
 			src/game/timer.o \
 			src/obj/whirlpool.o \
-			src/obj/pole.o \
+			src/obj/bg/pole_proc.o \
 			src/obj/actor/spring.o \
 			src/obj/actor/vine.o \
 			src/obj/cannon.o \
@@ -206,7 +216,7 @@ ENTITY_OBJS	=	src/obj/proj.o \
 			src/obj/misc/proc.o \
 			src/obj/misc/coin_proc.o \
 			src/obj/actor/powerup.o \
-			src/obj/block.o \
+			src/obj/block/proc.o \
 			src/obj/motion.o \
 			src/obj/actor/common_init.o \
 			src/obj/actor/goomba_init.o \
@@ -262,7 +272,7 @@ ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/actor/powerup_render.o \
 			data/sprites_actor.o \
 			src/obj/actor/common_render.o \
-			src/obj/block_render.o \
+			src/obj/block/obj.o \
 			src/obj/actor/proj_firebar_render.o \
 			src/obj/actor/plat_small_render.o \
 			src/obj/bubble_render.o \
@@ -331,15 +341,15 @@ APU_FDS_DATA_OBJS =	$(APU_FDS_OFFSET_OBJS) \
 			$(APU_FDS_MUSIC_OBJS) \
 			$(APU_FDS_MISC_OBJS)
 
-PIPE_FLIPPED_BASE_OBJS = src/obj/bg/bg_pipe_flipped_base.o \
+PIPE_FLIPPED_BASE_OBJS = src/obj/bg/pipe_flipped_base.o \
 			src/obj/actor/piranha_plant_b_proc_base.o
 
-PIPE_FLIPPED_EXT_OBJS =	src/obj/bg/bg_pipe_flipped_ext.o \
+PIPE_FLIPPED_EXT_OBJS =	src/obj/bg/pipe_flipped_ext.o \
 			src/obj/actor/piranha_plant_b_proc_ext.o
 
-WIND_BASE_OBJS	=	src/obj/bg/bg_wind_base.o
+WIND_BASE_OBJS	=	src/obj/bg/wind_base.o
 
-WIND_EXT_OBJS	=	src/obj/bg/bg_wind_ext.o
+WIND_EXT_OBJS	=	src/obj/bg/wind_ext.o
 
 HARD_MODE_SPRING_BASE_OBJS = src/game/hard_mode_spring_base.o
 

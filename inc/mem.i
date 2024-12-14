@@ -12,6 +12,7 @@ ppu_displist_write_addr	= zp_addr_00
 motion_gravity_accel_y_inc = zp_byte_00
 col_player_bullet_diff_pos_x_rel = zp_byte_00
 render_chr_pair_tile_left = zp_byte_00
+bg_obj_tbl_base		= zp_byte_00
 zp_byte_01		= $01
 motion_gravity_accel_y_dec = zp_byte_01
 render_chr_pair_tile_right = zp_byte_01
