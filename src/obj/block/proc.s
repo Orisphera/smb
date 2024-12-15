@@ -139,7 +139,7 @@ block_item:
 
 	lda	#0
 	sta	veloc_x_block, x
-	sta	accel_y2_bubble, x
+	sta	accel_y_grav_block, x
 	sta	veloc_y_player
 	lda	#BLOCK_ITEM_VELOC_Y
 	sta	veloc_y_block, x
@@ -334,8 +334,8 @@ block_bits_init:
 	lda	#BLOCK_BITS_B_VELOC_Y
 	sta	veloc_y_block+2, x
 	lda	#0
-	sta	accel_y2_bubble, x
-	sta	accel_y2_bubble+2, x
+	sta	accel_y_grav_block, x
+	sta	accel_y_grav_block+2, x
 	lda	pos_x_hi_block, x
 	sta	pos_x_hi_block+2, x
 	lda	pos_x_lo_block, x

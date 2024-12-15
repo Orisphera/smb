@@ -59,9 +59,9 @@ pos_calc_x_rel_b:
 	rts
 ; --------------------------------------------------------------
 pos_calc_x_rel_do:
-	lda	pos_y_lo_player, x
+	lda	pos_y_lo, x
 	sta	pos_y_rel_player, y
-	lda	pos_x_lo_player, x
+	lda	pos_x_lo, x
 	sec
 	sbc	pos_x_lo_screen_left
 	sta	pos_x_rel_player, y
@@ -183,10 +183,10 @@ pos_bits_get_do_x:
 	: ; for (y = 2-1; x == 0 && y >= 0; y--) {
 		lda	pos_x_lo_screen_left, y
 		sec
-		sbc	pos_x_lo_player, x
+		sbc	pos_x_lo, x
 		sta	pos_bits_diff_screen_player_off
 		lda	pos_x_hi_screen_left, y
-		sbc	pos_x_hi_player, x
+		sbc	pos_x_hi, x
 
 		ldx	pos_bits_off_x, y
 		cmp	#0
@@ -249,10 +249,10 @@ pos_bits_get_do_y:
 	: ; for (y = 2-1; x == 0 && y >= 0; y--) {
 		lda	pos_bits_y_hi, y
 		sec
-		sbc	pos_y_lo_player, x
+		sbc	pos_y_lo, x
 		sta	pos_bits_diff_screen_player_off
 		lda	#1
-		sbc	pos_y_hi_player, x
+		sbc	pos_y_hi, x
 		ldx	pos_bits_off_y, y
 		cmp	#0
 		bmi	:+

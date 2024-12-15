@@ -68,7 +68,7 @@ actor_proc_plat_bal:
 
 	lda	actor_plat_col_flag, x
 	bpl	:+
-	lda	accel_y2_actor, x
+	lda	accel_y_grav_actor, x
 	clc
 	adc	#5
 	sta	zp_byte_00
@@ -113,7 +113,7 @@ actor_proc_plat_bal:
 
 	ldy	actor_index
 	lda	veloc_y_actor, y
-	ora	accel_y2_actor, y
+	ora	accel_y_grav_actor, y
 	beq	:+++++
 	ldx	ppu_displist_0_offset
 	cpx	#32
@@ -264,7 +264,7 @@ actor_init_plat_fall:
 actor_proc_plat_stop:
 	jsr	actor_init_veloc_y
 	sta	veloc_y_actor, y
-	sta	accel_y2_actor, y
+	sta	accel_y_grav_actor, y
 	rts
 ; -----------------------------------------------------------
 actor_proc_plat_fall_do:
@@ -290,9 +290,9 @@ actor_proc_plat_fall_do:
 	.export actor_proc_plat_mov_v
 actor_proc_plat_mov_v:
 	lda	veloc_y_actor, x
-	ora	accel_y2_actor, x
+	ora	accel_y_grav_actor, x
 	bne	:++
-	sta	accel_y1_actor, x
+	sta	accel_y_actor, x
 	lda	pos_y_lo_actor, x
 	cmp	accel_x_actor, x
 	bcs	:++ ; if (actor.pos_y < actor.accel_x) {
@@ -387,10 +387,10 @@ actor_proc_plat_small_do:
 actor_proc_plat_lift_move:
 	lda	game_timer_stop
 	bne	actor_proc_plat_lift_col_rts ; if (!game_timer_stop) {
-		lda	accel_y1_actor, x
+		lda	accel_y_actor, x
 		clc
-		adc	accel_y2_actor, x
-		sta	accel_y1_actor, x
+		adc	accel_y_grav_actor, x
+		sta	accel_y_actor, x
 		lda	pos_y_lo_actor, x
 		adc	veloc_y_actor, x
 		sta	pos_y_lo_actor, x

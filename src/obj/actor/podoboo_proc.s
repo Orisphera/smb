@@ -13,7 +13,7 @@ actor_A_0C_proc:
 		jsr	actor_init_podoboo
 		lda	srand+1, x
 		ora	#%10000000
-		sta	accel_y2_actor, x
+		sta	accel_y_grav_actor, x
 		and	#MOD_16
 		ora	#%00000110
 		sta	timer_actor, x

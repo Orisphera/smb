@@ -78,7 +78,7 @@ actor_init_bullet_cheep:
 
 		lda	bullet_cheep_pos_x_lo, y
 		jsr	actor_init_right_side
-		sta	accel_y1_actor, x
+		sta	accel_y_actor, x
 		lda	#BULLET_CHEEP_TIMER_INIT
 		sta	timer_swarm
 		jmp	actor_init_do

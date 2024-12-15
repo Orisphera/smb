@@ -55,10 +55,10 @@ actor_A_0B_proc:
 			lda	veloc_x_actor, x
 			cmp	#CHEEP_VELOC_X
 			bcc	:+ ; if (actor.veloc_x >= CHEEP_VELOC_X) {
-				lda	accel_y1_actor, x
+				lda	accel_y_actor, x
 				clc
 				adc	actor_proc_cheep_veloc_y_abs
-				sta	accel_y1_actor, x
+				sta	accel_y_actor, x
 				lda	pos_y_lo_actor, x
 				adc	actor_proc_cheep_veloc_y
 				sta	pos_y_lo_actor, x
@@ -67,10 +67,10 @@ actor_A_0B_proc:
 
 				jmp	:++
 			: ; } else {
-				lda	accel_y1_actor, x
+				lda	accel_y_actor, x
 				sec
 				sbc	actor_proc_cheep_veloc_y_abs
-				sta	accel_y1_actor, x
+				sta	accel_y_actor, x
 				lda	pos_y_lo_actor, x
 				sbc	actor_proc_cheep_veloc_y
 				sta	pos_y_lo_actor, x
@@ -82,7 +82,7 @@ actor_A_0B_proc:
 			ldy	#0
 			lda	pos_y_lo_actor, x
 			sec
-			sbc	accel_y2_actor, x
+			sbc	accel_y_grav_actor, x
 			bpl	:+ ; if (actor.pos_y < actor.accel_y) { 
 				ldy	#CHEEP_VELOC_X
 				neg_m

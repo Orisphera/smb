@@ -42,9 +42,9 @@ pole_proc:
 	cmp	#162
 	bcs	:++ ; if (this.proc_id != pole || this.state != climb || (actor.pos_y.lo < 0xAA && this.pos_y.lo < 0xA2)) {
 		; if (this.proc_id == pole && this.state == climb) {
-			lda	accel_y1_actor, x
+			lda	accel_y_actor, x
 			adc	#<-1
-			sta	accel_y1_actor, x
+			sta	accel_y_actor, x
 			lda	pos_y_lo_actor, x
 			adc	#1
 			sta	pos_y_lo_actor, x

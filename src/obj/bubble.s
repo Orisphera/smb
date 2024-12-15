@@ -45,10 +45,10 @@ bubble_proc:
 		: ; }
 
 		ldy	bubble_idx
-		lda	accel_y1_bubble, x
+		lda	accel_y_bubble, x
 		sec
 		sbc	bubble_accel_y, y
-		sta	accel_y1_bubble, x
+		sta	accel_y_bubble, x
 		lda	pos_y_lo_bubble, x
 		sbc	#0
 		cmp	#BUBBLE_POS_Y_MIN

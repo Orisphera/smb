@@ -51,7 +51,7 @@ bowser_flame_accel_y:
 actor_init_bowser_flame:
 	lda	timer_swarm
 	bne	actor_init_dup_rts ; if (timer_swarm == 0) {
-		sta	accel_y2_actor, x
+		sta	accel_y_grav_actor, x
 		lda	apu_sfx_noise_req
 		ora	#sfx_noise::flame
 		sta	apu_sfx_noise_req
@@ -71,7 +71,7 @@ actor_init_bowser_flame:
 		
 			lda	srand, x
 			and	#MOD_4
-			sta	accel_y1_actor, x
+			sta	accel_y_actor, x
 			tay
 			lda	actor_bowser_flame_pos_y_offset, y
 		
@@ -100,7 +100,7 @@ actor_init_bowser_flame:
 		
 			lda	srand, x
 			and	#MOD_4
-			sta	accel_y1_actor, x
+			sta	accel_y_actor, x
 			tay
 			lda	actor_bowser_flame_pos_y_offset, y
 			ldy	#0
@@ -109,7 +109,7 @@ actor_init_bowser_flame:
 				iny
 			: ; }
 			lda	bowser_flame_accel_y, y
-			sta	accel_y2_actor, x
+			sta	accel_y_grav_actor, x
 		
 			lda	#0
 			sta	actor_swarm_buffer

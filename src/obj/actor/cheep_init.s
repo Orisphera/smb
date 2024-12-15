@@ -14,6 +14,6 @@ actor_A_0B_init:
 	and	#%00010000
 	sta	veloc_x_actor, x
 	lda	pos_y_lo_actor, x
-	sta	accel_y2_actor, x
+	sta	accel_y_grav_actor, x
 	rts
 

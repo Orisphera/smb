@@ -569,7 +569,7 @@ player_proc_player_ground:
 	jsr	player_proc_player_friction
 
 player_proc_player_ground_b:
-	jsr	motion_x_check_spring
+	jsr	motion_x_player
 	sta	scroll_x_player
 
 	.if	.defined(SMB2)
@@ -583,7 +583,7 @@ player_proc_player_ground_b:
 ; -----------------------------------------------------------
 player_proc_player_fall:
 	lda	accel_y_gravity
-	sta	accel_y_player
+	sta	accel_y_player_spring
 	jmp	player_proc_player_jump_swim_do
 ; -----------------------------------------------------------
 player_proc_player_jump_swim:
@@ -606,7 +606,7 @@ player_proc_player_jump_swim:
 	;	)
 	; ) {
 		lda	accel_y_gravity
-		sta	accel_y_player
+		sta	accel_y_player_spring
 	: ; }
 
 	lda	player_swimming
@@ -616,7 +616,7 @@ player_proc_player_jump_swim:
 		cmp	#20
 		bcs	:+ ; if (this.pos_y < 20) {
 			lda	#24
-			sta	accel_y_player
+			sta	accel_y_player_spring
 		: ; }
 	
 		lda	joypad_l_r
@@ -632,7 +632,7 @@ player_proc_player_jump_swim_do:
 	: ; }
 
 	.if	.defined(SMBV1)
-		jsr	motion_x_check_spring
+		jsr	motion_x_player
 		sta	scroll_x_player
 	.elseif	.defined(SMBV2)
 		jsr	player_proc_player_ground_b
@@ -642,10 +642,10 @@ player_proc_player_jump_swim_do:
 	cmp	#player_procs::death
 	bne	:+ ; if (this.proc_id == death) {
 		lda	#$28
-		sta	accel_y_player
+		sta	accel_y_player_spring
 	: ; }
 
-	jmp	motion_y_check_spring
+	jmp	motion_y_player
 ; -----------------------------------------------------------
 CLIMB_OFFSET_SMALL	= 4
 CLIMB_OFFSET_LARGE	= 14
@@ -657,10 +657,10 @@ player_proc_player_climb_offset_x_hi:
 	.byte	>CLIMB_OFFSET_LARGE, >CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_LARGE
 ; -----------------------------
 player_proc_player_climb:
-	lda	accel_y1_player
+	lda	accel_y_player
 	clc
-	adc	accel_y2_player
-	sta	accel_y1_player
+	adc	accel_y_grav_player
+	sta	accel_y_player
 
 	ldy	#0
 	lda	veloc_y_player
@@ -744,7 +744,7 @@ player_proc_player_physics:
 			; }
 		: ; }
 		ldx	player_proc_player_climb_accel_y, y
-		stx	accel_y2_player
+		stx	accel_y_grav_player
 	
 		lda	#8
 		ldx	player_proc_player_climb_veloc_y, y
@@ -778,8 +778,8 @@ player_proc_player_physics:
 		lda	#$20
 		sta	timer_player_jump_swim
 		ldy	#0
-		sty	accel_y1_player
-		sty	accel_y2_player
+		sty	accel_y_player
+		sty	accel_y_grav_player
 		lda	pos_y_hi_player
 		sta	pos_y_player_jump
 		lda	pos_y_lo_player
@@ -816,11 +816,11 @@ player_proc_player_physics:
 		: ; }
 
 		lda	player_proc_player_jump_accel_y, y
-		sta	accel_y_player
+		sta	accel_y_player_spring
 		lda	player_proc_player_grav_accel_y, y
 		sta	accel_y_gravity
 		lda	player_proc_player_init_accel_y, y
-		sta	accel_y2_player
+		sta	accel_y_grav_player
 		lda	player_proc_veloc_y_player, y
 		sta	veloc_y_player
 

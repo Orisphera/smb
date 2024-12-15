@@ -50,12 +50,12 @@ actor_proc_bowser_flame_do:
 		lda	pos_x_hi_actor, x
 		sbc	#>BOWSER_FLAME_POS_X_OFFSET
 		sta	pos_x_hi_actor, x
-		ldy	accel_y1_actor, x
+		ldy	accel_y_actor, x
 		lda	pos_y_lo_actor, x
 		cmp	actor_bowser_flame_pos_y_offset, y
 		beq	:+ ; if (this.pos_y != actor_bowser_flame_pos_y_offset) {
 			clc
-			adc	accel_y2_actor, x
+			adc	accel_y_grav_actor, x
 			sta	pos_y_lo_actor, x
 		; }
 	: ; }

@@ -1190,7 +1190,7 @@ col_plat_player_pos_do:
 		sta	pos_y_hi_player
 		lda	#0
 		sta	veloc_y_player
-		sta	accel_y2_player
+		sta	accel_y_grav_player
 	: ; }
 
 	rts
@@ -1405,7 +1405,7 @@ col_bg_proc_ground_type:
 
 				lda	#0
 				sta	veloc_y_player
-				sta	accel_y2_player
+				sta	accel_y_grav_player
 				sta	counter_stomps
 			: ; }
 		
@@ -1702,7 +1702,7 @@ col_bg_proc_spring:
 	jsr	col_bg_proc_spring_check
 	bcc	:+ ; if (col_bg_proc_spring_check()) {
 		lda	#SPRING_ACCEL_Y_INIT
-		sta	accel_y_player
+		sta	accel_y_player_spring
 
 		.if	.defined(SMBV2)
 			sta	accel_y_gravity
@@ -2534,9 +2534,9 @@ col_box_screen_right:
 	lda	pos_x_hi_screen_left
 	adc	#0
 	sta	col_box_screen_right_offset_x_hi
-	lda	pos_x_lo_player, x
+	lda	pos_x_lo, x
 	cmp	col_box_screen_right_offset_x_lo
-	lda	pos_x_hi_player, x
+	lda	pos_x_hi, x
 	sbc	col_box_screen_right_offset_x_hi
 	bcc	:+++ ; if () {
 		lda	pos_x_col_box_se, y
@@ -2739,9 +2739,9 @@ col_box_buffer:
 	sty	col_box_buffer_tbl_offset
 	lda	col_bg_buffer_offset_x, y
 	clc
-	adc	pos_x_lo_player, x
+	adc	pos_x_lo, x
 	sta	col_box_buffer_player_offset
-	lda	pos_x_hi_player, x
+	lda	pos_x_hi, x
 	adc	#0
 	and	#MOD_2
 	lsr	a
@@ -2752,7 +2752,7 @@ col_box_buffer:
 	lsr	a
 	jsr	scenery_get_buffer_ptr
 	ldy	col_box_buffer_tbl_offset
-	lda	pos_y_lo_player, x
+	lda	pos_y_lo, x
 	clc
 	adc	col_bg_buffer_offset_y, y
 	and	#CLAMP_16
@@ -2765,11 +2765,11 @@ col_box_buffer:
 	ldy	col_box_buffer_tbl_offset
 	pla
 	bne	:+ ; if () {
-		lda	pos_y_lo_player, x
+		lda	pos_y_lo, x
 
 		jmp	:++
 	: ; } else {
-		lda	pos_x_lo_player, x
+		lda	pos_x_lo, x
 	: ; }
 	and	#MOD_16
 	sta	col_box_buffer_tbl_offset

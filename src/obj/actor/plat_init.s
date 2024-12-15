@@ -107,7 +107,7 @@ actor_B_12_init:
 actor_init_plat_s_up:
 actor_B_16_init:
 	lda	#PLAT_ACCEL_Y_ABS
-	sta	accel_y2_actor, x
+	sta	accel_y_grav_actor, x
 	lda	#<-1
 	sta	veloc_y_actor, x
 
@@ -116,7 +116,7 @@ actor_B_16_init:
 actor_init_plat_s_down:
 actor_B_17_init:
 	lda	#<-PLAT_ACCEL_Y_ABS
-	sta	accel_y2_actor, x
+	sta	accel_y_grav_actor, x
 	lda	#0
 	sta	veloc_y_actor, x
 ; ------------------------------

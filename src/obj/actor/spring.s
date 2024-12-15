@@ -79,7 +79,7 @@ actor_B_1D_proc:
 
 			.if	.defined(PAL)
 				lda	#64
-				sta	accel_y_player
+				sta	accel_y_player_spring
 			.endif
 
 			lda	#0
