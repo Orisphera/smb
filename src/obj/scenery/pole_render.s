@@ -13,25 +13,25 @@ OFFSET_X_FLAG	= 8
 OFFSET_Y_FLAG	= 48
 OFFSET_Y_FLAG_SCORE = (OFFSET_Y_FLAG+128)
 
-	.export	bg_scenery_pole_tip
-bg_scenery_pole_tip:
-	jsr	bg_scenery_attr
+	.export	scenery_pole_tip
+scenery_pole_tip:
+	jsr	scenery_attr
 	ldx	#POS_X_LONE_BALL
 	lda	#metatile_1::flag_ball
-	jmp	bg_scenery_render
+	jmp	scenery_render
 ; --------------
-	.export	bg_scenery_pole
-bg_scenery_pole:
+	.export	scenery_pole
+scenery_pole:
 	lda	#metatile_0::flag_ball
-	sta	gfx_metatile
+	sta	scenery_metatile
 	ldx	#HEIGHT_BALL
 	ldy	#HEIGHT_POLE-(HEIGHT_BALL+HEIGHT_BASE)
 	lda	#metatile_0::pole
-	jsr	bg_scenery_render
+	jsr	scenery_render
 	lda	#metatile_1::stair
-	sta	gfx_metatile+HEIGHT_POLE
+	sta	scenery_metatile+HEIGHT_POLE
 
-	jsr	bg_objpos_x_get
+	jsr	scenery_pos_x_get
 	sec
 	sbc	#<OFFSET_X_FLAG
 	sta	pos_x_lo_actor+ENG_ACTOR_MAX-1

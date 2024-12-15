@@ -119,7 +119,7 @@ game_init_0_do:
 	dec	scenery_length+2
 
 	lda	#$0B
-	sta	screen_bg_counter
+	sta	bg_scenery_counter
 	jsr	course_load
 
 	lda	ENG_HARDMODE_VAR
@@ -154,7 +154,7 @@ game_init_0_do:
 		inc	proc_id_game
 		rts
 	.elseif	.defined(ANN)
-		jmp	screen_title_bg_finish
+		jmp	bg_title_screen_finish
 	.endif
 ; -----------------------------------------------------------
 	.export	game_init_1
@@ -200,7 +200,7 @@ game_init_1_do:
 	sta	nmi_disp_disable
 	
 	.if	.defined(SMB2)
-		sta	bg_scenery_wind_flag
+		sta	scenery_wind_flag
 	.endif
 
 	.if	.defined(SMBV2)
@@ -216,7 +216,7 @@ game_init_1_do:
 	; }
 
 	sta	game_time_up
-	sta	screen_msg_disable
+	sta	bg_msg_disable
 	sta	course_page_loaded
 
 	lda	#$FF
@@ -268,7 +268,7 @@ game_init_1_do:
 		inc	proc_id_game
 		rts
 	.elseif	.defined(ANN)
-		jmp	screen_title_bg_finish
+		jmp	bg_title_screen_finish
 	.endif
 ; -----------------------------------------------------------
 	.export game_init_clearram

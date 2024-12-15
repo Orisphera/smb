@@ -5,14 +5,14 @@
 .include	"tiles.i"
 
 ; -----------------------------
-bg_scenery_coinrow_tiles:
+scenery_coinrow_tiles:
 	.byte	metatile_3::coin_b
 	.byte	metatile_3::coin_a
 	.byte	metatile_3::coin_a
 	.byte	metatile_3::coin_a
 ; --------------
-        .export bg_scenery_coinrow
-bg_scenery_coinrow:
+        .export scenery_coinrow
+scenery_coinrow:
 	ldy	course_type
-	lda	bg_scenery_coinrow_tiles, y
-	jmp	bg_scenery_get_row
+	lda	scenery_coinrow_tiles, y
+	jmp	scenery_get_row

@@ -50,7 +50,7 @@ course_actor_overworld_9:
 	.word	(COURSE_ACTORS_POS_Y_B|COURSE_ACTORS_POS_X_B|COURSE_ACTORS_ID_PARA_GREEN_J)
 
 	.word	(COURSE_ACTORS_POS_Y_B|COURSE_ACTORS_POS_X_9|COURSE_ACTORS_NEW_PAGE|COURSE_ACTORS_ID_KOOPA_GREEN)
-    ; NOTE: Expects to fall through to empty course actor descriptor in original engine
-	.if	.defined(ANN)
+
+	.if	.defined(ANN)|(!.defined(OG_FALL))
 		.byte	COURSE_ACTORS_END
 	.endif

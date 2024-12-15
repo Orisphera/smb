@@ -16,7 +16,7 @@ sys_game_over:
 	jsr	tbljmp
 game_over_mode_tbl:
 game_over_mode_init:	.addr	game_over_init
-game_over_mode_scr:	.addr	screen_proc
+game_over_mode_scr:	.addr	bg_proc
 
 .if	.defined(VS_SMB)
 		.export	game_over_mode_9902
@@ -34,8 +34,8 @@ game_over_mode_proc:	.addr	game_over_proc
 .endif
 ; ----------------------------
 game_over_init:
-	lda	#screen_procs::init
-	sta	screen_proc_id
+	lda	#bg_procs::init
+	sta	bg_proc_id
 	sta	nmi_sprite_overlap
 
 .if	.defined(SMBV2)
@@ -51,7 +51,7 @@ game_over_init:
 	inc	proc_id_game
 	rts
 .elseif	.defined(ANN)
-	jmp	screen_title_bg_finish
+	jmp	bg_title_screen_finish
 .endif
 ; ----------------------------
 	.export	game_over_continue

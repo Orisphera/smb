@@ -10,11 +10,11 @@
 ; -----------------------------
 SCENERY_HEIGHT_MAX	= $0D
 
-	.export	bg_scenery_render
-bg_scenery_render:
+	.export	scenery_render
+scenery_render:
 	: ; for (x = metatile_base_id, y = this.height; x >= 0xD && y >= 0; x++, y--) {
 		sty	scenery_height
-		ldy	gfx_metatile, x
+		ldy	scenery_metatile, x
 		beq	:+
 		cpy	#metatile_0::plat_b_b
 		beq	:++
@@ -31,7 +31,7 @@ bg_scenery_render:
 			beq	:++
 		.endif
 		: ; if (metatile == blank_a || (metatile.not_in(plat_b_b, plat_a_b) && (metatile == 0xC0 || (metatile < 0xC0 && (metatile != floor_normal || a != 0x50))))) {
-			sta	gfx_metatile, x
+			sta	scenery_metatile, x
 		: ; }
 
 		inx
@@ -44,11 +44,11 @@ bg_scenery_render:
 
 	rts
 ; -----------------------------
-        .export bg_scenery_len, bg_scenery_len_b
-bg_scenery_len:
-	jsr	bg_scenery_attr
+        .export scenery_len, scenery_len_b
+scenery_len:
+	jsr	scenery_attr
 
-bg_scenery_len_b:
+scenery_len_b:
 	lda	scenery_length, x
 	clc
 	bpl	:+ ; if () {
@@ -59,8 +59,8 @@ bg_scenery_len_b:
 
 	rts
 ; -----------------------------
-        .export bg_scenery_attr
-bg_scenery_attr:
+        .export scenery_attr
+scenery_attr:
 	.if	.defined(VS)
 		lda	#vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
 		sta	VS_REQ
@@ -68,15 +68,15 @@ bg_scenery_attr:
 	ldy	scenery_offset, x
 	lda	(course_scenery_addr), y
 	and	#%00001111
-	sta	bg_proc_metatile_id
+	sta	scenery_proc_metatile_id
 	iny
 	lda	(course_scenery_addr), y
 	and	#%00001111
 	tay
 	rts
 ; -----------------------------
-        .export bg_objpos_x_get
-bg_objpos_x_get:
+        .export scenery_pos_x_get
+scenery_pos_x_get:
 	lda	pos_x_lo_game
 	asl	a
 	asl	a
@@ -84,8 +84,8 @@ bg_objpos_x_get:
 	asl	a
 	rts
 ; -----------------------------
-        .export bg_objpos_y_get
-bg_objpos_y_get:
+        .export scenery_pos_y_get
+scenery_pos_y_get:
 	lda	game_buffer+1
 	asl	a
 	asl	a
@@ -95,26 +95,26 @@ bg_objpos_y_get:
 	adc	#(2<<4)
 	rts
 ; -----------------------------
-	.export bg_buffer_ptr_lo, bg_buffer_ptr_hi
-bg_buffer_ptr_lo:
+	.export scenery_buffer_ptr_lo, scenery_buffer_ptr_hi
+scenery_buffer_ptr_lo:
 	.byte	<bg_buffer_0, <bg_buffer_1
 
-bg_buffer_ptr_hi:
+scenery_buffer_ptr_hi:
 	.byte	>bg_buffer_0, >bg_buffer_1
 ; --------------
-	.export bg_get_buffer_ptr
-bg_get_buffer_ptr:
+	.export scenery_get_buffer_ptr
+scenery_get_buffer_ptr:
 	pha
 	lsr	a
 	lsr	a
 	lsr	a
 	lsr	a
 	tay
-	lda	bg_buffer_ptr_hi, y
+	lda	scenery_buffer_ptr_hi, y
 	sta	game_buffer+1
 	pla
 	and	#%00001111
 	clc
-	adc	bg_buffer_ptr_lo, y
+	adc	scenery_buffer_ptr_lo, y
 	sta	game_buffer
 	rts

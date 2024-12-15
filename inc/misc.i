@@ -127,20 +127,20 @@ COL_BOX_SIZE	= 4
 	.endenum
 
 	.enum	scores
-		value_100	= <(screen_score_value_100-screen_score_disp_incs)
-		value_200	= <(screen_score_value_200-screen_score_disp_incs)
-		value_400	= <(screen_score_value_400-screen_score_disp_incs)
-		value_500	= <(screen_score_value_500-screen_score_disp_incs)
-		value_800	= <(screen_score_value_800-screen_score_disp_incs)
-		value_1000	= <(screen_score_value_1000-screen_score_disp_incs)
-		value_2000	= <(screen_score_value_2000-screen_score_disp_incs)
-		value_4000	= <(screen_score_value_4000-screen_score_disp_incs)
-		value_5000	= <(screen_score_value_5000-screen_score_disp_incs)
-		value_8000	= <(screen_score_value_8000-screen_score_disp_incs)
-		value_oneup	= <(screen_score_value_oneup-screen_score_disp_incs)
+		value_100	= <(bg_score_value_100-bg_score_disp_incs)
+		value_200	= <(bg_score_value_200-bg_score_disp_incs)
+		value_400	= <(bg_score_value_400-bg_score_disp_incs)
+		value_500	= <(bg_score_value_500-bg_score_disp_incs)
+		value_800	= <(bg_score_value_800-bg_score_disp_incs)
+		value_1000	= <(bg_score_value_1000-bg_score_disp_incs)
+		value_2000	= <(bg_score_value_2000-bg_score_disp_incs)
+		value_4000	= <(bg_score_value_4000-bg_score_disp_incs)
+		value_5000	= <(bg_score_value_5000-bg_score_disp_incs)
+		value_8000	= <(bg_score_value_8000-bg_score_disp_incs)
+		value_oneup	= <(bg_score_value_oneup-bg_score_disp_incs)
 	.endenum
 
-	.enum	screen_procs
+	.enum	bg_procs
 		init
 		color_init_1
 		stat_bg_0
@@ -176,7 +176,7 @@ COL_BOX_SIZE	= 4
 		power_firefl
 	.endenum
 
-	.enum	screen_text
+	.enum	bg_text
 		header
 		splash
 		timeup
@@ -401,23 +401,23 @@ COL_BOX_SIZE	= 4
 	.endenum
 
 	.enum	clear_blocks
-		brick_a		= <((gfx_clear_blocks_brick_a-gfx_clear_blocks)/METATILE_SIZE)
-		brick_b		= <((gfx_clear_blocks_brick_b-gfx_clear_blocks)/METATILE_SIZE)
-		block_empty	= <((gfx_clear_blocks_block_empty-gfx_clear_blocks)/METATILE_SIZE)
-		blank_a		= <((gfx_clear_blocks_blank_a-gfx_clear_blocks)/METATILE_SIZE)
-		blank_b		= <((gfx_clear_blocks_blank_b-gfx_clear_blocks)/METATILE_SIZE)
+		brick_a		= <((meta_clear_blocks_brick_a-meta_clear_blocks)/METATILE_SIZE)
+		brick_b		= <((meta_clear_blocks_brick_b-meta_clear_blocks)/METATILE_SIZE)
+		block_empty	= <((meta_clear_blocks_block_empty-meta_clear_blocks)/METATILE_SIZE)
+		blank_a		= <((meta_clear_blocks_blank_a-meta_clear_blocks)/METATILE_SIZE)
+		blank_b		= <((meta_clear_blocks_blank_b-meta_clear_blocks)/METATILE_SIZE)
 	.endenum
 
-	.enum	bg_procs
+	.enum	scenery_procs
 		main_c			= 0
-		inc_col_a		= (((bg_proc_inc_col_a-bg_proc_tbl)/WORD_SIZE)+1)
-		gfx_render_area_a	= (((bg_proc_gfx_render_area_a-bg_proc_tbl)/WORD_SIZE)+1)
-		gfx_render_area_b	= (((bg_proc_gfx_render_area_b-bg_proc_tbl)/WORD_SIZE)+1)
-		main_a			= (((bg_proc_main_a-bg_proc_tbl)/WORD_SIZE)+1)
-		inc_col_b		= (((bg_proc_inc_col_b-bg_proc_tbl)/WORD_SIZE)+1)
-		gfx_render_area_c	= (((bg_proc_gfx_render_area_c-bg_proc_tbl)/WORD_SIZE)+1)
-		gfx_render_area_d	= (((bg_proc_gfx_render_area_d-bg_proc_tbl)/WORD_SIZE)+1)
-		main_b			= (((bg_proc_main_b-bg_proc_tbl)/WORD_SIZE)+1)
+		inc_seam_a		= (((scenery_proc_inc_seam_a-scenery_proc_tbl)/WORD_SIZE)+1)
+		render_area_a		= (((scenery_proc_render_area_a-scenery_proc_tbl)/WORD_SIZE)+1)
+		render_area_b		= (((scenery_proc_render_area_b-scenery_proc_tbl)/WORD_SIZE)+1)
+		main_a			= (((scenery_proc_main_a-scenery_proc_tbl)/WORD_SIZE)+1)
+		inc_seam_b		= (((scenery_proc_inc_seam_b-scenery_proc_tbl)/WORD_SIZE)+1)
+		render_area_c		= (((scenery_proc_render_area_c-scenery_proc_tbl)/WORD_SIZE)+1)
+		render_area_d		= (((scenery_proc_render_area_d-scenery_proc_tbl)/WORD_SIZE)+1)
+		main_b			= (((scenery_proc_main_b-scenery_proc_tbl)/WORD_SIZE)+1)
 		mask			= $07
 	.endenum
 

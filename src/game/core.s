@@ -42,7 +42,7 @@ game_mode_init_0:	.addr	game_init_0_do
 game_mode_toad_load:	.addr	ann_toad_load
 .endif
 
-game_mode_scr:		.addr	screen_proc
+game_mode_scr:		.addr	bg_proc
 game_mode_init_1:	.addr	game_init_1_do
 game_mode_proc:		.addr	game_proc
 ; ------------------------------------------------------------
@@ -112,7 +112,7 @@ game_proc:
 			stx	actor_index
 			jsr	actor_proc
 
-			jsr	screen_score_disp
+			jsr	bg_score_disp
 	
 			inx
 			cpx	#ENG_ACTOR_MAX
@@ -140,12 +140,12 @@ game_proc:
 
 		jsr	stats_time_proc
 	
-		jsr	gfx_color_rotate
+		jsr	meta_color_rotate
 	
 		.if	.defined(SMB2)
 			lda	disk_loader_file_id
 			beq	:+ ; if (disk_loader_file_id != main) {
-				jsr	bg_scenery_wind_proc
+				jsr	scenery_wind_proc
 			: ; }
 		.endif
 	
@@ -184,19 +184,19 @@ game_proc:
 		lda	nmi_buffer_ptr
 		cmp	#nmi_addr::buffer_11_A
 		beq	:++
-		lda	bg_proc_id
+		lda	bg_scenery_proc_id
 		bne	:+
 		lda	game_scroll_h
 		cmp	#GAME_SCROLL_END
-		bmi	:++ ; if (nmi_buffer_ptr != buffer_11_A && (bg_proc_id == main_c || game.scroll_h > GAME_SCROLL_END)) {
-			; if (bg_proc_id == main_c) {
+		bmi	:++ ; if (nmi_buffer_ptr != buffer_11_A && (bg_scenery_proc_id == main_c || game.scroll_h > GAME_SCROLL_END)) {
+			; if (bg_scenery_proc_id == main_c) {
 				lda	game_scroll_h
 				sbc	#GAME_SCROLL_END
 				sta	game_scroll_h
 				lda	#0
 				sta	ppu_displist_1_offset
 			: ; }
-			jsr	bg_proc
+			jsr	scenery_proc
 		: ; }
 
 		rts

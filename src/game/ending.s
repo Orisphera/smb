@@ -33,7 +33,7 @@ ending_course_plus_msg:
 		lda	#0
 		sta	nmi_disp_disable
 
-		jmp	ending_screen_proc_next
+		jmp	ending_bg_proc_next
 	: ; } else {
 		lda	#32
 		sta	timer_screen
@@ -45,16 +45,16 @@ ending_course_plus_msg:
 	; }
 .endif
 ; -----------------------------
-	.export	ending_screen_proc
-ending_screen_proc:
-	lda	screen_proc_id
+	.export	ending_bg_proc
+ending_bg_proc:
+	lda	bg_proc_id
 	jsr	tbljmp
-	.addr	screen_init_title
-	.addr	screen_text_draw_header
-	.addr	screen_text_draw_splash
+	.addr	bg_init_title
+	.addr	bg_text_draw_header
+	.addr	bg_text_draw_splash
 	.addr	ending_throneroom_show
-	.addr	screen_color_init_2
-	.addr	screen_color_init_3
+	.addr	bg_color_init_2
+	.addr	bg_color_init_3
 .if	.defined(ANN)
 	.addr	ending_pal_load_ext
 .endif
@@ -66,15 +66,15 @@ ending_throneroom_show:
 
 	sta	nmi_sprite_overlap
 
-ending_screen_proc_next:
-	inc	screen_proc_id
+ending_bg_proc_next:
+	inc	bg_proc_id
 	rts
 ; -----------------------------
 .if	.defined(ANN)
 ending_pal_load_ext:
 	lda	#nmi_addr::ending_pal_ext
 	sta	nmi_buffer_ptr
-	inc	screen_proc_id
+	inc	bg_proc_id
 	rts
 .endif
 ; -----------------------------
@@ -536,8 +536,8 @@ ending_text_player_luigi_end:
 ; -----------------------------
 	.export	ending_text_player_set
 ending_text_player_set:
-	lda	#screen_procs::init
-	sta	screen_proc_id
+	lda	#bg_procs::init
+	sta	bg_proc_id
 
 	ldx	#(ending_text_player_mario_end-ending_text_player_names)-1
 	lda	player_id

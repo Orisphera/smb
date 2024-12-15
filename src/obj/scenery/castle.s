@@ -4,7 +4,7 @@
 
 CASTLE_ROW_SIZE		= 5
 
-bg_scenery_castle_tiles:
+scenery_castle_tiles:
 	.byte	metatile_0::blank_a
 	.byte	metatile_1::castle_a
 	.byte	metatile_1::castle_a
@@ -70,39 +70,39 @@ bg_scenery_castle_tiles:
 	.byte	metatile_1::castle_g
 	.byte	metatile_1::castle_c
 	.byte	metatile_1::castle_g
-bg_scenery_castle_tiles_end:
+scenery_castle_tiles_end:
 ; --------------
-bg_scenery_castle_tile_remain	= zp_byte_06
-bg_scenery_castle_height	= zp_byte_07
+scenery_castle_tile_remain	= zp_byte_06
+scenery_castle_height	= zp_byte_07
 
-	.export	bg_scenery_castle
-bg_scenery_castle:
-	jsr	bg_scenery_attr
-	sty	bg_scenery_castle_height
+	.export	scenery_castle
+scenery_castle:
+	jsr	scenery_attr
+	sty	scenery_castle_height
 	ldy	#4
-	jsr	bg_scenery_len_b
+	jsr	scenery_len_b
 	txa
 	pha
 
 	ldy	scenery_length, x
-	ldx	bg_scenery_castle_height
-	lda	#((bg_scenery_castle_tiles_end-bg_scenery_castle_tiles)/CASTLE_ROW_SIZE)
-	sta	bg_scenery_castle_tile_remain
+	ldx	scenery_castle_height
+	lda	#((scenery_castle_tiles_end-scenery_castle_tiles)/CASTLE_ROW_SIZE)
+	sta	scenery_castle_tile_remain
 	: ; for (row of castle) {
-		lda	bg_scenery_castle_tiles, y
-		sta	gfx_metatile, x
+		lda	scenery_castle_tiles, y
+		sta	scenery_metatile, x
 
 		inx
-		lda	bg_scenery_castle_tile_remain
-		beq	:+ ; if (bg_scenery_castle_tile_remain) {
+		lda	scenery_castle_tile_remain
+		beq	:+ ; if (scenery_castle_tile_remain) {
 			iny
 			iny
 			iny
 			iny
 			iny
-			dec	bg_scenery_castle_tile_remain
+			dec	scenery_castle_tile_remain
 		: ; }
-		cpx	#((bg_scenery_castle_tiles_end-bg_scenery_castle_tiles)/CASTLE_ROW_SIZE)
+		cpx	#((scenery_castle_tiles_end-scenery_castle_tiles)/CASTLE_ROW_SIZE)
 		bne	:--
 	; }
 
@@ -113,16 +113,16 @@ bg_scenery_castle:
 		lda	scenery_length, x
 		cmp	#1
 		beq	:++
-		ldy	bg_proc_metatile_id
+		ldy	scenery_proc_metatile_id
 		bne	:+
 		cmp	#3
 		beq	:++
 		: cmp	#2
-		bne	:++ ; if (scenery_length == 2) {
-			jsr	bg_objpos_x_get
+		bne	:++ ; if (this.length == 2) {
+			jsr	scenery_pos_x_get
 			pha
 
-			jsr	bg_obj_alloc
+			jsr	scenery_alloc
 
 			pla
 			sta	pos_x_lo_actor, x
@@ -138,7 +138,7 @@ bg_scenery_castle:
 			rts
 		: ; } else if (scenery_length == 1 || (tile_id && scenery_length != 2) || scenery_length == 3) {
 			ldy	#metatile_1::brick_b
-			sty	gfx_metatile+10
+			sty	scenery_metatile+10
 		; }
 	: ; }
 

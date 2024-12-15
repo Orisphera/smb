@@ -12,25 +12,25 @@ BOWSER_VELOC_Y		= 8
 BOWSER_VELOC_Y_NEG	= <-2
 BOWSER_TIMER_START_POS_Y	= 128
 BOWSER_COL_BOX		= col_boxes::box_10
-BOWSER_GFX_CLEAR_BASE	= PPU_VRAM_BG1+PPU_BG_ROW_16
+BOWSER_BG_CLEAR_BASE	= PPU_VRAM_BG1+PPU_BG_ROW_16
 BOWSER_DEATH_Y_POS	= 224
 ; -----------------------------------------------------------
 actor_bowser_ending_clear_blocks:
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_0+PPU_BG_COL_26)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_2+PPU_BG_COL_24)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_24)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_22)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_20)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_18)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_16)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_14)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_12)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_10)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_8)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_6)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_4)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_2)
-	.byte	<(BOWSER_GFX_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_0)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_0+PPU_BG_COL_26)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_2+PPU_BG_COL_24)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_24)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_22)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_20)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_18)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_16)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_14)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_12)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_10)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_8)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_6)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_4)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_2)
+	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_0)
 actor_bowser_ending_clear_blocks_end:
 ; -----------------------------
 	.export actor_bowser_ending
@@ -64,21 +64,23 @@ actor_bowser_ending:
 			eor	#actor_bowser_ani::step_bit
 			sta	actor_bowser_ani_flag
 
-			lda	#>(BOWSER_GFX_CLEAR_BASE)
-			sta	gfx_clear_put_do_addr+1
+			lda	#>(BOWSER_BG_CLEAR_BASE)
+			sta	meta_clear_put_do_addr+1
 			ldy	actor_bowser_ending_clear_frame
 			lda	actor_bowser_ending_clear_blocks, y
-			sta	gfx_clear_put_do_addr
+			sta	meta_clear_put_do_addr
 			ldy	ppu_displist_0_offset
 			iny
 			ldx	#clear_blocks::blank_a*METATILE_SIZE
-			jsr	gfx_clear_put_do
+			jsr	meta_clear_put_do
 			ldx	actor_index
-			jsr	gfx_meta_step
+			jsr	meta_step
+
 			lda	#sfx_pulse_2::blast
 			sta	apu_sfx_pulse_2_req
 			lda	#sfx_noise::block_break_01
 			sta	apu_sfx_noise_req
+
 			inc	actor_bowser_ending_clear_frame
 			lda	actor_bowser_ending_clear_frame
 			cmp	#(actor_bowser_ending_clear_blocks_end-actor_bowser_ending_clear_blocks)

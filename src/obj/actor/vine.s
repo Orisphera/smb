@@ -137,9 +137,9 @@ actor_B_1A_proc:
 				nop
 			.endif
 			tay
-			lda	bg_buffer_ptr_lo, y
+			lda	scenery_buffer_ptr_lo, y
 			sta	game_buffer
-			lda	bg_buffer_ptr_hi, y
+			lda	scenery_buffer_ptr_hi, y
 			sta	game_buffer+1
 
 			lda	pos_x_lo_actor+GAME_PROC_VINE_ACTOR_ID

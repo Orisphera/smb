@@ -70,6 +70,6 @@ game_over_menu:
 			bpl	:-
 		; }
 	
-		inc	bg_hidden_one_up_req
+		inc	scenery_hidden_one_up_req
 		jmp	game_over_continue
 	; }

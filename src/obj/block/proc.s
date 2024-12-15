@@ -35,7 +35,7 @@ block_punch:
 	: ; }
 	sta	state_block, x
 
-	jsr	gfx_meta_destroy
+	jsr	meta_destroy
 
 	ldx	block_id
 	lda	pos_y_block_proc
@@ -314,7 +314,7 @@ block_top_check:
 		bne	:+ ; if (game_buffer[block_proc.pos_y-offset.y] == metatile_3::coin_a) {
 			lda	#metatile_0::blank_a
 			sta	(game_buffer), y
-			jsr	gfx_clear_small
+			jsr	meta_put_blank
 
 			ldx	block_id
 			jsr	misc_init_coin_b
@@ -442,7 +442,7 @@ block_flatten:
 			tay
 			lda	block_tile, x
 			sta	(game_buffer), y
-			jsr	gfx_meta_replace
+			jsr	meta_replace
 
 			lda	#0
 			sta	block_rep_flag, x

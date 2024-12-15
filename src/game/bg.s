@@ -10,48 +10,48 @@
 .include	"misc.i"
 
 .if	.defined(SMBV1)
-	screen_proc_continue = screen_proc_next
+	bg_proc_continue = bg_proc_next
 .elseif	.defined(SMBV2)
-	screen_proc_continue = screen_text_draw_timeup_continue
+	bg_proc_continue = bg_text_draw_timeup_continue
 .endif
 
-	.export screen_proc
-screen_proc:
-	lda	screen_proc_id
+	.export bg_proc
+bg_proc:
+	lda	bg_proc_id
 	jsr	tbljmp
-	.addr	screen_init
-	.addr	screen_color_init_1
-	.addr	screen_text_draw_header
-	.addr	screen_text_draw_splash
-	.addr	screen_text_draw_timeup
-	.addr	screen_timer_clear_check
-	.addr	screen_text_draw_intermission
+	.addr	bg_init
+	.addr	bg_color_init_1
+	.addr	bg_text_draw_header
+	.addr	bg_text_draw_splash
+	.addr	bg_text_draw_timeup
+	.addr	bg_timer_clear_check
+	.addr	bg_text_draw_intermission
 	.if	.defined(SMB2)
 		.addr	ending_course_plus_msg
 	.elseif	.defined(ANN)
-		.addr	screen_score_disp_end
+		.addr	bg_score_disp_end
 	.endif
-	.addr	screen_timer_clear_check
-	.addr	screen_bg
-	.addr	screen_color_init_2
-	.addr	screen_color_init_3
-	.addr	screen_color_init_4
-	.addr	screen_title_bg
-	.addr	screen_title_cursor
-	.addr	screen_title_score
+	.addr	bg_timer_clear_check
+	.addr	bg_scenery
+	.addr	bg_color_init_2
+	.addr	bg_color_init_3
+	.addr	bg_color_init_4
+	.addr	bg_title_screen
+	.addr	bg_title_cursor
+	.addr	bg_title_score
 ; ------------------------------------------------------------
-screen_init:
+bg_init:
 	jsr	oam_init
 	jsr	nt_init
 	lda	proc_id_system
-	beq	screen_proc_next_b ; if (proc_id_system != title) {
-		.export	screen_init_title
-	screen_init_title:
+	beq	bg_proc_next_b ; if (proc_id_system != title) {
+		.export	bg_init_title
+	bg_init_title:
 		ldx	#3
-		jmp	screen_proc_next_pal_set
+		jmp	bg_proc_next_pal_set
 	; }
 ; ------------------------------------------------------------
-screen_color_init_1:
+bg_color_init_1:
 	lda	course_bg_col
 	pha
 	lda	player_status
@@ -61,99 +61,99 @@ screen_color_init_1:
 	sta	player_status
 	lda	#COURSE_SCENERY_BG_COL_OVERWORLD_VAL
 	sta	course_bg_col
-	jsr	screen_color_player
+	jsr	bg_color_player
 
 	pla
 	sta	player_status
 	pla
 	sta	course_bg_col
 
-	jmp	screen_proc_continue
+	jmp	bg_proc_continue
 ; ------------------------------------------------------------
-screen_palette_types:
+bg_palette_types:
 	.byte	nmi_addr::pal_underwater
 	.byte	nmi_addr::pal_overworld
 	.byte	nmi_addr::pal_underground
 	.byte	nmi_addr::pal_castle
 ; ----------------------------
-	.export	screen_color_init_2
-screen_color_init_2:
+	.export	bg_color_init_2
+bg_color_init_2:
 	ldy	course_type
-	ldx	screen_palette_types, y
+	ldx	bg_palette_types, y
 
-screen_proc_next_pal_set:
+bg_proc_next_pal_set:
 	stx	nmi_buffer_ptr
 
-screen_proc_next_b:
-	jmp	screen_proc_continue
+bg_proc_next_b:
+	jmp	bg_proc_continue
 ; ------------------------------------------------------------
-	.export screen_color_bg_data
-	.export screen_color_bg_data_water
-	.export screen_color_bg_data_overworld
-	.export screen_color_bg_data_underground
-screen_color_bg_data:
-screen_color_bg_data_water:
+	.export bg_color_data
+	.export bg_color_data_water
+	.export bg_color_data_overworld
+	.export bg_color_data_underground
+bg_color_data:
+bg_color_data_water:
 	.if	.defined(CONS)
 	.byte	PPU_COLOR_GREY0, PPU_COLOR_YGREEN0, PPU_COLOR_GREEN0, PPU_COLOR_MAGENTA0
 	.elseif	.defined(VS)
 	.byte	PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW0, PPU_COLOR_YGREEN3, PPU_COLOR_PITCH1
 	.endif
 
-screen_color_bg_data_overworld:
+bg_color_data_overworld:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
 
-screen_color_bg_data_underground:
+bg_color_data_underground:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
 
-	.export screen_color_player_data
-screen_color_player_data:
-screen_color_player_1:
+	.export bg_color_player_data
+bg_color_player_data:
+bg_color_player_1:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_RED1, PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1
 
 .if	.defined(SMBV1)
-screen_color_player_2:
+bg_color_player_2:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_GREY3, PPU_COLOR_ORANGE2, PPU_COLOR_YGREEN1
 .endif
 
-screen_color_player_power:
+bg_color_player_power:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1
 ; --------------------------
-screen_color_pal_entry	= zp_byte_00
+bg_color_pal_entry	= zp_byte_00
 
-	.export	screen_color_init_3
-screen_color_init_3:
+	.export	bg_color_init_3
+bg_color_init_3:
 	ldy	course_bg_col
 	beq	:+ ; if (course_bg_col) {
-		lda	screen_color_bg_data-PPU_COLOR_ROW_SIZE, y
+		lda	bg_color_data-PPU_COLOR_ROW_SIZE, y
 		sta	nmi_buffer_ptr
 	: ; }
 
-	inc	screen_proc_id
+	inc	bg_proc_id
 
-	.export screen_color_player
-screen_color_player:
+	.export bg_color_player
+bg_color_player:
 	ldx	ppu_displist_0_offset
-	ldy	#(screen_color_player_1-screen_color_player_data)
+	ldy	#(bg_color_player_1-bg_color_player_data)
 	.if	.defined(SMBV1)
 		lda	player_id
 		beq	:+ ; if (player_id != 0) {
-			ldy	#(screen_color_player_2-screen_color_player_data)
+			ldy	#(bg_color_player_2-bg_color_player_data)
 		: ; }
 	.endif
 	lda	player_status
 	cmp	#2
 	bne	:+ ; if (player_status == 2) {
-		ldy	#(screen_color_player_power-screen_color_player_data)
+		ldy	#(bg_color_player_power-bg_color_player_data)
 	: ; }
 	lda	#PPU_COLOR_LINE_SIZE-1
-	sta	screen_color_pal_entry
+	sta	bg_color_pal_entry
 	: ; for (x = ppu_displist_0_offset, y = entry_base, i = 3; i >= 0; x++, y++, i--) {
-		lda	screen_color_player_data, y
+		lda	bg_color_player_data, y
 		sta	ppu_displist_0_byte, x
 
 		iny
 		inx
-		dec	screen_color_pal_entry
+		dec	bg_color_pal_entry
 		bpl	:-
 	; }
 
@@ -162,7 +162,7 @@ screen_color_player:
 	bne	:+ ; if (!course_bg_col) {
 		ldy	course_type
 	: ; }
-	lda	screen_color_bg_data+PPU_COLOR_ROW_SIZE, y
+	lda	bg_color_data+PPU_COLOR_ROW_SIZE, y
 	sta	ppu_displist_0_byte, x
 	lda	#>(PPU_COLOR_PAGE_OBJ)
 	sta	ppu_displist_0_addr_dbyt, x
@@ -176,48 +176,48 @@ screen_color_player:
 	clc
 	adc	#(WORD_SIZE+1+PPU_COLOR_ROW_SIZE)
 
-	.export screen_color_player_end
-screen_color_player_end:
+	.export bg_color_player_end
+bg_color_player_end:
 	sta	ppu_displist_0_offset
 	rts
 ; ------------------------------------------------------------
-	.export screen_color_init_4_end
-screen_color_init_4:
+	.export bg_color_init_4_end
+bg_color_init_4:
 	lda	course_ledge_type
 	cmp	#COURSE_AREA_LEDGE_MUSHROOM_VAL
 	bne	:+ ; if (ledge_type == MUSHROOM) {
 		lda	#nmi_addr::pal_mushroom
-	screen_color_init_4_end:
+	bg_color_init_4_end:
 		sta	nmi_buffer_ptr
 	: ; }
 
-	jmp	screen_proc_continue
+	jmp	bg_proc_continue
 ; ------------------------------------------------------------
-	.export screen_text_draw_header
-screen_text_draw_header:
-	lda	#screen_text::header
-	jsr	screen_text_draw
-	jmp	screen_proc_continue
+	.export bg_text_draw_header
+bg_text_draw_header:
+	lda	#bg_text::header
+	jsr	bg_text_draw
+	jmp	bg_proc_continue
 ; ------------------------------------------------------------
-SCREEN_STAT_BG_1_ADDR	=	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
-SCREEN_STAT_BG_1_LEN	=	3
+BG_STAT_1_ADDR	=	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
+BG_STAT_1_LEN	=	3
 
-	.export	screen_text_draw_splash
-screen_text_draw_splash:
+	.export	bg_text_draw_splash
+bg_text_draw_splash:
 	jsr	misc_proc_coin_update_stats
 	ldx	ppu_displist_0_offset
-	lda	#>(SCREEN_STAT_BG_1_ADDR)
+	lda	#>(BG_STAT_1_ADDR)
 	sta	ppu_displist_0_addr_dbyt, x
-	lda	#<(SCREEN_STAT_BG_1_ADDR)
+	lda	#<(BG_STAT_1_ADDR)
 	sta	ppu_displist_0_addr_dbyt+1, x
-	lda	#SCREEN_STAT_BG_1_LEN
+	lda	#BG_STAT_1_LEN
 	sta	ppu_displist_0_count, x
 	.if	.defined(SMBV1)
 		ldy	course_no
 		iny
 		tya
 	.elseif	.defined(SMBV2)
-		jsr	screen_calc_course_no
+		jsr	bg_calc_course_no
 	.endif
 	sta	ppu_displist_0_tile+0, x
 	lda	#'-'
@@ -228,16 +228,16 @@ screen_text_draw_splash:
 	sta	ppu_displist_0_tile+2, x
 
 	lda	#NMI_LIST_END
-	sta	ppu_displist_0_tile+SCREEN_STAT_BG_1_LEN, x
+	sta	ppu_displist_0_tile+BG_STAT_1_LEN, x
 
 	txa
 	clc
-	adc	#SCREEN_STAT_BG_1_LEN+WORD_SIZE+1
+	adc	#BG_STAT_1_LEN+WORD_SIZE+1
 	sta	ppu_displist_0_offset
-	jmp	screen_proc_continue
+	jmp	bg_proc_continue
 ; ----------------------------
 	.if	.defined(SMBV2)
-	screen_calc_course_no:
+	bg_calc_course_no:
 		ldy	course_no
 		lda	ENG_HARDMODE_VAR
 		beq	:+ ; if (ENG_HARDMODE_VAR) {
@@ -252,35 +252,35 @@ screen_text_draw_splash:
 		rts
 	.endif
 ; ------------------------------------------------------------
-screen_text_draw_timeup:
+bg_text_draw_timeup:
 	lda	game_time_up
 	beq	:+ ; if (game_time_up) {
 		lda	#0
 		sta	game_time_up
-		lda	#screen_text::timeup
+		lda	#bg_text::timeup
 		.if	.defined(SMBV1)
-			jmp	screen_text_draw_timeup_end
+			jmp	bg_text_draw_timeup_end
 		.elseif	.defined(SMBV2)
-		screen_text_draw_timeup_end:
-			jsr	screen_text_draw
-			jsr	screen_timer_reset
+		bg_text_draw_timeup_end:
+			jsr	bg_text_draw
+			jsr	bg_timer_reset
 			lda	#0
 			sta	nmi_disp_disable
 			rts
 		.endif
 	: ; } else {
-		inc	screen_proc_id
+		inc	bg_proc_id
 
 		.if	.defined(SMBV1)
-			jmp	screen_proc_continue
+			jmp	bg_proc_continue
 		.elseif	.defined(SMBV2)	
-		screen_text_draw_timeup_continue:
-			inc	screen_proc_id
+		bg_text_draw_timeup_continue:
+			inc	bg_proc_id
 			rts
 		.endif
 	; }
 ; ------------------------------------------------------------
-screen_text_draw_intermission:
+bg_text_draw_intermission:
 	lda	proc_id_system
 	beq	:+++
 	cmp	#system_modes::game_over
@@ -290,29 +290,29 @@ screen_text_draw_intermission:
 		ldy	course_type
 		cpy	#course_types::castle
 		beq	:+
-		lda	screen_msg_disable
+		lda	bg_msg_disable
 		bne	:+++
-		: ; if (game.start_type != 0 && (course.type == castle || !screen_msg_disable)) {
+		: ; if (game.start_type != 0 && (course.type == castle || !this.disable)) {
 			jsr	render_player_course_card
-			lda	#screen_text::splash
+			lda	#bg_text::splash
 			.if	.defined(SMBV1)
-			screen_text_draw_timeup_end:
-				jsr	screen_text_draw
-				jsr	screen_timer_reset
+			bg_text_draw_timeup_end:
+				jsr	bg_text_draw
+				jsr	bg_timer_reset
 				lda	#0
 				sta	nmi_disp_disable
 				rts
 			.elseif	.defined(SMBV2)
-				jsr	screen_text_draw_timeup_end
+				jsr	bg_text_draw_timeup_end
 				.if	.defined(SMB2)
 					lda	course_no
 					cmp	#course::no_09
 
-					bne	screen_proc_continue
+					bne	bg_proc_continue
 					inc	nmi_disp_disable
 					rts
 				.elseif	.defined(ANN)
-					jmp	screen_proc_continue
+					jmp	bg_proc_continue
 				.endif
 			.endif
 		; }
@@ -322,37 +322,37 @@ screen_text_draw_intermission:
 			sta	timer_screen
 		.endif
 
-		lda	#screen_text::gameover
-		jsr	screen_text_draw
+		lda	#bg_text::gameover
+		jsr	bg_text_draw
 
 		.if	.defined(SMBV1)
-			jmp	screen_title_proc_id_inc
+			jmp	bg_title_proc_id_inc
 		.elseif	.defined(SMBV2)
 			.if	.defined(SMB2)
 				lda	course_no
 				cmp	#course::no_09
-				beq	screen_proc_continue
+				beq	bg_proc_continue
 			.endif
-			jmp	screen_title_bg_finish
+			jmp	bg_title_screen_finish
 		.endif
 	: ; }
 
-	lda	#screen_procs::bg
-	sta	screen_proc_id
+	lda	#bg_procs::bg
+	sta	bg_proc_id
 	rts
 ; ------------------------------------------------------------
-screen_bg:
+bg_scenery:
 	inc	nmi_disp_disable
 
-	: ; while (bg_proc_id != main_c) {
-		jsr	bg_proc
-		lda	bg_proc_id
+	: ; while (bg_scenery_proc_id != main_c) {
+		jsr	scenery_proc
+		lda	bg_scenery_proc_id
 		bne	:-
 	; }
 
-	dec	screen_bg_counter
-	bpl	:+ ; if (--screen_bg_counter >= 0) {
-		inc	screen_proc_id
+	dec	bg_scenery_counter
+	bpl	:+ ; if (--bg_scenery_counter >= 0) {
+		inc	bg_proc_id
 	: ; }
 
 	lda	#nmi_addr::buffer_11_A
@@ -360,19 +360,19 @@ screen_bg:
 	rts
 ; ------------------------------------------------------------
 .if	.defined(SMBV1)
-	.include	"../title/scr.s"
+	.include	"../title/bg.s"
 .endif
 ; ------------------------------------------------------------
-.include	"../../data/screen_text.s"
+.include	"../../data/text.s"
 ; ----------------------------
 .if	.defined(SMB2)
-	screen_text_draw_buffer_page	= PPU_VRAM_BG2
+	bg_text_draw_buffer_page	= PPU_VRAM_BG2
 .elseif	.defined(SMBM)|.defined(VS_SMB)
-	screen_text_draw_buffer_page	= PPU_VRAM_BG4
+	bg_text_draw_buffer_page	= PPU_VRAM_BG4
 .endif
 
-	.export	screen_text_draw
-screen_text_draw:
+	.export	bg_text_draw
+bg_text_draw:
 	pha
 
 	.if	.defined(SMBV1)
@@ -394,10 +394,10 @@ screen_text_draw:
 		tay
 	.endif
 
-	ldx	screen_text_idx_tbl, y
+	ldx	bg_text_idx_tbl, y
 	ldy	#0
-	: ; for (x = screen_text_idx_tbl[y], y = 0; screen_text[x] != SCREEN_TEXT_END_VAL && y < 0x100; x++, y++) {
-		lda	screen_text, x
+	: ; for (x = bg_text_idx_tbl[y], y = 0; bg_text[x] != SCREEN_TEXT_END_VAL && y < 0x100; x++, y++) {
+		lda	bg_text, x
 		cmp	#SCREEN_TEXT_END_VAL
 		beq	:+
 		sta	ppu_displist_0_data, y
@@ -412,14 +412,14 @@ screen_text_draw:
 	pla
 
 	.if	.defined(SMBV2)
-		beq	screen_text_draw_end
+		beq	bg_text_draw_end
 	.endif
 
 	tax
 
 	.if	.defined(SMBV1)
 		cmp	#4
-		bcs	screen_text_draw_over
+		bcs	bg_text_draw_over
 	.endif
 
 	dex
@@ -440,7 +440,7 @@ screen_text_draw:
 			iny
 			sty	ppu_displist_0_data+19
 		.elseif	.defined(SMBV2)
-			jsr	screen_calc_course_no
+			jsr	bg_calc_course_no
 			sta	ppu_displist_0_data+19
 		.endif
 
@@ -451,7 +451,7 @@ screen_text_draw:
 	.if	.defined(SMBV2)
 		: ; }
 
-	screen_text_draw_end:
+	bg_text_draw_end:
 		rts
 	.elseif	.defined(SMBV1)
 		rts
@@ -473,9 +473,9 @@ screen_text_draw:
 
 				lsr	a
 				bcc	:++ ; if () {
-					ldy	#(screen_text_player_2_end-screen_text_player_2)-1
-					: ; for (byte of screen_text_player_2) {
-						lda	screen_text_player_2, y
+					ldy	#(bg_text_player_2_end-bg_text_player_2)-1
+					: ; for (byte of bg_text_player_2) {
+						lda	bg_text_player_2, y
 						sta	ppu_displist_0_tile, y
 
 						dey
@@ -488,14 +488,14 @@ screen_text_draw:
 	.endif
 
 	.if	.defined(SMBV2)
-			.export screen_text_draw_over
-		screen_text_draw_over:
+			.export bg_text_draw_over
+		bg_text_draw_over:
 			pha
 
 			ldy	#$FF
-			: ; for (byte of screen_text_warp_screen) {
+			: ; for (byte of bg_text_warp_screen) {
 				iny
-				lda	screen_text_warp_screen, y
+				lda	bg_text_warp_screen, y
 				sta	ppu_displist_0_data, y
 
 				bne	:-
@@ -506,11 +506,11 @@ screen_text_draw:
 			sbc	#$80
 		.if	.defined(SMB2)
 				tax
-				lda	screen_text_warps, x
+				lda	bg_text_warps, x
 				sta	ppu_displist_0_data+27
 		.endif
 	.elseif	.defined(SMBV1)
-		screen_text_draw_over: ; } else {
+		bg_text_draw_over: ; } else {
 			sbc	#4
 	.endif
 
@@ -520,7 +520,7 @@ screen_text_draw:
 		tax
 		ldy	#0
 		: ; for (y = 0; y < 12; y += 4) {
-			lda	screen_text_warps, x
+			lda	bg_text_warps, x
 			sta	ppu_displist_0_data+27, y
 
 			inx
@@ -533,17 +533,17 @@ screen_text_draw:
 		; }
 	.endif
 
-	lda	#>screen_text_draw_buffer_page
-	jmp	screen_color_player_end
+	lda	#>bg_text_draw_buffer_page
+	jmp	bg_color_player_end
 ; }
 ; -----------------------------------------------------------
-screen_timer_clear_check:
+bg_timer_clear_check:
 	lda	timer_screen
 	bne	:+ ; if (!timer_screen) {
 		jsr	oam_init
-	screen_timer_reset:
+	bg_timer_reset:
 		lda	#7
 		sta	timer_screen
-		inc	screen_proc_id
+		inc	bg_proc_id
 	: ; }
 	rts

@@ -107,7 +107,7 @@ title_patch_player:
 	ldx	#PLAYER_NAME_LENGTH-1
 	: ; for (character of player_name) {
 		lda	title_patch_player_name, y
-		sta	screen_text_header_player_name, x
+		sta	bg_text_header_player_name, x
 		sta	msg_thankyou_player_name, x
 
 		dey
@@ -122,7 +122,7 @@ title_patch_player:
 	ldx	#PPU_COLOR_ROW_SIZE-1
 	: ; for (entry of palette) {
 		lda	title_patch_player_palette, y
-		sta	screen_color_player_data, x
+		sta	bg_color_player_data, x
 
 		dey
 		dex

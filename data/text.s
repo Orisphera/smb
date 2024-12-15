@@ -3,13 +3,13 @@
 .include	"charmap.i"
 .include	"tunables.i"
 
-	.export screen_text
-	.export screen_text_header_player_name
-screen_text:
-screen_text_header:
+	.export bg_text
+	.export bg_text_header_player_name
+bg_text:
+bg_text_header:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_2+PPU_BG_COL_3
 	.byte	(:++)-(:+)
-screen_text_header_player_name:
+bg_text_header_player_name:
 	: .byte	"MARIO"
 	:
 
@@ -33,7 +33,7 @@ screen_text_header_player_name:
 
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
-screen_text_splash:
+bg_text_splash:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 	.byte	(:++)-(:+)
 	: .byte	"  x    "
@@ -54,7 +54,7 @@ screen_text_splash:
 
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
-screen_text_timeup_screen:
+bg_text_timeup_screen:
 .if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 		.byte	(:++)-(:+)
@@ -69,7 +69,7 @@ screen_text_timeup_screen:
 
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
-screen_text_gameover_screen:
+bg_text_gameover_screen:
 .if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 		.byte	(:++)-(:+)
@@ -104,7 +104,7 @@ screen_text_gameover_screen:
 
 	.byte	SCREEN_TEXT_END_VAL
 ; ----------------------------
-screen_text_warp_screen:
+bg_text_warp_screen:
 	.dbyt	PPU_VRAM_BG2+PPU_BG_ROW_12+PPU_BG_COL_4
 	.byte	(:++)-(:+)
 	: .byte	"WELCOME TO WARP ZONE!"
@@ -142,14 +142,14 @@ screen_text_warp_screen:
 .endif
 ; ----------------------------
 .if	.defined(SMBV1)
-		.export screen_text_player_2
-	screen_text_player_2:
+		.export bg_text_player_2
+	bg_text_player_2:
 		.byte	"LUIGI"
-	screen_text_player_2_end:
+	bg_text_player_2_end:
 .endif
 ; ----------------------------
-	.export screen_text_warps
-screen_text_warps:
+	.export bg_text_warps
+bg_text_warps:
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.byte	"4", "3", "2", 0
 		.byte	" ", "5", " ", 0
@@ -178,30 +178,30 @@ screen_text_warps:
 		.byte	" ", "D", " ", 0
 	.endif
 ; -------------
-screen_text_idx_off	= $08
-screen_text_idx_header		= screen_text_header-screen_text
-screen_text_idx_splash		= screen_text_splash-screen_text
-screen_text_idx_timeup		= screen_text_timeup_screen-screen_text
-screen_text_idx_gameover	= screen_text_gameover_screen-screen_text
+bg_text_idx_off	= $08
+bg_text_idx_header		= bg_text_header-bg_text
+bg_text_idx_splash		= bg_text_splash-bg_text
+bg_text_idx_timeup		= bg_text_timeup_screen-bg_text
+bg_text_idx_gameover	= bg_text_gameover_screen-bg_text
 
 .if	.defined(SMBV1)
-	screen_text_idx_warp		= screen_text_warp_screen-screen_text
+	bg_text_idx_warp		= bg_text_warp_screen-bg_text
 .endif
 
-	.export screen_text_idx_tbl
-screen_text_idx_tbl:
+	.export bg_text_idx_tbl
+bg_text_idx_tbl:
 	.if	.defined(SMBV1)
-		.byte	screen_text_idx_header, screen_text_idx_header
-		.byte	screen_text_idx_splash, screen_text_idx_splash
-		.byte	screen_text_idx_timeup, screen_text_idx_timeup+screen_text_idx_off
-		.byte	screen_text_idx_gameover, screen_text_idx_gameover+screen_text_idx_off
+		.byte	bg_text_idx_header, bg_text_idx_header
+		.byte	bg_text_idx_splash, bg_text_idx_splash
+		.byte	bg_text_idx_timeup, bg_text_idx_timeup+bg_text_idx_off
+		.byte	bg_text_idx_gameover, bg_text_idx_gameover+bg_text_idx_off
 	.elseif	.defined(SMBV2)
-		.byte	screen_text_idx_header
-		.byte	screen_text_idx_splash
-		.byte	screen_text_idx_timeup
-		.byte	screen_text_idx_gameover
+		.byte	bg_text_idx_header
+		.byte	bg_text_idx_splash
+		.byte	bg_text_idx_timeup
+		.byte	bg_text_idx_gameover
 	.endif
 
 	.if	.defined(SMBV1)
-		.byte	screen_text_idx_warp, screen_text_idx_warp
+		.byte	bg_text_idx_warp, bg_text_idx_warp
 	.endif

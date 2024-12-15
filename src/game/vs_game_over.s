@@ -277,7 +277,7 @@ sub_9A4E:
                 bne	:++ ; } else {
                         ldy	#vschar1_bg_data::stats
                 : ; }
-                jsr	screen_vschar1_load
+                jsr	bg_vschar1_load
                 inc	VS_RAM_ARENA0+$22
                 rts
         : ; } else {
@@ -1031,7 +1031,7 @@ sub_9F3B:
 	: cmp	#3
 	bne	:+ ; case 3: 
 		ldy	#vschar1_bg_data::insert_coin
-		jsr	screen_vschar1_load
+		jsr	bg_vschar1_load
 		inc	VS_RAM_ARENA0+$22
 		rts
 	: ; default:
@@ -1096,7 +1096,7 @@ sub_9FC1:
 		rts
 	: ; else if () {
 		ldy	#vschar1_bg_data::continue
-		jsr	screen_vschar1_load
+		jsr	bg_vschar1_load
 		jsr	sub_9DF7
 		lda	#0
 		sta	VS_RAM_ARENA0+$1A

@@ -24,7 +24,7 @@ sys_disk_loader:
 		.addr	disk_loader_inc_proc_id_game
 	.endif
 
-	.addr	screen_proc
+	.addr	bg_proc
 	.addr	title_init_1
 	.addr	title_proc
 	.addr	disk_loader_data4
@@ -57,7 +57,7 @@ disk_loader_file_load_data4:
 		jsr	lifedown_ext_init
 	: ; }
 
-	inc	bg_hidden_one_up_req
+	inc	scenery_hidden_one_up_req
 	inc	player_first_start
 	inc	proc_id_system
 	lda	#fds_loader_procs::prompt_00|game_modes::init_data2
@@ -209,10 +209,10 @@ disk_loader_file_count_check:
 	.export	disk_header_id
 disk_header_id:
 	.byte	FDS_VENDOR_NINTENDO
-.if	.defined(SMB2)
-	.byte	"SMB"
-.elseif	.defined(ANN)
+.if	.defined(ANN)
 	.byte	"NSM"
+.else
+	.byte	"SMB"
 .endif
 	.byte	" "
 	.byte	0

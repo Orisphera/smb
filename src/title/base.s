@@ -45,7 +45,7 @@ sys_title:
 	title_mode_init_0:
 		.addr	game_init_0
 	title_mode_scr:
-		.addr	screen_proc
+		.addr	bg_proc
 	title_mode_init_1:
 		.addr	game_init_1
 	title_mode_proc:
@@ -274,8 +274,8 @@ title_proc:
 				: ; }
 
 				jsr	course_descriptor_load
-				inc	bg_hidden_one_up_req
-				inc	bg_hidden_one_up_req_b
+				inc	scenery_hidden_one_up_req
+				inc	scenery_hidden_one_up_req_b
 				inc	player_first_start
 				inc	proc_id_system
 				lda	title_course_sel_on

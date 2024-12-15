@@ -15,10 +15,10 @@
 
 	SCREEN_TITLE_BG_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
 ; -----------------------------------------------------------
-	screen_title_bg_nmi_addr	= zp_addr_00
+	bg_title_screen_nmi_addr	= zp_addr_00
 
 	.if	.defined(VS)
-	screen_title_bg_addr_hi:
+	bg_title_screen_addr_hi:
 		.byte	>title_map
 		.byte	>vs_player_select_bg
 		.byte	>vs_name_register_bg
@@ -28,7 +28,7 @@
 		.byte	>vs_continue_bg
 		.byte	>vs_super_players_bg
 
-	screen_title_bg_addr_lo:
+	bg_title_screen_addr_lo:
 		.byte	<title_map
 		.byte	<vs_player_select_bg
 		.byte	<vs_name_register_bg
@@ -39,39 +39,39 @@
 		.byte	<vs_super_players_bg
 	.endif
 ; -----------------------------
-		.export screen_title_bg
-	screen_title_bg:
+		.export bg_title_screen
+	bg_title_screen:
 		lda	proc_id_system
-		bne	screen_title_proc_id_inc
+		bne	bg_title_proc_id_inc
 
 		.if	.defined(CONS)
 			ppuaddr_m	title_map
 		.elseif	.defined(VS)
 			ldy	#vschar1_bg_data::map_title
 
-			.export screen_vschar1_load
-		screen_vschar1_load:
+			.export bg_vschar1_load
+		bg_vschar1_load:
 			lda	#vs_req::chr_high|vs_req::irq_rel|vs_req::ctrl_rel
 			sta	VS_REQ
-			lda	screen_title_bg_addr_hi, y
+			lda	bg_title_screen_addr_hi, y
 			sta	PPU_VRAM_AR
-			lda	screen_title_bg_addr_lo, y
+			lda	bg_title_screen_addr_lo, y
 			sta	PPU_VRAM_AR
 		.endif
 
 		lda	#>(TITLE_NMI_ADDR)
-		sta	screen_title_bg_nmi_addr+1
+		sta	bg_title_screen_nmi_addr+1
 		ldy	#<(TITLE_NMI_ADDR)
-		sty	screen_title_bg_nmi_addr
+		sty	bg_title_screen_nmi_addr
 		lda	PPU_VRAM_IO
 		: ; for (entry of nmi_buffer) {
 			lda	PPU_VRAM_IO
-			sta	(screen_title_bg_nmi_addr), y
+			sta	(bg_title_screen_nmi_addr), y
 
 			iny
 			bne	:+
-			inc	screen_title_bg_nmi_addr+1
-			: lda	screen_title_bg_nmi_addr+1
+			inc	bg_title_screen_nmi_addr+1
+			: lda	bg_title_screen_nmi_addr+1
 			cmp	#>(TITLE_NMI_BUFFER_END)
 			bne	:--
 			cpy	#SCREEN_TITLE_BG_SIZE
@@ -84,13 +84,13 @@
 		.endif
 
 		lda	#PPU_COLOR_ROSE0
-		jmp	screen_color_init_4_end
+		jmp	bg_color_init_4_end
 .endif
 ; ----------------------------
-	.export	screen_title_cursor
-screen_title_cursor:
+	.export	bg_title_cursor
+bg_title_cursor:
 	lda	proc_id_system
-	bne	screen_title_proc_id_inc
+	bne	bg_title_proc_id_inc
 	ldx	#0
 	: ; for (byte of ppu_displist) {
 		sta	ppu_displist, x
@@ -103,20 +103,20 @@ screen_title_cursor:
 	.if	.defined(CONS)
 		jsr	title_cursor_draw
 	.endif
-screen_proc_next:
-	inc	screen_proc_id
+bg_proc_next:
+	inc	bg_proc_id
 	rts
 ; ----------------------------
-	.export screen_title_score
-screen_title_score:
+	.export bg_title_score
+bg_title_score:
 	lda	#$FA
 	jsr	misc_proc_coin_add_score
 
-	.export screen_title_proc_id_inc
-screen_title_proc_id_inc:
+	.export bg_title_proc_id_inc
+bg_title_proc_id_inc:
 .if	.defined(SMBV1)
 	inc	proc_id_game
 	rts
 .elseif	.defined(SMBV2)
-	jmp	screen_title_bg_finish
+	jmp	bg_title_screen_finish
 .endif

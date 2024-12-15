@@ -4,20 +4,20 @@
 .include	"tiles.i"
 
 ; -----------------------------
-bg_scenery_pit_tiles:
+scenery_pit_tiles:
 	.byte	metatile_2::water_b
 	.byte	metatile_0::blank_a
 	.byte	metatile_0::blank_a
 	.byte	metatile_0::blank_a
 ; --------------
-        .export bg_scenery_pit
-bg_scenery_pit:
-	jsr	bg_scenery_len
+        .export scenery_pit
+scenery_pit:
+	jsr	scenery_len
 	bcc	:++
 	lda	course_type
-	bne	:++ ; if (bg_scenery_len() && course_type == water) {
+	bne	:++ ; if (scenery_len() && course_type == water) {
 		ldx	actor_cannon_offset
-		jsr	bg_objpos_x_get
+		jsr	scenery_pos_x_get
 		sec
 		sbc	#16
 		sta	pos_x_lo_cannon, x
@@ -41,10 +41,10 @@ bg_scenery_pit:
 	: ; }
 
 	ldx	course_type
-	lda	bg_scenery_pit_tiles, x
+	lda	scenery_pit_tiles, x
 	ldx	#8
 	ldy	#$0F
 
         .if     .defined(NOFALLTHROUGH)
-                jmp     bg_scenery_render
+                jmp     scenery_render
         .endif

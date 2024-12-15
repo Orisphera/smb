@@ -12,7 +12,7 @@ ppu_displist_write_addr	= zp_addr_00
 motion_gravity_accel_y_inc = zp_byte_00
 col_player_bullet_diff_pos_x_rel = zp_byte_00
 render_chr_pair_tile_left = zp_byte_00
-bg_obj_tbl_base		= zp_byte_00
+scenery_tbl_base		= zp_byte_00
 zp_byte_01		= $01
 motion_gravity_accel_y_dec = zp_byte_01
 render_chr_pair_tile_right = zp_byte_01
@@ -30,13 +30,13 @@ render_chr_pair_color_mod_2 = zp_byte_03
 zp_byte_04		= $04
 zp_addr_04		= $04
 render_chr_pair_attr	= zp_byte_04
-gfx_clear_put_do_addr	= zp_addr_04
+meta_clear_put_do_addr	= zp_addr_04
 zp_byte_05		= $05
 render_chr_pair_pos_x	= zp_byte_05
 game_buffer		= $06
 zp_byte_06		= $06
 zp_byte_07		= $07
-bg_proc_metatile_id	= zp_byte_07
+scenery_proc_metatile_id	= zp_byte_07
 ; --------------
 actor_index		= zp_byte_07+1
 frame_count		= actor_index+1
@@ -211,9 +211,9 @@ render_flag_score_pos_y		= (STACK_BASE+$0D)
 render_flag_score_pos_y_b	= (STACK_BASE+$0E)
 render_flag_score_val		= (STACK_BASE+$0F)
 
-screen_score_ctl		= (STACK_BASE+$10)
-screen_score_pos_x		= (STACK_BASE+$17)
-screen_score_pos_y		= (STACK_BASE+$1E)
+bg_score_ctl		= (STACK_BASE+$10)
+bg_score_pos_x		= (STACK_BASE+$17)
+bg_score_pos_y		= (STACK_BASE+$1E)
 stomp_counter			= (STACK_BASE+$25)
 timer_score			= (STACK_BASE+$2C)
 score_digit_mod			= (STACK_BASE+$33)
@@ -355,9 +355,9 @@ unused_3F6		= unused_3F5+1
 unused_3F7		= unused_3F6+1
 unused_3F8		= unused_3F7+1
 ; --------------
-gfx_attr_buffer		= unused_3F8+1
+bg_attr_buffer		= unused_3F8+1
 ; -----------------------------
-accel_x_player		= gfx_attr_buffer+GFX_ATTR_COUNT
+accel_x_player		= bg_attr_buffer+BG_ATTR_COUNT
 ppu_displist_title_end	= accel_x_player
 accel_x_actor		= accel_x_player+ENG_PLAYER_OBJ_MAX
 accel_x_proj		= accel_x_actor+ENG_ACTOR_MAX
@@ -498,10 +498,10 @@ apu_fds_step		= bg_buffer_1+$4D
 apu_fds_wave_offset	= bg_buffer_1+$4F
 ; -----------------------------
 disp_buff_col		= bg_buffer_1+BG_BUFFER_SIZE
-gfx_metatile		= disp_buff_col+1
-gfx_metatile_end	= gfx_metatile+METATILE_MAX
+scenery_metatile		= disp_buff_col+1
+scenery_metatile_end	= scenery_metatile+METATILE_MAX
 ; --------------
-misc_obj_id_actor	= gfx_metatile_end
+misc_obj_id_actor	= scenery_metatile_end
 misc_block_id		= misc_obj_id_actor+ENG_MISC_MAX
 ; --------------
 unused_6B8		= misc_block_id+1
@@ -536,8 +536,8 @@ timer_lakitu_new	= unused_6D0+1
 unused_6D2		= timer_lakitu_new+1
 ; --------------
 actor_group_count	= unused_6D2+1
-gfx_color_rotate_off	= actor_group_count+1
-render_player_spr_group	= gfx_color_rotate_off+1
+meta_color_rotate_off	= actor_group_count+1
+render_player_spr_group	= meta_color_rotate_off+1
 game_warp_ctrl		= render_player_spr_group+1
 actor_firework_counter	= game_warp_ctrl+1
 ; --------------
@@ -597,9 +597,9 @@ pos_x_hi_screen_left	= victory_msg_id+1
 pos_x_hi_screen_right	= pos_x_hi_screen_left+1
 pos_x_lo_screen_left	= pos_x_hi_screen_right+1
 pos_x_lo_screen_right	= pos_x_lo_screen_left+1
-screen_bg_counter	= pos_x_lo_screen_right+1
-bg_proc_id		= screen_bg_counter+1
-bg_addr			= bg_proc_id+1
+bg_scenery_counter	= pos_x_lo_screen_right+1
+bg_scenery_proc_id	= bg_scenery_counter+1
+bg_addr			= bg_scenery_proc_id+1
 nmi_sprite_overlap	= bg_addr+WORD_SIZE
 game_scroll_lock	= nmi_sprite_overlap+1
 unused_724		= game_scroll_lock+1
@@ -620,8 +620,8 @@ scenery_ledge_dims	= scenery_height+1
 actor_offset		= scenery_ledge_dims+SCENERY_ACTIVE_MAX
 actor_page_loc		= actor_offset+1
 actor_page_on		= actor_page_loc+1
-screen_proc_id		= actor_page_on+1
-game_scroll_h		= screen_proc_id+1
+bg_proc_id		= actor_page_on+1
+game_scroll_h		= bg_proc_id+1
 unused_73E		= game_scroll_h+1
 ppu_scc_h_b		= unused_73E+1
 ppu_scc_v_b		= ppu_scc_h_b+1
@@ -658,16 +658,16 @@ game_time_up		= game_joypad_override+1
 player_lives		= game_time_up+1
 pos_x_hi_alt_game	= player_lives+1
 player_goals		= pos_x_hi_alt_game+1
-bg_hidden_one_up_req	= player_goals+1
-player_coins		= bg_hidden_one_up_req+1
+scenery_hidden_one_up_req	= player_goals+1
+player_coins		= scenery_hidden_one_up_req+1
 course_no		= player_coins+1
 course_sub		= course_no+1
 ; --------------
 player_lives_b		= course_sub+1
 pos_x_hi_alt_game_b	= player_lives_b+1
 player_goals_b		= pos_x_hi_alt_game_b+1
-bg_hidden_one_up_req_b	= player_goals_b+1
-player_coins_b		= bg_hidden_one_up_req_b+1
+scenery_hidden_one_up_req_b	= player_goals_b+1
+player_coins_b		= scenery_hidden_one_up_req_b+1
 course_no_b		= player_coins_b+1
 course_sub_b		= course_no_b+1
 .if	.defined(SMBV2)
@@ -676,20 +676,20 @@ ending_toad_offset	= pos_x_hi_alt_game_b
 ending_palcycle_step	= pos_x_hi_alt_game_b
 ending_toad_cycling	= player_goals_b
 ending_palcycle_delay	= player_goals_b
-ending_toad_delay	= bg_hidden_one_up_req_b
+ending_toad_delay	= scenery_hidden_one_up_req_b
 .endif
 ; --------------
 pos_x_victory_scroll	= course_sub_b+1
-screen_msg_disable	= pos_x_victory_scroll+1
+bg_msg_disable		= pos_x_victory_scroll+1
 
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
-game_hard_mode		= screen_msg_disable+1
+game_hard_mode		= bg_msg_disable+1
 .endif
 
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 title_course_sel_no	= game_hard_mode+1
 .elseif	.defined(ANN)
-unused_76A		= screen_msg_disable+1
+unused_76A		= bg_msg_disable+1
 title_course_sel_no	= unused_76A+1
 .endif
 unused_76C		= title_course_sel_no+1
@@ -860,8 +860,8 @@ course_plus_msg_flg	= unused_7F4+1
 game_level_end_apu_on	= course_plus_msg_flg+1
 disk_loader_file_id	= game_level_end_apu_on+1
 game_over_choice	= disk_loader_file_id+1
-bg_scenery_wind_flag	= game_over_choice+1
-game_courses_cleared	= bg_scenery_wind_flag+1
+scenery_wind_flag	= game_over_choice+1
+game_courses_cleared	= scenery_wind_flag+1
 .endif
 
 .if	.defined(SMBV1)

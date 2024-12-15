@@ -6,13 +6,13 @@
 ; ------------------------------------------------------------
 WIND_PLAYER_OFFSET	= 1
 
-bg_scenery_wind_col_mod		= zp_byte_00
+scenery_wind_col_mod		= zp_byte_00
 
 .if	.definedmacro(WIND_BASE)
-	.export	bg_scenery_wind_col
+	.export	scenery_wind_col
 .endif
-bg_scenery_wind_col:
-	lda	bg_scenery_wind_flag
+scenery_wind_col:
+	lda	scenery_wind_flag
 	beq	:++
 	lda	course_type
 	cmp	#course_types::overworld
@@ -23,9 +23,9 @@ bg_scenery_wind_col:
 		bcs	:+ ; if (!(frame_count & 0x80)) {
 			ldy	#MOD_4
 		: ; }
-		sty	bg_scenery_wind_col_mod
+		sty	scenery_wind_col_mod
 		lda	frame_count
-		and	bg_scenery_wind_col_mod
+		and	scenery_wind_col_mod
 		bne	:+ ; if ((frame_count % mod_val) == 0) {
 			lda	pos_x_lo_player
 			clc
@@ -42,17 +42,17 @@ bg_scenery_wind_col:
 ; -----------------------------
 LEAF_COUNT	= 12
 
-bg_scenery_wind_leaf_pos_y:
+scenery_wind_leaf_pos_y:
 	.byte	48, 112, 184, 80
 	.byte	152, 48, 112, 184
 	.byte	80, 152, 48, 112
 
-bg_scenery_wind_leaf_pos_x:
+scenery_wind_leaf_pos_x:
 	.byte	48, 48, 48, 96
 	.byte	96, 160, 160, 160
 	.byte	208, 208, 208, 96
 
-bg_scenery_wind_leaf_chr:
+scenery_wind_leaf_chr:
 	.byte	chr_obj::leaf+1
 	.byte	chr_obj::leaf+1
 	.byte	chr_obj::leaf+1
@@ -67,24 +67,24 @@ bg_scenery_wind_leaf_chr:
 	.byte	chr_obj::leaf+0
 ; -----------------------------
 .if	.definedmacro(WIND_BASE)
-	.export	bg_scenery_wind_proc
+	.export	scenery_wind_proc
 .endif
-bg_scenery_wind_proc:
-	lda	bg_scenery_wind_flag
-	beq	:+++ ; if (bg_scenery_wind_flag != 0) {
+scenery_wind_proc:
+	lda	scenery_wind_flag
+	beq	:+++ ; if (scenery_wind_flag != 0) {
 		lda	#sfx_noise::wind
 		sta	apu_sfx_noise_req
-		jsr	bg_scenery_wind_leaf_proc
+		jsr	scenery_wind_leaf_proc
 		ldx	#0
 		ldy	obj_data_offset_leaf
 		: ; for (frame of this.frames) {
-			lda	bg_scenery_wind_leaf_pos_y, x
+			lda	scenery_wind_leaf_pos_y, x
 			sta	oam_buffer+OBJ_POS_V, y
-			lda	bg_scenery_wind_leaf_chr, x
+			lda	scenery_wind_leaf_chr, x
 			sta	oam_buffer+OBJ_CHR_NO, y
 			lda	#obj_attr::h_flip|obj_attr::color1
 			sta	oam_buffer+OBJ_ATTR, y
-			lda	bg_scenery_wind_leaf_pos_x, x
+			lda	scenery_wind_leaf_pos_x, x
 			sta	oam_buffer+OBJ_POS_H, y
 			iny
 			iny
@@ -103,7 +103,7 @@ bg_scenery_wind_proc:
 
 	rts
 ; -----------------------------
-bg_scenery_wind_leaf_offset:
+scenery_wind_leaf_offset:
 	.byte	87, 87, 86, 86
 	.byte	88, 88, 86, 86
 	.byte	87, 88, 87, 88
@@ -111,18 +111,18 @@ bg_scenery_wind_leaf_offset:
 	.byte	90, 90, 88, 88
 	.byte	89, 90, 89, 90
 ; -----------------------------
-bg_scenery_wind_leaf_proc:
+scenery_wind_leaf_proc:
 	ldx	#LEAF_COUNT-1
 	: ; for (frame of this.frames) {
-		lda	bg_scenery_wind_leaf_pos_x, x
+		lda	scenery_wind_leaf_pos_x, x
 		clc
-		adc	bg_scenery_wind_leaf_offset, x
-		adc	bg_scenery_wind_leaf_offset, x
-		sta	bg_scenery_wind_leaf_pos_x, x
-		lda	bg_scenery_wind_leaf_pos_y, x
+		adc	scenery_wind_leaf_offset, x
+		adc	scenery_wind_leaf_offset, x
+		sta	scenery_wind_leaf_pos_x, x
+		lda	scenery_wind_leaf_pos_y, x
 		clc
-		adc	bg_scenery_wind_leaf_offset, x
-		sta	bg_scenery_wind_leaf_pos_y, x
+		adc	scenery_wind_leaf_offset, x
+		sta	scenery_wind_leaf_pos_y, x
 
 		dex
 		bpl	:-
@@ -131,14 +131,14 @@ bg_scenery_wind_leaf_proc:
 	rts
 ; -----------------------------
 .if	.definedmacro(WIND_BASE)
-	.export	bg_scenery_wind_on, bg_scenery_wind_off
+	.export	scenery_wind_on, scenery_wind_off
 .endif
-bg_scenery_wind_on:
+scenery_wind_on:
 	lda	#1
 	bne	:+
 
-bg_scenery_wind_off:
+scenery_wind_off:
 	lda	#0
 ; -----------------------------
-	: sta	bg_scenery_wind_flag
+	: sta	scenery_wind_flag
 	rts

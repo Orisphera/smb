@@ -36,19 +36,19 @@ actor_proc:
 	bcs	:++
 
 	pla
-	beq	:+ ; if (!actor.is_child && actor.mode != free) {
+	beq	:+ ; if (!this.is_child && this.mode != free) {
 		jmp	actor_proc_do
-	: lda	bg_proc_id
-	and	#bg_procs::mask
-	cmp	#<bg_procs::gfx_render_area_d
-	beq	:++ ; } else if (!actor.is_child && bg_proc_id != gfx_render_area_d) {
+	: lda	bg_scenery_proc_id
+	and	#scenery_procs::mask
+	cmp	#<scenery_procs::render_area_d
+	beq	:++ ; } else if (!this.is_child && scenery.proc_id != render_area_d) {
 		jmp	actor_loop
-	: ; } else if (actor.is_child) {
+	: ; } else if (this.is_child) {
 		pla
 		and	#ACTOR_MODE_PARENT_MASK
 		tay
 		lda	proc_id_actor, y
-		bne	:+ ; if (actor_parent.mode == free) {
+		bne	:+ ; if (this.parent.mode == free) {
 			sta	proc_id_actor, x
 		; }
 	: ; }

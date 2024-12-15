@@ -48,7 +48,7 @@ player_proc_enter:
 			jsr	player_proc_pipe_h_enter
 			dec	timer_scene_trans
 			bne	player_proc_enter_rts ; if (--timer_scene_trans == 0) {
-				inc	screen_msg_disable
+				inc	bg_msg_disable
 				jmp	player_proc_victory_do
 			; } else rts;
 		; }
@@ -495,7 +495,7 @@ player_proc_victory:
 		cmp	#10
 		.endif
 		bcc	:+ ; if (++this.goals == 3 && (game_bonus_counter >= player_proc_victory_oneup_tallies[course.no] || (SMBV2 && game_bonus_counter >= 10)) {
-			inc	bg_hidden_one_up_req
+			inc	scenery_hidden_one_up_req
 		: ; }
 
 	player_proc_victory_do:
@@ -575,7 +575,7 @@ player_proc_player_ground_b:
 	.if	.defined(SMB2)
 		lda	disk_loader_file_id
 		beq	:+ ; if (disk_loader_file_id != main) {
-			jsr	bg_scenery_wind_col
+			jsr	scenery_wind_col
 		: ; }
 	.endif
 

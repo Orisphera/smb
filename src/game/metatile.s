@@ -8,21 +8,21 @@
 .include	"misc.i"
 .include	"math.i"
 
-gfx_render_area_offset		= zp_byte_00
-gfx_render_area_index		= zp_byte_01
-gfx_metatile_id_offset		= zp_byte_02
-gfx_metatile_id_page		= zp_byte_03
-gfx_render_area_attr_index	= zp_byte_04
-gfx_render_area_pos_x_parity	= zp_byte_05
+meta_render_area_offset		= zp_byte_00
+meta_render_area_index		= zp_byte_01
+scenery_metatile_id_offset		= zp_byte_02
+scenery_metatile_id_page		= zp_byte_03
+meta_render_area_attr_index	= zp_byte_04
+meta_render_area_pos_x_parity	= zp_byte_05
 
-	.export gfx_render_area
-gfx_render_area:
+	.export meta_render_area
+meta_render_area:
 	lda	pos_x_lo_game
 	and	#1
-	sta	gfx_render_area_pos_x_parity
+	sta	meta_render_area_pos_x_parity
 
 	ldy	ppu_displist_1_offset
-	sty	gfx_render_area_offset
+	sty	meta_render_area_offset
 
 	lda	bg_addr+1
 	sta	ppu_displist_1_addr_dbyt+1, y
@@ -32,80 +32,80 @@ gfx_render_area:
 	sta	ppu_displist_1_byte, y
 
 	lda	#0
-	sta	gfx_render_area_attr_index
+	sta	meta_render_area_attr_index
 	tax
-	: ; for (tile in gfx_metatile) {
-		stx	gfx_render_area_index
+	: ; for (tile in scenery_metatile) {
+		stx	meta_render_area_index
 
-		lda	gfx_metatile, x
+		lda	scenery_metatile, x
 		and	#TILE_PAGE_BITS
-		sta	gfx_metatile_id_page
+		sta	scenery_metatile_id_page
 		asl	a
 		rol	a
 		rol	a
 		tay
-		lda	gfx_metatile_lo, y
+		lda	scenery_metatile_lo, y
 		sta	game_buffer
-		lda	gfx_metatile_hi, y
+		lda	scenery_metatile_hi, y
 		sta	game_buffer+1
 
-		lda	gfx_metatile, x
+		lda	scenery_metatile, x
 		asl	a
 		asl	a
-		sta	gfx_metatile_id_offset
-		lda	bg_proc_id
+		sta	scenery_metatile_id_offset
+		lda	bg_scenery_proc_id
 		and	#1
 		eor	#1
 		asl	a
-		adc	gfx_metatile_id_offset
+		adc	scenery_metatile_id_offset
 		tay
-		ldx	gfx_render_area_offset
+		ldx	meta_render_area_offset
 		lda	(game_buffer), y
 		sta	ppu_displist_1_addr_dbyt+(1*NMI_BUFFER_ENTRY_SIZE), x
 		iny
 		lda	(game_buffer), y
 		sta	ppu_displist_1_addr_dbyt+1+(1*NMI_BUFFER_ENTRY_SIZE), x
 
-		ldy	gfx_render_area_attr_index
-		lda	gfx_render_area_pos_x_parity
+		ldy	meta_render_area_attr_index
+		lda	meta_render_area_pos_x_parity
 		bne	:+
-		lda	gfx_render_area_index
+		lda	meta_render_area_index
 		lsr	a
-		bcs	:++ ; if (gfx_render_area_pos_x_parity == even && gfx_render_area_index_parity == even) {
-			rol	gfx_metatile_id_page
-			rol	gfx_metatile_id_page
-			rol	gfx_metatile_id_page
+		bcs	:++ ; if (meta_render_area_pos_x_parity == even && meta_render_area_index_parity == even) {
+			rol	scenery_metatile_id_page
+			rol	scenery_metatile_id_page
+			rol	scenery_metatile_id_page
 			jmp	:++++
-		: lda	gfx_render_area_index
+		: lda	meta_render_area_index
 		lsr	a
-		bcs	:++ ; } else if (gfx_render_area_pos_x_parity == odd && gfx_render_area_index_parity == even) {
-			lsr	gfx_metatile_id_page
-			lsr	gfx_metatile_id_page
-			lsr	gfx_metatile_id_page
-			lsr	gfx_metatile_id_page
+		bcs	:++ ; } else if (meta_render_area_pos_x_parity == odd && meta_render_area_index_parity == even) {
+			lsr	scenery_metatile_id_page
+			lsr	scenery_metatile_id_page
+			lsr	scenery_metatile_id_page
+			lsr	scenery_metatile_id_page
 			jmp	:+++
-		: ; } else if (gfx_render_area_pos_x_parity == even && gfx_render_area_index_parity == odd) {
-			lsr	gfx_metatile_id_page
-			lsr	gfx_metatile_id_page
+		: ; } else if (meta_render_area_pos_x_parity == even && meta_render_area_index_parity == odd) {
+			lsr	scenery_metatile_id_page
+			lsr	scenery_metatile_id_page
 		: ; }
-		; if (gfx_render_area_index_parity == odd) {
-			inc	gfx_render_area_attr_index
+		; if (meta_render_area_index_parity == odd) {
+			inc	meta_render_area_attr_index
 		: ; }
 
-		lda	gfx_attr_buffer, y
-		ora	gfx_metatile_id_page
-		sta	gfx_attr_buffer, y
+		lda	bg_attr_buffer, y
+		ora	scenery_metatile_id_page
+		sta	bg_attr_buffer, y
 
-		inc	gfx_render_area_offset
-		inc	gfx_render_area_offset
+		inc	meta_render_area_offset
+		inc	meta_render_area_offset
 
-		ldx	gfx_render_area_index
+		ldx	meta_render_area_index
 		inx
 		cpx	#METATILE_MAX
 		bcc	:-----
 	; }
 
-	ldy	gfx_render_area_offset
+	ldy	meta_render_area_offset
 	iny
 	iny
 	iny
@@ -124,12 +124,12 @@ gfx_render_area:
 		sta	bg_addr
 	: ; }
 
-	jmp	gfx_render_attr_end
+	jmp	meta_render_attr_end
 ; ----------------------------
-gfx_render_attr_addr_dbyt	= zp_addr_00
+meta_render_attr_addr_dbyt	= zp_addr_00
 
-	.export gfx_render_attr
-gfx_render_attr:
+	.export meta_render_attr
+meta_render_attr:
 	lda	bg_addr+1
 	and	#$1F
 	sec
@@ -143,43 +143,43 @@ gfx_render_attr:
 
 	and	#%00000100
 	ora	#%00100011
-	sta	gfx_render_attr_addr_dbyt
+	sta	meta_render_attr_addr_dbyt
 	lda	zp_byte_01
 	lsr	a
 	lsr	a
 	adc	#$C0
-	sta	gfx_render_attr_addr_dbyt+1
+	sta	meta_render_attr_addr_dbyt+1
 
 	ldx	#0
 	ldy	ppu_displist_1_offset
 	: ; for (attr of attrs) {
-		lda	gfx_render_attr_addr_dbyt
+		lda	meta_render_attr_addr_dbyt
 		sta	ppu_displist_1_addr_dbyt, y
-		lda	gfx_render_attr_addr_dbyt+1
+		lda	meta_render_attr_addr_dbyt+1
 		clc
 		adc	#8
 		sta	ppu_displist_1_addr_dbyt+1, y
-		sta	gfx_render_attr_addr_dbyt+1
-		lda	gfx_attr_buffer, x
+		sta	meta_render_attr_addr_dbyt+1
+		lda	bg_attr_buffer, x
 		sta	ppu_displist_1_byte+1, y
 		lda	#1
 		sta	ppu_displist_1_byte, y
 		lsr	a
-		sta	gfx_attr_buffer, x
+		sta	bg_attr_buffer, x
 
 		iny
 		iny
 		iny
 		iny
 		inx
-		cpx	#GFX_ATTR_COUNT
+		cpx	#BG_ATTR_COUNT
 		bcc	:-
 	; }
 
 	sta	ppu_displist_1_data, y
 	sty	ppu_displist_1_offset
 
-gfx_render_attr_end:
+meta_render_attr_end:
 	lda	#nmi_addr::buffer_11_A
 	sta	nmi_buffer_ptr
 	rts
@@ -206,22 +206,22 @@ pal_page_3:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_ORANGE0, PPU_COLOR_ORANGE1, PPU_COLOR_CYAN1
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_ORANGE0, PPU_COLOR_ORANGE1, PPU_COLOR_GREY0
 ; ----------------------------
-gfx_color_rotate_pal_entry	= zp_byte_00
+meta_color_rotate_pal_entry	= zp_byte_00
 
 .if	.defined(CONS)
-	GFX_COLOR_ROT_THRESH	= $31
+	META_COLOR_ROT_THRESH	= $31
 .elseif	.defined(VS)
-	GFX_COLOR_ROT_THRESH	= $21
+	META_COLOR_ROT_THRESH	= $21
 .endif
 
-	.export gfx_color_rotate
-gfx_color_rotate:
+	.export meta_color_rotate
+meta_color_rotate:
 	lda	frame_count
 	and	#MOD_8
 	bne	:+++
 	ldx	ppu_displist_0_offset
-	cpx	#GFX_COLOR_ROT_THRESH
-	bcs	:+++ ; if ((frame_count % 8) || ppu_displist_0_offset < GFX_COLOR_ROT_THRESH) {
+	cpx	#META_COLOR_ROT_THRESH
+	bcs	:+++ ; if ((frame_count % 8) || ppu_displist_0_offset < META_COLOR_ROT_THRESH) {
 		tay
 		: ; for (x = ppu_displist_entry, y = (frame_count % 8); y < 8; x++, y++) {
 			lda	pal_null, y
@@ -235,7 +235,7 @@ gfx_color_rotate:
 
 		ldx	ppu_displist_0_offset
 		lda	#PPU_COLOR_ROW_SIZE-1
-		sta	gfx_color_rotate_pal_entry
+		sta	meta_color_rotate_pal_entry
 		lda	course_type
 		asl	a
 		asl	a
@@ -246,12 +246,12 @@ gfx_color_rotate:
 
 			iny
 			inx
-			dec	gfx_color_rotate_pal_entry
+			dec	meta_color_rotate_pal_entry
 			bpl	:-
 		; }
 
 		ldx	ppu_displist_0_offset
-		ldy	gfx_color_rotate_off
+		ldy	meta_color_rotate_off
 		lda	pal_rotating, y
 		sta	ppu_displist+(NMI_BUFFER_ENTRY_OFFSET_SIZE+(1*PPU_COLOR_ROW_SIZE)), x
 		lda	ppu_displist_0_offset
@@ -259,54 +259,54 @@ gfx_color_rotate:
 		adc	#7
 		sta	ppu_displist_0_offset
 
-		inc	gfx_color_rotate_off
-		lda	gfx_color_rotate_off
+		inc	meta_color_rotate_off
+		lda	meta_color_rotate_off
 		cmp	#6
-		bcc	:+ ; if (++gfx_color_rotate_off >= 6) {
+		bcc	:+ ; if (++meta_color_rotate_off >= 6) {
 			lda	#0
-			sta	gfx_color_rotate_off
+			sta	meta_color_rotate_off
 		; }
 	: ; }
 
 	rts
 ; -----------------------------------------------------------
-	.export gfx_clear_blocks
-	.export gfx_clear_blocks_brick_a, gfx_clear_blocks_brick_b
-	.export gfx_clear_blocks_block_empty
-	.export gfx_clear_blocks_blank_a, gfx_clear_blocks_blank_b
-gfx_clear_blocks:
-gfx_clear_blocks_brick_a:
+	.export meta_clear_blocks
+	.export meta_clear_blocks_brick_a, meta_clear_blocks_brick_b
+	.export meta_clear_blocks_block_empty
+	.export meta_clear_blocks_blank_a, meta_clear_blocks_blank_b
+meta_clear_blocks:
+meta_clear_blocks_brick_a:
 	.byte	chr_bg::brick_a
 	.byte	chr_bg::brick_a
 	.byte	chr_bg::brick_b
 	.byte	chr_bg::brick_b
 
-gfx_clear_blocks_brick_b:
+meta_clear_blocks_brick_b:
 	.byte	chr_bg::brick_b
 	.byte	chr_bg::brick_b
 	.byte	chr_bg::brick_b
 	.byte	chr_bg::brick_b
 
-gfx_clear_blocks_block_empty:
+meta_clear_blocks_block_empty:
 	.byte	chr_bg::block_empty
 	.byte	chr_bg::block_empty+1
 	.byte	chr_bg::block_empty+2
 	.byte	chr_bg::block_empty+3
 
-gfx_clear_blocks_blank_a:
+meta_clear_blocks_blank_a:
 	.byte	chr_bg::blanks
 	.byte	chr_bg::blanks
 	.byte	chr_bg::blanks
 	.byte	chr_bg::blanks
 
-gfx_clear_blocks_blank_b:
+meta_clear_blocks_blank_b:
 	.byte	chr_bg::blanks+2
 	.byte	chr_bg::blanks+2
 	.byte	chr_bg::blanks+2
 	.byte	chr_bg::blanks+2
 ; ----------------------------
-	.export gfx_clear_small
-gfx_clear_small:
+	.export meta_put_blank
+meta_put_blank:
 	ldy	#ppu_displist_1_data-ppu_displist
 	lda	#clear_blocks::blank_a
 	ldx	course_type
@@ -314,23 +314,23 @@ gfx_clear_small:
 		lda	#clear_blocks::blank_b
 	: ; }
 
-	jsr	gfx_clear_put
+	jsr	meta_clear_put
 	lda	#nmi_addr::buffer_11_A
 	sta	nmi_buffer_ptr
 	rts
 ; ----------------------------
-	.export gfx_meta_replace
-gfx_meta_replace:
-	jsr	gfx_meta_write
+	.export meta_replace
+meta_replace:
+	jsr	meta_write
 	inc	block_counter_res
 	dec	block_rep_flag, x
 	rts
 ; ----------------------------
-	.export gfx_meta_destroy
-	.export gfx_meta_step
-gfx_meta_destroy:
+	.export meta_destroy
+	.export meta_step
+meta_destroy:
 	lda	#0
-gfx_meta_write:
+meta_write:
 	ldy	#clear_blocks::blank_a
 	cmp	#metatile_0::blank_a
 	beq	:+ ; if (tile != metatile_0::blank_a) {
@@ -352,28 +352,28 @@ gfx_meta_write:
 
 	ldy	ppu_displist_0_offset
 	iny
-	jsr	gfx_clear_put
+	jsr	meta_clear_put
 
-gfx_meta_step:
+meta_step:
 	dey
 	tya
 	clc
 	adc	#10
-	jmp	screen_color_player_end
+	jmp	bg_color_player_end
 ; ----------------------------
-GFX_CLEAR_PUT_WIDTH		= 2
-GFX_CLEAR_PUT_ENTRY_SIZE	= (WORD_SIZE+1+GFX_CLEAR_PUT_WIDTH)
+META_CLEAR_PUT_WIDTH		= 2
+META_CLEAR_PUT_ENTRY_SIZE	= (WORD_SIZE+1+META_CLEAR_PUT_WIDTH)
 
-gfx_clear_put_x_b		= zp_byte_00
-gfx_clear_put_ppu_displist_offset	= zp_byte_01
-gfx_clear_put_page_offset	= zp_byte_02
-gfx_clear_put_do_addr_hi_base	= zp_byte_03
+meta_clear_put_x_b			= zp_byte_00
+meta_clear_put_ppu_displist_offset	= zp_byte_01
+meta_clear_put_page_offset		= zp_byte_02
+meta_clear_put_do_addr_hi_base		= zp_byte_03
 
-	.export gfx_clear_put, gfx_clear_put_do
-gfx_clear_put:
-	stx	gfx_clear_put_x_b
+	.export meta_clear_put_do
+meta_clear_put:
+	stx	meta_clear_put_x_b
 
-	sty	gfx_clear_put_ppu_displist_offset
+	sty	meta_clear_put_ppu_displist_offset
 
 	asl	a
 	asl	a
@@ -385,55 +385,55 @@ gfx_clear_put:
 	bcc	:+ ; if (game_buffer >= 0xD0) {
 		ldy	#>PPU_VRAM_BG2
 	: ; }
-	sty	gfx_clear_put_do_addr_hi_base
+	sty	meta_clear_put_do_addr_hi_base
 
 	and	#$0F
 	asl	a
-	sta	gfx_clear_put_do_addr
+	sta	meta_clear_put_do_addr
 	lda	#0
-	sta	gfx_clear_put_do_addr+1
-	lda	gfx_clear_put_page_offset
+	sta	meta_clear_put_do_addr+1
+	lda	meta_clear_put_page_offset
 	clc
 	adc	#>PPU_VRAM_BG1
 	asl	a
-	rol	gfx_clear_put_do_addr+1
+	rol	meta_clear_put_do_addr+1
 	asl	a
-	rol	gfx_clear_put_do_addr+1
-	adc	gfx_clear_put_do_addr
-	sta	gfx_clear_put_do_addr
-	lda	gfx_clear_put_do_addr+1
+	rol	meta_clear_put_do_addr+1
+	adc	meta_clear_put_do_addr
+	sta	meta_clear_put_do_addr
+	lda	meta_clear_put_do_addr+1
 	adc	#0
 	clc
-	adc	gfx_clear_put_do_addr_hi_base
-	sta	gfx_clear_put_do_addr+1
+	adc	meta_clear_put_do_addr_hi_base
+	sta	meta_clear_put_do_addr+1
 
-	ldy	gfx_clear_put_ppu_displist_offset
+	ldy	meta_clear_put_ppu_displist_offset
 
-gfx_clear_put_do:
-	lda	gfx_clear_blocks, x
+meta_clear_put_do:
+	lda	meta_clear_blocks, x
 	sta	ppu_displist_0_tile-1, y
-	lda	gfx_clear_blocks+1, x
+	lda	meta_clear_blocks+1, x
 	sta	ppu_displist_0_tile+1-1, y
-	lda	gfx_clear_blocks+2, x
-	sta	ppu_displist_0_tile+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
-	lda	gfx_clear_blocks+3, x
-	sta	ppu_displist_0_tile+(GFX_CLEAR_PUT_ENTRY_SIZE)+1-1, y
+	lda	meta_clear_blocks+2, x
+	sta	ppu_displist_0_tile+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
+	lda	meta_clear_blocks+3, x
+	sta	ppu_displist_0_tile+(META_CLEAR_PUT_ENTRY_SIZE)+1-1, y
 
-	lda	gfx_clear_put_do_addr
+	lda	meta_clear_put_do_addr
 	sta	ppu_displist_0_addr_dbyt+1-1, y
 	clc
 	adc	#>PPU_VRAM_BG1
-	sta	ppu_displist_0_addr_dbyt+(GFX_CLEAR_PUT_ENTRY_SIZE)+1-1, y
-	lda	gfx_clear_put_do_addr+1
+	sta	ppu_displist_0_addr_dbyt+(META_CLEAR_PUT_ENTRY_SIZE)+1-1, y
+	lda	meta_clear_put_do_addr+1
 	sta	ppu_displist_0_addr_dbyt-1, y
-	sta	ppu_displist_0_addr_dbyt+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_0_addr_dbyt+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
 
-	lda	#GFX_CLEAR_PUT_WIDTH
+	lda	#META_CLEAR_PUT_WIDTH
 	sta	ppu_displist_0_count-1, y
-	sta	ppu_displist_0_count+(GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_0_count+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
 
 	lda	#NMI_LIST_END
-	sta	ppu_displist_0_data+(2*GFX_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_0_data+(2*META_CLEAR_PUT_ENTRY_SIZE)-1, y
 
-	ldx	gfx_clear_put_x_b
+	ldx	meta_clear_put_x_b
 	rts

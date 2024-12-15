@@ -87,7 +87,7 @@ player_proc_init:
 	sta	pos_y_lo_player
 	lda	player_bg_priority, x
 	sta	attr_player
-	jsr	screen_color_player
+	jsr	bg_color_player
 
 	ldy	course_timer
 	beq	:+++

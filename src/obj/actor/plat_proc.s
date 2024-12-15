@@ -255,9 +255,9 @@ actor_init_plat_fall:
 	lda	#scores::value_1000
 	jsr	col_score_do
 	lda	pos_x_rel_player
-	sta	screen_score_pos_x, x
+	sta	bg_score_pos_x, x
 	lda	pos_y_lo_player
-	sta	screen_score_pos_y, x
+	sta	bg_score_pos_y, x
 	lda	#DIR_RIGHT
 	sta	motion_dir_actor, x
 ; ------------------------------

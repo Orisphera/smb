@@ -287,8 +287,8 @@ sys_vs_player_select:
 ; ----------------------------
 	.export vs_player_select_init_0
 vs_player_select_init_0:
-	lda	#screen_procs::init
-	sta	screen_proc_id
+	lda	#bg_procs::init
+	sta	bg_proc_id
 	sta	nmi_sprite_overlap
 	jsr	oam_init
 	inc	nmi_disp_disable
@@ -298,7 +298,7 @@ vs_player_select_init_0:
 vs_player_select_scr:
 	jsr	nt_init
 	ldy	#vschar1_bg_data::player_select
-	jsr	screen_vschar1_load
+	jsr	bg_vschar1_load
 	lda	#0
 	sta	VS_RAM_ARENA0+$27
 	lda	#1
@@ -451,7 +451,7 @@ vs_title_super_players:
 		: cmp	#1
 		bne	:++ ; } else {
 			ldy	#vschar1_bg_data::super_players
-			jsr	screen_vschar1_load
+			jsr	bg_vschar1_load
 		: ; }
 
 		inc	VS_RAM_ARENA0+$22

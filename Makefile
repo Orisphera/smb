@@ -18,6 +18,7 @@
 #   SMBV2   - The "V2" Engine (ANN and SMB2)
 #   PAL     - PAL-specific
 #   OG_PAD  - Padding in the original is retained
+#   OG_FALL - Original fall-throughs (module adjacency for control flow) assumed
 AS		=	ca65
 ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1
 ASFLAGS_VS	=	-DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1
@@ -25,7 +26,8 @@ ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2 -DSMBV2
 ASFLAGS_ANN	=	-DFDS -DCONS -DANN -DSMBM -DSMBV2
 ASFLAGS_PAL	=	-DPAL
-ASFLAGS		=	-U -I ./inc -DOG_PAD $(ASFLAGS_FC)
+ASFLAGS_OG	=	-DOG_FALL -DOG_PAD
+ASFLAGS		=	-U -I ./inc $(ASFLAGS_OG) $(ASFLAGS_FC)
 LD		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
@@ -114,14 +116,14 @@ TITLE_OBJS	=	src/title/base.o \
 			src/title/cursor.o \
 			src/title/demo.o
 
-TITLE_SCR_OBJS	=	src/title/scr.o
+TITLE_BG_OBJS	=	src/title/bg.o
 
 TITLE_INIT_OBJS	=	src/title/init.o
 
 CASTLE_VICTORY_OBJS	=	src/game/castle_victory.o
 
-LIB_OBJS	=	src/lib/screen.o \
-			src/lib/gfx.o \
+LIB_OBJS	=	src/game/bg.o \
+			src/game/metatile.o \
 			data/metatiles.o \
 			data/nmi_data.o \
 			src/lib/tbljmp.o \
@@ -139,26 +141,26 @@ PLAYER_LO_OBJS	=	src/obj/player/init.o \
 
 GAME_PROC_OBJS	=	src/game/game_over.o
 
-BG_OBJS		= 	src/obj/bg/base.o \
-			src/obj/bg/swarm.o \
-			src/obj/bg/ledge_pulley.o \
-			src/obj/bg/castle.o \
-			src/obj/bg/pipe.o \
-			src/obj/bg/alloc.o \
-			src/obj/bg/waterhole.o \
+BG_OBJS		= 	src/obj/scenery/base.o \
+			src/obj/scenery/swarm.o \
+			src/obj/scenery/ledge_pulley.o \
+			src/obj/scenery/castle.o \
+			src/obj/scenery/pipe.o \
+			src/obj/scenery/alloc.o \
+			src/obj/scenery/waterhole.o \
 			src/obj/block/bg_q.o \
-			src/obj/bg/bridge.o \
-			src/obj/bg/pole_render.o \
-			src/obj/bg/rope.o \
-			src/obj/bg/coinrow.o \
-			src/obj/bg/castle_bridge.o \
-			src/obj/bg/brick.o \
-			src/obj/bg/cannon.o \
-			src/obj/bg/stairs.o \
-			src/obj/bg/spring.o \
+			src/obj/scenery/bridge.o \
+			src/obj/scenery/pole_render.o \
+			src/obj/scenery/rope.o \
+			src/obj/scenery/coinrow.o \
+			src/obj/scenery/castle_bridge.o \
+			src/obj/scenery/brick.o \
+			src/obj/scenery/cannon.o \
+			src/obj/scenery/stairs.o \
+			src/obj/scenery/spring.o \
 			src/obj/block/bg.o \
-			src/obj/bg/pit.o \
-			src/obj/bg/render_base.o
+			src/obj/scenery/pit.o \
+			src/obj/scenery/render_base.o
 
 GAME_OBJS	=	$(GAME_INIT_OBJS) \
 			$(PLAYER_LO_OBJS) \
@@ -207,7 +209,7 @@ ENTITY_OBJS	=	src/obj/proj.o \
 			src/obj/bubble.o \
 			src/game/timer.o \
 			src/obj/whirlpool.o \
-			src/obj/bg/pole_proc.o \
+			src/obj/scenery/pole_proc.o \
 			src/obj/actor/spring.o \
 			src/obj/actor/vine.o \
 			src/obj/cannon.o \
@@ -341,15 +343,15 @@ APU_FDS_DATA_OBJS =	$(APU_FDS_OFFSET_OBJS) \
 			$(APU_FDS_MUSIC_OBJS) \
 			$(APU_FDS_MISC_OBJS)
 
-PIPE_FLIPPED_BASE_OBJS = src/obj/bg/pipe_flipped_base.o \
+PIPE_FLIPPED_BASE_OBJS = src/obj/scenery/pipe_flipped_base.o \
 			src/obj/actor/piranha_plant_b_proc_base.o
 
-PIPE_FLIPPED_EXT_OBJS =	src/obj/bg/pipe_flipped_ext.o \
+PIPE_FLIPPED_EXT_OBJS =	src/obj/scenery/pipe_flipped_ext.o \
 			src/obj/actor/piranha_plant_b_proc_ext.o
 
-WIND_BASE_OBJS	=	src/obj/bg/wind_base.o
+WIND_BASE_OBJS	=	src/obj/scenery/wind_base.o
 
-WIND_EXT_OBJS	=	src/obj/bg/wind_ext.o
+WIND_EXT_OBJS	=	src/obj/scenery/wind_ext.o
 
 HARD_MODE_SPRING_BASE_OBJS = src/game/hard_mode_spring_base.o
 
@@ -481,7 +483,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(COURSE_LOOP_SMB2_OBJS) \
 			$(COURSE_PTR_SMB2_OBJS) \
 			$(TITLE_OBJS) \
-			$(TITLE_SCR_OBJS) \
+			$(TITLE_BG_OBJS) \
 			$(TITLE_INIT_OBJS) \
 			$(TITLE_MAP_OBJS) \
 			$(COURSE_DATA_SMB2_OBJS) \
@@ -541,7 +543,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(COURSE_LOOP_OBJS) \
 			$(COURSE_PTR_OBJS) \
 			$(TITLE_OBJS) \
-			$(TITLE_SCR_OBJS) \
+			$(TITLE_BG_OBJS) \
 			$(TITLE_INIT_OBJS) \
 			$(TITLE_MAP_OBJS) \
 			$(COURSE_DATA_OBJS) \

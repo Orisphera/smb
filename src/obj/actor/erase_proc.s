@@ -8,7 +8,7 @@ actor_erase:
 	sta	proc_id_actor, x
 	sta	obj_id_actor, x
 	sta	state_actor, x
-	sta	screen_score_ctl, x
+	sta	bg_score_ctl, x
 	sta	timer_actor, x
 	sta	stomp_counter, x
 	sta	attr_actor, x

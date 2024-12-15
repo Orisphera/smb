@@ -11,6 +11,10 @@
 .include	"modes.i"
 .include	"misc.i"
 
+.if	!.defined(OG_FALL)
+	rts
+.endif
+
 	.export sys_castle_victory
 sys_castle_victory:
 	jsr	victory_enter
@@ -25,7 +29,6 @@ sys_castle_victory:
 		beq	sys_castle_victory-1
 		cmp	#castle_victory_modes_course_08::disk_save
 		beq	sys_castle_victory-1
-		; NOTE: This assumes this module follows an rts
 	.endif
 	; if (!SMBV2 || course_no != course_08 || this.proc_id.not_in(data3, save)) {
 		: ; if (this.proc_id != bowser) {
@@ -103,7 +106,7 @@ victory_enter_finish:
 	victory_course_08_disk_init:	.addr	disk_loader_victory_init
 	victory_course_08_disk_check:	.addr	disk_loader_victory_check
 	victory_course_08_disk_data3:	.addr	disk_loader_data3
-	victory_course_08_scr:		.addr	ending_screen_proc
+	victory_course_08_scr:		.addr	ending_bg_proc
 	victory_course_08_msg:		.addr	ending_victory_msg
 	victory_course_08_time_tally:	.addr	victory_time_tally
 	victory_course_08_extra_lives:	.addr	ending_extra_lives
@@ -178,7 +181,7 @@ victory_enter_finish:
 			: ; }
 		; }
 
-		jmp	screen_title_bg_finish
+		jmp	bg_title_screen_finish
 	.endif
 ; -----------------------------------------------------------
 	.if	.defined(SMB2)
@@ -281,21 +284,21 @@ victory_init:
 	sta	apu_music_event_req
 
 	.if	.defined(SMBV1)
-		jmp	screen_title_proc_id_inc
+		jmp	bg_title_proc_id_inc
 	.elseif	.defined(SMBV2)
-		.export screen_title_bg, screen_title_bg_finish
-	screen_title_bg_finish:
+		.export bg_title_screen, bg_title_screen_finish
+	bg_title_screen_finish:
 		inc	proc_id_game
 		rts
 	.endif
 ; -----------------------------
 	.if	.defined(SMBV2)
-	screen_title_bg:
+	bg_title_screen:
 		lda	proc_id_system
-		bne	screen_title_bg_finish
+		bne	bg_title_screen_finish
 
 		lda	#5
-		jmp	screen_color_init_4_end
+		jmp	bg_color_init_4_end
 	.endif
 ; -----------------------------------------------------------
 victory_proc:
@@ -872,7 +875,7 @@ victory_865D_rts:
 SCORE_METASPR_W_TILES	= 2
 SCORE_DIGIT_MASK	= $0F
 
-screen_score_disp_tiles:
+bg_score_disp_tiles:
 	.byte	$FF, $FF
 
 	.byte	chr_obj::digits_10, chr_obj::digits_0
@@ -891,57 +894,57 @@ screen_score_disp_tiles:
 	.if	.defined(VS_SMB)
 		.byte	chr_obj::digits_80, chr_obj::digits_00
 	.endif
-screen_score_disp_tiles_end:
+bg_score_disp_tiles_end:
 
-	.export screen_score_disp_incs
-	.export screen_score_value_100, screen_score_value_200
-	.export screen_score_value_400, screen_score_value_500
-	.export screen_score_value_800, screen_score_value_1000
-	.export screen_score_value_2000, screen_score_value_4000
-	.export screen_score_value_5000, screen_score_value_8000
-	.export screen_score_value_oneup
-screen_score_disp_incs:
+	.export bg_score_disp_incs
+	.export bg_score_value_100, bg_score_value_200
+	.export bg_score_value_400, bg_score_value_500
+	.export bg_score_value_800, bg_score_value_1000
+	.export bg_score_value_2000, bg_score_value_4000
+	.export bg_score_value_5000, bg_score_value_8000
+	.export bg_score_value_oneup
+bg_score_disp_incs:
 	.byte	$FF
 
 SCORE_DIGIT_PLACE_100	= (((SCORE_DIGITS_MAX-1)-2)<<4)
 SCORE_DIGIT_PLACE_1000	= (((SCORE_DIGITS_MAX-1)-3)<<4)
 
-screen_score_value_100:		.byte	1|SCORE_DIGIT_PLACE_100
-screen_score_value_200:		.byte	2|SCORE_DIGIT_PLACE_100
-screen_score_value_400:		.byte	4|SCORE_DIGIT_PLACE_100
-screen_score_value_500:		.byte	5|SCORE_DIGIT_PLACE_100
-screen_score_value_800:		.byte	8|SCORE_DIGIT_PLACE_100
-screen_score_value_1000:	.byte	1|SCORE_DIGIT_PLACE_1000
-screen_score_value_2000:	.byte	2|SCORE_DIGIT_PLACE_1000
-screen_score_value_4000:	.byte	4|SCORE_DIGIT_PLACE_1000
-screen_score_value_5000:	.byte	5|SCORE_DIGIT_PLACE_1000
-screen_score_value_8000:	.byte	8|SCORE_DIGIT_PLACE_1000
-screen_score_value_oneup:	.byte	0
+bg_score_value_100:		.byte	1|SCORE_DIGIT_PLACE_100
+bg_score_value_200:		.byte	2|SCORE_DIGIT_PLACE_100
+bg_score_value_400:		.byte	4|SCORE_DIGIT_PLACE_100
+bg_score_value_500:		.byte	5|SCORE_DIGIT_PLACE_100
+bg_score_value_800:		.byte	8|SCORE_DIGIT_PLACE_100
+bg_score_value_1000:	.byte	1|SCORE_DIGIT_PLACE_1000
+bg_score_value_2000:	.byte	2|SCORE_DIGIT_PLACE_1000
+bg_score_value_4000:	.byte	4|SCORE_DIGIT_PLACE_1000
+bg_score_value_5000:	.byte	5|SCORE_DIGIT_PLACE_1000
+bg_score_value_8000:	.byte	8|SCORE_DIGIT_PLACE_1000
+bg_score_value_oneup:	.byte	0
 
 .if	.defined(VS_SMB)
 				.byte	8|SCORE_DIGIT_PLACE_1000
 .endif
 
-screen_score_disp_incs_end:
+bg_score_disp_incs_end:
 ; ----------------------------
-	.export screen_score_disp, screen_score_disp_end
-screen_score_disp:
-	lda	screen_score_ctl, x
+	.export bg_score_disp, bg_score_disp_end
+bg_score_disp:
+	lda	bg_score_ctl, x
 	.if	.defined(CONS)
 		beq	victory_finish_rts
 	.elseif	.defined(VS)
 		beq	victory_865D_rts
 	.endif
-	cmp	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
+	cmp	#((bg_score_disp_tiles_end-bg_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
 	bcc	:+ ; if (stack[0x10] >= sizeof (disp_tiles))) {
-		lda	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
-		sta	screen_score_ctl, x
+		lda	#((bg_score_disp_tiles_end-bg_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
+		sta	bg_score_ctl, x
 	: ; }
 	tay
 
 	lda	timer_score, x
 	bne	:+ ; if (score.timer == 0) {
-		sta	screen_score_ctl, x
+		sta	bg_score_ctl, x
 		rts
 	: ; }
 
@@ -949,9 +952,9 @@ screen_score_disp:
 	cmp	#43
 	bne	:++ ; if (stack[0x2C] == 43) {
 		.if	.defined(CONS)
-			cpy	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
+			cpy	#((bg_score_disp_tiles_end-bg_score_disp_tiles)/SCORE_METASPR_W_TILES)-1
 		.elseif	.defined(VS)
-			cpy	#((screen_score_disp_tiles_end-screen_score_disp_tiles)/SCORE_METASPR_W_TILES)-2
+			cpy	#((bg_score_disp_tiles_end-bg_score_disp_tiles)/SCORE_METASPR_W_TILES)-2
 		.endif
 		bne	:+ ; if (stack[0x10] == 1UP) {
 			inc	player_lives
@@ -959,13 +962,13 @@ screen_score_disp:
 			sta	apu_sfx_pulse_2_req
 		: ; }
 
-		lda	screen_score_disp_incs, y
+		lda	bg_score_disp_incs, y
 		lsr	a
 		lsr	a
 		lsr	a
 		lsr	a
 		tax
-		lda	screen_score_disp_incs, y
+		lda	bg_score_disp_incs, y
 		and	#SCORE_DIGIT_MASK
 		sta	score_digit_mod+1, x
 		jsr	misc_proc_coin_update_score
@@ -994,17 +997,17 @@ screen_score_disp:
 		ldx	actor_index
 	: ; }
 
-	lda	screen_score_pos_y, x
+	lda	bg_score_pos_y, x
 	cmp	#24
 	bcc	:+ ; if (score.pos_y >= 24) {
 		sbc	#1
-		sta	screen_score_pos_y, x
+		sta	bg_score_pos_y, x
 	: ; }
 
-	lda	screen_score_pos_y, x
+	lda	bg_score_pos_y, x
 	sbc	#PPU_CHR_HEIGHT_PX
 	jsr	render_set_two_sprites_v
-	lda	screen_score_pos_x, x
+	lda	bg_score_pos_x, x
 	sta	oam_buffer+OBJ_POS_H, y
 	clc
 	adc	#PPU_CHR_HEIGHT_PX
@@ -1012,14 +1015,14 @@ screen_score_disp:
 	lda	#(obj_attr::priority_high|obj_attr::color2)
 	sta	oam_buffer+OBJ_ATTR, y
 	sta	oam_buffer+OBJ_ATTR+OBJ_SIZE, y
-	lda	screen_score_ctl, x
+	lda	bg_score_ctl, x
 	asl	a
 	tax
-	lda	screen_score_disp_tiles, x
+	lda	bg_score_disp_tiles, x
 	sta	oam_buffer+OBJ_CHR_NO, y
-	lda	screen_score_disp_tiles+1, x
+	lda	bg_score_disp_tiles+1, x
 	sta	oam_buffer+OBJ_CHR_NO+OBJ_SIZE, y
 	ldx	actor_index
 
-screen_score_disp_end:
+bg_score_disp_end:
 	rts

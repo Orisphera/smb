@@ -379,14 +379,14 @@ col_player_powerup_proc:
 			ldx	actor_index
 			lda	#player_statuses::power_firefl
 			sta	player_status
-			jsr	screen_color_player
+			jsr	bg_color_player
 			ldx	actor_index
 			lda	#player_procs::firefl
 			jmp	:+++
 		; }
 	: ; } else if (powerup.type == mushroom_oneup) {
 		lda	#scores::value_oneup
-		sta	screen_score_ctl, x
+		sta	bg_score_ctl, x
 		rts
 	; }
 ; -----------------------------
@@ -600,7 +600,7 @@ col_player_harm_proc_do:
 				lda	#sfx_pulse_1::pipe_entry_16
 			.endif
 			sta	apu_sfx_pulse_1_req
-			jsr	screen_color_player
+			jsr	bg_color_player
 			lda	#player_procs::hurt
 		: ; }
 
@@ -778,13 +778,13 @@ col_actor_kick_dir:
 ; ------------------------------------------------------------
 	.export col_score_do
 col_score_do:
-	sta	screen_score_ctl, x
+	sta	bg_score_ctl, x
 	lda	#48
 	sta	timer_score, x
 	lda	pos_y_lo_actor, x
-	sta	screen_score_pos_y, x
+	sta	bg_score_pos_y, x
 	lda	pos_x_rel_actor
-	sta	screen_score_pos_x, x
+	sta	bg_score_pos_x, x
 	: rts
 ; ------------------------------------------------------------
 col_actor_actor_proc_idx	= zp_byte_01
@@ -1556,7 +1556,7 @@ col_bg_proc_bg_tile_blank:
 	ldy	col_buffer_ptr_idx
 	lda	#metatile_0::blank_a
 	sta	(game_buffer), y
-	jmp	gfx_clear_small
+	jmp	meta_put_blank
 ; -----------------------------
 col_bg_proc_climb_offset_x_lo:
 	.byte	<-7, 7
@@ -1599,7 +1599,7 @@ col_bg_proc_climb_do:
 			cmp	#player_procs::pole
 			beq	:++++ ; if (game.proc_id != pole) {
 				lda	#actor::bullet
-				jsr	bg_actor_kill
+				jsr	scenery_actor_kill
 				lda	#music_event::none
 				sta	apu_music_event_req
 				lsr	a
@@ -1785,9 +1785,9 @@ col_bg_proc_pipe_v_do:
 			:
 
 			.if	.defined(SMBV1)
-				: ldy	screen_text_warps, x
+				: ldy	bg_text_warps, x
 			.elseif	.defined(SMBV2)
-				lda	screen_text_warps, x
+				lda	bg_text_warps, x
 
 				ldy	ENG_HARDMODE_VAR
 				beq	:+ ; if (hard_mode) {
@@ -1813,7 +1813,7 @@ col_bg_proc_pipe_v_do:
 			sta	game_start_type
 
 			.if	.defined(SMB)|.defined(SMBV2)
-				inc	bg_hidden_one_up_req
+				inc	scenery_hidden_one_up_req
 			.endif
 
 			inc	player_first_start
@@ -2750,7 +2750,7 @@ col_box_buffer:
 	lsr	a
 	lsr	a
 	lsr	a
-	jsr	bg_get_buffer_ptr
+	jsr	scenery_get_buffer_ptr
 	ldy	col_box_buffer_tbl_offset
 	lda	pos_y_lo_player, x
 	clc
