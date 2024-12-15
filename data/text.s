@@ -31,7 +31,7 @@ bg_text_header_player_name:
 	: .byte	(PPU_BG_COLOR_LINE_3<<6)|(PPU_BG_COLOR_LINE_2<<4)|(PPU_BG_COLOR_LINE_2<<2)|(PPU_BG_COLOR_LINE_2)
 	:
 
-	.byte	SCREEN_TEXT_END_VAL
+	.byte	BG_TEXT_END_VAL
 ; ----------------------------
 bg_text_splash:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
@@ -52,7 +52,7 @@ bg_text_splash:
 	: .byte	(PPU_BG_COLOR_LINE_2<<6)|(PPU_BG_COLOR_LINE_3<<4)|(PPU_BG_COLOR_LINE_2<<2)|(PPU_BG_COLOR_LINE_2)
 	:
 
-	.byte	SCREEN_TEXT_END_VAL
+	.byte	BG_TEXT_END_VAL
 ; ----------------------------
 bg_text_timeup_screen:
 .if	.defined(SMBV1)
@@ -67,7 +67,7 @@ bg_text_timeup_screen:
 	: .byte	"TIME UP"
 	:
 
-	.byte	SCREEN_TEXT_END_VAL
+	.byte	BG_TEXT_END_VAL
 ; ----------------------------
 bg_text_gameover_screen:
 .if	.defined(SMBV1)
@@ -78,11 +78,11 @@ bg_text_gameover_screen:
 .endif
 
 .if	.defined(SMBV1)
-	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_16
+	BG_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_16
 .elseif	.defined(SMBV2)
-	SCREEN_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_11
+	BG_TEXT_GAME_OVER_ROW	= PPU_BG_ROW_11
 .endif
-	.dbyt	PPU_VRAM_BG1+SCREEN_TEXT_GAME_OVER_ROW+PPU_BG_COL_11
+	.dbyt	PPU_VRAM_BG1+BG_TEXT_GAME_OVER_ROW+PPU_BG_COL_11
 	.byte	(:++)-(:+)
 	: .byte	"GAME OVER"
 	:
@@ -102,7 +102,7 @@ bg_text_gameover_screen:
 		:
 .endif
 
-	.byte	SCREEN_TEXT_END_VAL
+	.byte	BG_TEXT_END_VAL
 ; ----------------------------
 bg_text_warp_screen:
 	.dbyt	PPU_VRAM_BG2+PPU_BG_ROW_12+PPU_BG_COL_4
@@ -136,7 +136,7 @@ bg_text_warp_screen:
 	.byte	NMI_REPEAT|5, PPU_BG_COLOR_LINE_2_ALL
 
 .if	.defined(SMBV1)
-		.byte	SCREEN_TEXT_END_VAL
+		.byte	BG_TEXT_END_VAL
 .elseif	.defined(SMBV2)
 		.byte	NMI_LIST_END
 .endif

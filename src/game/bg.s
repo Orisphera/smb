@@ -396,9 +396,9 @@ bg_text_draw:
 
 	ldx	bg_text_idx_tbl, y
 	ldy	#0
-	: ; for (x = bg_text_idx_tbl[y], y = 0; bg_text[x] != SCREEN_TEXT_END_VAL && y < 0x100; x++, y++) {
+	: ; for (x = bg_text_idx_tbl[y], y = 0; bg_text[x] != BG_TEXT_END_VAL && y < 0x100; x++, y++) {
 		lda	bg_text, x
-		cmp	#SCREEN_TEXT_END_VAL
+		cmp	#BG_TEXT_END_VAL
 		beq	:+
 		sta	ppu_displist_0_data, y
 

@@ -13,7 +13,7 @@
 		TITLE_NMI_ADDR		= vs_ppu_displist
 	.endif
 
-	SCREEN_TITLE_BG_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
+	BG_TITLE_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
 ; -----------------------------------------------------------
 	bg_title_screen_nmi_addr	= zp_addr_00
 
@@ -74,7 +74,7 @@
 			: lda	bg_title_screen_nmi_addr+1
 			cmp	#>(TITLE_NMI_BUFFER_END)
 			bne	:--
-			cpy	#SCREEN_TITLE_BG_SIZE
+			cpy	#BG_TITLE_SIZE
 			bcc	:--
 		; }
 
