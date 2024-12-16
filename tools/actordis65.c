@@ -207,14 +207,14 @@ static char *names[] = {
 	"WARP",
 	"TOAD",
 	"36",
-	"GOOMBA_TRIO_LO",
 	"GOOMBA_DUO_LO",
-	"GOOMBA_TRIO_HI",
+	"GOOMBA_TRIO_LO",
 	"GOOMBA_DUO_HI",
-	"KOOPA_TRIO_LO",
+	"GOOMBA_TRIO_HI",
 	"KOOPA_DUO_LO",
-	"KOOPA_TRIO_HI",
+	"KOOPA_TRIO_LO",
 	"KOOPA_DUO_HI",
+	"KOOPA_TRIO_HI",
 	"3F"
 };
 

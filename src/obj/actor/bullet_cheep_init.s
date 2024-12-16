@@ -116,7 +116,7 @@ actor_init_bullet_cheep:
 				sbc	#actor::group_start
 				pha
 
-				cmp	#actor::koopa_trio_lo-actor::group_start
+				cmp	#actor::koopa_group_start-actor::group_start
 				bcs	:++ ; if (this.id < koopa_trio_lo) {
 					pha
 				

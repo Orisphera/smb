@@ -340,15 +340,16 @@ COL_BOX_SIZE	= 4
 		toad		= <((actor_init_B_tbl_20-actor_init_tbl)/WORD_SIZE)
 
 		group_start	= toad+2
-		goomba_trio_lo	= group_start+0
-		goomba_duo_lo	= goomba_trio_lo+1
-		goomba_trio_hi	= goomba_duo_lo+1
-		goomba_duo_hi	= goomba_trio_hi+1
-		koopa_trio_lo	= goomba_duo_hi+1
-		koopa_duo_lo	= koopa_trio_lo+1
-		koopa_trio_hi	= koopa_duo_lo+1
-		koopa_duo_hi	= koopa_trio_hi+1
-		group_end	= koopa_duo_hi+1
+		goomba_duo_lo	= group_start+0
+		goomba_trio_lo	= goomba_duo_lo+1
+		goomba_duo_hi	= goomba_trio_lo+1
+		goomba_trio_hi	= goomba_duo_hi+1
+		koopa_group_start = goomba_trio_hi+1
+		koopa_duo_lo	= koopa_group_start+0
+		koopa_trio_lo	= koopa_duo_lo+1
+		koopa_duo_hi	= koopa_trio_lo+1
+		koopa_trio_hi	= koopa_duo_hi+1
+		group_end	= koopa_trio_hi+1
 		actor_end	= group_end
 	.endenum
 
