@@ -1,16 +1,16 @@
 #!/bin/sh
 
 # magic number
-printf "NES\x1A"
+printf "NES\032"
 
 # 32kb PRG (2 banks)
-printf "\x02"
+printf "\002"
 
 # 8kb CHR (1 bank)
-printf "\x01"
+printf "\001"
 
 # metadata - mapper 00 (NROM), vertical mirroring
-printf "\1\0"
+printf "\001\000"
 
 # padding
-printf "\0\0\0\0\0\0\0\0"
+printf "\000\000\000\000\000\000\000\000"

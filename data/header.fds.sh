@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # magic number
-printf "FDS\x1A"
+printf "FDS\032"
 
 # 1 side
-printf "\x01"
+printf "\001"
 
 # padding
-printf "\0\0\0\0\0\0\0\0\0\0\0"
+printf "\000\000\000\000\000\000\000\000\000\000\000"
