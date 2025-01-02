@@ -323,7 +323,7 @@ APU_DATA_OBJS	=	data/apu/notes.o \
 			data/apu/lengths_misc.o \
 			data/apu/envelopes_misc.o
 
-APU_FDS_OBJS	=	src/apu/fds_music.o \
+APU_FDS_OBJS	=	src/apu/alt_music.o \
 			src/apu/fds_wave.o \
 			src/apu/fds_load.o
 

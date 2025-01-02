@@ -14,8 +14,8 @@
 .endif
 .endif
 ; ------------------------------------------------------------
-	.export	apu_fds_cycle
-apu_fds_cycle:
+	.export	apu_alt_cycle
+apu_alt_cycle:
 	.if	.defined(SMB2)
 	lda	nmi_pause_flag
 	beq	:+ ; if (SMB2 && paused) {

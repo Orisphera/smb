@@ -410,7 +410,7 @@ nmi_rand:
 			:
 		.endif
 
-		jsr	nmi_system_enter
+		jsr	sys_enter
 	: ; }
 
 	.if	.defined(SMBV2)
@@ -614,36 +614,36 @@ nmi_oam_shuffle:
 
 	rts
 ; ------------------------------------------------------------
-	.export	nmi_system_enter_tbl
-	.export	nmi_system_enter_game
-	.export	nmi_system_enter_castle_victory
-	.export	nmi_system_enter_game_over
-nmi_system_enter:
+	.export	sys_enter_tbl
+	.export	sys_enter_game
+	.export	sys_enter_castle_victory
+	.export	sys_enter_game_over
+sys_enter:
 	lda	proc_id_system
 	jsr	tbljmp
 
-nmi_system_enter_tbl:
+sys_enter_tbl:
 	.if	.defined(SMBV1)
-		.export	nmi_system_enter_title
-	nmi_system_enter_title:
+		.export	sys_enter_title
+	sys_enter_title:
 		.addr	sys_title
 	.elseif	.defined(SMBV2)
-		.export	nmi_system_enter_disk_loader
-	nmi_system_enter_disk_loader:
+		.export	sys_enter_disk_loader
+	sys_enter_disk_loader:
 		.addr	sys_disk_loader
 	.endif
 
 	.if	.defined(VS_SMB)
-		.export	nmi_system_enter_player_select
-	nmi_system_enter_player_select:
+		.export	sys_enter_player_select
+	sys_enter_player_select:
 		.addr	sys_vs_player_select
 	.endif
 
-nmi_system_enter_game:
+sys_enter_game:
 	.addr	sys_game
 
-nmi_system_enter_castle_victory:
+sys_enter_castle_victory:
 	.addr	sys_castle_victory
 
-nmi_system_enter_game_over:
+sys_enter_game_over:
 	.addr	sys_game_over

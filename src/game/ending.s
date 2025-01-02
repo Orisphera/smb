@@ -81,9 +81,9 @@ ending_pal_load_ext:
 ending_princess_show:
 	lda	#(10<<4)|(stats::time)
 	jsr	stats_print_num
-	lda	#>apu_fds_cycle
+	lda	#>apu_alt_cycle
 	sta	nmi_apu_call+OP_SIZE+1
-	lda	#<apu_fds_cycle
+	lda	#<apu_alt_cycle
 	sta	nmi_apu_call+OP_SIZE
 	lda	#music_fds::ending
 	sta	apu_music_base_req
