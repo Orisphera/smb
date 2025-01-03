@@ -285,7 +285,7 @@ ending_toad_proc:
 	.endif
 
 	: lda	ENG_HARDMODE_VAR
-	bne	disk_loader_file_load_save_done ; if (music.fds.current == 0 && !game.hard_mode) {
+	bne	disk_loader_file_write_save_done ; if (music.fds.current == 0 && !game.hard_mode) {
 		inc	proc_id_game
 	: ; }
 
@@ -296,7 +296,7 @@ disk_loader_save:
 	lda	disk_loader_proc
 	jsr	tbljmp
 	.addr	disk_loader_prompt
-	.addr	disk_loader_file_load_save
+	.addr	disk_loader_file_write_save
 	.addr	disk_loader_wait_eject
 	.addr	disk_loader_wait_insert
 	.addr	disk_loader_bootstrap
@@ -309,20 +309,21 @@ disk_header_save:
 	.addr	save
 	.byte	0
 ; -----------------------------
-disk_loader_file_load_save:
+disk_loader_file_write_save:
 	lda	#FILE_NO_SAVE
 	jsr	fdsbios_file_write
 	.addr	disk_header_id
 	.addr	disk_header_save
-	beq	disk_loader_file_load_save_done
+	beq	disk_loader_file_write_save_done
 	inc	disk_loader_proc
 	jmp	disk_perror
 ; ------------------------------------------------------------
-disk_loader_file_load_save_done:
+disk_loader_file_write_save_done:
 	lda	#>apu_cycle
 	sta	nmi_apu_call+OP_SIZE+1
 	lda	#<apu_cycle
 	sta	nmi_apu_call+OP_SIZE
+
 	lda	#fds_loader_procs::prompt_00
 	sta	disk_loader_proc
 	sta	proc_id_game
