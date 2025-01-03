@@ -69,7 +69,7 @@ actor_bowser_ending:
 			ldy	actor_bowser_ending_clear_frame
 			lda	actor_bowser_ending_clear_blocks, y
 			sta	meta_clear_put_do_addr
-			ldy	ppu_displist_0_offset
+			ldy	ppu_displist_offset
 			iny
 			ldx	#clear_blocks::blank_a*METATILE_SIZE
 			jsr	meta_clear_put_do

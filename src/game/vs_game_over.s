@@ -243,17 +243,17 @@ data_9A2F:
 sub_9A32:
         ldy	#0
 	lda	(game_buffer), y
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	lda	#$20
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	lda	#$28
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	iny
 	lda	(game_buffer), y
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	rts
 ; ----------------------------
@@ -287,7 +287,7 @@ sub_9A4E:
                 ldx	#0
                 : ; for (x = 0; x < 3; x++) {
                         lda	data_9A2F, x
-                        sta	ppu_displist_0_data, x
+                        sta	ppu_displist_data, x
 
                         inx
                         cpx	#3
@@ -302,13 +302,13 @@ sub_9A4E:
                 bne	:+ ; if (!zp_addr_00) {
                         lda	#>PPU_VRAM_BG2
                 : ; }
-                sta	ppu_displist_0_data, x
+                sta	ppu_displist_data, x
 
                 inx
                 iny
                 : ; for (x = 3, y = 1; y < 7; x++, y++) {
                         lda	(zp_addr_00), y
-                        sta	ppu_displist_0_data, x
+                        sta	ppu_displist_data, x
 
                         inx
                         iny
@@ -317,7 +317,7 @@ sub_9A4E:
                 ; }
 
                 lda	#0
-                sta	ppu_displist_0_data, x
+                sta	ppu_displist_data, x
                 sta	VS_RAM_ARENA0+$22
                 sta	nmi_disp_disable
                 sta	VS_RAM_ARENA0+$1A
@@ -350,33 +350,33 @@ sub_9AE3:
 	cpy	#$0A
 	bne	:+ ; if () {
                 lda	#1
-                sta	ppu_displist_0_data, x
+                sta	ppu_displist_data, x
                 inx
                 lda	#0
-                sta	ppu_displist_0_data, x
+                sta	ppu_displist_data, x
                 inx
                 jmp	:++
         : ; } else {
                 jsr	sub_9B0C
                 tya
-                sta	ppu_displist_0_data, x
+                sta	ppu_displist_data, x
                 inx
         : ; }
 
 sub_9AFF:
         lda	#$AF
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	rts
 ; ----------------------------
 sub_9B06:
         lda	#$24
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 
 sub_9B0C:
         lda	#$24
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	rts
 ; ----------------------------
@@ -638,26 +638,26 @@ L9CB0:
 	ldx	#(data_9B35_end-data_9B35)-1
         : ; for (x = 3-1; x > 0; x--) {
                 lda	data_9B35, x
-                sta	ppu_displist_0_data+0, x
+                sta	ppu_displist_data+0, x
                 lda	VS_RAM_ARENA0+$1C, x
-                sta	ppu_displist_0_data+3, x
+                sta	ppu_displist_data+3, x
 
                 dex
                 bpl	:-
         ; }
 
 	lda	#>(PPU_VRAM_BG1+$305)
-	sta	ppu_displist_0_data+6
+	sta	ppu_displist_data+6
 	lda	#<(PPU_VRAM_BG1+$305)
-	sta	ppu_displist_0_data+7
+	sta	ppu_displist_data+7
 	lda	#2
-	sta	ppu_displist_0_data+8
+	sta	ppu_displist_data+8
 	lda	VS_RAM_ARENA0+$19
-	sta	ppu_displist_0_data+9
+	sta	ppu_displist_data+9
 	lda	VS_RAM_ARENA0+$1A
-	sta	ppu_displist_0_data+10
+	sta	ppu_displist_data+10
 	lda	#0
-	sta	ppu_displist_0_data+11
+	sta	ppu_displist_data+11
 	rts
 ; ----------------------------
 sub_9D3C:
@@ -851,10 +851,10 @@ sub_9E29:
 	sta	VS_RAM_ARENA0+$19
 	ldx	#0
 	lda	data_9E15, y
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	lda	data_9E1F, y
-	sta	ppu_displist_0_data, x
+	sta	ppu_displist_data, x
 	inx
 	lda	VS_RAM_ARENA0+$22
 	and	#$01
@@ -867,7 +867,7 @@ sub_9E29:
 		ldy	#0
 		: ; for (y = 0; y < 3; x++, y++) {
 			lda	data_9E12, y
-			sta	ppu_displist_0_data, x
+			sta	ppu_displist_data, x
 	
 			inx
 			iny
@@ -884,7 +884,7 @@ sub_9E29:
 			rts
 		: ; } else {
 			lda	#$15
-			sta	ppu_displist_0_data, x
+			sta	ppu_displist_data, x
 			inx
 			jsr	sub_9AE3
 			jsr	sub_9B0C
@@ -892,7 +892,7 @@ sub_9E29:
 			ldy	#0
 			: ; for (y = 0; y < 3; x++, y++) {
 				lda	(zp_addr_02), y
-				sta	ppu_displist_0_data, x
+				sta	ppu_displist_data, x
 
 				inx
 				iny
@@ -909,13 +909,13 @@ sub_9E29:
 			bne	:+ ; if () {
 				lda	#$24
 			: ; }
-			sta	ppu_displist_0_data, x
+			sta	ppu_displist_data, x
 
 			inx
 			iny
 			: ; for (y = 1; y < 7; x++, y++) {
 				lda	(zp_addr_00), y
-				sta	ppu_displist_0_data, x
+				sta	ppu_displist_data, x
 
 				inx
 				iny
@@ -924,7 +924,7 @@ sub_9E29:
 			; }
 
 			lda	#0
-			sta	ppu_displist_0_data, x
+			sta	ppu_displist_data, x
 			dec	VS_RAM_ARENA0+$1F
 			rts
 		; }
@@ -986,7 +986,7 @@ sub_9F24:
 	ldx	#9-1
 	: ; for (x = 9-1; x >= 0; x--) {
 		lda	data_9F1B, x
-		sta	ppu_displist_0_data, x
+		sta	ppu_displist_data, x
 
 		dex
 		bpl	:-
@@ -1017,7 +1017,7 @@ sub_9F3B:
 		ldx	#7
 		: ; for (x = 8-1; x >= 0; x--) {
 			lda	data_9F13, x
-			sta	ppu_displist_0_data, x
+			sta	ppu_displist_data, x
 
 			dex
 			bpl	:-
@@ -1223,7 +1223,7 @@ sub_A0B2:
 	ldy	#0
 	: ; for (y = 0; y < 3; x++, y++) {
 		lda	data_9F08, y
-		sta	ppu_displist_0_data, x
+		sta	ppu_displist_data, x
 
 		inx
 		iny
@@ -1234,7 +1234,7 @@ sub_A0B2:
 	ldy	#0
 	: ; for (y = 0; y < 2; y++) {
 		lda	VS_RAM_ARENA0+$19, y
-		sta	ppu_displist_0_data, x
+		sta	ppu_displist_data, x
 
 		inx
 		iny
@@ -1243,8 +1243,8 @@ sub_A0B2:
 	; }
 
 	lda	#0
-	sta	ppu_displist_0_data, x
-	stx	ppu_displist_0_offset
+	sta	ppu_displist_data, x
+	stx	ppu_displist_offset
 	rts
 ; ----------------------------------
 sub_A0D7:
@@ -1258,7 +1258,7 @@ sub_A0D7:
 		: ; } else {
 			lda	data_9EFA, y
 		: ; }
-		sta	ppu_displist_0_data, x
+		sta	ppu_displist_data, x
 
 		inx
 		iny
@@ -1279,7 +1279,7 @@ sub_A0D7_b:
 		: ; } else {
 			lda	data_9F0F, y
 		: ; }
-		sta	ppu_displist_0_data, x
+		sta	ppu_displist_data, x
 
 		inx
 		iny

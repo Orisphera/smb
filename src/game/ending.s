@@ -215,7 +215,7 @@ ending_palcycle:
 		ldx	#(ending_pal_end-ending_pal)-1
 		: ; for (byte of ending_pal) {
 			lda	ending_pal, x
-			sta	ppu_displist_0_data, x
+			sta	ppu_displist_data, x
 
 			dex
 			bpl	:-
@@ -225,7 +225,7 @@ ending_palcycle:
 		ldy	ending_palcycle_step
 		: ; for (entry_0 of palette_line) {
 			lda	ending_pal_var, y
-			sta	ppu_displist_0_data+3, x
+			sta	ppu_displist_data+3, x
 	
 			dex
 			dex
@@ -249,7 +249,7 @@ ending_lives_draw:
 	ldx	#(ending_lives_disp_end-ending_lives_disp)-1
 	: ; for (byte of ending_lives_disp) {
 		lda	ending_lives_disp, x
-		sta	ppu_displist_0_data, x
+		sta	ppu_displist_data, x
 
 		dex
 		bpl	:-

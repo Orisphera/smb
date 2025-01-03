@@ -198,7 +198,7 @@ title_proc:
 							jsr	title_course_set
 							: ; for (x = (title_course_sel_no+1); x < sizeof (title_course_no); x++) {
 								lda	title_course_no, x
-								sta	ppu_displist_0_data-1, x
+								sta	ppu_displist_data-1, x
 
 								inx
 								cpx	#(title_course_no_end-title_course_no)
@@ -207,7 +207,7 @@ title_proc:
 
 							ldy	course_no
 							iny
-							sty	ppu_displist_0_tile
+							sty	ppu_displist_payload
 						; }
 					.elseif	.defined(SMBV2)
 					:

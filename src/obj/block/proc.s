@@ -429,7 +429,7 @@ block_flatten:
 	: ; for (block of blocks) {
 		stx	actor_index
 
-		lda	ppu_displist_0_data
+		lda	ppu_displist_data
 		bne	:+
 		lda	block_rep_flag, x
 		beq	:+ ; if (*ppu_displist == NMI_LIST_END && block_rep_flag[actor_index] != 0) {

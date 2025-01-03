@@ -95,18 +95,18 @@ stats_print_num_do:
 
 		asl	a
 		tay
-		ldx	ppu_displist_0_offset
+		ldx	ppu_displist_offset
 		lda	#>PPU_VRAM_BG1
 		cpy	#0
 		bne	:+ ; if ((2*arg) == 0) {
 			lda	#>(PPU_VRAM_BG1+PPU_BG_ROW_16+PPU_BG_COL_0)
 		: ; }
-		sta	ppu_displist_0_addr_dbyt, x
+		sta	ppu_displist_addr_dbyt, x
 
 		lda	stats_data, y
-		sta	ppu_displist_0_addr_dbyt+1, x
+		sta	ppu_displist_addr_dbyt+1, x
 		lda	stats_data+1, y
-		sta	ppu_displist_0_count, x
+		sta	ppu_displist_count, x
 		sta	stats_print_num_score_digits
 		stx	stats_print_num_buffer_idx
 
@@ -119,7 +119,7 @@ stats_print_num_do:
 		ldx	stats_print_num_buffer_idx
 		: ; for (digit of game.stats) {
 			lda	stats_tbl, y
-			sta	ppu_displist_0_tile, x
+			sta	ppu_displist_payload, x
 
 			inx
 			iny
@@ -127,12 +127,12 @@ stats_print_num_do:
 			bne	:-
 		; }
 		lda	#NMI_LIST_END
-		sta	ppu_displist_0_tile, x
+		sta	ppu_displist_payload, x
 
 		inx
 		inx
 		inx
-		stx	ppu_displist_0_offset
+		stx	ppu_displist_offset
 	: ; }
 
 	rts

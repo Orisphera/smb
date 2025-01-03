@@ -21,15 +21,15 @@ meta_render_area:
 	and	#1
 	sta	meta_render_area_pos_x_parity
 
-	ldy	ppu_displist_1_offset
+	ldy	ppu_displist_meta_offset
 	sty	meta_render_area_offset
 
 	lda	bg_addr+1
-	sta	ppu_displist_1_addr_dbyt+1, y
+	sta	ppu_displist_meta_addr_dbyt+1, y
 	lda	bg_addr
-	sta	ppu_displist_1_addr_dbyt, y
+	sta	ppu_displist_meta_addr_dbyt, y
 	lda	#$9A
-	sta	ppu_displist_1_byte, y
+	sta	ppu_displist_meta_special, y
 
 	lda	#0
 	sta	meta_render_area_attr_index
@@ -61,10 +61,10 @@ meta_render_area:
 		tay
 		ldx	meta_render_area_offset
 		lda	(game_buffer), y
-		sta	ppu_displist_1_addr_dbyt+(1*NMI_BUFFER_ENTRY_SIZE), x
+		sta	ppu_displist_meta_addr_dbyt+(1*NMI_BUFFER_ENTRY_SIZE), x
 		iny
 		lda	(game_buffer), y
-		sta	ppu_displist_1_addr_dbyt+1+(1*NMI_BUFFER_ENTRY_SIZE), x
+		sta	ppu_displist_meta_addr_dbyt+1+(1*NMI_BUFFER_ENTRY_SIZE), x
 
 		ldy	meta_render_area_attr_index
 		lda	meta_render_area_pos_x_parity
@@ -110,8 +110,8 @@ meta_render_area:
 	iny
 	iny
 	lda	#0
-	sta	ppu_displist_1_data, y
-	sty	ppu_displist_1_offset
+	sta	ppu_displist_meta_data, y
+	sty	ppu_displist_meta_offset
 
 	inc	bg_addr+1
 	lda	bg_addr+1
@@ -151,19 +151,19 @@ meta_render_attr:
 	sta	meta_render_attr_addr_dbyt+1
 
 	ldx	#0
-	ldy	ppu_displist_1_offset
+	ldy	ppu_displist_meta_offset
 	: ; for (attr of attrs) {
 		lda	meta_render_attr_addr_dbyt
-		sta	ppu_displist_1_addr_dbyt, y
+		sta	ppu_displist_meta_addr_dbyt, y
 		lda	meta_render_attr_addr_dbyt+1
 		clc
 		adc	#8
-		sta	ppu_displist_1_addr_dbyt+1, y
+		sta	ppu_displist_meta_addr_dbyt+1, y
 		sta	meta_render_attr_addr_dbyt+1
 		lda	bg_attr_buffer, x
-		sta	ppu_displist_1_byte+1, y
+		sta	ppu_displist_meta_payload, y
 		lda	#1
-		sta	ppu_displist_1_byte, y
+		sta	ppu_displist_meta_count, y
 		lsr	a
 		sta	bg_attr_buffer, x
 
@@ -176,8 +176,8 @@ meta_render_attr:
 		bcc	:-
 	; }
 
-	sta	ppu_displist_1_data, y
-	sty	ppu_displist_1_offset
+	sta	ppu_displist_meta_data, y
+	sty	ppu_displist_meta_offset
 
 meta_render_attr_end:
 	lda	#nmi_addr::buffer_11_A
@@ -219,13 +219,13 @@ meta_color_rotate:
 	lda	frame_count
 	and	#MOD_8
 	bne	:+++
-	ldx	ppu_displist_0_offset
+	ldx	ppu_displist_offset
 	cpx	#META_COLOR_ROT_THRESH
-	bcs	:+++ ; if ((frame_count % 8) || ppu_displist_0_offset < META_COLOR_ROT_THRESH) {
+	bcs	:+++ ; if ((frame_count % 8) || ppu_displist_offset < META_COLOR_ROT_THRESH) {
 		tay
 		: ; for (x = ppu_displist_entry, y = (frame_count % 8); y < 8; x++, y++) {
 			lda	pal_null, y
-			sta	ppu_displist_0_data, x
+			sta	ppu_displist_data, x
 
 			inx
 			iny
@@ -233,7 +233,7 @@ meta_color_rotate:
 			bcc	:-
 		; }
 
-		ldx	ppu_displist_0_offset
+		ldx	ppu_displist_offset
 		lda	#PPU_COLOR_ROW_SIZE-1
 		sta	meta_color_rotate_pal_entry
 		lda	course_type
@@ -242,7 +242,7 @@ meta_color_rotate:
 		tay
 		: ; for (i = 3, x = ppu_displist_entry, y = (course_type * 4); i >= 0; i--, x++, y++) {
 			lda	pal_page_3, y
-			sta	ppu_displist_0_data+(PPU_COLOR_ROW_SIZE-1), x
+			sta	ppu_displist_data+(PPU_COLOR_ROW_SIZE-1), x
 
 			iny
 			inx
@@ -250,14 +250,14 @@ meta_color_rotate:
 			bpl	:-
 		; }
 
-		ldx	ppu_displist_0_offset
+		ldx	ppu_displist_offset
 		ldy	meta_color_rotate_off
 		lda	pal_rotating, y
 		sta	ppu_displist+(NMI_BUFFER_ENTRY_OFFSET_SIZE+(1*PPU_COLOR_ROW_SIZE)), x
-		lda	ppu_displist_0_offset
+		lda	ppu_displist_offset
 		clc
 		adc	#7
-		sta	ppu_displist_0_offset
+		sta	ppu_displist_offset
 
 		inc	meta_color_rotate_off
 		lda	meta_color_rotate_off
@@ -307,7 +307,7 @@ meta_clear_blocks_blank_b:
 ; ----------------------------
 	.export meta_put_blank
 meta_put_blank:
-	ldy	#ppu_displist_1_data-ppu_displist
+	ldy	#ppu_displist_meta_data-ppu_displist
 	lda	#clear_blocks::blank_a
 	ldx	course_type
 	bne	:+ ; if (course_type == water) {
@@ -350,7 +350,7 @@ meta_write:
 	; }
 	tya
 
-	ldy	ppu_displist_0_offset
+	ldy	ppu_displist_offset
 	iny
 	jsr	meta_clear_put
 
@@ -411,29 +411,29 @@ meta_clear_put:
 
 meta_clear_put_do:
 	lda	meta_clear_blocks, x
-	sta	ppu_displist_0_tile-1, y
+	sta	ppu_displist_payload-1, y
 	lda	meta_clear_blocks+1, x
-	sta	ppu_displist_0_tile+1-1, y
+	sta	ppu_displist_payload+1-1, y
 	lda	meta_clear_blocks+2, x
-	sta	ppu_displist_0_tile+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_payload+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
 	lda	meta_clear_blocks+3, x
-	sta	ppu_displist_0_tile+(META_CLEAR_PUT_ENTRY_SIZE)+1-1, y
+	sta	ppu_displist_payload+(META_CLEAR_PUT_ENTRY_SIZE)+1-1, y
 
 	lda	meta_clear_put_do_addr
-	sta	ppu_displist_0_addr_dbyt+1-1, y
+	sta	ppu_displist_addr_dbyt+1-1, y
 	clc
 	adc	#>PPU_VRAM_BG1
-	sta	ppu_displist_0_addr_dbyt+(META_CLEAR_PUT_ENTRY_SIZE)+1-1, y
+	sta	ppu_displist_addr_dbyt+(META_CLEAR_PUT_ENTRY_SIZE)+1-1, y
 	lda	meta_clear_put_do_addr+1
-	sta	ppu_displist_0_addr_dbyt-1, y
-	sta	ppu_displist_0_addr_dbyt+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_addr_dbyt-1, y
+	sta	ppu_displist_addr_dbyt+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
 
 	lda	#META_CLEAR_PUT_WIDTH
-	sta	ppu_displist_0_count-1, y
-	sta	ppu_displist_0_count+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_count-1, y
+	sta	ppu_displist_count+(META_CLEAR_PUT_ENTRY_SIZE)-1, y
 
 	lda	#NMI_LIST_END
-	sta	ppu_displist_0_data+(2*META_CLEAR_PUT_ENTRY_SIZE)-1, y
+	sta	ppu_displist_data+(2*META_CLEAR_PUT_ENTRY_SIZE)-1, y
 
 	ldx	meta_clear_put_x_b
 	rts

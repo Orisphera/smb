@@ -35,8 +35,8 @@ nt_init_do:
 
 	ldy	#PPU_VRAM_ATTR_SIZE
 	txa
-	sta	ppu_displist_0_offset
-	sta	ppu_displist_0_data+0
+	sta	ppu_displist_offset
+	sta	ppu_displist_data+0
 	: ; for (byte of attributes) {
 		sta	PPU_VRAM_IO
 

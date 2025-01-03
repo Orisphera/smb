@@ -15,14 +15,14 @@
 
 .if	.defined(SMBV1)
 	nmi_addrs_low:
-		.byte	<(ppu_displist_0_data)
+		.byte	<(ppu_displist_data)
 		.byte	<(palette_underwater)
 		.byte	<(palette_overworld)
 		.byte	<(palette_underground)
 		.byte	<(palette_castle)
-		.byte	<(ppu_displist_0_offset)
-		.byte	<(ppu_displist_1_data)
-		.byte	<(ppu_displist_1_data)
+		.byte	<(ppu_displist_offset)
+		.byte	<(ppu_displist_meta_data)
+		.byte	<(ppu_displist_meta_data)
 		.byte	<(palette_bowser)
 		.byte	<(palette_snow_day)
 		.byte	<(palette_snow_night)
@@ -63,14 +63,14 @@
 	.endif
 
 	nmi_addrs_high:
-		.byte	>(ppu_displist_0_data)
+		.byte	>(ppu_displist_data)
 		.byte	>(palette_underwater)
 		.byte	>(palette_overworld)
 		.byte	>(palette_underground)
 		.byte	>(palette_castle)
-		.byte	>(ppu_displist_0_offset)
-		.byte	>(ppu_displist_1_data)
-		.byte	>(ppu_displist_1_data)
+		.byte	>(ppu_displist_offset)
+		.byte	>(ppu_displist_meta_data)
+		.byte	>(ppu_displist_meta_data)
 		.byte	>(palette_bowser)
 		.byte	>(palette_snow_day)
 		.byte	>(palette_snow_night)
@@ -111,14 +111,14 @@
 	.endif
 .elseif	.defined(SMBV2)
 	nmi_addrs:
-		.addr	(ppu_displist_0_data)
+		.addr	(ppu_displist_data)
 		.addr	(palette_underwater)
 		.addr	(palette_overworld)
 		.addr	(palette_underground)
 		.addr	(palette_castle)
 		.addr	(title_map)
-		.addr	(ppu_displist_1_data)
-		.addr	(ppu_displist_1_data)
+		.addr	(ppu_displist_meta_data)
+		.addr	(ppu_displist_meta_data)
 		.addr	(palette_bowser)
 		.addr	(palette_snow_day)
 		.addr	(palette_snow_night)
@@ -166,9 +166,9 @@ nmi_addr_1E:
 	.byte	PPU_COLOR_RED1,	PPU_COLOR_ORANGE2, PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW1
 .endif
 
-ppu_displist_offset:
-	.byte	<ppu_displist_0
-	.byte	<ppu_displist_1
+ppu_displist_page:
+	.byte	<ppu_displist
+	.byte	<ppu_displist_meta
 ; ----------------------------
 .if	.defined(SMBV2)
 	SMBV2_NMI_TIMER_3_19594_MS	= 5720
@@ -260,7 +260,7 @@ nmi:
 	bne	:+ ; if (nmi_buffer_ptr == buffer_11_A) {
 		iny
 	: ; }
-	ldx	ppu_displist_offset, y
+	ldx	ppu_displist_page, y
 	lda	#nmi_addr::buffer_01_A
 	sta	ppu_displist, x
 	sta	ppu_displist+1, x

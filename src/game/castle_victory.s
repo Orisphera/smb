@@ -599,7 +599,7 @@ victory_84CF:
 			ldx	#(pal_8492_end-pal_8492)-1
 			: ; for (color of pal_8492) {
 				lda	pal_8492, x
-				sta	ppu_displist_0_data+0, x
+				sta	ppu_displist_data+0, x
 
 				dex
 				bpl	:-
@@ -609,7 +609,7 @@ victory_84CF:
 			ldy	VS_RAM_ARENA0+$22
 			: ; for (x = 12; x > 0; x -= 4) {
 				lda	pal_84A6, y
-				sta	ppu_displist_0_data+3, x
+				sta	ppu_displist_data+3, x
 
 				dex
 				dex
@@ -633,7 +633,7 @@ victory_8526:
 	ldx	#(ppu_84AA_end-ppu_84AA)-1
 	: ; for (entry of ppu_84AA) {
 		lda	ppu_84AA, x
-		sta	ppu_displist_0_data, x
+		sta	ppu_displist_data, x
 		dex
 		bpl	:-
 	; }

@@ -96,7 +96,7 @@ misc_proc_coin_update_stats:
 misc_proc_coin_add_score:
 	jsr	stats_print_num
 
-	ldy	ppu_displist_0_offset
+	ldy	ppu_displist_offset
 	lda	oam_buffer+$FB, y
 	bne	:+ ; if (!oam_buffer[0xFB]) {
 		lda	#$24

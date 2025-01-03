@@ -132,7 +132,7 @@ bg_color_init_3:
 
 	.export bg_color_player
 bg_color_player:
-	ldx	ppu_displist_0_offset
+	ldx	ppu_displist_offset
 	ldy	#(bg_color_player_1-bg_color_player_data)
 	.if	.defined(SMBV1)
 		lda	player_id
@@ -147,9 +147,9 @@ bg_color_player:
 	: ; }
 	lda	#PPU_COLOR_LINE_SIZE-1
 	sta	bg_color_pal_entry
-	: ; for (x = ppu_displist_0_offset, y = entry_base, i = 3; i >= 0; x++, y++, i--) {
+	: ; for (x = ppu_displist_offset, y = entry_base, i = 3; i >= 0; x++, y++, i--) {
 		lda	bg_color_player_data, y
-		sta	ppu_displist_0_byte, x
+		sta	ppu_displist_payload, x
 
 		iny
 		inx
@@ -157,28 +157,28 @@ bg_color_player:
 		bpl	:-
 	; }
 
-	ldx	ppu_displist_0_offset
+	ldx	ppu_displist_offset
 	ldy	course_bg_col
 	bne	:+ ; if (!course_bg_col) {
 		ldy	course_type
 	: ; }
 	lda	bg_color_data+PPU_COLOR_ROW_SIZE, y
-	sta	ppu_displist_0_byte, x
+	sta	ppu_displist_payload, x
 	lda	#>(PPU_COLOR_PAGE_OBJ)
-	sta	ppu_displist_0_addr_dbyt, x
+	sta	ppu_displist_addr_dbyt, x
 	lda	#<(PPU_COLOR_PAGE_OBJ)
-	sta	ppu_displist_0_addr_dbyt+1, x
+	sta	ppu_displist_addr_dbyt+1, x
 	lda	#PPU_COLOR_LINE_SIZE
-	sta	ppu_displist_0_count, x
+	sta	ppu_displist_count, x
 	lda	#NMI_LIST_END
-	sta	ppu_displist_0_data+(WORD_SIZE+1+PPU_COLOR_ROW_SIZE), x
+	sta	ppu_displist_data+(WORD_SIZE+1+PPU_COLOR_ROW_SIZE), x
 	txa
 	clc
 	adc	#(WORD_SIZE+1+PPU_COLOR_ROW_SIZE)
 
 	.export bg_color_player_end
 bg_color_player_end:
-	sta	ppu_displist_0_offset
+	sta	ppu_displist_offset
 	rts
 ; ------------------------------------------------------------
 	.export bg_color_init_4_end
@@ -205,13 +205,13 @@ BG_STAT_1_LEN	=	3
 	.export	bg_text_draw_splash
 bg_text_draw_splash:
 	jsr	misc_proc_coin_update_stats
-	ldx	ppu_displist_0_offset
+	ldx	ppu_displist_offset
 	lda	#>(BG_STAT_1_ADDR)
-	sta	ppu_displist_0_addr_dbyt, x
+	sta	ppu_displist_addr_dbyt, x
 	lda	#<(BG_STAT_1_ADDR)
-	sta	ppu_displist_0_addr_dbyt+1, x
+	sta	ppu_displist_addr_dbyt+1, x
 	lda	#BG_STAT_1_LEN
-	sta	ppu_displist_0_count, x
+	sta	ppu_displist_count, x
 	.if	.defined(SMBV1)
 		ldy	course_no
 		iny
@@ -219,21 +219,21 @@ bg_text_draw_splash:
 	.elseif	.defined(SMBV2)
 		jsr	bg_calc_course_no
 	.endif
-	sta	ppu_displist_0_tile+0, x
+	sta	ppu_displist_payload+0, x
 	lda	#'-'
-	sta	ppu_displist_0_tile+1, x
+	sta	ppu_displist_payload+1, x
 	ldy	player_goals
 	iny
 	tya
-	sta	ppu_displist_0_tile+2, x
+	sta	ppu_displist_payload+2, x
 
 	lda	#NMI_LIST_END
-	sta	ppu_displist_0_tile+BG_STAT_1_LEN, x
+	sta	ppu_displist_payload+BG_STAT_1_LEN, x
 
 	txa
 	clc
 	adc	#BG_STAT_1_LEN+WORD_SIZE+1
-	sta	ppu_displist_0_offset
+	sta	ppu_displist_offset
 	jmp	bg_proc_continue
 ; ----------------------------
 	.if	.defined(SMBV2)
@@ -400,7 +400,7 @@ bg_text_draw:
 		lda	bg_text, x
 		cmp	#BG_TEXT_END_VAL
 		beq	:+
-		sta	ppu_displist_0_data, y
+		sta	ppu_displist_data, y
 
 		inx
 		iny
@@ -408,7 +408,7 @@ bg_text_draw:
 	: ; }
 
 	lda	#NMI_LIST_END
-	sta	ppu_displist_0_data, y
+	sta	ppu_displist_data, y
 	pla
 
 	.if	.defined(SMBV2)
@@ -431,22 +431,22 @@ bg_text_draw:
 		bcc	:+ ; if (++player_lives >= 10) {
 			sbc	#10
 			ldy	#$9F
-			sty	ppu_displist_0_data+7
+			sty	ppu_displist_data+7
 		: ; }
-		sta	ppu_displist_0_data+8
+		sta	ppu_displist_data+8
 	
 		.if	.defined(SMBV1)
 			ldy	course_no
 			iny
-			sty	ppu_displist_0_data+19
+			sty	ppu_displist_data+19
 		.elseif	.defined(SMBV2)
 			jsr	bg_calc_course_no
-			sta	ppu_displist_0_data+19
+			sta	ppu_displist_data+19
 		.endif
 
 		ldy	player_goals
 		iny
-		sty	ppu_displist_0_data+21
+		sty	ppu_displist_data+21
 
 	.if	.defined(SMBV2)
 		: ; }
@@ -476,7 +476,7 @@ bg_text_draw:
 					ldy	#(bg_text_player_2_end-bg_text_player_2)-1
 					: ; for (byte of bg_text_player_2) {
 						lda	bg_text_player_2, y
-						sta	ppu_displist_0_tile, y
+						sta	ppu_displist_payload, y
 
 						dey
 						bpl	:-
@@ -496,7 +496,7 @@ bg_text_draw:
 			: ; for (byte of bg_text_warp_screen) {
 				iny
 				lda	bg_text_warp_screen, y
-				sta	ppu_displist_0_data, y
+				sta	ppu_displist_data, y
 
 				bne	:-
 			; }
@@ -507,7 +507,7 @@ bg_text_draw:
 		.if	.defined(SMB2)
 				tax
 				lda	bg_text_warps, x
-				sta	ppu_displist_0_data+27
+				sta	ppu_displist_data+27
 		.endif
 	.elseif	.defined(SMBV1)
 		bg_text_draw_over: ; } else {
@@ -521,7 +521,7 @@ bg_text_draw:
 		ldy	#0
 		: ; for (y = 0; y < 12; y += 4) {
 			lda	bg_text_warps, x
-			sta	ppu_displist_0_data+27, y
+			sta	ppu_displist_data+27, y
 
 			inx
 			iny
