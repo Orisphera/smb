@@ -104,10 +104,10 @@ render_player_do:
 	lda	timer_proj_throw
 	beq	:++ ; if (timer_proj_throw != 0) {
 		ldy	#0
-		lda	timer_proj_ani
+		lda	timer_ani_proj
 		cmp	timer_proj_throw
 		sty	timer_proj_throw
-		bcs	:++ ; if (timer_proj_ani < timer_proj_throw) {
+		bcs	:++ ; if (timer_ani_proj < timer_proj_throw) {
 			sta	timer_proj_throw
 			ldy	#<(render_player_tile_offset_proj-render_player_tile_offsets)
 			lda	render_player_tile_offsets, y
@@ -301,10 +301,10 @@ render_player_animation:
 	jsr	render_player_fall
 	pha
 
-	lda	timer_proj_ani
+	lda	timer_ani_proj
 	bne	:++ ; if (proj.timer_ani == 0) {
-		lda	timer_player_ani
-		sta	timer_proj_ani
+		lda	timer_ani_player
+		sta	timer_ani_proj
 		lda	player_ani_frame
 		clc
 		adc	#1

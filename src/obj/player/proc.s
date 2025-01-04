@@ -752,7 +752,7 @@ player_proc_player_physics:
 		bmi	:+ ; (this.veloc_y >= 0) { 
 			lsr	a
 		: ; }
-		sta	timer_player_ani
+		sta	timer_ani_player
 	
 		rts
 	: lda	player_on_spring
@@ -958,7 +958,7 @@ player_proc_player_ani_speed:
 	: ; }
 
 	lda	player_proc_player_ani_timers, y
-	sta	timer_player_ani
+	sta	timer_ani_player
 	rts
 ; -----------------------------------------------------------
 player_proc_player_friction:

@@ -38,10 +38,10 @@ proj_proc:
 			sta	apu_sfx_pulse_1_req
 			lda	#proj_states::state_2
 			sta	state_proj, x
-			ldy	timer_player_ani
+			ldy	timer_ani_player
 			sty	timer_proj_throw
 			dey
-			sty	timer_proj_ani
+			sty	timer_ani_proj
 			inc	proj_counter
 		: ; }
 	
