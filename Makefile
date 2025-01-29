@@ -682,6 +682,9 @@ nsmmain.bin: $(OBJS_ANN)
 	$(CHECK) nsmchar1.bin $(CKSUM_NSMCHAR1)
 	$(CHECK) nsmchar2.bin $(CKSUM_NSMCHAR2)
 
+.s.o:
+	$(AS) $(ASFLAGS) -o $@ $<
+
 .bin.fdf:
 	$(BINTOFDF) $< <data/fs/files/$<.def >$@
 
