@@ -9,7 +9,7 @@
 # SM2DATA3 - skip=45055 count=3279
 # SM2DATA2 - skip=48351 count=3916
 
-if [ -z $1 ]
+if test -z $1
 then
     echo "Usage: extract.sh <image>.fds"
     exit 1
@@ -43,19 +43,19 @@ TILE_ONEUP_RIGHT=254
 TILE_MUSH_SE=255
 
 I=0
-while [ $I -ne $BG_BANK ] && [ $I -ne $TILES ]
+while test $I -ne $BG_BANK && test $I -ne $TILES
 do
         CHR_PATH=$CHR_PATH_BASE
-        if [ $I -eq $TILE_PLAT ] || [ $I -eq $TILE_BLOCK_LEFT ] || [ $I -eq $TILE_BLOCK_RIGHT ]
+        if test $I -eq $TILE_PLAT || test $I -eq $TILE_BLOCK_LEFT || test $I -eq $TILE_BLOCK_RIGHT
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $I -eq $TILE_MUSH_NW ] || [ $I -eq $TILE_MUSH_NE ] || [ $I -eq $TILE_MUSH_SW ]
+        elif test $I -eq $TILE_MUSH_NW || test $I -eq $TILE_MUSH_NE || test $I -eq $TILE_MUSH_SW
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $I -eq $TILE_MUSH_SE ] || [ $I -eq $TILE_ONEUP_LEFT ] || [ $I -eq $TILE_ONEUP_RIGHT ]
+        elif test $I -eq $TILE_MUSH_SE || test $I -eq $TILE_ONEUP_LEFT || test $I -eq $TILE_ONEUP_RIGHT
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $I -ge $TILE_NEW_A_FIRST ] && [ $I -le $TILE_NEW_A_LAST ]
+        elif test $I -ge $TILE_NEW_A_FIRST && test $I -le $TILE_NEW_A_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
         fi
@@ -111,71 +111,71 @@ COPYRIGHT_SMB2=207
 BG_SMB2_C_FIRST=236
 BG_SMB2_C_LAST=254
 
-while [ $I -ne $TILES ]
+while test $I -ne $TILES
 do
 	J=`expr $I - $BG_BANK`
         CHR_PATH=$CHR_PATH_BASE
-        if [ $J -ge $FONT_VS_A_FIRST ] && [ $J -le $FONT_VS_A_LAST ]
+        if test $J -ge $FONT_VS_A_FIRST && test $J -le $FONT_VS_A_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -ge $FONT_SMB2_A_FIRST ] && [ $J -le $FONT_SMB2_A_LAST ]
+        elif test $J -ge $FONT_SMB2_A_FIRST && test $J -le $FONT_SMB2_A_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $FONT_VS_B_FIRST ] && [ $J -le $FONT_VS_B_LAST ]
+        elif test $J -ge $FONT_VS_B_FIRST && test $J -le $FONT_VS_B_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -ge $FONT_SMB2_B_FIRST ] && [ $J -le $FONT_SMB2_B_LAST ]
+        elif test $J -ge $FONT_SMB2_B_FIRST && test $J -le $FONT_SMB2_B_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $FONT_VS_C_FIRST ] && [ $J -le $FONT_VS_C_LAST ]
+        elif test $J -ge $FONT_VS_C_FIRST && test $J -le $FONT_VS_C_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -ge $FONT_VS_D_FIRST ] && [ $J -le $FONT_VS_D_LAST ]
+        elif test $J -ge $FONT_VS_D_FIRST && test $J -le $FONT_VS_D_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -ge $FONT_VS_E_FIRST ] && [ $J -le $FONT_VS_E_LAST ]
+        elif test $J -ge $FONT_VS_E_FIRST && test $J -le $FONT_VS_E_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -ge $PLAT_SMB2_A_FIRST ] && [ $J -le $PLAT_SMB2_A_LAST ]
+        elif test $J -ge $PLAT_SMB2_A_FIRST && test $J -le $PLAT_SMB2_A_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $BG_SMB2_A_FIRST ] && [ $J -le $BG_SMB2_A_LAST ]
+        elif test $J -ge $BG_SMB2_A_FIRST && test $J -le $BG_SMB2_A_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -eq $BRICK_SMB2_A ] || [ $J -eq $BRICK_SMB2_B ] || [ $J -eq $BRICK_SMB2_C ] || [ $J -eq $BRICK_SMB2_D ] || [ $J -eq $BRICK_SMB2_E ] || [ $J -eq $BRICK_SMB2_F ] || [ $J -eq $COPYRIGHT_SMB2 ]
+        elif test $J -eq $BRICK_SMB2_A || test $J -eq $BRICK_SMB2_B || test $J -eq $BRICK_SMB2_C || test $J -eq $BRICK_SMB2_D || test $J -eq $BRICK_SMB2_E || test $J -eq $BRICK_SMB2_F || test $J -eq $COPYRIGHT_SMB2
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $TREE_LEFT_SMB2_FIRST ] && [ $J -le $TREE_LEFT_SMB2_LAST ]
+        elif test $J -ge $TREE_LEFT_SMB2_FIRST && test $J -le $TREE_LEFT_SMB2_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $TREE_REST_SMB2_FIRST ] && [ $J -le $TREE_REST_SMB2_LAST ]
+        elif test $J -ge $TREE_REST_SMB2_FIRST && test $J -le $TREE_REST_SMB2_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $TOP_PLAT_SMB2_FIRST ] && [ $J -le $TOP_PLAT_SMB2_LAST ]
+        elif test $J -ge $TOP_PLAT_SMB2_FIRST && test $J -le $TOP_PLAT_SMB2_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $FENCE_SMB2_A_FIRST ] && [ $J -le $FENCE_SMB2_A_LAST ]
+        elif test $J -ge $FENCE_SMB2_A_FIRST && test $J -le $FENCE_SMB2_A_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $DOOR_SMB2_FIRST ] && [ $J -le $DOOR_SMB2_LAST ]
+        elif test $J -ge $DOOR_SMB2_FIRST && test $J -le $DOOR_SMB2_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $FENCE_SMB2_B_FIRST ] && [ $J -le $FENCE_SMB2_B_LAST ]
+        elif test $J -ge $FENCE_SMB2_B_FIRST && test $J -le $FENCE_SMB2_B_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $FONT_VS_F_FIRST ] && [ $J -le $FONT_VS_F_LAST ]
+        elif test $J -ge $FONT_VS_F_FIRST && test $J -le $FONT_VS_F_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -ge $GROUND_SMB2_A_FIRST ] && [ $J -le $GROUND_SMB2_A_LAST ]
+        elif test $J -ge $GROUND_SMB2_A_FIRST && test $J -le $GROUND_SMB2_A_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $MUSH_TREE_SMB2_FIRST ] && [ $J -le $MUSH_TREE_SMB2_LAST ]
+        elif test $J -ge $MUSH_TREE_SMB2_FIRST && test $J -le $MUSH_TREE_SMB2_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $BG_SMB2_B_FIRST ] && [ $J -le $BG_SMB2_B_LAST ]
+        elif test $J -ge $BG_SMB2_B_FIRST && test $J -le $BG_SMB2_B_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
-        elif [ $J -ge $BG_SMB2_C_FIRST ] && [ $J -le $BG_SMB2_C_LAST ]
+        elif test $J -ge $BG_SMB2_C_FIRST && test $J -le $BG_SMB2_C_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
         fi
@@ -190,7 +190,7 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 
 I=0
 J=118
-while [ $J -ne $BG_BANK ] && [ $I -ne $TILES ]
+while test $J -ne $BG_BANK && test $I -ne $TILES
 do
         dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.smb2/chr_obj_`printf "%.2X" $J`.bin
         I=`expr $I + 1`

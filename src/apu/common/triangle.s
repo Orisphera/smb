@@ -68,7 +68,6 @@ apu_triangle_do:
 			and	#music_base::castle|music_base::underwater
 			beq	apu_music_triangle_end
 			apu_triangle_fade_set:
-			; }
 			.endif ; if (APU_FDS || (music.event.current.not_in(hurry_up, level_end, victory, game_over) && music.base.current.in(castle, underwater))) {
 				txa
 				cmp	#APU_TRIANGLE_FADE_FRAME

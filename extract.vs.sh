@@ -5,7 +5,7 @@
 # CHR0 - skip=32784 count=8192
 # CHR1 - skip=40976 count=8192
 
-if [ -z $1 ]
+if test -z $1
 then
     echo "Usage: extract.sh <rom>.nes"
     exit 1
@@ -29,10 +29,10 @@ TILE_ONEUP_LEFT=253
 TILE_ONEUP_RIGHT=254
 
 I=0
-while [ $I -ne $BG_BANK ] && [ $I -ne $TILES ]
+while test $I -ne $BG_BANK && test $I -ne $TILES
 do
         CHR_PATH=$CHR_PATH_BASE
-        if [ $I -eq $TILE_ONEUP_LEFT ] || [ $I -eq $TILE_ONEUP_RIGHT ]
+        if test $I -eq $TILE_ONEUP_LEFT || test $I -eq $TILE_ONEUP_RIGHT
         then
                 CHR_PATH=$CHR_PATH_VS
         fi
@@ -50,17 +50,17 @@ ICON_MUSH=206
 VS_NEWBG_FIRST=236
 VS_NEWBG_LAST=254
 
-while [ $I -ne $TILES ]
+while test $I -ne $TILES
 do
 	J=`expr $I - $BG_BANK`
         CHR_PATH=$CHR_PATH_BASE
-        if [ $J -ge $FONT_FIRST ] && [ $J -le $FONT_LAST ]
+        if test $J -ge $FONT_FIRST && test $J -le $FONT_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -eq $FONT_DASH ] || [ $J -eq $FONT_X ] || [ $J -eq $FONT_EX ] || [ $J -eq $FONT_PER ] || [ $J -eq $ICON_MUSH ]
+        elif test $J -eq $FONT_DASH || test $J -eq $FONT_X || test $J -eq $FONT_EX || test $J -eq $FONT_PER || test $J -eq $ICON_MUSH
         then
                 CHR_PATH=$CHR_PATH_VS
-        elif [ $J -ge $VS_NEWBG_FIRST ] && [ $J -le $VS_NEWBG_LAST ]
+        elif test $J -ge $VS_NEWBG_FIRST && test $J -le $VS_NEWBG_LAST
         then
                 CHR_PATH=$CHR_PATH_VS
         fi
