@@ -1,4 +1,4 @@
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 	.export	apu_block_break_periods
 apu_block_break_periods:

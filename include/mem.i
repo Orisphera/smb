@@ -1,8 +1,8 @@
 .ifndef	MEM_I
 MEM_I	= 1
 
-.include	"system/cpu.i"
-.include	"system/vs.i"
+.include	"sys/cpu.i"
+.include	"sys/vs.i"
 
 .include	"./tunables.i"
 

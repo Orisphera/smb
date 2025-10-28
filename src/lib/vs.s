@@ -1,5 +1,5 @@
-.include	"system/ppu.i"
-.include	"system/vs.i"
+.include	"sys/ppu.i"
+.include	"sys/vs.i"
 
 .include	"mem.i"
 .include	"chr.i"

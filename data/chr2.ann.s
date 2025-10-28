@@ -1,6 +1,6 @@
 .segment	"CHR1DATA"
 
-.include	"system/ppu.i"
+.include	"sys/ppu.i"
 
 	.export chr_obj_princess_a
 	.export chr_obj_princess_b

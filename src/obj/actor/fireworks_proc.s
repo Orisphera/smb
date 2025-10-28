@@ -1,4 +1,4 @@
-.include	"system/cpu.i"
+.include	"sys/cpu.i"
 
 .include	"mem.i"
 .include	"misc.i"

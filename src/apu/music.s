@@ -1,4 +1,4 @@
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 .include	"mem.i"
 .include	"sound.i"

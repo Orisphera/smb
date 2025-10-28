@@ -1,7 +1,7 @@
 .ifndef	SOUND_I
 SOUND_I = 1
 
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 	SND_TRACK_NOTE_LEN      = %10000000
 	SND_CMP_LEN_MASK	= %11000001

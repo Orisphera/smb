@@ -1,4 +1,4 @@
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 	.export	apu_area_envelope
 apu_area_envelope:

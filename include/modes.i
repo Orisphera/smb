@@ -1,7 +1,7 @@
 .ifndef	MODES_I
 MODES_I = 1
 
-.include	"system/cpu.i"
+.include	"sys/cpu.i"
 
 	.enum	system_modes
 		.if	.defined(SMBV1)

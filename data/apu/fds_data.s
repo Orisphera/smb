@@ -1,4 +1,4 @@
-.include	"system/fds.i"
+.include	"sys/fds.i"
 
 .include	"sound.i"
 

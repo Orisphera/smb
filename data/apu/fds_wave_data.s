@@ -1,4 +1,4 @@
-.include	"system/fds.i"
+.include	"sys/fds.i"
 
 .segment	"DATA3"
 

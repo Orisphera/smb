@@ -1,4 +1,4 @@
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 	.export	apu_underwater_envelope
 	.export	apu_flame_envelope

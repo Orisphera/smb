@@ -1,7 +1,7 @@
 .ifndef MACROS_I
 MACROS_I = 1
 
-.include	"system/ppu.i"
+.include	"sys/ppu.i"
 
 ; move the zeropage-addressed word into the dest address
 .macro	movwz_m		src, dest

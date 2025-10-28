@@ -1,5 +1,5 @@
 .if     .defined(VS)
-        .include        "system/vs.i"
+        .include        "sys/vs.i"
 .endif
 
 .include	"mem.i"

@@ -1,10 +1,10 @@
-.include	"system/ppu.i"
-.include	"system/palette.i"
+.include	"sys/ppu.i"
+.include	"sys/palette.i"
 .if	.defined(FDS)
-	.include	"system/fds.i"
+	.include	"sys/fds.i"
 .endif
 .if	.defined(VS)
-	.include	"system/vs.i"
+	.include	"sys/vs.i"
 .endif
 
 .include	"mem.i"

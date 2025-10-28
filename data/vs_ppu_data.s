@@ -1,5 +1,5 @@
-.include        "system/ppu.i"
-.include        "system/palette.i"
+.include        "sys/ppu.i"
+.include        "sys/palette.i"
 
 .include        "tunables.i"
 .include        "chr.i"

@@ -1,11 +1,11 @@
-.include	"system/cpu.i"
-.include	"system/ppu.i"
-.include	"system/apu.i"
+.include	"sys/cpu.i"
+.include	"sys/ppu.i"
+.include	"sys/apu.i"
 .if	.defined(FDS)
-	.include	"system/fds.i"
+	.include	"sys/fds.i"
 .endif
 .if	.defined(VS)
-	.include	"system/vs.i"
+	.include	"sys/vs.i"
 .endif
 
 .include	"macros.i"

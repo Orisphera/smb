@@ -1,4 +1,4 @@
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 	.if	.defined(OG_PAD)
 	.if	.defined(SMB)

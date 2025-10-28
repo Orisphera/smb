@@ -1,4 +1,4 @@
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 	.export	apu_stomp_envelope
 apu_stomp_envelope:

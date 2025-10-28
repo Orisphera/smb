@@ -1,4 +1,4 @@
-.include	"system/ppu.i"
+.include	"sys/ppu.i"
 
 .include	"mem.i"
 .include	"misc.i"

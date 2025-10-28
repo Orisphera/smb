@@ -1,4 +1,4 @@
-.include	"system/apu.i"
+.include	"sys/apu.i"
 
 	.export	apu_victory_castle_envelope
 apu_victory_castle_envelope:

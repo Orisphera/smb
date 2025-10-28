@@ -1,4 +1,4 @@
-.include	"system/fds_charmap.i"
+.include	"sys/fds_charmap.i"
 
 .segment	"KYODAKUDATA"
 

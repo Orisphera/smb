@@ -1,8 +1,8 @@
 .ifndef TUNABLES_I
 TUNABLES_I = 1
 
-.include	"system/cpu.i"
-.include	"system/ppu.i"
+.include	"sys/cpu.i"
+.include	"sys/ppu.i"
 
 .include	"misc.i"
 

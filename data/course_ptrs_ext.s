@@ -1,4 +1,4 @@
-.include	"system/cpu.i"
+.include	"sys/cpu.i"
 
 COURSE_OFFSET_INC_SIZE	= WORD_SIZE
 

@@ -1,7 +1,7 @@
 .ifndef	CHR_I
 CHR_I = 1
 
-.include	"system/ppu.i"
+.include	"sys/ppu.i"
 
 	.enum	chr_obj
 		player_walk_large = <((chr_obj_player_walk_large-chr_obj)/PPU_CHR_SIZE)

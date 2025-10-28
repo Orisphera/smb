@@ -1,4 +1,4 @@
-.include	"system/cpu.i"
+.include	"sys/cpu.i"
 
 .if	.defined(SMB)
 	COURSE_OFFSET_INC_SIZE	= 1

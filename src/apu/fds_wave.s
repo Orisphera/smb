@@ -1,5 +1,5 @@
-.include	"system/apu.i"
-.include	"system/fds.i"
+.include	"sys/apu.i"
+.include	"sys/fds.i"
 
 .include	"mem.i"
 .include	"sound.i"

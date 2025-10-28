@@ -1,4 +1,4 @@
-.include	"system/vs.i"
+.include	"sys/vs.i"
 
 .include	"math.i"
 .include	"mem.i"

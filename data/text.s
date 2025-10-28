@@ -1,4 +1,4 @@
-.include	"system/ppu.i"
+.include	"sys/ppu.i"
 
 .include	"charmap.i"
 .include	"tunables.i"

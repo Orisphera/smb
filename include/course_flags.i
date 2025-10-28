@@ -1,8 +1,8 @@
 .ifndef	COURSE_FLAGS_I
 COURSE_FLAGS_I = 1
 
-.include	"system/cpu.i"
-.include	"system/ppu.i"
+.include	"sys/cpu.i"
+.include	"sys/ppu.i"
 
 .include	"misc.i"
 .include	"course_ids.i"

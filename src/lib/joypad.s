@@ -1,6 +1,6 @@
-.include	"system/ctrl.i"
+.include	"sys/ctrl.i"
 .if	.defined(VS)
-	.include	"system/vs.i"
+	.include	"sys/vs.i"
 .endif
 
 .include	"mem.i"
