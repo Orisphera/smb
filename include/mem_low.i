@@ -21,8 +21,8 @@ render_oam_idx			= zp_byte_02
 
 render_chr_pair_tile_left	= zp_byte_00
 render_chr_pair_tile_right	= zp_byte_01
-render_chr_pair_pos_y		= zp_byte_02
 render_chr_pair_args		= zp_byte_02
+render_chr_pair_pos_y		= zp_byte_02
 render_chr_pair_color_mod_2 	= zp_byte_03
 render_chr_pair_attr		= zp_byte_04
 render_chr_pair_pos_x		= zp_byte_05

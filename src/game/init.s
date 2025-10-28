@@ -99,10 +99,10 @@ game_init_0_do:
 	sta	pos_x_hi_game
 	sta	course_page_loaded
 
-	jsr	game_disp_pos
+	jsr	game_screen_pos_x_calc
 	ldy	#>PPU_VRAM_BG1
 	and	#1
-	beq	:+ ; if (game_disp_pos() % 1) {
+	beq	:+ ; if (game_screen_pos_x_calc() % 1) {
 		ldy	#>PPU_VRAM_BG2
 	: ; }
 	sty	bg_addr

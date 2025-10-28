@@ -327,8 +327,8 @@ victory_proc:
 		lda	#1
 		adc	#0
 		tay
-		jsr	game_scroll_do
-		jsr	game_proc_scroll_save
+		jsr	game_scroll_calc
+		jsr	game_proc_scenery_scroll
 		inc	victory_proc_ctrl
 	: ; }
 

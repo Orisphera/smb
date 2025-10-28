@@ -17,6 +17,7 @@
 .endif
 .endif
 
+; sys_game - game process
 	.export	sys_game
 	.export	game_mode_tbl
 	.export	game_mode_init_0
@@ -56,10 +57,8 @@ vs_game_init:
 	rts
 .endif
 ; ----------------------------------------------------------------------
-GAME_SCROLL_END	= $20
-
-	.export	game_proc, game_proc_scroll_save
-game_proc:
+	.export	game_proc, game_proc_scenery_scroll
+game_proc:	; game_proc - main gameplay routine
 	.if	.defined(SMBV1)
 		.if	.defined(VS_SMB)
 		lda	player_count
@@ -180,7 +179,7 @@ game_proc:
 		lda	#joypad_button::none
 		sta	joypad_l_r
 	
-	game_proc_scroll_save:
+	game_proc_scenery_scroll:	; game_proc_scenery_scroll - update scroll and process scenery, if applicable
 		lda	nmi_buffer_ptr
 		cmp	#nmi_addr::buffer_11_A
 		beq	:++
@@ -202,8 +201,8 @@ game_proc:
 		rts
 	; } else rts;
 ; ----------------------------------------------------------------------
-	.export	game_scroll, game_scroll_do
-game_scroll:
+	.export	game_scroll, game_scroll_calc
+game_scroll:	; game_scroll - apply scroll operations based on player motion
 	lda	scroll_x_player
 	clc
 	adc	actor_plat_scroll_x
@@ -211,13 +210,13 @@ game_scroll:
 	lda	game_scroll_lock
 	bne	:++++
 	lda	scroll_x_player_b
-	cmp	#$50
+	cmp	#80
 	bcc	:++++
 	lda	timer_col_x
 	bne	:++++
 	ldy	scroll_x_player
 	dey
-	bmi	:++++ ; if (!scroll_lock && this.scroll_x_b >= 0x50 && !timer_col_x && --this.scroll_x >= 0) {
+	bmi	:++++ ; if (!scroll_lock && this.scroll_x_b >= 80 && !timer_col_x && --this.scroll_x >= 0) {
 		iny
 		cpy	#2
 		bcc	:+ ; if (++this.scroll_x >= 2) {
@@ -225,12 +224,12 @@ game_scroll:
 		: ; }
 	
 		lda	scroll_x_player_b
-		cmp	#$70
-		bcc	:+ ; if (this.scroll_x_b >= 0x70) {
+		cmp	#112
+		bcc	:+ ; if (this.scroll_x_b >= 112) {
 			ldy	scroll_x_player
 		: ; }
 	
-	game_scroll_do:
+	game_scroll_calc:	; game_scroll_calc - apply scroll operations generally
 		.if	.defined(SMBV2)
 		: ; while (SMBV2 && fds_sprite_overlap_hit) {
 			lda	fds_sprite_overlap_hit
@@ -245,6 +244,7 @@ game_scroll:
 		clc
 		adc	game_scroll_h
 		sta	game_scroll_h
+
 		tya
 		clc
 		adc	pos_x_lo_screen_left
@@ -253,6 +253,7 @@ game_scroll:
 		lda	pos_x_hi_screen_left
 		adc	#0
 		sta	pos_x_hi_screen_left
+	
 		and	#ppu_ctlr0::bg_parity
 		.if	.defined(SMBV1)
 			sta	zp_byte_00
@@ -265,7 +266,7 @@ game_scroll:
 			sta	ppu_ctlr0_bg
 		.endif
 
-		jsr	game_disp_pos
+		jsr	game_screen_pos_x_calc
 
 		lda	#8
 		sta	timer_scroll
@@ -312,13 +313,14 @@ game_scroll_btn_mask:
 	.byte	joypad_button::right
 	.byte	joypad_button::left
 ; ----------------------------------------------------------------------
-	.export	game_disp_pos
-game_disp_pos:
+; game_screen_pos_x_calc - calculate screen boundaries
+	.export	game_screen_pos_x_calc
+game_screen_pos_x_calc:
 	lda	pos_x_lo_screen_left
 	clc
-	adc	#$FF
+	adc	#<255
 	sta	pos_x_lo_screen_right
 	lda	pos_x_hi_screen_left
-	adc	#0
+	adc	#>255
 	sta	pos_x_hi_screen_right
 	rts
