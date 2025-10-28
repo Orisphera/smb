@@ -2,7 +2,7 @@
 
 .include	"mem.i"
 .include	"sound.i"
-.include	"tunables.i"
+.include	"const.i"
 
 .if	.definedmacro(APU_PULSE_2_BASE)
 APU_PULSE_2_DO_NOTE_LEN	= apu_pulse_2_note_len

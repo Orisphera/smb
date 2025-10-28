@@ -1,7 +1,7 @@
 .include        "sys/ppu.i"
 .include        "sys/palette.i"
 
-.include        "tunables.i"
+.include        "const.i"
 .include        "chr.i"
 .include	"charmap.i"
 

@@ -1,7 +1,7 @@
 .include	"math.i"
 .include	"mem.i"
 .include	"joypad.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"misc.i"
 
 .include	"macros.i"

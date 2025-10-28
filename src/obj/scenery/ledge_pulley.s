@@ -1,6 +1,6 @@
 .include	"mem.i"
 .include	"tiles.i"
-.include	"tunables.i"
+.include	"const.i"
 
 ; -----------------------------
 	.export	scenery_ledge

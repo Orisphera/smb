@@ -1,7 +1,7 @@
 .include	"mem.i"
 .include	"course_flags.i"
 .include	"misc.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"tiles.i"
 
         .export scenery_spring

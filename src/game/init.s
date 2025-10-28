@@ -4,7 +4,7 @@
 .include	"chr.i"
 .include	"course_flags.i"
 .include	"sound.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"misc.i"
 .include	"math.i"
 

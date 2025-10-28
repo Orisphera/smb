@@ -4,7 +4,7 @@
 
 .include	"mem.i"
 .include	"course_flags.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"charmap.i"
 .include	"modes.i"
 .include	"misc.i"

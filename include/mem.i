@@ -4,7 +4,7 @@ MEM_I	= 1
 .include	"sys/cpu.i"
 .include	"sys/vs.i"
 
-.include	"./tunables.i"
+.include	"./const.i"
 
 zp_byte_00		= $00
 zp_addr_00		= zp_byte_00

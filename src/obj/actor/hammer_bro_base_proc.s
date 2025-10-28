@@ -1,6 +1,6 @@
 .include	"math.i"
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"joypad.i"
 .include	"misc.i"
 

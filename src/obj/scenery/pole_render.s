@@ -1,7 +1,7 @@
 .include	"mem.i"
 .include	"misc.i"
 .include	"tiles.i"
-.include	"tunables.i"
+.include	"const.i"
 
 POS_X_LONE_BALL	= 2
 

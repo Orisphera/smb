@@ -1,5 +1,5 @@
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"math.i"
 
 BUBBLE_PLAYER_OFFSET_Y		= 8

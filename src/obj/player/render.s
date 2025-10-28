@@ -3,7 +3,7 @@
 
 .include	"mem.i"
 .include	"math.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"chr.i"
 .include	"sound.i"
 

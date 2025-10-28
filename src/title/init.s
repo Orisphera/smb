@@ -4,7 +4,7 @@
 .include	"mem.i"
 .include	"chr.i"
 .include	"charmap.i"
-.include	"tunables.i"
+.include	"const.i"
 
 ; ------------------------------------------------------------
 .if	.defined(SMB2)

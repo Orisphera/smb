@@ -4,7 +4,7 @@
 .include	"mem.i"
 .include	"chr.i"
 .include	"tiles.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"misc.i"
 .include	"math.i"
 

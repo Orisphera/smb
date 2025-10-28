@@ -1,5 +1,5 @@
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"joypad.i"
 
 	.export actor_init_bullet

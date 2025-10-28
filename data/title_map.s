@@ -1,6 +1,6 @@
 .include	"sys/ppu.i"
 
-.include	"tunables.i"
+.include	"const.i"
 .include	"chr.i"
 .include	"charmap.i"
 

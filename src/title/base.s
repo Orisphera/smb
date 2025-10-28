@@ -3,7 +3,7 @@
 .include	"joypad.i"
 .include	"modes.i"
 .include	"misc.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"charmap.i"
 
 .if	.defined(OG_PAD)

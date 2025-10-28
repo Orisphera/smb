@@ -10,7 +10,7 @@
 .include	"mem.i"
 .include	"joypad.i"
 .include	"modes.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"misc.i"
 
 .if	.defined(SMBV1)

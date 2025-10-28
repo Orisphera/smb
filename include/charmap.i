@@ -1,7 +1,7 @@
 .ifndef CHARMAP_I
 CHARMAP_I = 1
 
-.include	"tunables.i"
+.include	"const.i"
 
 	.charmap	'0', ENG_FONT_TILE_BASE+$00
 	.charmap	'1', ENG_FONT_TILE_BASE+$01

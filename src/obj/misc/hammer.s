@@ -1,6 +1,6 @@
 .include	"mem.i"
 .include	"misc.i"
-.include	"tunables.i"
+.include	"const.i"
 
 ; ------------------------------------------------------------
 MISC_HAMMER_ACCEL_Y_DEC		= 15

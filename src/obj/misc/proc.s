@@ -1,5 +1,5 @@
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 
 ; ----------------------------------------------------------
 MISC_ACCEL_Y_INC		= 80

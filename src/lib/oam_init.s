@@ -2,7 +2,7 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 
 SKIP_TO_oam_init_do	= CPU_OPCODE_BIT_ABS
 

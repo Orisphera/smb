@@ -2,7 +2,7 @@
 
 .include	"math.i"
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"tiles.i"
 .include	"sound.i"
 

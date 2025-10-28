@@ -2,7 +2,7 @@
 
 .include	"mem.i"
 .include	"misc.i"
-.include	"tunables.i"
+.include	"const.i"
 
 scenery_swarm_ids:
 	.byte	actor::cheep_fly

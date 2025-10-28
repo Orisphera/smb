@@ -4,7 +4,7 @@
 .include	"mem.i"
 .include	"misc.i"
 .include	"charmap.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"chr.i"
 .include	"misc.i"
 .include	"joypad.i"

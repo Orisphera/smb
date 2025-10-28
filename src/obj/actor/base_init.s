@@ -1,5 +1,5 @@
 .include    "mem.i"
-.include    "tunables.i"
+.include    "const.i"
 
 actor_init_base_veloc_x:
 	.byte	<-ACTOR_BASE_VELOC_X, <-ACTOR_BASE_VELOC_X_HARD

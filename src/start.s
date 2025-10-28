@@ -10,7 +10,7 @@
 
 .include	"macros.i"
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"misc.i"
 
 .segment	"VECTORS"

@@ -1,6 +1,6 @@
 .include	"mem.i"
 .include	"misc.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"sound.i"
 
 SCORE_PLACE_THOUSANDS		= 3

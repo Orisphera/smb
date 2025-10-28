@@ -2,7 +2,7 @@
 .include	"sys/palette.i"
 
 .include	"charmap.i"
-.include	"tunables.i"
+.include	"const.i"
 
 	.export palette_underwater
 palette_underwater:

@@ -5,7 +5,7 @@
 .include	"mem.i"
 .include        "course_flags.i"
 .include	"misc.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"tiles.i"
 ; -----------------------------
 SCENERY_HEIGHT_MAX	= $0D

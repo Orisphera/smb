@@ -1,5 +1,5 @@
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 
 ; --------------------------------------------------------------
 pos_calc_object_x_offset	= zp_byte_00

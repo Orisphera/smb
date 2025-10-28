@@ -2,7 +2,7 @@
 
 .include	"mem.i"
 .include	"sound.i"
-.include	"tunables.i"
+.include	"const.i"
 
 .if	.definedmacro(APU_PULSE_1_BASE)
 APU_PULSE_1_DO_OFFSET	= apu_pulse_1_offset

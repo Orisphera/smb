@@ -1,7 +1,7 @@
 .include	"sys/ppu.i"
 
 .include	"charmap.i"
-.include	"tunables.i"
+.include	"const.i"
 
 	.export bg_text
 	.export bg_text_header_player_name

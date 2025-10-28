@@ -1,5 +1,5 @@
-.ifndef TUNABLES_I
-TUNABLES_I = 1
+.ifndef CONST_I
+CONST_I = 1
 
 .include	"sys/cpu.i"
 .include	"sys/ppu.i"
@@ -324,4 +324,4 @@ SRAND_SIZE	= 7
 ACTOR_A_COUNT	= 21
 ACTOR_B_COUNT	= 33
 
-.endif	; TUNABLES_I
+.endif	; CONST_I

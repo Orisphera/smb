@@ -1,5 +1,5 @@
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 
 	.export	scenery_alloc
 scenery_alloc:

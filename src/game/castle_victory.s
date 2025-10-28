@@ -7,7 +7,7 @@
 .include	"charmap.i"
 .include	"joypad.i"
 .include	"sound.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"modes.i"
 .include	"misc.i"
 

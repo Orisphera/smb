@@ -1,5 +1,5 @@
 .include	"mem.i"
-.include	"tunables.i"
+.include	"const.i"
 
 	.export actor_proc_enemy
 actor_proc_enemy:

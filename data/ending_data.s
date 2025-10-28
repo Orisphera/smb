@@ -3,7 +3,7 @@
 
 .include	"chr.i"
 .include	"charmap.i"
-.include	"tunables.i"
+.include	"const.i"
 
 .if	.defined(SMBV2)
 .segment	"DATA3"

@@ -1,6 +1,6 @@
 .include	"mem.i"
 .include	"misc.i"
-.include	"tunables.i"
+.include	"const.i"
 .include	"tiles.i"
 
 ; -----------------------------
