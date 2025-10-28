@@ -20,7 +20,7 @@ actor_proc_enemy:
 	bne	:+ ; if (!game_timer_stop) {
 		jsr	actor_proc_enemy_do
 	: ; }
-	jmp	col_actor_oob_proc
+	jmp	actor_oob_proc
 ; -----------------------------------------------------------
 actor_proc_enemy_do:
 	lda	obj_id_actor, x

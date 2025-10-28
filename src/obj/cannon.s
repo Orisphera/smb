@@ -65,7 +65,7 @@ cannon_proc:
 				lda	obj_id_actor, x
 				cmp	#actor::bullet
 				bne	:+ ; if (this.obj_id_actor == bullet) {
-					jsr	col_actor_oob_proc
+					jsr	actor_oob_proc
 			
 					lda	proc_id_actor, x
 					beq	:+ ; if (this.mode != dead) {

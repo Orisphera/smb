@@ -1,0 +1,82 @@
+.TH FDTC 1
+.SH NAME
+fdtc \- compile a Famicom Disk System table
+.SH SYNOPSIS
+.B fdtc
+file [ files ... ]
+.SH DESCRIPTION
+.I Fdtc
+is a script which compiles a selection of
+files with Famicom Disk System headers,
+like those produced by
+.IR bintofdf (1),
+into one side of a disk image.
+The header table is created with
+properties
+.IR read (1)
+from the standard input.
+The properties required are (hexadecimal unless
+otherwise noted):
+.P
+.RS
+Licensee
+.P
+Game Title (Three byte string)
+.P
+Game Type
+.P
+Game Version
+.P
+Disk Side (0 = A, 1 = B)
+.P
+Disk Number
+.P
+Disk Type
+.P
+Init File ID Max
+.P
+Region
+.P
+Disk Color
+.P
+Disk Version
+.RE
+.P
+The
+.B Disk Side
+may be provided as either
+0/1, a/b, or A/B.
+.B Region
+may be provided as "J" for Japan.
+Other simple letter codes may be added if
+relevant hexadecimal codes are discovered.
+.B Disk Color
+may be provided as "Y" for the
+standard consumer disk.
+.P
+The header table is then concatenated
+with the supplied
+.I file(s)
+on the standard output.
+The resulting file table image is suitable
+for concatenating with additional images.
+.P
+The binary-coded decimal creation date
+written to the disk image
+is in terms of the 
+.B Showa
+period in Japan.
+This may conflict with other sources
+of timekeeping on Famicom Disk System disks.
+.SH "SEE ALSO"
+bintofdf(1)
+.SH BUGS
+Parts of the superblock format of the Famicom
+Disk System are undocumented.
+As such, this script supplies
+defaults from several observed specimens.
+.P
+There are no safeguards on trying to make
+too large of an image.
+.P
+The image is not padded to 65500 bytes.

@@ -123,7 +123,7 @@ actor_B_19_proc:
 			jsr	render_powerup
 
 			jsr	col_player_actor_proc
-			jsr	col_actor_oob_proc
+			jsr	actor_oob_proc
 		; }
 	: ; }
 

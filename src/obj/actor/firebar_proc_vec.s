@@ -18,5 +18,5 @@ actor_B_0C_proc:
 actor_B_0D_proc:
 	jsr	actor_proc_firebar_do
 
-	jmp	col_actor_oob_proc
+	jmp	actor_oob_proc
 

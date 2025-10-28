@@ -90,7 +90,7 @@ actor_B_1D_proc:
 actor_proc_spring_ctd:
 	jsr	pos_calc_x_rel_actor
 	jsr	render_actor
-	jsr	col_actor_oob_proc
+	jsr	actor_oob_proc
 
 	lda	player_on_spring
 	beq	:+

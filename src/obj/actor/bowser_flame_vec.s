@@ -9,5 +9,5 @@ actor_B_00_proc:
 
 	jsr	col_actor_box
 	jsr	col_player_actor_proc
-	jmp	col_actor_oob_proc
+	jmp	actor_oob_proc
 

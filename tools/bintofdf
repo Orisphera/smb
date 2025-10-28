@@ -1,0 +1,82 @@
+#!/bin/sh
+# bintofdf - apply a Famicom Disk System header to a file
+#
+# Copyright 2024 Matthew Gilmore
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above
+# copyright notice, this list of conditions and the following
+# disclaimer in the documentation and/or other materials provided
+# with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its
+# contributors may be used to endorse or promote products derived
+# from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+# CONTRIBUTORS AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
+# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+# OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+# OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+# BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
+
+BASE=`basename $0`
+FILE=$1
+read	CODE_HEX	LOCATION_HEX
+CODE_HEX=`echo $CODE_HEX | tr [a-f] [A-F]`
+LOCATION_HEX=`echo $LOCATION_HEX | tr [a-f] [A-F]`
+
+if [ -z "$FILE" ]
+then
+	echo "Usage: "$BASE" file"
+	exit 1
+fi
+
+# print file block ID, blank file number, provided file code
+printf "\x03"
+printf "\0"
+printf `echo $CODE_HEX | sed 's/^/\\\\x/g'`
+
+# print an 8 byte filename
+printf "%s\0\0\0\0\0\0\0\0" `basename "$FILE" | sed 's/^\([^\.]*\)\..*$/\1/g'` | dd bs=1 count=8 2>/dev/null | tr [a-z_] [A-Z\-]
+
+# need a file dest word, output little-endian
+LEFT_BYTE=`printf "%s" "$LOCATION_HEX" | sed 's/^\([0-9A-F][0-9A-F]\)[0-9A-F][0-9A-F]$/\1/g'`
+RIGHT_BYTE=`printf "%s" "$LOCATION_HEX" | sed 's/^[0-9A-F][0-9A-F]\([0-9A-F][0-9A-F]\)$/\1/g'`
+printf `echo $RIGHT_BYTE | sed 's/^/\\\\x/g'`
+printf `echo $LEFT_BYTE | sed 's/^/\\\\x/g'`
+
+# emit file size word, output little-endian
+SIZE=`ls -l "$FILE" | awk '{ print $5 }'`
+LEFT_BYTE=`printf "%.4X" "$SIZE" | sed 's/^\([0-9A-F][0-9A-F]\)[0-9A-F][0-9A-F]$/\1/g'`
+RIGHT_BYTE=`printf "%.4X" "$SIZE" | sed 's/^[0-9A-F][0-9A-F]\([0-9A-F][0-9A-F]\)$/\1/g'`
+printf `echo $RIGHT_BYTE | sed 's/^/\\\\x/g'`
+printf `echo $LEFT_BYTE | sed 's/^/\\\\x/g'`
+
+# emit file type byte based on dest word:
+LOCATION=`echo "ibase=16;$LOCATION_HEX" | bc`
+if [ $LOCATION -ge 0 ] && [ $LOCATION -lt 8192 ]
+then
+	printf "\x01"	# CHR
+elif [ $LOCATION -ge 8192 ] && [ $LOCATION -lt 12288 ]
+then
+	printf "\x02"	# BG 
+else
+	printf "\x00"	# PRG
+fi
+
+printf "\x04"	# file blob block
+cat $FILE

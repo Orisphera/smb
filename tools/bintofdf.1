@@ -1,0 +1,75 @@
+.TH BINTOFDF 1
+.SH NAME
+bintofdf \- apply a Famicom Disk System header to a file
+.SH SYNOPSIS
+.B bintofdf
+file
+.SH DESCRIPTION
+.I Bintofdf
+is a script which applies a Famicom Disk System
+filesystem header to a 
+.I file
+according to
+a description of that
+.IR file .
+Two values are
+.IR read (1)
+from the standard input representing,
+in order, the hexadecimal ID of the
+.I file
+which is used to identify it to the
+Famicom Disk System ROM and the
+hexadecimal address at which the
+.I file
+will be loaded at runtime.
+The resulting header is then concatenated
+with the supplied
+.I file
+and left on the
+standard output.
+.P
+The filename is coerced into an acceptable format
+for the Famicom Disk System loader by:
+.P
+.RS
+Dropping any present file extension.
+.P
+Trimming/zero extending the remaining name to 8 bytes.
+.P
+Converting any lower case characters to upper case.
+.P
+Replacing underscore (_) with a minus (\-).
+.RE
+.P
+The
+.I file
+is defined as character data
+if its loading address falls between
+.I 0x0000
+and
+.IR 0x1FFF .
+It is instead defined as background mappings
+if its loading address falls between
+.I 0x2000
+and
+.IR 0x2FFF .
+Otherwise, it is considered program text.
+.P
+The file produced by
+.I bintofdf
+is suitable for concatenation with other such
+files into a Famicom Disk System disk image.
+The file number is automatically assigned zero.
+As a result, any utility compiling multiple
+output files from
+.I bintofdf
+must apply file numbering when compiling.
+.SH BUGS
+The character translations provided to
+.IR tr (1)
+are not definitive.
+.P
+File type assignment is based solely
+on loading address and does not check
+bounds nor consider overlapping addresses
+in different segments.

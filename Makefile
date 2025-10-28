@@ -35,8 +35,8 @@ LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
 CHECK		=	tools/check.sh
-BINTOFDF	=	fdtc/bintofdf
-FDTC		=	fdtc/fdtc
+BINTOFDF	=	tools/bintofdf
+FDTC		=	tools/fdtc
 
 FC		= 	smb.nes
 VS		=	smb.vs
@@ -263,7 +263,8 @@ ENTITY_OBJS	=	src/obj/proj.o \
 			src/obj/actor/flag_victory.o \
 			src/obj/actor/piranha_plant_proc.o \
 			src/obj/actor/firebar_spin_proc.o \
-			src/obj/actor/plat_proc.o
+			src/obj/actor/plat_proc.o \
+			src/obj/actor/oob_proc.o
 
 ACTOR_SUPPORT_OBJS =	src/obj/collision.o \
 			src/obj/actor/vine_render.o \

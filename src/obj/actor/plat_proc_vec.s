@@ -19,7 +19,7 @@ actor_B_17_proc:
 
 	jsr	actor_proc_plat_small_do
 
-	jmp	col_actor_oob_proc
+	jmp	actor_oob_proc
 ; -----------------------------------------------------------
 	.export actor_proc_plat_large
 	.export	actor_B_0F_proc
@@ -52,7 +52,7 @@ actor_B_15_proc:
 
 	jsr	render_plat_large
 
-	jmp	col_actor_oob_proc
+	jmp	actor_oob_proc
 ; -----------------------------------------------------------
 actor_proc_plat_do:
 	lda	obj_id_actor, x
