@@ -1,6 +1,7 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"chr.i"
 
 	.export render_plat_large

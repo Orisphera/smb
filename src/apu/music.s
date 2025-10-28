@@ -20,7 +20,7 @@ apu_music_play:
 			rts
 		; } else apu_music_pulse_2();
 	: ; } else apu_music_event_load();
-; --------------
+; ----------------
 apu_music_event_load:
 	.if	.defined(VS)
 		ldy	#APU_VS_COUNTER_START
@@ -69,7 +69,7 @@ apu_music_event_load:
 			; } else apu_music_header_load();
 		; }
 	.endif
-; --------------
+; ----------------
 apu_music_base_load:
 	cmp	#music_event::victory_ending
 	bne	:+ ; if (music.event.current == victory_ending) {
@@ -115,7 +115,7 @@ apu_music_base_load:
 
 	ldy	#<(apu_music_offsets_base_start-apu_music_offsets)
 	sty	apu_pulse_2_offset
-; --------------
+; ----------------
 apu_music_header_find:
 	: ; for (bit of music.current) {
 		iny
@@ -123,35 +123,35 @@ apu_music_header_find:
 		lsr	a
 		bcc	:-
 	; }
-; --------------
+; ----------------
 apu_music_header_load:
 	.macro	APU_HEADER_LOAD_BASE
 		1
 	.endmacro
 	.include	"./common/header_load.s"
 	.delmac	APU_HEADER_LOAD_BASE
-; --------------
+; ----------------
 apu_music_pulse_2:
 	.macro	APU_PULSE_2_BASE
 		1
 	.endmacro
 	.include	"./common/pulse_2.s"
 	.delmac	APU_PULSE_2_BASE
-; --------------
+; ----------------
 apu_music_pulse_1:
 	.macro	APU_PULSE_1_BASE
 		1
 	.endmacro
 	.include	"./common/pulse_1.s"
 	.delmac APU_PULSE_1_BASE
-; --------------
+; ----------------
 apu_music_triangle:
 	.macro	APU_TRIANGLE_BASE
 		1
 	.endmacro
 	.include	"./common/triangle.s"
 	.delmac	APU_TRIANGLE_BASE
-; --------------
+; ----------------
 apu_music_noise:
 	.macro	APU_NOISE_BASE
 		1

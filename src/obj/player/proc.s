@@ -26,7 +26,7 @@ player_proc:
 	.addr	player_proc_hurt
 	.addr	player_proc_death
 	.addr	player_proc_firefl
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_enter:
 	lda	game_start_type
 	cmp	#2
@@ -93,13 +93,13 @@ player_proc_enter:
 	player_proc_enter_rts: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_ctrl_fall_y_hi_cutoff	= zp_byte_07
 
 	.export	player_proc_auto
 player_proc_auto:
 	sta	joypad_p1
-; ---------------------------
+; ----------------------------------
 player_proc_ctrl:
 	lda	proc_id_player
 	cmp	#player_procs::death
@@ -240,7 +240,7 @@ player_proc_ctrl:
 			; }
 		; }
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_vine:
 	lda	pos_y_hi_player
 	bne	:+
@@ -259,7 +259,7 @@ player_proc_vine:
 		sta	game_start_type
 		jmp	player_proc_pipe_h_do_2
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_pipe_v:
 	lda	#1
 	jsr	game_pos_y_lo_player_add
@@ -277,13 +277,13 @@ player_proc_pipe_v:
 			jmp	player_proc_pipe_h_do
 		; }
 	; }
-; -----------------------------
+; ----------------------------------
 game_pos_y_lo_player_add:
 	clc
 	adc	pos_y_lo_player
 	sta	pos_y_lo_player
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_pipe_h:
 	jsr	player_proc_pipe_h_enter
 	ldy	#2
@@ -301,7 +301,7 @@ player_proc_pipe_h_do:
 	: ; }
 
 	rts
-; ------------------------------
+; ----------------------------------
 player_proc_pipe_h_enter:
 	lda	#8
 	sta	veloc_x_player
@@ -319,7 +319,7 @@ player_proc_pipe_h_enter:
 	.elseif	.defined(ANN)
 		jmp	player_proc_auto
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_size_chg:
 	lda	game_timer_stop
 	cmp	#$F8
@@ -331,7 +331,7 @@ player_proc_size_chg:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_hurt:
 	lda	game_timer_stop
 	cmp	#$F0
@@ -355,7 +355,7 @@ player_proc_hurt:
 	; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_death:
 	lda	game_timer_stop
 	cmp	#$F0
@@ -365,14 +365,14 @@ player_proc_death:
 		bcs	player_proc_firefl_rts
 	.endif
 	jmp	player_proc_ctrl
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_player_done:
 	lda	#0
 	sta	game_timer_stop
 	lda	#player_procs::ctrl
 	sta	proc_id_player
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	player_proc_firefl_do, player_proc_firefl_do_2
 player_proc_firefl:
 	lda	game_timer_stop
@@ -400,12 +400,12 @@ player_proc_firefl:
 	player_proc_firefl_rts:
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMBV1)
 player_proc_player_rts:
 	rts
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_pole:
 	lda	obj_id_actor+(ENG_ACTOR_MAX-1)
 	cmp	#actor::flag_enemy
@@ -425,7 +425,7 @@ player_proc_pole:
 		inc	proc_id_player
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_victory_oneup_tallies:
 .if	.defined(SMBV1)
 	.byte	$15, $23, $16, $1B
@@ -434,7 +434,7 @@ player_proc_victory_oneup_tallies:
 	.byte	$14, $1E, $14, $1B
 	.byte	$13, $18, $13, $63
 .endif
-; ----------------------------
+; ----------------------------------
 player_proc_victory:
 	lda	#joypad_button::right
 	jsr	player_proc_auto
@@ -524,7 +524,7 @@ player_proc_victory:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_player_move:
 	lda	#0
 	ldy	player_size
@@ -557,7 +557,7 @@ player_proc_player_move:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_player_ground:
 	jsr	player_proc_player_ani_speed
 
@@ -580,12 +580,12 @@ player_proc_player_ground_b:
 	.endif
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_player_fall:
 	lda	accel_y_gravity
 	sta	accel_y_player_spring
 	jmp	player_proc_player_jump_swim_do
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_player_jump_swim:
 	ldy	veloc_y_player
 	bpl	:+
@@ -646,7 +646,7 @@ player_proc_player_jump_swim_do:
 	: ; }
 
 	jmp	motion_y_player
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 CLIMB_OFFSET_SMALL	= 4
 CLIMB_OFFSET_LARGE	= 14
 
@@ -655,7 +655,7 @@ player_proc_player_climb_offset_x_lo:
 
 player_proc_player_climb_offset_x_hi:
 	.byte	>CLIMB_OFFSET_LARGE, >CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_SMALL, >-CLIMB_OFFSET_LARGE
-; -----------------------------
+; ----------------------------------
 player_proc_player_climb:
 	lda	accel_y_player
 	clc
@@ -710,7 +710,7 @@ player_proc_player_climb:
 		sta	timer_player_climb
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 STATS_BASE_INCLUDE	= 1
 
 	.export	player_proc_player_stats
@@ -728,7 +728,7 @@ player_proc_player_stats:
 .endif
 
 	.include	"../../../data/player_phys_climb.s"
-; ------------------------
+; ----------------
 player_proc_player_physics:
 	lda	state_player
 	cmp	#player_state::climb
@@ -913,7 +913,7 @@ player_proc_player_physics:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_player_ani_timers:
 	.byte	2
 
@@ -922,7 +922,7 @@ player_proc_player_ani_timers:
 	.else
 		.byte	3, 5
 	.endif
-; ---------------------------
+; ----------------------------------
 player_proc_player_ani_speed:
 	ldy	#0
 	lda	veloc_x_player_abs
@@ -960,7 +960,7 @@ player_proc_player_ani_speed:
 	lda	player_proc_player_ani_timers, y
 	sta	timer_ani_player
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_proc_player_friction:
 	and	collision_player
 	cmp	#COL_NONE

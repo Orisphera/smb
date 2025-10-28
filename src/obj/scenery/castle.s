@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"misc.i"
 .include	"tiles.i"
 
@@ -71,7 +72,7 @@ scenery_castle_tiles:
 	.byte	metatile_1::castle_c
 	.byte	metatile_1::castle_g
 scenery_castle_tiles_end:
-; --------------
+; ----------------
 scenery_castle_tile_remain	= zp_byte_06
 scenery_castle_height	= zp_byte_07
 

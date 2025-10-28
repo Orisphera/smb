@@ -8,6 +8,7 @@
 .endif
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"joypad.i"
 .include	"modes.i"
 .include	"const.i"
@@ -169,7 +170,7 @@ nmi_addr_1E:
 ppu_displist_page:
 	.byte	<ppu_displist
 	.byte	<ppu_displist_meta
-; ----------------------------
+; ----------------------------------
 .if	.defined(SMBV2)
 	SMBV2_NMI_TIMER_3_19594_MS	= 5720
 
@@ -288,7 +289,7 @@ nmi_apu_call:
 	.endif
 
 	jsr	stats_score_hi_check
-; -----------------------------
+; ----------------------------------
 	.if	.defined(CONS)
 	lda	nmi_pause_flag
 	lsr	a
@@ -323,7 +324,7 @@ nmi_apu_call:
 
 		inc	frame_count
 	: ; }
-; -----------------------------
+; ----------------------------------
 nmi_rand:
 	ldx	#0
 	ldy	#srand_end-srand
@@ -345,7 +346,7 @@ nmi_rand:
 		dey
 		bne	:-
 	; }
-; -----------------------------
+; ----------------------------------
 	.if	.defined(SMBV1)
 		lda	nmi_sprite_overlap
 		beq	:+++++ ; if (sprite_overlap) {
@@ -434,7 +435,7 @@ nmi_rand:
 	sta	PPU_CTLR0
 
 	rti
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMBV2)
 	.export irq
 irq:
@@ -501,7 +502,7 @@ irq:
 	pla
 	rts
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(VS)
 	.export vs_setbank_low
 vs_setbank_low:
@@ -509,7 +510,7 @@ vs_setbank_low:
 	sta	VS_REQ
 	rts
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(CONS)
 NMI_PAUSE_DEBOUNCE_FLAG	= %10000000
 NMI_PAUSE_DEBOUNCE_VALUE	= 43
@@ -558,7 +559,7 @@ nmi_pause:
 
 	rts
 .endif
-; ----------------------------
+; ----------------------------------
 nmi_oam_shuffle_offset	= zp_byte_00
 
 nmi_oam_shuffle:
@@ -613,7 +614,7 @@ nmi_oam_shuffle:
 	; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	sys_enter_tbl
 	.export	sys_enter_game
 	.export	sys_enter_castle_victory

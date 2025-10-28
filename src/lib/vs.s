@@ -59,7 +59,7 @@ vs_read_dips:
 	and	#$07
 	sta	VS_RAM_ARENA0+$06
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 vs_text_credit_count:
 	.byte	(:+++)-(:+)
 	: .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_28+PPU_BG_COL_20
@@ -75,7 +75,7 @@ vs_text_free_play:
 	: .byte	"FREE PLAY"
 	: .byte	NMI_LIST_END
 vs_text_free_play_end:
-; ----------------------------
+; ----------------------------------
 	.export	vs_disp_credit_msg
 vs_disp_credit_msg:
 	jsr	vs_setbank_low
@@ -117,7 +117,7 @@ vs_disp_credit_msg:
 		sta	ppu_displist_data+11
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 sub_93E7_data_0:
 	.byte	1, 2, 3, 1, 1, 1, 1
 	.byte	$FF
@@ -125,7 +125,7 @@ sub_93E7_data_0:
 sub_93E7_data_1:
 	.byte	1, 1, 1, 2, 3, 4, 5
 	.byte	$FF
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export sub_9324
 sub_9324:
 	jsr	vs_setbank_low
@@ -159,7 +159,7 @@ sub_9324:
 			rts
 		; }
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export sub_9362
 sub_9362:
 	jsr	vs_setbank_low
@@ -182,7 +182,7 @@ sub_9362:
 		sta	VS_RAM_ARENA0+$09
 		rts
 	; }
-; ----------------------------
+; ----------------------------------
 	.export sub_9389
 sub_9389:
 	jsr	vs_setbank_low
@@ -200,7 +200,7 @@ sub_9389:
 	jsr	sub_9389_do
 	ldx	#1
 	lsr	zp_byte_00
-; ----------------------------
+; ----------------------------------
 sub_9389_do:
 	lda	VS_RAM_ARENA0+$0A, x
 	bne	:++ ; if (vs_ram_arena0[10+x] == 0) {
@@ -236,13 +236,13 @@ sub_9389_do:
 
 		rts
 	; }
-; ----------------------------
+; ----------------------------------
 sub_93E0:
 	jsr	vs_setbank_low
 
 	lda	#sfx_pulse_2::coin_01
 	sta	apu_sfx_pulse_2_req
-; ----------------------------
+; ----------------------------------
 sub_93E7:
 	lda	VS_RAM_ARENA0+$06
 	cmp	#7
@@ -275,7 +275,7 @@ sub_93E7:
 		; }
 	: ; }
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export sys_vs_player_select
 sys_vs_player_select:
 	lda	proc_id_game
@@ -284,7 +284,7 @@ sys_vs_player_select:
 	.addr	vs_player_select_scr
 	.addr	vs_player_select_init_1
 	.addr	vs_player_select_do
-; ----------------------------
+; ----------------------------------
 	.export vs_player_select_init_0
 vs_player_select_init_0:
 	lda	#bg_procs::init
@@ -294,7 +294,7 @@ vs_player_select_init_0:
 	inc	nmi_disp_disable
 	inc	proc_id_game
 	rts
-; ----------------------------
+; ----------------------------------
 vs_player_select_scr:
 	jsr	nt_init
 	ldy	#vschar1_bg_data::player_select
@@ -305,7 +305,7 @@ vs_player_select_scr:
 	sta	VS_RAM_ARENA0+$26
 	inc	proc_id_game
 	rts
-; ----------------------------
+; ----------------------------------
 vs_player_select_init_1:
 	inc	proc_id_game
 
@@ -318,7 +318,7 @@ vs_player_select_init_1_do:
 	: ; }
 
 	rts
-; ----------------------------
+; ----------------------------------
 vs_player_select_do_data_0:
 	.byte	$0A, $05
 
@@ -336,7 +336,7 @@ vs_player_select_do_text_empty:
 	.byte	NMI_REPEAT|(vs_player_select_do_text_push_end-vs_player_select_do_text_push_start), " "
 	.byte	NMI_LIST_END
 vs_player_select_do_text_empty_def_end:
-; ----------------------------
+; ----------------------------------
 vs_player_select_do:
 	jsr	vs_setbank_low
 
@@ -414,7 +414,7 @@ vs_player_select_do:
 			jmp	vs_player_select_init_1_do
 		; }
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export vs_title_ppu_init
 vs_title_ppu_init:
 	jsr	oam_init
@@ -427,7 +427,7 @@ vs_title_ppu_init:
 	sta	VS_RAM_ARENA0+$22
 	inc	proc_id_game
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 vs_super_players_oam:
 	.byte	$20, chr_obj::player_walk_small, obj_attr::color0, $30
 	.byte	$20, chr_obj::player_jump_small+0, obj_attr::color0, $38
@@ -439,7 +439,7 @@ vs_super_players_oam:
 	.byte	$28, chr_obj::player_jump_small+2, obj_attr::h_flip|obj_attr::color1, $C0
 	.byte	$28, chr_obj::player_jump_small+1, obj_attr::h_flip|obj_attr::color1, $C8
 vs_super_players_oam_end:
-; ----------------------------
+; ----------------------------------
 	.export vs_title_super_players
 vs_title_super_players:
 	lda	VS_RAM_ARENA0+$22
@@ -491,7 +491,7 @@ vs_title_super_players:
 			rts
 		; }
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export vs_title_tick
 vs_title_tick:
 	lda	#0

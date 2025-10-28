@@ -2,20 +2,21 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"math.i"
 .include	"const.i"
 .include	"chr.i"
 .include	"sound.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 PLAYER_START_SCREEN_POS_X	= 96
 PLAYER_START_SCREEN_POS_Y	= 88
 PLAYER_RESIZE_FRAME_COUNT	= 10
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_ani_frames	= zp_byte_00
 render_player_do_bits		= zp_byte_00
 render_player_row		= zp_byte_07
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export render_player
 render_player:
 	.if	.defined(VS_SMB)
@@ -83,19 +84,19 @@ render_player:
 
 render_player_rts:
 	rts
-; -----------------------------
+; ----------------------------------
 render_player_normal:
 	jsr	render_player_action
 	jmp	render_player_do
-; -----------------------------
+; ----------------------------------
 render_player_resizing:
 	jsr	render_player_resize
 	jmp	render_player_do
-; -----------------------------
+; ----------------------------------
 render_player_death:
 	ldy	#<(render_player_tile_offset_death-render_player_tile_offsets)
 	lda	render_player_tile_offsets, y
-; -----------------------------
+; ----------------------------------
 render_player_do:
 	sta	render_player_spr_group
 	lda	#PLAYER_ROW_COUNT
@@ -151,14 +152,16 @@ render_player_do:
 	; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
+render_chr_pair_arg_count 	= 4
+; ----------------
 render_player_course_card_spr_desc:
 	.byte	PLAYER_START_SCREEN_POS_Y
 	.byte	1
 	.byte	obj_attr::priority_high|obj_attr::color0
 	.byte	PLAYER_START_SCREEN_POS_X
 	.addr	bg_buffer_0-1
-; -----------------------------
+; ----------------------------------
 	.export render_player_course_card
 render_player_course_card:
 	ldx	#((render_chr_pair_arg_count+WORD_SIZE)-1)
@@ -177,7 +180,7 @@ render_player_course_card:
 	ora	#obj_attr::h_flip
 	sta	oam_buffer+(OBJ_SIZE*8)+OBJ_ATTR
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_tiles_init:
 	sta	render_player_row
 	lda	pos_x_rel_player
@@ -191,7 +194,7 @@ render_player_tiles_init:
 	sta	render_chr_pair_attr
 	ldx	render_player_spr_group
 	ldy	obj_data_offset_player
-; -----------------------------
+; ----------------------------------
 render_player_tiles:
 	: ; for (row of this.sprite) {
 		lda	render_player_tile_data, x
@@ -203,7 +206,7 @@ render_player_tiles:
 	; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_action:
 	lda	state_player
 	cmp	#player_state::climb
@@ -283,18 +286,18 @@ render_player_action:
 		asl	a
 		bcs	render_player_ani_frames_3
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_fall:
 	lda	player_ani_frame
 	jmp	render_player_spr_next
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_ani_frames_3:
 	lda	#3
 	jmp	:+
-; -----------------------------
+; ----------------------------------
 render_player_ani_frames_2:
 	lda	#2
-; -----------------------------
+; ----------------------------------
 render_player_animation:
 	:
 	sta	render_player_ani_frames
@@ -317,7 +320,7 @@ render_player_animation:
 
 	pla
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_get_size_offset:
 	lda	player_size
 	beq	:+ ; if (this.size != large) {
@@ -328,7 +331,7 @@ render_player_get_size_offset:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_resize_frames:
 	.byte	<(render_player_tile_stand_small-render_player_tile_stand)/PLAYER_SPR_SIZE
 	.byte	<(render_player_tile_stand_medium-render_player_tile_stand)/PLAYER_SPR_SIZE
@@ -351,7 +354,7 @@ render_player_resize_frames:
 	.byte	<(render_player_tile_stand_small-render_player_tile_stand)/PLAYER_SPR_SIZE
 	.byte	<(render_player_tile_stand_large-render_player_tile_stand)/PLAYER_SPR_SIZE
 	.byte	<(render_player_tile_stand_small-render_player_tile_stand)/PLAYER_SPR_SIZE
-; -----------------------------
+; ----------------------------------
 render_player_resize:
 	ldy	player_ani_frame
 	lda	frame_count
@@ -391,7 +394,7 @@ render_player_resize:
 		lda	render_player_tile_offsets, y
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_player_tiles_mirror:
 	ldy	obj_data_offset_player
 	lda	proc_id_player

@@ -9,7 +9,7 @@
 	.endif
 .endif
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export course_scenery_loop_offsets 
 course_scenery_loop_offsets:
 	.byte	18, 54, 14, 14

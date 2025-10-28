@@ -8,43 +8,24 @@ MEM_I	= 1
 
 zp_byte_00		= $00
 zp_addr_00		= zp_byte_00
-ppu_displist_write_addr	= zp_addr_00
-motion_gravity_accel_y_inc = zp_byte_00
-col_player_bullet_diff_pos_x_rel = zp_byte_00
-render_chr_pair_tile_left = zp_byte_00
-scenery_tbl_base	= zp_byte_00
 zp_byte_01		= $01
-motion_gravity_accel_y_dec = zp_byte_01
-render_chr_pair_tile_right = zp_byte_01
-apu_fds_wave_id		= $01
 zp_byte_02		= $02
 zp_addr_02		= zp_byte_02
-motion_gravity_veloc_y_max_abs = zp_byte_02
-pos_y_block_proc	= zp_byte_02
-render_chr_pair_pos_y	= zp_byte_02
-render_chr_pair_args	= zp_byte_02
-render_oam_idx		= zp_byte_02
-render_chr_pair_arg_count = 4
 zp_byte_03		= $03
-render_chr_pair_color_mod_2 = zp_byte_03
 zp_byte_04		= $04
-zp_addr_04		= $04
-render_chr_pair_attr	= zp_byte_04
-meta_clear_put_do_addr	= zp_addr_04
+zp_addr_04		= zp_byte_04
 zp_byte_05		= $05
-render_chr_pair_pos_x	= zp_byte_05
-game_buffer		= $06
 zp_byte_06		= $06
 zp_byte_07		= $07
-scenery_proc_metatile_id = zp_byte_07
-; --------------
-actor_index		= zp_byte_07+1
+; ----------------
+game_buffer		= zp_byte_06
+actor_index		= game_buffer+WORD_SIZE
 frame_count		= actor_index+1
 joypad_a_b		= frame_count+1
 joypad_u_d		= joypad_a_b+1
 joypad_l_r		= joypad_u_d+1
 joypad_a_b_held		= joypad_l_r+1
-; --------------
+; ----------------
 proc_id_player		= joypad_a_b_held+1
 proc_id_actor		= proc_id_player+1
 proc_id_actor_end	= proc_id_actor+ENG_ACTOR_MAX
@@ -52,7 +33,7 @@ unused_15		= proc_id_actor_end
 obj_id_actor		= unused_15+1
 obj_id_actor_end	= obj_id_actor+ENG_ACTOR_MAX
 unused_1C		= obj_id_actor_end
-; --------------
+; ----------------
 state_player		= unused_1C+1
 state_player_end	= state_player+ENG_PLAYER_OBJ_MAX
 state_actor		= state_player_end
@@ -63,7 +44,7 @@ state_block		= state_proj_end
 state_block_end		= state_block+ENG_BLOCK_MAX
 state_misc		= state_block_end
 state_misc_end		= state_misc+ENG_MISC_MAX
-; --------------
+; ----------------
 disp_dir_player		= state_misc_end
 disp_dir_player_end	= disp_dir_player+ENG_PLAYER_OBJ_MAX
 rot_dir_actor		= disp_dir_player_end
@@ -74,11 +55,11 @@ actor_powerup_type	= rot_dir_actor_end-1
 proj_bounce_flag	= rot_dir_actor_end
 timer_hammer_bro_jump	= proj_bounce_flag+ENG_PROJ_MAX
 timer_hammer_bro_jump_end = timer_hammer_bro_jump+ENG_ACTOR_MAX
-; --------------
+; ----------------
 unused_42		= timer_hammer_bro_jump_end
 unused_43		= unused_42+1
 unused_44		= unused_43+1
-; --------------
+; ----------------
 motion_dir_player	= unused_44+1
 motion_dir_player_end 	= motion_dir_player+ENG_PLAYER_OBJ_MAX
 motion_dir_actor	= motion_dir_player_end
@@ -87,7 +68,7 @@ motion_dir_proj		= motion_dir_actor_end
 motion_dir_proj_end	= motion_dir_proj+ENG_PROJ_MAX
 motion_dir_misc		= motion_dir_proj_end
 motion_dir_misc_end	= motion_dir_misc+ENG_MISC_MAX
-; --------------
+; ----------------
 veloc_x			= motion_dir_misc_end
 veloc_x_player		= veloc_x+0
 veloc_x_player_end	= veloc_x_player+ENG_PLAYER_OBJ_MAX
@@ -104,7 +85,7 @@ apu_fds_wave_addr	= apu_fds_track+WORD_SIZE
 apu_fds_wave_vol_addr	= apu_fds_wave_addr+WORD_SIZE
 apu_fds_wave_mod_addr	= apu_fds_wave_vol_addr+WORD_SIZE
 veloc_x_misc_end	= veloc_x_misc+ENG_MISC_MAX
-; --------------
+; ----------------
 pos_x_hi		= veloc_x_misc_end
 pos_x_hi_player		= pos_x_hi+0
 pos_x_hi_player_end	= pos_x_hi_player+ENG_PLAYER_OBJ_MAX
@@ -118,7 +99,7 @@ pos_x_hi_misc		= pos_x_hi_block_end
 pos_x_hi_misc_end	= pos_x_hi_misc+ENG_MISC_MAX
 pos_x_hi_bubble		= pos_x_hi_misc_end
 pos_x_hi_bubble_end	= pos_x_hi_bubble+ENG_BUBBLE_MAX
-; ---------------
+; ----------------
 pos_x_lo		= pos_x_hi_bubble_end
 pos_x_lo_player		= pos_x_lo+0
 pos_x_lo_player_end	= pos_x_lo_player+ENG_PLAYER_OBJ_MAX
@@ -132,7 +113,7 @@ pos_x_lo_misc		= pos_x_lo_block_end
 pos_x_lo_misc_end	= pos_x_lo_misc+ENG_MISC_MAX
 pos_x_lo_bubble		= pos_x_lo_misc_end
 pos_x_lo_bubble_end	= pos_x_lo_bubble+ENG_BUBBLE_MAX
-; --------------
+; ----------------
 veloc_y			= pos_x_lo_bubble_end
 veloc_y_player		= veloc_y+0
 veloc_y_player_end	= veloc_y_player+ENG_PLAYER_OBJ_MAX
@@ -145,7 +126,7 @@ veloc_y_block		= veloc_y_proj_end
 veloc_y_block_end	= veloc_y_block+ENG_BLOCK_MAX
 veloc_y_misc		= veloc_y_block_end
 veloc_y_misc_end	= veloc_y_misc+ENG_MISC_MAX
-; --------------
+; ----------------
 pos_y_hi		= veloc_y_misc_end
 pos_y_hi_player		= pos_y_hi+0
 pos_y_hi_player_end	= pos_y_hi_player+ENG_PLAYER_OBJ_MAX
@@ -159,7 +140,7 @@ pos_y_hi_misc		= pos_y_hi_block_end
 pos_y_hi_misc_end	= pos_y_hi_misc+ENG_MISC_MAX
 pos_y_hi_bubble		= pos_y_hi_misc_end
 pos_y_hi_bubble_end	= pos_y_hi_bubble+ENG_BUBBLE_MAX
-; --------------
+; ----------------
 pos_y_lo		= pos_y_hi_bubble_end
 pos_y_lo_player		= pos_y_lo+0
 pos_y_lo_player_end	= pos_y_lo_player+ENG_PLAYER_OBJ_MAX
@@ -173,17 +154,17 @@ pos_y_lo_misc		= pos_y_lo_block_end
 pos_y_lo_misc_end	= pos_y_lo_misc+ENG_MISC_MAX
 pos_y_lo_bubble		= pos_y_lo_misc_end
 pos_y_lo_bubble_end	= pos_y_lo_bubble+ENG_BUBBLE_MAX
-; --------------
+; ----------------
 course_scenery_addr	= pos_y_lo_bubble_end
 course_actor_addr	= course_scenery_addr+WORD_SIZE
-; --------------
+; ----------------
 zp_addr_EB		= course_actor_addr+WORD_SIZE
 zp_byte_EB		= zp_addr_EB
 zp_byte_EC		= zp_byte_EB+1
 zp_addr_ED		= zp_addr_EB+WORD_SIZE
 zp_byte_ED		= zp_addr_ED
 zp_byte_EF		= zp_addr_ED+WORD_SIZE
-; --------------
+; ----------------
 apu_note_len_offset	= zp_byte_EF+1
 apu_sfx_pulse_1_current	= apu_note_len_offset+1
 apu_sfx_pulse_2_current	= apu_sfx_pulse_1_current+1
@@ -199,7 +180,7 @@ apu_music_event_req	= apu_music_base_req+1
 apu_sfx_noise_req	= apu_music_event_req+1
 apu_sfx_pulse_2_req	= apu_sfx_noise_req+1
 apu_sfx_pulse_1_req	= apu_sfx_pulse_2_req+1
-; -----------------------------
+; ----------------------------------
 stack_00			= (STACK_BASE+$00)
 
 stack_04			= (STACK_BASE+$04)
@@ -226,10 +207,10 @@ score_digit_mod			= (STACK_BASE+$33)
 ending_player_live		= (STACK_BASE+$35)
 
 cpu_stack_work_end		= (STACK_BASE+$60)
-; -----------------------------
+; ----------------------------------
 oam_buffer			= (STACK_BASE+STACK_SIZE)
 oam_buffer_END			= (oam_buffer+(OBJ_MAX*OBJ_SIZE))
-; -----------------------------
+; ----------------------------------
 ppu_displist			= oam_buffer_END
 ppu_displist_offset		= ppu_displist
 ppu_displist_data		= ppu_displist_offset+NMI_BUFFER_ENTRY_OFFSET_SIZE
@@ -246,7 +227,7 @@ ppu_displist_meta_special	= ppu_displist_meta_addr_dbyt+WORD_SIZE
 ppu_displist_meta_count		= ppu_displist_meta_special
 ppu_displist_meta_payload	= ppu_displist_meta_count+1
 ppu_displist_meta_end		= ppu_displist_meta_data+((NMI_BUFFER_ENTRY_MAX-1)*NMI_BUFFER_ENTRY_SIZE)
-; --------------
+; ----------------
 actor_bowser_ani_flag	= ppu_displist_meta_data+$22
 timer_ani_bowser	= actor_bowser_ani_flag+1
 veloc_x_bowser		= timer_ani_bowser+1
@@ -255,7 +236,7 @@ actor_bowser_flame_timer_idx = pos_x_prev_bowser+1
 actor_index_bowser	= actor_bowser_flame_timer_idx+1
 actor_bowser_ending_clear_frame = actor_index_bowser+1
 actor_bowser_ani_frame	= actor_bowser_ending_clear_frame+1
-; -----------------------------
+; ----------------------------------
 unused_380		= ppu_displist_meta_end
 unused_381		= unused_380+1
 unused_382		= unused_381+1
@@ -264,10 +245,10 @@ unused_384		= unused_383+1
 unused_385		= unused_384+1
 unused_386		= unused_385+1
 unused_387		= unused_386+1
-; --------------
+; ----------------
 veloc_ang_actor		= unused_387+1
 veloc_ang_actor_end	= veloc_ang_actor+ENG_ACTOR_MAX
-; --------------
+; ----------------
 unused_38E		= veloc_ang_actor_end
 unused_38F		= unused_38E+1
 unused_390		= unused_38F+1
@@ -278,34 +259,34 @@ unused_394		= unused_393+1
 unused_395		= unused_394+1
 unused_396		= unused_395+1
 unused_397		= unused_396+1
-; --------------
+; ----------------
 actor_vine_flag		= unused_397+1
 height_vine		= actor_vine_flag+1
 actor_vine_offset	= height_vine+1
 pos_y_vine		= actor_vine_offset+(ENG_ACTOR_MAX-3)
-; --------------
+; ----------------
 unused_39E		= pos_y_vine+1
 unused_39F		= unused_39E+1
-; --------------
+; ----------------
 actor_plat_align	= unused_39F+1
 actor_plat_scroll_x	= actor_plat_align+1
 actor_plat_col_flag	= actor_plat_scroll_x+1
 timer_hammer_throw	= actor_plat_col_flag
 actor_plat_col_flag_end	= actor_plat_col_flag+ENG_ACTOR_MAX
-; --------------
+; ----------------
 unused_3A8		= actor_plat_col_flag_end
 unused_3A9		= unused_3A8+1
 unused_3AA		= unused_3A9+1
 unused_3AB		= unused_3AA+1
 unused_3AC		= unused_3AB+1
-; --------------
+; ----------------
 pos_x_rel_player	= unused_3AC+1
 pos_x_rel_actor		= pos_x_rel_player+ENG_PLAYER_OBJ_MAX
 pos_x_rel_proj		= pos_x_rel_actor+(ENG_ACTOR_MAX-5)
 pos_x_rel_bubble	= pos_x_rel_proj+(ENG_PROJ_MAX-1)
 pos_x_rel_block		= pos_x_rel_bubble+(ENG_BUBBLE_MAX-2)
 pos_x_rel_misc		= pos_x_rel_block+(ENG_BLOCK_MAX-2)
-; --------------
+; ----------------
 pos_y_rel_player	= pos_x_rel_misc+(ENG_MISC_MAX-4)
 pos_y_rel_actor		= pos_y_rel_player+ENG_PLAYER_OBJ_MAX
 pos_y_rel_proj		= pos_y_rel_actor+(ENG_ACTOR_MAX-5)
@@ -313,19 +294,19 @@ pos_y_rel_bubble	= pos_y_rel_proj+(ENG_PROJ_MAX-1)
 pos_y_rel_block		= pos_y_rel_bubble+(ENG_BUBBLE_MAX-2)
 pos_y_rel_misc		= pos_y_rel_block+(ENG_BLOCK_MAX-2)
 pos_y_rel_misc_end	= pos_y_rel_misc+(ENG_MISC_MAX-4)
-; --------------
+; ----------------
 unused_3C3		= pos_y_rel_misc_end
-; --------------
+; ----------------
 attr_player		= unused_3C3+1
 attr_actor		= attr_player+ENG_PLAYER_OBJ_MAX
 attr_actor_end		= attr_actor+ENG_ACTOR_MAX
-; --------------
+; ----------------
 unused_3CB		= attr_actor_end
 unused_3CC		= unused_3CB+1
 unused_3CD		= unused_3CC+1
 unused_3CE		= unused_3CD+1
 unused_3CF		= unused_3CE+1
-; --------------
+; ----------------
 bits_offscr_player	= unused_3CF+1
 bits_offscr_actor	= bits_offscr_player+1
 bits_offscr_proj	= bits_offscr_actor+1
@@ -336,14 +317,14 @@ bits_offscr_misc	= unused_3D5+1
 unused_3D7		= bits_offscr_misc+1
 actor_bits_mask		= unused_3D7+1
 actor_bits_mask_end	= actor_bits_mask+ENG_ACTOR_MAX
-; --------------
+; ----------------
 unused_3DE		= actor_bits_mask_end
 unused_3DF		= unused_3DE+1
 unused_3E0		= unused_3DF+1
 unused_3E1		= unused_3E0+1
 unused_3E2		= unused_3E1+1
 unused_3E3		= unused_3E2+1
-; --------------
+; ----------------
 pos_y_orig_block	= unused_3E3+1
 block_buffer_idx	= pos_y_orig_block+(ENG_BLOCK_MAX-2)
 block_tile		= block_buffer_idx+(ENG_BLOCK_MAX-2)
@@ -354,16 +335,16 @@ unused_3EF		= block_id+1
 block_counter_res	= unused_3EF+1
 pos_x_orig_block	= block_counter_res+1
 pos_x_orig_block_end	= pos_x_orig_block+(ENG_BLOCK_MAX-2)
-; --------------
+; ----------------
 unused_3F3		= pos_x_orig_block_end
 unused_3F4		= unused_3F3+1
 unused_3F5		= unused_3F4+1
 unused_3F6		= unused_3F5+1
 unused_3F7		= unused_3F6+1
 unused_3F8		= unused_3F7+1
-; --------------
+; ----------------
 bg_attr_buffer		= unused_3F8+1
-; -----------------------------
+; ----------------------------------
 accel_x			= bg_attr_buffer+BG_ATTR_COUNT
 accel_x_player		= accel_x+0
 ppu_displist_title_end	= accel_x_player
@@ -371,7 +352,7 @@ accel_x_actor		= accel_x_player+ENG_PLAYER_OBJ_MAX
 accel_x_proj		= accel_x_actor+ENG_ACTOR_MAX
 accel_x_block		= accel_x_proj+ENG_PROJ_MAX
 accel_x_misc		= accel_x_block+ENG_BLOCK_MAX
-; --------------
+; ----------------
 accel_y			= accel_x_misc+ENG_MISC_MAX
 accel_y_player		= accel_y+0
 accel_y_actor		= accel_y_player+ENG_PLAYER_OBJ_MAX
@@ -380,12 +361,12 @@ accel_y_proj		= accel_y_actor+ENG_ACTOR_MAX
 accel_y_block		= accel_y_proj+ENG_PROJ_MAX
 accel_y_misc		= accel_y_block+ENG_BLOCK_MAX
 accel_y_bubble		= accel_y_misc+ENG_MISC_MAX
-; --------------
+; ----------------
 unused_42F		= accel_y_bubble+ENG_BUBBLE_MAX
 unused_430		= unused_42F+1
 unused_431		= unused_430+1
 unused_432		= unused_431+1
-; --------------
+; ----------------
 accel_y_grav		= unused_432+1
 accel_y_grav_player		= accel_y_grav+0
 accel_y_grav_actor		= accel_y_grav_player+ENG_PLAYER_OBJ_MAX
@@ -394,12 +375,12 @@ accel_y_grav_proj		= accel_y_grav_actor+ENG_ACTOR_MAX
 accel_y_grav_block		= accel_y_grav_proj+ENG_PROJ_MAX
 accel_y_grav_misc		= accel_y_grav_block+ENG_BLOCK_MAX
 accel_y_grav_bubble		= accel_y_grav_misc+ENG_MISC_MAX
-; --------------
+; ----------------
 unused_44C		= accel_y_grav_bubble+ENG_BUBBLE_MAX
 unused_44D		= unused_44C+1
 unused_44E		= unused_44D+1
 unused_44F		= unused_44E+1
-; --------------
+; ----------------
 player_max_veloc_left 	= unused_44F+1
 unused_451		= player_max_veloc_left+1
 unused_452		= unused_451+1
@@ -412,7 +393,7 @@ unused_458		= unused_457+1
 unused_459		= unused_458+1
 unused_45A		= unused_459+1
 unused_45B		= unused_45A+1
-; --------------
+; ----------------
 unused_45C		= unused_45B+1
 unused_45D		= unused_45C+1
 unused_45E		= unused_45D+1
@@ -427,7 +408,7 @@ unused_466		= unused_465+1
 unused_467		= unused_466+1
 unused_468		= unused_467+1
 unused_469		= unused_468+1
-; --------------
+; ----------------
 actor_cannon_offset	= unused_469+1
 pos_y_hi_cannon		= actor_cannon_offset+1
 pos_x_lo_cannon		= pos_y_hi_cannon+ENG_ACTOR_MAX
@@ -436,7 +417,7 @@ timer_cannon		= pos_y_lo_cannon+ENG_ACTOR_MAX
 game_whirlpool_flag	= timer_cannon
 hp_bowser		= timer_cannon+ENG_ACTOR_MAX
 counter_stomps		= hp_bowser+1
-; --------------
+; ----------------
 unused_485		= counter_stomps+1
 unused_486		= unused_485+1
 unused_487		= unused_486+1
@@ -448,7 +429,7 @@ unused_48C		= unused_48B+1
 unused_48D		= unused_48C+1
 unused_48E		= unused_48D+1
 unused_48F		= unused_48E+1
-; --------------
+; ----------------
 collision_player	= unused_48F+1
 collision_actor		= collision_player+ENG_PLAYER_OBJ_MAX
 collision_proj		= collision_actor+ENG_ACTOR_MAX
@@ -466,10 +447,10 @@ pos_x_col_box_nw_actor	= pos_y_col_box_se+1
 pos_y_col_box_nw_actor	= pos_x_col_box_nw_actor+1
 pos_x_col_box_se_actor	= pos_y_col_box_nw_actor+1
 pos_y_col_box_se_actor	= pos_x_col_box_se_actor+1
-; -----------------------------
+; ----------------------------------
 bg_buffer_0		= $500
 bg_buffer_1		= bg_buffer_0+BG_BUFFER_SIZE
-; --------------
+; ----------------
 apu_fds_wave_note_len	= bg_buffer_1+$21
 apu_fds_wave_note_len_b	= bg_buffer_1+$22
 apu_fds_wave_env_ctl	= bg_buffer_1+$23
@@ -497,62 +478,62 @@ apu_fds_noise_note_len	= bg_buffer_1+$47
 apu_fds_noise_loop_offset = bg_buffer_1+$4B
 apu_fds_step		= bg_buffer_1+$4D
 apu_fds_wave_offset	= bg_buffer_1+$4F
-; -----------------------------
+; ----------------------------------
 disp_buff_col		= bg_buffer_1+BG_BUFFER_SIZE
 scenery_metatile		= disp_buff_col+1
 scenery_metatile_end	= scenery_metatile+METATILE_MAX
-; --------------
+; ----------------
 misc_obj_id_actor	= scenery_metatile_end
 misc_block_id		= misc_obj_id_actor+ENG_MISC_MAX
-; --------------
+; ----------------
 unused_6B8		= misc_block_id+1
 unused_6B9		= unused_6B8+1
 unused_6BA		= unused_6B9+1
 unused_6BB		= unused_6BA+1
-; --------------
+; ----------------
 block_invis_req		= unused_6BB+1
-; --------------
+; ----------------
 unused_6BD		= block_invis_req+1
-; --------------
+; ----------------
 misc_col_flag		= unused_6BD+1
 misc_col_flag_end	= misc_col_flag+ENG_MISC_MAX
-; --------------
+; ----------------
 unused_6C7		= misc_col_flag_end
 unused_6C8		= unused_6C7+1
-; --------------
+; ----------------
 byte_6C9		= unused_6C8+1
-; --------------
+; ----------------
 unused_6CA		= byte_6C9+1
-; --------------
+; ----------------
 actor_swarm_buffer	= unused_6CA+1
 game_hard_mode_b	= actor_swarm_buffer+1
 actor_swarm_queue	= game_hard_mode_b+1
 proj_counter		= actor_swarm_queue+1
 actor_dup_offset	= proj_counter+1
-; --------------
+; ----------------
 unused_6D0		= actor_dup_offset+1
-; --------------
+; ----------------
 timer_lakitu_new	= unused_6D0+1
-; --------------
+; ----------------
 unused_6D2		= timer_lakitu_new+1
-; --------------
+; ----------------
 actor_group_count	= unused_6D2+1
 meta_color_rotate_off	= actor_group_count+1
 render_player_spr_group	= meta_color_rotate_off+1
 game_warp_ctrl		= render_player_spr_group+1
 actor_firework_counter	= game_warp_ctrl+1
-; --------------
+; ----------------
 unused_6D8		= actor_firework_counter+1
-; --------------
+; ----------------
 actor_loop_counter_real	= unused_6D8+1
 actor_loop_counter	= actor_loop_counter_real+1
 accel_y_spring		= actor_loop_counter+1
 actor_bowser_rand_offset = accel_y_spring+1
 actor_bullet_cheep_mask	= actor_bowser_rand_offset+1
 timer_scene_trans	= actor_bullet_cheep_mask+1
-; --------------
+; ----------------
 unused_6DF		= timer_scene_trans+1
-; --------------
+; ----------------
 sprite_strobe_offset	= unused_6DF+1
 sprite_strobe_amount	= sprite_strobe_offset+1
 obj_data_offset_player	= sprite_strobe_amount+3
@@ -565,9 +546,9 @@ obj_data_offset_misc	= obj_data_offset_proj+ENG_PROJ_MAX
 joypad_bits		= obj_data_offset_misc+ENG_MISC_MAX
 joypad_p1		= joypad_bits
 joypad_p2		= joypad_p1+1
-; --------------
+; ----------------
 unused_6FE		= joypad_p2+1
-; --------------
+; ----------------
 scroll_x_player		= unused_6FE+1
 veloc_x_player_abs	= scroll_x_player+1
 accel_x_friction	= veloc_x_player_abs+1
@@ -593,7 +574,7 @@ col_disable		= course_timer+1
 title_demo_button_id	= col_disable+1
 title_demo_button_timer	= title_demo_button_id+1
 victory_msg_id		= title_demo_button_timer+1
-; --------------
+; ----------------
 pos_x_hi_screen_left	= victory_msg_id+1
 pos_x_hi_screen_right	= pos_x_hi_screen_left+1
 pos_x_lo_screen_left	= pos_x_hi_screen_right+1
@@ -639,10 +620,10 @@ joypad_mask		= timer_victory_msg+1
 joypad_mask_p1		= joypad_mask+0
 joypad_mask_p2		= joypad_mask+1
 RAM_CLEAR_END_GAMERESET	= joypad_mask_p2
-; -----------------------------
+; ----------------------------------
 unused_74C		= RAM_CLEAR_END_GAMERESET+1
 unused_74D		= unused_74C+1
-; -----------------------------
+; ----------------------------------
 course_type		= unused_74D+1
 course_page_offset	= course_type+1
 course_descriptor	= course_page_offset+1
@@ -655,7 +636,7 @@ player_status		= scroll_x_player_b+1
 player_first_start	= player_status+1
 game_joypad_override	= player_first_start+1
 game_time_up		= game_joypad_override+1
-; --------------
+; ----------------
 player_lives		= game_time_up+1
 pos_x_hi_alt_game	= player_lives+1
 player_goals		= pos_x_hi_alt_game+1
@@ -663,7 +644,7 @@ scenery_hidden_one_up_req	= player_goals+1
 player_coins		= scenery_hidden_one_up_req+1
 course_no		= player_coins+1
 course_sub		= course_no+1
-; --------------
+; ----------------
 player_lives_b		= course_sub+1
 pos_x_hi_alt_game_b	= player_lives_b+1
 player_goals_b		= pos_x_hi_alt_game_b+1
@@ -679,7 +660,7 @@ ending_toad_cycling	= player_goals_b
 ending_palcycle_delay	= player_goals_b
 ending_toad_delay	= scenery_hidden_one_up_req_b
 .endif
-; --------------
+; ----------------
 pos_x_victory_scroll	= course_sub_b+1
 bg_msg_disable		= pos_x_victory_scroll+1
 
@@ -698,7 +679,7 @@ unused_76D		= unused_76C+1
 unused_76E		= unused_76D+1
 unused_76F		= unused_76E+1
 RAM_CLEAR_END_GAMEINIT	= unused_76F
-; -----------------------------
+; ----------------------------------
 proc_id_system		= RAM_CLEAR_END_GAMEINIT+1
 unused_771		= proc_id_system+1
 proc_id_game		= unused_771+1
@@ -721,13 +702,13 @@ ppu_ctlr0_bg		= ppu_ctlr1_b+1
 .endif
 fds_sprite_overlap_hit	= ppu_ctlr0_bg+1
 render_clear_skip	= fds_sprite_overlap_hit+1
-; -----------------------------
+; ----------------------------------
 .if	.defined(SMB2)
 unused_77D		= render_clear_skip+1
 .elseif	.defined(ANN)
 game_hard_mode		= render_clear_skip+1
 .endif
-; --------------
+; ----------------
 .if	.defined(SMBV1)
 unused_77E		= render_clear_skip+1
 .elseif	.defined(SMB2)
@@ -735,7 +716,7 @@ unused_77E		= unused_77D+1
 .elseif	.defined(ANN)
 unused_77E		= game_hard_mode+1
 .endif
-; -----------------------------
+; ----------------------------------
 timer_nmi_tick		= unused_77E+1
 timers_nmi		= timer_nmi_tick+1
 timer_select		= timers_nmi
@@ -766,16 +747,16 @@ timer_demo		= timer_victory+1
 timer_unk_c		= timer_demo+1
 timer_unk_d		= timer_unk_c+1
 timers_nmi_end		= timer_unk_d
-; -----------------------------
+; ----------------------------------
 unused_7A4	= timers_nmi_end
 unused_7A5	= unused_7A4+1
 unused_7A6	= unused_7A5+1
-; -----------------------------
+; ----------------------------------
 srand		= unused_7A6+1
 srand_end	= srand+SRAND_SIZE
 unused_7AE	= srand_end
 unused_7AF	= unused_7AE+1
-; -----------------------------
+; ----------------------------------
 snd_ram			= unused_7AF+1
 apu_noise_offset	= snd_ram
 apu_music_event_current = apu_noise_offset+1
@@ -810,7 +791,7 @@ unused_7CD		= apu_vs_counter+1
 unused_7CE		= unused_7CD+1
 unused_7CF		= unused_7CE+1
 snd_ram_end		= unused_7CF+1
-; -----------------------------
+; ----------------------------------
 unused_7D0		= snd_ram_end
 unused_7D1		= unused_7D0+1
 unused_7D2		= unused_7D1+1
@@ -819,11 +800,11 @@ unused_7D4		= unused_7D3+1
 unused_7D5		= unused_7D4+1
 unused_7D6		= unused_7D5+1
 RAM_CLEAR_END_WARMBOOT	= unused_7D6
-; -----------------------------
+; ----------------------------------
 stats_tbl		= RAM_CLEAR_END_WARMBOOT+1
 stats_score_top		= stats_tbl
 stats_score_top_end	= (stats_score_top+STAT_LEN_MAX)
-; --------------
+; ----------------
 stats_player			= stats_score_top_end
 stats_score_player		= stats_player
 stats_score_player_a		= stats_score_player
@@ -835,7 +816,7 @@ stats_score_player_end		= stats_score_player_b_end
 .elseif	.defined(SMBV2)
 stats_score_player_end		= stats_score_player_a_end
 .endif
-; --------------
+; ----------------
 stats_coin_player	= stats_score_player_end
 stats_coin_player_a	= stats_coin_player
 stats_coin_player_a_end	= (stats_coin_player_a+STAT_LEN_MAX)
@@ -849,7 +830,7 @@ stats_coin_player_end	= stats_coin_player_a_end
 stats_player_end	= stats_coin_player_end
 stats_time		= stats_player_end
 stats_time_end		= (stats_time+STAT_LEN_MAX)
-; -----------------------------
+; ----------------------------------
 .if    .defined(SMBV2)
 unused_7EF		= stats_time_end
 unused_7F0		= unused_7EF+1
@@ -881,9 +862,9 @@ disk_loader_main_req	= course_no_continued
 
 unused_7FE		= course_no_continued+1
 RAM_CLEAR_END_COLDBOOT	= unused_7FE
-; -----------------------------
+; ----------------------------------
 game_boot_flag		= RAM_CLEAR_END_COLDBOOT+1
-; -----------------------------
+; ----------------------------------
 .if	.defined(VS_SMB)
 	nmi_addr_1D	= VS_RAM+$000
 	vs_actor_data	= VS_RAM+$100

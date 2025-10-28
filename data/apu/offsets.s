@@ -25,7 +25,7 @@ apu_music_offsets:
 	.byte	apu_music_level_end-apu_music_offsets
 	.byte	apu_music_hurry_up-apu_music_offsets
 	.byte	apu_music_none-apu_music_offsets
-; --------------
+; ----------------
 apu_music_offsets_base_start:
 	.byte	apu_music_overworld_a-apu_music_offsets
 	.byte	apu_music_underwater-apu_music_offsets
@@ -35,7 +35,7 @@ apu_music_offsets_base_start:
 	.byte	apu_music_overworld_intro-apu_music_offsets
 	.byte	apu_music_super_star-apu_music_offsets
 	.byte	apu_music_none-apu_music_offsets
-; --------------
+; ----------------
 apu_music_overworld_offsets:
 	.byte	apu_music_overworld_intro-apu_music_offsets
 
@@ -96,7 +96,7 @@ apu_music_overworld_loop_end:
 		.byte	apu_music_super_star_vs_c-apu_music_offsets
 	apu_music_super_star_vs_loop_end:
 	.endif
-; --------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(VS)
 apu_music_super_star_vs_a:
 	.byte	<(apu_note_lengths_d-apu_note_lengths)

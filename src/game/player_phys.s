@@ -3,7 +3,7 @@
 
 .include	"mem.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 player_phys_data:
 	.include	"../../data/player_a_accel.s"
 	.include	"../../data/player_a_friction.s"
@@ -12,7 +12,7 @@ player_phys_data_a_end:
 	.include	"../../data/player_b_accel.s"
 	.include	"../../data/player_b_friction.s"
 player_phys_data_b_end:
-; -----------------------------
+; ----------------------------------
 	.export player_phys_load, player_phys_load_default
 player_phys_load:
 	ldx	#CPU_OPCODE_RTS

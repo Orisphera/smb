@@ -44,7 +44,7 @@ ending_course_plus_msg:
 		jmp	ending_state_next
 	; }
 .endif
-; -----------------------------
+; ----------------------------------
 	.export	ending_bg_proc
 ending_bg_proc:
 	lda	bg_proc_id
@@ -59,7 +59,7 @@ ending_bg_proc:
 	.addr	ending_pal_load_ext
 .endif
 	.addr	ending_princess_show
-; -----------------------------
+; ----------------------------------
 ending_throneroom_show:
 	lda	#nmi_addr::ending_throneroom_map
 	sta	nmi_buffer_ptr
@@ -69,7 +69,7 @@ ending_throneroom_show:
 ending_bg_proc_next:
 	inc	bg_proc_id
 	rts
-; -----------------------------
+; ----------------------------------
 .if	.defined(ANN)
 ending_pal_load_ext:
 	lda	#nmi_addr::ending_pal_ext
@@ -77,7 +77,7 @@ ending_pal_load_ext:
 	inc	bg_proc_id
 	rts
 .endif
-; -----------------------------
+; ----------------------------------
 ending_princess_show:
 	lda	#(10<<4)|(stats::time)
 	jsr	stats_print_num
@@ -97,7 +97,7 @@ ending_princess_show:
 ending_state_next:
 	inc	proc_id_game
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	ending_victory_msg
 ending_victory_msg:
 	lda	timer_victory_msg
@@ -143,7 +143,7 @@ ending_victory_msg:
 		sta	ending_palcycle_delay
 		: rts
 	; }
-; -----------------------------
+; ----------------------------------
 	.export	ending_extra_lives
 ending_extra_lives:
 	lda	timer_victory
@@ -171,7 +171,7 @@ ending_extra_lives:
 		rts
 	.endif
 	; } else rts;
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 ending_pal:
 	.dbyt	PPU_VRAM_COLOR
 	.byte	(:++)-(:+)
@@ -196,7 +196,7 @@ ending_lives_disp:
 	.byte	NMI_REPEAT|21, chr_bg::blanks+0
 	.byte	NMI_LIST_END
 ending_lives_disp_end:
-; -----------------------------
+; ----------------------------------
 	.export	ending_palcycle
 ending_palcycle:
 	inc	timer_ending
@@ -243,7 +243,7 @@ ending_palcycle:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 	.export	ending_lives_draw
 ending_lives_draw:
 	ldx	#(ending_lives_disp_end-ending_lives_disp)-1
@@ -268,7 +268,7 @@ ending_lives_draw:
 	.endif
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	ending_toad_proc
 ending_toad_proc:
 	jsr	ending_toad_render
@@ -290,7 +290,7 @@ ending_toad_proc:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	disk_loader_save
 disk_loader_save:
 	lda	disk_loader_proc
@@ -300,7 +300,7 @@ disk_loader_save:
 	.addr	disk_loader_wait_eject
 	.addr	disk_loader_wait_insert
 	.addr	disk_loader_bootstrap
-; -----------------------------
+; ----------------------------------
 disk_header_save:
 	.byte	FILE_ID_SAVE, "SM2SAVE "
 	.addr	save
@@ -308,7 +308,7 @@ disk_header_save:
 	.byte	0
 	.addr	save
 	.byte	0
-; -----------------------------
+; ----------------------------------
 disk_loader_file_write_save:
 	lda	#FILE_NO_SAVE
 	jsr	fdsbios_file_write
@@ -317,7 +317,7 @@ disk_loader_file_write_save:
 	beq	disk_loader_file_write_save_done
 	inc	disk_loader_proc
 	jmp	disk_perror
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 disk_loader_file_write_save_done:
 	lda	#>apu_cycle
 	sta	nmi_apu_call+OP_SIZE+1
@@ -354,7 +354,7 @@ disk_loader_file_write_save_done:
 		jmp	victory_finish_do
 	; }
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 ending_toad_render_data_offset:
 	.byte	$50, $B0, $E0, $68, $98, $C8
 
@@ -386,7 +386,7 @@ ending_toad_render_attrs:
 	.byte	obj_attr::color1
 	.byte	obj_attr::color3
 .endif
-; -----------------------------
+; ----------------------------------
 ending_toad_render_CHR_NO	= zp_byte_00
 ending_toad_render_ATTR		= zp_byte_01
 
@@ -525,7 +525,7 @@ ending_toad_render:
 		sta	pos_y_lo_actor
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.include        "charmap.i"
 ENDING_TEXT_NAME_LEN	= 5
 
@@ -534,7 +534,7 @@ ending_text_player_names:
 ending_text_player_mario_end:
 	.byte	"LUIGI"
 ending_text_player_luigi_end:
-; -----------------------------
+; ----------------------------------
 	.export	ending_text_player_set
 ending_text_player_set:
 	lda	#bg_procs::init
@@ -557,5 +557,5 @@ ending_text_player_set:
 	; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.include        "../../data/ending_data.s"

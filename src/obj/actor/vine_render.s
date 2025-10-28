@@ -1,6 +1,7 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"chr.i"
 
 .if	.defined(OG_PAD)
@@ -14,17 +15,17 @@
         .res    7, $FF
 .endif
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 VINE_PART_COUNT		= 6
 VINE_COLUMN_B_OFFSET	= 6
 VINE_HEIGHT_CUTOFF	= 100
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_vine_part_idx	= zp_byte_00
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_vine_offset:
 	.byte	0*PPU_CHR_HEIGHT_PX
 	.byte	VINE_PART_COUNT*PPU_CHR_HEIGHT_PX
-; -----------------------------
+; ----------------------------------
 	.export render_vine
 render_vine:
 	sty	render_vine_part_idx
@@ -97,7 +98,7 @@ render_vine:
 
 	ldy	render_vine_part_idx
 	rts
-; -----------------------------
+; ----------------------------------
 	.export render_vine_column
 render_vine_column:
 	ldx	#VINE_PART_COUNT

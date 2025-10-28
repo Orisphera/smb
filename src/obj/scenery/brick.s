@@ -1,10 +1,11 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"course_flags.i"
 .include	"misc.i"
 .include	"const.i"
 .include	"tiles.i"
 
-; -----------------------------
+; ----------------------------------
 scenery_floor_tiles:
 	.byte	metatile_1::floor_underwater
 	.byte	metatile_1::stair
@@ -16,7 +17,7 @@ scenery_brick_tiles:
 	.byte	metatile_1::brick_b
 	.byte	metatile_1::brick_b
 	.byte	metatile_2::cloud_small
-; --------------
+; ----------------
         .export scenery_brickrow
         .export scenery_floorrow
         .export scenery_get_row

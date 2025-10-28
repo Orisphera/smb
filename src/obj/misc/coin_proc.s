@@ -3,7 +3,7 @@
 .include	"sound.i"
 .include	"misc.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMBV1)
 	misc_coin_coin_players:
 		.byte	stats_coin_player_a_end-stats_tbl-1
@@ -25,7 +25,7 @@
 		.byte	COIN_MAX+(COIN_VS_INC*2)
 		.byte	COIN_MAX+(COIN_VS_INC*3)
 .endif
-; -----------------------------
+; ----------------------------------
     .export misc_proc_coin_add
 	.export misc_proc_coin_update_score
 	.export misc_proc_coin_update_stats

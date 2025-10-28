@@ -1,6 +1,7 @@
 .include	"math.i"
 .include	"joypad.i"
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"misc.i"
 .include	"sound.i"
 
@@ -68,10 +69,10 @@ proj_proc:
 		; }
 	: ; }
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 proj_proc_veloc_x:
 	.byte	PROJ_VELOC_X_ABS, <-PROJ_VELOC_X_ABS
-; -----------------------------
+; ----------------------------------
 proj_proc_do:
 	stx	actor_index
 	lda	state_proj, x

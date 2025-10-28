@@ -4,13 +4,13 @@
 
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 FLOATER_KOOPA_VELOC_X_CUTOFF	= 19
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_floater_koopa, actor_floater_do, actor_floater_move
 actor_floater_koopa:
 	lda	#FLOATER_KOOPA_VELOC_X_CUTOFF
-; ----------------------------
+; ----------------------------------
 actor_floater_veloc_x_cutoff	= zp_byte_01
 
 actor_floater_do:
@@ -36,7 +36,7 @@ actor_floater_do:
 			rts
 		; }
 	; } else rts;
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_floater_move:
 	lda	veloc_x_actor, x
 	pha

@@ -18,7 +18,7 @@ actor_proc_do:
 	.repeat ACTOR_B_COUNT, I
 		.addr	.ident(.sprintf("actor_B_%02X_proc", I))
 	.endrep
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 actor_B_02_proc:
 actor_B_03_proc:

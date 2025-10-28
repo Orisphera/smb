@@ -1,13 +1,14 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"const.i"
 
-; ----------------------------------------------------------
+; ----------------------------------------------------------------------
 MISC_ACCEL_Y_INC		= 80
 MISC_VELOC_Y_MAX_ABS_6		= 6
 MISC_GRAVITY_INIT		= 0
 MISC_VELOC_Y_STATE_CUTOFF	= 5
 MISC_SCORE_DURATION		= 48
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	misc_proc
 misc_proc:
 	ldx	#ENG_MISC_MAX-1

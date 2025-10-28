@@ -28,7 +28,7 @@ sys_disk_loader:
 	.addr	title_init_1
 	.addr	title_proc
 	.addr	disk_loader_data4
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 disk_loader_data4:
 	lda	disk_loader_proc
 	jsr	tbljmp
@@ -37,7 +37,7 @@ disk_loader_data4:
 	.addr	disk_loader_wait_eject
 	.addr	disk_loader_wait_insert
 	.addr	disk_loader_bootstrap
-; -----------------------------
+; ----------------------------------
 disk_loader_file_load_data4:
 	lda	ENG_HARDMODE_VAR
 	beq	:+ ; if (ENG_HARDMODE_VAR) {
@@ -65,7 +65,7 @@ disk_loader_file_load_data4:
 	sta	proc_id_game
 	sta	timer_demo
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 disk_loader_main:
 	lda	disk_loader_proc
 	jsr	tbljmp
@@ -74,7 +74,7 @@ disk_loader_main:
 	.addr	disk_loader_wait_eject
 	.addr	disk_loader_wait_insert
 	.addr	disk_loader_bootstrap
-; -----------------------------
+; ----------------------------------
 disk_loader_file_load_main:
 	lda	disk_loader_main_req
 	beq	:++++
@@ -107,7 +107,7 @@ disk_loader_file_load_main:
 	sta	course_no
 	sta	ENG_HARDMODE_VAR
 	jmp	disk_loader_next
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export disk_loader_data2
 disk_loader_data2:
 	lda	disk_loader_proc
@@ -117,7 +117,7 @@ disk_loader_data2:
 	.addr	disk_loader_wait_eject
 	.addr	disk_loader_wait_insert
 	.addr	disk_loader_bootstrap
-; -----------------------------
+; ----------------------------------
 disk_loader_file_load_data2:
 	lda	course_no
 	cmp	#course::no_05
@@ -142,7 +142,7 @@ disk_loader_file_load_data2:
 		inc	proc_id_game
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export disk_loader_victory_init, disk_loader_victory_check
 disk_loader_victory_init:
 	lda	#16
@@ -153,7 +153,7 @@ disk_loader_victory_check:
 	lda	timer_victory
 	beq	disk_loader_inc_proc_id_game
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMB2)
 	VICTORY_CUTOFF	= 24
 .elseif	.defined(ANN)
@@ -169,7 +169,7 @@ disk_loader_data3:
 	.addr	disk_loader_wait_eject
 	.addr	disk_loader_wait_insert
 	.addr	disk_loader_bootstrap
-; -----------------------------
+; ----------------------------------
 disk_loader_file_load_data3:
 	lda	#fds_file_ids::data3
 	sta	disk_loader_file_id
@@ -199,13 +199,13 @@ disk_loader_file_load_data3:
 		jsr	disk_loader_next
 		jmp	ending_text_player_set
 	; } else disk_loader_file_load_err();
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 disk_loader_file_count_check:
 	tya
 	ldy	disk_loader_file_id
 	cmp	filetbl_lens, y
 	rts
-; -----------------------------
+; ----------------------------------
 	.export	disk_header_id
 disk_header_id:
 	.byte	FDS_VENDOR_NINTENDO
@@ -222,7 +222,7 @@ disk_sideb_current:	.byte	0
 	.byte	0
 	.byte	0
 	.byte	0
-; -----------------------------
+; ----------------------------------
 filelist_files_lo:
 	.byte	<filetbl_main
 	.byte	<filetbl_data2
@@ -264,7 +264,7 @@ filetbl_lens:
 	.byte	filetbl_data2_end-filetbl_data2
 	.byte	filetbl_data3_end-filetbl_data3
 	.byte	filetbl_data4_end-filetbl_data4
-; -----------------------------
+; ----------------------------------
 disk_load_files:
 	ldx	disk_loader_file_id
 	lda	filelist_files_lo, x
@@ -277,14 +277,14 @@ fileptr_filetbl:
 	.addr	filetbl_main
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	disk_perror_pal
 disk_perror_pal:
 	.dbyt	PPU_VRAM_COLOR
 	.byte	((:++)-(:+))
 	: .byte	PPU_COLOR_PITCH0, PPU_COLOR_GREY3, PPU_COLOR_GREY3, PPU_COLOR_PITCH0
 	: .byte	NMI_LIST_END
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	disk_loader_prompt
 disk_loader_prompt:
 	lda	#ppu_ctlr1::objblk_on|ppu_ctlr1::bgblk_on|ppu_ctlr1::objlblk_on|ppu_ctlr1::bglblk_on|ppu_ctlr1::color
@@ -294,7 +294,7 @@ disk_loader_prompt:
 	lda	#nmi_addr::disk_perror_pal
 	sta	nmi_buffer_ptr
 	jmp	:+
-; -----------------------------
+; ----------------------------------
 	.export	disk_loader_wait_eject
 disk_loader_wait_eject:
 	lda	#ppu_ctlr0::bg1
@@ -312,21 +312,21 @@ disk_loader_wait_eject:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 	.export	disk_loader_wait_insert
 disk_loader_wait_insert:
 	lda	FDS_DISK_SR
 	lsr	a
 	bcc	:--
 	bcs	:-
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	disk_loader_bootstrap
 disk_loader_bootstrap:
 	lda	#fds_loader_procs::prompt_00
 	sta	disk_loader_proc
 	sta	disk_loader_file_id
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .include	"charmap.i"
 
 	.export disk_text_error_buffer
@@ -368,7 +368,7 @@ disk_text_error_battery_end:
 disk_text_error_ab_side:
 	.byte	"A B SIDE"
 disk_text_error_ab_side_end:
-; -----------------------------
+; ----------------------------------
 	.export	disk_perror
 disk_perror:
 	pha

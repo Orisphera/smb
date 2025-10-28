@@ -1,16 +1,17 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"math.i"
 .include	"const.i"
 .include	"chr.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_actor_data_offset	= zp_byte_EB
 render_actor_state_next		= zp_byte_EC
 render_actor_state_prev		= zp_byte_ED
 render_obj_id_actor			= zp_byte_EF
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export render_actor
 render_actor:	
 	.if	.defined(SMBV2)
@@ -248,7 +249,7 @@ render_actor:
 		; }
 	: ; }
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_actor_ani_check:
 	ldy	actor_index
 	lda	render_obj_id_actor
@@ -327,7 +328,7 @@ render_actor_ani_check:
 			tax
 		; }
 	: ; }
-; ------------------------------
+; ----------------------------------
 render_actor_ani_do:
 	.if	.defined(SMBV2)
 		lda	render_obj_id_actor
@@ -346,7 +347,7 @@ render_actor_ani_do:
 		dey
 		sty	render_actor_state_next
 	: ; }
-; ------------------------------
+; ----------------------------------
 render_actor_tiles:
 	ldy	render_actor_data_offset
 	jsr	render_actor_chr_pair
@@ -518,7 +519,7 @@ render_actor_clear_b:
 			; }
 		; }
 	: ; }
-; ------------------------------
+; ----------------------------------
 	.export render_actor_clear_offscr
 render_actor_clear_offscr:
 	ldx	actor_index
@@ -577,7 +578,7 @@ render_actor_clear_offscr:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_actor_chr_pair:
 	lda	render_actor_tile_data, x
 	sta	render_chr_pair_tile_left
@@ -587,14 +588,14 @@ render_actor_chr_pair:
 render_chr_pair:
 	sta	render_chr_pair_tile_right
 	jmp	render_chr_pair_do
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_actor_clear_chr_pair_v:
 	clc
 	adc	obj_data_offset_actor, x
 	tay
 	lda	#OAM_INIT_SCANLINE
 	jmp	render_set_two_sprites_v
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_actor_clear_chr_pair_h:
 	clc
 	adc	obj_data_offset_actor, x

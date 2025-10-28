@@ -4,13 +4,13 @@
 .include	"joypad.i"
 .include	"misc.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 HAMMER_BRO_VELOC_X_A		= <-6
 HAMMER_BRO_VELOC_X_B		= <-3
 HAMMER_BRO_VELOC_CUTOFF_POS_Y	= 112
 
 ACTOR_ACCEL_X_ABS	= 24
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_hammer_bro_timers:
 	.byte	48, 28
 
@@ -21,7 +21,7 @@ actor_proc_accel_x:
 actor_proc_veloc_x:
 	.byte	ACTOR_HAMMER_BRO_VELOC_X, <-ACTOR_HAMMER_BRO_VELOC_X
 	.byte	ACTOR_HAMMER_BRO_VELOC_X_HARD, <-ACTOR_HAMMER_BRO_VELOC_X_HARD
-; ------------------------------
+; ----------------------------------
 	.export actor_A_05_proc
 actor_A_05_proc:
 	lda	state_actor, x
@@ -54,10 +54,10 @@ actor_A_05_proc:
 			; } else actor_proc_hammer_bro_move_h();
 		; } else actor_proc_hammer_bro_jump();
 	; }
-; ------------------------------
+; ----------------------------------
 hammer_bro_jump_timers:
 	.byte	32, 55
-; ------------------------------
+; ----------------------------------
 actor_proc_hammer_bro_jump_rand	= zp_byte_00
 
 actor_proc_hammer_bro_jump:
@@ -103,7 +103,7 @@ actor_proc_hammer_bro_jump:
 		ora	#%11000000
 		sta	timer_hammer_bro_jump, x
 	: ; }
-; ------------------------------
+; ----------------------------------
 actor_proc_hammer_bro_move_h:
 	ldy	#<-HAMMER_BRO_VELOC_X_C_ABS
 	lda	frame_count
@@ -124,7 +124,7 @@ actor_proc_hammer_bro_move_h:
 		; }
 	: ; }
 	sty	motion_dir_actor, x
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_base
 	.export	actor_A_00_proc
 	.export	actor_A_01_proc
@@ -235,7 +235,7 @@ actor_A_04_proc:
 			rts
 		; }
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_bounce
 	.export	actor_A_0E_proc
 actor_proc_bounce:

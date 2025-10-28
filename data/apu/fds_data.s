@@ -38,7 +38,7 @@ apu_fds_wave_b_data:
 	.byte	$28
 	.byte	$22
 	.byte	$1E
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	apu_fds_wave_a_vols
 	.export	apu_fds_wave_b_vols
 apu_fds_wave_b_vols:
@@ -66,7 +66,7 @@ apu_fds_wave_a_vols:
 	.byte	128
 
 	.byte	fds_snd_vol_env::on|fds_snd_vol_env::dec|52
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	apu_fds_wave_notes
 	.export	apu_fds_wave_note_00
 	.export	apu_fds_wave_note_01
@@ -159,7 +159,7 @@ apu_fds_wave_note_28:
 	.dbyt	$A26
 apu_fds_wave_note_29:
 	.dbyt	$000
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	apu_fds_envelope
 apu_fds_envelope:
 	.byte	channel_vol::duty_500|channel_vol::constant_vol|7

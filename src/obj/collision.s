@@ -2,6 +2,7 @@
 
 .include	"math.i"
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"modes.i"
 .include	"misc.i"
 .include	"const.i"
@@ -23,11 +24,11 @@
 .endif
 .endif
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_player_halt_dir	= zp_byte_00
 col_buffer_ptr_idx		= zp_byte_02
 col_box_buffer_tbl_offset	= zp_byte_04
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_proj_actor_proc_index	= zp_byte_01
 	.export col_proj_actor_proc
 col_proj_actor_proc:
@@ -100,12 +101,12 @@ col_proj_actor_proc:
 
 	ldx	actor_index
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 SCORE_PROJ_GOOMBA	= scores::value_100
 SCORE_PROJ_ENEMY_OTHER	= scores::value_200
 SCORE_PROJ_HAMMER_BRO	= scores::value_1000
 SCORE_PROJ_BOWSER	= scores::value_5000
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 bowser_death_obj_id_actors:
 	.byte	actor::goomba
 	.byte	actor::koopa_green
@@ -118,7 +119,7 @@ bowser_death_obj_id_actors:
 .if	.defined(SMBV2)
 	.byte	actor::bowser
 .endif
-; -----------------------------
+; ----------------------------------
 col_proj_actor_damage:
 	jsr	pos_calc_x_rel_actor
 	ldx	zp_byte_01
@@ -213,7 +214,7 @@ col_proj_actor_damage:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_player_hammer_proc
 col_player_hammer_proc:
 	lda	frame_count
@@ -258,7 +259,7 @@ col_player_hammer_proc:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 SCORE_POWERUP	= scores::value_1000
 STAR_TIMER	= 35
 
@@ -267,7 +268,7 @@ STAR_TIMER	= 35
 .elseif	.defined(VS_SMB)
 	STAR_MUSIC	= music_base::clouds
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_player_powerup_proc:
 	jsr	actor_erase
 
@@ -311,7 +312,7 @@ col_player_powerup_proc:
 		sta	bg_score_ctl, x
 		rts
 	; }
-; -----------------------------
+; ----------------------------------
 	: ; if (player.status != power_mushroom) {
 		; if (player.status == power_none) {
 			lda	#player_statuses::power_mushroom
@@ -324,7 +325,7 @@ col_player_powerup_proc:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 LD84D:
 	.byte	24, <-24
 
@@ -333,7 +334,7 @@ col_player_actor_kick_veloc_x:
 
 col_player_stomp_veloc_x:
 	.byte	8, <-8
-; -----------------------------
+; ----------------------------------
 	.export col_player_actor_proc
 col_player_actor_proc:
 	lda	frame_count
@@ -362,7 +363,7 @@ col_player_actor_proc:
 	col_player_actor_proc_rts:
 		rts
 	; }
-; -----------------------------
+; ----------------------------------
 col_player_actor_proc_hit:
 	ldy	obj_id_actor, x
 	cpy	#actor::power_up
@@ -372,12 +373,12 @@ col_player_actor_proc_hit:
 	beq	col_player_actor_proc_hit_do ; } else if (player.timer_star > 0) {
 		jmp	col_actor_kill
 	; } else col_player_actor_proc_hit_do();
-; -----------------------------
+; ----------------------------------
 col_player_actor_kick_score:
 	.byte	scores::value_8000
 	.byte	scores::value_1000
 	.byte	scores::value_500
-; -----------------------------
+; ----------------------------------
 col_player_actor_proc_hit_do:
 	lda	collision_actor, x
 	and	#COL_RIGHT
@@ -498,9 +499,9 @@ col_player_actor_proc_hit_do:
 			; } else col_player_harm_proc_end();
 		; } else col_player_actor_stomp();
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 PLAYER_DEATH_VELOC_Y	= <-4
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_player_harm_proc, col_player_harm_proc_do
 col_player_harm_proc:
 	lda	timer_player_injury
@@ -527,7 +528,7 @@ col_player_harm_proc_do:
 		: ; }
 
 		ldy	#1
-; -----------------------------
+; ----------------------------------
 	col_player_harm_proc_proc_change:
 		sta	proc_id_player
 		sty	state_player
@@ -540,7 +541,7 @@ col_player_harm_proc_do:
 col_player_harm_proc_end:
 	ldx	actor_index
 	rts
-; -----------------------------
+; ----------------------------------
 	: ; if (player.status == 0) {
 		stx	veloc_x_player
 		inx
@@ -551,13 +552,13 @@ col_player_harm_proc_end:
 		lda	#player_procs::death
 		bne	:--
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_player_actor_stomp_scores:
 	.byte	scores::value_200
 	.byte	scores::value_1000
 	.byte	scores::value_800
 	.byte	scores::value_1000
-; -----------------------------
+; ----------------------------------
 col_player_actor_stomp:
 	lda	obj_id_actor, x
 	cmp	#actor::spiny
@@ -636,14 +637,14 @@ col_player_actor_stomp:
 		.elseif	.defined(SMBV2)
 			rts
 		.endif
-; -----------------------------
+; ----------------------------------
 col_actor_stomp_resurrect_timer:
 	.ifndef	PAL
 		.byte	16, 11
 	.else
 		.byte	13, 9
 	.endif
-; -----------------------------
+; ----------------------------------
 	: ; } else {
 		lda	#actor_states::state_4
 		sta	state_actor, x
@@ -675,7 +676,7 @@ col_actor_stomp_resurrect_timer:
 	.endif
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_player_harm_proc_check_dir:
 	lda	motion_dir_actor, x
 	cmp	#DIR_RIGHT
@@ -686,7 +687,7 @@ col_player_harm_proc_check_dir:
 		jsr	col_actor_calc_dir_check
 		jmp	col_player_harm_proc
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_kick_dir:
 	ldy	#DIR_RIGHT
 	jsr	col_player_bullet_diff
@@ -697,7 +698,7 @@ col_actor_kick_dir:
 	sty	motion_dir_actor, x
 	dey
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_score_do
 col_score_do:
 	sta	bg_score_ctl, x
@@ -708,7 +709,7 @@ col_score_do:
 	lda	pos_x_rel_actor
 	sta	bg_score_pos_x, x
 	: rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_actor_proc_idx	= zp_byte_01
 
 col_actor_actor_set_masks:
@@ -728,7 +729,7 @@ col_actor_actor_clear_masks:
 	.byte	<~COL_TOP
 	.byte	<~COL_BOTTOM
 	.byte	<~COL_LEFT
-; -----------------------------
+; ----------------------------------
 	.export col_actor_actor_proc
 col_actor_actor_proc:
 	lda	frame_count
@@ -816,7 +817,7 @@ col_actor_actor_proc:
 		ldx	actor_index
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_actor_do:
 	lda	state_actor, y
 	ora	state_actor, x
@@ -857,7 +858,7 @@ col_actor_actor_do:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 	: ; if (actor_x.state == init && actor_y.state == init && actor_x.state < 6 || called) {
 		lda	state_actor, y
 		cmp	#actor_states::state_6
@@ -887,7 +888,7 @@ col_actor_actor_do:
 		jsr	col_actor_calc_dir_check
 		ldx	actor_index
 	; }
-; -----------------------------
+; ----------------------------------
 col_actor_calc_dir_check:
 	lda	obj_id_actor, x
 	cmp	#actor::piranha_plant
@@ -921,7 +922,7 @@ col_actor_calc_dir_check:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_plat_l_proc
 col_plat_l_proc:
 	lda	#%11111111
@@ -937,7 +938,7 @@ col_plat_l_proc:
 		tax
 		jsr	:+
 	: ; }
-; -----------------------------
+; ----------------------------------
 	jsr	col_check_player_pos_y
 	bcs	:+ ; if (!col_check_player_pos_y()) {
 		txa
@@ -956,7 +957,7 @@ col_plat_l_proc:
 
 	ldx	actor_index
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_plat_s_proc_idx	= zp_byte_00
 
 	.export col_plat_s_proc
@@ -997,10 +998,10 @@ col_plat_s_proc:
 
 	ldx	actor_index
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_plat_do:
 	ldx	actor_index
-; -----------------------------
+; ----------------------------------
 col_plat_l_do:
 	lda	pos_y_col_box_se, y
 	sec
@@ -1078,10 +1079,10 @@ col_plat_l_do:
 
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_plat_s_pos_offsets:
 	.byte	<-128, 0
-; -----------------------------
+; ----------------------------------
 	.export col_plat_s_player_pos, col_plat_player_pos
 col_plat_s_player_pos:
 	tay
@@ -1093,7 +1094,7 @@ col_plat_s_player_pos:
 .elseif	.defined(VS_SMB)
 	jmp	col_plat_player_pos_do
 .endif
-; -----------------------------
+; ----------------------------------
 col_plat_player_pos:
 	lda	pos_y_lo_actor, x
 
@@ -1116,9 +1117,9 @@ col_plat_player_pos_do:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 COL_CHECK_PLAYER_POS_Y_CUTOFF	= 208
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_check_player_pos_y:
 	lda	bits_offscr_player
 
@@ -1140,7 +1141,7 @@ col_check_player_pos_y:
 	.endif
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_box_get:
 	lda	actor_index
 
@@ -1154,10 +1155,10 @@ col_actor_box_get_do:
 	and	#%00001111
 	cmp	#%00001111
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_player_pos_y_block_cutoff:
 	.byte	32, 16
-; -----------------------------
+; ----------------------------------
 	.export col_bg_proc
 col_bg_proc:
 	lda	col_disable
@@ -1196,7 +1197,7 @@ col_bg_proc:
 	col_bg_proc_rts: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 col_bg_proc_do:
 	ldy	#(col_bg_buffer_offset_end-col_bg_buffer_offset)-1
 	lda	player_crouching
@@ -1295,7 +1296,7 @@ col_bg_proc_do:
 	: ; }
 
 	jmp	col_bg_proc_coin_do
-; -----------------------------
+; ----------------------------------
 col_bg_proc_ground_type:
 	jsr	col_bg_proc_climb_check
 	bcs	:++++
@@ -1335,7 +1336,7 @@ col_bg_proc_ground_type:
 			sta	state_player
 		; }
 	: ; }
-; -----------------------------
+; ----------------------------------
 SIDE_REPS	= 2
 
 col_bg_proc_side_rep	= zp_byte_00
@@ -1381,7 +1382,7 @@ col_bg_proc_side:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 col_bg_proc_side_do:
 	jsr	col_bg_proc_vis
 	beq	:++++++++ ; if (tile.is_visible) {
@@ -1446,19 +1447,19 @@ col_bg_proc_side_do:
 			; } else col_bg_proc_coin_do();
 		; } else col_bg_proc_climb_do();
 	; } else rts;
-; -----------------------------
+; ----------------------------------
 col_bg_timer_scene_trans:
 	.ifndef	PAL
 		.byte	160, 52
 	.else
 		.byte	133, 43
 	.endif
-; -----------------------------
+; ----------------------------------
 col_bg_proc_coin_do:
 	jsr	col_bg_proc_bg_tile_blank
 	inc	game_bonus_counter
 	jmp	misc_proc_coin_add
-; -----------------------------
+; ----------------------------------
 AXE_PLAYER_VELOC_X	= 24
 
 col_bg_proc_axe_do:
@@ -1473,13 +1474,13 @@ col_bg_proc_axe_do:
 
 	lda	#AXE_PLAYER_VELOC_X
 	sta	veloc_x_player
-; -----------------------------
+; ----------------------------------
 col_bg_proc_bg_tile_blank:
 	ldy	col_buffer_ptr_idx
 	lda	#metatile_0::blank_a
 	sta	(game_buffer), y
 	jmp	meta_put_blank
-; -----------------------------
+; ----------------------------------
 col_bg_proc_climb_offset_x_lo:
 	.byte	<-7, 7
 
@@ -1489,7 +1490,7 @@ col_bg_proc_climb_offset_x_hi:
 col_bg_proc_pole_cutoffs_y:
 	.byte	24, 34, 80, 104, 144
 col_bg_proc_pole_cutoffs_y_end:
-; -----------------------------
+; ----------------------------------
 .if	.defined(SMB)|.defined(SMBV2)
 CLIMB_POS_X	= pos_x_lo_player
 CLIMB_DIR_BOUND	= 16
@@ -1600,7 +1601,7 @@ col_bg_proc_climb_do:
 	
 		rts
 	; } else rts;
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_vis:
 	.if	.defined(SMB2)
 		cmp	#metatile_1::blank_e
@@ -1616,7 +1617,7 @@ col_bg_proc_vis:
 	beq	:+
 	cmp	#metatile_1::blank_c
 	: rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 SPRING_ACCEL_Y_INIT	= 112
 SPRING_ACCEL_TIMER	= 3
 
@@ -1639,7 +1640,7 @@ col_bg_proc_spring:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_spring_check:
 	cmp	#metatile_1::spring_bg_a
 	beq	:+
@@ -1651,7 +1652,7 @@ col_bg_proc_spring_check:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_pipe_v_metatile_a	= zp_byte_00
 col_bg_proc_pipe_v_metatile_b	= zp_byte_01
 
@@ -1743,7 +1744,7 @@ col_bg_proc_pipe_v_do:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_player_halt:
 	lda	#0
 	ldy	veloc_x_player
@@ -1784,29 +1785,29 @@ col_bg_proc_player_halt:
 	and	collision_player
 	sta	collision_player
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_tiles_solid:
 	.byte	metatile_0::pipe_v_a
 	.byte	metatile_1::stair
 	.byte	metatile_2::cloud_small
 	.byte	metatile_3::block_invis
-; -----------------------------
+; ----------------------------------
 col_bg_proc_solid_check:
 	jsr	col_bg_proc_get_tile_page
 	cmp	col_bg_proc_tiles_solid, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_tiles_climb:
 	.byte	metatile_0::flag_ball
 	.byte	metatile_1::flag_ball
 	.byte	metatile_2::end
 	.byte	metatile_3::end
-; -----------------------------
+; ----------------------------------
 col_bg_proc_climb_check:
 	jsr	col_bg_proc_get_tile_page
 	cmp	col_bg_proc_tiles_climb, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_coin_check:
 	cmp	#metatile_3::coin_a
 	beq	:+
@@ -1819,7 +1820,7 @@ col_bg_proc_coin_check:
 		sta	apu_sfx_pulse_2_req
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_get_tile_page:
 	tay
 	and	#TILE_PAGE_BITS
@@ -1829,7 +1830,7 @@ col_bg_proc_get_tile_page:
 	tax
 	tya
 	: rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_side_col_states:
 	.byte	actor_states::state_1
 	.byte	actor_states::state_1
@@ -1840,7 +1841,7 @@ col_actor_side_col_states:
 
 col_actor_stomp_veloc_x:
 	.byte	16, <-16
-; -----------------------------
+; ----------------------------------
 	.export col_actor_ground_proc
 col_actor_ground_proc:
 	lda	state_actor, x
@@ -1906,7 +1907,7 @@ col_actor_ground_proc:
 			; } else col_actor_koopa_demote_check();
 		; } else col_actor_land();
 	; } else rts;
-; -----------------------------
+; ----------------------------------
 col_actor_koopa_demote_check:
 	.if	.defined(SMBV2)
 		lda	obj_id_actor, x
@@ -1932,7 +1933,7 @@ col_actor_koopa_demote_check:
 		and	#actor::koopa_mask
 		sta	obj_id_actor, x
 	: ; }
-; -----------------------------
+; ----------------------------------
 col_player_actor_stomp_do:
 	.if	.defined(SMBV1)
 		lda	state_actor, x
@@ -1984,7 +1985,7 @@ col_player_actor_stomp_do:
 col_actor_ground_proc_rts:
 .endif
 	rts
-; -----------------------------
+; ----------------------------------
 col_actor_land:
 	lda	col_box_buffer_tbl_offset
 	sec
@@ -2023,7 +2024,7 @@ col_actor_land:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 col_actor_land_dir:
 	lda	obj_id_actor, x
 	cmp	#actor::goomba
@@ -2051,7 +2052,7 @@ col_actor_land_dir:
 			jsr	col_actor_check_side_bump
 		; }
 	: ; }
-; -----------------------------
+; ----------------------------------
 col_actor_land_init:
 	jsr	col_actor_land_do
 	lda	state_actor, x
@@ -2066,7 +2067,7 @@ col_actor_land_init:
 		sta	state_actor, x
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_check_side:
 	lda	obj_id_actor, x
 	cmp	#actor::koopa_red
@@ -2115,7 +2116,7 @@ col_actor_check_side:
 	
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_check_side_bump:
 	cpx	#ENG_ACTOR_MAX-1
 	beq	:+
@@ -2136,7 +2137,7 @@ col_actor_check_side_bump:
 	: ; } else {
 		jmp	col_actor_reverse
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_player_bullet_diff
 col_player_bullet_diff:
 	lda	pos_x_lo_actor, x
@@ -2146,7 +2147,7 @@ col_player_bullet_diff:
 	lda	pos_x_hi_actor, x
 	sbc	pos_x_hi_player
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_land_do:
 	jsr	actor_init_veloc_y
 	lda	pos_y_lo_actor, x
@@ -2154,14 +2155,14 @@ col_actor_land_do:
 	ora	#%00001000
 	sta	pos_y_lo_actor, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_pos_y_diff:
 	lda	pos_y_lo_actor, x
 	clc
 	adc	#62
 	cmp	#68
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_actor_bounce_proc
 col_actor_bounce_proc:
 	jsr	col_actor_pos_y_diff
@@ -2181,19 +2182,19 @@ col_actor_bounce_proc:
 	: ; }
 
 	jmp	col_actor_check_side_do
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_hammer_bro_block_check:
 	jsr	col_actor_block_col
 	beq	col_actor_fall
 	cmp	#metatile_0::blank_d
 	bne	col_actor_fall_check
-; -----------------------------
+; ----------------------------------
 col_actor_block_bump_kill:
 	jsr	col_actor_kill
 	lda	#<-4
 	sta	veloc_y_actor, x
 	rts
-; -----------------------------
+; ----------------------------------
 col_actor_fall_check:
 	lda	timer_ani_actor, x
 	bne	col_actor_fall ; if () {
@@ -2203,18 +2204,18 @@ col_actor_fall_check:
 		jsr	col_actor_land_do
 		jmp	col_actor_check_side_do
 	; } else col_actor_fall();
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_fall:
 	lda	state_actor, x
 	ora	#actor_states::state_1
 	sta	state_actor, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_actor_block_col:
 	lda	#$00
 	ldy	#$15
 	jmp	col_box_buffer_check_actor
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_proc_check_non_solid:
 	cmp	#metatile_0::climb_blank
 	beq	:+
@@ -2237,7 +2238,7 @@ col_bg_proc_check_non_solid:
 	beq	:+
 	cmp	#metatile_1::blank_c
 	: rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_proj_proc
 col_proj_proc:
 	lda	pos_y_lo_proj, x
@@ -2270,7 +2271,7 @@ col_proj_proc:
 		sta	apu_sfx_pulse_1_req
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export col_box_tbl
 	.export col_box_0, col_box_1
 	.export col_box_2, col_box_3
@@ -2317,7 +2318,7 @@ col_box_10:
 	.byte	0, 2, 16, 21
 col_box_11:
 	.byte	4, 4, 12, 28
-; -----------------------------
+; ----------------------------------
 	.export col_proj_box, col_misc_box
 col_proj_box:
 	txa
@@ -2327,18 +2328,18 @@ col_proj_box:
 	ldy	#$02
 
 	bne	col_box_proc_basic
-; -----------------------------
+; ----------------------------------
 col_misc_box:
 	txa
 	clc
 	adc	#$09
 	tax
 	ldy	#$06
-; -----------------------------
+; ----------------------------------
 col_box_proc_basic:
 	jsr	col_box_proc
 	jmp	col_box_screen_right
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_box_w_bits_mask		= zp_byte_00
 col_box_w_bits_offset_x_lo	= zp_byte_01
 
@@ -2349,12 +2350,12 @@ col_actor_box:
 	ldy	#$44
 
 	jmp	col_box_w_bits
-; -----------------------------
+; ----------------------------------
 col_plat_s_box:
 	ldy	#$08
 	sty	col_box_w_bits_mask
 	ldy	#$04
-; -----------------------------
+; ----------------------------------
 col_box_w_bits:
 	lda	pos_x_lo_actor, x
 	sec
@@ -2372,7 +2373,7 @@ col_box_w_bits:
 	sta	actor_bits_mask, x
 	bne	col_box_offscr
 	jmp	col_box_actor_offset
-; -----------------------------
+; ----------------------------------
 	.export col_plat_l_box
 col_plat_l_box:
 	inx
@@ -2390,7 +2391,7 @@ col_box_actor_offset:
 	ldy	#1
 	jsr	col_box_proc
 	jmp	col_box_screen_right
-; -----------------------------
+; ----------------------------------
 col_box_offscr:
 	txa
 	asl	a
@@ -2402,7 +2403,7 @@ col_box_offscr:
 	sta	pos_x_col_box_se_actor, y
 	sta	pos_y_col_box_se_actor, y
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_box_proc_box_idx		= zp_byte_00
 col_box_proc_pos_x_rel_player	= zp_byte_01
 col_box_proc_pos_y_rel_player	= zp_byte_02
@@ -2444,7 +2445,7 @@ col_box_proc:
 	tay
 	ldx	col_box_proc_box_idx
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_box_screen_right_offset_x_hi	= zp_byte_01
 col_box_screen_right_offset_x_lo	= zp_byte_02
 
@@ -2493,9 +2494,9 @@ col_box_screen_right:
 		ldx	actor_index
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 COL_BASE_SIDE_COUNT	= 2
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_base_actor_b_index	= zp_byte_06
 col_base_box_side	= zp_byte_07
 
@@ -2572,7 +2573,7 @@ col_base_actor:
 	sec
 	ldy	col_base_actor_b_index
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_box_buffer_check_actor:
 	pha
 	txa
@@ -2581,7 +2582,7 @@ col_box_buffer_check_actor:
 	tax
 	pla
 	jmp	col_box_buffer_check_do
-; -----------------------------
+; ----------------------------------
 col_box_buffer_check_misc:
 	txa
 	clc
@@ -2589,23 +2590,23 @@ col_box_buffer_check_misc:
 	tax
 	ldy	#$1B
 	jmp	col_box_buffer_check
-; -----------------------------
+; ----------------------------------
 col_box_buffer_check_proj:
 	ldy	#$1A
 	txa
 	clc
 	adc	#$07
 	tax
-; -----------------------------
+; ----------------------------------
 col_box_buffer_check:
 	lda	#$00
-; -----------------------------
+; ----------------------------------
 col_box_buffer_check_do:
 	jsr	col_box_buffer
 	ldx	actor_index
 	cmp	#0
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 col_bg_buffer_offset:
 col_bg_buffer_offset_tall:
 	.byte	0
@@ -2634,10 +2635,10 @@ col_bg_buffer_offset_y_short:
 	.byte	18, 32, 32, 24, 24, 24, 24
 
 	.byte	24, 20, 20, 6,  6,  8,  16
-; -------------------------------
+; ----------------------------------
 col_box_player_step:
 	iny
-; -----------------------------
+; ----------------------------------
 col_box_player_jump:
 	lda	#0
 .if	.defined(SMB)|.defined(SMBV2)
@@ -2645,13 +2646,13 @@ col_box_player_jump:
 .elseif	.defined(VS_SMB)
 	jmp	col_box_player_buffer_do
 .endif
-; -----------------------------
+; ----------------------------------
 col_box_player_back:
 	lda	#1
 
 col_box_player_buffer_do:
 	ldx	#0
-; -----------------------------
+; ----------------------------------
 col_box_buffer_old_tile		= zp_byte_03
 col_box_buffer_player_offset	= zp_byte_05
 

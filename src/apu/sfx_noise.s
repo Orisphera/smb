@@ -3,12 +3,12 @@
 .include	"mem.i"
 .include	"sound.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 APU_NOISE_LEN_SKID		= 6
 APU_NOISE_LEN_BLOCK_BREAK	= 32
 APU_NOISE_LEN_FLAME		= 64
 APU_NOISE_LEN_WIND		= 192
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(SMB2)
 	.include	"../data/apu/data_wind.s"
 	.endif
@@ -18,7 +18,7 @@ APU_NOISE_LEN_WIND		= 192
 	.if	.defined(SMBV2)
 	.include	"../data/apu/notes_skid.s"
 	.endif
-; --------------
+; ----------------
 .if	.defined(SMBV2)
 apu_skid:
 	sty	apu_sfx_noise_current
@@ -35,7 +35,7 @@ apu_skid_continued:
 	sta	TRIANGLE_COUNTER
 	bne	:+
 .endif
-; --------------
+; ----------------
 apu_block_break:
 	.if	.defined(SMBV2)
 		sty	apu_sfx_noise_current
@@ -43,7 +43,7 @@ apu_block_break:
 
 	lda	#APU_NOISE_LEN_BLOCK_BREAK
 	sta	snd_sfx_noise_len
-; --------------
+; ----------------
 apu_block_break_continued:
 	lda	snd_sfx_noise_len
 	lsr	a
@@ -51,13 +51,13 @@ apu_block_break_continued:
 	tay
 	ldx	apu_block_break_periods, y
 	lda	apu_block_break_envelope, y
-; --------------
+; ----------------
 apu_sfx_noise_continued:
 	sta	NOISE_VOL
 	stx	NOISE_PERIOD
 	lda	#channel_counter::length_2
 	sta	NOISE_COUNTER
-; --------------
+; ----------------
 	: dec	snd_sfx_noise_len
 	bne	:+ ; if (--snd_sfx_noise_len == 0) {
 		lda	#NOISE_VOL_HI_BITS|channel_vol::counter_halt|channel_vol::constant_vol|0
@@ -74,7 +74,7 @@ apu_sfx_noise_continued:
 
 apu_sfx_noise_end:
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	apu_sfx_noise_play
 apu_sfx_noise_play:
 	.if	.defined(SMBV1)
@@ -118,7 +118,7 @@ apu_sfx_noise_play:
 	.endif
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 apu_flame:
 	.if	.defined(SMBV2)
 		sty	apu_sfx_noise_current
@@ -126,7 +126,7 @@ apu_flame:
 
 	lda	#APU_NOISE_LEN_FLAME
 	sta	snd_sfx_noise_len
-; --------------
+; ----------------
 apu_flame_continued:
 	lda	snd_sfx_noise_len
 	lsr	a
@@ -134,7 +134,7 @@ apu_flame_continued:
 	ldx	#noise_period::D10
 	lda	apu_flame_envelope-1, y
 	: bne	apu_sfx_noise_continued
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMB2)
 apu_wind:
 	sty	apu_sfx_noise_current

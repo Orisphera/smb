@@ -1,8 +1,9 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"tiles.i"
 .include	"const.i"
 
-; -----------------------------
+; ----------------------------------
 	.export	scenery_ledge
 	.export scenery_ledge_tbl
 	.export scenery_ledge_tbl_tree
@@ -21,7 +22,7 @@ scenery_ledge_tbl_mushroom:
 
 scenery_ledge_tbl_cannon:
 	.addr	scenery_cannon
-; --------------
+; ----------------
 scenery_ledge_tree:
 	jsr	scenery_attr
 	lda	scenery_length, x
@@ -47,7 +48,7 @@ scenery_ledge_tree:
 		lda	#metatile_0::plat_b_c
 		jmp	scenery_ledge_no_base
 	; }
-; --------------
+; ----------------
 scenery_ledge_mushroom:
 	jsr	scenery_len
 	sty	game_buffer
@@ -89,12 +90,12 @@ scenery_ledge_no_base:
 	ldx	scenery_proc_metatile_id
 	ldy	#0
 	jmp	scenery_render
-; -----------------------------
+; ----------------------------------
 scenery_pulley_tiles:
 	.byte	metatile_1::pulley_c
 	.byte	metatile_1::pulley_b
 	.byte	metatile_1::pulley_d
-; --------------
+; ----------------
 	.export	scenery_pulley
 scenery_pulley:
 	jsr	scenery_len

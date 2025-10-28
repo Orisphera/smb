@@ -3,7 +3,7 @@
 .include	"math.i"
 .include	"sound.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 WIND_PLAYER_OFFSET	= 1
 
 scenery_wind_col_mod		= zp_byte_00
@@ -39,7 +39,7 @@ scenery_wind_col:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 LEAF_COUNT	= 12
 
 scenery_wind_leaf_pos_y:
@@ -65,7 +65,7 @@ scenery_wind_leaf_chr:
 	.byte	chr_obj::leaf+0
 	.byte	chr_obj::leaf+1
 	.byte	chr_obj::leaf+0
-; -----------------------------
+; ----------------------------------
 .if	.definedmacro(WIND_BASE)
 	.export	scenery_wind_proc
 .endif
@@ -102,7 +102,7 @@ scenery_wind_proc:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 scenery_wind_leaf_offset:
 	.byte	87, 87, 86, 86
 	.byte	88, 88, 86, 86
@@ -110,7 +110,7 @@ scenery_wind_leaf_offset:
 	.byte	89, 89, 88, 88
 	.byte	90, 90, 88, 88
 	.byte	89, 90, 89, 90
-; -----------------------------
+; ----------------------------------
 scenery_wind_leaf_proc:
 	ldx	#LEAF_COUNT-1
 	: ; for (frame of this.frames) {
@@ -129,7 +129,7 @@ scenery_wind_leaf_proc:
 	; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 .if	.definedmacro(WIND_BASE)
 	.export	scenery_wind_on, scenery_wind_off
 .endif
@@ -139,6 +139,6 @@ scenery_wind_on:
 
 scenery_wind_off:
 	lda	#0
-; -----------------------------
+; ----------------------------------
 	: sta	scenery_wind_flag
 	rts

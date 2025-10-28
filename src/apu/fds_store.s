@@ -8,7 +8,7 @@
 .endmacro
 .include	"./common/store.s"
 .delmac	APU_STORE_FDS
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	apu_fds_write_note_wave
 apu_fds_write_note_wave:
 	ldx	#FDS_SND_MOD_ENV_4X

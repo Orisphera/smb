@@ -31,7 +31,7 @@ game_init_oam:
 	.byte	PPU_BG_COL_11*PPU_CHR_WIDTH_PX
 game_init_oam_end:
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export game_init_0
 
 	.if	.defined(SMBV1)
@@ -56,7 +56,7 @@ game_init_oam_end:
 		.if	.defined(VS_SMB)
 		rts
 		.endif
-; ----------------------------
+; ----------------------------------
 		.if	.defined(VS_SMB)
 	game_init_0:
 		jsr	game_init_ram
@@ -156,7 +156,7 @@ game_init_0_do:
 	.elseif	.defined(ANN)
 		jmp	bg_title_screen_finish
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	game_init_1
 
 	.if	.defined(SMBV1)
@@ -185,7 +185,7 @@ game_init_0_do:
 		.if	.defined(VS_SMB)
 		rts
 		.endif
-	; ----------------------------
+	; ----------------------------------
 		.if	.defined(VS_SMB)
 	game_init_1:
 		jsr	game_init_setup
@@ -270,7 +270,7 @@ game_init_1_do:
 	.elseif	.defined(ANN)
 		jmp	bg_title_screen_finish
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export game_init_clearram
 game_init_clearram:
 	ldx	#>(RAM_END-RAM_BASE)-1
@@ -301,7 +301,7 @@ game_init_clearram:
 	; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 area_music_data:
 	.byte	music_base::underwater
 	.byte	music_base::overworld
@@ -311,7 +311,7 @@ area_music_data_clouds:
 	.byte	music_base::clouds
 area_music_data_pipe_intro:
 	.byte	music_base::pipe_intro
-; ----------------------------
+; ----------------------------------
 	.export	game_init_area_music
 game_init_area_music:
 	lda	proc_id_system

@@ -299,7 +299,7 @@ course_actor_pages:
 			.addr	course_actor_overworld_10
 		.endif
 .endif
-; --------------
+; ----------------
 	.export course_scenery_pages
 course_scenery_pages:
 	.byte	(course_scenery_addr_lo_water-course_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE

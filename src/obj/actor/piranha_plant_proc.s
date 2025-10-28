@@ -1,16 +1,17 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 PIRANHA_PLANT_CUTOFF_A	= 33
 .elseif	.defined(ANN)
 PIRANHA_PLANT_CUTOFF_A	= 19
 .endif
 PIRANHA_PLANT_TIMER_ANI	= 64
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_piranha_plant_pos_x_rel_abs	= zp_byte_00
 actor_proc_piranha_plant_pos_y		= zp_byte_00
 

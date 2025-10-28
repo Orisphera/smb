@@ -1,12 +1,13 @@
 .include	"math.i"
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"const.i"
 .include	"misc.i"
 .include	"joypad.i"
 .include	"sound.i"
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 BOWSER_VELOC_X_ABS	= 16
 BOWSER_VELOC_Y		= 8
 BOWSER_VELOC_Y_NEG	= <-2
@@ -14,7 +15,7 @@ BOWSER_TIMER_START_POS_Y	= 128
 BOWSER_COL_BOX		= col_boxes::box_10
 BOWSER_BG_CLEAR_BASE	= PPU_VRAM_BG1+PPU_BG_ROW_16
 BOWSER_DEATH_Y_POS	= 224
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_bowser_ending_clear_blocks:
 	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_0+PPU_BG_COL_26)
 	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_2+PPU_BG_COL_24)
@@ -32,7 +33,7 @@ actor_bowser_ending_clear_blocks:
 	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_2)
 	.byte	<(BOWSER_BG_CLEAR_BASE+PPU_BG_ROW_4+PPU_BG_COL_0)
 actor_bowser_ending_clear_blocks_end:
-; -----------------------------
+; ----------------------------------
 	.export actor_bowser_ending
 actor_bowser_ending:
 	ldx	actor_index_bowser
@@ -95,10 +96,10 @@ actor_bowser_ending:
 	
 		jmp	actor_proc_bowser_finish
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_bowser_timer_data:
 	.byte	33, 65, 17, 49
-; ----------------------------
+; ----------------------------------
 	.export actor_proc_bowser, actor_killall
 	.export	actor_B_18_proc
 actor_proc_bowser:
@@ -298,7 +299,7 @@ actor_proc_bowser_finish:
 	lda	#0
 	sta	actor_bowser_ani_frame
 	: rts
-; -----------------------------
+; ----------------------------------
 actor_proc_bowser_col:
 	inc	actor_bowser_ani_frame
 	jsr	actor_proc_toad

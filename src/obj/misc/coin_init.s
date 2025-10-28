@@ -1,14 +1,15 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"const.i"
 .include	"sound.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 MISC_COIN_BLOCK_OFFSET_Y	= 16
 MISC_COIN_BLOCK_B_OFFSET_Y	= 32
 MISC_COIN_POS_X_CLAMP		= %00000101
 MISC_COIN_HEAD_SLOTS		= 5
 MISC_COIN_VELOC_Y		= <-5
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export misc_init_coin_a, misc_init_coin_b
 misc_init_coin_a:
 	jsr	misc_init_coin_block_alloc
@@ -21,7 +22,7 @@ misc_init_coin_a:
 	sbc	#MISC_COIN_BLOCK_OFFSET_Y
 	sta	pos_y_lo_misc, y
 	jmp	misc_init_coin
-; -----------------------------
+; ----------------------------------
 misc_init_coin_b:
 	jsr	misc_init_coin_block_alloc
 	lda	block_page_loc, x
@@ -48,7 +49,7 @@ misc_init_coin:
 	jsr	misc_proc_coin_add
 	inc	game_bonus_counter
 	rts
-; -----------------------------
+; ----------------------------------
 misc_init_coin_block_alloc:
 	ldy	#ENG_MISC_MAX-1
 	: ; for (obj of misc) {

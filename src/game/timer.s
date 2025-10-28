@@ -62,7 +62,7 @@ stats_time_proc:
 
 stats_time_proc_rts:
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_warp
 	.export	actor_B_1F_proc
 actor_proc_warp:

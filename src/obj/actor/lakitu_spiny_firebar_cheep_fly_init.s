@@ -6,7 +6,7 @@
 
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 LAKITU_SPINY_SWARM_TIMER	= 128
 LAKITU_OFFSET_X			= 32
 LAKITU_OFFSET_X_B		= 96
@@ -25,7 +25,7 @@ FIREBAR_OFFSET_X	= FIREBAR_OFFSET
 FIREBAR_OFFSET_Y	= FIREBAR_OFFSET
 
 CHEEP_FLY_COUNT_BASE	= 3
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_init_lakitu
 	.export	actor_A_11_init
 actor_init_lakitu:
@@ -40,12 +40,12 @@ actor_A_11_init:
 	: ; } else {
 		jmp	actor_erase
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_spiny_data:
 	.byte	$26, $2C, $32, $38
 	.byte	$20, $22, $24, $26
 	.byte	$13, $14, $15, $16
-; ------------------------------
+; ----------------------------------
 	.export actor_init_lakitu_spiny
 actor_init_lakitu_spiny:
 	lda	timer_swarm
@@ -112,7 +112,7 @@ actor_init_lakitu_spiny:
 	: ; }
 
 	rts
-; ------------------------------
+; ----------------------------------
 actor_proc_spiny:
 	lda	pos_y_lo_player
 	cmp	#SPINY_PLAYER_Y_CUTOFF
@@ -184,7 +184,7 @@ actor_proc_spiny:
 actor_spiny_rts:
 	rts
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 firebar_veloc_ang:
 	.byte	FIREBAR_ANG_VELOC_SLOW
 	.byte	FIREBAR_ANG_VELOC_FAST
@@ -198,7 +198,7 @@ firebar_rot_dir:
 	.byte	firebar_rot_dir::ccw
 	.byte	firebar_rot_dir::ccw
 	.byte	firebar_rot_dir::cw
-; ------------------------------
+; ----------------------------------
 	.export actor_init_firebar_long, actor_init_firebar_short
 	.export	actor_B_06_init, actor_B_07_init
 	.export	actor_B_08_init, actor_B_09_init
@@ -206,7 +206,7 @@ firebar_rot_dir:
 actor_init_firebar_long:
 actor_B_0A_init:
 	jsr	actor_init_dup
-; ------------------------------
+; ----------------------------------
 actor_init_firebar_short:
 actor_B_06_init:
 actor_B_07_init:
@@ -234,7 +234,7 @@ actor_B_09_init:
 	adc	#0
 	sta	pos_x_hi_actor, x
 	jmp	actor_init_col_large_b
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_cheep_fly_count		= zp_byte_00
 actor_cheep_fly_offset_rand	= zp_byte_00
 actor_cheep_fly_veloc_x_rand	= zp_byte_01
@@ -258,7 +258,7 @@ actor_cheep_fly_veloc_x:
 
 actor_cheep_fly_timers:
 	.byte	16, 96, 32, 72
-; ------------------------------
+; ----------------------------------
 	.export actor_init_cheep_fly
 actor_init_cheep_fly:
 	lda	timer_swarm

@@ -40,7 +40,7 @@ sys_castle_victory:
 		jsr	pos_calc_x_rel_player
 		jmp	render_player
 	; } else rts;
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	victory_enter_tbl
 	.export	victory_enter_bowser
 	.export	victory_enter_init
@@ -116,7 +116,7 @@ victory_enter_finish:
 	victory_course_08_disk_save:	.addr	disk_loader_save
 	; }
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(ANN)
 	ann_toads:
 		.addr	ann_toad_1
@@ -137,7 +137,7 @@ victory_enter_finish:
 		.byte	<chr_obj_nsm_char_c
 	ann_toads_size:
 		.byte	$30, $50, $60
-; ----------------------------
+; ----------------------------------
 	ann_toad_ptr	= zp_addr_00
 	ann_toad_id	= zp_byte_06
 
@@ -183,7 +183,7 @@ victory_enter_finish:
 
 		jmp	bg_title_screen_finish
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(SMB2)
 	victory_init_mask:
 		.byte	1<<0, 1<<1, 1<<2, 1<<3
@@ -230,7 +230,7 @@ victory_enter_finish:
 		.byte	PPU_COLOR_GREY0, PPU_COLOR_GREY0, PPU_COLOR_GREY0
 	ann_toad_pal_buf_end:
 	.endif
-; ----------------------------
+; ----------------------------------
 victory_init:
 	.if	.defined(ANN)
 		lda	ENG_HARDMODE_VAR
@@ -291,7 +291,7 @@ victory_init:
 		inc	proc_id_game
 		rts
 	.endif
-; -----------------------------
+; ----------------------------------
 	.if	.defined(SMBV2)
 	bg_title_screen:
 		lda	proc_id_system
@@ -300,7 +300,7 @@ victory_init:
 		lda	#5
 		jmp	bg_color_init_4_end
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 victory_proc:
 	ldy	#joypad_button::none
 	sty	victory_proc_ctrl
@@ -336,7 +336,7 @@ victory_proc:
 	beq	victory_next ; if (victory_proc_ctrl != 0) {
 		rts
 	; } else victory_next();
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 victory_msg:
 	lda	timer_victory_msg
 	bne	victory_msg_continue ; if (this.timer == 0) {
@@ -490,7 +490,7 @@ victory_msg:
 	
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(SMBV2)|.defined(VS_SMB)
 
 	.if	.defined(SMBV2)
@@ -530,7 +530,7 @@ victory_msg:
 
 		rts
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(VS_SMB)
 pal_8492:
 	.byte	PPU_COLOR_YGREEN0, PPU_COLOR_YELLOW1, PPU_COLOR_ROSE2,  PPU_COLOR_PITCH0
@@ -570,7 +570,7 @@ actor_pos_y_lo_84C0:
 ppu_84C7:
 	.byte	$B8, $38, $48, $60
 	.byte	$80, $A0, $B8, $C8
-; ----------------------------
+; ----------------------------------
 victory_84CF:
 	lda	course_no
 	cmp	#course::no_08
@@ -628,7 +628,7 @@ victory_84CF:
 
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 victory_8526:
 	ldx	#(ppu_84AA_end-ppu_84AA)-1
 	: ; for (entry of ppu_84AA) {
@@ -651,7 +651,7 @@ victory_8526:
 	lda	#$60
 	sta	VS_RAM_ARENA0+$2A
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 victory_8552:
 	lda	VS_RAM_ARENA0+$2A
 	beq	:+ ; if (vs_ram_arena0[0x2A]) {
@@ -728,7 +728,7 @@ victory_8552:
 		sta	pos_y_lo_actor
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 victory_85E0:
 	lda	course_no
 	cmp	#course::no_08
@@ -763,7 +763,7 @@ victory_85E0:
 		rts
 	; }
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 victory_finish:
 	lda	timer_victory
 	bne	victory_finish_rts
@@ -839,7 +839,7 @@ victory_finish:
 			rts
 		; }
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(VS_SMB)
 victory_864C:
 	jsr	victory_8552
@@ -851,7 +851,7 @@ victory_864C:
 		sta	timer_select
 		rts
 	; } else rts;
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 victory_865D:
 	jsr	victory_8552
 
@@ -871,7 +871,7 @@ victory_865D:
 victory_865D_rts:
 	rts
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 SCORE_METASPR_W_TILES	= 2
 SCORE_DIGIT_MASK	= $0F
 
@@ -926,7 +926,7 @@ bg_score_value_oneup:	.byte	0
 .endif
 
 bg_score_disp_incs_end:
-; ----------------------------
+; ----------------------------------
 	.export bg_score_disp, bg_score_disp_end
 bg_score_disp:
 	lda	bg_score_ctl, x

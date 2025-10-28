@@ -6,7 +6,7 @@
 .include	"chr.i"
 .include	"sound.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_flag_pos_y:
 	.byte	0, 0, 8, 8
 
@@ -19,7 +19,7 @@ actor_proc_flag_chr_nos:
 	.byte	chr_obj::flag_victory+2
 	.byte	chr_obj::flag_victory+3
 actor_proc_flag_chr_nos_end:
-; ----------------------------
+; ----------------------------------
 	.export actor_proc_flag_victory
 	.export actor_proc_flag_victory_tbl
 	.export actor_proc_flag_victory_tbl_null
@@ -49,7 +49,7 @@ actor_proc_flag_victory_tbl_raise:
 actor_proc_flag_victory_tbl_delay:
 	.addr	actor_proc_flag_victory_delay
 actor_proc_flag_victory_tbl_done:
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_flag_victory_fireworks:
 	.if	.defined(SMBV1)
 		ldy	#actor_states::state_5
@@ -96,7 +96,7 @@ actor_proc_flag_victory_fireworks_step:
 
 actor_proc_flag_victory_fireworks_rts:
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_flag_victory_timer_score_do
 	.export actor_proc_course_end_stats
 actor_proc_flag_victory_timer_score:
@@ -119,7 +119,7 @@ actor_proc_flag_victory_timer_score_do:
 	jsr	stats_calc
 	lda	#5
 	sta	score_digit_mod+6
-; ------------------------------
+; ----------------------------------
 actor_proc_course_end_stats:
 	ldy	#(stats_score_player_a_end-stats_tbl)-1
 
@@ -143,7 +143,7 @@ actor_proc_course_end_stats:
 		lda	#2
 	.endif
 	jmp	misc_proc_coin_add_score
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_flag_victory_raise:
 	lda	pos_y_lo_actor, x
 	cmp	#114
@@ -157,7 +157,7 @@ actor_proc_flag_victory_raise:
 		lda	#actor::fireworks
 		sta	actor_swarm_buffer
 	; } else actor_proc_flag_victory_start_flag();
-; ------------------------------
+; ----------------------------------
 actor_proc_flag_victory_draw:
 	jsr	pos_calc_x_rel_actor
 	ldy	obj_data_offset_actor, x
@@ -186,7 +186,7 @@ actor_proc_flag_victory_draw:
 
 	ldx	actor_index
 	rts
-; -----------------------------
+; ----------------------------------
 actor_proc_flag_victory_start_flag:
 	jsr	actor_proc_flag_victory_draw
 	lda	#6
@@ -195,7 +195,7 @@ actor_proc_flag_victory_start_flag:
 actor_proc_flag_victory_next:
 	inc	proc_id_flag_victory
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_flag_victory_delay:
 	jsr	actor_proc_flag_victory_draw
 

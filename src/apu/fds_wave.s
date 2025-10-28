@@ -2,6 +2,7 @@
 .include	"sys/fds.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"sound.i"
 
 .segment	"DATA3"
@@ -41,7 +42,7 @@ apu_fds_wave_proc:
 		sta	FDS_SND_WAVE_VOL
 		rts
 	; }
-; -----------------------------
+; ----------------------------------
 apu_fds_wave_get:
 	lda	#fds_snd_wave_vol::bus_req|fds_snd_wave_vol::vol_full
 	sta	FDS_SND_WAVE_VOL
@@ -71,7 +72,7 @@ apu_fds_wave_get:
 		lda	#fds_snd_wave_vol::bus_rel|fds_snd_wave_vol::vol_two_fifths
 	: ; }
 	sta	FDS_SND_WAVE_VOL
-; -----------------------------
+; ----------------------------------
 apu_fds_mod_offset	= zp_byte_02
 
 	.export	apu_fds_mod_get
@@ -104,7 +105,7 @@ apu_fds_mod_get:
 	; }
 
 	rts
-; -----------------------------
+; ----------------------------------
 	.export	apu_fds_mod
 	.export	apu_fds_mod_a
 	.export	apu_fds_mod_b

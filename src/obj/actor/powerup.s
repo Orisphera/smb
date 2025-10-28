@@ -6,7 +6,7 @@
 .include	"misc.i"
 .include	"sound.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 POWERUP_OFFSET_BLOCK_Y	= 8
 POWERUP_VELOC_Y		= 16
 POWERUP_COL_BOX		= col_boxes::box_3
@@ -16,7 +16,7 @@ POWERUP_CUE_SPAWNED_FRAMES	= 68
 POWERUP_CUE_UNITS		= (MOD_4+1)
 POWERUP_CUE_DISPLAY		= (POWERUP_CUE_DISPLAY_FRAMES/POWERUP_CUE_UNITS)
 POWERUP_CUE_SPAWNED		= (POWERUP_CUE_SPAWNED_FRAMES/POWERUP_CUE_UNITS)
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_init_powerup, actor_init_powerup_b
 	.export	actor_B_19_init
 actor_init_powerup_b:
@@ -57,7 +57,7 @@ actor_B_19_init:
 	lda	#sfx_pulse_2::spawn_powerup
 	sta	apu_sfx_pulse_2_req
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_powerup
 	.export	actor_B_19_proc
 actor_proc_powerup:

@@ -30,12 +30,12 @@
 .endif
 
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	course_descriptor_load, course_type_get
 course_descriptor_load:
 	jsr	course_descriptor_get
 	sta	course_descriptor
-; -----------------------------
+; ----------------------------------
 course_type_get:
 	and	#(course_types::MAX<<COURSE_DESC_TYPE_BIT)
 	asl	a
@@ -44,4 +44,4 @@ course_type_get:
 	rol	a
 	sta	course_type
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------

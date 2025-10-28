@@ -2,19 +2,19 @@
 .include	"mem.i"
 .include	"joypad.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 BLOOPER_ACCEL_OFFSET_Y		= 1
 BLOOPER_MOTION_TIMER		= 2
 BLOOPER_VELOC_X_Y_OFFSET	= 2
 BLOOPER_ACCEL_Y_THRESH		= 32
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_blooper_flip_chance:
 	.ifndef	PAL
 		.byte	MOD_64, MOD_4
 	.else
 		.byte	MOD_8, MOD_2
 	.endif
-; ----------------------------
+; ----------------------------------
 	.export actor_proc_blooper
 	.export	actor_A_07_proc
 actor_proc_blooper:
@@ -79,7 +79,7 @@ actor_A_07_proc:
 	: ; } else {
 		jmp	motion_fall_slow
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_swim:
 	lda	veloc_y_actor, x
 	and	#MOD_4_2_UP

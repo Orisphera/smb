@@ -13,7 +13,7 @@
 	.res	781, $FF
 .endif
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	apu_alt_cycle
 apu_alt_cycle:
 	.if	.defined(SMB2)
@@ -43,9 +43,9 @@ apu_alt_cycle:
 
 		rts
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	: jmp	:+++
-; -----------------------------
+; ----------------------------------
 	.export	apu_fds_next
 apu_fds_music_play:
 	lda	apu_music_base_req
@@ -72,28 +72,28 @@ apu_fds_music_play:
 			.delmac	APU_HEADER_LOAD_FDS
 		; }
 	: ; }
-; -----------------------------
+; ----------------------------------
 apu_fds_music_pulse_2:
 	.macro	APU_PULSE_2_FDS
 		1
 	.endmacro
 	.include	"./common/pulse_2.s"
 	.delmac	APU_PULSE_2_FDS
-; --------------
+; ----------------
 apu_fds_music_pulse_1:
 	.macro	APU_PULSE_1_FDS
 		1
 	.endmacro
 	.include	"./common/pulse_1.s"
 	.delmac	APU_PULSE_1_FDS
-; --------------
+; ----------------
 apu_fds_music_triangle:
 	.macro	APU_TRIANGLE_FDS
 		1
 	.endmacro
 	.include	"./common/triangle.s"
 	.delmac	APU_TRIANGLE_FDS
-; --------------
+; ----------------
 APU_FDS_WAVE_FADE_FRAME	= 2
 
 apu_fds_music_wave:
@@ -199,7 +199,7 @@ apu_fds_music_wave:
 			; }
 		; }
 	: ; }
-; --------------
+; ----------------
 apu_fds_music_noise:
 	.macro	APU_NOISE_FDS
 		1

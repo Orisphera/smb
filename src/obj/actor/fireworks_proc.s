@@ -4,7 +4,7 @@
 .include	"misc.i"
 .include	"sound.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_fireworks
 	.export	actor_B_01_proc
 actor_proc_fireworks:

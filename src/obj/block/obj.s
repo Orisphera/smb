@@ -1,22 +1,23 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"chr.i"
 .include	"tiles.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 BLOCK_BITS_OFFSET	= 6
 
 render_block_bits_attr			= zp_byte_00
 render_block_bits_pos_x_orig_rel	= zp_byte_00
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_block_tile_data:
 	.byte	chr_obj::brick+0
 	.byte	chr_obj::brick+0
 	.byte	chr_obj::brick+1
 	.byte	chr_obj::brick+1
 render_block_tile_data_end:
-; ------------------------------
+; ----------------------------------
 	.export render_block
 render_block:
 	lda	pos_y_rel_block
@@ -86,7 +87,7 @@ render_block:
 	: ; }
 
 	pla
-; ------------------------------
+; ----------------------------------
 	.export	render_offscr_top_clear
 render_offscr_check_top:
 	and	#%00001000
@@ -98,7 +99,7 @@ render_offscr_check_top:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export render_block_bits
 render_block_bits:
 	lda	#obj_attr::priority_high|obj_attr::color2

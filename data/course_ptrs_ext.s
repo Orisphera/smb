@@ -40,7 +40,7 @@ course_ext_actor_addr_lo_underground:
 
 course_ext_actor_addr_lo_water:
 	.addr	course_ext_actor_water_1
-; --------------
+; ----------------
 	.export	course_ext_scenery_pages
 course_ext_scenery_pages:
 	.byte	(course_ext_scenery_addr_lo_water-course_ext_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE

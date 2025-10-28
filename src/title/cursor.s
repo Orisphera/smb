@@ -4,7 +4,7 @@
 .include	"charmap.i"
 
 .if	.defined(CONS)
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMBV1)
 	TITLE_CURSOR_COL	= PPU_BG_COL_9
 .elseif	.defined(SMBV2)
@@ -32,7 +32,7 @@ title_cursor_tiles:
 	.byte	" "
 	.byte	chr_bg::cursor
 .endif
-; ----------------------------
+; ----------------------------------
 	.export title_cursor_draw, title_cursor_draw_xfer
 title_cursor_draw:
 .if	.defined(SMBV1)

@@ -9,7 +9,7 @@
 .include	"misc.i"
 .include	"joypad.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 PLAT_ROPE_OFFSET_X	= 8
 PLAT_ROPE_OFFSET_X_HARD	= 16
 PLAT_ROPE_WIDTH		= 2
@@ -17,7 +17,7 @@ PLAT_ROPE_ENTRY_SIZE	= (WORD_SIZE+1+PLAT_ROPE_WIDTH)
 PLAT_ROPE_ENTRY_COUNT	= 2
 
 actor_init_plat_rope_addr	= zp_byte_00
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_plat_bal
 actor_proc_plat_bal:
 	lda	pos_y_hi_actor, x
@@ -181,7 +181,7 @@ actor_proc_plat_bal:
 
 	ldx	actor_index
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_init_plat_rope:
 	pha
 
@@ -245,7 +245,7 @@ actor_init_plat_rope:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_init_plat_fall:
 	tya
 	tax
@@ -260,13 +260,13 @@ actor_init_plat_fall:
 	sta	bg_score_pos_y, x
 	lda	#DIR_RIGHT
 	sta	motion_dir_actor, x
-; ------------------------------
+; ----------------------------------
 actor_proc_plat_stop:
 	jsr	actor_init_veloc_y
 	sta	veloc_y_actor, y
 	sta	accel_y_grav_actor, y
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_plat_fall_do:
 	tya
 	pha
@@ -286,7 +286,7 @@ actor_proc_plat_fall_do:
 
 	ldx	actor_index
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_plat_mov_v
 actor_proc_plat_mov_v:
 	lda	veloc_y_actor, x
@@ -314,7 +314,7 @@ actor_proc_plat_mov_v:
 			jsr	motion_platform_down
 		: ; }
 	; }
-; ------------------------------
+; ----------------------------------
 actor_proc_plat_lift_player:
 	lda	actor_plat_col_flag, x
 	bmi	:+ ; if (!(actor.plat_col & 0x80)) {
@@ -322,7 +322,7 @@ actor_proc_plat_lift_player:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_plat_move_h
 actor_proc_plat_move_h:
 	lda	#14
@@ -350,7 +350,7 @@ actor_proc_plat_move_h:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_plat_drop
 actor_proc_plat_drop:
 	lda	actor_plat_col_flag, x
@@ -360,7 +360,7 @@ actor_proc_plat_drop:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_plat_right
 actor_proc_plat_right:
 	jsr	motion_x
@@ -373,17 +373,17 @@ actor_proc_plat_right:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_plat_lift
 actor_proc_plat_lift:
 	jsr	actor_proc_plat_lift_move
 	jmp	actor_proc_plat_lift_player
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc_plat_small_do
 actor_proc_plat_small_do:
 	jsr	actor_proc_plat_lift_move
 	jmp	actor_proc_plat_lift_col
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_plat_lift_move:
 	lda	game_timer_stop
 	bne	actor_proc_plat_lift_col_rts ; if (!game_timer_stop) {
@@ -396,7 +396,7 @@ actor_proc_plat_lift_move:
 		sta	pos_y_lo_actor, x
 		rts
 	; } else rts;
-; -----------------------------
+; ----------------------------------
 actor_proc_plat_lift_col:
 	lda	actor_plat_col_flag, x
 	beq	:+ ; if (actor.plat_col != 0) {

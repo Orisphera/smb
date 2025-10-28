@@ -45,7 +45,7 @@ game_mode_toad_load:	.addr	ann_toad_load
 game_mode_scr:		.addr	bg_proc
 game_mode_init_1:	.addr	game_init_1_do
 game_mode_proc:		.addr	game_proc
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(VS_SMB)
 vs_game_init:
 	inc	proc_id_game
@@ -55,7 +55,7 @@ vs_game_init:
 	sta	nmi_sprite_overlap
 	rts
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 GAME_SCROLL_END	= $20
 
 	.export	game_proc, game_proc_scroll_save
@@ -201,7 +201,7 @@ game_proc:
 
 		rts
 	; } else rts;
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	game_scroll, game_scroll_do
 game_scroll:
 	lda	scroll_x_player
@@ -304,14 +304,14 @@ game_scroll:
 	lda	#0
 	sta	actor_plat_scroll_x
 	rts
-; ----------------------------
+; ----------------------------------
 game_scroll_off:
 	.byte	0, 16
 
 game_scroll_btn_mask:
 	.byte	joypad_button::right
 	.byte	joypad_button::left
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	game_disp_pos
 game_disp_pos:
 	lda	pos_x_lo_screen_left

@@ -2,6 +2,7 @@
 .include	"sys/palette.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"chr.i"
 .include	"tiles.i"
 .include	"const.i"
@@ -125,7 +126,7 @@ meta_render_area:
 	: ; }
 
 	jmp	meta_render_attr_end
-; ----------------------------
+; ----------------------------------
 meta_render_attr_addr_dbyt	= zp_addr_00
 
 	.export meta_render_attr
@@ -183,7 +184,7 @@ meta_render_attr_end:
 	lda	#nmi_addr::buffer_11_A
 	sta	nmi_buffer_ptr
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 pal_rotating:
 	.byte	PPU_COLOR_ORANGE2
 	.byte	PPU_COLOR_ORANGE2
@@ -205,7 +206,7 @@ pal_page_3:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_ORANGE0, PPU_COLOR_ORANGE1, PPU_COLOR_PITCH0
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_ORANGE0, PPU_COLOR_ORANGE1, PPU_COLOR_CYAN1
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_ORANGE0, PPU_COLOR_ORANGE1, PPU_COLOR_GREY0
-; ----------------------------
+; ----------------------------------
 meta_color_rotate_pal_entry	= zp_byte_00
 
 .if	.defined(CONS)
@@ -269,7 +270,7 @@ meta_color_rotate:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export meta_clear_blocks
 	.export meta_clear_blocks_brick_a, meta_clear_blocks_brick_b
 	.export meta_clear_blocks_block_empty
@@ -304,7 +305,7 @@ meta_clear_blocks_blank_b:
 	.byte	chr_bg::blanks+2
 	.byte	chr_bg::blanks+2
 	.byte	chr_bg::blanks+2
-; ----------------------------
+; ----------------------------------
 	.export meta_put_blank
 meta_put_blank:
 	ldy	#ppu_displist_meta_data-ppu_displist
@@ -318,14 +319,14 @@ meta_put_blank:
 	lda	#nmi_addr::buffer_11_A
 	sta	nmi_buffer_ptr
 	rts
-; ----------------------------
+; ----------------------------------
 	.export meta_replace
 meta_replace:
 	jsr	meta_write
 	inc	block_counter_res
 	dec	block_rep_flag, x
 	rts
-; ----------------------------
+; ----------------------------------
 	.export meta_destroy
 	.export meta_step
 meta_destroy:
@@ -360,7 +361,7 @@ meta_step:
 	clc
 	adc	#10
 	jmp	bg_color_player_end
-; ----------------------------
+; ----------------------------------
 META_CLEAR_PUT_WIDTH		= 2
 META_CLEAR_PUT_ENTRY_SIZE	= (WORD_SIZE+1+META_CLEAR_PUT_WIDTH)
 

@@ -1,6 +1,7 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"macros.i"
 
 ppu_displist_write_do:
@@ -54,7 +55,7 @@ ppu_displist_write_do:
 	ppuaddr_m	PPU_VRAM_COLOR
 	sta	PPU_VRAM_AR
 	sta	PPU_VRAM_AR
-; ----------------------------
+; ----------------------------------
 	.export ppu_displist_write, ppu_displist_write_scc_h_v
 ppu_displist_write:
 	ldx	PPU_SR
@@ -67,7 +68,7 @@ ppu_displist_write:
 		sta	PPU_SCC_H_V
 		rts
 	; } else ppu_displist_write_do();
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export ppu_displist_write_ctlr0
 ppu_displist_write_ctlr0:
 	sta	PPU_CTLR0

@@ -4,7 +4,7 @@
 .include	"misc.i"
 .include	"sound.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 BOWSER_FLAME_TIMESLICE		= 16
 BOWSER_FLAME_OFFSET_X		= 32
 
@@ -14,7 +14,7 @@ BOWSER_FLAME_SHOOT_OFFSET_Y	= 8
 BOWSER_FLAME_COL_BOX		= col_boxes::box_8
 
 BOWSER_FLAME_ACCEL_Y_ABS	= 1
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_init_dup
 actor_init_dup:
 	ldy	#<-1
@@ -40,13 +40,13 @@ actor_init_dup:
 
 actor_init_dup_rts:
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_bowser_flame_pos_y_offset
 actor_bowser_flame_pos_y_offset:
 	.byte	<-112, <-128, 112, <-112
 bowser_flame_accel_y:
 	.byte	<-BOWSER_FLAME_ACCEL_Y_ABS, BOWSER_FLAME_ACCEL_Y_ABS
-; ------------------------------
+; ----------------------------------
 	.export actor_init_bowser_flame, actor_init_right_side
 actor_init_bowser_flame:
 	lda	timer_swarm

@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"tiles.i"
 .include	"const.i"
 
@@ -12,7 +13,7 @@ scenery_pipe_water:
 	lda	#metatile_1::pipe_water_b
 	sta	scenery_metatile+1, x
 	rts
-; -----------------------------
+; ----------------------------------
 BG_SCENERY_PIPE_SIZE	= 7
 
 scenery_pipe_horiz_len	= zp_byte_05
@@ -38,7 +39,7 @@ scenery_pipe_intro:
 	: ; }
 
 	rts
-; --------------
+; ----------------
 scenery_pipe_horiz_m:
 	.byte	metatile_0::pipe_v_f
 	.byte	metatile_0::pipe_v_e
@@ -54,7 +55,7 @@ scenery_pipe_horiz_b:
 	.byte	metatile_0::pipe_h_f
 	.byte	metatile_0::pipe_h_e
 	.byte	metatile_0::pipe_h_d
-; --------------
+; ----------------
 scenery_pipe_length	= zp_byte_06
 
 	.export	scenery_pipe_exit
@@ -86,14 +87,14 @@ scenery_pipe_horiz:
 	lda	scenery_pipe_horiz_b, y
 	sta	scenery_metatile+1, x
 	rts
-; --------------
+; ----------------
 	.export	scenery_pipe_v_tiles
 scenery_pipe_v_tiles:
 	.byte	metatile_0::pipe_v_b, metatile_0::pipe_v_a
 	.byte	metatile_0::pipe_v_f, metatile_0::pipe_v_e
 	.byte	metatile_0::pipe_v_d, metatile_0::pipe_v_c
 	.byte	metatile_0::pipe_v_f, metatile_0::pipe_v_e
-; --------------
+; ----------------
 	.export	scenery_pipe_vert
 scenery_pipe_vert:
 	jsr	scenery_pipe_h
@@ -157,7 +158,7 @@ scenery_pipe_vert:
 	ldy	scenery_pipe_length
 	dey
 	jmp	scenery_render
-; --------------
+; ----------------
 	.export	scenery_pipe_h
 scenery_pipe_h:
 	ldy	#1
@@ -168,7 +169,7 @@ scenery_pipe_h:
 	sta	scenery_pipe_length
 	ldy	scenery_length, x
 	rts
-; -------------
+; ----------------
 .if	.defined(SMBV2)
 	.export	scenery_pipe_vert_plant
 scenery_pipe_vert_plant:

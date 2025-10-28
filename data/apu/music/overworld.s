@@ -87,7 +87,7 @@ apu_music_overworld_a_triangle:
 		.byte	sound_notes::B4
 	.byte	SND_TRACK_NOTE_LEN|length_d::halfdot
 		.byte	sound_notes::G4
-; --------------
+; ----------------
 	.export apu_music_overworld_b_a_data
 	.export apu_music_overworld_b_a_pulse_2
 	.export apu_music_overworld_b_a_pulse_1
@@ -142,7 +142,7 @@ apu_music_overworld_b_a_triangle:
 	.byte	SND_TRACK_NOTE_LEN|length_d::half
 		.byte	sound_notes::C5
 		.byte	sound_notes::F4
-; --------------
+; ----------------
 	.export	apu_music_overworld_b_b_data
 	.export	apu_music_overworld_b_b_pulse_2
 	.export apu_music_overworld_b_b_pulse_1
@@ -193,7 +193,7 @@ apu_music_overworld_b_b_triangle:
 	.byte	SND_TRACK_NOTE_LEN|length_d::half
 		.byte	sound_notes::G6
 		.byte	sound_notes::G4
-; --------------
+; ----------------
 	.export	apu_music_overworld_b_c_data
 	.export	apu_music_overworld_b_c_pulse_2
 	.export	apu_music_overworld_b_c_pulse_1
@@ -245,7 +245,7 @@ apu_music_overworld_b_noise:
 	snd_cmp_byte	length_d::sixth,	SND_NOISE_NONE
 	snd_cmp_byte	length_d::sixth,	SND_NOISE_HI_SHORT
 	.byte	SND_TRACK_END
-; --------------
+; ----------------
 	.export apu_music_overworld_c_a_data
 	.export apu_music_overworld_c_a_pulse_2
 	.export	apu_music_overworld_c_a_pulse_1
@@ -278,7 +278,7 @@ apu_music_overworld_c_a_pulse_1:
 	snd_cmp_byte	length_d::half,		sound_notes::E4
 	snd_cmp_byte	length_d::quarter,	sound_notes::E4
 	snd_cmp_byte	length_d::whole,	sound_notes::C4
-; --------------
+; ----------------
 	.export	apu_music_overworld_c_b_data
 	.export	apu_music_overworld_c_b_pulse_2
 	.export	apu_music_overworld_c_b_pulse_1
@@ -319,7 +319,7 @@ apu_music_overworld_c_triangle:
 		.byte	sound_notes::C4
 	.byte	SND_TRACK_NOTE_LEN|length_d::half
 		.byte	sound_notes::G3
-; --------------
+; ----------------
 	.export	apu_music_overworld_intro_data
 	.export	apu_music_overworld_intro_pulse_2
 	.export	apu_music_overworld_intro_pulse_1
@@ -377,7 +377,7 @@ apu_music_overworld_c_noise:
 	snd_cmp_byte	length_d::quarter,	SND_NOISE_HI_SHORT
 	snd_cmp_byte	length_d::quarter,	SND_NOISE_HI_SHORT
 	.byte	SND_TRACK_END
-; --------------
+; ----------------
 	.export	apu_music_overworld_d_a_data
 	.export	apu_music_overworld_d_a_pulse_2
 	.export	apu_music_overworld_d_a_pulse_1
@@ -426,7 +426,7 @@ apu_music_overworld_d_a_triangle:
 		.byte	sound_notes::C5
 		.byte	sound_notes::F4
 		.byte	sound_notes::null
-; --------------
+; ----------------
 	.export	apu_music_overworld_d_b_data
 	.export	apu_music_overworld_d_b_pulse_2
 	.export	apu_music_overworld_d_b_pulse_1
@@ -476,7 +476,7 @@ apu_music_overworld_d_b_triangle:
 		.byte	sound_notes::C5
 		.byte	sound_notes::G4
 		.byte	sound_notes::null
-; --------------
+; ----------------
 	.export	apu_music_overworld_d_c_data
 	.export	apu_music_overworld_d_c_pulse_2
 	.export	apu_music_overworld_d_c_pulse_1

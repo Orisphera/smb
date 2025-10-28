@@ -3,13 +3,13 @@
 .include	"const.i"
 .include	"tiles.i"
 
-; -----------------------------
+; ----------------------------------
 scenery_pit_tiles:
 	.byte	metatile_2::water_b
 	.byte	metatile_0::blank_a
 	.byte	metatile_0::blank_a
 	.byte	metatile_0::blank_a
-; --------------
+; ----------------
         .export scenery_pit
 scenery_pit:
 	jsr	scenery_len

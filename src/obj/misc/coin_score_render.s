@@ -4,7 +4,7 @@
 .include	"math.i"
 .include	"chr.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	: ; if (this.state > coin_01) {
 		lda	frame_count
 		lsr	a
@@ -36,13 +36,13 @@
 
 		jmp	:+
 	; }
-; -----------------------------
+; ----------------------------------
 render_coin_tiles:
 	.byte	chr_obj::coin+0
 	.byte	chr_obj::coin+1
 	.byte	chr_obj::coin+2
 	.byte	chr_obj::coin+3
-; -----------------------------
+; ----------------------------------
 	.export render_coin_score
 render_coin_score:
 	ldy	obj_data_offset_misc, x

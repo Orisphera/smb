@@ -7,7 +7,7 @@
 	.include	"./envelope_victory_castle.s"
 	.include	"./envelope_area.s"
 .endif
-; --------------
+; ----------------
 apu_underwater_envelope:
 	.byte	channel_vol::duty_500|channel_vol::constant_vol|0
 	.byte	channel_vol::duty_500|channel_vol::constant_vol|1
@@ -49,7 +49,7 @@ apu_underwater_envelope:
 	.byte	channel_vol::duty_500|channel_vol::constant_vol|5
 	.byte	channel_vol::duty_500|channel_vol::constant_vol|4
 	.byte	channel_vol::duty_500|channel_vol::constant_vol|3
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 apu_flame_envelope:
 	.byte	channel_vol::duty_125|channel_vol::constant_vol|5
 	.byte	channel_vol::duty_125|channel_vol::constant_vol|6
@@ -83,7 +83,7 @@ apu_flame_envelope:
 	.byte	channel_vol::duty_125|channel_vol::constant_vol|8
 	.byte	channel_vol::duty_125|channel_vol::constant_vol|6
 	.byte	channel_vol::duty_125|channel_vol::constant_vol|4
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 apu_block_break_envelope:
 	.byte	channel_vol::duty_125|channel_vol::constant_vol|5
 	.byte	channel_vol::duty_125|channel_vol::constant_vol|6

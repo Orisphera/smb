@@ -1,14 +1,15 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"chr.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 RENDER_POWERUP_HEIGHT	= 2
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_powerup_type	= zp_byte_00
 render_powerup_row	= zp_byte_07
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_powerup_tiles:
 	.byte	chr_obj::mushroom_nw, chr_obj::mushroom_ne
 	.byte	chr_obj::mushroom_sw, chr_obj::mushroom_se
@@ -36,7 +37,7 @@ render_powerup_colors:
 	.if	.defined(SMBV2)
 		.byte	obj_attr::color3
 	.endif
-; -----------------------------
+; ----------------------------------
 	.export render_powerup
 render_powerup:
 	ldy	obj_data_offset_actor+POWERUP_ACTOR_IDX

@@ -6,7 +6,7 @@
 .include	"joypad.i"
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 FIREBAR_SHORT_COUNT		= 6
 FIREBAR_LONG_COUNT		= 12
 FIREBAR_VELOC_Y_CUTOFF_A	= 8
@@ -19,7 +19,7 @@ FIREBAR_POS_X_CHECK_OFFSET	= <-16
 FIREBAR_SCROLL_X_INC		= 4
 FIREBAR_SPRITE_OFFSET		= 4
 FIREBAR_COLLISION_DIST		= 8
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_firebar_pos_tbl:
 actor_firebar_pos_tbl_0:
 	.byte	$00, $01, $03, $04, $05, $06, $07, $07, $08
@@ -64,7 +64,7 @@ actor_firebar_pos_tbl_idx:
 
 actor_proc_firebar_pos_y:
 	.byte	12, 24
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_firebar_loop_idx		= zp_byte_00
 actor_firebar_pos_x_rel		= zp_byte_06
 actor_firebar_pos_y_rel		= zp_byte_07
@@ -145,7 +145,7 @@ actor_proc_firebar_do:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_firebar_col_draw:
 	lda	zp_byte_03
 	sta	zp_byte_05
@@ -189,7 +189,7 @@ actor_firebar_col_draw:
 	: ; }
 	sta	oam_buffer+OBJ_POS_V, y
 	sta	actor_firebar_pos_y_rel
-; -----------------------------
+; ----------------------------------
 actor_firebar_col_player_pos_x	= zp_byte_04
 actor_firebar_col_pos_y_rel_idx	= zp_byte_05
 
@@ -287,7 +287,7 @@ actor_firebar_col:
 	sta	actor_firebar_pos_x_rel
 	ldx	actor_index
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_firebar_get_pos:
 	pha
 

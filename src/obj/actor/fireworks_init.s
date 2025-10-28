@@ -1,16 +1,16 @@
 .include	"mem.i"
 .include	"misc.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 FIREWORKS_SWARM_TIMER		= 32
 FIREWORKS_VELOC_Y		= 8
 FIREWORKS_ACTOR_OFFSET_Y	= 48
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 fireworks_pos_x_hi_tmp	= zp_byte_00
 
 fireworks_pos_x:	.byte	0,  48, 96,  96, 0,  32
 fireworks_pos_y:	.byte	96, 64, 112, 64, 96, 48
-; ------------------------------
+; ----------------------------------
 	.export actor_init_fireworks
 actor_init_fireworks:
 	lda	timer_swarm

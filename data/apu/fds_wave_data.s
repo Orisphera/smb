@@ -8,7 +8,7 @@ apu_fds_wave_offsets_a:
 	.byte	apu_fds_wave_a-apu_fds_wave_offsets
 apu_fds_wave_offsets_b:
 	.byte	apu_fds_wave_b-apu_fds_wave_offsets
-; -----------------------------
+; ----------------------------------
 apu_fds_wave_a:
 	.addr	apu_fds_wave_a_data
 	.byte	$44
@@ -22,7 +22,7 @@ apu_fds_wave_b:
 	.addr	apu_fds_wave_b_vols
 	.addr	apu_fds_wave_b_mods
 	.byte	<((apu_fds_mod_a-apu_fds_mod)*2)
-; -----------------------------
+; ----------------------------------
 	.byte	0
 ;------------------------------
 apu_fds_wave_a_data:
@@ -58,7 +58,7 @@ apu_fds_wave_a_data:
 	.byte	$1E
 	.byte	$18
 	.byte	$19
-; -----------------------------
+; ----------------------------------
 apu_fds_wave_a_mods:
 	.byte	fds_snd_mod_env::on|fds_snd_mod_env::dec|0
 	.byte	27

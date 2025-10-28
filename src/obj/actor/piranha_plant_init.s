@@ -1,11 +1,11 @@
 .include	"mem.i"
 .include	"misc.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 PIRANHA_PLANT_VELOC_Y_1		= 1
 PIRANHA_PLANT_POS_Y_BOTTOM	= 24
 PIRANHA_PLANT_COL_BOX		= col_boxes::box_9
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_init_piranha_plant_attr	= zp_byte_00
 
 	.export actor_init_piranha_plant

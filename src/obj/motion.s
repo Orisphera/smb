@@ -1,6 +1,7 @@
 .include	"sys/cpu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"misc.i"
 
 veloc_x_lo_motion	= zp_byte_00
@@ -69,7 +70,7 @@ motion_x_player:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export motion_y_player, motion_y
 	.export motion_y_state_5
 motion_y_player:
@@ -85,7 +86,7 @@ motion_y_player:
 		lda	#MOTION_GRAVITY_VAL
 		jmp	motion_gravity_do
 	; } else rts;
-; --------------
+; ----------------
 motion_y:
 	ldy	#$3D
 	lda	state_actor, x
@@ -95,7 +96,7 @@ motion_y:
 		ldy	#$20
 	: ; }
 	jmp	motion_fall_max_hi
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export motion_bounce_down, motion_bounce_up
 	.export motion_bounce
 motion_bounce_down:
@@ -115,7 +116,7 @@ motion_bounce:
 	sta	motion_gravity_veloc_y_max_abs
 	tya
 	jmp	motion_bounce_gravity_do
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export motion_fall_fast, motion_fall_slow
 	.export motion_fall_mid, motion_fall
 motion_fall_fast:
@@ -141,10 +142,10 @@ motion_fall:
 	jsr	motion_gravity_do
 	ldx	actor_index
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 motion_block_veloc_y_max:
 	.byte	6, 8
-; -----------------------------
+; ----------------------------------
 	.export motion_block_fall_fast
 motion_block_fall_slow:
 	ldy	#0
@@ -167,7 +168,7 @@ motion_gravity_do:
 	sta	motion_gravity_veloc_y_max_abs
 	lda	#0
 	jmp	motion_gravity
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export motion_platform_down, motion_platform_up
 motion_platform_down:
 	lda	#0
@@ -204,7 +205,7 @@ motion_bounce_gravity_do:
 	jsr	motion_gravity
 	ldx	actor_index
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 veloc_y_grav	= zp_byte_07
 
 	.export motion_gravity

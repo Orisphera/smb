@@ -4,13 +4,13 @@
 .include	"const.i"
 .include	"tiles.i"
 
-; -----------------------------
+; ----------------------------------
 scenery_coinrow_tiles:
 	.byte	metatile_3::coin_b
 	.byte	metatile_3::coin_a
 	.byte	metatile_3::coin_a
 	.byte	metatile_3::coin_a
-; --------------
+; ----------------
         .export scenery_coinrow
 scenery_coinrow:
 	ldy	course_type

@@ -1,17 +1,17 @@
 .include    "mem.i"
 .include    "misc.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 HAMMER_BRO_COL_SIZE	= 11
 HAMMER_BRO_TIMER_VS	= 255
 HAMMER_BRO_TIMER_EASY	= 128
 HAMMER_BRO_TIMER_HARD	= 80
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(CONS)
 actor_init_hammer_bro_timer:
 	.byte	HAMMER_BRO_TIMER_EASY, HAMMER_BRO_TIMER_HARD
 .endif
-; ------------------------------
+; ----------------------------------
 	.export actor_init_hammer_bro
 	.export	actor_A_05_init
 actor_init_hammer_bro:

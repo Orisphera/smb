@@ -1,7 +1,7 @@
 .include	"mem.i"
 .include	"misc.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 PIRANHA_HEIGHT		= 24
 PIRANHA_PIPE_OFFSET	= 10
 
@@ -20,7 +20,7 @@ scenery_pipe_v_flip_a:
 scenery_pipe_v_flip_b:
 	lda	#4
 	pha
-; --------------
+; ----------------
 	: jsr	scenery_pipe_h
 
 	pla
@@ -66,5 +66,5 @@ scenery_pipe_v_flip_b:
 	lda	scenery_pipe_v_tiles, y
 	sta	scenery_metatile, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	rts

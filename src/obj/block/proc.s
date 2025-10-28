@@ -2,11 +2,12 @@
 
 .include	"math.i"
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"const.i"
 .include	"tiles.i"
 .include	"sound.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 BLOCK_TIMER_VAL		= 11
 BLOCK_PLAYER_OFFSET_X	= 8
 BLOCK_ITEM_VELOC_Y	= <-2
@@ -16,13 +17,13 @@ BLOCK_BITS_B_OFFSET_Y	= 8
 BLOCK_BITS_VELOC_X	= <-16
 BLOCK_BITS_VELOC_Y	= <-6
 BLOCK_BITS_B_VELOC_Y	= <-4
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 block_punch_tile_id_b	= zp_byte_00
 block_punch_tile_id_a	= zp_byte_05
 
 block_punch_off_y:
 	.byte	4, 18
-; -----------------------------
+; ----------------------------------
 	.export block_punch
 block_punch:
 	pha
@@ -115,7 +116,7 @@ block_punch:
 	eor	#1
 	sta	block_id
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export block_initpos
 block_initpos:
 	lda	pos_x_lo_player
@@ -130,7 +131,7 @@ block_initpos:
 	lda	pos_y_hi_player
 	sta	pos_y_hi_block, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 block_item:
 	jsr	block_top_check
 
@@ -190,7 +191,7 @@ block_item:
 		.addr	block_mushroom_oneup
 		block_item_end:
 	; }
-; -----------------------------
+; ----------------------------------
 block_mushroom_reg:
 	lda	#powerup_type::mushroom_reg
 
@@ -226,7 +227,7 @@ block_mushroom_oneup:
 block_powerup:
 	sta	actor_powerup_type
 	jmp	actor_init_powerup_b
-; -----------------------------
+; ----------------------------------
 block_vine:
 	ldx	#$05
 	ldy	block_id
@@ -234,7 +235,7 @@ block_vine:
 
 block_item_rts:
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export block_tiles
 block_tiles:
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -269,7 +270,7 @@ block_tiles:
 	.byte	metatile_1::brick_k, metatile_1::brick_l
 	.byte	metatile_1::brick_m
 block_tiles_end:
-; -----------------------------
+; ----------------------------------
 block_is_tile:
 	ldy	#(block_tiles_end-block_tiles)-1
 	: ; for (tile of block_tiles) {
@@ -283,7 +284,7 @@ block_is_tile:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 block_break:
 	jsr	block_top_check
 	lda	#sfx_noise::block_break_01
@@ -297,9 +298,9 @@ block_break:
 	jsr	misc_proc_coin_update_score
 	ldx	block_id
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 BLOCK_TOP_MISC_OFFSET_Y	= 16
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 block_top_check:
 	ldx	block_id
 	ldy	pos_y_block_proc
@@ -322,7 +323,7 @@ block_top_check:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 block_bits_init:
 	lda	pos_x_lo_block, x
 	sta	pos_x_orig_block, x
@@ -347,7 +348,7 @@ block_bits_init:
 	lda	#BLOCK_BITS_VELOC_Y
 	sta	veloc_y_block, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export block_proc
 block_proc:
 	lda	state_block, x
@@ -422,7 +423,7 @@ block_proc:
 	: ; }
 	sta	state_block, x
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export block_flatten
 block_flatten:
 	ldx	#ACTIVE_BLOCK_MAX-1

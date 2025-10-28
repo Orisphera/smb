@@ -8,11 +8,11 @@
 .endmacro
 .include	"./common/load.s"
 .delmac	APU_LOAD_BASE
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 APU_ENVELOPE_LENGTH_VICTORY_CASTLE	= 4
 APU_ENVELOPE_LENGTH_UNDERWATER		= 40
 APU_ENVELOPE_LENGTH_DEFAULT		= 8
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	apu_next_state
 apu_next_state:
 	lda	apu_music_event_current
@@ -32,7 +32,7 @@ apu_next_state:
 	ldx	#channel_vol::duty_500|channel_vol::envelope|2
 	ldy	#pulse_sweep::period_8hf|pulse_sweep::negate|pulse_sweep::shift_7
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export apu_next_volume
 apu_next_volume:
 	lda	apu_music_event_current

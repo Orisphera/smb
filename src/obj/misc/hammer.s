@@ -1,8 +1,9 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"misc.i"
 .include	"const.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 MISC_HAMMER_ACCEL_Y_DEC		= 15
 MISC_HAMMER_VELOC_Y_MAX_ABS	= 4
 MISC_HAMMER_GRAVITY_INIT 	= 0
@@ -10,14 +11,14 @@ MISC_HAMMER_COL_BOX		= col_boxes::box_7
 
 MISC_HAMMER_ACTOR_OFFSET_X	= 2
 MISC_HAMMER_ACTOR_OFFSET_Y	= $10A
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 misc_hammer_obj_id_actor:
 	.byte	4, 4, 4, 5, 5, 5, 6, 6, 6
 misc_hammer_obj_id_actor_end:
 
 misc_hammer_veloc_x:
 	.byte	MISC_HAMMER_VELOC_X_INIT_ABS, <-MISC_HAMMER_VELOC_X_INIT_ABS
-; -----------------------------
+; ----------------------------------
 	.export misc_init_hammer
 misc_init_hammer:
 	lda	srand+1
@@ -47,7 +48,7 @@ misc_init_hammer:
 		clc
 		rts
 	; }
-; -----------------------------
+; ----------------------------------
 	.export misc_proc_hammer
 misc_proc_hammer:
 	lda	game_timer_stop

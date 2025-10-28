@@ -4,10 +4,10 @@
 .include	"math.i"
 .include	"chr.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 EXPLOSION_BASE_ATTR	= (obj_attr::priority_high|obj_attr::color2)
 EXPLOSION_TILE_OFFSET	= 4
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export render_proj, render_firebar
 render_proj:
 	ldy	obj_data_offset_proj, x
@@ -34,12 +34,12 @@ render_firebar:
 
 	sta	oam_buffer+OBJ_ATTR, y
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_proj_hit_tiles:
 	.byte	chr_obj::fire_hit+2
 	.byte	chr_obj::fire_hit+1
 	.byte	chr_obj::fire_hit+0
-; ------------------------------
+; ----------------------------------
 	.export render_proj_hit, render_fireworks
 render_proj_hit:
 	ldy	obj_data_offset_block, x

@@ -4,7 +4,7 @@
 .include	"modes.i"
 .include	"misc.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	lifedown_starts
 lifedown_starts:
 .if	.defined(SMBM)|.defined(VS_SMB)
@@ -62,7 +62,7 @@ lifedown_starts:
 .if	.defined(SMB2)
 	.byte	$00, $00
 .endif
-; ----------------------------
+; ----------------------------------
 	.export	player_proc_lifedown
 player_proc_lifedown:
 	inc	nmi_disp_disable

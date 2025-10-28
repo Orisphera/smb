@@ -40,7 +40,7 @@
 .endif
 .endif
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.definedmacro(COURSE_LOADER_BASE)
 	.export course_descriptor_get
 .endif
@@ -52,7 +52,7 @@ course_descriptor_get:
 	tay
 	lda	COURSE_AREA_OFFSETS, y
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.definedmacro(COURSE_LOADER_BASE)
 	.export	course_load
 .endif

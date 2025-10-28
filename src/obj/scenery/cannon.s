@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"course_flags.i"
 .include	"misc.i"
 .include	"const.i"

@@ -19,7 +19,7 @@ scenery_pole_tip:
 	ldx	#POS_X_LONE_BALL
 	lda	#metatile_1::flag_ball
 	jmp	scenery_render
-; --------------
+; ----------------
 	.export	scenery_pole
 scenery_pole:
 	lda	#metatile_0::flag_ball

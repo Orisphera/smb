@@ -1,15 +1,16 @@
 .include	"math.i"
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"misc.i"
 .include	"joypad.i"
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 LAKITU_VELOC_X	= 16
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_lakitu_data:
 	.byte	$15, $30, $40
-; -----------------------------
+; ----------------------------------
 	.export actor_proc_lakitu, actor_proc_lakitu_spiny
 	.export	actor_A_11_proc
 actor_proc_lakitu:
@@ -54,7 +55,7 @@ actor_A_11_proc:
 		sty	motion_dir_actor, x
 		jmp	motion_x
 	; }
-; -----------------------------
+; ----------------------------------
 actor_proc_lakitu_spiny_pos_x_rel_abs	= zp_byte_00
 
 actor_proc_lakitu_spiny:

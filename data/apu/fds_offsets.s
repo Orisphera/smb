@@ -14,7 +14,7 @@ apu_fds_music_offsets:
 	.byte	LD015-apu_fds_music_offsets
 	.byte	LD025-apu_fds_music_offsets
 apu_fds_music_offsets_end:
-; -----------------------------
+; ----------------------------------
 LD005:
 	.byte	<(apu_fds_note_lengths_a-apu_fds_note_lengths)
 	.addr	LD038_data
@@ -74,7 +74,7 @@ LD02D:
 
 	.byte	<(LD106_wave-LD106_data)
 	.byte	<((apu_fds_wave_offsets_a)-(apu_fds_wave_offsets-1))
-; -----------------------------
+; ----------------------------------
 LD035:
 	.byte	<(apu_fds_note_lengths_a-apu_fds_note_lengths)
 	.addr	LD04B_data

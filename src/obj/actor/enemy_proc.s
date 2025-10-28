@@ -21,7 +21,7 @@ actor_proc_enemy:
 		jsr	actor_proc_enemy_do
 	: ; }
 	jmp	actor_oob_proc
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_enemy_do:
 	lda	obj_id_actor, x
 	jsr	tbljmp
@@ -31,7 +31,7 @@ actor_proc_enemy_do:
 	.ident(.sprintf("actor_proc_A_tbl_%02X", I)):
 		.addr	.ident(.sprintf("actor_A_%02X_proc", I))
 	.endrep
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 actor_proc_null_b:
 actor_A_09_proc:

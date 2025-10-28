@@ -13,7 +13,7 @@ courses_world_offsets:
 	.byte	course_07_areas-courses_area_offsets
 	.byte	course_08_areas-courses_area_offsets
 	.byte	course_09_areas-courses_area_offsets
-; --------------
+; ----------------
 courses_area_offsets:
 course_01_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_smb2::no_01

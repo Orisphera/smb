@@ -3,7 +3,7 @@
 
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMBV1)
 	CHEEP_VELOC_Y	= 32
 .elseif	.defined(SMBV2)
@@ -12,14 +12,14 @@
 CHEEP_VELOC_X			= 16
 CHEEP_VELOC_X_SET_CUTOFF	= 15
 CHEEP_FAST_SLOW_ACTOR_IDX	= 2
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_cheep_accel_x_val	= zp_byte_02
 actor_proc_cheep_veloc_y_abs	= zp_byte_02
 actor_proc_cheep_veloc_y	= zp_byte_03
 
 actor_proc_cheep_accel_x:
 	.byte	64, <-128, 4, 4
-; -----------------------------
+; ----------------------------------
 	.export actor_proc_cheep
 	.export	actor_A_0A_proc
 	.export	actor_A_0B_proc

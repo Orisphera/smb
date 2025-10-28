@@ -14,10 +14,10 @@ oam_init:
 	.elseif	.defined(VS)
 		jmp	oam_init_do
 	.endif
-; --------------
+; ----------------
 oam_init_all:
 	ldy	#(OBJ_SIZE*1)
-; --------------
+; ----------------
 oam_init_do:
         lda     #OAM_INIT_SCANLINE
 	: ; for (obj of OAM) {

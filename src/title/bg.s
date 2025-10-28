@@ -2,7 +2,7 @@
 .include	"macros.i"
 
 .if	.defined(SMBV1)
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(CONS)
 		LARGEST_DATA_SIZE	= (title_map_end-title_map+9)
 		TITLE_NMI_BUFFER_END	= ppu_displist_title_end
@@ -14,7 +14,7 @@
 	.endif
 
 	BG_TITLE_SIZE	= <((LARGEST_DATA_SIZE)-(TITLE_NMI_BUFFER_END-TITLE_NMI_ADDR))
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	bg_title_screen_nmi_addr	= zp_addr_00
 
 	.if	.defined(VS)
@@ -38,7 +38,7 @@
 		.byte	<vs_continue_bg
 		.byte	<vs_super_players_bg
 	.endif
-; -----------------------------
+; ----------------------------------
 		.export bg_title_screen
 	bg_title_screen:
 		lda	proc_id_system
@@ -86,7 +86,7 @@
 		lda	#PPU_COLOR_ROSE0
 		jmp	bg_color_init_4_end
 .endif
-; ----------------------------
+; ----------------------------------
 	.export	bg_title_cursor
 bg_title_cursor:
 	lda	proc_id_system
@@ -106,7 +106,7 @@ bg_title_cursor:
 bg_proc_next:
 	inc	bg_proc_id
 	rts
-; ----------------------------
+; ----------------------------------
 	.export bg_title_score
 bg_title_score:
 	lda	#$FA

@@ -27,7 +27,7 @@ joypad_read:
 
 	jsr	joypad_read_do
 	inx
-; ----------------------------
+; ----------------------------------
 joypad_read_do:
 	ldy	#CTRL_BIT_COUNT
 	: ; for (bit of ctrl[x].bits) {

@@ -10,12 +10,12 @@ nt_init:
 	ora	#ppu_ctlr0::bg_seg1
 	and	#<~(ppu_ctlr0::obj_seg1|ppu_ctlr0::inc_bit|ppu_ctlr0::bg_bits)
 	jsr	ppu_displist_write_ctlr0
-; --------------
+; ----------------
 	lda	#>PPU_VRAM_BG2
 	jsr	nt_init_do
-; --------------
+; ----------------
 	lda	#>PPU_VRAM_BG1
-; --------------
+; ----------------
 nt_init_do:
 	sta	PPU_VRAM_AR
 	lda	#0

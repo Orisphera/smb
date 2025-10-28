@@ -28,12 +28,12 @@ actor_B_1A_init:
 	lda	#sfx_pulse_2::spawn_vine
 	sta	apu_sfx_pulse_2_req
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 GAME_PROC_VINE_ACTOR_ID	= (ENG_ACTOR_MAX-1)
 
 actor_proc_vine_heights:
 	.byte	$30, $60
-; -----------------------------
+; ----------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(ANN)
 VINE_DO_VAR0	= $26
 .elseif	.defined(SMB2)

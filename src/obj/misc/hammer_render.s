@@ -4,10 +4,10 @@
 .include	"math.i"
 .include	"chr.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 HAMMER_A_OFFSET		= 4
 HAMMER_B_OFFSET		= 8
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_hammer_pos_x_a:
 	.byte	HAMMER_A_OFFSET, 0, HAMMER_A_OFFSET, 0
 
@@ -37,7 +37,7 @@ render_hammer_attr:
 	.byte	obj_attr::priority_high|obj_attr::color3
 	.byte	obj_attr::priority_high|obj_attr::color3|obj_attr::v_flip|obj_attr::h_flip
 	.byte	obj_attr::priority_high|obj_attr::color3|obj_attr::v_flip|obj_attr::h_flip
-; -----------------------------
+; ----------------------------------
 	.export render_hammer
 render_hammer:
 	ldy	obj_data_offset_misc, x

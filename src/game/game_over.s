@@ -28,11 +28,11 @@ game_over_mode_98F2:	.addr	game_over_98F2
 .endif
 
 game_over_mode_proc:	.addr	game_over_proc
-; ----------------------------
+; ----------------------------------
 .if	.defined(VS_SMB)
 	.include	"vs_game_over.s"
 .endif
-; ----------------------------
+; ----------------------------------
 game_over_init:
 	lda	#bg_procs::init
 	sta	bg_proc_id
@@ -53,7 +53,7 @@ game_over_init:
 .elseif	.defined(ANN)
 	jmp	bg_title_screen_finish
 .endif
-; ----------------------------
+; ----------------------------------
 	.export	game_over_continue
 game_over_proc:
 .if	.defined(CONS)
@@ -92,7 +92,7 @@ game_over_next_game:
 	lda	#music_event::none
 	sta	apu_music_event_req
 .endif
-; ----------------------------
+; ----------------------------------
 .if	.defined(SMBV1)
 	jsr	game_over_player_switch
 	bcc	game_over_continue ; if () {
@@ -130,7 +130,7 @@ game_over_next_game:
 	game_over_next_game_rts_b:
 		rts
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.if	.defined(SMBV1)
 	.export	game_over_player_switch
 game_over_player_switch:
@@ -160,7 +160,7 @@ game_over_player_switch:
 
 	rts
 	.endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	sub_92AA, sub_92AA_rts
 sub_92AA:
 	lda	#$FF

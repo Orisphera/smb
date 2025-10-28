@@ -6,7 +6,7 @@ TIMER_SPRING_CONTINUE	= 4
 
 actor_proc_spring_pos_y:
 	.byte	8, 16, 8, 0
-; -----------------------------
+; ----------------------------------
 	.export actor_proc_spring
 	.export	actor_B_1D_proc
 actor_proc_spring:

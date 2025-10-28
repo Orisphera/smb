@@ -1,45 +1,46 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"const.i"
 
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 pos_calc_object_x_offset	= zp_byte_00
 pos_bits_buffer			= zp_byte_00
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export pos_calc_x_rel_player, pos_calc_x_rel_bubble
 	.export pos_calc_x_rel_proj, pos_calc_x_rel_misc
 pos_calc_x_rel_player:
 	ldx	#ENG_PLAYER_OBJ_OFF
 	ldy	#ENG_PLAYER_OBJ_REL_OFF
 	jmp	pos_calc_x_rel_a
-; -----------------------------
+; ----------------------------------
 pos_calc_x_rel_bubble:
 	ldy	#pos_calc_x_offset_bubble-pos_calc_x_offsets
 	jsr	pos_calc_x_offset_get
 	ldy	#ENG_BUBBLE_REL_OFF
 	jmp	pos_calc_x_rel_a
-; -----------------------------
+; ----------------------------------
 pos_calc_x_rel_proj:
 	ldy	#pos_calc_x_offset_proj-pos_calc_x_offsets
 	jsr	pos_calc_x_offset_get
 	ldy	#ENG_PROJ_REL_OFF
-; -----------------------------
+; ----------------------------------
 pos_calc_x_rel_a:
 	jsr	pos_calc_x_rel_do
 	ldx	actor_index
 	rts
-; -------------------------------
+; ----------------------------------
 pos_calc_x_rel_misc:
 	ldy	#pos_calc_x_offset_misc-pos_calc_x_offsets
 	jsr	pos_calc_x_offset_get
 	ldy	#ENG_MISC_REL_OFF
 	jmp	pos_calc_x_rel_a
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export pos_calc_x_rel_actor, pos_calc_x_rel_block
 pos_calc_x_rel_actor:
 	lda	#ENG_ACTOR_OFF
 	ldy	#ENG_ACTOR_REL_OFF
 	jmp	pos_calc_x_rel_b
-; -------------------------------
+; ----------------------------------
 pos_calc_x_rel_block:
 	lda	#ENG_BLOCK_OFF
 	ldy	#ENG_BLOCK_REL_OFF
@@ -48,7 +49,7 @@ pos_calc_x_rel_block:
 	inx
 	lda	#ENG_BLOCK_OFF
 	iny
-; -------------------------------
+; ----------------------------------
 pos_calc_x_rel_b:
 	stx	pos_calc_object_x_offset
 	clc
@@ -57,7 +58,7 @@ pos_calc_x_rel_b:
 	jsr	pos_calc_x_rel_do
 	ldx	actor_index
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 pos_calc_x_rel_do:
 	lda	pos_y_lo, x
 	sta	pos_y_rel_player, y
@@ -66,32 +67,32 @@ pos_calc_x_rel_do:
 	sbc	pos_x_lo_screen_left
 	sta	pos_x_rel_player, y
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export pos_bits_get_player, pos_bits_get_proj
 	.export pos_bits_get_bubble, pos_bits_get_misc
 pos_bits_get_player:
 	ldx	#ENG_PLAYER_OBJ_OFF
 	ldy	#ENG_PLAYER_OBJ_REL_OFF
 	jmp	pos_bits_get
-; -------------------------------
+; ----------------------------------
 pos_bits_get_proj:
 	ldy	#pos_calc_x_offset_proj-pos_calc_x_offsets
 	jsr	pos_calc_x_offset_get
 	ldy	#ENG_PROJ_REL_OFF
 	jmp	pos_bits_get
-; -------------------------------
+; ----------------------------------
 pos_bits_get_bubble:
 	ldy	#pos_calc_x_offset_bubble-pos_calc_x_offsets
 	jsr	pos_calc_x_offset_get
 	ldy	#ENG_BUBBLE_REL_OFF
 	jmp	pos_bits_get
-; -------------------------------
+; ----------------------------------
 pos_bits_get_misc:
 	ldy	#pos_calc_x_offset_misc-pos_calc_x_offsets
 	jsr	pos_calc_x_offset_get
 	ldy	#ENG_MISC_REL_OFF
 	jmp	pos_bits_get
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 pos_calc_x_offsets:
 pos_calc_x_offset_proj:
 	.byte	ENG_PROJ_OFF
@@ -99,30 +100,30 @@ pos_calc_x_offset_bubble:
 	.byte	ENG_BUBBLE_OFF
 pos_calc_x_offset_misc:
 	.byte	ENG_MISC_OFF
-; -------------------------------
+; ----------------------------------
 pos_calc_x_offset_get:
 	txa
 	clc
 	adc	pos_calc_x_offsets, y
 	tax
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export pos_bits_get_actor, pos_bits_get_block
 pos_bits_get_actor:
 	lda	#ENG_ACTOR_OFF
 	ldy	#ENG_ACTOR_REL_OFF
 	jmp	pos_bits_get_offset
-; -------------------------------
+; ----------------------------------
 pos_bits_get_block:
 	lda	#ENG_BLOCK_OFF
 	ldy	#ENG_BLOCK_REL_OFF
-; -------------------------------
+; ----------------------------------
 pos_bits_get_offset:
 	stx	pos_calc_object_x_offset
 	clc
 	adc	pos_calc_object_x_offset
 	tax
-; -------------------------------
+; ----------------------------------
 pos_bits_get:
 	tya
 	pha
@@ -139,7 +140,7 @@ pos_bits_get:
 	sta	bits_offscr_player, y
 	ldx	actor_index
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 pos_bits_proc:
 	jsr	pos_bits_get_do_x
 	lsr	a
@@ -148,7 +149,7 @@ pos_bits_proc:
 	lsr	a
 	sta	pos_bits_buffer
 	jmp	pos_bits_get_do_y
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 pos_bits_get_do_object_idx	= zp_byte_04
 pos_bits_diff_current		= zp_byte_05
 pos_bits_diff_offset		= zp_byte_06
@@ -175,7 +176,7 @@ pos_bits_x:
 
 pos_bits_off_x:
 	.byte	7, 15, 7
-; -------------------------------
+; ----------------------------------
 	.export pos_bits_get_do_x
 pos_bits_get_do_x:
 	stx	pos_bits_get_do_object_idx
@@ -209,7 +210,7 @@ pos_bits_get_do_x:
 		bpl	:--
 	: ; }
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 pos_bits_y:
 	.if	.defined(SMBV1)
 		.byte	%00000000
@@ -242,7 +243,7 @@ pos_bits_y_hi:
 	.elseif	.defined(SMBV2)
 		.byte	0, <-1
 	.endif
-; -------------------------------
+; ----------------------------------
 pos_bits_get_do_y:
 	stx	pos_bits_get_do_object_idx
 	ldy	#2-1
@@ -275,7 +276,7 @@ pos_bits_get_do_y:
 	: ; }
 
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 pos_bits_diff:
 	sta	pos_bits_diff_current
 	lda	pos_bits_diff_screen_player_off
@@ -293,7 +294,7 @@ pos_bits_diff:
 	: ; }
 
 	rts
-; --------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export render_chr_pair_do
 render_chr_pair_do:
 	lda	render_chr_pair_color_mod_2

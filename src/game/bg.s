@@ -39,7 +39,7 @@ bg_proc:
 	.addr	bg_title_screen
 	.addr	bg_title_cursor
 	.addr	bg_title_score
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 bg_init:
 	jsr	oam_init
 	jsr	nt_init
@@ -50,7 +50,7 @@ bg_init:
 		ldx	#3
 		jmp	bg_proc_next_pal_set
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 bg_color_init_1:
 	lda	course_bg_col
 	pha
@@ -69,13 +69,13 @@ bg_color_init_1:
 	sta	course_bg_col
 
 	jmp	bg_proc_continue
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 bg_palette_types:
 	.byte	nmi_addr::pal_underwater
 	.byte	nmi_addr::pal_overworld
 	.byte	nmi_addr::pal_underground
 	.byte	nmi_addr::pal_castle
-; ----------------------------
+; ----------------------------------
 	.export	bg_color_init_2
 bg_color_init_2:
 	ldy	course_type
@@ -86,7 +86,7 @@ bg_proc_next_pal_set:
 
 bg_proc_next_b:
 	jmp	bg_proc_continue
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export bg_color_data
 	.export bg_color_data_water
 	.export bg_color_data_overworld
@@ -117,7 +117,7 @@ bg_color_player_2:
 
 bg_color_player_power:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1
-; --------------------------
+; ----------------------------------
 bg_color_pal_entry	= zp_byte_00
 
 	.export	bg_color_init_3
@@ -180,7 +180,7 @@ bg_color_player:
 bg_color_player_end:
 	sta	ppu_displist_offset
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export bg_color_init_4_end
 bg_color_init_4:
 	lda	course_ledge_type
@@ -192,13 +192,13 @@ bg_color_init_4:
 	: ; }
 
 	jmp	bg_proc_continue
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export bg_text_draw_header
 bg_text_draw_header:
 	lda	#bg_text::header
 	jsr	bg_text_draw
 	jmp	bg_proc_continue
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 BG_STAT_1_ADDR	=	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
 BG_STAT_1_LEN	=	3
 
@@ -235,7 +235,7 @@ bg_text_draw_splash:
 	adc	#BG_STAT_1_LEN+WORD_SIZE+1
 	sta	ppu_displist_offset
 	jmp	bg_proc_continue
-; ----------------------------
+; ----------------------------------
 	.if	.defined(SMBV2)
 	bg_calc_course_no:
 		ldy	course_no
@@ -251,7 +251,7 @@ bg_text_draw_splash:
 		tya
 		rts
 	.endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 bg_text_draw_timeup:
 	lda	game_time_up
 	beq	:+ ; if (game_time_up) {
@@ -279,7 +279,7 @@ bg_text_draw_timeup:
 			rts
 		.endif
 	; }
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 bg_text_draw_intermission:
 	lda	proc_id_system
 	beq	:+++
@@ -340,7 +340,7 @@ bg_text_draw_intermission:
 	lda	#bg_procs::bg
 	sta	bg_proc_id
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 bg_scenery:
 	inc	nmi_disp_disable
 
@@ -358,13 +358,13 @@ bg_scenery:
 	lda	#nmi_addr::buffer_11_A
 	sta	nmi_buffer_ptr
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMBV1)
 	.include	"../title/bg.s"
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .include	"../../data/text.s"
-; ----------------------------
+; ----------------------------------
 .if	.defined(SMB2)
 	bg_text_draw_buffer_page	= PPU_VRAM_BG2
 .elseif	.defined(SMBM)|.defined(VS_SMB)
@@ -536,7 +536,7 @@ bg_text_draw:
 	lda	#>bg_text_draw_buffer_page
 	jmp	bg_color_player_end
 ; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 bg_timer_clear_check:
 	lda	timer_screen
 	bne	:+ ; if (!timer_screen) {

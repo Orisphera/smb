@@ -97,7 +97,7 @@ LD038_triangle:
 		.byte	sound_notes::G4
 		.byte	sound_notes::G3
 		.byte	sound_notes::C4
-; --------------
+; ----------------
 	.export	LD087_data
 	.export	LD087_pulse_1
 	.export	LD087_wave

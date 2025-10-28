@@ -4,9 +4,9 @@
 .include	"mem.i"
 .include	"sound.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.include	"../data/apu/envelope_stomp.s"
-; -----------------------------
+; ----------------------------------
 apu_pole:
 	lda	#64
 	sta	snd_sfx_pulse_1_len
@@ -14,20 +14,20 @@ apu_pole:
 	jsr	apu_write_note_pulse_1
 	ldx	#channel_vol::duty_500|channel_vol::constant_vol|9
 	bne	apu_pole_jump_comm_b
-; --------------
+; ----------------
 apu_jump_small:
 	lda	#sound_notes::A4
 	bne	:+
-; --------------
+; ----------------
 apu_jump_big:
 	lda	#sound_notes::D4
-; --------------
+; ----------------
 	: ldx	#channel_vol::duty_500|channel_vol::envelope|2
 	ldy	#pulse_sweep::enable|pulse_sweep::period_3hf|pulse_sweep::shift_7
 	jsr	apu_write_pulse_1
 	lda	#40
 	sta	snd_sfx_pulse_1_len
-; --------------
+; ----------------
 apu_jump_continued:
 	lda	snd_sfx_pulse_1_len
 	cmp	#37
@@ -40,28 +40,28 @@ apu_jump_continued:
 	bne	apu_sfx_pulse_1_continued_c ; if (this.len == 32) {
 		ldx	#channel_vol::duty_250|channel_vol::envelope|8
 	; }
-; --------------
+; ----------------
 apu_pole_jump_comm_b:
 	ldy	#pulse_sweep::enable|pulse_sweep::period_4hf|pulse_sweep::negate|pulse_sweep::shift_4
-; --------------
+; ----------------
 apu_pole_jump_comm:
 	jsr	apu_write_base_pulse_1
 	bne	apu_sfx_pulse_1_continued_c
-; --------------
+; ----------------
 apu_proj:
 	lda	#5
 	ldy	#pulse_sweep::enable|pulse_sweep::period_2hf|pulse_sweep::negate|pulse_sweep::shift_1
 	bne	:+
-; --------------
+; ----------------
 apu_bump:
 	lda	#10
 	ldy	#pulse_sweep::enable|pulse_sweep::period_2hf|pulse_sweep::shift_3
-; --------------
+; ----------------
 	: ldx	#channel_vol::duty_500|channel_vol::constant_vol|14
 	sta	snd_sfx_pulse_1_len
 	lda	#sound_notes::G3
 	jsr	apu_write_pulse_1
-; --------------
+; ----------------
 apu_bump_continued:
 	lda	snd_sfx_pulse_1_len
 	cmp	#6
@@ -69,10 +69,10 @@ apu_bump_continued:
 		lda	#pulse_sweep::enable|pulse_sweep::period_4hf|pulse_sweep::negate|pulse_sweep::shift_3
 		sta	PULSE1_SWEEP
 	: ; }
-; --------------
+; ----------------
 apu_sfx_pulse_1_continued_c:
 	bne	apu_sfx_pulse_1_continued_b
-; --------------
+; ----------------
 	.export	apu_sfx_pulse_1_play
 apu_sfx_pulse_1_play:
 	ldy	apu_sfx_pulse_1_req
@@ -111,7 +111,7 @@ apu_sfx_pulse_1_play:
 	lsr	a
 	bcs	apu_sfx_pulse_1_continued
 	: rts
-; --------------
+; ----------------
 apu_stomp:
 	lda	#14
 	sta	snd_sfx_pulse_1_len
@@ -119,7 +119,7 @@ apu_stomp:
 	ldx	#channel_vol::duty_500|channel_vol::constant_vol|14
 	lda	#sound_notes::A4
 	jsr	apu_write_pulse_1
-; --------------
+; ----------------
 apu_stomp_continued:
 	ldy	snd_sfx_pulse_1_len
 	lda	apu_stomp_envelope-1, y
@@ -133,10 +133,10 @@ apu_stomp_continued:
 		.endif
 		sta	PULSE1_TIMER
 	: ; }
-; --------------
+; ----------------
 apu_sfx_pulse_1_continued_b:
 	bne	apu_sfx_pulse_1_continued
-; --------------
+; ----------------
 apu_smack:
 	lda	#14
 	ldy	#pulse_sweep::enable|pulse_sweep::period_5hf|pulse_sweep::negate|pulse_sweep::shift_3
@@ -145,7 +145,7 @@ apu_smack:
 	lda	#sound_notes::Ax4
 	jsr	apu_write_pulse_1
 	bne	apu_sfx_pulse_1_continued
-; --------------
+; ----------------
 apu_smack_continued:
 	ldy	snd_sfx_pulse_1_len
 	cpy	#8
@@ -162,11 +162,11 @@ apu_smack_continued:
 		lda	#channel_vol::duty_500|channel_vol::constant_vol|0
 	: ; }
 	sta	PULSE1_VOL
-; --------------
+; ----------------
 apu_sfx_pulse_1_continued:
 	dec	snd_sfx_pulse_1_len
 	bne	:+
-; --------------
+; ----------------
 	.export	apu_sfx_pulse_1_stop
 apu_sfx_pulse_1_stop:
 	ldx	#sfx_pulse_1::none
@@ -176,7 +176,7 @@ apu_sfx_pulse_1_stop:
 	ldx	#dmcstatus::noise|dmcstatus::tri|dmcstatus::pulse_2|dmcstatus::pulse_1
 	stx	DMCSTATUS
 	: rts
-; --------------
+; ----------------
 apu_pipe_entry:
 	lda	#47
 	sta	snd_sfx_pulse_1_len

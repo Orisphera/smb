@@ -18,7 +18,7 @@ apu_fds_note_decomp:
 	rol	a
 	rol	a
 	rol	a
-; --------------
+; ----------------
 .if	.definedmacro(APU_LOAD_BASE)
 APU_NOTE_LEN_OFFSET	= apu_note_len_offset
 APU_NOTE_LENGTHS	= apu_note_lengths

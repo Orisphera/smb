@@ -1,17 +1,18 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"course_flags.i"
 .include	"misc.i"
 .include	"const.i"
 .include	"tiles.i"
 
-; -----------------------------
+; ----------------------------------
 scenery_castle_bridge_data:
 	.byte	$06, $07, $08
 scenery_castle_bridge_tiles:
 	.byte	metatile_3::axe
 	.byte	metatile_0::chain
 	.byte	metatile_2::bridge_castle
-; --------------
+; ----------------
         .export scenery_castle_bridge
         .export scenery_castle_bridge_axe
         .export scenery_castle_bridge_draw

@@ -1,12 +1,13 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"chr.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 FLAG_SCORE_OFFSET_X	= 12
 FLAG_SCORE_OFFSET_SPR	= (OBJ_SIZE*3)
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 render_flag_score_tiles:
 	.byte	chr_obj::digits_50, chr_obj::digits_00
 	.byte	chr_obj::digits_20, chr_obj::digits_00
@@ -17,7 +18,7 @@ render_flag_score_tiles:
 	.if	.defined(SMBV2)
 		.byte	chr_obj::oneup_left, chr_obj::oneup_right
 	.endif
-; -----------------------------
+; ----------------------------------
 	.export render_flag_enemy
 render_flag_enemy:
 	ldy	obj_data_offset_actor, x

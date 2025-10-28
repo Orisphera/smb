@@ -65,7 +65,7 @@ sys_title:
 			.addr	vs_title_tick
 		.endif
 	; }
-; ----------------------------
+; ----------------------------------
 .if	.defined(VS)
 vs_title_init:
 	lda	#1
@@ -75,7 +75,7 @@ vs_title_init:
 	inc	proc_id_game
 	rts
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 title_course_no:
 	.byte	(:+++)-(:+)
 	: .dbyt	PPU_VRAM_BG1+PPU_BG_ROW_3+PPU_BG_COL_19
@@ -84,7 +84,7 @@ title_course_no:
 	: .byte	NMI_LIST_END
 title_course_no_end:
 .endif
-; ----------------------------
+; ----------------------------------
 .if	.defined(SMBV1)
 TITLE_PLAYER_ID	= player_count
 .elseif	.defined(SMBV2)
@@ -318,7 +318,7 @@ title_proc:
 		; }
 		.endif
 	; }
-; ----------------------------
+; ----------------------------------
 .if	.defined(SMBV1)
 title_course_set:
 	sta	course_no

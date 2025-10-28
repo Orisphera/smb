@@ -1,6 +1,7 @@
 .include	"sys/apu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"sound.i"
 
 .if	.definedmacro(APU_HEADER_LOAD_FDS)

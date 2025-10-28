@@ -1,6 +1,7 @@
 .include	"sys/cpu.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"misc.i"
 .include	"const.i"
 

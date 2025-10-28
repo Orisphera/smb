@@ -3,7 +3,7 @@
 .include	"misc.i"
 .include	"sound.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 BULLET_CHEEP_SLOTS	= 3
 BULLET_CHEEP_RED_CHANCE	= $AA
 BULLET_CHEEP_TIMER_INIT	= 32
@@ -11,7 +11,7 @@ BULLET_CHEEP_TIMER_INIT	= 32
 GROUP_MEMBER_OFFSET_X	= 24
 GROUP_POS_Y_LOW		= 176
 GROUP_POS_Y_HIGH	= 112
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_init_bullet_cheep_data_a
 actor_init_bullet_cheep_data_a:
 	.byte	1<<0, 1<<1, 1<<2, 1<<3
@@ -25,7 +25,7 @@ bullet_cheep_pos_x_lo:
 bullet_cheep_obj_id_actors:
 	.byte	actor::cheep_grey
 	.byte	actor::cheep_red
-; ------------------------------
+; ----------------------------------
 	.export actor_init_bullet_cheep, actor_group_do
 actor_init_bullet_cheep:
 	lda	timer_swarm

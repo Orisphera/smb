@@ -6,7 +6,7 @@
 .include	"charmap.i"
 .include	"const.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMB2)
 GAMES_STARS_MAX		= 24
 GAMES_STARS_ROW_START	= $33
@@ -16,7 +16,7 @@ GAMES_STARS_MAX		= 20
 GAMES_STARS_ROW_START	= $47
 GAMES_STARS_ROW_INC	= $2F
 .endif
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 title_init_0_star_cutoff	= zp_byte_00
 
 	.export title_init_0
@@ -68,7 +68,7 @@ title_init_0:
 	sta	timer_demo
 	jsr	course_descriptor_load
 	jmp	game_init_0
-; -----------------------------
+; ----------------------------------
 	.export title_init_1
 title_init_1:
 	lda	#1
@@ -77,7 +77,7 @@ title_init_1:
 	lda	#2
 	sta	player_lives
 	jmp	game_init_1
-; -----------------------------
+; ----------------------------------
 title_patch_player_name:
 	.byte	"MARIO"
 title_patch_player_name_a_end:
@@ -91,7 +91,7 @@ title_patch_player_palette:
 title_patch_player_name_ends:
 	.byte	(title_patch_player_name_a_end-title_patch_player_name)-1
 	.byte	(title_patch_player_name_b_end-title_patch_player_name)-1
-; -----------------------------
+; ----------------------------------
 title_patch_player_offset	= zp_byte_00
 
 	.export title_patch_player

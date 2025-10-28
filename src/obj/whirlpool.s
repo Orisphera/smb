@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"mem_low.i"
 
 	.export whirlpool_proc
 whirlpool_proc:
@@ -42,7 +43,7 @@ whirlpool_proc:
 	: ; }
 
 	rts
-; ------------------------------
+; ----------------------------------
 whirlpool_proc_do:
 	lda	pos_y_lo_cannon, y
 	lsr	a

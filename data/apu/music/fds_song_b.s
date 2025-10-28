@@ -116,7 +116,7 @@ LD106_triangle:
 		.byte	sound_notes::C5
 		.byte	sound_notes::C4
 		.byte	sound_notes::F4
-; --------------
+; ----------------
 LD143_data:
 LD143_pulse_2:
 	.byte	SND_TRACK_NOTE_LEN|length_fds_a::ninth_double

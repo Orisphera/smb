@@ -56,7 +56,7 @@ course_actor_addr_lo_water:
 	.addr	course_actor_water_6_smb2
 	.addr	course_actor_water_7_smb2
 	.addr	course_actor_water_8_smb2
-; --------------
+; ----------------
 	.export course_scenery_pages
 course_scenery_pages:
 	.byte	(course_scenery_addr_lo_water-course_scenery_addr_lo)/COURSE_OFFSET_INC_SIZE

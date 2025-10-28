@@ -21,7 +21,7 @@ pole_digit_place:
 	.byte	SCORE_PLACE_HUNDREDS
 	.byte	SCORE_PLACE_HUNDREDS
 	.byte	SCORE_PLACE_HUNDREDS
-; -----------------------------
+; ----------------------------------
 	.export	pole_proc
 pole_proc:
 	ldx	#5

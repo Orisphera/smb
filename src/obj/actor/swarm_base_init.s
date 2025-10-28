@@ -25,12 +25,12 @@ actor_B_02_init:
 	.addr	actor_init_bowser_flame
 	.addr	actor_init_fireworks
 	.addr	actor_init_bullet_cheep
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.defined(SMB)|.defined(VS_SMB)|.defined(SMB2)
 actor_init_swarm_null:
 	rts 
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_kill_swarm
 	.export	actor_B_03_init
 actor_kill_swarm:

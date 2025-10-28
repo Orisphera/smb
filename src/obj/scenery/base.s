@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"course_flags.i"
 .include	"misc.i"
 .include	"const.i"
@@ -22,7 +23,7 @@ scenery_proc:
 	: ; }
 
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export scenery_proc_tbl
 	.export scenery_proc_inc_seam_a, scenery_proc_inc_seam_b
 	.export scenery_proc_render_area_a, scenery_proc_render_area_b
@@ -39,7 +40,7 @@ scenery_proc_inc_seam_b:		.addr	scenery_inc_seam
 scenery_proc_render_area_c:		.addr	meta_render_area
 scenery_proc_render_area_d:		.addr	meta_render_area
 scenery_proc_main_b:			.addr	scenery_proc_main
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 scenery_inc_seam:
 	inc	pos_x_lo_game
 	lda	pos_x_lo_game
@@ -54,7 +55,7 @@ scenery_inc_seam:
 	and	#%00011111
 	sta	disp_buff_col
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export scenery_static_tbl
 	.export scenery_static_tbl_cloud
 	.export scenery_static_tbl_mnt_bush
@@ -320,7 +321,7 @@ floor_mask_12:	.byte	%11110001, %00011111
 floor_mask_13:	.byte	%11111001, %00011000
 floor_mask_14:	.byte	%11110001, %00011000
 floor_mask_15:	.byte	%11111111, %00011111
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 scenery_proc_main_tile_idx	= zp_byte_00
 scenery_proc_main_floor_mask	= zp_byte_00
 scenery_proc_main_fg_next	= zp_byte_01
@@ -510,13 +511,13 @@ scenery_proc_main:
 	; }
 
 	rts
-; --------------
+; ----------------
 scenery_buffer_cutoff:
 	.byte	metatile_0::cutoff
 	.byte	metatile_1::cutoff
 	.byte	metatile_2::cutoff
 	.byte	metatile_3::cutoff
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 scenery_do:
 	.if	.defined(VS)
 		jsr	vs_setbank_low
@@ -645,14 +646,14 @@ scenery_do_rts:
 		jsr	vs_setbank_low
 	.endif
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 scenery_offset_base_inc:
 	inc	scenery_offset_base
 	inc	scenery_offset_base
 	lda	#0
 	sta	scenery_page_on
 	rts
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 SCENERY_TBL_OFFSET	= zp_byte_07
 
 scenery_decode:
@@ -984,7 +985,7 @@ scenery_tbl_wind_off:	.addr	scenery_wind_off
 .endif
 
 scenery_tbl_set_attr:		.addr	scenery_set_attr
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 scenery_set_attr:
 	ldy	scenery_offset, x
 	iny
@@ -1019,7 +1020,7 @@ scenery_set_attr:
 		sta	course_fg_id
 		rts
 	; }
-; -----------------------------
+; ----------------------------------
 scenery_lock_warp:
 	.if	.defined(SMBV1)
 		ldx	#4
@@ -1121,7 +1122,7 @@ scenery_lock:
 	eor	#1
 	sta	game_scroll_lock
 	rts
-; -----------------------------
+; ----------------------------------
 scenery_actor_kill_id	= zp_byte_00
 
 	.export scenery_actor_kill

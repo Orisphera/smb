@@ -2,7 +2,7 @@
 .include	"misc.i"
 .include	"const.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 .if	.definedmacro(HARDMODE_SPRING_BASE)
 	.export	game_hard_mode_spring, game_hard_mode_render_spring
 .endif

@@ -17,7 +17,7 @@ courses_ext_world_offsets:
 .if	.defined(SMB2)
 	.byte	course_ext_01_areas-courses_ext_area_offsets
 .endif
-; --------------
+; ----------------
 courses_ext_area_offsets:
 course_ext_01_areas:
 	.byte	COURSE_TYPE_OVERWORLD_B|course_overworld_ext::no_01

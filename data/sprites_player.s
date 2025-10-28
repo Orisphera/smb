@@ -1,6 +1,6 @@
 .include	"chr.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export	render_player_tile_offsets
 render_player_tile_offsets:
 
@@ -37,7 +37,7 @@ render_player_tile_offset_death:
 	.export render_player_tile_offset_stand_small_b
 render_player_tile_offset_stand_small_b:
 	.byte	render_player_tile_stand_small-render_player_tile_data
-; -----------------------------
+; ----------------------------------
 	.export	render_player_tile_data
 render_player_tile_data:
 render_player_tile_walk_large:
@@ -46,7 +46,7 @@ render_player_tile_walk_large:
 	.byte	chr_obj::player_walk_large+02, chr_obj::player_walk_large+03
 	.byte	chr_obj::player_walk_large+04, chr_obj::player_walk_large+05
 	.byte	chr_obj::player_walk_large+06, chr_obj::player_walk_large+07
-; --------------
+; ----------------
 	.byte	chr_obj::player_walk_large+08, chr_obj::player_walk_large+09
 
 	.byte	chr_obj::player_walk_large+10, chr_obj::player_walk_large+11
@@ -56,24 +56,24 @@ render_player_tile_walk_large:
 	.byte					chr_obj::player_walk_large+13
 
 	.byte	chr_obj::player_walk_large+14, chr_obj::player_walk_large+15
-; --------------
+; ----------------
 	.byte	chr_obj::player_walk_large+16, chr_obj::player_walk_large+17
 	.byte	chr_obj::player_walk_large+18, chr_obj::player_walk_large+19
 	.byte	chr_obj::player_walk_large+20, chr_obj::player_walk_large+21
 	.byte	chr_obj::player_walk_large+22, chr_obj::player_walk_large+23
-; -----------------------------
+; ----------------------------------
 render_player_tile_skid_large:
 	.byte	chr_obj::player_skid_large+00, chr_obj::player_skid_large+01
 	.byte	chr_obj::player_skid_large+02, chr_obj::player_skid_large+03
 	.byte	chr_obj::player_skid_large+04, chr_obj::player_skid_large+05
 	.byte	chr_obj::player_skid_large+06, chr_obj::player_skid_large+07
-; -----------------------------
+; ----------------------------------
 render_player_tile_jump_large:
 	.byte	chr_obj::player_jump_large+00, chr_obj::player_jump_large+01
 	.byte	chr_obj::player_jump_large+02, chr_obj::player_jump_large+03
 	.byte	chr_obj::player_jump_large+04, chr_obj::player_jump_large+05
 	.byte	chr_obj::player_jump_large+06, chr_obj::player_jump_large+07
-; -----------------------------
+; ----------------------------------
 render_player_tile_swim_large:
 	.byte	chr_obj::player_walk_large+08, chr_obj::player_walk_large+09
 
@@ -81,7 +81,7 @@ render_player_tile_swim_large:
 	.byte	chr_obj::player_swim_large+02, chr_obj::player_swim_large+03
 
 	.byte	chr_obj::player_swim_large+04, chr_obj::player_swim_large+05
-; --------------
+; ----------------
 	.byte	chr_obj::player_walk_large+08, chr_obj::player_walk_large+09
 
 	.byte	chr_obj::player_walk_large+10, chr_obj::player_walk_large+11
@@ -91,7 +91,7 @@ render_player_tile_swim_large:
 	.byte					chr_obj::player_swim_large+08
 
 	.byte	chr_obj::player_swim_large+04, chr_obj::player_swim_large+05
-; --------------
+; ----------------
 	.byte	chr_obj::player_walk_large+08, chr_obj::player_walk_large+09
 
 	.byte	chr_obj::player_walk_large+10, chr_obj::player_walk_large+11
@@ -99,7 +99,7 @@ render_player_tile_swim_large:
 	.byte	chr_obj::player_swim_large+06, chr_obj::player_swim_large+07
 
 	.byte	chr_obj::player_swim_large+04, chr_obj::player_swim_large+05
-; -----------------------------
+; ----------------------------------
 render_player_tile_climb_large:
 	.byte	chr_obj::player_walk_large+08, chr_obj::player_walk_large+09
 
@@ -107,7 +107,7 @@ render_player_tile_climb_large:
 	.byte	chr_obj::player_swim_large+02, chr_obj::player_swim_large+03
 
 	.byte	chr_obj::player_climb_large+00, chr_obj::player_climb_large+01
-; --------------
+; ----------------
 	.byte	chr_obj::player_walk_large+08, chr_obj::player_walk_large+09
 
 	.byte	chr_obj::player_walk_large+10, chr_obj::player_walk_large+11
@@ -117,7 +117,7 @@ render_player_tile_climb_large:
 	.byte					chr_obj::player_walk_large+13
 
 	.byte	chr_obj::player_climb_large+02, chr_obj::player_climb_large+03
-; -----------------------------
+; ----------------------------------
 	.export render_player_tile_crouch_large
 render_player_tile_crouch_large:
 	.byte	chr_obj::empty, chr_obj::empty
@@ -126,7 +126,7 @@ render_player_tile_crouch_large:
 
 	.byte	chr_obj::player_crouch+00, chr_obj::player_crouch+01
 	.byte	chr_obj::player_crouch+02, chr_obj::player_crouch+02
-; -----------------------------
+; ----------------------------------
 render_player_tile_proj_large:
 	.byte	chr_obj::player_walk_large+08, chr_obj::player_walk_large+09
 
@@ -134,7 +134,7 @@ render_player_tile_proj_large:
 	.byte	chr_obj::player_swim_large+02, chr_obj::player_swim_large+03
 
 	.byte	chr_obj::player_walk_large+14, chr_obj::player_walk_large+15
-; -----------------------------
+; ----------------------------------
 render_player_tile_walk_small:
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
@@ -144,7 +144,7 @@ render_player_tile_walk_small:
 	.byte					chr_obj::player_walk_small+01
 
 	.byte	chr_obj::player_walk_small+02, chr_obj::player_walk_small+03
-; --------------
+; ----------------
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
 
@@ -153,7 +153,7 @@ render_player_tile_walk_small:
 	.byte					chr_obj::player_walk_small+05
 
 	.byte	chr_obj::player_walk_small+06, chr_obj::player_walk_small+07
-; --------------
+; ----------------
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
 
@@ -162,14 +162,14 @@ render_player_tile_walk_small:
 	.byte					chr_obj::player_walk_small+05
 
 	.byte	chr_obj::player_walk_small+09, chr_obj::player_walk_small+10
-; -----------------------------
+; ----------------------------------
 render_player_tile_skid_small:
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
 
 	.byte	chr_obj::player_skid_small+00, chr_obj::player_skid_small+01
 	.byte	chr_obj::player_skid_small+02, chr_obj::player_skid_small+03
-; -----------------------------
+; ----------------------------------
 render_player_tile_jump_small:
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
@@ -178,7 +178,7 @@ render_player_tile_jump_small:
 
 	.byte					chr_obj::player_jump_small+00
 	.byte	chr_obj::player_jump_small+01, chr_obj::player_jump_small+02
-; -----------------------------
+; ----------------------------------
 	.export render_player_tile_swim_small
 render_player_tile_swim_small:
 	.byte	chr_obj::empty, chr_obj::empty
@@ -191,7 +191,7 @@ render_player_tile_swim_small:
 	.byte	chr_obj::player_swim_small+00
 	
 	.byte					chr_obj::player_swim_small+01
-; --------------
+; ----------------
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
 
@@ -202,7 +202,7 @@ render_player_tile_swim_small:
 	.byte	chr_obj::player_swim_small+00
 	
 	.byte					chr_obj::player_swim_small+03
-; --------------
+; ----------------
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
 
@@ -211,7 +211,7 @@ render_player_tile_swim_small:
 	.byte					chr_obj::player_walk_small+01
 
 	.byte	chr_obj::player_swim_small+04, chr_obj::player_swim_small+05
-; -----------------------------
+; ----------------------------------
 render_player_tile_climb_small:
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
@@ -221,7 +221,7 @@ render_player_tile_climb_small:
 	.byte					chr_obj::player_walk_small+01
 
 	.byte	chr_obj::player_climb_small+00, chr_obj::player_climb_small+01
-; --------------
+; ----------------
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
 
@@ -230,14 +230,14 @@ render_player_tile_climb_small:
 	.byte					chr_obj::player_walk_small+05
 
 	.byte	chr_obj::player_climb_small+02, chr_obj::player_climb_small+03
-; -----------------------------
+; ----------------------------------
 render_player_tile_death_small:
 	.byte	chr_obj::empty, chr_obj::empty
 	.byte	chr_obj::empty, chr_obj::empty
 
 	.byte	chr_obj::player_death+00, chr_obj::player_death+00
 	.byte	chr_obj::player_death+01, chr_obj::player_death+01
-; -----------------------------
+; ----------------------------------
 	.export render_player_tile_stand
 render_player_tile_stand:
 
@@ -251,7 +251,7 @@ render_player_tile_stand_small:
 	.byte					chr_obj::player_walk_small+05
 
 	.byte	chr_obj::player_resize+05, chr_obj::player_resize+05
-; -----------------------------
+; ----------------------------------
 	.export render_player_tile_stand_medium
 render_player_tile_stand_medium:
 	.byte	chr_obj::empty, chr_obj::empty
@@ -261,7 +261,7 @@ render_player_tile_stand_medium:
 	.byte	chr_obj::player_resize+02, chr_obj::player_resize+03
 
 	.byte	chr_obj::player_resize+04, chr_obj::player_resize+04
-; -----------------------------
+; ----------------------------------
 	.export render_player_tile_stand_large
 render_player_tile_stand_large:
 	.byte	chr_obj::player_walk_large+00, chr_obj::player_walk_large+01
@@ -270,8 +270,8 @@ render_player_tile_stand_large:
 
 	.byte	chr_obj::player_resize+00, chr_obj::player_resize+00
 	.byte	chr_obj::player_resize+01, chr_obj::player_resize+01
-; -----------------------------
+; ----------------------------------
 	.export render_player_swim_foot_left
 render_player_swim_foot_left:
 	.byte	chr_obj::player_swim_large+09, chr_obj::player_swim_small+02
-; -----------------------------
+; ----------------------------------

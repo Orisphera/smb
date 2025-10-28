@@ -32,7 +32,7 @@ bg_text_header_player_name:
 	:
 
 	.byte	BG_TEXT_END_VAL
-; ----------------------------
+; ----------------------------------
 bg_text_splash:
 	.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
 	.byte	(:++)-(:+)
@@ -53,7 +53,7 @@ bg_text_splash:
 	:
 
 	.byte	BG_TEXT_END_VAL
-; ----------------------------
+; ----------------------------------
 bg_text_timeup_screen:
 .if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
@@ -68,7 +68,7 @@ bg_text_timeup_screen:
 	:
 
 	.byte	BG_TEXT_END_VAL
-; ----------------------------
+; ----------------------------------
 bg_text_gameover_screen:
 .if	.defined(SMBV1)
 		.dbyt	PPU_VRAM_BG1+PPU_BG_ROW_14+PPU_BG_COL_13
@@ -103,7 +103,7 @@ bg_text_gameover_screen:
 .endif
 
 	.byte	BG_TEXT_END_VAL
-; ----------------------------
+; ----------------------------------
 bg_text_warp_screen:
 	.dbyt	PPU_VRAM_BG2+PPU_BG_ROW_12+PPU_BG_COL_4
 	.byte	(:++)-(:+)
@@ -140,14 +140,14 @@ bg_text_warp_screen:
 .elseif	.defined(SMBV2)
 		.byte	NMI_LIST_END
 .endif
-; ----------------------------
+; ----------------------------------
 .if	.defined(SMBV1)
 		.export bg_text_player_2
 	bg_text_player_2:
 		.byte	"LUIGI"
 	bg_text_player_2_end:
 .endif
-; ----------------------------
+; ----------------------------------
 	.export bg_text_warps
 bg_text_warps:
 	.if	.defined(SMBM)|.defined(VS_SMB)
@@ -177,7 +177,7 @@ bg_text_warps:
 		.byte	" ", "C", " ", 0
 		.byte	" ", "D", " ", 0
 	.endif
-; -------------
+; ----------------
 bg_text_idx_off	= $08
 bg_text_idx_header		= bg_text_header-bg_text
 bg_text_idx_splash		= bg_text_splash-bg_text

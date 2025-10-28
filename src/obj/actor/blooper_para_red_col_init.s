@@ -3,11 +3,11 @@
 .include	"misc.i"
 .include	"joypad.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 BLOOPER_VELOC_X		= 0
 KOOPA_RED_ACCEL_X_RIGHT	= 48
 KOOPA_RED_ACCEL_X_LEFT	= <-32
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_init_blooper
 	.export actor_init_koopa_red_fly
 	.export actor_init_col_small, actor_init_col_large, actor_init_col
@@ -18,11 +18,11 @@ actor_init_blooper:
 actor_A_07_init:
 	lda	#BLOOPER_VELOC_X
 	sta	veloc_x_actor, x
-; ------------------------------
+; ----------------------------------
 actor_init_col_small:
 	lda	#ACTOR_COL_BOX_SMALL
 	bne	actor_init_col
-; ------------------------------
+; ----------------------------------
 actor_init_koopa_red_fly:
 actor_A_0F_init:
 	ldy	#KOOPA_RED_ACCEL_X_RIGHT
@@ -34,7 +34,7 @@ actor_A_0F_init:
 	tya
 	adc	pos_y_lo_actor, x
 	sta	veloc_x_actor, x
-; ------------------------------
+; ----------------------------------
 actor_init_col_large:
 	lda	#ACTOR_COL_BOX_LARGE
 

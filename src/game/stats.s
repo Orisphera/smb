@@ -8,7 +8,7 @@
 .include	"mem.i"
 .include	"joypad.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 STATS_UPPER_ROW	= PPU_BG_ROW_3
 STATS_LOWER_ROW	= PPU_BG_ROW_7
 
@@ -38,7 +38,7 @@ STATS_TIME_COL		= PPU_BG_COL_26
 
 STAT_ENTRIES_SKIP	= 1
 STAT_ENTRIES_MAX	= 6
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 stats_print_num_arg		= zp_byte_00
 stats_print_num_buffer_idx	= zp_byte_02
 stats_print_num_score_digits	= zp_byte_03
@@ -74,7 +74,7 @@ stats_offsets:
 	.endif
 
 	.byte	stats_time_end-stats_tbl
-; ----------------------------
+; ----------------------------------
 	.export	stats_print_num
 stats_print_num:
 	sta	stats_print_num_arg
@@ -84,7 +84,7 @@ stats_print_num:
 	lsr	a
 	lsr	a
 	lsr	a
-; ----------------------------
+; ----------------------------------
 stats_print_num_do:
 	clc
 	adc	#STAT_ENTRIES_SKIP
@@ -136,7 +136,7 @@ stats_print_num_do:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export stats_calc
 stats_calc:
 	lda	proc_id_system
@@ -172,7 +172,7 @@ stats_calc:
 	; }
 
 	rts
-; ----------------------------
+; ----------------------------------
 stats_calc_dec:
 	dec	score_digit_mod, x
 	lda	#9
@@ -183,7 +183,7 @@ stats_calc_inc:
 	sbc	#10
 	inc	score_digit_mod, x
 	jmp	stats_calc_store
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export stats_score_hi_check
 stats_score_hi_check:
 	ldx	#(STAT_LEN_MAX)-1
@@ -191,7 +191,7 @@ stats_score_hi_check:
 		jsr	stats_score_hi_check_do
 		ldx	#(2*STAT_LEN_MAX)-1
 	.endif
-; ----------------------------
+; ----------------------------------
 stats_score_hi_check_do:
 	ldy	#STAT_LEN_MAX-1
 	sec

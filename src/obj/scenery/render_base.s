@@ -3,11 +3,12 @@
 .endif
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include        "course_flags.i"
 .include	"misc.i"
 .include	"const.i"
 .include	"tiles.i"
-; -----------------------------
+; ----------------------------------
 SCENERY_HEIGHT_MAX	= $0D
 
 	.export	scenery_render
@@ -43,7 +44,7 @@ scenery_render:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
         .export scenery_len, scenery_len_b
 scenery_len:
 	jsr	scenery_attr
@@ -58,7 +59,7 @@ scenery_len_b:
 	: ; }
 
 	rts
-; -----------------------------
+; ----------------------------------
         .export scenery_attr
 scenery_attr:
 	.if	.defined(VS)
@@ -74,7 +75,7 @@ scenery_attr:
 	and	#%00001111
 	tay
 	rts
-; -----------------------------
+; ----------------------------------
         .export scenery_pos_x_get
 scenery_pos_x_get:
 	lda	pos_x_lo_game
@@ -83,7 +84,7 @@ scenery_pos_x_get:
 	asl	a
 	asl	a
 	rts
-; -----------------------------
+; ----------------------------------
         .export scenery_pos_y_get
 scenery_pos_y_get:
 	lda	game_buffer+1
@@ -94,14 +95,14 @@ scenery_pos_y_get:
 	clc
 	adc	#(2<<4)
 	rts
-; -----------------------------
+; ----------------------------------
 	.export scenery_buffer_ptr_lo, scenery_buffer_ptr_hi
 scenery_buffer_ptr_lo:
 	.byte	<bg_buffer_0, <bg_buffer_1
 
 scenery_buffer_ptr_hi:
 	.byte	>bg_buffer_0, >bg_buffer_1
-; --------------
+; ----------------
 	.export scenery_get_buffer_ptr
 scenery_get_buffer_ptr:
 	pha

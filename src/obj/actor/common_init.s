@@ -15,7 +15,7 @@
         .res    11, $FF 
 .endif
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 ACTOR_PAGE_A_OFFSET_Y	= 8
 ACTOR_INIT_BITS_MASK	= %00000001
 ACTOR_LOOP_SCROLL_INC	= 4
@@ -26,7 +26,7 @@ ACTOR_LOOP_OFFSET_X	= 48
 .elseif	.defined(VS)
 	COURSE_SCENERY_LOOP_OFFSETS	= VS_RAM
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_proc
 actor_proc:
 	lda	proc_id_actor, x
@@ -54,7 +54,7 @@ actor_proc:
 	: ; }
 	
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_loop_courses:
 	.if	.defined(SMBM)|.defined(VS_SMB)
 		.if	.defined(SMBM)
@@ -177,7 +177,7 @@ actor_loop_data_smb2:
 	.byte	3, 3, 3, 3
 	.byte	1, 1
 .endif
-; -----------------------------
+; ----------------------------------
 actor_area_loop:
 	lda	pos_x_hi_player
 	sec
@@ -214,7 +214,7 @@ actor_area_loop:
 	sta	scenery_offset_base
 
 	rts
-; ------------------------------
+; ----------------------------------
 actor_loop:
 	lda	course_loop_flag
 	beq	:+++++
@@ -500,7 +500,7 @@ actor_loop:
 			; } else actor_special_a();
 		; }
 	; }
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_init_check:
 	lda	actor_swarm_buffer
 	bne	:+
@@ -519,10 +519,10 @@ actor_init_check:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_group:
 	jmp	actor_group_do
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_special_do
 actor_special_a:
 	.if	.defined(VS)
@@ -565,7 +565,7 @@ actor_special_a:
 	: ; }
 
 	jmp	:+
-; ------------------------------
+; ----------------------------------
 actor_special_b:
 	.if	.defined(VS)
                 lda     #vs_req::chr_low|vs_req::irq_rel|vs_req::ctrl_rel
@@ -577,7 +577,7 @@ actor_special_b:
 	and	#<COURSE_ACTORS_TYPE_MASK
 	cmp	#<COURSE_ACTORS_TYPE_E
 	bne	:++
-; ------------------------------
+; ----------------------------------
 	: ; if (actor.type == type_E) {
 		inc	actor_offset
 	: ; }
@@ -589,7 +589,7 @@ actor_special_do:
 	sta	actor_page_on
 	ldx	actor_index
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 	.export actor_init_do
 	.export	actor_init_tbl
 actor_init_do:
@@ -623,7 +623,7 @@ actor_init_tbl:
 	.export	actor_init_B_tbl_36
 actor_init_B_tbl_36:
 	.addr	actor_B_36_init
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_init_null:
 actor_A_09_init:
 actor_A_13_init:

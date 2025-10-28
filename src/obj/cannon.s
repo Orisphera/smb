@@ -1,13 +1,14 @@
 .include	"math.i"
 .include	"joypad.i"
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"misc.i"
 .include	"sound.i"
 
 cannon_proc_masks:
 	.byte	MOD_16
 	.byte	MOD_8
-; -----------------------------
+; ----------------------------------
 	.export cannon_proc
 cannon_proc:
 	lda	course_type
@@ -82,10 +83,10 @@ cannon_proc:
 	: ; }
 
 	rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 cannon_bullet_veloc_x:
 	.byte	BULLET_VELOC_X_ABS, <-BULLET_VELOC_X_ABS
-; -----------------------------
+; ----------------------------------
 cannon_bullet_proc:
 	lda	game_timer_stop
 	bne	:++++ ; if (!game_timer_stop) {

@@ -4,17 +4,17 @@
 .include	"mem.i"
 .include	"chr.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 BOWSER_FLAME_POS_X_OFFSET		= 1
 BOWSER_FLAME_TIMER_IDX_MASK		= %00000111
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_bowser_flame_timer_data:
 	.ifndef	PAL
 		.byte	191, 64, 191, 191, 191, 64, 64, 191
 	.else
 		.byte	128, 48, 48, 128, 128, 128, 48, 80
 	.endif
-; ----------------------------
+; ----------------------------------
 	.export actor_proc_bowser_flame_timer_init
 actor_proc_bowser_flame_timer_init:
 	ldy	actor_bowser_flame_timer_idx
@@ -24,7 +24,7 @@ actor_proc_bowser_flame_timer_init:
 	sta	actor_bowser_flame_timer_idx
 	lda	actor_proc_bowser_flame_timer_data, y
 	: rts
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 actor_proc_bowser_flame_accel_x_offset	= zp_byte_00
 actor_proc_bowser_flame_obj_tile	= zp_byte_00
 actor_proc_bowser_flame_obj_attr	= zp_byte_01

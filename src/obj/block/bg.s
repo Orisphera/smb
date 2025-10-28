@@ -43,7 +43,7 @@ scenery_block_draw:
 	pha
 	jsr	scenery_attr
 	jmp	scenery_draw_row
-; --------------
+; ----------------
 scenery_block_id:
 	lda	zp_byte_00
 	sec

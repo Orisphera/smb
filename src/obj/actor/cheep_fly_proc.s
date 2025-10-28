@@ -5,7 +5,7 @@
 
 .include	"macros.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 CHEEP_FLY_MOTION_X		= 5
 .ifndef	PAL
 CHEEP_FLY_MOTION_Y		= 13
@@ -18,7 +18,7 @@ CHEEP_FLY_MOTION_Y_B		= 32
 CHEEP_FLY_ACCEL_OFFSET_Y	= 16
 CHEEP_FLY_ACCEL_DIST		= 8
 .endif
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 .ifndef	PAL
 actor_cheep_fly_offset_y:
 	.byte	<-8
@@ -34,7 +34,7 @@ actor_cheep_fly_attr:
 	.byte	obj_attr::priority_high|obj_attr::color0
 	.byte	obj_attr::priority_high|obj_attr::color0
 .endif
-; -----------------------------
+; ----------------------------------
 	.export actor_proc_cheep_fly
 	.export	actor_A_14_proc
 actor_proc_cheep_fly:

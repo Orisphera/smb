@@ -1,7 +1,7 @@
 .include	"mem.i"
 .include	"joypad.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 title_demo_buttons:
 .if	.defined(SMBV1)
 	.byte	joypad_button::right
@@ -130,7 +130,7 @@ title_demo_timers:
 	.byte	$B0
 	.byte	$00
 .endif
-; ----------------------------
+; ----------------------------------
 	.export title_demo
 title_demo:
 	ldx     title_demo_button_id

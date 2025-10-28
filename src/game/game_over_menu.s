@@ -4,11 +4,11 @@
 .include	"chr.i"
 .include	"joypad.i"
 
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 GAME_OVER_MENU_CURSOR_POS_X	= 72
 GAME_OVER_MENU_CURSOR_OPTION_A_POS_Y	= 119
 GAME_OVER_MENU_CURSOR_OPTION_B_POS_Y	= 143
-; ------------------------------------------------------------
+; ----------------------------------------------------------------------
 game_over_menu_attrs:
 	.byte	chr_obj::plat_norm
 	.byte	obj_attr::priority_high|obj_attr::color2
@@ -18,7 +18,7 @@ game_over_menu_attrs_end:
 game_over_menu_pos_y:
 	.byte	GAME_OVER_MENU_CURSOR_OPTION_A_POS_Y
 	.byte	GAME_OVER_MENU_CURSOR_OPTION_B_POS_Y
-; -----------------------------
+; ----------------------------------
 	.export game_over_menu
 game_over_menu:
 	lda	joypad_p1

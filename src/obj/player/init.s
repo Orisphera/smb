@@ -5,7 +5,7 @@
 .include	"const.i"
 .include	"joypad.i"
 
-; -----------------------------------------------------------
+; ----------------------------------------------------------------------
 player_start_x:
 	.byte	$28, $18, $38, $28
 
@@ -51,7 +51,7 @@ course_timer_vals_a:
 course_timer_vals_b:
 	.byte	$03, $00, $00, $05
 .endif
-; ----------------------------
+; ----------------------------------
 	.export player_proc_init
 player_proc_init:
 	lda	pos_x_hi_screen_left
