@@ -27,10 +27,10 @@ joypad_l_r		= joypad_u_d+1
 joypad_a_b_held		= joypad_l_r+1
 ; ----------------
 proc_id_player		= joypad_a_b_held+1
-proc_id_actor		= proc_id_player+1
+proc_id_actor		= proc_id_player+ENG_PLAYER_OBJ_MAX
 proc_id_actor_end	= proc_id_actor+ENG_ACTOR_MAX
-unused_15		= proc_id_actor_end
-obj_id_actor		= unused_15+1
+obj_id_player		= proc_id_actor_end
+obj_id_actor		= obj_id_player+ENG_PLAYER_OBJ_MAX
 obj_id_actor_end	= obj_id_actor+ENG_ACTOR_MAX
 unused_1C		= obj_id_actor_end
 ; ----------------
@@ -48,13 +48,14 @@ state_misc_end		= state_misc+ENG_MISC_MAX
 disp_dir_player		= state_misc_end
 disp_dir_player_end	= disp_dir_player+ENG_PLAYER_OBJ_MAX
 rot_dir_actor		= disp_dir_player_end
-pos_x_hi_victory_right	= rot_dir_actor
-victory_proc_ctrl	= pos_x_hi_victory_right+1
 rot_dir_actor_end	= rot_dir_actor+ENG_ACTOR_MAX
-actor_powerup_type	= rot_dir_actor_end-1
 proj_bounce_flag	= rot_dir_actor_end
 timer_hammer_bro_jump	= proj_bounce_flag+ENG_PROJ_MAX
 timer_hammer_bro_jump_end = timer_hammer_bro_jump+ENG_ACTOR_MAX
+; ----------------
+pos_x_hi_victory_right	= rot_dir_actor
+victory_proc_ctrl	= pos_x_hi_victory_right+1
+actor_powerup_type	= rot_dir_actor_end-1
 ; ----------------
 unused_42		= timer_hammer_bro_jump_end
 unused_43		= unused_42+1
@@ -80,11 +81,12 @@ veloc_x_proj_end	= veloc_x_proj+ENG_PROJ_MAX
 veloc_x_block		= veloc_x_proj_end
 veloc_x_block_end	= veloc_x_block+ENG_BLOCK_MAX
 veloc_x_misc		= veloc_x_block_end
+veloc_x_misc_end	= veloc_x_misc+ENG_MISC_MAX
+; ----------------
 apu_fds_track		= veloc_x_misc+2
 apu_fds_wave_addr	= apu_fds_track+WORD_SIZE
 apu_fds_wave_vol_addr	= apu_fds_wave_addr+WORD_SIZE
 apu_fds_wave_mod_addr	= apu_fds_wave_vol_addr+WORD_SIZE
-veloc_x_misc_end	= veloc_x_misc+ENG_MISC_MAX
 ; ----------------
 pos_x_hi		= veloc_x_misc_end
 pos_x_hi_player		= pos_x_hi+0
