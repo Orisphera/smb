@@ -60,7 +60,7 @@ bg_color_init_1:
 
 	lda	#0
 	sta	player_status
-	lda	#COURSE_SCENERY_BG_COL_OVERWORLD_VAL
+	lda	#COURSE_SCENERY_BG_COL_NIGHT_SNOW_VAL
 	sta	course_bg_col
 	jsr	bg_color_player
 
@@ -89,16 +89,17 @@ bg_proc_next_b:
 	jmp	bg_proc_continue
 ; ----------------------------------------------------------------------
 	.export bg_color_data
-	.export bg_color_data_water
+	.export	bg_color_data_vec_00
+	.export	bg_color_data_vec_01
+	.export	bg_color_data_vec_02
+	.export	bg_color_data_vec_03
 	.export bg_color_data_overworld
 	.export bg_color_data_underground
 bg_color_data:
-bg_color_data_water:
-	.if	.defined(CONS)
-	.byte	PPU_COLOR_GREY0, PPU_COLOR_YGREEN0, PPU_COLOR_GREEN0, PPU_COLOR_MAGENTA0
-	.elseif	.defined(VS)
-	.byte	PPU_COLOR_YELLOW1, PPU_COLOR_YELLOW0, PPU_COLOR_YGREEN3, PPU_COLOR_PITCH1
-	.endif
+bg_color_data_vec_00:	.byte	nmi_addr::buffer_01_A
+bg_color_data_vec_01:	.byte	nmi_addr::pal_day_snow
+bg_color_data_vec_02:	.byte	nmi_addr::pal_night_snow
+bg_color_data_vec_03:	.byte	nmi_addr::pal_castle
 
 bg_color_data_overworld:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
