@@ -93,19 +93,19 @@ bg_proc_next_b:
 	.export	bg_color_data_vec_01
 	.export	bg_color_data_vec_02
 	.export	bg_color_data_vec_03
-	.export bg_color_data_overworld
-	.export bg_color_data_underground
 bg_color_data:
 bg_color_data_vec_00:	.byte	nmi_addr::buffer_01_A
 bg_color_data_vec_01:	.byte	nmi_addr::pal_day_snow
 bg_color_data_vec_02:	.byte	nmi_addr::pal_night_snow
 bg_color_data_vec_03:	.byte	nmi_addr::pal_castle
 
-bg_color_data_overworld:
+	.export bg_color_data_background
+bg_color_data_background:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
-
-bg_color_data_underground:
+bg_color_data_background_end:
+bg_color_data_spec:
 	.byte	PPU_COLOR_PITCH0, PPU_COLOR_BLUE2, PPU_COLOR_PITCH0, PPU_COLOR_PITCH0
+bg_color_data_spec_end:
 
 	.export bg_color_player_data
 bg_color_player_data:
@@ -123,8 +123,8 @@ bg_color_player_power:
 	.export	bg_color_init_3
 bg_color_init_3:
 	ldy	course_bg_col
-	beq	:+ ; if (course_bg_col) {
-		lda	bg_color_data-PPU_COLOR_ROW_SIZE, y
+	beq	:+ ; if (course_bg_col != 0) {
+		lda	bg_color_data-(COURSE_SCENERY_FG_MAX+1), y
 		sta	nmi_buffer_ptr
 	: ; }
 
@@ -159,10 +159,10 @@ bg_color_player:
 
 	ldx	ppu_displist_offset
 	ldy	course_bg_col
-	bne	:+ ; if (!course_bg_col) {
+	bne	:+ ; if (course_bg_col == 0) {
 		ldy	course_type
 	: ; }
-	lda	bg_color_data+PPU_COLOR_ROW_SIZE, y
+	lda	bg_color_data_background, y
 	sta	ppu_displist_payload, x
 	lda	#>(PPU_COLOR_PAGE_OBJ)
 	sta	ppu_displist_addr_dbyt, x
