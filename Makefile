@@ -219,8 +219,9 @@ ENTITY_OBJS	=	src/obj/proj.o \
 			src/obj/misc/coin_proc.o \
 			src/obj/actor/powerup.o \
 			src/obj/block/proc.o \
-			src/obj/motion.o \
-			src/obj/actor/common_init.o \
+			src/obj/motion.o
+
+ACTOR_OBJS	=	src/obj/actor/common_init.o \
 			src/obj/actor/goomba_init.o \
 			src/obj/actor/podoboo_init.o \
 			src/obj/actor/toad_init.o \
@@ -390,6 +391,7 @@ PRG_OBJS_FC	=	$(BASE_OBJS) \
 			$(GAME_CORE_OBJS) \
 			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
@@ -415,6 +417,7 @@ PRG_OBJS_VS	=	$(BASE_OBJS) \
 			$(GAME_CORE_OBJS) \
 			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_VS_A_OBJS) \
@@ -447,6 +450,7 @@ PRG_OBJS_FDS	=	$(BASE_OBJS) \
 			$(GAME_CORE_OBJS) \
 			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(APU_OBJS) \
 			$(APU_MUSIC_OBJS) \
@@ -476,6 +480,7 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(GAME_CORE_OBJS) \
 			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
 			$(COURSE_BASE_OBJS) \
@@ -536,6 +541,7 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(GAME_CORE_OBJS) \
 			$(PLAYER_OBJS) \
 			$(ENTITY_OBJS) \
+			$(ACTOR_OBJS) \
 			$(ACTOR_SUPPORT_OBJS) \
 			$(LIB_FDS_OBJS) \
 			$(COURSE_BASE_OBJS) \

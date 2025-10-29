@@ -3,6 +3,7 @@
 .include	"sys/palette.i"
 
 .include	"mem.i"
+.include	"mem_low.i"
 .include	"course_flags.i"
 .include	"const.i"
 .include	"charmap.i"
@@ -118,8 +119,6 @@ bg_color_player_2:
 bg_color_player_power:
 	.byte	PPU_COLOR_BLUE2, PPU_COLOR_ORANGE3, PPU_COLOR_ORANGE2, PPU_COLOR_RED1
 ; ----------------------------------
-bg_color_pal_entry	= zp_byte_00
-
 	.export	bg_color_init_3
 bg_color_init_3:
 	ldy	course_bg_col

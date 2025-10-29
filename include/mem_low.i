@@ -9,6 +9,8 @@ col_player_bullet_diff_pos_x_rel = zp_byte_00
 
 scenery_tbl_base		= zp_byte_00
 
+bg_color_pal_entry		= zp_byte_00
+
 motion_gravity_accel_y_inc	= zp_byte_00
 motion_gravity_accel_y_dec	= zp_byte_01
 motion_gravity_veloc_y_max_abs	= zp_byte_02
