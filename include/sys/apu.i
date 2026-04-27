@@ -344,7 +344,6 @@ TRIANGLE_COUNTER .set	$400B
 
 ; Noise Generator [1](11.3.a)(p. 8)
 NOISE_PERIOD	.set	$400E
-NOISE_PERIOD_MASK	.set	%00001111
 	.enum	noise_period
 		mask	= %00001111
 		C8	= 0

@@ -152,7 +152,7 @@ apu_wind_continued:
 		tay
 
 		lda	apu_wind_data, y
-		and	#NOISE_PERIOD_MASK
+		and	#noise_period::mask
 		ora	#noise_period::loop
 		tax
 
