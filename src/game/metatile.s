@@ -230,12 +230,12 @@ meta_color_rotate:
 
 			inx
 			iny
-			cpy	#2*PPU_COLOR_ROW_SIZE
+			cpy	#2*PPU_COLOR_LINE_COUNT
 			bcc	:-
 		; }
 
 		ldx	ppu_displist_offset
-		lda	#PPU_COLOR_ROW_SIZE-1
+		lda	#PPU_COLOR_LINE_COUNT-1
 		sta	meta_color_rotate_pal_entry
 		lda	course_type
 		asl	a
@@ -243,7 +243,7 @@ meta_color_rotate:
 		tay
 		: ; for (i = 3, x = ppu_displist_entry, y = (course_type * 4); i >= 0; i--, x++, y++) {
 			lda	pal_page_3, y
-			sta	ppu_displist_data+(PPU_COLOR_ROW_SIZE-1), x
+			sta	ppu_displist_data+(PPU_COLOR_LINE_COUNT-1), x
 
 			iny
 			inx
@@ -254,7 +254,7 @@ meta_color_rotate:
 		ldx	ppu_displist_offset
 		ldy	meta_color_rotate_off
 		lda	pal_rotating, y
-		sta	ppu_displist+(NMI_BUFFER_ENTRY_OFFSET_SIZE+(1*PPU_COLOR_ROW_SIZE)), x
+		sta	ppu_displist+(NMI_BUFFER_ENTRY_OFFSET_SIZE+(1*PPU_COLOR_LINE_COUNT)), x
 		lda	ppu_displist_offset
 		clc
 		adc	#7

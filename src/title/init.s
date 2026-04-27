@@ -119,7 +119,7 @@ title_patch_player:
 	sec
 	sbc	title_patch_player_offset
 	tay
-	ldx	#PPU_COLOR_ROW_SIZE-1
+	ldx	#PPU_COLOR_LINE_COUNT-1
 	: ; for (entry of palette) {
 		lda	title_patch_player_palette, y
 		sta	bg_color_player_data, x

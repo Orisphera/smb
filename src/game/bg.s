@@ -171,10 +171,10 @@ bg_color_player:
 	lda	#PPU_COLOR_LINE_SIZE
 	sta	ppu_displist_count, x
 	lda	#NMI_LIST_END
-	sta	ppu_displist_data+(WORD_SIZE+1+PPU_COLOR_ROW_SIZE), x
+	sta	ppu_displist_data+(WORD_SIZE+1+PPU_COLOR_LINE_COUNT), x
 	txa
 	clc
-	adc	#(WORD_SIZE+1+PPU_COLOR_ROW_SIZE)
+	adc	#(WORD_SIZE+1+PPU_COLOR_LINE_COUNT)
 
 	.export bg_color_player_end
 bg_color_player_end:
