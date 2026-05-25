@@ -11,8 +11,8 @@ BOWSER_HP	= 5
 actor_init_bowser:
 actor_B_18_init:
 	.if	.defined(SMBV2)
-	        ldy     #ENG_ACTOR_MAX-2
-		: ; for (y = ENG_ACTOR_MAX-2; y >= 0; y--) {
+	        ldy     #ACTOR_COUNT_MAX-2
+		: ; for (y = ACTOR_COUNT_MAX-2; y >= 0; y--) {
 		        cpy     actor_index
 		        beq     :+
 		        lda     obj_id_actor, y

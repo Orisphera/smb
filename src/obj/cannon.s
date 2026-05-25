@@ -21,13 +21,13 @@ cannon_proc:
 			lda	srand+1, x
 			ldy	game_hard_mode_b
 			and	cannon_proc_masks, y
-			cmp	#ENG_ACTOR_MAX
+			cmp	#ACTOR_COUNT_MAX
 			bcs	:++
 			tay
 			lda	pos_y_hi_cannon, y
 			beq	:++ ; if (
 			;	actor.mode == dead
-			;	&& (srand[actor_index+1] & player_proc_cannon_masks[game_hard_mode_b]) < ENG_ACTOR_MAX
+			;	&& (srand[actor_index+1] & player_proc_cannon_masks[game_hard_mode_b]) < ACTOR_COUNT_MAX
 			;	&& (pos_y_hi_cannon[(srand[actor_index+1])])
 			; ) {
 				lda	timer_cannon, y

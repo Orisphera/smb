@@ -111,8 +111,8 @@ actor_B_18_proc:
 	cmp	#224
 	bcc	:--- ; if ((actor.state & 0x20) && actor.pos_y >= 224) {
 	actor_killall:
-		ldx	#ENG_ACTOR_MAX-2
-		: ; for (x = ENG_ACTOR_MAX-2; x >= 0; x--) {
+		ldx	#ACTOR_COUNT_MAX-2
+		: ; for (x = ACTOR_COUNT_MAX-2; x >= 0; x--) {
 			jsr	actor_erase
 	
 			dex

@@ -14,7 +14,7 @@ scenery_swarm_ids:
 scenery_swarm:
 	ldx	scenery_tbl_base
 	lda	scenery_swarm_ids-((scenery_tbl_swarm_a-scenery_spec_D)/WORD_SIZE), x
-	ldy	#ENG_ACTOR_MAX-1
+	ldy	#ACTOR_COUNT_MAX-1
 	: ; for (actor of applicable_actors) {
 		dey
 		bmi	:+

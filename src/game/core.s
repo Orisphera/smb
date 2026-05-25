@@ -114,7 +114,7 @@ game_proc:	; game_proc - main gameplay routine
 			jsr	bg_score_disp
 	
 			inx
-			cpx	#ENG_ACTOR_MAX
+			cpx	#ACTOR_COUNT_MAX
 			bne	:-
 		; }
 	

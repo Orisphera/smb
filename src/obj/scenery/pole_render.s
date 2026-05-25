@@ -34,15 +34,15 @@ scenery_pole:
 	jsr	scenery_pos_x_get
 	sec
 	sbc	#<OFFSET_X_FLAG
-	sta	pos_x_lo_actor+ENG_ACTOR_MAX-1
+	sta	pos_x_lo_actor+ACTOR_COUNT_MAX-1
 	lda	pos_x_hi_game
 	sbc	#>OFFSET_X_FLAG
-	sta	pos_x_hi_actor+ENG_ACTOR_MAX-1
+	sta	pos_x_hi_actor+ACTOR_COUNT_MAX-1
 	lda	#OFFSET_Y_FLAG
-	sta	pos_y_lo_actor+ENG_ACTOR_MAX-1
+	sta	pos_y_lo_actor+ACTOR_COUNT_MAX-1
 	lda	#OFFSET_Y_FLAG_SCORE
 	sta	render_flag_score_pos_y
 	lda	#actor::flag_enemy
-	sta	obj_id_actor+ENG_ACTOR_MAX-1
-	inc	proc_id_actor+ENG_ACTOR_MAX-1
+	sta	obj_id_actor+ACTOR_COUNT_MAX-1
+	inc	proc_id_actor+ACTOR_COUNT_MAX-1
 	rts

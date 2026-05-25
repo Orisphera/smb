@@ -1129,7 +1129,7 @@ scenery_actor_kill_id	= zp_byte_00
 scenery_actor_kill:
 	sta	scenery_actor_kill_id
 	lda	#proc_id_actors::free
-	ldx	#ENG_ACTOR_MAX-2
+	ldx	#ACTOR_COUNT_MAX-2
 	: ; for (entry of obj_id_actor) {
 		ldy	obj_id_actor, x
 		cpy	scenery_actor_kill_id

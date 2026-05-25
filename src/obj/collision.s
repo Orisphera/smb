@@ -45,8 +45,8 @@ col_proj_actor_proc:
 		clc
 		adc	#(7*4)
 		tay
-		ldx	#(ENG_ACTOR_MAX-2)
-		: ; for (x = ENG_ACTOR_MAX-2; x >= 0; x--) {
+		ldx	#(ACTOR_COUNT_MAX-2)
+		: ; for (x = ACTOR_COUNT_MAX-2; x >= 0; x--) {
 			stx	col_proj_actor_proc_index
 			tya
 			pha
@@ -1495,7 +1495,7 @@ col_bg_proc_pole_cutoffs_y_end:
 CLIMB_POS_X	= pos_x_lo_player
 CLIMB_DIR_BOUND	= 16
 .elseif	.defined(VS_SMB)
-CLIMB_POS_X	= pos_x_lo_actor+(ENG_ACTOR_MAX-1)
+CLIMB_POS_X	= pos_x_lo_actor+(ACTOR_COUNT_MAX-1)
 CLIMB_DIR_BOUND	= 10
 .endif
 
@@ -2118,7 +2118,7 @@ col_actor_check_side:
 	; }
 ; ----------------------------------------------------------------------
 col_actor_check_side_bump:
-	cpx	#ENG_ACTOR_MAX-1
+	cpx	#ACTOR_COUNT_MAX-1
 	beq	:+
 	lda	state_actor, x
 	asl	a

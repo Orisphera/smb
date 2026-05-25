@@ -84,9 +84,9 @@ actor_init_bullet_cheep:
 		jmp	actor_init_do
 	: ; } else if (timer_swarm == 0 && course.type != water) {
 		ldy	#<-1
-		: ; for (y = 0; y < (ENG_ACTOR_MAX-1) && (actor[y].mode == free || actor[y].id != bullet_swarm); y++) {
+		: ; for (y = 0; y < (ACTOR_COUNT_MAX-1) && (actor[y].mode == free || actor[y].id != bullet_swarm); y++) {
 			iny
-			cpy	#ENG_ACTOR_MAX-1
+			cpy	#ACTOR_COUNT_MAX-1
 			bcs	:+
 		
 			lda	proc_id_actor, y
@@ -154,18 +154,18 @@ actor_init_bullet_cheep:
 					iny
 				: ; }
 				sty	actor_group_count
-				: ; for (actor_group_count; actor_group_count > 0 && x < (ENG_ACTOR_MAX-1); actor_group_count--) {
+				: ; for (actor_group_count; actor_group_count > 0 && x < (ACTOR_COUNT_MAX-1); actor_group_count--) {
 					ldx	#<-1
-					: ; for (x = 0; x < (ENG_ACTOR_MAX-1) && actor[x].mode != free; x++) {
+					: ; for (x = 0; x < (ACTOR_COUNT_MAX-1) && actor[x].mode != free; x++) {
 						inx
-						cpx	#ENG_ACTOR_MAX-1
+						cpx	#ACTOR_COUNT_MAX-1
 						bcs	:+
 				
 						lda	proc_id_actor, x
 						bne	:-
 					; }
 			
-					; if (x < (ENG_ACTOR_MAX-1) && actor[x].mode == free) {	
+					; if (x < (ACTOR_COUNT_MAX-1) && actor[x].mode == free) {	
 						lda	actor_group_obj_id_actor
 						sta	obj_id_actor, x
 

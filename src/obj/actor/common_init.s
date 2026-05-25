@@ -319,7 +319,7 @@ actor_loop:
 	: and	#<COURSE_ACTORS_TYPE_MASK
 	cmp	#<COURSE_ACTORS_TYPE_E
 	beq	:+
-	cpx	#ENG_ACTOR_MAX-1
+	cpx	#ACTOR_COUNT_MAX-1
 	bcc	:+
 	iny
 
@@ -331,7 +331,7 @@ actor_loop:
 	lda	(course_actor_addr), y
 	and	#>COURSE_ACTORS_ID_MASK
 	cmp	#actor::power_up
-	beq	:+ ; } else if (actor.type != type_E && x >= (ENG_ACTOR_MAX-1) && actor.id != power_up) {
+	beq	:+ ; } else if (actor.type != type_E && x >= (ACTOR_COUNT_MAX-1) && actor.id != power_up) {
 		rts
 	: ; } else {
 	actor_loop_screen_right_pos_x_hi	= zp_byte_06

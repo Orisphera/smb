@@ -19,7 +19,7 @@ actor_init_fireworks:
 		sta	timer_swarm
 		dec	actor_firework_counter
 
-		ldy	#ENG_ACTOR_MAX
+		ldy	#ACTOR_COUNT_MAX
 		: ; for (actor of actors) {
 			dey
 			lda	obj_id_actor, y

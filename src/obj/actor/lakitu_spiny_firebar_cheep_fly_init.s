@@ -50,12 +50,12 @@ actor_spiny_data:
 actor_init_lakitu_spiny:
 	lda	timer_swarm
 	bne	:+++++
-	cpx	#ENG_ACTOR_MAX-1
-	bcs	:+++++ ; if (timer_swarm == 0 && this.idx < (ENG_ACTOR_MAX-1)) {
+	cpx	#ACTOR_COUNT_MAX-1
+	bcs	:+++++ ; if (timer_swarm == 0 && this.idx < (ACTOR_COUNT_MAX-1)) {
 		lda	#LAKITU_SPINY_SWARM_TIMER
 		sta	timer_swarm
-		ldy	#ENG_ACTOR_MAX-2
-		: ; for (y = ENG_ACTOR_MAX-2; y >= 0; y--) {
+		ldy	#ACTOR_COUNT_MAX-2
+		: ; for (y = ACTOR_COUNT_MAX-2; y >= 0; y--) {
 			lda	obj_id_actor, y
 			cmp	#actor::lakitu
 			beq	actor_proc_spiny
@@ -69,8 +69,8 @@ actor_init_lakitu_spiny:
 			lda	timer_lakitu_new
 			cmp	#LAKITU_SPAWN_TIME
 			bcc	:++++ ; if (++this.timer_new >= LAKITU_SPAWN_TIME) {
-				ldx	#ENG_ACTOR_MAX-2
-				: ; for (x = ENG_ACTOR_MAX-2; x >= 0; x--) {
+				ldx	#ACTOR_COUNT_MAX-2
+				: ; for (x = ACTOR_COUNT_MAX-2; x >= 0; x--) {
 					lda	proc_id_actor, x
 					beq	:+
 

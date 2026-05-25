@@ -35,7 +35,7 @@ actor_init_swarm_null:
 	.export	actor_B_03_init
 actor_kill_swarm:
 actor_B_03_init:
-	ldy	#ENG_ACTOR_MAX-1
+	ldy	#ACTOR_COUNT_MAX-1
 	: ; for (actor of actors) {
 		lda	obj_id_actor, y
 		cmp	#actor::lakitu

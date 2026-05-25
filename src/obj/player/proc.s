@@ -407,7 +407,7 @@ player_proc_player_rts:
 .endif
 ; ----------------------------------------------------------------------
 player_proc_pole:
-	lda	obj_id_actor+(ENG_ACTOR_MAX-1)
+	lda	obj_id_actor+(ACTOR_COUNT_MAX-1)
 	cmp	#actor::flag_enemy
 	bne	:++ ; if (actor.obj_id_actor == flag_enemy) {
 		lda	music_event_goal_flag
