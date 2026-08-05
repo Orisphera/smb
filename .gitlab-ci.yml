@@ -1,5 +1,6 @@
 variables:
   CKSUM_FC_ZERO: 2944420496
+  CKSUM_FC_PAL_ZERO: 4131243774
 
 image: alpine:latest
 
@@ -23,3 +24,18 @@ test_base:
   needs: ["build_base"]
   script:
     - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1" CKSUM_FC="$CKSUM_FC_ZERO" make check_base
+
+build_pal:
+  stage: build
+  needs: []
+  script:
+    - ./tools/extract.fc_smb.sh
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL" make pal
+  artifacts:
+    untracked: true
+
+test_pal:
+  stage: test
+  needs: ["build_pal"]
+  script:
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL" CKSUM_FC="$CKSUM_FC_PAL_ZERO" make check_pal

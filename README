@@ -29,11 +29,11 @@ the provided Makefile includes the definitions required
 to build Super Mario Bros. for the Famicom.
 
 Additionally, the ASFLAGS_PAL Makefile variable can be added
-to ASFLAGS to pull in PAL-specific changes.
+to ASFLAGS_TGT to pull in PAL-specific changes.
 
-To build other titles, you will need to change which set of ASFLAGS are
-included in the Makefile and then issue make for the specific
-variant desired as follows:
+To build other titles, you will need to change the definitions
+in ASFLAGS_TGT included in the Makefile and then issue make
+for the specific variant desired as follows:
 
 Super Mario Bros. (FC)  - make smb.nes
 Super Mario Bros. (PAL) - make smb.nes
@@ -78,7 +78,7 @@ compared with those passed through the extraction scripts.
 Rather, the files contained within the FDS images should be
 1:1 copies whereas the FDS image will reflect local filenames
 and timestamps.  In other words, the disk image is fully functional,
-but the disk superlabel may not compare 1:1 with a disk pressed
+but the disk superblock may not compare 1:1 with a disk pressed
 in the factory in the 80s, particularly regarding the creation
 date and some file naming details.
 
