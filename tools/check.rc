@@ -1,0 +1,11 @@
+#!/bin/rc
+
+FILE_REF=$1
+CHECKSUM_REF=$2
+
+CHECKSUM_FILE=`{sum $FILE_REF | awk '{ print $1 }'}
+
+if (!{~ $CHECKSUM_FILE $CHECKSUM_REF})
+	echo 'CRC mismatch for '$FILE_REF
+
+exit 0
