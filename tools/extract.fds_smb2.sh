@@ -9,12 +9,14 @@
 # SM2DATA3 - skip=45055 count=3279
 # SM2DATA2 - skip=48351 count=3916
 
-if test -z $1
+INFILE="$1"
+
+if test -z "$INFILE"
 then
-    echo "Usage: extract.sh <image>.fds"
-    exit 1
+	INFILE=/dev/zero
 fi
 
+# Directory structure
 CHR_PATH_BASE="chr.smb"
 CHR_PATH_VS="chr.vs"
 CHR_PATH_SMB2="chr.smb2"
@@ -59,7 +61,7 @@ do
         then
                 CHR_PATH=$CHR_PATH_SMB2
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
@@ -179,7 +181,7 @@ do
         then
                 CHR_PATH=$CHR_PATH_SMB2
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
 
@@ -192,7 +194,7 @@ I=0
 J=118
 while test $J -ne $BG_BANK && test $I -ne $TILES
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.smb2/chr_obj_`printf "%.2X" $J`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.smb2/chr_obj_`printf "%.2X" $J`.bin
         I=`expr $I + 1`
 	J=`expr $J + 1`
 done

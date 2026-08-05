@@ -1,7 +1,7 @@
 #!/bin/sh
-# fdtc - compile a Famicom Disk System table
+# fdtc - compile a Famicom Disk System table (UNIX)
 #
-# Copyright 2024 Matthew Gilmore
+# Copyright 2026 Matthew Gilmore
 # 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -61,6 +61,11 @@ FDSDATE=$YEAR$MONTH$DAY
 
 SIDE=`echo $SIDE | tr [ab] [AB] | tr [AB] [01]`
 
+if [ "$TITLE" = "NULL" ]
+then
+	TITLE=`printf "\xFF\xFF\xFF"`
+fi
+
 if [ "$REGION" = "J" ]
 then
 	REGION=49	# Japan
@@ -69,6 +74,12 @@ fi
 if [ "$COLOR" = "Y" ]
 then
 	COLOR=0		# Yellow
+elif [ "$COLOR" = "W" ]
+then
+	COLOR=FE	# White
+elif [ "$COLOR" = "B" ]
+then
+	COLOR=FF	# Blue
 fi	
 
 printf "\x01"

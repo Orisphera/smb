@@ -9,12 +9,14 @@
 # NSMDATA3 - skip=46064 count=3346
 # NSMDATA2 - skip=49427 count=3568
 
-if test -z $1
+INFILE="$1"
+
+if test -z "$INFILE"
 then
-    echo "Usage: extract.sh <image>.fds"
-    exit 1
+	INFILE=/dev/zero
 fi
 
+# Directory structure
 CHR_PATH_BASE="chr.smb"
 CHR_PATH_VS="chr.vs"
 CHR_PATH_SMB2="chr.smb2"
@@ -94,7 +96,7 @@ do
         then
                 CHR_PATH=$CHR_PATH_NSM
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
@@ -226,14 +228,14 @@ do
         then
                 CHR_PATH=$CHR_PATH_SMB2
                 
-                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_75.bin
+                dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_75.bin
 
                 DID_READ=1
         elif test $J -eq $TEXT_NSM_QUOTES_LAST
         then
                 CHR_PATH=$CHR_PATH_SMB2
                 
-                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_76.bin
+                dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_76.bin
 
                 DID_READ=1
         elif test $J -ge $TEXT_NSM_C_FIRST && test $J -le $TEXT_NSM_C_LAST
@@ -243,7 +245,7 @@ do
 
         if test $DID_READ -eq 0
         then
-                dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
+                dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
 	fi
         I=`expr $I + 1`
 done
@@ -257,7 +259,7 @@ I=0
 J=118
 while test $J -ne $BG_BANK && test $I -ne $TILES
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.ann/chr_obj_`printf "%.2X" $J`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.ann/chr_obj_`printf "%.2X" $J`.bin
         I=`expr $I + 1`
 	J=`expr $J + 1`
 done
@@ -270,7 +272,7 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 I=0
 while test $I -ne $TILES
 do
-        dd if=raw/ann.fds bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $I`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
@@ -283,7 +285,7 @@ J=$I    # Continue adding to misc folder
 I=0
 while test $I -ne $TILES
 do
-        dd if=raw/ann.fds bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $J`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $J`.bin
         I=`expr $I + 1`
         J=`expr $J + 1`
 done

@@ -1,7 +1,7 @@
-#!/bin/sh
-# bintofdf - apply a Famicom Disk System header to a file
+#!/bin/rc
+# bintofdf - apply a Famicom Disk System header to a file (Plan9)
 #
-# Copyright 2024 Matthew Gilmore
+# Copyright 2026 Matthew Gilmore
 # 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions
@@ -33,50 +33,52 @@
 # USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
-BASE=`basename $0`
+BASE=`{basename $0}
 FILE=$1
-read	CODE_HEX	LOCATION_HEX
-CODE_HEX=`echo $CODE_HEX | tr [a-f] [A-F]`
-LOCATION_HEX=`echo $LOCATION_HEX | tr [a-f] [A-F]`
+VARS=(`{read})
+CODE_HEX=$VARS(1)
+LOCATION_HEX=$VARS(2)
 
-if [ -z "$FILE" ]
-then
-	echo "Usage: "$BASE" file"
+CODE_HEX=`{echo $CODE_HEX | tr [a-f] [A-F]}
+LOCATION_HEX=`{echo $LOCATION_HEX | tr [a-f] [A-F]}
+
+if (~ $#FILE 0) {
+	echo 'Usage: '$BASE' file'
 	exit 1
-fi
+}
 
 # print file block ID, blank file number, provided file code
-printf "\x03"
-printf "\0"
-printf `echo $CODE_HEX | sed 's/^/\\\\x/g'`
+awk 'BEGIN { printf "%c%c", 3, 0 }' </dev/null
+echo 'ibase=16;'$CODE_HEX | bc | awk '/.*/ { printf "%c", $0 }'
 
 # print an 8 byte filename
-printf "%s\0\0\0\0\0\0\0\0" `basename "$FILE" | sed 's/^\([^\.]*\)\..*$/\1/g'` | dd bs=1 count=8 2>/dev/null | tr [a-z_] [A-Z\-]
+basename $FILE | awk '/.*/ { printf "%s%c%c%c%c%c%c%c%c", $0, 0, 0, 0, 0, 0, 0, 0, 0 }' | sed 's/^\([^\.]*\)\..*$/\1/g' | dd -bs 1 -count 8 >[2]/dev/null | tr [a-z_] [A-Z\-]
 
 # need a file dest word, output little-endian
-LEFT_BYTE=`printf "%s" "$LOCATION_HEX" | sed 's/^\([0-9A-F][0-9A-F]\)[0-9A-F][0-9A-F]$/\1/g'`
-RIGHT_BYTE=`printf "%s" "$LOCATION_HEX" | sed 's/^[0-9A-F][0-9A-F]\([0-9A-F][0-9A-F]\)$/\1/g'`
-printf `echo $RIGHT_BYTE | sed 's/^/\\\\x/g'`
-printf `echo $LEFT_BYTE | sed 's/^/\\\\x/g'`
+LEFT_BYTE=`{echo $LOCATION_HEX | sed 's/^([0-9A-F][0-9A-F])[0-9A-F][0-9A-F]$/\1/g'}
+RIGHT_BYTE=`{echo $LOCATION_HEX | sed 's/^[0-9A-F][0-9A-F]([0-9A-F][0-9A-F])$/\1/g'}
+echo 'ibase=16;'$RIGHT_BYTE | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$LEFT_BYTE | bc | awk '/.*/ { printf "%c", $0 }'
 
 # emit file size word, output little-endian
-SIZE=`ls -l "$FILE" | awk '{ print $5 }'`
-LEFT_BYTE=`printf "%.4X" "$SIZE" | sed 's/^\([0-9A-F][0-9A-F]\)[0-9A-F][0-9A-F]$/\1/g'`
-RIGHT_BYTE=`printf "%.4X" "$SIZE" | sed 's/^[0-9A-F][0-9A-F]\([0-9A-F][0-9A-F]\)$/\1/g'`
-printf `echo $RIGHT_BYTE | sed 's/^/\\\\x/g'`
-printf `echo $LEFT_BYTE | sed 's/^/\\\\x/g'`
+SIZE=`{ls -l $FILE | awk '{ print $6 }'}
+LEFT_BYTE=`{echo $SIZE | awk '/.*/ { printf "%.4X", $0 }' | sed 's/^([0-9A-F][0-9A-F])[0-9A-F][0-9A-F]$/\1/g'}
+RIGHT_BYTE=`{echo $SIZE | awk '/.*/ { printf "%.4X", $0 }' | sed 's/^[0-9A-F][0-9A-F]([0-9A-F][0-9A-F])$/\1/g'}
+echo 'ibase=16;'$RIGHT_BYTE | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$LEFT_BYTE | bc | awk '/.*/ { printf "%c", $0 }'
 
 # emit file type byte based on dest word:
-LOCATION=`echo "ibase=16;$LOCATION_HEX" | bc`
-if [ $LOCATION -ge 0 ] && [ $LOCATION -lt 8192 ]
-then
-	printf "\x01"	# CHR
-elif [ $LOCATION -ge 8192 ] && [ $LOCATION -lt 12288 ]
-then
-	printf "\x02"	# BG 
-else
-	printf "\x00"	# PRG
-fi
+LOCATION=`{echo 'ibase=16;'$LOCATION_HEX | bc}
+if ({test $LOCATION -ge 0} && {test $LOCATION -lt 8192}) {
+	awk 'BEGIN { printf "%c", 1 }' </dev/null	# CHR
+}
+if ({test $LOCATION -ge 8192} && {test $LOCATION -lt 12288}) {
+	awk 'BEGIN { printf "%c", 2 }' </dev/null	# BG
+}
+if ({test $LOCATION -ge 12288}) {
+	awk 'BEGIN { printf "%c", 0 }' </dev/null	# PRG
+}
 
-printf "\x04"	# file blob block
+awk 'BEGIN { printf "\004" }' </dev/null	# file blob block
+
 cat $FILE

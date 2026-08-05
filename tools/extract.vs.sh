@@ -5,12 +5,14 @@
 # CHR0 - skip=32784 count=8192
 # CHR1 - skip=40976 count=8192
 
-if test -z $1
+INFILE="$1"
+
+if test -z "$INFILE"
 then
-    echo "Usage: extract.sh <rom>.nes"
-    exit 1
+	INFILE=/dev/zero
 fi
 
+# Directory structure
 CHR_PATH_BASE="chr.smb"
 CHR_PATH_VS="chr.vs"
 
@@ -64,6 +66,6 @@ do
         then
                 CHR_PATH=$CHR_PATH_VS
         fi
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done

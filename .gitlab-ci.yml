@@ -1,0 +1,25 @@
+variables:
+  CKSUM_FC_ZERO: 2944420496
+
+image: alpine:latest
+
+before_script:
+  - echo "@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >>/etc/apk/repositories
+  - apk add --no-cache make
+  - apk add --no-cache plan9port
+  - apk add --no-cache --allow-untrusted cc65@testing
+
+build_base:
+  stage: build
+  needs: []
+  script:
+    - ./tools/extract.fc_smb.sh
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1" make base
+  artifacts:
+    untracked: true
+
+test_base:
+  stage: test
+  needs: ["build_base"]
+  script:
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1" CKSUM_FC="$CKSUM_FC_ZERO" make check_base

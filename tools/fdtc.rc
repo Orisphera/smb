@@ -1,0 +1,122 @@
+#!/bin/rc
+# fdtc - compile a Famicom Disk System table (Plan9)
+#
+# Copyright 2026 Matthew Gilmore
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+# notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above
+# copyright notice, this list of conditions and the following
+# disclaimer in the documentation and/or other materials provided
+# with the distribution.
+#
+# 3. Neither the name of the copyright holder nor the names of its
+# contributors may be used to endorse or promote products derived
+# from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+# CONTRIBUTORS AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
+# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+# OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+# OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+# BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+# DAMAGE.
+
+BASE=`{basename "$0"}
+FILES=$*
+FILE_COUNT=$#*
+
+if (~ $FILE_COUNT 0) {
+	echo 'Usage: '$BASE' file [ files ... ]'
+	exit 1
+}
+
+VARS=(`{read})
+LICENSEE=$VARS(1)
+TITLE=$VARS(2)
+TYPE=$VARS(3)
+VERSION=$VARS(4)
+SIDE=$VARS(5)
+NUMBER=$VARS(6)
+DISK_TYPE=$VARS(7)
+START_CUTOFF=$VARS(8)
+REGION=$VARS(9)
+COLOR=$VARS(10)
+DISK_VER=$VARS(11)
+
+SHOWA_FACTOR=25
+
+YEAR=`{date +%Y}
+MONTH=`{date +%m}
+DAY=`{date +%d}
+
+YEAR=`{echo $YEAR-$SHOWA_FACTOR | bc | sed s/^[0-9][0-9]//g}
+FDSDATE=`{echo $YEAR $MONTH $DAY | awk '/.*/ { printf "%c%c%c", $1, $2, $3 }'}
+
+SIDE=`{echo $SIDE | tr [ab] [AB] | tr [AB] [01]}
+
+if (~ $TITLE "NULL") {
+	TITLE=`{awk 'BEGIN { printf "\xFF\xFF\xFF" }' </dev/null}
+}
+
+if (~ $REGION "J") {
+	REGION=49	# Japan
+}
+
+switch ($COLOR) {
+case Y
+	COLOR=0		# Yellow
+case W
+	COLOR=FE	# White
+case B
+	COLOR=FF	# Blue
+}
+
+awk 'BEGIN { printf "%c", 1 }' </dev/null
+echo -n *NINTENDO-HVC*
+echo 'ibase=16;'$LICENSEE  | bc | awk '/.*/ { printf "%c", $0 }'
+echo -n $TITLE
+echo 'ibase=16;'$TYPE      | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$VERSION   | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$SIDE      | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$NUMBER    | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$DISK_TYPE | bc | awk '/.*/ { printf "%c", $0 }'
+awk 'BEGIN { printf "%c", 0 }' </dev/null
+echo 'ibase=16;'$START_CUTOFF | bc | awk '/.*/ { printf "%c", $0 }'
+awk 'BEGIN { printf "\xFF\xFF\xFF\xFF\xFF" }' </dev/null
+echo -n $FDSDATE
+echo 'ibase=16;'$REGION | bc | awk '/.*/ { printf "%c", $0 }'
+awk 'BEGIN { printf "%c%c", 97, 0 }' </dev/null
+awk 'BEGIN { printf "%c%c", 0, 2 }' </dev/null
+awk 'BEGIN { printf "%c%c%c%c%c", 0, 0, 0, 0, 0 }' </dev/null
+echo -n $FDSDATE
+awk 'BEGIN { printf "\xFF" }' </dev/null
+awk 'BEGIN { printf "\xFF" }' </dev/null
+awk 'BEGIN { printf "\xFF\xFF" }' </dev/null
+awk 'BEGIN { printf "\xFF" }' </dev/null
+awk 'BEGIN { printf "%c", 0 }' </dev/null
+echo 'ibase=16;'$SIDE       | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$COLOR      | bc | awk '/.*/ { printf "%c", $0 }'
+echo 'ibase=16;'$DISK_VER   | bc | awk '/.*/ { printf "%c", $0 }'
+
+awk 'BEGIN { printf "%c", 2 }' </dev/null
+echo $FILE_COUNT | awk '/.*/ { printf "%c", $0 }'
+
+J=0
+for (I in $FILES) {
+	dd -if $I -bs 1 -count 1 >[2]/dev/null
+	echo $J | awk '/.*/ { printf "%c", $0 }'
+	dd -if $I -bs 1 -skip 2 >[2]/dev/null
+	J=`{echo $J+1 | bc}
+}

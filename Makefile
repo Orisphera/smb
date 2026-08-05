@@ -19,24 +19,26 @@
 #   PAL     - PAL-specific
 #   OG_PAD  - Padding in the original is retained
 #   OG_FALL - Original fall-throughs (module adjacency for control flow) assumed
-AS		=	ca65
+AS_TGT		=	ca65
+APPFLAGS_TGT	=	-U -I . -I ./include
 ASFLAGS_FC	=	-DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1
 ASFLAGS_VS	=	-DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1
 ASFLAGS_FDS	=	-DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1
 ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2 -DSMBV2
 ASFLAGS_ANN	=	-DFDS -DCONS -DANN -DSMBM -DSMBV2
 ASFLAGS_PAL	=	-DPAL
-ASFLAGS_OG	=	-DOG_FALL -DOG_PAD
-ASFLAGS		=	-U -I ./include $(ASFLAGS_OG) $(ASFLAGS_FC)
-LD		=	ld65
+ASFLAGS_HACKS	=	-DOG_PAD -DOG_FALL
+ASFLAGS_TGT	?=	$(ASFLAGS_HACKS) $(ASFLAGS_FC)
+LD_TGT		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
-CHECK		=	tools/check.sh
-BINTOFDF	=	tools/bintofdf
-FDTC		=	tools/fdtc
+LDFLAGS_TGT	?=	$(LDFLAGS_FC)
+CHECK		=	sh tools/check.sh
+BINTOFDF	=	sh tools/bintofdf.sh
+FDTC		=	sh tools/fdtc.sh
 
 FC		= 	smb.nes
 VS		=	smb.vs
@@ -44,26 +46,19 @@ FDS		=	smb.fds
 SMB2		=	smb2.fds
 ANN		=	ann.fds
 
-TGT		=	$(FC)
-
 CKSUM_FC_NTSC	=	1517619510
 CKSUM_FC_PAL	=	63472984
-CKSUM_FC	= 	$(CKSUM_FC_NTSC)
-CKSUM_VS	=	4075261516
-CKSUM_SMMAIN	=	905814991
-CKSUM_SMCHAR	=	1041839036
-CKSUM_SM2MAIN	=	1292353937
-CKSUM_SM2DATA2	=	4174737589
-CKSUM_SM2DATA3	=	3993005026
-CKSUM_SM2DATA4	=	2625833775
-CKSUM_SM2CHAR1	=	2348767384
-CKSUM_SM2CHAR2	=	4142743742
-CKSUM_NSMMAIN	=	3225424774
-CKSUM_NSMDATA2	=	2486615578
-CKSUM_NSMDATA3	=	1988748891
-CKSUM_NSMDATA4	=	813708659
-CKSUM_NSMCHAR1	=	31826565
-CKSUM_NSMCHAR2	=	1691251489
+CKSUM_FC	?= 	$(CKSUM_FC_NTSC)
+CKSUM_VS	?=	4075261516
+CKSUM_SMMAIN	?=	905814991
+CKSUM_SM2MAIN	?=	1292353937
+CKSUM_SM2DATA2	?=	4174737589
+CKSUM_SM2DATA3	?=	3993005026
+CKSUM_SM2DATA4	?=	2625833775
+CKSUM_NSMMAIN	?=	3225424774
+CKSUM_NSMDATA2	?=	2486615578
+CKSUM_NSMDATA3	?=	1988748891
+CKSUM_NSMDATA4	?=	813708659
 
 PRG_FC		=	smmain.fc.bin
 CHR_FC		=	smchar.fc.bin
@@ -628,19 +623,24 @@ FDTS		=	$(FDT_FDS) \
 			$(FDT_SMB2) \
 			$(FDT_ANN)
 
-.SUFFIXES : .bin .fdf .fdt .fds .sh
+.SUFFIXES : .bin .fdf .fdt .fds .sh .s
 
-all: $(TGT)
+all: base
+
+base: $(FC)
+
+check: check_base
+
+check_base: $(FC)
+	$(CHECK) $(FC) $(CKSUM_FC)
 
 $(FC): $(HEADER_FC) $(OBJS_FC)
-	$(LD) $(OBJS_FC) $(LDFLAGS_FC)
+	$(LD_TGT) $(OBJS_FC) $(LDFLAGS_TGT)
 	cat $(HEADER_FC) $(ROMS_FC) > $@
-	$(CHECK) $@ $(CKSUM_FC)
 
 $(VS): $(HEADER_VS) $(OBJS_VS)
-	$(LD) $(OBJS_VS) $(LDFLAGS_VS)
+	$(LD_TGT) $(OBJS_VS) $(LDFLAGS_TGT)
 	cat $(HEADER_VS) $(ROMS_VS) > $@
-	$(CHECK) $@ $(CKSUM_VS)
 
 $(FDS): $(HEADER_FDS) $(FDT_FDS)
 	cat $(HEADER_FDS) $(FDT_FDS) > $@
@@ -655,9 +655,7 @@ smmain2.bin: smmain.fds.bin
 	dd if=$< bs=1 count=16384 skip=16384 >$@
 
 smmain.fds.bin: $(OBJS_FDS)
-	$(LD) $^ $(LDFLAGS_FDS)
-	$(CHECK) $(PRG_FDS) $(CKSUM_SMMAIN)
-	$(CHECK) $(CHR_FDS) $(CKSUM_SMCHAR)
+	$(LD_TGT) $^ $(LDFLAGS_TGT)
 
 $(SMB2): $(HEADER_FDS) $(FDT_SMB2)
 	cat $(HEADER_FDS) $(FDT_SMB2) > $@
@@ -666,13 +664,7 @@ $(FDT_SMB2): sm2main.bin $(FDFS_SMB2)
 	$(FDTC) $(FDFS_SMB2) <$(DEF_SMB2) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
 sm2main.bin: $(OBJS_SMB2)
-	$(LD) $(OBJS_SMB2) $(LDFLAGS_SMB2)
-	$(CHECK) sm2main.bin $(CKSUM_SM2MAIN)
-	$(CHECK) sm2data2.bin $(CKSUM_SM2DATA2)
-	$(CHECK) sm2data3.bin $(CKSUM_SM2DATA3)
-	$(CHECK) sm2data4.bin $(CKSUM_SM2DATA4)
-	$(CHECK) sm2char1.bin $(CKSUM_SM2CHAR1)
-	$(CHECK) sm2char2.bin $(CKSUM_SM2CHAR2)
+	$(LD_TGT) $^ $(LDFLAGS_TGT)
 
 $(ANN): $(HEADER_FDS) $(FDT_ANN)
 	cat $(HEADER_FDS) $(FDT_ANN) > $@
@@ -681,16 +673,10 @@ $(FDT_ANN): nsmmain.bin $(FDFS_ANN)
 	$(FDTC) $(FDFS_ANN) <$(DEF_ANN) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
 nsmmain.bin: $(OBJS_ANN)
-	$(LD) $^ $(LDFLAGS_ANN)
-	$(CHECK) nsmmain.bin $(CKSUM_NSMMAIN)
-	$(CHECK) nsmdata2.bin $(CKSUM_NSMDATA2)
-	$(CHECK) nsmdata3.bin $(CKSUM_NSMDATA3)
-	$(CHECK) nsmdata4.bin $(CKSUM_NSMDATA4)
-	$(CHECK) nsmchar1.bin $(CKSUM_NSMCHAR1)
-	$(CHECK) nsmchar2.bin $(CKSUM_NSMCHAR2)
+	$(LD_TGT) $^ $(LDFLAGS_TGT)
 
 .s.o:
-	$(AS) $(ASFLAGS) -o $@ $<
+	$(AS_TGT) $(APPFLAGS_TGT) $(ASFLAGS_TGT) -o $@ $<
 
 .bin.fdf:
 	$(BINTOFDF) $< <data/fs/files/$<.def >$@

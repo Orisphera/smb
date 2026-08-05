@@ -6,12 +6,14 @@
 # PRG low  - skip=8558  count=16384
 # PRG high - skip=24942 count=16384
 
-if test -z $1
+INFILE="$1"
+
+if test -z "$INFILE"
 then
-    echo "Usage: extract.sh <image>.fds"
-    exit 1
+	INFILE=/dev/zero
 fi
 
+# Directory structure
 mkdir -p data/chr.smb
 
 # CHR Common
@@ -26,13 +28,13 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 I=0
 while test $I -ne $BG_BANK && test $I -ne $TILES
 do
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/chr_obj_`printf "%.2X" $I`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/chr_obj_`printf "%.2X" $I`.bin
         I=`expr $I + 1`
 done
 
 while test $I -ne $TILES
 do
 	J=`expr $I - $BG_BANK`
-        dd if=$1 bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/chr_bg_`printf "%.2X" $J`.bin
+        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr.smb/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done
