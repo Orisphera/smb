@@ -22,7 +22,7 @@ CHR_PATH_VS="chr.vs"
 CHR_PATH_SMB2="chr.smb2"
 CHR_PATH_NSM="chr.ann"
 
-mkdir -p data/chr2.ann data/${CHR_PATH_BASE} data/${CHR_PATH_VS} data/${CHR_PATH_SMB2} data/${CHR_PATH_NSM}
+mkdir -p data/chr2.ann data/chr_misc.ann data/${CHR_PATH_BASE} data/${CHR_PATH_VS} data/${CHR_PATH_SMB2} data/${CHR_PATH_NSM}
 
 # CHR Common
 TILE_SIZE=16

@@ -2,6 +2,8 @@ variables:
   CKSUM_FC_ZERO: 2944420496
   CKSUM_FC_PAL_ZERO: 4131243774
   CKSUM_VS_ZERO: 306840185
+  CKSUM_NSMMAIN_ZERO: 4037760225
+  CKSUM_NSMDATA2_ZERO: 1086899374
 
 image: alpine:latest
 
@@ -24,7 +26,7 @@ test_base:
   stage: test
   needs: ["build_base"]
   script:
-    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1" CKSUM_FC="$CKSUM_FC_ZERO" make check_base
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1" CKSUM_FC=$CKSUM_FC_ZERO make check_base
 
 build_pal:
   stage: build
@@ -39,7 +41,7 @@ test_pal:
   stage: test
   needs: ["build_pal"]
   script:
-    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL" CKSUM_FC="$CKSUM_FC_PAL_ZERO" make check_pal
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL" CKSUM_FC=$CKSUM_FC_PAL_ZERO make check_pal
 
 build_vs:
   stage: build
@@ -54,7 +56,7 @@ test_vs:
   stage: test
   needs: ["build_vs"]
   script:
-    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1" CKSUM_VS="$CKSUM_VS_ZERO" make check_vs
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1" CKSUM_VS=$CKSUM_VS_ZERO make check_vs
 
 build_fds:
   stage: build
@@ -70,3 +72,33 @@ test_fds:
   needs: ["build_fds"]
   script:
     - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1" make check_fds
+
+build_smb2:
+  stage: build
+  needs: []
+  script:
+    - ./tools/extract.fds_smb2.sh
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB2 -DSMBV2" make smb2
+  artifacts:
+    untracked: true
+
+test_smb2:
+  stage: test
+  needs: ["build_smb2"]
+  script:
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB2 -DSMBV2" make check_smb2
+
+build_ann:
+  stage: build
+  needs: []
+  script:
+    - ./tools/extract.fds_ann.sh
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DANN -DSMBM -DSMBV2" make ann
+  artifacts:
+    untracked: true
+
+test_ann:
+  stage: test
+  needs: ["build_ann"]
+  script:
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DANN -DSMBM -DSMBV2" CKSUM_NSMMAIN=$CKSUM_NSMMAIN_ZERO CKSUM_NSMDATA2=$CKSUM_NSMDATA2_ZERO make check_ann

@@ -28,7 +28,7 @@ ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2 -DSMBV2
 ASFLAGS_ANN	=	-DFDS -DCONS -DANN -DSMBM -DSMBV2
 ASFLAGS_PAL	=	-DPAL
 ASFLAGS_HACKS	=	-DOG_PAD -DOG_FALL
-ASFLAGS_TGT	?=	$(ASFLAGS_HACKS) $(ASFLAGS_FC)
+ASFLAGS_TGT	?=	$(ASFLAGS_HACKS) $(ASFLAGS_ANN)
 LD_TGT		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
@@ -70,7 +70,9 @@ CHR_VS		=	vschar0.vs.bin \
 PRG_FDS		=	smmain.fds.bin
 CHR_FDS		=	smchar.fds.bin
 
-PRG_SMB2	=	sm2main.bin \
+PRG_SMB2_MAIN	=	sm2main.bin
+
+PRG_SMB2	=	$(PRG_SMB2_MAIN) \
 			sm2data2.bin \
 			sm2data3.bin \
 			sm2data4.bin \
@@ -79,7 +81,9 @@ PRG_SMB2	=	sm2main.bin \
 CHR_SMB2	=	sm2char1.bin \
 			sm2char2.bin
 
-PRG_ANN		=	nsmmain.bin \
+PRG_ANN_MAIN	=	nsmmain.bin
+
+PRG_ANN		=	$(PRG_ANN_MAIN) \
 			nsmdata2.bin \
 			nsmdata3.bin \
 			nsmdata4.bin \
@@ -635,6 +639,10 @@ vs: $(VS)
 
 fds: $(FDS)
 
+smb2: $(SMB2)
+
+ann: $(ANN)
+
 check: check_base
 
 check_base: $(FC)
@@ -648,6 +656,12 @@ check_vs: $(VS)
 
 check_fds: $(PRG_FDS)
 	$(CHECK) $(PRG_FDS) $(CKSUM_SMMAIN)
+
+check_smb2: $(PRG_SMB2_MAIN)
+	$(CHECK) $(PRG_SMB2_MAIN) $(CKSUM_SM2MAIN)
+
+check_ann: $(PRG_ANN_MAIN)
+	$(CHECK) $(PRG_ANN_MAIN) $(CKSUM_NSMMAIN)
 
 $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD_TGT) $(OBJS_FC) $(LDFLAGS_FC)
@@ -677,19 +691,19 @@ $(PRG_FDS): $(OBJS_FDS)
 $(SMB2): $(HEADER_FDS) $(FDT_SMB2)
 	cat $(HEADER_FDS) $(FDT_SMB2) > $@
 
-$(FDT_SMB2): sm2main.bin $(FDFS_SMB2)
+$(FDT_SMB2): $(PRG_SMB2_MAIN) $(FDFS_SMB2)
 	$(FDTC) $(FDFS_SMB2) <$(DEF_SMB2) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
-sm2main.bin: $(OBJS_SMB2)
+$(PRG_SMB2_MAIN): $(OBJS_SMB2)
 	$(LD_TGT) $^ $(LDFLAGS_SMB2)
 
 $(ANN): $(HEADER_FDS) $(FDT_ANN)
 	cat $(HEADER_FDS) $(FDT_ANN) > $@
 
-$(FDT_ANN): nsmmain.bin $(FDFS_ANN) 
+$(FDT_ANN): $(PRG_ANN_MAIN) $(FDFS_ANN) 
 	$(FDTC) $(FDFS_ANN) <$(DEF_ANN) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
-nsmmain.bin: $(OBJS_ANN)
+$(PRG_ANN_MAIN): $(OBJS_ANN)
 	$(LD_TGT) $^ $(LDFLAGS_ANN)
 
 .s.o:
@@ -702,4 +716,5 @@ nsmmain.bin: $(OBJS_ANN)
 	$< >$@
 
 clean:
-	rm -rf $(IMAGES) *.bin $(ROMS) $(OBJS) $(HEADERS) $(FDFS) $(FDTS)
+	rm -rf $(IMAGES) *.bin $(ROMS) $(HEADERS) $(FDFS) $(FDTS)
+	rm -rf $(OBJS)
