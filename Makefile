@@ -633,6 +633,8 @@ pal: $(PAL)
 
 vs: $(VS)
 
+fds: $(FDS)
+
 check: check_base
 
 check_base: $(FC)
@@ -643,6 +645,9 @@ check_pal: $(PAL)
 
 check_vs: $(VS)
 	$(CHECK) $(VS) $(CKSUM_VS)
+
+check_fds: $(PRG_FDS)
+	$(CHECK) $(PRG_FDS) $(CKSUM_SMMAIN)
 
 $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD_TGT) $(OBJS_FC) $(LDFLAGS_FC)
@@ -657,22 +662,22 @@ $(VS): $(HEADER_VS) $(OBJS_VS)
 $(FDS): $(HEADER_FDS) $(FDT_FDS)
 	cat $(HEADER_FDS) $(FDT_FDS) > $@
 
-$(FDT_FDS): smmain.fds.bin $(FDFS_FDS) 
+$(FDT_FDS): $(PRG_FDS) $(FDFS_FDS) 
 	$(FDTC) $(FDFS_FDS) <$(DEF_FDS) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
-smmain1.bin: smmain.fds.bin
+smmain1.bin: $(PRG_FDS)
 	dd if=$< bs=1 count=16384 skip=0 >$@
 
-smmain2.bin: smmain.fds.bin
+smmain2.bin: $(PRG_FDS)
 	dd if=$< bs=1 count=16384 skip=16384 >$@
 
-smmain.fds.bin: $(OBJS_FDS)
+$(PRG_FDS): $(OBJS_FDS)
 	$(LD_TGT) $^ $(LDFLAGS_FDS)
 
 $(SMB2): $(HEADER_FDS) $(FDT_SMB2)
 	cat $(HEADER_FDS) $(FDT_SMB2) > $@
 
-$(FDT_SMB2): sm2main.bin $(FDFS_SMB2) 
+$(FDT_SMB2): sm2main.bin $(FDFS_SMB2)
 	$(FDTC) $(FDFS_SMB2) <$(DEF_SMB2) | cat - /dev/zero | dd of=$@ bs=1 count=65500 2>/dev/null
 
 sm2main.bin: $(OBJS_SMB2)

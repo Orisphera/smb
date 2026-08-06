@@ -55,3 +55,18 @@ test_vs:
   needs: ["build_vs"]
   script:
     - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1" CKSUM_VS="$CKSUM_VS_ZERO" make check_vs
+
+build_fds:
+  stage: build
+  needs: []
+  script:
+    - ./tools/extract.fds_smb.sh
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1" make fds
+  artifacts:
+    untracked: true
+
+test_fds:
+  stage: test
+  needs: ["build_fds"]
+  script:
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1" make check_fds
