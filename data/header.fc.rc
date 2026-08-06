@@ -1,0 +1,16 @@
+#!/bin/rc
+
+# magic number
+awk 'BEGIN { printf "NES\032" }' </dev/null
+
+# 32kb PRG (2 banks)
+awk 'BEGIN { printf "%c", 2 }' </dev/null
+
+# 8kb CHR (1 bank)
+awk 'BEGIN { printf "%c", 1 }' </dev/null
+
+# metadata - mapper 00 (NROM), vertical mirroring
+awk 'BEGIN { printf "%c%c", 1, 0 }' </dev/null
+
+# padding
+awk 'BEGIN { printf "%c%c%c%c%c%c%c%c", 0, 0, 0, 0, 0, 0, 0, 0 }' </dev/null
