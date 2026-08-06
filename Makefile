@@ -1,5 +1,5 @@
 #
-# (All Night Nippon) Super Mario Bros. (2) for the (Vs) Famicom (Disk System)
+# UNIX Makefile for (All Night Nippon) Super Mario Bros. (2) for the (Vs) Famicom (Disk System)
 #
 # Preprocessor Definitions:
 #   FC      - Famicom-specific

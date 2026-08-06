@@ -1,0 +1,39 @@
+#!/bin/rc
+
+# dd positions of banks in iNES ROM
+# PRG  - skip=16    count=32768
+# CHR  - skip=32784 count=8192
+
+if (~ $#INFILE 0) {
+	INFILE=/dev/zero
+}
+
+# Directory structure
+mkdir -p data/chr.smb
+
+# CHR Common
+TILE_SIZE=16
+BG_BANK=256
+
+# CHR bank 00
+BANKBASE=32784
+BANKLEN=7872
+TILES=`{echo $BANKLEN/$TILE_SIZE | bc}
+
+I=0
+while (!{~ $I $BG_BANK} && !{~ $I $TILES}) {
+	TILENO=`{echo $I | awk '{ printf "%.2X", $0 }' }
+	TILESKIP=`{echo $I'*'$TILE_SIZE+$BANKBASE | bc}
+	dd -if $INFILE -bs 1 -count $TILE_SIZE -skip $TILESKIP >data/chr.smb/chr_obj_$TILENO.bin
+	I=`{echo $I+1 | bc }
+}
+
+while (!{~ $I $TILES}) {
+	J=`{echo $I-$BG_BANK | bc}
+	TILENO=`{echo $J | awk '{ printf "%.2X", $0 }' }
+	TILESKIP=`{echo $I'*'$TILE_SIZE+$BANKBASE | bc}
+	dd -if $INFILE -bs 1 -count $TILE_SIZE -skip $TILESKIP >data/chr.smb/chr_bg_$TILENO.bin
+	I=`{echo $I+1 | bc}
+}
+
+exit 0
