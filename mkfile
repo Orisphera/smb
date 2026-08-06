@@ -644,10 +644,9 @@ ann:V: $ANN
 check:V: check_base
 
 check_base:V: $FC
-	$CHECK $FC $CKSUM_FC_NTSC
+	$CHECK $FC $CKSUM_FC
 
-check_pal:V: $FC
-	$CHECK $FC $CKSUM_FC_PAL
+check_pal:V: check_base
 
 check_vs:V: $VS
 	$CHECK $VS $CKSUM_VS
