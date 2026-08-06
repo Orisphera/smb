@@ -631,7 +631,7 @@ all:V: base
 
 base:V: $FC
 
-pal:V: $PAL
+pal:V: $FC
 
 vs:V: $VS
 
@@ -644,10 +644,10 @@ ann:V: $ANN
 check:V: check_base
 
 check_base:V: $FC
-	$CHECK $FC $CKSUM_FC
+	$CHECK $FC $CKSUM_FC_NTSC
 
-check_pal:V: $PAL
-	$CHECK $FC $CKSUM_FC
+check_pal:V: $FC
+	$CHECK $FC $CKSUM_FC_PAL
 
 check_vs:V: $VS
 	$CHECK $VS $CKSUM_VS
@@ -665,14 +665,12 @@ $FC: $HEADER_FC $OBJS_FC
 	$LD_TGT $OBJS_FC $LDFLAGS_FC
 	cat $HEADER_FC $ROMS_FC >$target
 
-$PAL:V: $FC
-
 $VS: $HEADER_VS $OBJS_VS
 	$LD_TGT $OBJS_VS $LDFLAGS_VS
 	cat $HEADER_VS $ROMS_VS >$target
 
 $FDS: $HEADER_FDS $FDT_FDS
-	cat $HEADER_FDS $FDT_FDS >$target
+	cat $prereq >$target
 
 $FDT_FDS: $PRG_FDS $FDFS_FDS
 	rc -c '{$FDTC $FDFS_FDS <$DEF_FDS; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
@@ -687,7 +685,7 @@ $PRG_FDS: $OBJS_FDS
 	$LD_TGT $prereq $LDFLAGS_FDS
 
 $SMB2: $HEADER_FDS $FDT_SMB2
-	cat $HEADER_FDS $FDT_SMB2 >$target
+	cat $prereq >$target
 
 $FDT_SMB2: $PRG_SMB2_MAIN $FDFS_SMB2
 	rc -c '{$FDTC $FDFS_SMB2 <$DEF_SMB2; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
@@ -696,7 +694,7 @@ $PRG_SMB2_MAIN: $OBJS_SMB2
 	$LD_TGT $prereq $LDFLAGS_SMB2
 
 $ANN: $HEADER_FDS $FDT_ANN
-	cat $HEADER_FDS $FDT_ANN >$target
+	cat $prereq >$target
 
 $FDT_ANN: $PRG_ANN_MAIN $FDFS_ANN
 	rc -c '{$FDTC $FDFS_ANN <$DEF_ANN; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
