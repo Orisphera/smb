@@ -33,13 +33,13 @@ TILE_ONEUP_RIGHT=254
 I=0
 while test $I -ne $BG_BANK && test $I -ne $TILES
 do
-        CHR_PATH=$CHR_PATH_BASE
-        if test $I -eq $TILE_ONEUP_LEFT || test $I -eq $TILE_ONEUP_RIGHT
-        then
-                CHR_PATH=$CHR_PATH_VS
-        fi
-        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
-        I=`expr $I + 1`
+	CHR_PATH=$CHR_PATH_BASE
+	if test $I -eq $TILE_ONEUP_LEFT || test $I -eq $TILE_ONEUP_RIGHT
+	then
+		CHR_PATH=$CHR_PATH_VS
+	fi
+	dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
+	I=`expr $I + 1`
 done
 
 FONT_FIRST=0
@@ -55,17 +55,17 @@ VS_NEWBG_LAST=254
 while test $I -ne $TILES
 do
 	J=`expr $I - $BG_BANK`
-        CHR_PATH=$CHR_PATH_BASE
-        if test $J -ge $FONT_FIRST && test $J -le $FONT_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -eq $FONT_DASH || test $J -eq $FONT_X || test $J -eq $FONT_EX || test $J -eq $FONT_PER || test $J -eq $ICON_MUSH
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -ge $VS_NEWBG_FIRST && test $J -le $VS_NEWBG_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        fi
-        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
+	CHR_PATH=$CHR_PATH_BASE
+	if test $J -ge $FONT_FIRST && test $J -le $FONT_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -eq $FONT_DASH || test $J -eq $FONT_X || test $J -eq $FONT_EX || test $J -eq $FONT_PER || test $J -eq $ICON_MUSH
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -ge $VS_NEWBG_FIRST && test $J -le $VS_NEWBG_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	fi
+	dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
 	I=`expr $I + 1`
 done

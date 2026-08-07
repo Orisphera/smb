@@ -1,0 +1,70 @@
+#!/bin/rc
+
+# dd positions of banks in VS ROM
+# PRG  - skip=16    count=32768
+# CHR0 - skip=32784 count=8192
+# CHR1 - skip=40976 count=8192
+
+if (~ $#INFILE 0) {
+	INFILE=/dev/zero
+}
+
+# Directory structure
+CHR_PATH_BASE=chr.smb
+CHR_PATH_VS=chr.vs
+
+mkdir -p data/$CHR_PATH_BASE data/$CHR_PATH_VS data/chr2.vs
+
+# CHR Common
+TILE_SIZE=16
+BG_BANK=256
+
+# CHR bank 00
+BANKBASE=32784
+BANKLEN=8176
+TILES=`{echo $BANKLEN/$TILE_SIZE | bc}
+
+TILE_ONEUP_LEFT=253
+TILE_ONEUP_RIGHT=254
+
+I=0
+while (!{~ $I $BG_BANK} && !{~ $I $TILES}) {
+	CHR_PATH=$CHR_PATH_BASE
+	if ({test $I -eq $TILE_ONEUP_LEFT} || {test $I -eq $TILE_ONEUP_RIGHT}) {
+		CHR_PATH=$CHR_PATH_VS
+	}
+	TILENO=`{echo $I | awk '{ printf "%.2X", $0 }' }
+	TILESKIP=`{echo $I'*'$TILE_SIZE+$BANKBASE | bc}
+	dd -if $INFILE -bs 1 -count $TILE_SIZE -skip $TILESKIP >data/$CHR_PATH/chr_obj_$TILENO.bin
+	I=`{echo $I+1 | bc }
+}
+
+FONT_FIRST=0
+FONT_LAST=35
+FONT_DASH=40
+FONT_X=41
+FONT_EX=43
+FONT_PER=175
+ICON_MUSH=206
+VS_NEWBG_FIRST=236
+VS_NEWBG_LAST=254
+
+while (!{~ $I $TILES}) {
+	J=`{echo $I-$BG_BANK | bc}
+	CHR_PATH=$CHR_PATH_BASE
+	if ({test $J -ge $FONT_FIRST} && {test $J -le $FONT_LAST}) {
+		CHR_PATH=$CHR_PATH_VS
+	}
+	if not if ({test $J -eq $FONT_DASH} || {test $J -eq $FONT_X} || {test $J -eq $FONT_EX} || {test $J -eq $FONT_PER} || {test $J -eq $ICON_MUSH}) {
+		CHR_PATH=$CHR_PATH_VS
+	}
+	if not if ({test $J -ge $VS_NEWBG_FIRST} && {test $J -le $VS_NEWBG_LAST}) {
+		CHR_PATH=$CHR_PATH_VS
+	}
+	TILENO=`{echo $J | awk '{ printf "%.2X", $0 }' }
+	TILESKIP=`{echo $I'*'$TILE_SIZE+$BANKBASE | bc}
+	dd -if $INFILE -bs 1 -count $TILE_SIZE -skip $TILESKIP >data/$CHR_PATH/chr_bg_$TILENO.bin
+	I=`{echo $I+1 | bc}
+}
+
+exit 0

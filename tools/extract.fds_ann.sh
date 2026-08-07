@@ -61,43 +61,43 @@ TILE_MUSH_SE=255
 I=0
 while test $I -ne $BG_BANK && test $I -ne $TILES
 do
-        CHR_PATH=$CHR_PATH_BASE
-        if test $I -ge $TILE_FLAG_VICTORY_FIRST && test $I -le $TILE_FLAG_VICTORY_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $I -eq $TILE_PLAT
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $I -ge $TILE_GOOMBA_A_FIRST && test $I -le $TILE_GOOMBA_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $I -ge $TILE_DOOR_FIRST && test $I -le $TILE_DOOR_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $I -ge $TILE_NSM_GUY_A_FIRST && test $I -le $TILE_NSM_GUY_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $I -ge $TILE_NSM_GUY_B_FIRST && test $I -le $TILE_NSM_GUY_B_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $I -eq $TILE_STAR_A || test $I -eq $TILE_STAR_B || test $I -eq $TILE_GOOMBA_B
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $I -eq $TILE_MUSH_NW || test $I -eq $TILE_MUSH_NE || test $I -eq $TILE_MUSH_SW
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $I -eq $TILE_MUSH_SE || test $I -eq $TILE_ONEUP_LEFT || test $I -eq $TILE_ONEUP_RIGHT
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $I -ge $TILE_PIRANHA_A_FIRST && test $I -le $TILE_PIRANHA_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $I -ge $TILE_PIRANHA_B_FIRST && test $I -le $TILE_PIRANHA_B_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        fi
-        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
-        I=`expr $I + 1`
+	CHR_PATH=$CHR_PATH_BASE
+	if test $I -ge $TILE_FLAG_VICTORY_FIRST && test $I -le $TILE_FLAG_VICTORY_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $I -eq $TILE_PLAT
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $I -ge $TILE_GOOMBA_A_FIRST && test $I -le $TILE_GOOMBA_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $I -ge $TILE_DOOR_FIRST && test $I -le $TILE_DOOR_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $I -ge $TILE_NSM_GUY_A_FIRST && test $I -le $TILE_NSM_GUY_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $I -ge $TILE_NSM_GUY_B_FIRST && test $I -le $TILE_NSM_GUY_B_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $I -eq $TILE_STAR_A || test $I -eq $TILE_STAR_B || test $I -eq $TILE_GOOMBA_B
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $I -eq $TILE_MUSH_NW || test $I -eq $TILE_MUSH_NE || test $I -eq $TILE_MUSH_SW
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $I -eq $TILE_MUSH_SE || test $I -eq $TILE_ONEUP_LEFT || test $I -eq $TILE_ONEUP_RIGHT
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $I -ge $TILE_PIRANHA_A_FIRST && test $I -le $TILE_PIRANHA_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $I -ge $TILE_PIRANHA_B_FIRST && test $I -le $TILE_PIRANHA_B_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	fi
+	dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_obj_`printf "%.2X" $I`.bin
+	I=`expr $I + 1`
 done
 
 FONT_VS_A_FIRST=0
@@ -153,101 +153,101 @@ TEXT_NSM_C_LAST=254
 while test $I -ne $TILES
 do
 	J=`expr $I - $BG_BANK`
-        CHR_PATH=$CHR_PATH_BASE
-        DID_READ=0
-        if test $J -ge $FONT_VS_A_FIRST && test $J -le $FONT_VS_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -ge $FONT_SMB2_A_FIRST && test $J -le $FONT_SMB2_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $FONT_VS_B_FIRST && test $J -le $FONT_VS_B_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -ge $FONT_SMB2_B_FIRST && test $J -le $FONT_SMB2_B_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $FONT_VS_C_FIRST && test $J -le $FONT_VS_C_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -ge $FONT_VS_D_FIRST && test $J -le $FONT_VS_D_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -ge $FONT_VS_E_FIRST && test $J -le $FONT_VS_E_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -ge $TILE_SMB2_GFX_A_FIRST && test $J -le $TILE_SMB2_GFX_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $TREE_LEFT_SMB2_FIRST && test $J -le $TREE_LEFT_SMB2_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $TREE_REST_SMB2_FIRST && test $J -le $TREE_REST_SMB2_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $BRICK_SMB2_C_FIRST && test $J -le $BRICK_SMB2_C_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $TILE_EDGE_NSM_FIRST && test $J -le $TILE_EDGE_NSM_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $J -ge $TILE_AXE_NSM_FIRST && test $J -le $TILE_AXE_NSM_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $J -ge $FENCE_NSM_A_FIRST && test $J -le $FENCE_NSM_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $J -ge $FENCE_NSM_B_FIRST && test $J -le $FENCE_NSM_B_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $J -ge $FONT_VS_F_FIRST && test $J -le $FONT_VS_F_LAST
-        then
-                CHR_PATH=$CHR_PATH_VS
-        elif test $J -ge $GROUND_SMB2_A_FIRST && test $J -le $GROUND_SMB2_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $MUSH_TREE_SMB2_FIRST && test $J -le $MUSH_TREE_SMB2_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $BG_SMB2_B_FIRST && test $J -le $BG_SMB2_B_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -eq $COPYRIGHT_SMB2
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $TEXT_NSM_A_FIRST && test $J -le $TEXT_NSM_A_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $J -ge $BG_SMB2_C_FIRST && test $J -le $BG_SMB2_C_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-        elif test $J -ge $TEXT_NSM_B_FIRST && test $J -le $TEXT_NSM_B_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        elif test $J -eq $TEXT_NSM_QUOTES_FIRST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-                
-                dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_75.bin
+	CHR_PATH=$CHR_PATH_BASE
+	DID_READ=0
+	if test $J -ge $FONT_VS_A_FIRST && test $J -le $FONT_VS_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -ge $FONT_SMB2_A_FIRST && test $J -le $FONT_SMB2_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $FONT_VS_B_FIRST && test $J -le $FONT_VS_B_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -ge $FONT_SMB2_B_FIRST && test $J -le $FONT_SMB2_B_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $FONT_VS_C_FIRST && test $J -le $FONT_VS_C_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -ge $FONT_VS_D_FIRST && test $J -le $FONT_VS_D_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -ge $FONT_VS_E_FIRST && test $J -le $FONT_VS_E_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -ge $TILE_SMB2_GFX_A_FIRST && test $J -le $TILE_SMB2_GFX_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $TREE_LEFT_SMB2_FIRST && test $J -le $TREE_LEFT_SMB2_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $TREE_REST_SMB2_FIRST && test $J -le $TREE_REST_SMB2_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $BRICK_SMB2_C_FIRST && test $J -le $BRICK_SMB2_C_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $TILE_EDGE_NSM_FIRST && test $J -le $TILE_EDGE_NSM_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $J -ge $TILE_AXE_NSM_FIRST && test $J -le $TILE_AXE_NSM_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $J -ge $FENCE_NSM_A_FIRST && test $J -le $FENCE_NSM_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $J -ge $FENCE_NSM_B_FIRST && test $J -le $FENCE_NSM_B_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $J -ge $FONT_VS_F_FIRST && test $J -le $FONT_VS_F_LAST
+	then
+		CHR_PATH=$CHR_PATH_VS
+	elif test $J -ge $GROUND_SMB2_A_FIRST && test $J -le $GROUND_SMB2_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $MUSH_TREE_SMB2_FIRST && test $J -le $MUSH_TREE_SMB2_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $BG_SMB2_B_FIRST && test $J -le $BG_SMB2_B_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -eq $COPYRIGHT_SMB2
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $TEXT_NSM_A_FIRST && test $J -le $TEXT_NSM_A_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $J -ge $BG_SMB2_C_FIRST && test $J -le $BG_SMB2_C_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+	elif test $J -ge $TEXT_NSM_B_FIRST && test $J -le $TEXT_NSM_B_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
+	elif test $J -eq $TEXT_NSM_QUOTES_FIRST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+		
+		dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_75.bin
 
-                DID_READ=1
-        elif test $J -eq $TEXT_NSM_QUOTES_LAST
-        then
-                CHR_PATH=$CHR_PATH_SMB2
-                
-                dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_76.bin
+		DID_READ=1
+	elif test $J -eq $TEXT_NSM_QUOTES_LAST
+	then
+		CHR_PATH=$CHR_PATH_SMB2
+		
+		dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_76.bin
 
-                DID_READ=1
-        elif test $J -ge $TEXT_NSM_C_FIRST && test $J -le $TEXT_NSM_C_LAST
-        then
-                CHR_PATH=$CHR_PATH_NSM
-        fi
-
-        if test $DID_READ -eq 0
-        then
-                dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
+		DID_READ=1
+	elif test $J -ge $TEXT_NSM_C_FIRST && test $J -le $TEXT_NSM_C_LAST
+	then
+		CHR_PATH=$CHR_PATH_NSM
 	fi
-        I=`expr $I + 1`
+
+	if test $DID_READ -eq 0
+	then
+		dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/${CHR_PATH}/chr_bg_`printf "%.2X" $J`.bin
+	fi
+	I=`expr $I + 1`
 done
 
 # NSMCHAR2
@@ -259,8 +259,8 @@ I=0
 J=118
 while test $J -ne $BG_BANK && test $I -ne $TILES
 do
-        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.ann/chr_obj_`printf "%.2X" $J`.bin
-        I=`expr $I + 1`
+	dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr2.ann/chr_obj_`printf "%.2X" $J`.bin
+	I=`expr $I + 1`
 	J=`expr $J + 1`
 done
 
@@ -272,8 +272,8 @@ TILES=`expr $BANKLEN / $TILE_SIZE`
 I=0
 while test $I -ne $TILES
 do
-        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $I`.bin
-        I=`expr $I + 1`
+	dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $I`.bin
+	I=`expr $I + 1`
 done
 
 # NSMDATA2.CHR
@@ -285,8 +285,8 @@ J=$I    # Continue adding to misc folder
 I=0
 while test $I -ne $TILES
 do
-        dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $J`.bin
-        I=`expr $I + 1`
-        J=`expr $J + 1`
+	dd if="$INFILE" bs=1 count=$TILE_SIZE skip=`expr $I \* $TILE_SIZE + $BANKBASE` >data/chr_misc.ann/chr_obj_`printf "%.2X" $J`.bin
+	I=`expr $I + 1`
+	J=`expr $J + 1`
 done
 

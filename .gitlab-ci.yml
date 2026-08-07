@@ -4,6 +4,7 @@ variables:
   CKSUM_FC_PAL_ZERO: 4131243774
   CKSUM_FC_PAL_9P_ZERO: 215bbd9d
   CKSUM_VS_ZERO: 306840185
+  CKSUM_VS_9P_ZERO: c1455baa
   CKSUM_NSMMAIN_ZERO: 4037760225
   CKSUM_NSMDATA2_ZERO: 1086899374
 
@@ -93,6 +94,23 @@ test_vs:
   needs: ["build_vs"]
   script:
     - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1" CKSUM_VS=$CKSUM_VS_ZERO make check_vs
+
+build_vs_9p:
+  stage: build
+  needs: []
+  script:
+    - export	PATH=/usr/lib/plan9/bin:$PATH
+    - rc ./tools/extract.vs.rc
+    - mk vs 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1'
+  artifacts:
+    untracked: true
+
+test_vs_9p:
+  stage: test
+  needs: ["build_vs_9p"]
+  script:
+    - export	PATH=/usr/lib/plan9/bin:$PATH
+    - mk check_vs 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DVS -DVS_2C04_0004 -DVS_SMB -DSMBV1' 'CKSUM_VS=$CKSUM_VS_9P_ZERO'
 
 build_fds:
   stage: build
