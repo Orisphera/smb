@@ -69,6 +69,8 @@ CHR_VS		=	vschar0.vs.bin \
 
 PRG_FDS		=	smmain.fds.bin
 CHR_FDS		=	smchar.fds.bin
+BIN_SMMAIN1	=	smmain1.bin
+BIN_SMMAIN2	=	smmain2.bin
 
 PRG_SMB2_MAIN	=	sm2main.bin
 PRG_SMB2_DATA2	=	sm2data2.bin
@@ -365,6 +367,7 @@ ENDING_OBJS	=	src/game/ending.o
 
 LIFEDOWN_EXT_OBJS =	src/game/lifedown_ext_init.o
 
+BIN_SECURITY	=	kyodaku_.bin
 SECURITY_OBJS	=	data/security.o
 
 SAVE_VS_OBJS	=	data/save.vs.o
@@ -462,6 +465,11 @@ PRG_OBJS_FDS	=	$BASE_OBJS \
 CHR_OBJS_FDS	=	$CHR_BASE_OBJS \
 			$TITLE_MAP_OBJS
 
+BINS_FDS	=	$BIN_SECURITY \
+			$CHR_FDS \
+			$BIN_SMMAIN1 \
+			$BIN_SMMAIN2
+
 OBJS_FDS	=	$PRG_OBJS_FDS \
 			$CHR_OBJS_FDS \
 			$SECURITY_OBJS
@@ -522,6 +530,15 @@ CHR_OBJS_SMB2	=	$CHR_BASE_OBJS \
 
 OBJS_SMB2	=	$PRG_OBJS_SMB2 \
 			$CHR_OBJS_SMB2
+
+BINS_SMB2	=	$BIN_SECURITY \
+			sm2char1.bin \
+			sm2char2.bin \
+			$PRG_SMB2_MAIN \
+			$PRG_SMB2_DATA2 \
+			$PRG_SMB2_DATA3 \
+			$PRG_SMB2_DATA4 \
+			sm2save.bin
 
 FDFS_SMB2	=	kyodaku_.fdf \
 			sm2char1.fdf \
@@ -677,25 +694,25 @@ $VS: $HEADER_VS $OBJS_VS
 $FDS: $HEADER_FDS $FDT_FDS
 	cat $prereq >$target
 
-$FDT_FDS: $PRG_FDS $FDFS_FDS
+$FDT_FDS: $BINS_FDS $FDFS_FDS
 	rc -c '{$FDTC $FDFS_FDS <$DEF_FDS; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
 
-smmain1.bin: $PRG_FDS
+$BIN_SMMAIN1: $PRG_FDS
 	dd -if $prereq -bs 1 -count 16384 -skip 0 >$target
 
-smmain2.bin: $PRG_FDS
+$BIN_SMMAIN2: $PRG_FDS
 	dd -if $prereq -bs 1 -count 16384 -skip 16384 >$target
 
-$PRG_FDS: $OBJS_FDS
+$BINS_FDS: $OBJS_FDS
 	$LD_TGT $prereq $LDFLAGS_FDS
 
 $SMB2: $HEADER_FDS $FDT_SMB2
 	cat $prereq >$target
 
-$FDT_SMB2: $PRG_SMB2_MAIN $FDFS_SMB2
+$FDT_SMB2: $BINS_SMB2 $FDFS_SMB2
 	rc -c '{$FDTC $FDFS_SMB2 <$DEF_SMB2; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
 
-$PRG_SMB2_MAIN: $OBJS_SMB2
+$BINS_SMB2: $OBJS_SMB2
 	$LD_TGT $prereq $LDFLAGS_SMB2
 
 $ANN: $HEADER_FDS $FDT_ANN
