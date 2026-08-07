@@ -2,7 +2,6 @@ MEMORY {
 	RAM1:	 start = $0000, size $0100, file = "";
 	STACK:	 start = $0100, size $0100, file = "";
 	RAM2:	 start = $0200, size $0600, file = "";
-	KYODAKU: start = $2800, size $00E0,                          file = "kyodaku_.bin";
 	CHR0:	 start = $0000, size $2000, fill = yes, fillval $FF, file = "sm2char1.bin";
 	CHR1:	 start = $0760, size $0040, fill = yes, fillval $FF, file = "sm2char2.bin";
 	ROM1:	 start = $6000, size $7FFA, fill = yes, fillval $FF, file = "sm2main.bin";
@@ -16,7 +15,6 @@ MEMORY {
 SEGMENTS {
 	ZEROPAGE:	load = RAM1,    type = bss, define = yes;
 	BSS:		load = RAM2,    type = bss;
-	KYODAKUDATA:	load = KYODAKU, type = ro;
 	CHR0DATA:	load = CHR0,    type = ro;
 	CHR1DATA:	load = CHR1,    type = ro;
 	DATA2:		load = DATA2,   type = rw;

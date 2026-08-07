@@ -35,6 +35,7 @@ LDFLAGS_VS	=	-C link.vs.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
+LDFLAGS_SECURITY =	-C link.kyodaku.ld
 CHECK		=	rc ./tools/check.rc
 BINTOFDF	=	rc ./tools/bintofdf.rc
 FDTC		=	rc ./tools/fdtc.rc
@@ -368,7 +369,7 @@ ENDING_OBJS	=	src/game/ending.o
 LIFEDOWN_EXT_OBJS =	src/game/lifedown_ext_init.o
 
 BIN_SECURITY	=	kyodaku_.bin
-SECURITY_OBJS	=	data/security.o
+OBJS_SECURITY	=	data/security.o
 
 SAVE_VS_OBJS	=	data/save.vs.o
 
@@ -465,14 +466,12 @@ PRG_OBJS_FDS	=	$BASE_OBJS \
 CHR_OBJS_FDS	=	$CHR_BASE_OBJS \
 			$TITLE_MAP_OBJS
 
-BINS_FDS	=	$BIN_SECURITY \
-			$CHR_FDS \
+BINS_FDS	=	$CHR_FDS \
 			$BIN_SMMAIN1 \
 			$BIN_SMMAIN2
 
 OBJS_FDS	=	$PRG_OBJS_FDS \
-			$CHR_OBJS_FDS \
-			$SECURITY_OBJS
+			$CHR_OBJS_FDS
 
 FDFS_FDS	=	kyodaku_.fdf \
 			smchar.fds.fdf \
@@ -522,7 +521,6 @@ PRG_OBJS_SMB2	=	$BASE_OBJS \
 			$PIPE_FLIPPED_EXT_OBJS \
 			$WIND_EXT_OBJS \
 			$COURSE_DATA_EXT_OBJS \
-			$SECURITY_OBJS \
 			$SAVE_FDS_OBJS
 
 CHR_OBJS_SMB2	=	$CHR_BASE_OBJS \
@@ -531,8 +529,7 @@ CHR_OBJS_SMB2	=	$CHR_BASE_OBJS \
 OBJS_SMB2	=	$PRG_OBJS_SMB2 \
 			$CHR_OBJS_SMB2
 
-BINS_SMB2	=	$BIN_SECURITY \
-			sm2char1.bin \
+BINS_SMB2	=	sm2char1.bin \
 			sm2char2.bin \
 			$PRG_SMB2_MAIN \
 			$PRG_SMB2_DATA2 \
@@ -593,7 +590,6 @@ PRG_OBJS_ANN	=	$BASE_OBJS \
 			$PIPE_FLIPPED_EXT_OBJS \
 			$HARD_MODE_SPRING_EXT_OBJS \
 			$COURSE_DATA_EXT_OBJS \
-			$SECURITY_OBJS \
 			$SAVE_FDS_OBJS
 
 CHR_OBJS_ANN	=	$CHR_BASE_OBJS \
@@ -631,7 +627,8 @@ OBJS		=	$OBJS_FC \
 			$OBJS_VS \
 			$OBJS_FDS \
 			$OBJS_SMB2 \
-			$OBJS_ANN
+			$OBJS_ANN \
+			$OBJS_SECURITY
 
 HEADERS		=	$HEADER_FC \
 			$HEADER_VS \
@@ -694,7 +691,7 @@ $VS: $HEADER_VS $OBJS_VS
 $FDS: $HEADER_FDS $FDT_FDS
 	cat $prereq >$target
 
-$FDT_FDS: $BINS_FDS $FDFS_FDS
+$FDT_FDS: $BINS_FDS $BIN_SECURITY $FDFS_FDS
 	rc -c '{$FDTC $FDFS_FDS <$DEF_FDS; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
 
 $BIN_SMMAIN1: $PRG_FDS
@@ -709,7 +706,7 @@ $BINS_FDS: $OBJS_FDS
 $SMB2: $HEADER_FDS $FDT_SMB2
 	cat $prereq >$target
 
-$FDT_SMB2: $BINS_SMB2 $FDFS_SMB2
+$FDT_SMB2: $BINS_SMB2 $BIN_SECURITY  $FDFS_SMB2
 	rc -c '{$FDTC $FDFS_SMB2 <$DEF_SMB2; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
 
 $BINS_SMB2: $OBJS_SMB2
@@ -723,6 +720,9 @@ $FDT_ANN: $PRG_ANN_MAIN $FDFS_ANN
 
 $PRG_ANN_MAIN: $OBJS_ANN
 	$LD_TGT $prereq $LDFLAGS_ANN
+
+$BIN_SECURITY: $OBJS_SECURITY
+	$LD_TGT $prereq $LDFLAGS_SECURITY
 
 %.o: %.s
 	$AS_TGT $APPFLAGS_TGT $ASFLAGS_TGT -o $stem.o $stem.s

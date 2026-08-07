@@ -35,6 +35,7 @@ LDFLAGS_VS	=	-C link.vs.ld
 LDFLAGS_FDS	=	-C link.fds_smb.ld
 LDFLAGS_SMB2	=	-C link.fds_smb2.ld
 LDFLAGS_ANN	=	-C link.fds_ann.ld
+LDFLAGS_SECURITY =	-C link.kyodaku.ld
 CHECK		=	sh tools/check.sh
 BINTOFDF	=	sh tools/bintofdf.sh
 FDTC		=	sh tools/fdtc.sh
@@ -365,7 +366,8 @@ ENDING_OBJS	=	src/game/ending.o
 
 LIFEDOWN_EXT_OBJS =	src/game/lifedown_ext_init.o
 
-SECURITY_OBJS	=	data/security.o
+BIN_SECURITY	=	kyodaku_.bin
+OBJS_SECURITY	=	data/security.o
 
 SAVE_VS_OBJS	=	data/save.vs.o
 
@@ -463,8 +465,7 @@ CHR_OBJS_FDS	=	$(CHR_BASE_OBJS) \
 			$(TITLE_MAP_OBJS)
 
 OBJS_FDS	=	$(PRG_OBJS_FDS) \
-			$(CHR_OBJS_FDS) \
-			$(SECURITY_OBJS)
+			$(CHR_OBJS_FDS)
 
 FDFS_FDS	=	kyodaku_.fdf \
 			smchar.fds.fdf \
@@ -514,7 +515,6 @@ PRG_OBJS_SMB2	=	$(BASE_OBJS) \
 			$(PIPE_FLIPPED_EXT_OBJS) \
 			$(WIND_EXT_OBJS) \
 			$(COURSE_DATA_EXT_OBJS) \
-			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)
 
 CHR_OBJS_SMB2	=	$(CHR_BASE_OBJS) \
@@ -576,7 +576,6 @@ PRG_OBJS_ANN	=	$(BASE_OBJS) \
 			$(PIPE_FLIPPED_EXT_OBJS) \
 			$(HARD_MODE_SPRING_EXT_OBJS) \
 			$(COURSE_DATA_EXT_OBJS) \
-			$(SECURITY_OBJS) \
 			$(SAVE_FDS_OBJS)
 
 CHR_OBJS_ANN	=	$(CHR_BASE_OBJS) \
@@ -614,7 +613,8 @@ OBJS		=	$(OBJS_FC) \
 			$(OBJS_VS) \
 			$(OBJS_FDS) \
 			$(OBJS_SMB2) \
-			$(OBJS_ANN)
+			$(OBJS_ANN) \
+			$(OBJS_SECURITY)
 
 HEADERS		=	$(HEADER_FC) \
 			$(HEADER_VS) \
@@ -711,6 +711,9 @@ $(FDT_ANN): $(PRG_ANN_MAIN) $(FDFS_ANN)
 
 $(PRG_ANN_MAIN): $(OBJS_ANN)
 	$(LD_TGT) $^ $(LDFLAGS_ANN)
+
+$(BIN_SECURITY): $(OBJS_SECURITY)
+	$(LD_TGT) $^ $(LDFLAGS_SECURITY)
 
 .s.o:
 	$(AS_TGT) $(APPFLAGS_TGT) $(ASFLAGS_TGT) -o $@ $<
