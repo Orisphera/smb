@@ -290,3 +290,4 @@ while (!{~ $I $TILES}) {
 	J=`{echo $J+1 | bc}
 }
 
+exit 0
