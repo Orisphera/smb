@@ -1,0 +1,41 @@
+#!/bin/rc
+
+# dd positions of banks in FDS image
+# security - skip=91    count=224
+# CHR      - skip=332   count=8192
+# PRG low  - skip=8558  count=16384
+# PRG high - skip=24942 count=16384
+
+if (~ $#INFILE 0) {
+	INFILE=/dev/zero
+}
+
+# Directory structure
+mkdir -p data/chr.smb
+
+# CHR Common
+TILE_SIZE=16
+BG_BANK=256
+
+# SMCHAR
+BANKBASE=332
+BANKLEN=7872
+TILES=`{echo $BANKLEN/$TILE_SIZE | bc}
+
+I=0
+while (!{~ $I $BG_BANK} && !{~ $I $TILES}) {
+	TILENO=`{echo $I | awk '{ printf "%.2X", $0 }' }
+	TILESKIP=`{echo $I'*'$TILE_SIZE+$BANKBASE | bc}
+	dd -if $INFILE -bs 1 -count $TILE_SIZE -skip $TILESKIP >data/chr.smb/chr_obj_$TILENO.bin
+	I=`{echo $I+1 | bc }
+}
+
+while (!{~ $I $TILES}) {
+	J=`{echo $I-$BG_BANK | bc}
+	TILENO=`{echo $J | awk '{ printf "%.2X", $0 }' }
+	TILESKIP=`{echo $I'*'$TILE_SIZE+$BANKBASE | bc}
+	dd -if $INFILE -bs 1 -count $TILE_SIZE -skip $TILESKIP >data/chr.smb/chr_bg_$TILENO.bin
+	I=`{echo $I+1 | bc}
+}
+
+exit 0

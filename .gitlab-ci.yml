@@ -109,6 +109,23 @@ test_fds:
   script:
     - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1" make check_fds
 
+build_fds_9p:
+  stage: build
+  needs: []
+  script:
+    - export	PATH=/usr/lib/plan9/bin:$PATH
+    - rc ./tools/extract.fds_smb.rc
+    - mk fds 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1'
+  artifacts:
+    untracked: true
+
+test_fds_9p:
+  stage: test
+  needs: ["build_fds_9p"]
+  script:
+    - export	PATH=/usr/lib/plan9/bin:$PATH
+    - mk check_fds 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB -DFDS_SMB -DSMBM -DSMBV1'
+
 build_smb2:
   stage: build
   needs: []
@@ -123,6 +140,23 @@ test_smb2:
   needs: ["build_smb2"]
   script:
     - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB2 -DSMBV2" make check_smb2
+
+build_smb2_9p:
+  stage: build
+  needs: []
+  script:
+    - export	PATH=/usr/lib/plan9/bin:$PATH
+    - rc ./tools/extract.fds_smb2.rc
+    - mk smb2 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB2 -DSMBV2'
+  artifacts:
+    untracked: true
+
+test_smb2_9p:
+  stage: test
+  needs: ["build_smb2_9p"]
+  script:
+    - export	PATH=/usr/lib/plan9/bin:$PATH
+    - mk check_smb2 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFDS -DCONS -DSMB2 -DSMBV2'
 
 build_ann:
   stage: build
