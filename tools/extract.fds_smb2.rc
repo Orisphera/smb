@@ -198,3 +198,5 @@ while (!{~ $J $BG_BANK} && !{~ $I $TILES}) {
 	I=`{echo $I+1 | bc}
 	J=`{echo $J+1 | bc}
 }
+
+exit 0
