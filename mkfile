@@ -600,6 +600,14 @@ CHR_OBJS_ANN	=	$CHR_BASE_OBJS \
 OBJS_ANN	=	$PRG_OBJS_ANN \
 			$CHR_OBJS_ANN
 
+BINS_ANN	=	nsmchar1.bin \
+			nsmchar2.bin \
+			$PRG_ANN_MAIN \
+			$PRG_ANN_DATA2 \
+			$PRG_ANN_DATA3 \
+			$PRG_ANN_DATA4 \
+			nsmsave.bin
+
 FDFS_ANN	=	kyodaku_.fdf \
 			nsmchar1.fdf \
 			nsmchar2.fdf \
@@ -720,10 +728,10 @@ $BINS_SMB2: $OBJS_SMB2
 $ANN: $HEADER_FDS $FDT_ANN
 	cat $prereq >$target
 
-$FDT_ANN: $PRG_ANN_MAIN $FDFS_ANN
+$FDT_ANN: $BINS_ANN $FDFS_ANN
 	rc -c '{$FDTC $FDFS_ANN <$DEF_ANN; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
 
-$PRG_ANN_MAIN: $OBJS_ANN
+$BINS_ANN: $OBJS_ANN
 	$LD_TGT $prereq $LDFLAGS_ANN
 
 $BIN_SECURITY: $OBJS_SECURITY
