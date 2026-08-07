@@ -705,7 +705,7 @@ $BINS_FDS: $OBJS_FDS
 $SMB2: $HEADER_FDS $FDT_SMB2
 	cat $prereq >$target
 
-$FDT_SMB2: $BINS_SMB2 $BIN_SECURITY  $FDFS_SMB2
+$FDT_SMB2: $BINS_SMB2 $BIN_SECURITY $FDFS_SMB2
 	rc -c '{$FDTC $FDFS_SMB2 <$DEF_SMB2; cat /dev/zero} | dd -of $target -bs 1 -count 65500' || echo pipe closed
 
 $BINS_SMB2: $OBJS_SMB2

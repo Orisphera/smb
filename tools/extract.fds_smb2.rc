@@ -18,7 +18,7 @@ CHR_PATH_BASE="chr.smb"
 CHR_PATH_VS="chr.vs"
 CHR_PATH_SMB2="chr.smb2"
 
-mkdir -p data/chr2.smb2 data/${CHR_PATH_BASE} data/${CHR_PATH_SMB2} data/${CHR_PATH_VS} 
+mkdir -p data/chr2.smb2 data/$CHR_PATH_BASE data/$CHR_PATH_SMB2 data/$CHR_PATH_VS
 
 # CHR Common
 TILE_SIZE=16
