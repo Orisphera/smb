@@ -267,6 +267,7 @@ BANKBASE=38668
 BANKLEN=384
 TILES=`{echo $BANKLEN/$TILE_SIZE | bc}
 
+I=0
 while (!{~ $I $TILES}) {
 	TILENO=`{echo $I | awk '{ printf "%.2X", $0 }' }
 	TILESKIP=`{echo $I'*'$TILE_SIZE+$BANKBASE | bc}
