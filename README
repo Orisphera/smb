@@ -16,8 +16,8 @@ particular engine for Nintendo's 6502-based 8-bit platforms.
 
 The utilities required to compile the FDS image are included
 as a submodule of this repository.
-Otherwise this repository should build on UNIX-like platforms
-using the cc65 6502 development suite.
+Otherwise this repository should build on UNIX-like 
+and Plan9 platforms using the cc65 6502 development suite.
 
 Throughout the disassembly, preprocessor directives are
 used to section off code that differs between these

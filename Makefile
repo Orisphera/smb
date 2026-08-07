@@ -28,7 +28,7 @@ ASFLAGS_SMB2	=	-DFDS -DCONS -DSMB2 -DSMBV2
 ASFLAGS_ANN	=	-DFDS -DCONS -DANN -DSMBM -DSMBV2
 ASFLAGS_PAL	=	-DPAL
 ASFLAGS_HACKS	=	-DOG_PAD -DOG_FALL
-ASFLAGS_TGT	?=	$(ASFLAGS_HACKS) $(ASFLAGS_VS)
+ASFLAGS_TGT	?=	$(ASFLAGS_HACKS) $(ASFLAGS_FC)
 LD_TGT		=	ld65
 LDFLAGS_FC	=	-C link.fc_smb.ld
 LDFLAGS_VS	=	-C link.vs.ld
@@ -86,11 +86,14 @@ CHR_SMB2	=	sm2char1.bin \
 			sm2char2.bin
 
 PRG_ANN_MAIN	=	nsmmain.bin
+PRG_ANN_DATA2	=	nsmdata2.bin
+PRG_ANN_DATA3	=	nsmdata3.bin
+PRG_ANN_DATA4	=	nsmdata4.bin
 
 PRG_ANN		=	$(PRG_ANN_MAIN) \
-			nsmdata2.bin \
-			nsmdata3.bin \
-			nsmdata4.bin \
+			$(PRG_ANN_DATA2) \
+			$(PRG_ANN_DATA3) \
+			$(PRG_ANN_DATA4) \
 			nsmsave.bin
 
 CHR_ANN		=	nsmchar1.bin \
@@ -668,6 +671,9 @@ check_smb2: $(PRG_SMB2_MAIN)
 
 check_ann: $(PRG_ANN_MAIN)
 	$(CHECK) $(PRG_ANN_MAIN) $(CKSUM_NSMMAIN)
+	$(CHECK) $(PRG_ANN_DATA2) $(CKSUM_NSMDATA2)
+	$(CHECK) $(PRG_ANN_DATA3) $(CKSUM_NSMDATA3)
+	$(CHECK) $(PRG_ANN_DATA4) $(CKSUM_NSMDATA4)
 
 $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD_TGT) $(OBJS_FC) $(LDFLAGS_FC)
