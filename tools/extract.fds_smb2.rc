@@ -44,13 +44,13 @@ TILE_MUSH_SE=255
 I=0
 while (!{~ $I $BG_BANK} && !{~ $I $TILES}) {
 	CHR_PATH=$CHR_PATH_BASE
-	if ({test $I -eq $TILE_PLAT} || {test $I -eq $TILE_BLOCK_LEFT} || {test $I -eq $TILE_BLOCK_RIGHT}) {
+	if ({~ $I $TILE_PLAT} || {~ $I $TILE_BLOCK_LEFT} || {~ $I $TILE_BLOCK_RIGHT}) {
 		CHR_PATH=$CHR_PATH_SMB2
         }
-	if not if ({test $I -eq $TILE_MUSH_NW} || {test $I -eq $TILE_MUSH_NE} || {test $I -eq $TILE_MUSH_SW}) {
+	if not if ({~ $I $TILE_MUSH_NW} || {~ $I $TILE_MUSH_NE} || {~ $I $TILE_MUSH_SW}) {
 		CHR_PATH=$CHR_PATH_SMB2
         }
-	if not if ({test $I -eq $TILE_MUSH_SE} || {test $I -eq $TILE_ONEUP_LEFT} || {test $I -eq $TILE_ONEUP_RIGHT}) {
+	if not if ({~ $I $TILE_MUSH_SE} || {~ $I $TILE_ONEUP_LEFT} || {~ $I $TILE_ONEUP_RIGHT}) {
 		CHR_PATH=$CHR_PATH_SMB2
         }
 	if not if ({test $I -ge $TILE_NEW_A_FIRST} && {test $I -le $TILE_NEW_A_LAST}) {
@@ -141,7 +141,7 @@ while (!{~ $I $TILES}) {
 	if not if ({test $J -ge $BG_SMB2_A_FIRST} && {test $J -le $BG_SMB2_A_LAST}) {
 		CHR_PATH=$CHR_PATH_SMB2
 	}
-	if not if ({test $J -eq $BRICK_SMB2_A} || {test $J -eq $BRICK_SMB2_B} || {test $J -eq $BRICK_SMB2_C} || {test $J -eq $BRICK_SMB2_D} || {test $J -eq $BRICK_SMB2_E} || {test $J -eq $BRICK_SMB2_F} || {test $J -eq $COPYRIGHT_SMB2}) {
+	if not if ({~ $J $BRICK_SMB2_A} || {~ $J $BRICK_SMB2_B} || {~ $J $BRICK_SMB2_C} || {~ $J $BRICK_SMB2_D} || {~ $J $BRICK_SMB2_E} || {~ $J $BRICK_SMB2_F} || {~ $J $COPYRIGHT_SMB2}) {
 		CHR_PATH=$CHR_PATH_SMB2
         }
 	if not if ({test $J -ge $TREE_LEFT_SMB2_FIRST} && {test $J -le $TREE_LEFT_SMB2_LAST}) {
