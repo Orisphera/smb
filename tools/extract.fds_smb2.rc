@@ -141,7 +141,7 @@ while (!{~ $I $TILES}) {
 	if ({test $J -ge $BG_SMB2_A_FIRST} && {test $J -le $BG_SMB2_A_LAST}) {
 		CHR_PATH=$CHR_PATH_SMB2
 	}
-	if ({test $J -eq $BRICK_SMB2_A} || {test $J -eq $BRICK_SMB2_B} || {test $J -eq $BRICK_SMB2_C} || {test $J -eq $BRICK_SMB2_D} || {test $J -eq $BRICK_SMB2_E} || test {$J -eq $BRICK_SMB2_F} || test {$J -eq $COPYRIGHT_SMB2}) {
+	if ({test $J -eq $BRICK_SMB2_A} || {test $J -eq $BRICK_SMB2_B} || {test $J -eq $BRICK_SMB2_C} || {test $J -eq $BRICK_SMB2_D} || {test $J -eq $BRICK_SMB2_E} || {test $J -eq $BRICK_SMB2_F} || {test $J -eq $COPYRIGHT_SMB2}) {
 		CHR_PATH=$CHR_PATH_SMB2
         }
 	if ({test $J -ge $TREE_LEFT_SMB2_FIRST} && {test $J -le $TREE_LEFT_SMB2_LAST}) {
