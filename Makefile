@@ -41,7 +41,6 @@ BINTOFDF	=	sh tools/bintofdf.sh
 FDTC		=	sh tools/fdtc.sh
 
 FC		= 	smb.nes
-PAL		=	smb.nes
 VS		=	smb.vs
 FDS		=	smb.fds
 SMB2		=	smb2.fds
@@ -639,7 +638,7 @@ all: base
 
 base: $(FC)
 
-pal: $(PAL)
+pal: $(FC)
 
 vs: $(VS)
 
@@ -654,7 +653,7 @@ check: check_base
 check_base: $(FC)
 	$(CHECK) $(FC) $(CKSUM_FC)
 
-check_pal: $(PAL)
+check_pal: $(FC)
 	$(CHECK) $(FC) $(CKSUM_FC)
 
 check_vs: $(VS)
@@ -678,8 +677,6 @@ check_ann: $(PRG_ANN_MAIN)
 $(FC): $(HEADER_FC) $(OBJS_FC)
 	$(LD_TGT) $(OBJS_FC) $(LDFLAGS_FC)
 	cat $(HEADER_FC) $(ROMS_FC) > $@
-
-$(PAL): $(FC)
 
 $(VS): $(HEADER_VS) $(OBJS_VS)
 	$(LD_TGT) $(OBJS_VS) $(LDFLAGS_VS)
