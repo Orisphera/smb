@@ -5,7 +5,10 @@ CHECKSUM_REF=$2
 
 CHECKSUM_FILE=`{sum $FILE_REF | awk '{ print $1 }'}
 
-if (!{~ $CHECKSUM_FILE $CHECKSUM_REF})
+if (!{~ $CHECKSUM_FILE $CHECKSUM_REF}) {
 	echo 'CRC mismatch for '$FILE_REF
-
-exit 0
+	exit 1
+}
+if not {
+	exit 0
+}
