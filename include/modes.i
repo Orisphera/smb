@@ -4,10 +4,10 @@ MODES_I = 1
 .include	"sys/cpu.i"
 
 	.enum	system_modes
-		.if	.defined(SMBV1)
-			title		= <((sys_enter_title-sys_enter_tbl)/WORD_SIZE)
-		.elseif	.defined(SMBV2)
+		.if	.defined(SMBV2)
 			disk_loader	= <((sys_enter_disk_loader-sys_enter_tbl)/WORD_SIZE)
+		.else
+			title		= <((sys_enter_title-sys_enter_tbl)/WORD_SIZE)
 		.endif
 
 		.if	.defined(VS_SMB)

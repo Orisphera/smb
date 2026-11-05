@@ -110,14 +110,6 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		.endif
 	.endenum
 
-	.enum	victory_mode
-		bridge
-		init
-		proc
-		msg
-		end
-	.endenum
-
 	.enum	player_procs
 		init
 		vine

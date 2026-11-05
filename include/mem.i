@@ -50,13 +50,13 @@ disp_dir_player		= state_misc_end
 disp_dir_player_end	= disp_dir_player+PLAYER_COUNT_MAX
 rot_dir_actor		= disp_dir_player_end
 rot_dir_actor_end	= rot_dir_actor+ACTOR_COUNT_MAX
+actor_powerup_type	= rot_dir_actor_end-1
 proj_bounce_flag	= rot_dir_actor_end
 timer_hammer_bro_jump	= proj_bounce_flag+PROJ_COUNT_MAX
 timer_hammer_bro_jump_end = timer_hammer_bro_jump+ACTOR_COUNT_MAX
 ; ----------------
 pos_x_hi_victory_right	= rot_dir_actor
 victory_proc_ctrl	= pos_x_hi_victory_right+1
-actor_powerup_type	= rot_dir_actor_end-1
 ; ----------------
 unused_42		= timer_hammer_bro_jump_end
 unused_43		= unused_42+1
