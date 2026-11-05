@@ -107,7 +107,7 @@ PULSE2_TIMER	.set	$4006
 PULSE2_COUNTER	.set	$4007
 
 ; Chromatic Scale [1](11.1.f)(p. 7)
-	.ifndef	PAL
+	.ifndef	PAL_APU
 		.enum	apu_chromatic_scale
 			A1	= $7F2
 			Ax1	= $780
