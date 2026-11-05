@@ -3,6 +3,8 @@ MISC_I = 1
 
 .include	"sys/cpu.i"
 
+.include	"sound.i"
+
 METATILE_SIZE	= 4
 
 	.enum	proc_id_actors
@@ -40,10 +42,13 @@ BLOCK_STATE_PROC_MASK	= %00001111
 		exploded	= 128
 	.endenum
 
-SCORE_PROJ_GOOMBA	= scores::value_100
-SCORE_PROJ_ENEMY_OTHER	= scores::value_200
-SCORE_PROJ_HAMMER_BRO	= scores::value_1000
-SCORE_PROJ_BOWSER	= scores::value_5000
+STAR_TIMER	= 35
+
+.if	.defined(SMB)|.defined(SMBV2)
+	STAR_MUSIC	= music_base::super_star
+.elseif	.defined(VS_SMB)
+	STAR_MUSIC	= music_base::clouds
+.endif
 
 MISC_MODE_HIGH_BIT		= %10000000
 
@@ -144,6 +149,12 @@ COL_BOX_SIZE	= 4
 		value_8000	= <(bg_score_value_8000-bg_score_disp_incs)
 		value_oneup	= <(bg_score_value_oneup-bg_score_disp_incs)
 	.endenum
+
+SCORE_PROJ_GOOMBA	= scores::value_100
+SCORE_PROJ_ENEMY_OTHER	= scores::value_200
+SCORE_PROJ_HAMMER_BRO	= scores::value_1000
+SCORE_PROJ_BOWSER	= scores::value_5000
+SCORE_POWERUP		= scores::value_1000
 
 	.enum	bg_procs
 		init

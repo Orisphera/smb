@@ -58,7 +58,7 @@ bg_color_init_1:
 	lda	player_status
 	pha
 
-	lda	#0
+	lda	#player_statuses::power_none
 	sta	player_status
 	lda	#COURSE_SCENERY_BG_COL_NIGHT_SNOW_VAL
 	sta	course_bg_col
@@ -141,8 +141,8 @@ bg_color_player:
 		: ; }
 	.endif
 	lda	player_status
-	cmp	#2
-	bne	:+ ; if (player_status == 2) {
+	cmp	#player_statuses::power_firefl
+	bne	:+ ; if (player_status == power_firefl) {
 		ldy	#(bg_color_player_power-bg_color_player_data)
 	: ; }
 	lda	#PPU_COLOR_LINE_SIZE-1

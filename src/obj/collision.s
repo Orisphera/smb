@@ -267,15 +267,7 @@ col_player_hammer_proc:
 
 	rts
 ; ----------------------------------------------------------------------
-SCORE_POWERUP	= scores::value_1000
-STAR_TIMER	= 35
-
-.if	.defined(SMB)|.defined(SMBV2)
-	STAR_MUSIC	= music_base::super_star
-.elseif	.defined(VS_SMB)
-	STAR_MUSIC	= music_base::clouds
-.endif
-; ----------------------------------------------------------------------
+; col_player_powerup_proc - player x powerup collision
 col_player_powerup_proc:
 	jsr	actor_erase
 
@@ -289,8 +281,10 @@ col_player_powerup_proc:
 
 	lda	#SCORE_POWERUP
 	jsr	col_score_do
+
 	lda	#sfx_pulse_2::powerup
 	sta	apu_sfx_pulse_2_req
+
 	lda	actor_powerup_type
 	cmp	#powerup_type::star
 	bcc	:+
@@ -309,7 +303,9 @@ col_player_powerup_proc:
 			ldx	actor_index
 			lda	#player_statuses::power_firefl
 			sta	player_status
+
 			jsr	bg_color_player
+
 			ldx	actor_index
 			lda	#player_procs::firefl
 			jmp	:+++
@@ -318,15 +314,13 @@ col_player_powerup_proc:
 		lda	#scores::value_oneup
 		sta	bg_score_ctl, x
 		rts
-	; }
-; ----------------------------------
-	: ; if (player.status != power_mushroom) {
-		; if (player.status == power_none) {
-			lda	#player_statuses::power_mushroom
-			sta	player_status
-			lda	#player_procs::size_chg
-		: ; }
-
+	: ; } else if (powerup.type == mushroom && player.status == power_none) {
+		lda	#player_statuses::power_mushroom
+		sta	player_status
+		lda	#player_procs::size_chg
+	: ; }
+	
+	; if (powerup.type.in(mushroom, firefl)) {
 		ldy	#0
 		jsr	col_player_harm_proc_proc_change
 	: ; }
@@ -520,7 +514,7 @@ col_player_harm_proc:
 col_player_harm_proc_do:
 	ldx	player_status
 	beq	:++ ; if (player.timer_injury == 0) {
-		; if (player.status != 0) {
+		; if (player.status != power_none) {
 			sta	player_status
 			lda	#(sfx_pulse_1::pipe_entry_16)>>1
 			sta	timer_player_injury
@@ -530,7 +524,9 @@ col_player_harm_proc_do:
 				lda	#sfx_pulse_1::pipe_entry_16
 			.endif
 			sta	apu_sfx_pulse_1_req
+
 			jsr	bg_color_player
+
 			lda	#player_procs::hurt
 		: ; }
 
