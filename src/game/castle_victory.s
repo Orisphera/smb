@@ -989,7 +989,7 @@ bg_score_disp:
 	cmp	#actor::div_height
 	bcs	:+
 	lda	state_actor, x
-	cmp	#actor_states::state_2
+	cmp	#actor_states::acting
 	bcs	:++
 	: ; if (actor.id == hammer_bro || actor.id >= div_height || actor.state < 2) {
 		ldx	block_id

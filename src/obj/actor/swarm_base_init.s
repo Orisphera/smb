@@ -40,7 +40,7 @@ actor_B_03_init:
 		lda	obj_id_actor, y
 		cmp	#actor::lakitu
 		bne	:+ ; if (actor.id == lakitu) {
-			lda	#actor_states::state_1
+			lda	#actor_states::descending
 			sta	state_actor, y
 		: ; }
 	

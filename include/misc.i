@@ -37,8 +37,13 @@ BLOCK_STATE_PROC_MASK	= %00001111
 		state_3
 		state_mask	= 7
 
-		bit_7	= 128
+		exploded	= 128
 	.endenum
+
+SCORE_PROJ_GOOMBA	= scores::value_100
+SCORE_PROJ_ENEMY_OTHER	= scores::value_200
+SCORE_PROJ_HAMMER_BRO	= scores::value_1000
+SCORE_PROJ_BOWSER	= scores::value_5000
 
 MISC_MODE_HIGH_BIT		= %10000000
 
@@ -47,17 +52,17 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 
 	.enum	actor_states
 		init
-		state_1
-		state_2
-		state_3
-		state_4
-		state_5
-		state_6
+		descending
+		acting
+		stopped
+		timing
+		dropped
+		state_end
 		state_mask = 7
 
 		bit_3	= 8
 		bit_4	= 16
-		bit_5	= 32
+		dying	= 32
 
 		falling	= 64
 		spawned	= 128
@@ -377,8 +382,12 @@ COL_BOX_SIZE	= 4
 		no_06
 		no_07
 		no_08
+
+	.if	.defined(SMB2)
 		no_09
-		no_0A
+	.endif	; SMB2
+
+		count
 	.endenum
 
 	.enum	course_types

@@ -29,6 +29,11 @@ render_chr_pair_color_mod_2 	= zp_byte_03
 render_chr_pair_attr		= zp_byte_04
 render_chr_pair_pos_x		= zp_byte_05
 
+col_bg_proc_player_halt_dir	= zp_byte_00
+col_proj_actor_proc_index	= zp_byte_01
+col_buffer_ptr_idx		= zp_byte_02
+col_box_buffer_tbl_offset	= zp_byte_04
+
 meta_clear_put_do_addr		= zp_addr_04
 
 scenery_proc_metatile_id 	= zp_byte_07

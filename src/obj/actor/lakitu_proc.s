@@ -16,7 +16,7 @@ actor_proc_lakitu_data:
 actor_proc_lakitu:
 actor_A_11_proc:
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	beq	:+ ; if (actor.state & 0x20) {
 		jmp	motion_y
 	: ; } else {

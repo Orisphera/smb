@@ -41,7 +41,7 @@ actor_proc_cheep_fly:
 actor_A_14_proc:
 .ifndef	PAL
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	beq	:+ ; if (this.state.bit_5) {
 		lda	#obj_attr::priority_high|obj_attr::color0
 		sta	attr_actor, x
@@ -84,7 +84,7 @@ actor_A_14_proc:
 .else
 	ldy	#CHEEP_FLY_MOTION_Y_B
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	bne	:+ ; if (!this.state.bit_5) {
 		jsr	motion_x
 		ldy	#CHEEP_FLY_MOTION_Y

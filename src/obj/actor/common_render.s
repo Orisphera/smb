@@ -67,7 +67,7 @@ render_actor:
 
 	lda	state_actor, x
 	sta	render_actor_state_prev
-	and	#<~(actor_states::spawned|actor_states::falling|actor_states::bit_5)
+	and	#<~(actor_states::spawned|actor_states::falling|actor_states::dying)
 	tay
 	lda	obj_id_actor, x ; switch (this.id) {
 	cmp	#actor::toad
@@ -92,7 +92,7 @@ render_actor:
 		lda	#actor::bullet_swarm
 	: cmp	#actor::spring
 	bne	:+ ; case "spring":
-		ldy	#actor_states::state_3
+		ldy	#actor_states::stopped
 		ldx	player_on_spring
 		lda	render_actor_spring_ani_ids, x
 	: ; }
@@ -121,13 +121,13 @@ render_actor:
 	cpy	#actor::goomba
 	bne	:++ ; if (this.id == goomba) {
 		lda	state_actor, x
-		cmp	#actor_states::state_2
+		cmp	#actor_states::acting
 		bcc	:+ ; if (this.state >= state_2) {
-			ldx	#actor_states::state_4
+			ldx	#actor_states::timing
 			stx	render_actor_state_next
 		: ; }
 
-		and	#actor_states::bit_5
+		and	#actor_states::dying
 		ora	game_timer_stop
 		bne	:+
 		lda	frame_count
@@ -155,7 +155,7 @@ render_actor:
 			: ; }
 
 			lda	render_actor_state_prev
-			and	#actor_states::bit_5
+			and	#actor_states::dying
 			beq	:++
 		; }
 
@@ -172,7 +172,7 @@ render_actor:
 			: ; }
 
 			lda	render_actor_state_prev
-			and	#actor_states::bit_5
+			and	#actor_states::dying
 			beq	:--- ; if ((this.state & bit_5)) {
 				lda	render_chr_pair_pos_y
 				sec
@@ -185,12 +185,12 @@ render_actor:
 
 	cpx	#<(render_actor_tiles_spiny-render_actor_tile_data)
 	bne	:++ ; if (this.id == spiny) {
-		cpy	#actor_states::state_5
+		cpy	#actor_states::dropped
 		bne	:+ ; if (this.state_next == state_5) {
 			ldx	#<(render_actor_tiles_spiny_egg-render_actor_tile_data)
 			lda	#$02
 			sta	render_chr_pair_color_mod_2
-			lda	#actor_states::state_5
+			lda	#actor_states::dropped
 			sta	render_actor_state_next
 		: ; }
 
@@ -200,7 +200,7 @@ render_actor:
 	cpx	#<(render_actor_tiles_lakitu-render_actor_tile_data)
 	bne	:++ ; if (this.id == lakitu) {
 		lda	render_actor_state_prev
-		and	#actor_states::bit_5
+		and	#actor_states::dying
 		bne	:+
 		lda	timer_swarm
 		cmp	#16
@@ -227,7 +227,7 @@ render_actor:
 	: ; }
 
 	lda	render_actor_state_next
-	cmp	#actor_states::state_4
+	cmp	#actor_states::timing
 	bne	:++ ; if (this.state_next == state_4) {
 		ldx	#<(render_actor_tiles_buzzy_stun_flip-render_actor_tile_data)
 		inc	render_chr_pair_pos_y
@@ -241,7 +241,7 @@ render_actor:
 			ldx	#<(render_actor_tiles_goomba-render_actor_tile_data)
 
 			lda	render_actor_state_prev
-			and	#actor_states::bit_5
+			and	#actor_states::dying
 			bne	:+ ; if (!(this.state & bit_5)) {
 				ldx	#<(render_actor_tiles_goomba_stomped-render_actor_tile_data)
 				dec	render_chr_pair_pos_y
@@ -290,7 +290,7 @@ render_actor_ani_check:
 			iny
 
 			.if	.defined(SMBV2)
-				lda	#actor_states::state_3
+				lda	#actor_states::stopped
 				sta	render_actor_state_next
 			.endif
 
@@ -305,7 +305,7 @@ render_actor_ani_check:
 			ldx	#<(render_actor_tiles_toad-render_actor_tile_data)
 
 			.if	.defined(SMBV1)
-				lda	#actor_states::state_3
+				lda	#actor_states::stopped
 				sta	render_actor_state_next
 			.endif
 
@@ -319,7 +319,7 @@ render_actor_ani_check:
 
 	: ; if () {
 		lda	render_actor_state_prev
-		and	#actor_states::spawned|actor_states::bit_5
+		and	#actor_states::spawned|actor_states::dying
 		ora	game_timer_stop
 		bne	:+ ; if ((this.spawned | this.bit_5) | game_timer_stop) {
 			txa
@@ -336,7 +336,7 @@ render_actor_ani_do:
 		beq	:+
 	.endif
 	lda	render_actor_state_prev
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	beq	:++
 	lda	render_obj_id_actor
 	cmp	#actor::koopa_cutoff
@@ -426,7 +426,7 @@ render_actor_clear_b:
 			beq	:+++
 			cmp	#actor::spiny
 			bne	:+
-			cpx	#actor_states::state_5
+			cpx	#actor_states::dropped
 			bne	:+++++
 			: ; if (this.id.not_in(blooper, piranha_plant, podoboo) && (!SMBV2 || this.id != piranha_plant_b) && (this.id != spiny || this.state_next == state_5)) {
 				cmp	#actor::bowser_flame
@@ -435,7 +435,7 @@ render_actor_clear_b:
 					sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 				: ; }
 
-				cpx	#actor_states::state_2
+				cpx	#actor_states::acting
 				bcc	:+++
 			: ; }
 
@@ -448,7 +448,7 @@ render_actor_clear_b:
 					sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
 					sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 					ora	#obj_attr::h_flip
-					cpx	#actor_states::state_5
+					cpx	#actor_states::dropped
 					bne	:+ ; if (this.state_next == 5) {
 						ora	#obj_attr::v_flip
 					: ; }
@@ -456,7 +456,7 @@ render_actor_clear_b:
 					sta	oam_buffer+(OBJ_SIZE*3)+OBJ_ATTR, y
 					sta	oam_buffer+(OBJ_SIZE*5)+OBJ_ATTR, y
 
-					cpx	#actor_states::state_4
+					cpx	#actor_states::timing
 					bne	:+ ; if (this.state_next == 4) {
 						lda	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
 						ora	#obj_attr::v_flip

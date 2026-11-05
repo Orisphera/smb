@@ -105,7 +105,7 @@ actor_proc_bowser_timer_data:
 actor_proc_bowser:
 actor_B_18_proc:
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	beq	:++
 	lda	pos_y_lo_actor, x
 	cmp	#224

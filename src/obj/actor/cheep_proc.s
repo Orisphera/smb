@@ -27,7 +27,7 @@ actor_proc_cheep:
 actor_A_0A_proc:
 actor_A_0B_proc:
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	beq	:+ ; if (actor.state & 0x20) {
 		jmp	motion_fall_slow
 	: ; } else {

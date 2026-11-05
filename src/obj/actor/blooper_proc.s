@@ -20,7 +20,7 @@ actor_proc_blooper_flip_chance:
 actor_proc_blooper:
 actor_A_07_proc:
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	bne	:++++++ ; if (!(actor.state & 0x20)) {
 		ldy	game_hard_mode_b
 		lda	srand+1, x

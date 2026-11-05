@@ -173,12 +173,6 @@ ppu_displist_page:
 ; ----------------------------------
 .if	.defined(SMBV2)
 	SMBV2_NMI_TIMER_3_19594_MS	= 5720
-
-	.if	.defined(SMB2)
-		SMBV2_COURSE_NO_CUTOFF = course::no_0A
-	.elseif	.defined(ANN)
-		SMBV2_COURSE_NO_CUTOFF = course::no_09
-	.endif
 .endif
 
 nmi_rand_buffer	= zp_byte_00
@@ -402,8 +396,8 @@ nmi_rand:
 			: ; }
 
 			lda	course_no
-			cmp	#SMBV2_COURSE_NO_CUTOFF
-			bcc	:+ ; if (course_no >= cutoff) {
+			cmp	#course::count
+			bcc	:+ ; if (course_no >= max) {
 				jsr	game_over_next_game
 			: ; }
 		.else

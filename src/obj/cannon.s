@@ -109,7 +109,7 @@ cannon_bullet_proc:
 				adc	#40
 				cmp	#80
 				bcc	:++++ ; if ((col_player_bullet_diff_pos_x_rel + 40) >= 80) {
-					lda	#actor_states::state_1
+					lda	#actor_states::descending
 					sta	state_actor, x
 					lda	#BULLET_ANI_TIMER
 					sta	timer_ani_actor, x
@@ -120,7 +120,7 @@ cannon_bullet_proc:
 		: ; }
 
 		lda	state_actor, x
-		and	#actor_states::bit_5
+		and	#actor_states::dying
 		beq	:+ ; if (this.state & bit_5) {
 			jsr	motion_y
 		: ; }

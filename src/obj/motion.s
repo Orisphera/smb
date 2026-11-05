@@ -90,7 +90,7 @@ motion_y_player:
 motion_y:
 	ldy	#$3D
 	lda	state_actor, x
-	cmp	#actor_states::state_5
+	cmp	#actor_states::dropped
 	bne	:+ ; if (this.state == state_05) {
 	motion_y_state_5:
 		ldy	#$20

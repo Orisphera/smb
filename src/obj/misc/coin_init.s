@@ -51,7 +51,7 @@ misc_init_coin:
 	rts
 ; ----------------------------------
 misc_init_coin_block_alloc:
-	ldy	#ENG_MISC_MAX-1
+	ldy	#MISC_COUNT_MAX-1
 	: ; for (obj of misc) {
 		lda	state_misc, y
 		beq	:+
@@ -59,7 +59,7 @@ misc_init_coin_block_alloc:
 		dey
 		cpy	#MISC_COIN_HEAD_SLOTS
 		bne	:- ; if (index == coin_head_end) {
-			ldy	#ENG_MISC_MAX-1
+			ldy	#MISC_COUNT_MAX-1
 		; }
 	: ; }
 	sty	misc_block_id

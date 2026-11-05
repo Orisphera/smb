@@ -52,11 +52,11 @@ actor_proc_flag_victory_tbl_done:
 ; ----------------------------------------------------------------------
 actor_proc_flag_victory_fireworks:
 	.if	.defined(SMBV1)
-		ldy	#actor_states::state_5
+		ldy	#actor_states::dropped
 		lda	stats_time_end-STATS_TIME_LEN+2
 		cmp	#1
 		beq	:+ ; if (game.time.digit_last != 1) {
-			ldy	#actor_states::state_3
+			ldy	#actor_states::stopped
 	
 			cmp	#3
 			beq	:+ ; if (game.time.digit_last != 3) {
@@ -74,7 +74,7 @@ actor_proc_flag_victory_fireworks:
 	        bne     :++
 	        and     #MOD_2
 	        beq     :+ ; if ((game.time.digit_last == player.coin.digit_last) && (game.time.digit_last % 2)) {
-	        	ldy     #actor_states::state_3
+	        	ldy     #actor_states::stopped
 	        	lda     #3
 
 	        	bne     :+++

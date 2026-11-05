@@ -11,7 +11,7 @@ MISC_SCORE_DURATION		= 48
 ; ----------------------------------------------------------------------
 	.export	misc_proc
 misc_proc:
-	ldx	#ENG_MISC_MAX-1
+	ldx	#MISC_COUNT_MAX-1
 	: ; for (obj of misc) {
 		stx	actor_index
 		lda	state_misc, x

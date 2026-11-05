@@ -25,7 +25,7 @@ actor_proc_veloc_x:
 	.export actor_A_05_proc
 actor_A_05_proc:
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	beq	:+ ; if (actor.state_bit_5) {
 		jmp	actor_proc_base_defeated
 	: ; } else {
@@ -63,7 +63,7 @@ actor_proc_hammer_bro_jump_rand	= zp_byte_00
 actor_proc_hammer_bro_jump:
 	lda	state_actor, x
 	and	#actor_states::state_mask
-	cmp	#actor_states::state_1
+	cmp	#actor_states::descending
 	beq	:+++ ; if (actor.state != state_1) {
 		lda	#0
 		sta	actor_proc_hammer_bro_jump_rand
@@ -87,7 +87,7 @@ actor_proc_hammer_bro_jump:
 		sty	veloc_y_actor, x
 	
 		lda	state_actor, x
-		ora	#actor_states::state_1
+		ora	#actor_states::descending
 		sta	state_actor, x
 	
 		lda	actor_proc_hammer_bro_jump_rand
@@ -153,21 +153,21 @@ actor_A_04_proc:
 	asl	a
 	bcs	:++++
 	lda	state_actor, x
-	and	#actor_states::bit_5
+	and	#actor_states::dying
 	bne	actor_proc_base_defeated
 	lda	state_actor, x
 	and	#actor_states::state_mask
 	beq	:++++
-	cmp	#actor_states::state_5
+	cmp	#actor_states::dropped
 	beq	:+
-	cmp	#actor_states::state_3
+	cmp	#actor_states::stopped
 	bcs	:++++++
 	: ; if (this.falling || (!(actor.state & 0xA0) && actor.state.in(1, 2, 5))) {
 		jsr	motion_y
 	; }
 	ldy	#0
 	lda	state_actor, x
-	cmp	#actor_states::state_2
+	cmp	#actor_states::acting
 	beq	:+
 	and	#actor_states::falling
 	beq	:+++
