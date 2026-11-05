@@ -1,7 +1,7 @@
 .ifndef	FDS_I
 FDS_I	= 1
 
-.include	"./cpu.i"
+.include	"sys/cpu.i"
 
 FDS_TIMER_DATA_LO	= $4020
 FDS_TIMER_DATA_HI	= $4021
@@ -11,7 +11,7 @@ FDS_TIMER_CTLR		= $4022
 		irq	= %00000010
 	.endenum
 
-FDS_IO_ENABLE   	= $4023
+FDS_IO_ENABLE		= $4023
 	.enum	fds_io 
 		disk	= %00000001
 		sound	= %00000010
@@ -133,6 +133,8 @@ FDS_SND_WAVE_VOL	= $4089
 
 FDS_SND_ENV_SPD		= $408A
 
+FDS_PRG_RAM		= $6000
+
 ; fdsbios_sleep_short - wait 137 cycles
 fdsbios_sleep_short	= $E149
 
@@ -142,7 +144,7 @@ fdsbios_sleep_short	= $E149
 ; clobbers:
 ;	x - zero
 ;	y - zero
-fdsbios_sleep_ms	= $E150
+fdsbios_sleep_ms	= $E153
 
 ; fdsbios_ppuctlr1_blk - set PPU blanking
 ; clobbers:
@@ -196,9 +198,19 @@ FDS_FILEHEADER_FILEID_IDX = 2
 FDS_FILEHEADER_NAME_IDX	= 3
 FDS_FILEHEADER_ADDR_IDX	= 11
 FDS_FILEHEADER_NAME_SIZE = (FDS_FILEHEADER_ADDR_IDX-FDS_FILEHEADER_NAME_IDX)
+
+	.enum	fds_file_type
+		prg
+		chr
+		bg
+	.endenum
+
 FDS_FILEBLOB_ID		= 4
 
 FDS_VENDOR_NINTENDO	= 1
+FDS_VENDOR_NULL		= $FF
+
+FDS_RELEASE_TYPE_NULL	= $FF
 
 ; fdsbios_file_write - write a file to disk
 ; input:
@@ -222,7 +234,7 @@ FDS_DISKSET_2ADDR	= $FF
 	fdsbios_blocktype_check	= $E68F
 	fdsbios_load_done	= $E778
 
-; fdsbios_ppu_displist_write -
+; fdsbios_ppu_displist_write - write a VRAM BG display list
 ; input:
 ;	(following jsr)
 ;	.addr	
@@ -234,6 +246,8 @@ fdsbios_ppu_inc_load	= $E86A
 
 fdsbios_ppu_buffer_load	= $E8D2
 fdsbios_ppu_buffer_tbl_load = $E8E1
+
+FDSBIOS_PPU_LIST_END	= $FF
 
 ; fdsbios_ppu_px_to_nt - convert pixel coordinates to nt address
 ; input:
@@ -254,9 +268,9 @@ fdsbios_ppu_px_to_nt	= $E97D
 ; clobbers:
 ;	a
 fdsbios_ppu_nt_to_px	= $E997
-fdsbios_ppu_ntaddr	= RAM_BASE+0       
-fdsbios_ppu_y_px	= RAM_BASE+2       
-fdsbios_ppu_x_px	= RAM_BASE+3 
+fdsbios_ppu_ntaddr	= RAM_BASE+0
+fdsbios_ppu_y_px	= RAM_BASE+2
+fdsbios_ppu_x_px	= RAM_BASE+3
 
 ; fdsbios_rand - entropy
 ; input:
@@ -279,6 +293,7 @@ fdsbios_timers_tick	= $E9D3
 
 fdsbios_joypad_read	= $EA1F
 	.enum	fds_joypad_button
+		none	= %00000000
  		right	= %00000001
  		left	= %00000010
  		down	= %00000100
@@ -289,9 +304,35 @@ fdsbios_joypad_read	= $EA1F
  		face_a	= %10000000
  	.endenum
 
+; fdsbios_ppu_fill - PPU VRAM fill
+; input:
+;	a - address (high)
+;	x - CHR ID
+;	y - attribute
+; output:
+;	entropy in shift register
 fdsbios_ppu_fill	= $EA84
 fdsbios_ppu_restore	= $EAEA
 fdsbios_tbljmp		= $EAFD
+
+fdsbios_obj_load	= $EC22
+
+fds_obj_load_buffer		= RAM_BASE+0
+
+fds_obj_load_ptr_state		= $00
+fds_obj_load_ptr_pos_y		= $01
+fds_obj_load_ptr_sub_y		= $02
+fds_obj_load_ptr_pos_x		= $03
+fds_obj_load_ptr_sub_x		= $04
+fds_obj_load_ani_frame		= $05
+fds_obj_load_ptr_chr_list	= $06
+fds_obj_load_ptr_orientation	= $08
+fds_obj_load_ptr_prio_color	= $09
+fds_obj_load_ptr_dims		= $0A
+fds_obj_load_ptr_oam_entry	= $0B
+fds_obj_load_ptr_end		= $0C
+
+FDS_OBJ_ATTR_H_FLIP		= $10
 
 FDS_PPU_CTLR0_B		= $FF
 FDS_PPU_CTLR1_B		= FDS_PPU_CTLR0_B-1
@@ -338,6 +379,7 @@ FDS_RESET_SOFT		= $53
 FDS_RESET_FIRSTBOOT	= $AC
 
 	.enum	fds_errnos
+		none		= $00
 		disk_set	= $01
 		battery		= $02
 		read_only	= $03
