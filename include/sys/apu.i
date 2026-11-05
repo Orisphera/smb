@@ -8,6 +8,7 @@ CHANNEL_PULSE1	.set	0
 CHANNEL_PULSE2	.set	1
 CHANNEL_TRIANGLE .set	2
 CHANNEL_NOISE	.set	3
+CHANNEL_EXT	.set	4
 
 CHANNEL_SIZE	.set	4
 
@@ -15,10 +16,11 @@ CHANNEL_SIZE	.set	4
 CHANNEL_VOL	.set	$4000
 	.enum	channel_vol
 		envelope	= %00000000
+		silent		= %00000000
+		full		= %00001111
 
 		constant_vol	= %00010000
 		counter_halt	= %00100000
-
 
 		duty_bits	= %11000000
 		duty_125	= (0<<6)
@@ -30,7 +32,7 @@ PULSE1_VOL	.set	$4000
 
 ; Sweep Clock Generator [1](11.1.c)(p. 5-6)
 PULSE_SWEEP	.set	$4001
-	.enum   pulse_sweep
+	.enum	pulse_sweep
 		shift_mask	= %00000111
 		shift_0		= 0
 		shift_1		= 1
@@ -65,6 +67,7 @@ PULSE1_TIMER	.set	$4002
 CHANNEL_COUNTER	.set	$4003
 	.enum	channel_counter
 		length_254	= 1<<3
+		length_0	= 0<<3
 		length_2	= 3<<3
 		length_4	= 5<<3
 		length_6	= 7<<3
@@ -226,18 +229,18 @@ PULSE2_COUNTER	.set	$4007
 			; A1	= $7F2
 			; Ax1	= $780
 			; B1	= $714
-			; C2	= $6AE
+			C2	= $62A
 			; Cx2	= $64E
-			; D2	= $5F4
+			D2	= $57F
 			; Dx2	= $59E
-			; E2	= $54D
-			; F2	= $501
+			E2	= $4E4
+			F2	= $49E
 			; Fx2	= $4B9
 			G2	= $41D
 			; Gx2	= $435
 			; A2	= $3F9
 			; Ax2	= $3C0
-			; B2	= $38A
+			B2	= $344
 			C3	= $315
 			; Cx3	= $327
 			D3	= $2BF
@@ -299,7 +302,7 @@ PULSE2_COUNTER	.set	$4007
 			; Ax7	= $01E
 			; B7	= $01C
 			; C8	= $01B
-			; Cx8	= $019
+			Cx8	= $019
 			; D8	= $018
 			; Dx8	= $016
 			; E8	= $015
@@ -325,11 +328,12 @@ PULSE2_COUNTER	.set	$4007
 			; A12	= $001
 			none	= $000
 		.endenum
-	.endif
+	.endif	; PAL_APU
 
 ; Triangle Volume Controls [1](11.2.a)(p. 8)
 TRIANGLE_VOL	.set	$4008
 	.enum	triangle_vol
+		vol_norm	= %00000000
 		volume_bits	= %01111111
 		full		= volume_bits
 
@@ -375,9 +379,43 @@ NOISE_COUNTER	.set	$400F
 
 ; Delta Modulation [1](11.4)(p. 9)
 DMCFLAG		.set	$4010
+	.enum	dmcflag
+		rate_n428_p398
+		rate_n380_p354
+		rate_n340_p316
+		rate_n320_p298
+		rate_n286_p276
+		rate_n254_p236
+		rate_n226_p210
+		rate_n214_p198
+		rate_n190_p176
+		rate_n160_p148
+		rate_n142_p132
+		rate_n128_p118
+		rate_n106_p98
+		rate_n84_p78
+		rate_n72_p66
+		rate_n54_p50
+
+		loop		= %01000000
+		irq		= %10000000
+	.endenum
 
 ; Delta Modulation I/O [1](11.4.c)(p. 9)
 DMCDATA		.set	$4011
+DMCADDR		.set	$4012
+	.macro	m_dmcaddr_emit	src
+		.byte	<((src & $3FFF) >> 6)
+	.endmacro
+DMCADDR_BASE	= $C000
+DMCADDR_MASK	= $C03F
+DMCADDR_CLAMP	= 16
+
+DMCLEN		.set	$4013
+	.macro	m_dmclen_emit	base, len
+		.byte	<((len-base) >> 4)
+	.endmacro
+
 DMCSTATUS	.set	$4015
 	.enum	dmcstatus
 		pulse_1		= %00000001
