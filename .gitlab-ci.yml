@@ -55,7 +55,7 @@ build_pal:
   needs: []
   script:
     - ./tools/extract.fc_smb.sh
-    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL" make pal
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL -DPAL_APU" make pal
   artifacts:
     untracked: true
 
@@ -63,7 +63,7 @@ test_pal:
   stage: test
   needs: ["build_pal"]
   script:
-    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL" CKSUM_FC=$CKSUM_FC_PAL_ZERO make check_pal
+    - ASFLAGS_TGT="-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL -DPAL_APU" CKSUM_FC=$CKSUM_FC_PAL_ZERO make check_pal
 
 build_pal_9p:
   stage: build
@@ -71,7 +71,7 @@ build_pal_9p:
   script:
     - export	PATH=/usr/lib/plan9/bin:$PATH
     - rc ./tools/extract.fc_smb.rc
-    - mk base 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL'
+    - mk base 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL -DPAL_APU'
   artifacts:
     untracked: true
 
@@ -80,7 +80,7 @@ test_pal_9p:
   needs: ["build_pal_9p"]
   script:
     - export	PATH=/usr/lib/plan9/bin:$PATH
-    - mk check_base 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL' 'CKSUM_FC=$CKSUM_FC_PAL_9P_ZERO'
+    - mk check_base 'ASFLAGS_TGT=-DOG_PAD -DOG_FALL -DFC -DCONS -DSMB -DFC_SMB -DSMBM -DSMBV1 -DPAL -DPAL_APU' 'CKSUM_FC=$CKSUM_FC_PAL_9P_ZERO'
 
 build_vs:
   stage: build
