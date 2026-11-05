@@ -2,6 +2,7 @@
 .include	"sys/vs.i"
 
 .include	"mem.i"
+.include	"misc.i"
 .include	"chr.i"
 .include	"charmap.i"
 .include	"joypad.i"

@@ -1,5 +1,6 @@
 .include	"joypad.i"
 .include	"mem.i"
+.include	"misc.i"
 .include	"const.i"
 
 TIMER_SPRING_CONTINUE	= 4

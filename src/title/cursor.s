@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"misc.i"
 .include	"const.i"
 .include	"chr.i"
 .include	"charmap.i"
