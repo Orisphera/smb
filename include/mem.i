@@ -26,7 +26,8 @@ joypad_u_d		= joypad_a_b+1
 joypad_l_r		= joypad_u_d+1
 joypad_a_b_held		= joypad_l_r+1
 ; ----------------
-proc_id_player		= joypad_a_b_held+1
+proc_id_obj		= joypad_a_b_held+1
+proc_id_player		= proc_id_obj
 proc_id_actor		= proc_id_player+PLAYER_COUNT_MAX
 proc_id_actor_end	= proc_id_actor+ACTOR_COUNT_MAX
 obj_id_player		= proc_id_actor_end

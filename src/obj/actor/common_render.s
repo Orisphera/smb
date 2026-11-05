@@ -185,12 +185,12 @@ render_actor:
 
 	cpx	#<(render_actor_tiles_spiny-render_actor_tile_data)
 	bne	:++ ; if (this.id == spiny) {
-		cpy	#actor_states::dropped
+		cpy	#actor_states::thrown
 		bne	:+ ; if (this.state_next == state_5) {
 			ldx	#<(render_actor_tiles_spiny_egg-render_actor_tile_data)
 			lda	#$02
 			sta	render_chr_pair_color_mod_2
-			lda	#actor_states::dropped
+			lda	#actor_states::thrown
 			sta	render_actor_state_next
 		: ; }
 
@@ -426,7 +426,7 @@ render_actor_clear_b:
 			beq	:+++
 			cmp	#actor::spiny
 			bne	:+
-			cpx	#actor_states::dropped
+			cpx	#actor_states::thrown
 			bne	:+++++
 			: ; if (this.id.not_in(blooper, piranha_plant, podoboo) && (!SMBV2 || this.id != piranha_plant_b) && (this.id != spiny || this.state_next == state_5)) {
 				cmp	#actor::bowser_flame
@@ -448,7 +448,7 @@ render_actor_clear_b:
 					sta	oam_buffer+(OBJ_SIZE*2)+OBJ_ATTR, y
 					sta	oam_buffer+(OBJ_SIZE*4)+OBJ_ATTR, y
 					ora	#obj_attr::h_flip
-					cpx	#actor_states::dropped
+					cpx	#actor_states::thrown
 					bne	:+ ; if (this.state_next == 5) {
 						ora	#obj_attr::v_flip
 					: ; }

@@ -61,7 +61,7 @@ actor_oob_proc:
 		sbc	oob_proc_offset_x_right_hi
 		bmi	:++
 		lda	state_actor, x
-		cmp	#actor_states::dropped
+		cmp	#actor_states::thrown
 		beq	:++
 		cpy	#actor::piranha_plant
 		beq	:++

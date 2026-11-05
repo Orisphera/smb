@@ -301,9 +301,17 @@ RSCKFG	=	game_boot_flag
 BWALK	=	0
 PLSB	=	player_procs::size_chg
 PLBX	=	player_procs::firefl
+PLMDPY	=	player_procs::ctrl
+PLBS	=	player_procs::hurt
+PLSF	=	player_procs::death
 
+BJUMP	=	player_state::jump_swim
+
+WALK	=	actor_states::init
 DOWN	=	actor_states::descending
+JUMP	=	actor_states::acting
 STOP	=	actor_states::stopped
+TIME	=	actor_states::timing
 
 YPVS	=	actor::goomba
 LFT0	=	actor::plat_start
@@ -319,6 +327,10 @@ FTM0	=	actor::bullet_swarm
 JPTR	=	actor::podoboo
 ENDTR	=	actor::actors_page_b
 FLWR	=	actor::piranha_plant
+BMUS	=	actor::power_up
+JFS0	=	actor::cheep_fly
+GSHL	=	actor::bullet
+FTR0	=	actor::div_height
 
 FIRON	=	col_proj_actor_damage
 CROJCS	=	col_base_player
@@ -333,5 +345,15 @@ SCRSET2	=	col_score_do
 HEDCA5	=	col_player_harm_proc_proc_change
 CLSET2	=	bg_color_player
 ENCLER2	=	actor_erase
+PLOFCK	=	col_check_player_pos_y
+ENCCKS	=	col_actor_box_get
+MSCROS	=	col_player_powerup_proc
+MISTRY	=	col_player_actor_kick_score
+CREPMS	=	col_actor_kick_dir
+BAKCRS	=	col_player_harm_proc_check_dir
+CRENPL	=	col_player_actor_proc
+HEDC15	=	col_player_harm_proc_do
+ENTURN	=	col_actor_calc_dir_check
+CRECMP	=	col_player_bullet_diff
 
 .endif	; SYMMAP_ORIG_I

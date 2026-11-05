@@ -45,7 +45,7 @@ col_proj_actor_proc:
 		tay
 		ldx	#(ACTOR_COUNT_MAX-2)
 		: ; for (x = ACTOR_COUNT_MAX-2; x >= 0; x--) {
-		stx	col_proj_actor_proc_index
+		stx	col_obj_idx
 		tya
 		pha
 			lda	state_actor, x
@@ -84,13 +84,13 @@ col_proj_actor_proc:
 					lda	#proj_states::exploded
 					sta	state_proj, x
 
-					ldx	col_proj_actor_proc_index
+					ldx	col_obj_idx
 					jsr	col_proj_actor_damage
 				; }
 			: ; }
 		pla
 		tay
-		ldx	col_proj_actor_proc_index
+		ldx	col_obj_idx
 		dex
 		bpl	:---- ; }
 	: ; }
@@ -120,7 +120,7 @@ bowser_death_obj_id_actors_end:
 col_proj_actor_damage:
 	jsr	pos_calc_x_rel_actor
 
-	ldx	col_proj_actor_proc_index
+	ldx	col_obj_idx
 	lda	proc_id_actor, x
 	bpl	:+
 	and	#ACTOR_MODE_PARENT_MASK
@@ -128,7 +128,7 @@ col_proj_actor_damage:
 	lda	obj_id_actor, x
 	cmp	#actor::bowser
 	beq	:++
-	ldx	col_proj_actor_proc_index
+	ldx	col_obj_idx
 	: lda	obj_id_actor, x
 	cmp	#actor::buzzy_beetle
 	beq	:+++++++++
@@ -156,7 +156,7 @@ col_proj_actor_damage:
 		lda	#sfx_pulse_2::bowser_fall
 		sta	apu_sfx_pulse_2_req
 
-		ldx	col_proj_actor_proc_index
+		ldx	col_obj_idx
 		lda	#SCORE_PROJ_BOWSER
 	bne	:++++++
 	: cmp	#actor::bullet_swarm
@@ -327,15 +327,19 @@ col_player_powerup_proc:
 
 	rts
 ; ----------------------------------------------------------------------
-LD84D:
+; col_player_actor_touch_veloc_x - unused horizontal velocity modifier
+col_player_actor_touch_veloc_x:
 	.byte	24, <-24
 
+; col_player_actor_kick_veloc_x - kick horizontal velocity
 col_player_actor_kick_veloc_x:
 	.byte	KICK_VELOC_X_ABS, <-KICK_VELOC_X_ABS
 
+; col_player_stomp_veloc_x - stomp horizontal velocity
 col_player_stomp_veloc_x:
 	.byte	8, <-8
 ; ----------------------------------
+; col_player_actor_proc - player x actor collision
 	.export col_player_actor_proc
 col_player_actor_proc:
 	lda	frame_count
@@ -350,22 +354,23 @@ col_player_actor_proc:
 		bne	:+
 		lda	state_actor, x
 		and	#actor_states::dying
-		bne	:+ ; if (!col_check_player_pos_y() && actor.bits_mask == 0 && game.proc_id == ctrl && (actor.state & bit_5)) {
+		bne	:+ ; if (!col_check_player_pos_y() && actor.bits_mask == 0 && game.proc_id == ctrl && actor.state == dying) {
 			jsr	col_actor_box_get
+
 			jsr	col_base_player
 			ldx	actor_index
-			bcs	col_player_actor_proc_hit ; if (!col_base_player()) {
+			bcs	:++ ; if (!col_base_player()) {
 				lda	collision_actor, x
 				and	#<~COL_RIGHT
 				sta	collision_actor, x
-			; } else col_player_actor_proc_hit();
+			; }
 		: ; }
 
-	col_player_actor_proc_rts:
-		rts
-	; }
-; ----------------------------------
-col_player_actor_proc_hit:
+		; if () {
+			rts
+		; }
+	: ; }
+
 	ldy	obj_id_actor, x
 	cpy	#actor::power_up
 	bne	:+ ; if (actor.id == power_up) {
@@ -375,11 +380,13 @@ col_player_actor_proc_hit:
 		jmp	col_actor_kill
 	; } else col_player_actor_proc_hit_do();
 ; ----------------------------------
+; col_player_actor_kick_score - score for kicking an actor
 col_player_actor_kick_score:
 	.byte	scores::value_8000
 	.byte	scores::value_1000
 	.byte	scores::value_500
 ; ----------------------------------
+; col_player_actor_proc_hit_do - proceed with actor hit processing
 col_player_actor_proc_hit_do:
 	lda	collision_actor, x
 	and	#COL_RIGHT
@@ -388,6 +395,7 @@ col_player_actor_proc_hit_do:
 	lda	#COL_RIGHT
 	ora	collision_actor, x
 	sta	collision_actor, x
+
 	cpy	#actor::spiny
 	beq	:+++
 
@@ -440,9 +448,12 @@ col_player_actor_proc_hit_do:
 		lda	state_actor, x
 		ora	#actor_states::spawned
 		sta	state_actor, x
+
 		jsr	col_actor_kick_dir
+
 		lda	col_player_actor_kick_veloc_x, y
 		sta	veloc_x_actor, x
+
 		lda	#scores::value_400
 		clc
 		adc	counter_stomps
@@ -457,26 +468,29 @@ col_player_actor_proc_hit_do:
 	: ; } else {
 		.if	.defined(SMBV1)
 			lda	veloc_y_player
-			bmi	:+
+			bmi	:+ ; if (player.veloc_y > 0) {
 				bne	col_player_actor_stomp
+			; }
 		.elseif	.defined(SMBV2)
 			ldy	veloc_y_player
-			dey
-			bpl	col_player_actor_stomp
+			dey ; if (player.veloc_y > 0) {
+				bpl	col_player_actor_stomp
+			; }
 		.endif
 		:
 		.ifndef	PAL
 			lda	obj_id_actor, x
-			cmp	#actor::blooper
+			cmp	#actor::goomba+1
 			bcc	:+
 			lda	pos_y_lo_player
 			clc
 			adc	#12
 		.else
-			lda	#20
+			; if (actor.id != cheep_fly) {
+				lda	#20
 			ldy	obj_id_actor, x
 			cpy	#actor::cheep_fly
-			bne	:+ ; if (actor.id == cheep_fly) {
+			bne	:+ ; } else {
 				lda	#7
 			: ; }
 			adc	pos_y_lo_player
@@ -485,7 +499,7 @@ col_player_actor_proc_hit_do:
 		cmp	pos_y_lo_actor, x
 		bcc	col_player_actor_stomp
 		: lda	timer_actor_stun
-		bne	col_player_actor_stomp ; if (player.veloc_y <= 0 && (actor.id < blooper || (player.pos_y + 12) >= actor.pos_y) && player.timer_stomp == 0) {
+		bne	col_player_actor_stomp ; if (player.veloc_y <= 0 && (actor.id <= goomba || (player.pos_y + 12) >= actor.pos_y) && player.timer_stomp == 0) {
 			lda	timer_player_injury
 			bne	col_player_harm_proc_end ; if (player.timer_injury == 0) {
 				lda	pos_x_rel_player
@@ -501,19 +515,20 @@ col_player_actor_proc_hit_do:
 		; } else col_player_actor_stomp();
 	; }
 ; ----------------------------------------------------------------------
-PLAYER_DEATH_VELOC_Y	= <-4
-; ----------------------------------------------------------------------
-	.export col_player_harm_proc, col_player_harm_proc_do
+; col_player_harm_proc - check for harming player by actor
+	.export col_player_harm_proc
 col_player_harm_proc:
 	lda	timer_player_injury
 	.if	.defined(SMBV2)
 		ora	timer_player_star
 	.endif
 	bne	col_player_harm_proc_end
-
+; ----------------
+; col_player_harm_proc_do - perform harming player by actor
+	.export	col_player_harm_proc_do
 col_player_harm_proc_do:
 	ldx	player_status
-	beq	:++ ; if (player.timer_injury == 0) {
+	beq	col_player_harm_proc_kill ; if (player.timer_injury == 0) {
 		; if (player.status != power_none) {
 			sta	player_status
 			lda	#(sfx_pulse_1::pipe_entry_16)>>1
@@ -530,38 +545,40 @@ col_player_harm_proc_do:
 			lda	#player_procs::hurt
 		: ; }
 
-		ldy	#1
+		ldy	#player_state::jump_swim
 ; ----------------------------------
-	col_player_harm_proc_proc_change:
-		sta	proc_id_player
-		sty	state_player
-		ldy	#255
-		sty	game_timer_stop
-		iny
-		sty	game_scroll_amount
-	; }
+; col_player_harm_proc_proc_change - change player process from collision
+col_player_harm_proc_proc_change:
+	sta	proc_id_player
+	sty	state_player
+	ldy	#255
+	sty	game_timer_stop
+	iny
+	sty	game_scroll_amount
 
 col_player_harm_proc_end:
 	ldx	actor_index
 	rts
 ; ----------------------------------
-	: ; if (player.status == 0) {
-		stx	veloc_x_player
-		inx
-		stx	apu_music_event_req
-		lda	#PLAYER_DEATH_VELOC_Y
-		sta	veloc_y_player
+; col_player_harm_proc_kill - kill player from collision
+col_player_harm_proc_kill:
+	stx	veloc_x_player
+	inx
+	stx	apu_music_event_req
+	lda	#PLAYER_DEATH_VELOC_Y
+	sta	veloc_y_player
 
-		lda	#player_procs::death
-		bne	:--
-	; }
+	lda	#player_procs::death
+	bne	:-
 ; ----------------------------------------------------------------------
+; col_player_actor_stomp_scores - scores for stomping different actor types
 col_player_actor_stomp_scores:
 	.byte	scores::value_200
 	.byte	scores::value_1000
 	.byte	scores::value_800
 	.byte	scores::value_1000
 ; ----------------------------------
+; col_player_actor_stomp - handle player stomping on actor
 col_player_actor_stomp:
 	lda	obj_id_actor, x
 	cmp	#actor::spiny
@@ -601,6 +618,7 @@ col_player_actor_stomp:
 
 		lda	#actor_states::dying
 		sta	state_actor, x
+
 		jsr	actor_init_veloc_y
 		sta	veloc_x_actor, x
 
@@ -641,6 +659,7 @@ col_player_actor_stomp:
 			rts
 		.endif
 ; ----------------------------------
+; col_actor_stomp_resurrect_timer - timings for stop resurrection
 col_actor_stomp_resurrect_timer:
 	.ifndef	PAL
 		.byte	16, 11
@@ -680,6 +699,7 @@ col_actor_stomp_resurrect_timer:
 
 	rts
 ; ----------------------------------------------------------------------
+; col_player_harm_proc_check_dir - direction-sensitive calculation of player harm
 col_player_harm_proc_check_dir:
 	lda	motion_dir_actor, x
 	cmp	#DIR_RIGHT
@@ -691,17 +711,19 @@ col_player_harm_proc_check_dir:
 		jmp	col_player_harm_proc
 	; }
 ; ----------------------------------------------------------------------
+; col_actor_kick_dir - calculate actor motion direction for kick
 col_actor_kick_dir:
 	ldy	#DIR_RIGHT
 	jsr	col_player_bullet_diff
 	bpl	:+ ; if (col_player_bullet_diff() < 0) {
 		iny
 	: ; }
-
 	sty	motion_dir_actor, x
+
 	dey
 	rts
 ; ----------------------------------------------------------------------
+; col_score_do - store scoring from collision actions
 	.export col_score_do
 col_score_do:
 	sta	bg_score_ctl, x
@@ -713,8 +735,6 @@ col_score_do:
 	sta	bg_score_pos_x, x
 	: rts
 ; ----------------------------------------------------------------------
-col_actor_actor_proc_idx	= zp_byte_01
-
 col_actor_actor_set_masks:
 	.byte	(1<<7)
 	.byte	(1<<6)
@@ -759,7 +779,7 @@ col_actor_actor_proc:
 		dex
 		bmi	:+++++
 		: ; for (x = actor_index - 1; x >= 0; x--) {
-			stx	col_actor_actor_proc_idx
+			stx	col_obj_idx
 			tya
 			pha
 
@@ -788,7 +808,7 @@ col_actor_actor_proc:
 				tax
 				jsr	col_base_actor
 				ldx	actor_index
-				ldy	col_actor_actor_proc_idx
+				ldy	col_obj_idx
 				bcc	:++
 				lda	state_actor, x
 				ora	state_actor, y
@@ -812,7 +832,7 @@ col_actor_actor_proc:
 
 			pla
 			tay
-			ldx	col_actor_actor_proc_idx
+			ldx	col_obj_idx
 			dex
 			bpl	:----
 		: ; }
@@ -839,7 +859,7 @@ col_actor_actor_do:
 			jsr	col_score_do
 
 			jsr	col_actor_kill
-			ldy	col_actor_actor_proc_idx
+			ldy	col_obj_idx
 		: ; }
 		tya
 		tax
@@ -851,7 +871,7 @@ col_actor_actor_do:
 		clc
 		adc	#scores::value_500
 
-		ldx	col_actor_actor_proc_idx
+		ldx	col_obj_idx
 
 		jsr	col_score_do
 
@@ -870,7 +890,7 @@ col_actor_actor_do:
 		cmp	#actor::hammer_bro
 		beq	:-- ; if (actor.state >= 6 && actor.id != hammer_bro) {
 			jsr	col_actor_kill
-			ldy	col_actor_actor_proc_idx
+			ldy	col_obj_idx
 
 			lda	stomp_counter, y
 			clc
@@ -880,7 +900,7 @@ col_actor_actor_do:
 
 			jsr	col_score_do
 
-			ldx	col_actor_actor_proc_idx
+			ldx	col_obj_idx
 
 			inc	stomp_counter, x
 			rts
@@ -1840,7 +1860,7 @@ col_actor_side_col_states:
 	.byte	actor_states::acting
 	.byte	actor_states::acting
 	.byte	actor_states::acting
-	.byte	actor_states::dropped
+	.byte	actor_states::thrown
 
 col_actor_stomp_veloc_x:
 	.byte	16, <-16
@@ -2006,7 +2026,7 @@ col_actor_land:
 	: ; }
 	lda	state_actor, x
 	beq	:--
-	cmp	#actor_states::dropped
+	cmp	#actor_states::thrown
 	beq	col_actor_land_dir
 	cmp	#actor_states::stopped
 	bcs	:++

@@ -177,7 +177,7 @@ actor_proc_spiny:
 		sta	veloc_y_actor, x
 		lda	#proc_id_actors::active
 		sta	proc_id_actor, x
-		lda	#actor_states::dropped
+		lda	#actor_states::thrown
 		sta	state_actor, x
 	; }
 

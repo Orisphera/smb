@@ -52,7 +52,7 @@ actor_proc_flag_victory_tbl_done:
 ; ----------------------------------------------------------------------
 actor_proc_flag_victory_fireworks:
 	.if	.defined(SMBV1)
-		ldy	#actor_states::dropped
+		ldy	#actor_states::thrown
 		lda	stats_time_end-STATS_TIME_LEN+2
 		cmp	#1
 		beq	:+ ; if (game.time.digit_last != 1) {

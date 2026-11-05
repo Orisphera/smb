@@ -158,7 +158,7 @@ actor_A_04_proc:
 	lda	state_actor, x
 	and	#actor_states::state_mask
 	beq	:++++
-	cmp	#actor_states::dropped
+	cmp	#actor_states::thrown
 	beq	:+
 	cmp	#actor_states::stopped
 	bcs	:++++++

@@ -61,7 +61,7 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		acting
 		stopped
 		timing
-		dropped
+		thrown
 		state_end
 		state_mask = 7
 
@@ -135,6 +135,8 @@ COL_BOX_SIZE	= 4
 		death
 		firefl
 	.endenum
+
+PLAYER_DEATH_VELOC_Y	= <-4
 
 	.enum	scores
 		value_100	= <(bg_score_value_100-bg_score_disp_incs)
