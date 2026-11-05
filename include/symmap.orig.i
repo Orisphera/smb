@@ -155,6 +155,7 @@ ENCSMD	=	col_box_actor
 FICSMD	=	col_box_proj
 HMCSMD	=	col_box_misc
 CWORK0	=	pos_col_box
+CWORK1	=	pos_col_box
 PLCWOK	=	pos_col_box_player
 ENCWOK	=	pos_col_box_actor
 FICWOK	=	pos_col_box_proj
@@ -339,6 +340,8 @@ JFS0	=	actor::cheep_fly
 GSHL	=	actor::bullet
 FTR0	=	actor::div_height
 FTR2	=	actor::koopa_para_jump_green
+ELV0	=	actor::plat_s_up
+ELV1	=	actor::plat_s_down
 
 FIRON	=	col_proj_actor_damage
 CROJCS	=	col_base_player
@@ -352,7 +355,7 @@ SCRSET	=	col_score_do
 HEDCA5	=	col_player_harm_proc_proc_change
 CLSET2	=	bg_color_player
 ENCLER2	=	actor_erase
-PLOFCK	=	col_check_player_pos_y
+PLOFCK	=	col_check_player_offscr
 ENCCKS	=	col_actor_box_get
 MSCROS	=	col_player_powerup_proc
 MISTRY	=	col_player_actor_kick_score
@@ -368,5 +371,6 @@ FIOT10	=	col_player_actor_stomp_do
 ENCRMD	=	col_actor_actor_do
 LFCCKS	=	col_actor_box_get_do
 PLONCK	=	col_plat_l_do
+PLCLRS	=	col_bg_proc_player_halt
 
 .endif	; SYMMAP_ORIG_I

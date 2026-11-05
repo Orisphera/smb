@@ -345,7 +345,7 @@ col_player_actor_proc:
 	lda	frame_count
 	lsr	a
 	bcs	:- ; if (!(frame_count % 2)) {
-		jsr	col_check_player_pos_y 
+		jsr	col_check_player_offscr 
 		bcs	:+
 		lda	actor_bits_mask, x
 		bne	:+
@@ -354,7 +354,7 @@ col_player_actor_proc:
 		bne	:+
 		lda	state_actor, x
 		and	#actor_states::dying
-		bne	:+ ; if (!col_check_player_pos_y() && actor.bits_mask == 0 && game.proc_id == ctrl && actor.state == dying) {
+		bne	:+ ; if (!player.offscr && actor.bits_mask == 0 && game.proc_id == ctrl && actor.state == dying) {
 			jsr	col_actor_box_get
 
 			jsr	col_base_player
@@ -957,14 +957,14 @@ col_plat_l_proc:
 	bmi	:++
 	lda	obj_id_actor, x
 	cmp	#actor::plat_start
-	bne	:+ ; if (!game_timer_stop && !(actor.state & 0x80) && actor.id == plat_start) {
+	bne	:+ ; if (!game_timer_stop && actor.state != spawned && actor.id == plat_start) {
 		lda	state_actor, x
 		tax
 		jsr	:+
 	: ; }
 ; ----------------------------------
-	jsr	col_check_player_pos_y
-	bcs	:+ ; if (!col_check_player_pos_y()) {
+	jsr	col_check_player_offscr
+	bcs	:+ ; if (!player.offscr) {
 		txa
 		jsr	col_actor_box_get_do
 		lda	pos_y_lo_actor, x
@@ -988,8 +988,8 @@ col_plat_s_proc:
 	lda	game_timer_stop
 	bne	:+++
 	sta	actor_plat_col_flag, x
-	jsr	col_check_player_pos_y
-	bcs	:+++ ; if (!game_timer_stop && !col_check_player_pos_y()) {
+	jsr	col_check_player_offscr
+	bcs	:+++ ; if (!game_timer_stop && !player.offscr) {
 		lda	#2
 		sta	col_plat_s_proc_idx
 		: ; for (i = 2; i > 0; i--) {
@@ -1063,10 +1063,10 @@ col_plat_l_do:
 			pha
 
 			lda	pos_y_hi_player
-			cmp	#1
+			cmp	#>479
 			bne	:+
 			lda	pos_y_lo_player
-			cmp	#223
+			cmp	#<479
 			bcc	:+ ; if (player.pos_y >= 479) {
 				pla
 				rts
@@ -1105,10 +1105,12 @@ col_plat_l_do:
 		rts
 	; }
 ; ----------------------------------------------------------------------
+; col_plat_s_pos_offsets - elevator offsets
 col_plat_s_pos_offsets:
 	.byte	<-128, 0
-; ----------------------------------
-	.export col_plat_s_player_pos, col_plat_player_pos
+; ----------------
+; col_plat_s_player_pos - player elevator positioning
+	.export col_plat_s_player_pos
 col_plat_s_player_pos:
 	tay
 	lda	pos_y_lo_actor, x
@@ -1119,10 +1121,13 @@ col_plat_s_player_pos:
 .elseif	.defined(VS_SMB)
 	jmp	col_plat_player_pos_do
 .endif
-; ----------------------------------
+; ----------------
+; col_plat_player_pos - general player platform positioning
+	.export	col_plat_player_pos
 col_plat_player_pos:
 	lda	pos_y_lo_actor, x
-
+; ----------------
+; col_plat_player_pos_do - process platform position
 col_plat_player_pos_do:
 	ldy	proc_id_player
 	cpy	#player_procs::death
@@ -1143,9 +1148,8 @@ col_plat_player_pos_do:
 
 	rts
 ; ----------------------------------------------------------------------
-COL_CHECK_PLAYER_POS_Y_CUTOFF	= 208
-; ----------------------------------------------------------------------
-col_check_player_pos_y:
+; col_check_player_offscr - check for offscreen player
+col_check_player_offscr:
 	lda	bits_offscr_player
 
 	.if	.defined(SMBV1)
@@ -1167,14 +1171,16 @@ col_check_player_pos_y:
 
 	rts
 ; ----------------------------------------------------------------------
+; col_actor_box_get - check for collision with current actor
 col_actor_box_get:
 	lda	actor_index
-
+; ----------------
+; col_actor_box_get_do - check for collision with any actor
 col_actor_box_get_do:
 	asl	a
 	asl	a
 	clc
-	adc	#(1*4)
+	adc	#<(pos_x_col_box_nw_actor-pos_col_box)
 	tay
 	lda	bits_offscr_actor
 	and	#%00001111
