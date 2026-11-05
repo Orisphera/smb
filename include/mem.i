@@ -454,13 +454,13 @@ pos_x_col_box_nw_player	= pos_x_col_box_nw
 pos_y_col_box_nw_player	= pos_col_box_player+1
 pos_x_col_box_se_player	= pos_col_box_player+2
 pos_y_col_box_se_player	= pos_col_box_player+3
-pos_col_box_actor	= pos_x_col_box_nw_player+(PLAYER_COUNT_MAX*4)
+pos_col_box_actor	= pos_x_col_box_nw_player+(PLAYER_COUNT_MAX*COL_BOX_SIZE)
 pos_x_col_box_nw_actor	= pos_col_box_actor
 pos_y_col_box_nw_actor	= pos_col_box_actor+1
 pos_x_col_box_se_actor	= pos_col_box_actor+2
 pos_y_col_box_se_actor	= pos_col_box_actor+3
-pos_col_box_proj	= pos_x_col_box_nw_actor+(ACTOR_COUNT_MAX*4)
-pos_col_box_misc	= pos_col_box_proj+(PROJ_COUNT_MAX*4)
+pos_col_box_proj	= pos_x_col_box_nw_actor+(ACTOR_COUNT_MAX*COL_BOX_SIZE)
+pos_col_box_misc	= pos_col_box_proj+(PROJ_COUNT_MAX*COL_BOX_SIZE)
 pos_col_box_hammer	= pos_col_box_misc
 ; ----------------------------------
 bg_buffer_0		= $500

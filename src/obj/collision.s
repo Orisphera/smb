@@ -735,6 +735,7 @@ col_score_do:
 	sta	bg_score_pos_x, x
 	: rts
 ; ----------------------------------------------------------------------
+; col_actor_actor_set_masks - collision set masks
 col_actor_actor_set_masks:
 	.byte	(1<<7)
 	.byte	(1<<6)
@@ -744,6 +745,7 @@ col_actor_actor_set_masks:
 	.byte	COL_BOTTOM
 	.byte	COL_LEFT
 
+; col_actor_actor_clear_masks - collision clear masks
 col_actor_actor_clear_masks:
 	.byte	<~(1<<7)
 	.byte	<~(1<<6)
@@ -752,7 +754,8 @@ col_actor_actor_clear_masks:
 	.byte	<~COL_TOP
 	.byte	<~COL_BOTTOM
 	.byte	<~COL_LEFT
-; ----------------------------------
+; ----------------
+; col_actor_actor_proc - actor x actor collision 
 	.export col_actor_actor_proc
 col_actor_actor_proc:
 	lda	frame_count
@@ -804,7 +807,7 @@ col_actor_actor_proc:
 				asl	a
 				asl	a
 				clc
-				adc	#4
+				adc	#<(pos_col_box_actor-pos_col_box)
 				tax
 				jsr	col_base_actor
 				ldx	actor_index
@@ -841,6 +844,7 @@ col_actor_actor_proc:
 		rts
 	; }
 ; ----------------------------------------------------------------------
+; col_actor_actor_do - process actor hit
 col_actor_actor_do:
 	lda	state_actor, y
 	ora	state_actor, x
@@ -851,10 +855,10 @@ col_actor_actor_do:
 	bcc	:+++
 	lda	obj_id_actor, x
 	cmp	#actor::hammer_bro
-	beq	:++ ; if (actor_x.state == init && actor_y.state == init && actor_x.state >= state_6 && actor_x.id != hammer_bro) {
+	beq	:++ ; if (actor_x.state != dying && actor_y.state != dying && actor_x.state >= state_end && actor_x.id != hammer_bro) {
 		lda	state_actor, y
 		asl	a
-		bcc	:+ ; if (actor.state & 0x80) {
+		bcc	:+ ; if (actor_y.state == spawned) {
 			lda	#scores::value_1000
 			jsr	col_score_do
 
@@ -879,72 +883,68 @@ col_actor_actor_do:
 
 		inc	stomp_counter, x
 	: ; }
-
 	rts
-; ----------------------------------
-	: ; if (actor_x.state == init && actor_y.state == init && actor_x.state < 6 || called) {
-		lda	state_actor, y
-		cmp	#actor_states::state_end
-		bcc	:+
-		lda	obj_id_actor, y
-		cmp	#actor::hammer_bro
-		beq	:-- ; if (actor.state >= 6 && actor.id != hammer_bro) {
-			jsr	col_actor_kill
-			ldy	col_obj_idx
+	: lda	state_actor, y
+	cmp	#actor_states::state_end
+	bcc	:+
+	lda	obj_id_actor, y
+	cmp	#actor::hammer_bro
+	beq	:-- ; } else if (actor_x.state != dying && actor_y.state != dying && actor_y.state < state_end && actor_y.id != hammer_bro) {
+		jsr	col_actor_kill
+		ldy	col_obj_idx
 
-			lda	stomp_counter, y
-			clc
-			adc	#scores::value_500
+		lda	stomp_counter, y
+		clc
+		adc	#scores::value_500
 
-			ldx	actor_index
+		ldx	actor_index
 
-			jsr	col_score_do
+		jsr	col_score_do
 
-			ldx	col_obj_idx
+		ldx	col_obj_idx
 
-			inc	stomp_counter, x
-			rts
-		: ; }
-	
+		inc	stomp_counter, x
+		rts
+	: ; } else {
 		tya
 		tax
 		jsr	col_actor_calc_dir_check
 		ldx	actor_index
-	; }
-; ----------------------------------
-col_actor_calc_dir_check:
-	lda	obj_id_actor, x
-	cmp	#actor::piranha_plant
-	beq	:++
 
-	.if	.defined(SMBV2)
-		cmp	#actor::piranha_plant_b
+	col_actor_calc_dir_check:
+		lda	obj_id_actor, x
+		cmp	#actor::piranha_plant
 		beq	:++
-	.endif
 
-	cmp	#actor::lakitu
-	beq	:++
-	cmp	#actor::hammer_bro
-	beq	:++
-	cmp	#actor::spiny
-	beq	:+
-	cmp	#actor::koopa_para_jump_green
-	beq	:+
-	cmp	#actor::blooper
-	bcs	:++
-	: ; if (actor.id.in(piranha_plant, lakitu, hammer_bro, spiny, koopa_para_jump_green) || actor.id < blooper && (!SMBV2 || actor.id != piranha_plant_b)) {
-	col_actor_reverse:
-		lda	veloc_x_actor, x
-		eor	#<-1
-		tay
-		iny
-		sty	veloc_x_actor, x
-		lda	motion_dir_actor, x
-		eor	#DIR_MASK
-		sta	motion_dir_actor, x
-	: ; }
+		.if	.defined(SMBV2)
+			cmp	#actor::piranha_plant_b
+			beq	:++
+		.endif
 
-	rts
+		cmp	#actor::lakitu
+		beq	:++
+		cmp	#actor::hammer_bro
+		beq	:++
+		cmp	#actor::spiny
+		beq	:+
+		cmp	#actor::koopa_para_jump_green
+		beq	:+
+		cmp	#actor::blooper
+		bcs	:++
+		: ; if (actor.id.in(piranha_plant, lakitu, hammer_bro, spiny, koopa_para_jump_green) || actor.id < blooper && (!SMBV2 || actor.id != piranha_plant_b)) {
+		col_actor_reverse:
+			lda	veloc_x_actor, x
+			eor	#<-1
+			tay
+			iny
+			sty	veloc_x_actor, x
+			lda	motion_dir_actor, x
+			eor	#DIR_MASK
+			sta	motion_dir_actor, x
+		: ; }
+
+		rts
+	; }
 ; ----------------------------------------------------------------------
 	.export col_plat_l_proc
 col_plat_l_proc:

@@ -3,6 +3,7 @@ MISC_I = 1
 
 .include	"sys/cpu.i"
 
+.include	"const.i"
 .include	"sound.i"
 
 METATILE_SIZE	= 4
@@ -72,8 +73,6 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 		falling	= 64
 		spawned	= 128
 	.endenum
-
-COL_BOX_SIZE	= 4
 
 	.enum	col_boxes
 		box_0		= <((col_box_0-col_box_tbl)/COL_BOX_SIZE)
