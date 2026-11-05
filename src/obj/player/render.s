@@ -3,6 +3,7 @@
 
 .include	"mem.i"
 .include	"mem_low.i"
+.include	"misc.i"
 .include	"math.i"
 .include	"const.i"
 .include	"chr.i"

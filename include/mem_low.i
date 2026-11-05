@@ -31,6 +31,7 @@ render_chr_pair_pos_x		= zp_byte_05
 
 col_bg_proc_player_halt_dir	= zp_byte_00
 col_plat_s_proc_idx		= zp_byte_00
+col_bg_proc_side_rep		= zp_byte_00
 col_obj_idx			= zp_byte_01
 col_buffer_ptr_idx		= zp_byte_02
 col_box_buffer_tbl_offset	= zp_byte_04

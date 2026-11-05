@@ -1187,9 +1187,11 @@ col_actor_box_get_do:
 	cmp	#%00001111
 	rts
 ; ----------------------------------------------------------------------
+; col_bg_proc_player_pos_y_block_cutoff - player height cutoff for BG collision
 col_bg_proc_player_pos_y_block_cutoff:
 	.byte	32, 16
 ; ----------------------------------
+; col_bg_proc - player x background collision
 	.export col_bg_proc
 col_bg_proc:
 	lda	col_disable
@@ -1197,8 +1199,8 @@ col_bg_proc:
 	lda	proc_id_player
 	cmp	#player_procs::death
 	beq	col_bg_proc_rts
-	cmp	#player_procs::pole
-	bcc	col_bg_proc_rts ; if (!col_disable && proc_id_player != death && proc_id_player >= pole) {
+	cmp	#player_procs::pipe_v+1
+	bcc	col_bg_proc_rts ; if (!col_disable && proc_id_player != death && proc_id_player > pipe_v) {
 		lda	#player_state::jump_swim
 		ldy	player_swimming
 		bne	:++
@@ -1217,7 +1219,7 @@ col_bg_proc:
 		lda	pos_y_hi_player
 		cmp	#1
 		bne	col_bg_proc_rts ; if (player.pos_y.hi == 1) 
-			lda	#%11110000|(COL_TOP|COL_BOTTOM|COL_LEFT|COL_RIGHT)
+			lda	#COL_ALL
 			sta	collision_player
 
 			lda	pos_y_lo_player
@@ -1229,6 +1231,7 @@ col_bg_proc:
 
 	rts
 ; ----------------------------------
+; col_bg_proc_do - handle player hit with background
 col_bg_proc_do:
 	ldy	#(col_bg_buffer_offset_end-col_bg_buffer_offset)-1
 	lda	player_crouching
@@ -1328,6 +1331,7 @@ col_bg_proc_do:
 
 	jmp	col_bg_proc_coin_do
 ; ----------------------------------
+; col_bg_proc_ground_type - ground type collision check
 col_bg_proc_ground_type:
 	jsr	col_bg_proc_climb_check
 	bcs	:++++
@@ -1368,15 +1372,12 @@ col_bg_proc_ground_type:
 		; }
 	: ; }
 ; ----------------------------------
-SIDE_REPS	= 2
-
-col_bg_proc_side_rep	= zp_byte_00
-
+; col_bg_proc_side - side calculations for background collision
 col_bg_proc_side:
 	ldy	zp_addr_EB
 	iny
 	iny
-	lda	#SIDE_REPS
+	lda	#COL_SIDE_REPS
 	sta	col_bg_proc_side_rep
 	: ; for (side of sides) {
 		iny
@@ -1414,6 +1415,7 @@ col_bg_proc_side:
 
 	rts
 ; ----------------------------------
+; col_bg_proc_side_do - process BG side hit
 col_bg_proc_side_do:
 	jsr	col_bg_proc_vis
 	beq	:++++++++ ; if (tile.is_visible) {
@@ -1479,20 +1481,21 @@ col_bg_proc_side_do:
 		; } else col_bg_proc_climb_do();
 	; } else rts;
 ; ----------------------------------
+; col_bg_timer_scene_trans - scene timer for pipe entry
 col_bg_timer_scene_trans:
 	.ifndef	PAL
 		.byte	160, 52
 	.else
 		.byte	133, 43
 	.endif
-; ----------------------------------
+; ----------------------------------------------------------------------
+; col_bg_proc_coin_do - player x coin collision hit
 col_bg_proc_coin_do:
 	jsr	col_bg_proc_bg_tile_blank
 	inc	game_bonus_counter
 	jmp	misc_proc_coin_add
-; ----------------------------------
-AXE_PLAYER_VELOC_X	= 24
-
+; ----------------------------------------------------------------------
+; col_bg_proc_axe_do - player x axe collision hit
 col_bg_proc_axe_do:
 	lda	#castle_victory_modes::bowser
 	sta	proc_id_game
@@ -1506,30 +1509,26 @@ col_bg_proc_axe_do:
 	lda	#AXE_PLAYER_VELOC_X
 	sta	veloc_x_player
 ; ----------------------------------
+; col_bg_proc_bg_tile_blank - write a blank metatile
 col_bg_proc_bg_tile_blank:
 	ldy	col_buffer_ptr_idx
 	lda	#metatile_0::blank_a
 	sta	(game_buffer), y
 	jmp	meta_put_blank
-; ----------------------------------
+; ----------------------------------------------------------------------
+; col_bg_proc_climb_offset_x - horizontal climb offset of character
 col_bg_proc_climb_offset_x_lo:
-	.byte	<-7, 7
+	.byte	<-7, <7
 
 col_bg_proc_climb_offset_x_hi:
-	.byte	<-1, 0
+	.byte	>-7, >7
 
+; col_bg_proc_pole_cutoffs_y - vertical cutoffs for goal post scores
 col_bg_proc_pole_cutoffs_y:
 	.byte	24, 34, 80, 104, 144
 col_bg_proc_pole_cutoffs_y_end:
 ; ----------------------------------
-.if	.defined(SMB)|.defined(SMBV2)
-CLIMB_POS_X	= pos_x_lo_player
-CLIMB_DIR_BOUND	= 16
-.elseif	.defined(VS_SMB)
-CLIMB_POS_X	= pos_x_lo_actor+(ACTOR_COUNT_MAX-1)
-CLIMB_DIR_BOUND	= 10
-.endif
-
+; col_bg_proc_climb_do - player x climbable collision hit
 col_bg_proc_climb_do:
 	ldy	col_box_buffer_tbl_offset
 	cpy	#6
@@ -1633,6 +1632,7 @@ col_bg_proc_climb_do:
 		rts
 	; } else rts;
 ; ----------------------------------------------------------------------
+; col_bg_proc_vis - determine visibility of block
 col_bg_proc_vis:
 	.if	.defined(SMB2)
 		cmp	#metatile_1::blank_e
@@ -1649,9 +1649,7 @@ col_bg_proc_vis:
 	cmp	#metatile_1::blank_c
 	: rts
 ; ----------------------------------------------------------------------
-SPRING_ACCEL_Y_INIT	= 112
-SPRING_ACCEL_TIMER	= 3
-
+; col_bg_proc_spring - player x spring collision
 col_bg_proc_spring:
 	jsr	col_bg_proc_spring_check
 	bcc	:+ ; if (col_bg_proc_spring_check()) {
@@ -1672,6 +1670,7 @@ col_bg_proc_spring:
 
 	rts
 ; ----------------------------------------------------------------------
+; col_bg_proc_spring_check - player x spring check
 col_bg_proc_spring_check:
 	cmp	#metatile_1::spring_bg_a
 	beq	:+
@@ -1707,14 +1706,6 @@ col_bg_proc_pipe_v_do:
 		sta	attr_player
 		lda	game_warp_ctrl
 		beq	:+++ ; if (game_warp_ctrl) {
-			.if	.defined(SMBV1)
-				PIPE_POS_MASK	= %00000011
-			.elseif	.defined(SMB2)
-				PIPE_POS_MASK	= %00001111
-			.elseif	.defined(ANN)
-				PIPE_POS_MASK	= %00000111
-			.endif
-
 			and	#PIPE_POS_MASK
 
 			.if	.defined(SMBM)|.defined(VS_SMB)

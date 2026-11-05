@@ -1,6 +1,7 @@
 .include	"sys/ppu.i"
 
 .include	"mem.i"
+.include	"misc.i"
 .include	"math.i"
 .include	"chr.i"
 

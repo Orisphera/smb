@@ -2,6 +2,7 @@
 
 .include	"mem.i"
 .include	"math.i"
+.include	"misc.i"
 .include	"chr.i"
 
 ; ----------------------------------------------------------------------

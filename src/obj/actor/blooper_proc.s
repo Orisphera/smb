@@ -1,5 +1,6 @@
 .include	"math.i"
 .include	"mem.i"
+.include	"misc.i"
 .include	"joypad.i"
 
 ; ----------------------------------------------------------------------

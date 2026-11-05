@@ -67,21 +67,20 @@ whirlpool_proc_do:
 		bpl	:+ ; if (actor.pos_y.hi >= this.pos_x.hi) {
 			lda	pos_x_lo_player
 			sec
-			sbc	#1
+			sbc	#<1
 			sta	pos_x_lo_player
 			lda	pos_x_hi_player
-			sbc	#0
-			jmp	:++
-		: ; } else {
-			lda	collision_player
-			lsr	a
-			bcc	:++
+			sbc	#>1
+		jmp	:++
+		: lda	collision_player
+		lsr	a
+		bcc	:++ ; } else if (player.collision == right) {
 			lda	pos_x_lo_player
 			clc
-			adc	#1
+			adc	#<1
 			sta	pos_x_lo_player
 			lda	pos_x_hi_player
-			adc	#0
+			adc	#>1
 		: ; }
 
 		; if (this.pos_y.hi >= this.pos_x.hi || this.collision == right) {

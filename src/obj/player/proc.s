@@ -470,7 +470,7 @@ player_proc_victory:
 
 	lda	collision_player
 	lsr	a
-	bcs	:++ ; if (!(this.collision & right)) {
+	bcs	:++ ; if (this.collision != right) {
 		lda	proc_id_flag_victory
 		bne	:+ ; if (flag_victory.proc_id == null) {
 			inc	proc_id_flag_victory
@@ -676,7 +676,7 @@ player_proc_player_climb:
 
 	lda	joypad_l_r
 	and	collision_player
-	beq	:++++ ; if ((joypad.l_r & this.collision) != none) {
+	beq	:++++ ; if (joypad.dir != this.collision) {
 		ldy	timer_player_climb
 		bne	:+++ ; if (this.timer_climb == 0) {
 			ldy	#24
@@ -736,10 +736,11 @@ player_proc_player_physics:
 		ldy	#0
 		lda	joypad_u_d
 		and	collision_player
-		beq	:+ ; if ((this.collision & joypad.u_d) != none) {
+		beq	:+ ; if (joypad.dir == this.collision) {
 			iny
+
 			and	#COL_TOP
-			bne	:+ ; if ((this.collision & joypad.u_d) != top) {
+			bne	:+ ; if (this.collision != top) {
 				iny
 			; }
 		: ; }

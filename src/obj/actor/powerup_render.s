@@ -2,6 +2,7 @@
 
 .include	"mem.i"
 .include	"mem_low.i"
+.include	"misc.i"
 .include	"chr.i"
 
 ; ----------------------------------------------------------------------

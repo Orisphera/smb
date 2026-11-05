@@ -22,5 +22,6 @@ JOYPAD_I = 1
 	COL_LEFT	= joypad_button::left
 	COL_BOTTOM	= joypad_button::down
 	COL_TOP		= joypad_button::up
+	COL_ALL		= %11110000|(COL_TOP|COL_BOTTOM|COL_LEFT|COL_RIGHT)
 
 .endif	; JOYPAD_I

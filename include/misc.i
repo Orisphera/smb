@@ -4,6 +4,7 @@ MISC_I = 1
 .include	"sys/cpu.i"
 
 .include	"const.i"
+.include	"mem.i"
 .include	"sound.i"
 
 METATILE_SIZE	= 4
@@ -501,5 +502,24 @@ ACTOR_COL_BOX_SMALL	= col_boxes::box_9
 	ENG_HARDMODE_B_COURSE	= course::no_04
 	ENG_HARDMODE_B_GOAL	= 3
 .endif
+
+.if	.defined(VS_SMB)
+CLIMB_POS_X	= pos_x_lo_actor+(ACTOR_COUNT_MAX-1)
+CLIMB_DIR_BOUND	= 10
+.else
+CLIMB_POS_X	= pos_x_lo_player
+CLIMB_DIR_BOUND	= 16
+.endif
+
+.if	.defined(SMB2)
+	PIPE_POS_MASK	= %00001111
+.elseif	.defined(ANN)
+	PIPE_POS_MASK	= %00000111
+.else
+	PIPE_POS_MASK	= %00000011
+.endif
+
+SPRING_ACCEL_Y_INIT	= 112
+SPRING_ACCEL_TIMER	= 3
 
 .endif	; MISC_I

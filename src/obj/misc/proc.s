@@ -1,6 +1,7 @@
 .include	"mem.i"
 .include	"mem_low.i"
 .include	"const.i"
+.include	"misc.i"
 
 ; ----------------------------------------------------------------------
 MISC_ACCEL_Y_INC		= 80
