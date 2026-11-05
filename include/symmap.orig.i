@@ -91,6 +91,7 @@ WDMAPS	=	pos_y_vine
 LFSTWK	=	actor_plat_align
 LFXMVL	=	actor_plat_scroll_x
 ONLFFG	=	actor_plat_col_flag
+ONELFG	=	actor_plat_col_flag
 PLOBJX	=	pos_x_rel_player
 ENOBJX	=	pos_x_rel_actor
 FIOBJX	=	pos_x_rel_proj
@@ -365,5 +366,7 @@ FIRH10	=	col_actor_kill
 FIRHIT	=	col_actor_kill
 FIOT10	=	col_player_actor_stomp_do
 ENCRMD	=	col_actor_actor_do
+LFCCKS	=	col_actor_box_get_do
+PLONCK	=	col_plat_l_do
 
 .endif	; SYMMAP_ORIG_I

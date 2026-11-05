@@ -204,17 +204,6 @@ VICTORY_TICK		= 4
 	VICTORY_TIMER_SET	= 12
 .endif
 
-.if	.defined(SMB)
-	ENG_HARDMODE_B_COURSE	= course::no_05
-	ENG_HARDMODE_B_GOAL	= 2
-.elseif	.defined(VS_SMB)
-	ENG_HARDMODE_B_COURSE	= course::no_04
-	ENG_HARDMODE_B_GOAL	= 1
-.elseif	.defined(SMBV2)
-	ENG_HARDMODE_B_COURSE	= course::no_04
-	ENG_HARDMODE_B_GOAL	= 3
-.endif
-
 ENG_TILEOBJ_NULL	= 0
 SCENERY_ROW_SIZE	= 3
 
@@ -269,12 +258,6 @@ NMI_LIST_END	= 0
 .elseif	.defined(ANN)
 	LOOP_VAL_COUNT	= 10
 .endif
-
-ACTOR_SWAPPABLE_EASY	= actor::goomba
-ACTOR_SWAPPABLE_HARD	= actor::buzzy_beetle
-
-ACTOR_COL_BOX_LARGE	= col_boxes::box_3
-ACTOR_COL_BOX_SMALL	= col_boxes::box_9
 
 ACTOR_BOWSER_FLAME_TIMER	= 32
 ACTOR_BOWSER_FLAME_TIMER_HARD_OFFSET	= 16

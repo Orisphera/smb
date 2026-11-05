@@ -946,6 +946,7 @@ col_actor_actor_do:
 		rts
 	; }
 ; ----------------------------------------------------------------------
+; col_plat_l_proc - player x lift collision
 	.export col_plat_l_proc
 col_plat_l_proc:
 	lda	#%11111111
@@ -981,8 +982,7 @@ col_plat_l_proc:
 	ldx	actor_index
 	rts
 ; ----------------------------------------------------------------------
-col_plat_s_proc_idx	= zp_byte_00
-
+; col_plat_s_proc - player x elevator collision
 	.export col_plat_s_proc
 col_plat_s_proc:
 	lda	game_timer_stop
@@ -1001,7 +1001,7 @@ col_plat_s_proc:
 				cmp	#32
 				bcc	:+ ; if (col_box_nw.pos_y >= 32) {
 					jsr	col_base_player
-					bcs	col_plat_do
+					bcs	col_plat_s_do
 				: ; }
 
 				lda	pos_y_col_box_nw, y
@@ -1021,10 +1021,12 @@ col_plat_s_proc:
 
 	ldx	actor_index
 	rts
-; ----------------------------------------------------------------------
-col_plat_do:
+; ----------------
+; col_plat_s_do - elevator collision proc
+col_plat_s_do:
 	ldx	actor_index
-; ----------------------------------
+; ----------------------------------------------------------------------
+; col_plat_l_do - lift collision proc
 col_plat_l_do:
 	lda	pos_y_col_box_se, y
 	sec

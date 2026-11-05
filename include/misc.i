@@ -485,4 +485,21 @@ SCORE_POWERUP		= scores::value_1000
 		time
 	.endenum
 
+ACTOR_SWAPPABLE_EASY	= actor::goomba
+ACTOR_SWAPPABLE_HARD	= actor::buzzy_beetle
+
+ACTOR_COL_BOX_LARGE	= col_boxes::box_3
+ACTOR_COL_BOX_SMALL	= col_boxes::box_9
+
+.if	.defined(SMB)
+	ENG_HARDMODE_B_COURSE	= course::no_05
+	ENG_HARDMODE_B_GOAL	= 2
+.elseif	.defined(VS_SMB)
+	ENG_HARDMODE_B_COURSE	= course::no_04
+	ENG_HARDMODE_B_GOAL	= 1
+.elseif	.defined(SMBV2)
+	ENG_HARDMODE_B_COURSE	= course::no_04
+	ENG_HARDMODE_B_GOAL	= 3
+.endif
+
 .endif	; MISC_I
