@@ -1,4 +1,5 @@
 .include	"mem.i"
+.include	"misc.i"
 .include	"chr.i"
 .include	"math.i"
 .include	"sound.i"
