@@ -17,6 +17,7 @@
 .endif
 .endif
 
+; ----------------------------------------------------------------------
 ; sys_game - game process
 	.export	sys_game
 	.export	game_mode_tbl
@@ -57,8 +58,9 @@ vs_game_init:
 	rts
 .endif
 ; ----------------------------------------------------------------------
-	.export	game_proc, game_proc_scenery_scroll
-game_proc:	; game_proc - main gameplay routine
+; game_proc - main gameplay routine
+	.export	game_proc
+game_proc:	
 	.if	.defined(SMBV1)
 		.if	.defined(VS_SMB)
 		lda	player_count
@@ -178,31 +180,34 @@ game_proc:	; game_proc - main gameplay routine
 		sta	joypad_a_b_held
 		lda	#joypad_button::none
 		sta	joypad_l_r
-	
-	game_proc_scenery_scroll:	; game_proc_scenery_scroll - update scroll and process scenery, if applicable
-		lda	nmi_buffer_ptr
-		cmp	#nmi_addr::buffer_11_A
-		beq	:++
-		lda	bg_scenery_proc_id
-		bne	:+
-		lda	game_scroll_h
-		cmp	#GAME_SCROLL_END
-		bmi	:++ ; if (nmi_buffer_ptr != buffer_11_A && (bg_scenery_proc_id == main_c || game.scroll_h > GAME_SCROLL_END)) {
-			; if (bg_scenery_proc_id == main_c) {
-				lda	game_scroll_h
-				sbc	#GAME_SCROLL_END
-				sta	game_scroll_h
-				lda	#0
-				sta	ppu_displist_meta_offset
-			: ; }
-			jsr	scenery_proc
-		: ; }
-
-		rts
-	; } else rts;
+	; }
 ; ----------------------------------------------------------------------
-	.export	game_scroll, game_scroll_calc
-game_scroll:	; game_scroll - apply scroll operations based on player motion
+; game_proc_scenery_scroll - update scroll and process scenery, if applicable
+	.export	game_proc_scenery_scroll
+game_proc_scenery_scroll:	
+	lda	nmi_buffer_ptr
+	cmp	#nmi_addr::buffer_11_A
+	beq	:++
+	lda	bg_scenery_proc_id
+	bne	:+
+	lda	game_scroll_h
+	cmp	#GAME_SCROLL_END
+	bmi	:++ ; if (nmi_buffer_ptr != buffer_11_A && (bg_scenery_proc_id == main_c || game.scroll_h > GAME_SCROLL_END)) {
+		; if (bg_scenery_proc_id == main_c) {
+			lda	game_scroll_h
+			sbc	#GAME_SCROLL_END
+			sta	game_scroll_h
+			lda	#0
+			sta	ppu_displist_meta_offset
+		: ; }
+		jsr	scenery_proc
+	: ; }
+
+	rts
+; ----------------------------------------------------------------------
+; game_scroll - apply scroll operations based on player motion
+	.export	game_scroll
+game_scroll:
 	lda	scroll_x_player
 	clc
 	adc	actor_plat_scroll_x
@@ -228,54 +233,58 @@ game_scroll:	; game_scroll - apply scroll operations based on player motion
 		bcc	:+ ; if (this.scroll_x_b >= 112) {
 			ldy	scroll_x_player
 		: ; }
-	
-	game_scroll_calc:	; game_scroll_calc - apply scroll operations generally
-		.if	.defined(SMBV2)
-		: ; while (SMBV2 && fds_sprite_overlap_hit) {
-			lda	fds_sprite_overlap_hit
-			bne	:-
-		; }
-		.else
-		:
-		.endif
+	; }
+; ----------------------------------------------------------------------
+; game_scroll_calc - apply scroll operations generally
+	.export	game_scroll_calc
+game_scroll_calc:
+	.if	.defined(SMBV2)
+	: ; while (SMBV2 && fds_sprite_overlap_hit) {
+		lda	fds_sprite_overlap_hit
+		bne	:-
+	; }
+	.else
+	:
+	.endif
 
-		tya
-		sta	game_scroll_amount
-		clc
-		adc	game_scroll_h
-		sta	game_scroll_h
+	tya
+	sta	game_scroll_amount
+	clc
+	adc	game_scroll_h
+	sta	game_scroll_h
 
-		tya
-		clc
-		adc	pos_x_lo_screen_left
-		sta	pos_x_lo_screen_left
-		sta	ppu_scc_h_b
-		lda	pos_x_hi_screen_left
-		adc	#0
-		sta	pos_x_hi_screen_left
-	
-		and	#ppu_ctlr0::bg_parity
-		.if	.defined(SMBV1)
-			sta	zp_byte_00
-	
-			lda	ppu_ctlr0_b
-			and	#<~ppu_ctlr0::bg_parity
-			ora	zp_byte_00
-			sta	ppu_ctlr0_b
-		.elseif	.defined(SMBV2)
-			sta	ppu_ctlr0_bg
-		.endif
+	tya
+	clc
+	adc	pos_x_lo_screen_left
+	sta	pos_x_lo_screen_left
+	sta	ppu_scc_h_b
+	lda	pos_x_hi_screen_left
+	adc	#0
+	sta	pos_x_hi_screen_left
 
-		jsr	game_screen_pos_x_calc
+	and	#ppu_ctlr0::bg_parity
+	.if	.defined(SMBV1)
+		sta	zp_byte_00
 
-		lda	#8
-		sta	timer_scroll
-		jmp	:++
-	: ; } else {
-		lda	#0
-		sta	game_scroll_amount
-	: ; }
+		lda	ppu_ctlr0_b
+		and	#<~ppu_ctlr0::bg_parity
+		ora	zp_byte_00
+		sta	ppu_ctlr0_b
+	.elseif	.defined(SMBV2)
+		sta	ppu_ctlr0_bg
+	.endif
 
+	jsr	game_screen_pos_x_calc
+
+	lda	#8
+	sta	timer_scroll
+	jmp	:++
+; ----------------
+:
+	lda	#0
+	sta	game_scroll_amount
+; ----------------
+:
 	ldx	#0
 	jsr	pos_bits_get_do_x
 	sta	zp_byte_00

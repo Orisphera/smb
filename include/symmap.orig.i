@@ -17,6 +17,7 @@ WKEYUD	=	joypad_a_b_held
 CMODE	=	proc_id_obj
 PLCMOD	=	proc_id_player
 ENCMOD	=	proc_id_actor
+CMEND	=	proc_id_actor_end
 ENMYNO	=	obj_id_actor
 CSTAT	=	state_player
 PLSTAT	=	state_player
@@ -86,6 +87,7 @@ SCOBJY	=	bg_score_pos_y
 ENCONT	=	stomp_counter
 SCDPTM	=	timer_score
 OAM	=	oam_buffer
+BGDBPT	=	ppu_displist_meta_offset
 BKMFLG	=	actor_bowser_ani_flag
 BKMCNT	=	timer_ani_bowser
 BKMDOT	=	veloc_x_bowser
@@ -196,8 +198,8 @@ FRLPCT	=	actor_loop_counter
 SPGPWR	=	accel_y_spring
 PBITFLG	=	actor_bullet_cheep_mask
 PLICCT	=	timer_scene_trans
-PLMVX	=	scroll_x_player
-PLXMVL	=	veloc_x_player_abs
+KEYA1	=	joypad_p1
+PLXMVL	=	scroll_x_player
 ACLPW0	=	accel_x_friction
 MXSPFG	=	veloc_x_player_run
 PLSMFG	=	player_swimming
@@ -242,6 +244,7 @@ FXCHPT	=	actor_offset
 FCXHCT	=	actor_page_loc
 FCXHFG	=	actor_page_on
 BGOTMD	=	bg_proc_id
+BGWTIM	=	game_scroll_h
 SCCH	=	ppu_scc_h_b
 SCCV	=	ppu_scc_v_b
 BBGFG0	=	course_fg_id
@@ -345,7 +348,6 @@ TIMEMD	=	PLMDPY
 NOCRMD	=	PLC0MD
 
 MSBMD0	=	bg_procs::init
-GMBGMD	=	bg_procs::bg
 
 PBCMD	=	col_boxes::box_0
 PSCMD	=	col_boxes::box_1
@@ -483,6 +485,12 @@ TLMOD	=	system_modes::title
 PYMOD	=	system_modes::game
 SCMOD	=	system_modes::castle_victory
 GVMOD	=	system_modes::game_over
+
+GMITMD	=	game_modes::init_0
+GMBGMD	=	game_modes::scr
+GMPYMD	=	game_modes::proc
+
+BGD02	=	nmi_addr::buffer_11_A
 ; ----------------------------------------------------------------------
 HOLE0	=	metatile_0::blank_a
 HOLE1	=	metatile_0::blank_b
@@ -633,6 +641,27 @@ CSDRVS	=	col_box_screen_right
 FRMXCK	=	pos_bits_get_do_x
 CRBGCK	=	col_box_buffer
 FRTADC	=	scenery_get_buffer_ptr
-
+PLAYER	=	player_proc
+PLTOOL	=	proj_proc
+ENEMY	=	actor_proc
+PLFRCK	=	pos_bits_get_player
+PLPSCV	=	pos_calc_x_rel_player
+PLCSET	=	render_player
+AGBLOK	=	block_flatten
+DWBLOK	=	block_proc
+COINHM	=	misc_proc
+GUN	=	cannon_proc
+WHPLMV	=	whirlpool_proc
+GLFGMV	=	pole_proc
+PLYTIM	=	stats_time_proc
+BGBLNK	=	meta_color_rotate
+PLFLSH	=	player_proc_firefl_do
+SCRPRS	=	game_scroll
+SCRCAL	=	game_scroll_calc
+DSXPCR	=	game_screen_pos_x_calc
+NWFRST	=	scenery_proc
+BGMSET	=	game_init_area_music
+SCDISP	=	bg_score_disp
+PLBX20	=	player_proc_firefl_do_2
 
 .endif	; SYMMAP_ORIG_I
