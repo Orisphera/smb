@@ -334,7 +334,7 @@ scenery_proc_main:
 	: ; }
 
 	ldx	#METATILE_MAX-1
-	lda	#0
+	lda	#metatile_0::blank_a
 	: ; for (entry of scenery_metatile) {
 		sta	scenery_metatile, x
 
@@ -496,13 +496,13 @@ scenery_proc_main:
 		lda	scenery_metatile, x
 		cmp	scenery_buffer_cutoff, y
 		bcs	:+ ; if (scenery_metatile_entry < this.buffer_cutoff[scenery_metatile_entry>>6]) {
-			lda	#0
+			lda	#metatile_0::blank_a
 		: ; }
 		ldy	scenery_proc_main_buffer_ptr_idx
 		sta	(game_buffer), y
 		tya
 		clc
-		adc	#16
+		adc	#PPU_VRAM_COLUMN_COUNT/METATILE_WIDTH_CHR
 		tay
 
 		inx
@@ -513,10 +513,10 @@ scenery_proc_main:
 	rts
 ; ----------------
 scenery_buffer_cutoff:
-	.byte	metatile_0::bumpable
-	.byte	metatile_1::bumpable
-	.byte	metatile_2::bumpable
-	.byte	metatile_3::bumpable
+	.byte	metatile_0::scenery_prio
+	.byte	metatile_1::scenery_prio
+	.byte	metatile_2::scenery_prio
+	.byte	metatile_3::scenery_prio
 ; ----------------------------------------------------------------------
 scenery_do:
 	.if	.defined(VS)

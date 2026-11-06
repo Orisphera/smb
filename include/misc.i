@@ -7,8 +7,6 @@ MISC_I = 1
 .include	"mem.i"
 .include	"sound.i"
 
-METATILE_SIZE	= 4
-
 	.enum	proc_id_actors
 		free
 		active
@@ -418,11 +416,11 @@ SCORE_POWERUP		= scores::value_1000
 	.endenum
 
 	.enum	clear_blocks
-		brick_a		= <((meta_clear_blocks_brick_a-meta_clear_blocks)/METATILE_SIZE)
-		brick_b		= <((meta_clear_blocks_brick_b-meta_clear_blocks)/METATILE_SIZE)
-		block_empty	= <((meta_clear_blocks_block_empty-meta_clear_blocks)/METATILE_SIZE)
-		blank_a		= <((meta_clear_blocks_blank_a-meta_clear_blocks)/METATILE_SIZE)
-		blank_b		= <((meta_clear_blocks_blank_b-meta_clear_blocks)/METATILE_SIZE)
+		brick_a		= <((meta_clear_blocks_brick_a-meta_clear_blocks)/METATILE_SIZE_CHR)
+		brick_b		= <((meta_clear_blocks_brick_b-meta_clear_blocks)/METATILE_SIZE_CHR)
+		block_empty	= <((meta_clear_blocks_block_empty-meta_clear_blocks)/METATILE_SIZE_CHR)
+		blank_a		= <((meta_clear_blocks_blank_a-meta_clear_blocks)/METATILE_SIZE_CHR)
+		blank_b		= <((meta_clear_blocks_blank_b-meta_clear_blocks)/METATILE_SIZE_CHR)
 	.endenum
 
 	.enum	scenery_procs

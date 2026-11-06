@@ -72,7 +72,7 @@ actor_bowser_ending:
 			sta	meta_clear_put_do_addr
 			ldy	ppu_displist_offset
 			iny
-			ldx	#clear_blocks::blank_a*METATILE_SIZE
+			ldx	#clear_blocks::blank_a*METATILE_SIZE_CHR
 			jsr	meta_clear_put_do
 			ldx	actor_index
 			jsr	meta_step
