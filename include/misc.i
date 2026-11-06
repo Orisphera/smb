@@ -111,21 +111,22 @@ ACTOR_MODE_PARENT_MASK	= %00001111
 	.endenum
 
 	.enum	player_procs
-		init
-		vine
-		pipe_h
-		pipe_v
+		init		= <((player_proc_00-player_proc_tbl)/WORD_SIZE)
+		vine		= <((player_proc_01-player_proc_tbl)/WORD_SIZE)
+		pipe_h		= <((player_proc_02-player_proc_tbl)/WORD_SIZE)
+		pipe_v		= <((player_proc_03-player_proc_tbl)/WORD_SIZE)
 
-		pole
-		victory
-		lifedown
-		enter
-		ctrl
+		pole		= <((player_proc_04-player_proc_tbl)/WORD_SIZE)
+		victory		= <((player_proc_05-player_proc_tbl)/WORD_SIZE)
+		lifedown	= <((player_proc_06-player_proc_tbl)/WORD_SIZE)
+		enter		= <((player_proc_07-player_proc_tbl)/WORD_SIZE)
+		ctrl		= <((player_proc_08-player_proc_tbl)/WORD_SIZE)
 
-		size_chg
-		hurt
-		death
-		firefl
+		size_chg	= <((player_proc_09-player_proc_tbl)/WORD_SIZE)
+		hurt		= <((player_proc_0A-player_proc_tbl)/WORD_SIZE)
+		death		= <((player_proc_0B-player_proc_tbl)/WORD_SIZE)
+		firefl		= <((player_proc_0C-player_proc_tbl)/WORD_SIZE)
+		count
 	.endenum
 
 PLAYER_DEATH_VELOC_Y	= <-4
@@ -514,5 +515,6 @@ CLIMB_DIR_BOUND	= 16
 
 SPRING_ACCEL_Y_INIT	= 112
 SPRING_ACCEL_TIMER	= 3
+COL_BASE_SIDE_COUNT	= 2
 
 .endif	; MISC_I

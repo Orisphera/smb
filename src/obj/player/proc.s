@@ -9,23 +9,47 @@
 .include	"misc.i"
 .include	"macros.i"
 
+.linecont	+
+
+; ----------------------------------------------------------------------
+; player_proc - player main process
 	.export	player_proc
 player_proc:
 	lda	proc_id_player
 	jsr	tbljmp
-	.addr	player_proc_init
-	.addr	player_proc_vine
-	.addr	player_proc_pipe_h
-	.addr	player_proc_pipe_v
-	.addr	player_proc_pole
-	.addr	player_proc_victory
-	.addr	player_proc_lifedown
-	.addr	player_proc_enter
-	.addr	player_proc_ctrl
-	.addr	player_proc_size_chg
-	.addr	player_proc_hurt
-	.addr	player_proc_death
-	.addr	player_proc_firefl
+; ----------------
+	.export	player_proc_tbl
+	.export	player_proc_00
+	.export	player_proc_01
+	.export	player_proc_02
+	.export	player_proc_03
+	.export	player_proc_04
+	.export	player_proc_05
+	.export	player_proc_06
+	.export	player_proc_07
+	.export	player_proc_08
+	.export	player_proc_09
+	.export	player_proc_0A
+	.export	player_proc_0B
+	.export	player_proc_0C
+player_proc_tbl:
+player_proc_00:	.addr	player_proc_init
+player_proc_01:	.addr	player_proc_vine
+player_proc_02:	.addr	player_proc_pipe_h
+player_proc_03:	.addr	player_proc_pipe_v
+player_proc_04:	.addr	player_proc_pole
+player_proc_05:	.addr	player_proc_victory
+player_proc_06:	.addr	player_proc_lifedown
+player_proc_07:	.addr	player_proc_enter
+player_proc_08:	.addr	player_proc_ctrl
+player_proc_09:	.addr	player_proc_size_chg
+player_proc_0A:	.addr	player_proc_hurt
+player_proc_0B:	.addr	player_proc_death
+player_proc_0C:	.addr	player_proc_firefl
+player_proc_tbl_end:
+	.assert	(((player_proc_tbl_end-player_proc_tbl)/WORD_SIZE)=player_procs::count)\
+	,error\
+	,"player_proc_tbl mis-sized"
 ; ----------------------------------------------------------------------
 player_proc_enter:
 	lda	game_start_type

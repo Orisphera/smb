@@ -23,13 +23,13 @@ motion_x_player:
 		; }
 	
 	motion_x_do:
-		lda	veloc_x, x
+		lda	veloc_x_obj, x
 		asl	a
 		asl	a
 		asl	a
 		asl	a
 		sta	veloc_x_16x
-		lda	veloc_x, x
+		lda	veloc_x_obj, x
 		lsr	a
 		lsr	a
 		lsr	a
@@ -57,12 +57,12 @@ motion_x_player:
 		pha
 	
 		ror	a
-		lda	pos_x_lo, x
+		lda	pos_x_lo_obj, x
 		adc	veloc_x_lo_motion
-		sta	pos_x_lo, x
-		lda	pos_x_hi, x
+		sta	pos_x_lo_obj, x
+		lda	pos_x_hi_obj, x
 		adc	veloc_x_hi_motion
-		sta	pos_x_hi, x
+		sta	pos_x_hi_obj, x
 
 		pla
 		clc
@@ -218,32 +218,32 @@ motion_gravity:
 	sta	accel_y, x
 
 	ldy	#0
-	lda	veloc_y, x
+	lda	veloc_y_obj, x
 	bpl	:+ ; if (this.veloc_y < 0) {
 		dey
 	: ; }
 	sty	veloc_y_grav
-	adc	pos_y_lo, x
-	sta	pos_y_lo, x
-	lda	pos_y_hi, x
+	adc	pos_y_lo_obj, x
+	sta	pos_y_lo_obj, x
+	lda	pos_y_hi_obj, x
 	adc	veloc_y_grav
-	sta	pos_y_hi, x
+	sta	pos_y_hi_obj, x
 
 	lda	accel_y_grav, x
 	clc
 	adc	motion_gravity_accel_y_inc
 	sta	accel_y_grav, x
 
-	lda	veloc_y, x
+	lda	veloc_y_obj, x
 	adc	#0
-	sta	veloc_y, x
+	sta	veloc_y_obj, x
 	cmp	motion_gravity_veloc_y_max_abs
 	bmi	:+
 	lda	accel_y_grav, x
 	cmp	#$80
 	bcc	:+ ; if (abs(this.veloc_y) > abs(motion_gravity_veloc_y_max_abs) && this.accel_y < 0) {
 		lda	motion_gravity_veloc_y_max_abs
-		sta	veloc_y, x
+		sta	veloc_y_obj, x
 		lda	#0
 		sta	accel_y_grav, x
 	: ; }
@@ -263,16 +263,16 @@ motion_gravity:
 		sbc	motion_gravity_accel_y_dec
 		sta	accel_y_grav, x
 
-		lda	veloc_y, x
+		lda	veloc_y_obj, x
 		sbc	#0
-		sta	veloc_y, x
+		sta	veloc_y_obj, x
 		cmp	motion_gravity_veloc_y_max_neg
 		bpl	:+
 		lda	accel_y_grav, x
 		cmp	#<-128
 		bcs	:+ ; if (abs(this.veloc_y) > abs(motion_gravity_veloc_y_max_abs) && this.accel_y >= 0) {
 			lda	motion_gravity_veloc_y_max_neg
-			sta	veloc_y, x
+			sta	veloc_y_obj, x
 			lda	#<-1
 			sta	accel_y_grav, x
 		; }

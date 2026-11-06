@@ -33,10 +33,21 @@ col_bg_proc_player_halt_dir	= zp_byte_00
 col_plat_s_proc_idx		= zp_byte_00
 col_bg_proc_side_rep		= zp_byte_00
 col_bg_proc_pipe_v_metatile_a	= zp_byte_00
+col_box_w_bits_mask		= zp_byte_00
+col_box_proc_box_idx		= zp_byte_00
+col_box_proc_pos_x_rel_player	= zp_byte_01
+col_box_w_bits_offset_x_lo	= zp_byte_01
 col_bg_proc_pipe_v_metatile_b	= zp_byte_01
 col_obj_idx			= zp_byte_01
+col_box_screen_right_offset_x_hi = zp_byte_01
+col_box_screen_right_offset_x_lo = zp_byte_02
+col_box_proc_pos_y_rel_player	= zp_byte_02
 col_buffer_ptr_idx		= zp_byte_02
+col_box_buffer_old_tile		= zp_byte_03
 col_box_buffer_tbl_offset	= zp_byte_04
+col_box_buffer_player_offset	= zp_byte_05
+col_base_actor_b_index		= zp_byte_06
+col_base_box_side		= zp_byte_07
 
 meta_clear_put_do_addr		= zp_addr_04
 

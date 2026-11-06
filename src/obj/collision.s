@@ -2226,18 +2226,21 @@ col_actor_bounce_proc:
 
 	jmp	col_actor_check_side_do
 ; ----------------------------------------------------------------------
+; col_hammer_bro_block_check - check for hammer bro jumping through blocks
 col_hammer_bro_block_check:
 	jsr	col_actor_block_col
 	beq	col_actor_fall
 	cmp	#metatile_0::blank_d
 	bne	col_actor_fall_check
 ; ----------------------------------
+; col_actor_block_bump_kill - handle bumping an actor through a block
 col_actor_block_bump_kill:
 	jsr	col_actor_kill
 	lda	#<-4
 	sta	veloc_y_actor, x
 	rts
 ; ----------------------------------
+; col_actor_fall_check - check state of falling actor
 col_actor_fall_check:
 	lda	timer_ani_actor, x
 	bne	col_actor_fall ; if () {
@@ -2248,17 +2251,20 @@ col_actor_fall_check:
 		jmp	col_actor_check_side_do
 	; } else col_actor_fall();
 ; ----------------------------------------------------------------------
+; col_actor_fall - trigger the descending state for an actor
 col_actor_fall:
 	lda	state_actor, x
 	ora	#actor_states::descending
 	sta	state_actor, x
 	rts
 ; ----------------------------------------------------------------------
+; col_actor_block_col - check collision buffer for actor
 col_actor_block_col:
-	lda	#$00
-	ldy	#$15
+	lda	#0
+	ldy	#<(col_bg_buffer_x_val_a-col_bg_buffer_offset_x)
 	jmp	col_box_buffer_check_actor
 ; ----------------------------------------------------------------------
+; col_bg_proc_check_non_solid - check for non-solid blocks in tile collision
 col_bg_proc_check_non_solid:
 	cmp	#metatile_0::climb_blank
 	beq	:+
@@ -2282,6 +2288,7 @@ col_bg_proc_check_non_solid:
 	cmp	#metatile_1::blank_c
 	: rts
 ; ----------------------------------------------------------------------
+; col_proj_proc - projectile x background collision
 	.export col_proj_proc
 col_proj_proc:
 	lda	pos_y_lo_proj, x
@@ -2315,6 +2322,7 @@ col_proj_proc:
 		rts
 	; }
 ; ----------------------------------------------------------------------
+; col_box_tbl - collision boxes
 	.export col_box_tbl
 	.export col_box_0, col_box_1
 	.export col_box_2, col_box_3
@@ -2323,24 +2331,15 @@ col_proj_proc:
 	.export col_box_8, col_box_9
 	.export col_box_10, col_box_11
 col_box_tbl:
-col_box_0:
-	.byte	2, 8, 14, 32
-col_box_1:
-	.byte	3, 20, 13, 32
-col_box_2:
-	.byte	2, 20, 14, 32
-col_box_3:
-	.byte	2, 9, 14, 21
-col_box_4:
-	.byte	0, 0, 24, 6
-col_box_5:
-	.byte	0, 0, 32, 13
-col_box_6:
-	.byte	0, 0, 48, 13
-col_box_7:
-	.byte	0, 0, 8, 8
-col_box_8:
-	.byte	6, 4, 10, 8
+col_box_0:	.byte	2, 8, 14, 32
+col_box_1:	.byte	3, 20, 13, 32
+col_box_2:	.byte	2, 20, 14, 32
+col_box_3:	.byte	2, 9, 14, 21
+col_box_4:	.byte	0, 0, 24, 6
+col_box_5:	.byte	0, 0, 32, 13
+col_box_6:	.byte	0, 0, 48, 13
+col_box_7:	.byte	0, 0, 8, 8
+col_box_8:	.byte	6, 4, 10, 8
 col_box_9:
 	.byte	3
 
@@ -2357,48 +2356,52 @@ col_box_9:
 	.elseif	.defined(SMBV2)
 		.byte	22
 	.endif
-col_box_10:
-	.byte	0, 2, 16, 21
-col_box_11:
-	.byte	4, 4, 12, 28
-; ----------------------------------
-	.export col_proj_box, col_misc_box
+col_box_10:	.byte	0, 2, 16, 21
+col_box_11:	.byte	4, 4, 12, 28
+; ----------------------------------------------------------------------
+; col_proj_box - load projectile collision box
+	.export col_proj_box
 col_proj_box:
 	txa
 	clc
-	adc	#$07
+	adc	#<(col_box_proj-col_box_obj)
 	tax
-	ldy	#$02
+	ldy	#<(pos_x_rel_proj-pos_x_rel_obj)
 
 	bne	col_box_proc_basic
 ; ----------------------------------
+; col_misc_box - load miscellaneous collision box
+	.export	col_misc_box
 col_misc_box:
 	txa
 	clc
-	adc	#$09
+	adc	#<(col_box_misc-col_box_obj)
 	tax
-	ldy	#$06
+	ldy	#<(pos_x_rel_misc-pos_x_rel_obj)
 ; ----------------------------------
+; col_box_proc_basic - load basic collision box
 col_box_proc_basic:
 	jsr	col_box_proc
 	jmp	col_box_screen_right
 ; ----------------------------------------------------------------------
-col_box_w_bits_mask		= zp_byte_00
-col_box_w_bits_offset_x_lo	= zp_byte_01
-
-	.export col_actor_box, col_plat_s_box
+; col_actor_box - load actor collision box
+	.export col_actor_box
 col_actor_box:
-	ldy	#$48
+	ldy	#%01001000
 	sty	col_box_w_bits_mask
-	ldy	#$44
 
+	ldy	#%01000100
 	jmp	col_box_w_bits
-; ----------------------------------
+; ----------------------------------------------------------------------
+; col_plat_s_box - load elevator collision box
+	.export	col_plat_s_box
 col_plat_s_box:
-	ldy	#$08
+	ldy	#%00001000
 	sty	col_box_w_bits_mask
-	ldy	#$04
+
+	ldy	#%00000100
 ; ----------------------------------
+; col_box_w_bits - load collision box for various actors
 col_box_w_bits:
 	lda	pos_x_lo_actor, x
 	sec
@@ -2416,25 +2419,28 @@ col_box_w_bits:
 	sta	actor_bits_mask, x
 	bne	col_box_offscr
 	jmp	col_box_actor_offset
-; ----------------------------------
+; ----------------------------------------------------------------------
+; col_plat_l_box - load lift collision box
 	.export col_plat_l_box
 col_plat_l_box:
 	inx
 	jsr	pos_bits_get_do_x
 	dex
 
-	cmp	#$FE
+	cmp	#%11111110
 	bcs	col_box_offscr
-
+; ----------------------------------
+; col_box_actor_offset - setup offset for actor collision
 col_box_actor_offset:
 	txa
 	clc
-	adc	#1
+	adc	#<(col_box_actor-col_box_obj)
 	tax
-	ldy	#1
+	ldy	#<(pos_x_rel_actor-pos_x_rel_obj)
 	jsr	col_box_proc
 	jmp	col_box_screen_right
 ; ----------------------------------
+; col_box_offscr - clear collision box data
 col_box_offscr:
 	txa
 	asl	a
@@ -2447,22 +2453,20 @@ col_box_offscr:
 	sta	pos_y_col_box_se_actor, y
 	rts
 ; ----------------------------------------------------------------------
-col_box_proc_box_idx		= zp_byte_00
-col_box_proc_pos_x_rel_player	= zp_byte_01
-col_box_proc_pos_y_rel_player	= zp_byte_02
+; col_box_proc - perform collision box calculation
 	.export col_box_proc
 col_box_proc:
 	stx	col_box_proc_box_idx
-	lda	pos_y_rel_player, y
+	lda	pos_y_rel_obj, y
 	sta	col_box_proc_pos_y_rel_player
-	lda	pos_x_rel_player, y
+	lda	pos_x_rel_obj, y
 	sta	col_box_proc_pos_x_rel_player
 	txa
 	asl	a
 	asl	a
 	pha
 	tay
-	lda	col_box_player, x
+	lda	col_box_obj, x
 	asl	a
 	asl	a
 	tax
@@ -2489,9 +2493,7 @@ col_box_proc:
 	ldx	col_box_proc_box_idx
 	rts
 ; ----------------------------------------------------------------------
-col_box_screen_right_offset_x_hi	= zp_byte_01
-col_box_screen_right_offset_x_lo	= zp_byte_02
-
+; col_box_screen_right - handle screen collision
 col_box_screen_right:
 	lda	pos_x_lo_screen_left
 	clc
@@ -2500,9 +2502,9 @@ col_box_screen_right:
 	lda	pos_x_hi_screen_left
 	adc	#0
 	sta	col_box_screen_right_offset_x_hi
-	lda	pos_x_lo, x
+	lda	pos_x_lo_obj, x
 	cmp	col_box_screen_right_offset_x_lo
-	lda	pos_x_hi, x
+	lda	pos_x_hi_obj, x
 	sbc	col_box_screen_right_offset_x_hi
 	bcc	:+++ ; if () {
 		lda	pos_x_col_box_se, y
@@ -2538,14 +2540,11 @@ col_box_screen_right:
 		rts
 	; }
 ; ----------------------------------------------------------------------
-COL_BASE_SIDE_COUNT	= 2
-; ----------------------------------------------------------------------
-col_base_actor_b_index	= zp_byte_06
-col_base_box_side	= zp_byte_07
-
+; col_base_player - base player collision check
 col_base_player:
 	ldx	#0
-
+; ----------------
+; col_base_actor - base actor collision check
 col_base_actor:
 	sty	col_base_actor_b_index
 	lda	#COL_BASE_SIDE_COUNT-1
@@ -2617,33 +2616,38 @@ col_base_actor:
 	ldy	col_base_actor_b_index
 	rts
 ; ----------------------------------------------------------------------
+; col_box_buffer_check_actor - actor x background cross check
 col_box_buffer_check_actor:
 	pha
 	txa
 	clc
-	adc	#$01
+	adc	#<(pos_x_hi_actor-pos_x_hi_obj)
 	tax
 	pla
 	jmp	col_box_buffer_check_do
 ; ----------------------------------
+; col_box_buffer_check_misc - misc object x background cross check
 col_box_buffer_check_misc:
 	txa
 	clc
-	adc	#$0D
+	adc	#<(pos_x_hi_misc-pos_x_hi_obj)
 	tax
-	ldy	#$1B
+	ldy	#<(col_bg_buffer_x_val_c_misc-col_bg_buffer_offset_x)
 	jmp	col_box_buffer_check
 ; ----------------------------------
+; col_box_buffer_check_proj - projectile x background cross check
 col_box_buffer_check_proj:
-	ldy	#$1A
+	ldy	#<(col_bg_buffer_x_val_c_proj-col_bg_buffer_offset_x)
 	txa
 	clc
-	adc	#$07
+	adc	#<(pos_x_hi_proj-pos_x_hi_obj)
 	tax
 ; ----------------------------------
+; col_box_buffer_check - basic collision box buffer check
 col_box_buffer_check:
-	lda	#$00
+	lda	#0
 ; ----------------------------------
+; col_box_buffer_check_do - selective collision box buffer check
 col_box_buffer_check_do:
 	jsr	col_box_buffer
 	ldx	actor_index
@@ -2652,11 +2656,11 @@ col_box_buffer_check_do:
 ; ----------------------------------------------------------------------
 col_bg_buffer_offset:
 col_bg_buffer_offset_tall:
-	.byte	0
+	.byte	<(col_bg_buffer_offset_x_tall-col_bg_buffer_offset_x)
 col_bg_buffer_offset_swimming:
-	.byte	7
+	.byte	<(col_bg_buffer_offset_x_swimming-col_bg_buffer_offset_x)
 col_bg_buffer_offset_short:
-	.byte	14
+	.byte	<(col_bg_buffer_offset_x_short-col_bg_buffer_offset_x)
 col_bg_buffer_offset_end:
 
 col_bg_buffer_offset_x:
@@ -2673,10 +2677,10 @@ col_bg_buffer_x_val_a:
 col_bg_buffer_x_val_b:
 	.byte	4, 20
 	
-col_bg_buffer_x_val_c_a:
+col_bg_buffer_x_val_c_proj:
 	.byte	4
 
-col_bg_buffer_x_val_c_b:
+col_bg_buffer_x_val_c_misc:
 	.byte	4
 
 col_bg_buffer_offset_y:
@@ -2699,9 +2703,11 @@ col_bg_buffer_y_val_c_a:
 col_bg_buffer_y_val_c_b:
 	.byte	16
 ; ----------------------------------
+; col_box_player_step - player x background step cross
 col_box_player_step:
 	iny
 ; ----------------------------------
+; col_box_player_jump - player x background jump cross
 col_box_player_jump:
 	lda	#0
 .if	.defined(SMB)|.defined(SMBV2)
@@ -2710,24 +2716,24 @@ col_box_player_jump:
 	jmp	col_box_player_buffer_do
 .endif
 ; ----------------------------------
+; col_box_player_back - player back cross
 col_box_player_back:
 	lda	#1
-
+; ----------------
+; col_box_player_buffer_do - common player buffer cross
 col_box_player_buffer_do:
 	ldx	#0
 ; ----------------------------------
-col_box_buffer_old_tile		= zp_byte_03
-col_box_buffer_player_offset	= zp_byte_05
-
+; col_box_buffer - check buffer cross
 	.export col_box_buffer
 col_box_buffer:
 	pha
 	sty	col_box_buffer_tbl_offset
 	lda	col_bg_buffer_offset_x, y
 	clc
-	adc	pos_x_lo, x
+	adc	pos_x_lo_obj, x
 	sta	col_box_buffer_player_offset
-	lda	pos_x_hi, x
+	lda	pos_x_hi_obj, x
 	adc	#0
 	and	#MOD_2
 	lsr	a
@@ -2738,7 +2744,7 @@ col_box_buffer:
 	lsr	a
 	jsr	scenery_get_buffer_ptr
 	ldy	col_box_buffer_tbl_offset
-	lda	pos_y_lo, x
+	lda	pos_y_lo_obj, x
 	clc
 	adc	col_bg_buffer_offset_y, y
 	and	#CLAMP_16
@@ -2751,11 +2757,11 @@ col_box_buffer:
 	ldy	col_box_buffer_tbl_offset
 	pla
 	bne	:+ ; if () {
-		lda	pos_y_lo, x
+		lda	pos_y_lo_obj, x
 
 		jmp	:++
 	: ; } else {
-		lda	pos_x_lo, x
+		lda	pos_x_lo_obj, x
 	: ; }
 	and	#MOD_16
 	sta	col_box_buffer_tbl_offset
