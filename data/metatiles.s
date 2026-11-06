@@ -119,8 +119,10 @@ bg_meta_block_0_tree_c:
 	.byte	chr_bg::tree+3
 	.byte	chr_bg::tree+5
 ; ---
-	.export bg_meta_block_0_cutoff
-bg_meta_block_0_cutoff:
+	.export bg_meta_block_0_bumpable
+bg_meta_block_0_bumpable:
+	.export bg_meta_block_0_solid
+bg_meta_block_0_solid:
 ; ---
 	.export bg_meta_block_0_pipe_v_a, bg_meta_block_0_pipe_v_b
 	.export bg_meta_block_0_pipe_v_c, bg_meta_block_0_pipe_v_d
@@ -257,6 +259,9 @@ bg_meta_block_0_blank_d:
 	.byte	chr_bg::blanks
 	.byte	chr_bg::blanks
 	.byte	chr_bg::blanks
+; ---
+	.export	bg_meta_block_0_climbable
+bg_meta_block_0_climbable:
 ; ---
 	.export bg_meta_block_0_flag_ball
 bg_meta_block_0_flag_ball:
@@ -400,8 +405,8 @@ bg_meta_block_1_tree_trunk:
 		.byte	chr_bg::tree+3
 	.endif
 ; ---
-	.export bg_meta_block_1_cutoff
-bg_meta_block_1_cutoff:
+	.export bg_meta_block_1_bumpable
+bg_meta_block_1_bumpable:
 ; ---
 	.export bg_meta_block_1_brick_a
 	.export bg_meta_block_1_brick_b
@@ -545,6 +550,9 @@ bg_meta_block_1_blank_c:
 	.byte	chr_bg::blanks
 	.byte	chr_bg::blanks
 ; ---
+	.export	bg_meta_block_1_solid
+bg_meta_block_1_solid:
+; ---
 	.export bg_meta_block_1_stair
 bg_meta_block_1_stair:
 	.byte	chr_bg::stair
@@ -634,6 +642,9 @@ bg_meta_block_1_pipe_water_b:
 	.byte	chr_bg::pipe_h+9
 	.byte	chr_bg::pipe_h+12
 ; ---
+	.export	bg_meta_block_1_climbable
+bg_meta_block_1_climbable:
+; ---
 	.export bg_meta_block_1_flag_ball
 bg_meta_block_1_flag_ball:
 	.byte	chr_bg::blanks
@@ -696,8 +707,10 @@ bg_meta_block_2_water_b:
 	.byte	chr_bg::blanks+2
 	.byte	chr_bg::blanks+2
 ; ---
-	.export bg_meta_block_2_cutoff
-bg_meta_block_2_cutoff:
+	.export bg_meta_block_2_bumpable
+bg_meta_block_2_bumpable:
+	.export	bg_meta_block_2_solid
+bg_meta_block_2_solid:
 ; ---
 	.export bg_meta_block_2_cloud_small
 bg_meta_block_2_cloud_small:
@@ -736,11 +749,14 @@ bg_meta_block_2_bridge_castle:
 		.byte	chr_bg::plat_a+9
 	.endif
 ; ---
+	.export	bg_meta_block_2_climbable
+bg_meta_block_2_climbable:
+; ---
 	.export bg_meta_block_3
 bg_meta_block_3:
 ; ---
-	.export bg_meta_block_3_cutoff
-bg_meta_block_3_cutoff:
+	.export bg_meta_block_3_bumpable
+bg_meta_block_3_bumpable:
 ; ---
 	.export bg_meta_block_3_block_q_set
 bg_meta_block_3_block_q_set:
@@ -780,6 +796,9 @@ bg_meta_block_3_coin_b:
 	.byte	chr_bg::coin_b+1
 	.byte	chr_bg::coin_b+3
 ; ---
+	.export	bg_meta_block_3_block_solid
+bg_meta_block_3_block_solid:
+; ---
 	.export bg_meta_block_3_block_invis
 bg_meta_block_3_block_invis:
 	.byte	chr_bg::block_empty
@@ -793,3 +812,6 @@ bg_meta_block_3_axe:
 	.byte	chr_bg::axe+2
 	.byte	chr_bg::axe+1
 	.byte	chr_bg::axe+3
+; ---
+	.export	bg_meta_block_3_climbable
+bg_meta_block_3_climbable:

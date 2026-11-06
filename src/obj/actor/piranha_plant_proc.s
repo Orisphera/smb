@@ -28,9 +28,9 @@ actor_A_0D_proc:
 		bne	:+++
 		lda	veloc_y_piranha, x
 		bmi	:++ ; if (!this.negated && this.veloc_y >= 0) {
-			jsr	col_player_bullet_diff
-			bpl	:+ ; if (col_player_bullet_diff() < 0) {
-				lda	col_player_bullet_diff_pos_x_rel
+			jsr	col_player_actor_offset_x
+			bpl	:+ ; if (col_player_actor_offset_x() < 0) {
+				lda	col_player_actor_offset_x_pos_x_rel
 				neg_m
 				sta	actor_proc_piranha_plant_pos_x_rel_abs
 			: ; }

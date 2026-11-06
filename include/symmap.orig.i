@@ -5,6 +5,7 @@ SYMMAP_ORIG_I	= 1
 .include	"misc.i"
 .include	"modes.i"
 .include	"tiles.i"
+.include	"course_flags.i"
 
 WORK	=	zp_byte_00
 INDEX	=	actor_index
@@ -320,7 +321,7 @@ URAFLG	=	game_hard_mode_new
 BSLFG	=	title_course_sel_on
 CTNCOS	=	course_no_continued
 RSCKFG	=	game_boot_flag
-
+; ----------------------------------------------------------------------
 PLSMMD	=	player_procs::enter
 PLMDPY	=	player_procs::ctrl
 PLWUMD	=	player_procs::vine
@@ -476,7 +477,7 @@ TLMOD	=	system_modes::title
 PYMOD	=	system_modes::game
 SCMOD	=	system_modes::castle_victory
 GVMOD	=	system_modes::game_over
-
+; ----------------------------------------------------------------------
 HOLE0	=	metatile_0::blank_a
 HOLE1	=	metatile_0::blank_b
 GRS0	=	metatile_0::bush_a
@@ -484,13 +485,19 @@ MT0	=	metatile_0::hill_a
 HNDR0	=	metatile_0::bridge_rope
 CHIN0	=	metatile_0::chain
 WOOD1	=	metatile_0::tree_a
+; ----------------
+NOBK0	=	metatile_0::solid
+
 CHM0	=	metatile_0::pipe_v_a
 CHM1	=	metatile_0::pipe_h_a
 CORL0	=	metatile_0::coral
 BKBSW	=	metatile_0::blank_d
+; ----------------
+THWR0	=	metatile_0::climbable
+
 POLE0	=	metatile_0::flag_ball
 WOOD0	=	metatile_0::climb_blank
-
+; ----------------------------------
 BRIK0	=	metatile_1::brick_a
 BRIK1	=	metatile_1::brick_b
 GRND0	=	metatile_1::floor_normal
@@ -506,6 +513,9 @@ BRBCS	=	metatile_1::brick_l
 BRSMS	=	metatile_1::brick_m
 STBCO	=	metatile_1::blank_b
 STBMS	=	metatile_1::blank_c
+; ----------------
+NOBK1	=	metatile_1::solid
+
 HDBK0	=	metatile_1::stair
 CSWL0	=	metatile_1::floor_castle
 BRGE0	=	metatile_1::bridge_base
@@ -513,21 +523,34 @@ BGUN0	=	metatile_1::cannon_a
 SPRIG	=	metatile_1::spring_bg_a
 ROCK0	=	metatile_1::floor_underwater
 WCHM0	=	metatile_1::pipe_water_a
-WOOD3	=	metatile_1::flag_ball
+; ----------------
+THWR1	=	metatile_1::climbable
 
+WOOD3	=	metatile_1::flag_ball
+; ----------------------------------
 CLD00	=	metatile_2::cloud_a
 WATR0	=	metatile_2::water_a
 WATR1	=	metatile_2::water_b
+; ----------------
+NOBK2	=	metatile_2::solid
+
 CLBK0	=	metatile_2::cloud_small
 STTL0	=	metatile_2::bridge_castle
-
+; ----------------
+THWR2	=	metatile_2::climbable
+; ----------------------------------
 BXCON	=	metatile_3::block_q_a
 BXMUS	=	metatile_3::block_q_b
 COIN0	=	metatile_3::coin_a
 COIN1	=	metatile_3::coin_b
+; ----------------
+NOBK3	=	metatile_3::solid
+
 BRIK2	=	metatile_3::block_invis
 STEK0	=	metatile_3::axe
-
+; ----------------
+THWR3	=	metatile_3::climbable
+; ----------------------------------------------------------------------
 FIRON	=	col_proj_actor_damage
 CROJCS	=	col_base_player
 CROJCK	=	col_base_actor
@@ -549,7 +572,7 @@ BAKCRS	=	col_player_harm_proc_check_dir
 CRENPL	=	col_player_actor_proc
 HEDC15	=	col_player_harm_proc_do
 ENTURN	=	col_actor_calc_dir_check
-CRECMP	=	col_player_bullet_diff
+CRECMP	=	col_player_actor_offset_x
 FIRH10	=	col_actor_kill
 FIRHIT	=	col_actor_kill
 FIOT10	=	col_player_actor_stomp_do
@@ -575,5 +598,24 @@ PLSR60	=	col_bg_proc_bg_tile_blank
 COINUP	=	misc_proc_coin_add
 BGCOES	=	meta_put_blank
 CHRCLR	=	scenery_actor_kill
+CROSID	=	courses_world_offsets
+COURSD	=	courses_area_offsets
+CORCDT	=	bg_text_warps
+BKCKSB	=	col_tile_attr_stx
+CRDWDT	=	col_actor_side_col_states
+CRXSDT	=	col_actor_stomp_veloc_x
+CRENBG	=	col_actor_ground_proc
+BGYCMP	=	col_actor_pos_y_diff
+ENBGCK	=	col_actor_block_col
+BGCMP	=	col_bg_proc_check_non_solid
+BGFAIL	=	col_actor_block_bump_kill
+FLORON	=	col_actor_land_do
+ENCBCK	=	col_box_buffer_check_actor
+CRBD00	=	col_bg_buffer_offset_x
+CRBD01	=	col_bg_buffer_x_val_a
+FIEN10	=	actor_proc_hammer_bro_jump_do
+ENCRA3	=	col_actor_reverse
+CRFEBG	=	col_hammer_bro_block_check
+CREB01	=	col_actor_bounce_proc
 
 .endif	; SYMMAP_ORIG_I

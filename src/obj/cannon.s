@@ -97,18 +97,18 @@ cannon_bullet_proc:
 			cmp	#%00001100
 			beq	:+++++ ; if ((bits_offscr_actor & 0x0C) != 0x0C) {
 				ldy	#DIR_RIGHT
-				jsr	col_player_bullet_diff
-				bmi	:+ ; if (col_player_bullet_diff() >= 0) {
+				jsr	col_player_actor_offset_x
+				bmi	:+ ; if (col_player_actor_offset_x() >= 0) {
 					iny
 				: ; }
 				sty	motion_dir_actor, x
 				dey
 				lda	cannon_bullet_veloc_x, y
 				sta	veloc_x_actor, x
-				lda	col_player_bullet_diff_pos_x_rel
+				lda	col_player_actor_offset_x_pos_x_rel
 				adc	#40
 				cmp	#80
-				bcc	:++++ ; if ((col_player_bullet_diff_pos_x_rel + 40) >= 80) {
+				bcc	:++++ ; if ((col_player_actor_offset_x_pos_x_rel + 40) >= 80) {
 					lda	#actor_states::descending
 					sta	state_actor, x
 					lda	#BULLET_ANI_TIMER

@@ -36,8 +36,8 @@ actor_A_07_proc:
 			: ; } else {
 				ldy	#DIR_LEFT
 
-				jsr	col_player_bullet_diff
-				bpl	:+ ; if (col_player_bullet_diff() < 0) {
+				jsr	col_player_actor_offset_x
+				bpl	:+ ; if (col_player_actor_offset_x() < 0) {
 					dey
 				; }
 			: ; }

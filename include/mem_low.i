@@ -5,7 +5,7 @@ MEM_LOW_I	= 1
 
 ppu_displist_write_addr		= zp_addr_00
 
-col_player_bullet_diff_pos_x_rel = zp_byte_00
+col_player_actor_offset_x_pos_x_rel = zp_byte_00
 
 scenery_tbl_base		= zp_byte_00
 
@@ -32,6 +32,8 @@ render_chr_pair_pos_x		= zp_byte_05
 col_bg_proc_player_halt_dir	= zp_byte_00
 col_plat_s_proc_idx		= zp_byte_00
 col_bg_proc_side_rep		= zp_byte_00
+col_bg_proc_pipe_v_metatile_a	= zp_byte_00
+col_bg_proc_pipe_v_metatile_b	= zp_byte_01
 col_obj_idx			= zp_byte_01
 col_buffer_ptr_idx		= zp_byte_02
 col_box_buffer_tbl_offset	= zp_byte_04

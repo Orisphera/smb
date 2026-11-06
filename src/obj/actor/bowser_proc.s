@@ -150,7 +150,7 @@ actor_B_18_proc:
 	
 		lda	timer_ani_actor, x
 		beq	:+
-		jsr	col_player_bullet_diff
+		jsr	col_player_actor_offset_x
 		bpl	:+ ; if (timer_ani_actor && col_player_bullet_dif() < 0) {
 			lda	#DIR_RIGHT
 			sta	motion_dir_actor, x
@@ -166,7 +166,7 @@ actor_B_18_proc:
 	
 		lda	frame_count
 		and	#MOD_4
-		bne	:+++ ; if ((!timer_ani_actor || col_player_bullet_diff() >= 0 || (this.pos_x < 200)) && !(frame_count % 4)) {
+		bne	:+++ ; if ((!timer_ani_actor || col_player_actor_offset_x() >= 0 || (this.pos_x < 200)) && !(frame_count % 4)) {
 			lda	pos_x_lo_actor, x
 			cmp	pos_x_prev_bowser
 			bne	:+ ; if (this.pos_x == this.pos_x_prev) {

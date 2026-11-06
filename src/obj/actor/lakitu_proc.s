@@ -60,10 +60,10 @@ actor_proc_lakitu_spiny_pos_x_rel_abs	= zp_byte_00
 
 actor_proc_lakitu_spiny:
 	ldy	#0
-	jsr	col_player_bullet_diff
-	bpl	:+ ; if (col_player_bullet_diff() < 0) {
+	jsr	col_player_actor_offset_x
+	bpl	:+ ; if (col_player_actor_offset_x() < 0) {
 		iny
-		lda	col_player_bullet_diff_pos_x_rel
+		lda	col_player_actor_offset_x_pos_x_rel
 		neg_m
 		sta	actor_proc_lakitu_spiny_pos_x_rel_abs
 	: ; }

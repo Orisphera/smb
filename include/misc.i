@@ -296,12 +296,13 @@ SCORE_POWERUP		= scores::value_1000
 		cheep_grey	= <((actor_init_A_tbl_0A-actor_init_tbl)/WORD_SIZE)
 		cheep_red	= <((actor_init_A_tbl_0B-actor_init_tbl)/WORD_SIZE)
 		cheep		= cheep_grey
-
 		podoboo		= <((actor_init_A_tbl_0C-actor_init_tbl)/WORD_SIZE)
+		
 		piranha_plant	= <((actor_init_A_tbl_0D-actor_init_tbl)/WORD_SIZE)
 		koopa_para_jump_green = <((actor_init_A_tbl_0E-actor_init_tbl)/WORD_SIZE)
 		koopa_para_fly_red = <((actor_init_A_tbl_0F-actor_init_tbl)/WORD_SIZE)
 		koopa_para_fly_green = <((actor_init_A_tbl_10-actor_init_tbl)/WORD_SIZE)
+
 		lakitu		= <((actor_init_A_tbl_11-actor_init_tbl)/WORD_SIZE)
 
 		spiny		= <((actor_init_A_tbl_12-actor_init_tbl)/WORD_SIZE)

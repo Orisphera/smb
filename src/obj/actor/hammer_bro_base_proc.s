@@ -114,8 +114,8 @@ actor_proc_hammer_bro_move_h:
 	sty	veloc_x_actor, x
 
 	ldy	#DIR_RIGHT
-	jsr	col_player_bullet_diff
-	bmi	:+ ; if (col_player_bullet_diff() >= 0) {
+	jsr	col_player_actor_offset_x
+	bmi	:+ ; if (col_player_actor_offset_x() >= 0) {
 		iny
 		lda	timer_actor, x
 		bne	:+ ; if (!actor.timer) {

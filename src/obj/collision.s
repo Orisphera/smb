@@ -714,8 +714,8 @@ col_player_harm_proc_check_dir:
 ; col_actor_kick_dir - calculate actor motion direction for kick
 col_actor_kick_dir:
 	ldy	#DIR_RIGHT
-	jsr	col_player_bullet_diff
-	bpl	:+ ; if (col_player_bullet_diff() < 0) {
+	jsr	col_player_actor_offset_x
+	bpl	:+ ; if (col_player_actor_offset_x() < 0) {
 		iny
 	: ; }
 	sty	motion_dir_actor, x
@@ -1683,9 +1683,7 @@ col_bg_proc_spring_check:
 
 	rts
 ; ----------------------------------------------------------------------
-col_bg_proc_pipe_v_metatile_a	= zp_byte_00
-col_bg_proc_pipe_v_metatile_b	= zp_byte_01
-
+; col_bg_proc_pipe_v_do - player x vertical pipe collision
 col_bg_proc_pipe_v_do:
 	lda	joypad_u_d
 	and	#joypad_button::down
@@ -1712,7 +1710,7 @@ col_bg_proc_pipe_v_do:
 				asl	a
 				asl	a
 			.endif
-			
+
 			tax
 
 			.if	.defined(SMBM)|.defined(VS_SMB)
@@ -1751,6 +1749,7 @@ col_bg_proc_pipe_v_do:
 
 			lda	#music_event::none
 			sta	apu_music_event_req
+
 			lda	#0
 			sta	pos_x_hi_init_game
 			sta	course_sub
@@ -1767,6 +1766,7 @@ col_bg_proc_pipe_v_do:
 
 	rts
 ; ----------------------------------------------------------------------
+; col_bg_proc_player_halt - player stop from collision
 col_bg_proc_player_halt:
 	lda	#0
 	ldy	veloc_x_player
@@ -1808,28 +1808,33 @@ col_bg_proc_player_halt:
 	sta	collision_player
 	rts
 ; ----------------------------------------------------------------------
+; col_bg_proc_tiles_solid - solid tile tables
 col_bg_proc_tiles_solid:
-	.byte	metatile_0::pipe_v_a
-	.byte	metatile_1::stair
-	.byte	metatile_2::cloud_small
-	.byte	metatile_3::block_invis
+	.byte	metatile_0::solid
+	.byte	metatile_1::solid
+	.byte	metatile_2::solid
+	.byte	metatile_3::solid
 ; ----------------------------------
+; col_bg_proc_solid_check - check if metatile is solid
 col_bg_proc_solid_check:
-	jsr	col_bg_proc_get_tile_page
+	jsr	col_tile_attr_stx
 	cmp	col_bg_proc_tiles_solid, x
 	rts
 ; ----------------------------------------------------------------------
+; col_bg_proc_tiles_climb - climbable tile tables
 col_bg_proc_tiles_climb:
-	.byte	metatile_0::flag_ball
-	.byte	metatile_1::flag_ball
-	.byte	metatile_2::end
-	.byte	metatile_3::end
+	.byte	metatile_0::climbable
+	.byte	metatile_1::climbable
+	.byte	metatile_2::climbable
+	.byte	metatile_3::climbable
 ; ----------------------------------
+; col_bg_proc_climb_check - check if metatile is climbable
 col_bg_proc_climb_check:
-	jsr	col_bg_proc_get_tile_page
+	jsr	col_tile_attr_stx
 	cmp	col_bg_proc_tiles_climb, x
 	rts
 ; ----------------------------------------------------------------------
+; col_bg_proc_coin_check - check if metatile is a coin
 col_bg_proc_coin_check:
 	cmp	#metatile_3::coin_a
 	beq	:+
@@ -1843,7 +1848,8 @@ col_bg_proc_coin_check:
 		rts
 	; }
 ; ----------------------------------------------------------------------
-col_bg_proc_get_tile_page:
+; col_tile_attr_stx - save the tile attribute in X
+col_tile_attr_stx:
 	tay
 	and	#TILE_PAGE_BITS
 	asl	a
@@ -1851,8 +1857,10 @@ col_bg_proc_get_tile_page:
 	rol	a
 	tax
 	tya
+
 	: rts
 ; ----------------------------------------------------------------------
+; col_actor_side_col_states - side collision states for actors
 col_actor_side_col_states:
 	.byte	actor_states::descending
 	.byte	actor_states::descending
@@ -1861,9 +1869,11 @@ col_actor_side_col_states:
 	.byte	actor_states::acting
 	.byte	actor_states::thrown
 
+; col_actor_stomp_veloc_x - horizontal velocity for stomping
 col_actor_stomp_veloc_x:
 	.byte	16, <-16
 ; ----------------------------------
+; col_actor_ground_proc - actor x background collision
 	.export col_actor_ground_proc
 col_actor_ground_proc:
 	lda	state_actor, x
@@ -1930,6 +1940,7 @@ col_actor_ground_proc:
 		; } else col_actor_land();
 	; } else rts;
 ; ----------------------------------
+; col_actor_koopa_demote_check - check for secondary koopa demotion
 col_actor_koopa_demote_check:
 	.if	.defined(SMBV2)
 		lda	obj_id_actor, x
@@ -1937,7 +1948,7 @@ col_actor_koopa_demote_check:
 
 	cmp	#actor::div_height
 	bcc	:++
-	cmp	#actor::lakitu
+	cmp	#actor::koopa_para_fly_green+1
 	bcs	:++
 
 	.if	.defined(SMBV2)
@@ -1949,13 +1960,14 @@ col_actor_koopa_demote_check:
 
 	cmp	#actor::cheep_grey
 	bcc	:+
-	cmp	#actor::piranha_plant
+	cmp	#actor::podoboo+1
 	bcc	:++
-	: ; if ((actor.id >= div_height && actor.id < lakitu) && (actor.id < cheep_grey || actor.id >= piranha_plant)) {
+	: ; if ((actor.id >= div_height && actor.id <= koopa_para_fly_green) && (actor.id < cheep_grey || actor.id > podoboo)) {
 		and	#actor::koopa_mask
 		sta	obj_id_actor, x
 	: ; }
 ; ----------------------------------
+; col_player_actor_stomp_do - perform stomp on an actor
 col_player_actor_stomp_do:
 	.if	.defined(SMBV1)
 		lda	state_actor, x
@@ -1988,8 +2000,8 @@ col_player_actor_stomp_do:
 	sta	veloc_y_actor, x
 
 	ldy	#DIR_RIGHT
-	jsr	col_player_bullet_diff
-	bpl	:+ ; if (col_player_bullet_diff() < 0) {
+	jsr	col_player_actor_offset_x
+	bpl	:+ ; if (col_player_actor_offset_x() < 0) {
 		iny
 	: ; }
 	lda	obj_id_actor, x
@@ -2008,6 +2020,7 @@ col_actor_ground_proc_rts:
 .endif
 	rts
 ; ----------------------------------
+; col_actor_land - actor collision with surface
 col_actor_land:
 	lda	col_box_buffer_tbl_offset
 	sec
@@ -2047,6 +2060,7 @@ col_actor_land:
 
 	rts
 ; ----------------------------------
+; col_actor_land_dir - direction calculation for landing actor
 col_actor_land_dir:
 	lda	obj_id_actor, x
 	cmp	#actor::goomba
@@ -2064,8 +2078,8 @@ col_actor_land_dir:
 	; }
 	: ; if (obj_id_actor == 6 || (obj_id_actor == 0x12 && (frame_count % 8))) {
 		ldy	#DIR_RIGHT
-		jsr	col_player_bullet_diff
-		bpl	:+ ; if (col_player_bullet_diff() < 0) {
+		jsr	col_player_actor_offset_x
+		bpl	:+ ; if (col_player_actor_offset_x() < 0) {
 			iny
 		: ; }
 		tya
@@ -2075,6 +2089,7 @@ col_actor_land_dir:
 		; }
 	: ; }
 ; ----------------------------------
+; col_actor_land_init - initialize landing actor
 col_actor_land_init:
 	jsr	col_actor_land_do
 	lda	state_actor, x
@@ -2090,6 +2105,7 @@ col_actor_land_init:
 		rts
 	; }
 ; ----------------------------------------------------------------------
+; col_actor_check_side - determine collision side
 col_actor_check_side:
 	lda	obj_id_actor, x
 	cmp	#actor::koopa_red
@@ -2114,14 +2130,14 @@ col_actor_check_side:
 		lda	pos_y_lo_actor, x
 		cmp	#32
 		bcc	:+++ ; if (actor.pos_y >= 32) {
-			ldy	#$16
+			ldy	#<((col_bg_buffer_x_val_a-col_bg_buffer_offset_x)+1)
 			lda	#DIR_LEFT
 			sta	zp_byte_EB
 			: ; for (y = 0x16; y < 0x18; y++) {
 				lda	zp_byte_EB
 				cmp	motion_dir_actor, x
 				bne	:+
-				lda	#$01
+				lda	#1
 				jsr	col_box_buffer_check_actor
 				beq	:+ ; if (actor.motion_dir == zp_byte_EB && col_box_buffer_check_actor()) {
 					jsr	col_bg_proc_check_non_solid ; if (col_bg_proc_check_non_solid()) {
@@ -2131,7 +2147,7 @@ col_actor_check_side:
 		
 				dec	zp_byte_EB
 				iny
-				cpy	#$18
+				cpy	#<((col_bg_buffer_x_val_a-col_bg_buffer_offset_x)+3)
 				bcc	:--
 			; }
 		: ; }
@@ -2139,6 +2155,7 @@ col_actor_check_side:
 		rts
 	; }
 ; ----------------------------------------------------------------------
+; col_actor_check_side_bump - perform side bump for proper actors
 col_actor_check_side_bump:
 	cpx	#ACTOR_COUNT_MAX-1
 	beq	:+
@@ -2160,24 +2177,27 @@ col_actor_check_side_bump:
 		jmp	col_actor_reverse
 	; }
 ; ----------------------------------------------------------------------
-	.export col_player_bullet_diff
-col_player_bullet_diff:
+; col_player_actor_offset_x - calculate player x actor horizontal offset
+	.export col_player_actor_offset_x
+col_player_actor_offset_x:
 	lda	pos_x_lo_actor, x
 	sec
 	sbc	pos_x_lo_player
-	sta	col_player_bullet_diff_pos_x_rel
+	sta	col_player_actor_offset_x_pos_x_rel
 	lda	pos_x_hi_actor, x
 	sbc	pos_x_hi_player
 	rts
 ; ----------------------------------------------------------------------
+; col_actor_land_do - snap landing character to tiles
 col_actor_land_do:
 	jsr	actor_init_veloc_y
 	lda	pos_y_lo_actor, x
 	and	#CLAMP_16
-	ora	#%00001000
+	ora	#8
 	sta	pos_y_lo_actor, x
 	rts
 ; ----------------------------------------------------------------------
+; col_actor_pos_y_diff - check actor on bounce line
 col_actor_pos_y_diff:
 	lda	pos_y_lo_actor, x
 	clc
@@ -2185,6 +2205,7 @@ col_actor_pos_y_diff:
 	cmp	#68
 	rts
 ; ----------------------------------------------------------------------
+; col_actor_bounce_proc - calculate actor bouncing
 	.export col_actor_bounce_proc
 col_actor_bounce_proc:
 	jsr	col_actor_pos_y_diff
@@ -2646,7 +2667,17 @@ col_bg_buffer_offset_x_swimming:
 col_bg_buffer_offset_x_short:
 	.byte	8, 3, 12, 2, 2,  13, 13
 
-	.byte	8, 0, 16, 4, 20, 4,  4
+col_bg_buffer_x_val_a:
+	.byte	8, 0, 16
+
+col_bg_buffer_x_val_b:
+	.byte	4, 20
+	
+col_bg_buffer_x_val_c_a:
+	.byte	4
+
+col_bg_buffer_x_val_c_b:
+	.byte	4
 
 col_bg_buffer_offset_y:
 col_bg_buffer_offset_y_tall:
@@ -2656,7 +2687,17 @@ col_bg_buffer_offset_y_swimming:
 col_bg_buffer_offset_y_short:
 	.byte	18, 32, 32, 24, 24, 24, 24
 
-	.byte	24, 20, 20, 6,  6,  8,  16
+col_bg_buffer_y_val_a:
+	.byte	24, 20, 20
+
+col_bg_buffer_y_val_b:
+	.byte	6,  6
+
+col_bg_buffer_y_val_c_a:
+	.byte	8
+
+col_bg_buffer_y_val_c_b:
+	.byte	16
 ; ----------------------------------
 col_box_player_step:
 	iny

@@ -29,7 +29,9 @@ TILE_ENTRY_BITS	= %00111111
 		tree_b		= <((bg_meta_block_0_tree_b-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		tree_c		= <((bg_meta_block_0_tree_c-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 
-		cutoff		= <((bg_meta_block_0_cutoff-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+		bumpable	= <((bg_meta_block_0_bumpable-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+
+		solid		= <((bg_meta_block_0_solid-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 
 		pipe_v_a	= <((bg_meta_block_0_pipe_v_a-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		pipe_v_b	= <((bg_meta_block_0_pipe_v_b-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
@@ -48,6 +50,8 @@ TILE_ENTRY_BITS	= %00111111
 		pipe_h_f	= <((bg_meta_block_0_pipe_h_f-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		coral		= <((bg_meta_block_0_coral-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		blank_d		= <((bg_meta_block_0_blank_d-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
+
+		climbable	= <((bg_meta_block_0_climbable-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 
 		flag_ball	= <((bg_meta_block_0_flag_ball-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
 		pole		= <((bg_meta_block_0_pole-bg_meta_block_0)/METATILE_SIZE)|TILE_PAGE_0
@@ -79,7 +83,8 @@ TILE_ENTRY_BITS	= %00111111
 			tree_a		= <((bg_meta_block_1_tree_a-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 			tree_b		= <((bg_meta_block_1_tree_b-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		.endif
-		cutoff		= <((bg_meta_block_1_cutoff-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1	
+
+		bumpable	= <((bg_meta_block_1_bumpable-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1	
 
 		brick_a		= <((bg_meta_block_1_brick_a-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		brick_b		= <((bg_meta_block_1_brick_b-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1	
@@ -97,6 +102,8 @@ TILE_ENTRY_BITS	= %00111111
 		blank_b		= <((bg_meta_block_1_blank_b-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		blank_c		= <((bg_meta_block_1_blank_c-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 
+		solid		= <((bg_meta_block_1_solid-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
+
 		stair		= <((bg_meta_block_1_stair-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		floor_castle	= <((bg_meta_block_1_floor_castle-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		bridge_base	= <((bg_meta_block_1_bridge_base-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
@@ -108,6 +115,9 @@ TILE_ENTRY_BITS	= %00111111
 		floor_underwater = <((bg_meta_block_1_floor_underwater-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		pipe_water_a	= <((bg_meta_block_1_pipe_water_a-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		pipe_water_b	= <((bg_meta_block_1_pipe_water_b-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
+
+		climbable	= <((bg_meta_block_1_climbable-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
+
 		flag_ball	= <((bg_meta_block_1_flag_ball-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
 		.if	.defined(SMBV2)
 			blank_d		= <((bg_meta_block_1_blank_d-bg_meta_block_1)/METATILE_SIZE)|TILE_PAGE_1
@@ -129,7 +139,9 @@ TILE_ENTRY_BITS	= %00111111
 		water_a		= <((bg_meta_block_2_water_a-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
 		water_b		= <((bg_meta_block_2_water_b-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
 
-		cutoff		= <((bg_meta_block_2_cutoff-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
+		bumpable	= <((bg_meta_block_2_bumpable-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
+	
+		solid		= <((bg_meta_block_2_solid-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
 
 		cloud_small	= <((bg_meta_block_2_cloud_small-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
 		bridge_castle	= <((bg_meta_block_2_bridge_castle-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
@@ -139,15 +151,12 @@ TILE_ENTRY_BITS	= %00111111
 			plat_a_c	= <((bg_meta_block_2_plat_a_c-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
 		.endif
 
-		.if	.defined(SMBM)|.defined(VS_SMB)|.defined(ANN)
-			end	= bridge_castle+1
-		.elseif	.defined(SMB2)
-			end = plat_a_c+1
-		.endif
+		climbable	= <((bg_meta_block_2_climbable-bg_meta_block_2)/METATILE_SIZE)|TILE_PAGE_2
+		end
 	.endenum
 
 	.enum	metatile_3
-		cutoff		= <((bg_meta_block_3_cutoff-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+		bumpable	= <((bg_meta_block_3_bumpable-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 
 		block_q_set	= <((bg_meta_block_3_block_q_set-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 		block_q_a	= <((bg_meta_block_3_block_q_a-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
@@ -158,10 +167,14 @@ TILE_ENTRY_BITS	= %00111111
 		coin_a		= <((bg_meta_block_3_coin_a-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 		coin_b		= <((bg_meta_block_3_coin_b-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 
-		block_invis	= <((bg_meta_block_3_block_invis-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
-		axe	= <((bg_meta_block_3_axe-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+		solid		= <((bg_meta_block_3_block_solid-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
 
-		end	= axe+1
+		block_invis	= <((bg_meta_block_3_block_invis-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+		axe		= <((bg_meta_block_3_axe-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+		
+		climbable	= <((bg_meta_block_3_climbable-bg_meta_block_3)/METATILE_SIZE)|TILE_PAGE_3
+
+		end	= climbable
 	.endenum
 
 .if	.defined(SMBM)|.defined(VS_SMB)

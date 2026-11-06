@@ -513,10 +513,10 @@ scenery_proc_main:
 	rts
 ; ----------------
 scenery_buffer_cutoff:
-	.byte	metatile_0::cutoff
-	.byte	metatile_1::cutoff
-	.byte	metatile_2::cutoff
-	.byte	metatile_3::cutoff
+	.byte	metatile_0::bumpable
+	.byte	metatile_1::bumpable
+	.byte	metatile_2::bumpable
+	.byte	metatile_3::bumpable
 ; ----------------------------------------------------------------------
 scenery_do:
 	.if	.defined(VS)
